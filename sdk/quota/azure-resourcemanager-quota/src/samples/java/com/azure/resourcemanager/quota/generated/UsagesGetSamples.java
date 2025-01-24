@@ -4,41 +4,41 @@
 
 package com.azure.resourcemanager.quota.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Usages Get. */
+/**
+ * Samples for Usages Get.
+ */
 public final class UsagesGetSamples {
     /*
-     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2021-03-15-preview/examples/getNetworkOneSkuUsages.json
+     * x-ms-original-file:
+     * specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/getNetworkOneSkuUsages.
+     * json
      */
     /**
      * Sample code: Quotas_UsagesRequest_ForNetwork.
-     *
+     * 
      * @param manager Entry point to QuotaManager.
      */
     public static void quotasUsagesRequestForNetwork(com.azure.resourcemanager.quota.QuotaManager manager) {
-        manager
-            .usages()
-            .getWithResponse(
-                "MinPublicIpInterNetworkPrefixLength",
+        manager.usages()
+            .getWithResponse("MinPublicIpInterNetworkPrefixLength",
                 "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2021-03-15-preview/examples/getComputeOneSkuUsages.json
+     * x-ms-original-file:
+     * specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/getComputeOneSkuUsages.
+     * json
      */
     /**
      * Sample code: Quotas_UsagesRequest_ForCompute.
-     *
+     * 
      * @param manager Entry point to QuotaManager.
      */
     public static void quotasUsagesRequestForCompute(com.azure.resourcemanager.quota.QuotaManager manager) {
-        manager
-            .usages()
-            .getWithResponse(
-                "standardNDSFamily",
+        manager.usages()
+            .getWithResponse("standardNDSFamily",
                 "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

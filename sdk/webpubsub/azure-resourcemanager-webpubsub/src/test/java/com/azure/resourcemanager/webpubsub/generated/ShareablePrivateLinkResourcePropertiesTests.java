@@ -7,30 +7,27 @@ package com.azure.resourcemanager.webpubsub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.ShareablePrivateLinkResourceProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ShareablePrivateLinkResourcePropertiesTests {
-    @Test
-    public void testDeserialize() {
-        ShareablePrivateLinkResourceProperties model =
-            BinaryData
-                .fromString("{\"description\":\"wkfvhqcrailvp\",\"groupId\":\"pfuflrw\",\"type\":\"hdlxyjrxsagafcn\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ShareablePrivateLinkResourceProperties model
+            = BinaryData.fromString("{\"description\":\"nb\",\"groupId\":\"rxgibbd\",\"type\":\"confozauors\"}")
                 .toObject(ShareablePrivateLinkResourceProperties.class);
-        Assertions.assertEquals("wkfvhqcrailvp", model.description());
-        Assertions.assertEquals("pfuflrw", model.groupId());
-        Assertions.assertEquals("hdlxyjrxsagafcn", model.type());
+        Assertions.assertEquals("nb", model.description());
+        Assertions.assertEquals("rxgibbd", model.groupId());
+        Assertions.assertEquals("confozauors", model.type());
     }
 
-    @Test
-    public void testSerialize() {
-        ShareablePrivateLinkResourceProperties model =
-            new ShareablePrivateLinkResourceProperties()
-                .withDescription("wkfvhqcrailvp")
-                .withGroupId("pfuflrw")
-                .withType("hdlxyjrxsagafcn");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ShareablePrivateLinkResourceProperties model
+            = new ShareablePrivateLinkResourceProperties().withDescription("nb")
+                .withGroupId("rxgibbd")
+                .withType("confozauors");
         model = BinaryData.fromObject(model).toObject(ShareablePrivateLinkResourceProperties.class);
-        Assertions.assertEquals("wkfvhqcrailvp", model.description());
-        Assertions.assertEquals("pfuflrw", model.groupId());
-        Assertions.assertEquals("hdlxyjrxsagafcn", model.type());
+        Assertions.assertEquals("nb", model.description());
+        Assertions.assertEquals("rxgibbd", model.groupId());
+        Assertions.assertEquals("confozauors", model.type());
     }
 }

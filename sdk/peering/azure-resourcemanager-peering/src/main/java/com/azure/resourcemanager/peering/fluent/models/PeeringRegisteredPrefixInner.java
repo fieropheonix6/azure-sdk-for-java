@@ -5,111 +5,195 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.peering.models.PrefixValidationState;
 import com.azure.resourcemanager.peering.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The customer's prefix that is registered by the peering service provider. */
-@JsonFlatten
+/**
+ * The customer's prefix that is registered by the peering service provider.
+ */
 @Fluent
-public class PeeringRegisteredPrefixInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringRegisteredPrefixInner.class);
+public final class PeeringRegisteredPrefixInner extends ProxyResource {
+    /*
+     * The properties that define a registered prefix.
+     */
+    private PeeringRegisteredPrefixProperties innerProperties;
 
     /*
-     * The customer's prefix from which traffic originates.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.prefix")
-    private String prefix;
+    private String type;
 
     /*
-     * The prefix validation state.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.prefixValidationState", access = JsonProperty.Access.WRITE_ONLY)
-    private PrefixValidationState prefixValidationState;
+    private String name;
 
     /*
-     * The peering service prefix key that is to be shared with the customer.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.peeringServicePrefixKey", access = JsonProperty.Access.WRITE_ONLY)
-    private String peeringServicePrefixKey;
+    private String id;
 
-    /*
-     * The error message associated with the validation state, if any.
+    /**
+     * Creates an instance of PeeringRegisteredPrefixInner class.
      */
-    @JsonProperty(value = "properties.errorMessage", access = JsonProperty.Access.WRITE_ONLY)
-    private String errorMessage;
+    public PeeringRegisteredPrefixInner() {
+    }
 
-    /*
-     * The provisioning state of the resource.
+    /**
+     * Get the innerProperties property: The properties that define a registered prefix.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private PeeringRegisteredPrefixProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the prefix property: The customer's prefix from which traffic originates.
-     *
+     * 
      * @return the prefix value.
      */
     public String prefix() {
-        return this.prefix;
+        return this.innerProperties() == null ? null : this.innerProperties().prefix();
     }
 
     /**
      * Set the prefix property: The customer's prefix from which traffic originates.
-     *
+     * 
      * @param prefix the prefix value to set.
      * @return the PeeringRegisteredPrefixInner object itself.
      */
     public PeeringRegisteredPrefixInner withPrefix(String prefix) {
-        this.prefix = prefix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringRegisteredPrefixProperties();
+        }
+        this.innerProperties().withPrefix(prefix);
         return this;
     }
 
     /**
      * Get the prefixValidationState property: The prefix validation state.
-     *
+     * 
      * @return the prefixValidationState value.
      */
     public PrefixValidationState prefixValidationState() {
-        return this.prefixValidationState;
+        return this.innerProperties() == null ? null : this.innerProperties().prefixValidationState();
     }
 
     /**
      * Get the peeringServicePrefixKey property: The peering service prefix key that is to be shared with the customer.
-     *
+     * 
      * @return the peeringServicePrefixKey value.
      */
     public String peeringServicePrefixKey() {
-        return this.peeringServicePrefixKey;
+        return this.innerProperties() == null ? null : this.innerProperties().peeringServicePrefixKey();
     }
 
     /**
      * Get the errorMessage property: The error message associated with the validation state, if any.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
-        return this.errorMessage;
+        return this.innerProperties() == null ? null : this.innerProperties().errorMessage();
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringRegisteredPrefixInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringRegisteredPrefixInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PeeringRegisteredPrefixInner.
+     */
+    public static PeeringRegisteredPrefixInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringRegisteredPrefixInner deserializedPeeringRegisteredPrefixInner = new PeeringRegisteredPrefixInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPeeringRegisteredPrefixInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPeeringRegisteredPrefixInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPeeringRegisteredPrefixInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPeeringRegisteredPrefixInner.innerProperties
+                        = PeeringRegisteredPrefixProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringRegisteredPrefixInner;
+        });
     }
 }

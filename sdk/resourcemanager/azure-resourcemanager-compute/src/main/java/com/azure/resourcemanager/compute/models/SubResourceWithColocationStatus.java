@@ -6,24 +6,30 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SubResourceWithColocationStatus model. */
+/**
+ * The SubResourceWithColocationStatus model.
+ */
 @Fluent
 public final class SubResourceWithColocationStatus extends SubResource {
     /*
      * Describes colocation status of a resource in the Proximity Placement Group.
      */
-    @JsonProperty(value = "colocationStatus")
     private InstanceViewStatus colocationStatus;
 
-    /** Creates an instance of SubResourceWithColocationStatus class. */
+    /**
+     * Creates an instance of SubResourceWithColocationStatus class.
+     */
     public SubResourceWithColocationStatus() {
     }
 
     /**
      * Get the colocationStatus property: Describes colocation status of a resource in the Proximity Placement Group.
-     *
+     * 
      * @return the colocationStatus value.
      */
     public InstanceViewStatus colocationStatus() {
@@ -32,7 +38,7 @@ public final class SubResourceWithColocationStatus extends SubResource {
 
     /**
      * Set the colocationStatus property: Describes colocation status of a resource in the Proximity Placement Group.
-     *
+     * 
      * @param colocationStatus the colocationStatus value to set.
      * @return the SubResourceWithColocationStatus object itself.
      */
@@ -41,7 +47,9 @@ public final class SubResourceWithColocationStatus extends SubResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SubResourceWithColocationStatus withId(String id) {
         super.withId(id);
@@ -50,12 +58,52 @@ public final class SubResourceWithColocationStatus extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (colocationStatus() != null) {
             colocationStatus().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("colocationStatus", this.colocationStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubResourceWithColocationStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubResourceWithColocationStatus if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubResourceWithColocationStatus.
+     */
+    public static SubResourceWithColocationStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubResourceWithColocationStatus deserializedSubResourceWithColocationStatus
+                = new SubResourceWithColocationStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSubResourceWithColocationStatus.withId(reader.getString());
+                } else if ("colocationStatus".equals(fieldName)) {
+                    deserializedSubResourceWithColocationStatus.colocationStatus = InstanceViewStatus.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubResourceWithColocationStatus;
+        });
     }
 }

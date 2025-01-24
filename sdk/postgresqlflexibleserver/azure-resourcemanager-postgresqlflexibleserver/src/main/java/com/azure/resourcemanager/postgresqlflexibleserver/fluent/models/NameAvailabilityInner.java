@@ -5,82 +5,37 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilityReason;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilityResponse;
+import java.io.IOException;
 
-/** Represents a resource name availability. */
+/**
+ * Represents a resource name availability.
+ */
 @Fluent
-public final class NameAvailabilityInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameAvailabilityInner.class);
-
-    /*
-     * Error Message.
-     */
-    @JsonProperty(value = "message")
-    private String message;
-
-    /*
-     * Indicates whether the resource name is available.
-     */
-    @JsonProperty(value = "nameAvailable")
-    private Boolean nameAvailable;
-
+public final class NameAvailabilityInner extends CheckNameAvailabilityResponse {
     /*
      * name of the PostgreSQL server.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * type of the server
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /**
-     * Get the message property: Error Message.
-     *
-     * @return the message value.
+     * Creates an instance of NameAvailabilityInner class.
      */
-    public String message() {
-        return this.message;
-    }
-
-    /**
-     * Set the message property: Error Message.
-     *
-     * @param message the message value to set.
-     * @return the NameAvailabilityInner object itself.
-     */
-    public NameAvailabilityInner withMessage(String message) {
-        this.message = message;
-        return this;
-    }
-
-    /**
-     * Get the nameAvailable property: Indicates whether the resource name is available.
-     *
-     * @return the nameAvailable value.
-     */
-    public Boolean nameAvailable() {
-        return this.nameAvailable;
-    }
-
-    /**
-     * Set the nameAvailable property: Indicates whether the resource name is available.
-     *
-     * @param nameAvailable the nameAvailable value to set.
-     * @return the NameAvailabilityInner object itself.
-     */
-    public NameAvailabilityInner withNameAvailable(Boolean nameAvailable) {
-        this.nameAvailable = nameAvailable;
-        return this;
+    public NameAvailabilityInner() {
     }
 
     /**
      * Get the name property: name of the PostgreSQL server.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -88,19 +43,8 @@ public final class NameAvailabilityInner {
     }
 
     /**
-     * Set the name property: name of the PostgreSQL server.
-     *
-     * @param name the name value to set.
-     * @return the NameAvailabilityInner object itself.
-     */
-    public NameAvailabilityInner withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get the type property: type of the server.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -108,21 +52,85 @@ public final class NameAvailabilityInner {
     }
 
     /**
-     * Set the type property: type of the server.
-     *
-     * @param type the type value to set.
-     * @return the NameAvailabilityInner object itself.
+     * {@inheritDoc}
      */
-    public NameAvailabilityInner withType(String type) {
-        this.type = type;
+    @Override
+    public NameAvailabilityInner withNameAvailable(Boolean nameAvailable) {
+        super.withNameAvailable(nameAvailable);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NameAvailabilityInner withReason(CheckNameAvailabilityReason reason) {
+        super.withReason(reason);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NameAvailabilityInner withMessage(String message) {
+        super.withMessage(message);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("nameAvailable", nameAvailable());
+        jsonWriter.writeStringField("reason", reason() == null ? null : reason().toString());
+        jsonWriter.writeStringField("message", message());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NameAvailabilityInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NameAvailabilityInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NameAvailabilityInner.
+     */
+    public static NameAvailabilityInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NameAvailabilityInner deserializedNameAvailabilityInner = new NameAvailabilityInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nameAvailable".equals(fieldName)) {
+                    deserializedNameAvailabilityInner.withNameAvailable(reader.getNullable(JsonReader::getBoolean));
+                } else if ("reason".equals(fieldName)) {
+                    deserializedNameAvailabilityInner
+                        .withReason(CheckNameAvailabilityReason.fromString(reader.getString()));
+                } else if ("message".equals(fieldName)) {
+                    deserializedNameAvailabilityInner.withMessage(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedNameAvailabilityInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNameAvailabilityInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNameAvailabilityInner;
+        });
     }
 }

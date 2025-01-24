@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.AggregationType;
 import com.azure.resourcemanager.monitor.models.LocalizableString;
@@ -13,6 +14,7 @@ import com.azure.resourcemanager.monitor.models.ResultType;
 import com.azure.resourcemanager.monitor.fluent.models.LocalizableStringInner;
 import com.azure.resourcemanager.monitor.fluent.models.MetricDefinitionInner;
 import com.azure.resourcemanager.monitor.models.Unit;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -175,25 +177,16 @@ class MetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner>
 
     @Override
     public Mono<MetricCollection> executeAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getMetrics()
-            .listAsync(
-                this.inner.resourceId(),
-                String
-                    .format(
-                        "%s/%s",
-                        DateTimeFormatter.ISO_INSTANT.format(this.queryStartTime.atZoneSameInstant(ZoneOffset.UTC)),
-                        DateTimeFormatter.ISO_INSTANT.format(this.queryEndTime.atZoneSameInstant(ZoneOffset.UTC))),
-                this.interval,
-                this.inner.name().value(),
-                this.aggreagation,
-                this.top,
-                this.orderBy,
-                this.odataFilter,
-                this.resultType,
-                this.namespaceFilter)
+            .listWithResponseAsync(ResourceUtils.encodeResourceId(this.inner.resourceId()),
+                String.format("%s/%s",
+                    DateTimeFormatter.ISO_INSTANT.format(this.queryStartTime.atZoneSameInstant(ZoneOffset.UTC)),
+                    DateTimeFormatter.ISO_INSTANT.format(this.queryEndTime.atZoneSameInstant(ZoneOffset.UTC))),
+                this.interval, this.inner.name().value(), this.aggreagation, this.top, this.orderBy, this.odataFilter,
+                this.resultType, this.namespaceFilter)
+            .map(Response::getValue)
             .map(MetricCollectionImpl::new);
     }
 }

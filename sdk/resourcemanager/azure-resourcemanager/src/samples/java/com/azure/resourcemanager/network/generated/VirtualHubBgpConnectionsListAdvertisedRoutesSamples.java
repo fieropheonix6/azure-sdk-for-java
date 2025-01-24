@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualHubBgpConnections ListAdvertisedRoutes. */
+/**
+ * Samples for VirtualHubBgpConnections ListAdvertisedRoutes.
+ */
 public final class VirtualHubBgpConnectionsListAdvertisedRoutesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualRouterPeerListAdvertisedRoute.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * VirtualRouterPeerListAdvertisedRoute.json
      */
     /**
      * Sample code: VirtualRouterPeerListAdvertisedRoutes.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualRouterPeerListAdvertisedRoutes(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getVirtualHubBgpConnections()
-            .listAdvertisedRoutes("rg1", "virtualRouter1", "peer1", Context.NONE);
+            .listAdvertisedRoutes("rg1", "virtualRouter1", "peer1", com.azure.core.util.Context.NONE);
     }
 }

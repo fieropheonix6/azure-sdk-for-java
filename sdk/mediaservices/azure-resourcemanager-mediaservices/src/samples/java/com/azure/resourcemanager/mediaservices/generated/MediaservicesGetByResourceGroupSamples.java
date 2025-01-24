@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Mediaservices GetByResourceGroup. */
+/**
+ * Samples for Mediaservices GetByResourceGroup.
+ */
 public final class MediaservicesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/accounts-get-by-name.json
+     * x-ms-original-file:
+     * specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2023-01-01/examples/accounts-get-by-
+     * name.json
      */
     /**
      * Sample code: Get a Media Services account by name.
-     *
+     * 
      * @param manager Entry point to MediaServicesManager.
      */
-    public static void getAMediaServicesAccountByName(
-        com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager.mediaservices().getByResourceGroupWithResponse("contoso", "contosotv", Context.NONE);
+    public static void
+        getAMediaServicesAccountByName(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
+        manager.mediaservices()
+            .getByResourceGroupWithResponse("contosorg", "contosotv", com.azure.core.util.Context.NONE);
     }
 }

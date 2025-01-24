@@ -5,53 +5,67 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.SqlAlwaysEncryptedProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.datafactory.models.SqlServerAuthenticationType;
+import com.azure.resourcemanager.datafactory.models.SqlServerBaseLinkedServiceTypeProperties;
+import java.io.IOException;
 
-/** SQL Server linked service properties. */
+/**
+ * SQL Server linked service properties.
+ */
 @Fluent
-public final class SqlServerLinkedServiceTypeProperties {
+public final class SqlServerLinkedServiceTypeProperties extends SqlServerBaseLinkedServiceTypeProperties {
     /*
      * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
+
+    /*
+     * The type used for authentication. Type: string.
+     */
+    private SqlServerAuthenticationType authenticationType;
 
     /*
      * The on-premises Windows authentication user name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "userName")
     private Object username;
 
     /*
      * The on-premises Windows authentication password.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /*
      * Sql always encrypted properties.
      */
-    @JsonProperty(value = "alwaysEncryptedSettings")
     private SqlAlwaysEncryptedProperties alwaysEncryptedSettings;
 
-    /** Creates an instance of SqlServerLinkedServiceTypeProperties class. */
+    /*
+     * The credential reference containing authentication information.
+     */
+    private CredentialReference credential;
+
+    /**
+     * Creates an instance of SqlServerLinkedServiceTypeProperties class.
+     */
     public SqlServerLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -61,7 +75,7 @@ public final class SqlServerLinkedServiceTypeProperties {
     /**
      * Set the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the SqlServerLinkedServiceTypeProperties object itself.
      */
@@ -71,9 +85,29 @@ public final class SqlServerLinkedServiceTypeProperties {
     }
 
     /**
+     * Get the authenticationType property: The type used for authentication. Type: string.
+     * 
+     * @return the authenticationType value.
+     */
+    public SqlServerAuthenticationType authenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: The type used for authentication. Type: string.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the SqlServerLinkedServiceTypeProperties object itself.
+     */
+    public SqlServerLinkedServiceTypeProperties withAuthenticationType(SqlServerAuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
+        return this;
+    }
+
+    /**
      * Get the username property: The on-premises Windows authentication user name. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -83,7 +117,7 @@ public final class SqlServerLinkedServiceTypeProperties {
     /**
      * Set the username property: The on-premises Windows authentication user name. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param username the username value to set.
      * @return the SqlServerLinkedServiceTypeProperties object itself.
      */
@@ -94,7 +128,7 @@ public final class SqlServerLinkedServiceTypeProperties {
 
     /**
      * Get the password property: The on-premises Windows authentication password.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -103,7 +137,7 @@ public final class SqlServerLinkedServiceTypeProperties {
 
     /**
      * Set the password property: The on-premises Windows authentication password.
-     *
+     * 
      * @param password the password value to set.
      * @return the SqlServerLinkedServiceTypeProperties object itself.
      */
@@ -114,29 +148,29 @@ public final class SqlServerLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SqlServerLinkedServiceTypeProperties object itself.
      */
-    public SqlServerLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public SqlServerLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Get the alwaysEncryptedSettings property: Sql always encrypted properties.
-     *
+     * 
      * @return the alwaysEncryptedSettings value.
      */
     public SqlAlwaysEncryptedProperties alwaysEncryptedSettings() {
@@ -145,35 +179,337 @@ public final class SqlServerLinkedServiceTypeProperties {
 
     /**
      * Set the alwaysEncryptedSettings property: Sql always encrypted properties.
-     *
+     * 
      * @param alwaysEncryptedSettings the alwaysEncryptedSettings value to set.
      * @return the SqlServerLinkedServiceTypeProperties object itself.
      */
-    public SqlServerLinkedServiceTypeProperties withAlwaysEncryptedSettings(
-        SqlAlwaysEncryptedProperties alwaysEncryptedSettings) {
+    public SqlServerLinkedServiceTypeProperties
+        withAlwaysEncryptedSettings(SqlAlwaysEncryptedProperties alwaysEncryptedSettings) {
         this.alwaysEncryptedSettings = alwaysEncryptedSettings;
         return this;
     }
 
     /**
+     * Get the credential property: The credential reference containing authentication information.
+     * 
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     * 
+     * @param credential the credential value to set.
+     * @return the SqlServerLinkedServiceTypeProperties object itself.
+     */
+    public SqlServerLinkedServiceTypeProperties withCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withServer(Object server) {
+        super.withServer(server);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withDatabase(Object database) {
+        super.withDatabase(database);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withEncrypt(Object encrypt) {
+        super.withEncrypt(encrypt);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withTrustServerCertificate(Object trustServerCertificate) {
+        super.withTrustServerCertificate(trustServerCertificate);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withHostnameInCertificate(Object hostnameInCertificate) {
+        super.withHostnameInCertificate(hostnameInCertificate);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withApplicationIntent(Object applicationIntent) {
+        super.withApplicationIntent(applicationIntent);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withConnectTimeout(Object connectTimeout) {
+        super.withConnectTimeout(connectTimeout);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withConnectRetryCount(Object connectRetryCount) {
+        super.withConnectRetryCount(connectRetryCount);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withConnectRetryInterval(Object connectRetryInterval) {
+        super.withConnectRetryInterval(connectRetryInterval);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withLoadBalanceTimeout(Object loadBalanceTimeout) {
+        super.withLoadBalanceTimeout(loadBalanceTimeout);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withCommandTimeout(Object commandTimeout) {
+        super.withCommandTimeout(commandTimeout);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withIntegratedSecurity(Object integratedSecurity) {
+        super.withIntegratedSecurity(integratedSecurity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withFailoverPartner(Object failoverPartner) {
+        super.withFailoverPartner(failoverPartner);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withMaxPoolSize(Object maxPoolSize) {
+        super.withMaxPoolSize(maxPoolSize);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withMinPoolSize(Object minPoolSize) {
+        super.withMinPoolSize(minPoolSize);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withMultipleActiveResultSets(Object multipleActiveResultSets) {
+        super.withMultipleActiveResultSets(multipleActiveResultSets);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withMultiSubnetFailover(Object multiSubnetFailover) {
+        super.withMultiSubnetFailover(multiSubnetFailover);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withPacketSize(Object packetSize) {
+        super.withPacketSize(packetSize);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerLinkedServiceTypeProperties withPooling(Object pooling) {
+        super.withPooling(pooling);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (connectionString() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property connectionString in model SqlServerLinkedServiceTypeProperties"));
-        }
         if (password() != null) {
             password().validate();
         }
         if (alwaysEncryptedSettings() != null) {
             alwaysEncryptedSettings().validate();
         }
+        if (credential() != null) {
+            credential().validate();
+        }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(SqlServerLinkedServiceTypeProperties.class);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("server", server());
+        jsonWriter.writeUntypedField("database", database());
+        jsonWriter.writeUntypedField("encrypt", encrypt());
+        jsonWriter.writeUntypedField("trustServerCertificate", trustServerCertificate());
+        jsonWriter.writeUntypedField("hostNameInCertificate", hostnameInCertificate());
+        jsonWriter.writeUntypedField("applicationIntent", applicationIntent());
+        jsonWriter.writeUntypedField("connectTimeout", connectTimeout());
+        jsonWriter.writeUntypedField("connectRetryCount", connectRetryCount());
+        jsonWriter.writeUntypedField("connectRetryInterval", connectRetryInterval());
+        jsonWriter.writeUntypedField("loadBalanceTimeout", loadBalanceTimeout());
+        jsonWriter.writeUntypedField("commandTimeout", commandTimeout());
+        jsonWriter.writeUntypedField("integratedSecurity", integratedSecurity());
+        jsonWriter.writeUntypedField("failoverPartner", failoverPartner());
+        jsonWriter.writeUntypedField("maxPoolSize", maxPoolSize());
+        jsonWriter.writeUntypedField("minPoolSize", minPoolSize());
+        jsonWriter.writeUntypedField("multipleActiveResultSets", multipleActiveResultSets());
+        jsonWriter.writeUntypedField("multiSubnetFailover", multiSubnetFailover());
+        jsonWriter.writeUntypedField("packetSize", packetSize());
+        jsonWriter.writeUntypedField("pooling", pooling());
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeUntypedField("userName", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeJsonField("alwaysEncryptedSettings", this.alwaysEncryptedSettings);
+        jsonWriter.writeJsonField("credential", this.credential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlServerLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlServerLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlServerLinkedServiceTypeProperties.
+     */
+    public static SqlServerLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlServerLinkedServiceTypeProperties deserializedSqlServerLinkedServiceTypeProperties
+                = new SqlServerLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withServer(reader.readUntyped());
+                } else if ("database".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withDatabase(reader.readUntyped());
+                } else if ("encrypt".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withEncrypt(reader.readUntyped());
+                } else if ("trustServerCertificate".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withTrustServerCertificate(reader.readUntyped());
+                } else if ("hostNameInCertificate".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withHostnameInCertificate(reader.readUntyped());
+                } else if ("applicationIntent".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withApplicationIntent(reader.readUntyped());
+                } else if ("connectTimeout".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withConnectTimeout(reader.readUntyped());
+                } else if ("connectRetryCount".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withConnectRetryCount(reader.readUntyped());
+                } else if ("connectRetryInterval".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withConnectRetryInterval(reader.readUntyped());
+                } else if ("loadBalanceTimeout".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withLoadBalanceTimeout(reader.readUntyped());
+                } else if ("commandTimeout".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withCommandTimeout(reader.readUntyped());
+                } else if ("integratedSecurity".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withIntegratedSecurity(reader.readUntyped());
+                } else if ("failoverPartner".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withFailoverPartner(reader.readUntyped());
+                } else if ("maxPoolSize".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withMaxPoolSize(reader.readUntyped());
+                } else if ("minPoolSize".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withMinPoolSize(reader.readUntyped());
+                } else if ("multipleActiveResultSets".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withMultipleActiveResultSets(reader.readUntyped());
+                } else if ("multiSubnetFailover".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withMultiSubnetFailover(reader.readUntyped());
+                } else if ("packetSize".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withPacketSize(reader.readUntyped());
+                } else if ("pooling".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.withPooling(reader.readUntyped());
+                } else if ("connectionString".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.authenticationType
+                        = SqlServerAuthenticationType.fromString(reader.getString());
+                } else if ("userName".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("alwaysEncryptedSettings".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.alwaysEncryptedSettings
+                        = SqlAlwaysEncryptedProperties.fromJson(reader);
+                } else if ("credential".equals(fieldName)) {
+                    deserializedSqlServerLinkedServiceTypeProperties.credential = CredentialReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlServerLinkedServiceTypeProperties;
+        });
+    }
 }

@@ -5,35 +5,39 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.RegionInfoAvailabilityZoneMappingsItem;
 import com.azure.resourcemanager.netapp.models.RegionStorageToNetworkProximity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Provides region specific information. */
+/**
+ * Provides region specific information.
+ */
 @Fluent
-public final class RegionInfoInner {
+public final class RegionInfoInner implements JsonSerializable<RegionInfoInner> {
     /*
-     * Storage to Network Proximity
-     *
      * Provides storage to network proximity information in the region.
      */
-    @JsonProperty(value = "storageToNetworkProximity")
     private RegionStorageToNetworkProximity storageToNetworkProximity;
 
     /*
-     * Logical availability zone mappings.
-     *
      * Provides logical availability zone mappings for the subscription for a region.
      */
-    @JsonProperty(value = "availabilityZoneMappings")
     private List<RegionInfoAvailabilityZoneMappingsItem> availabilityZoneMappings;
 
     /**
-     * Get the storageToNetworkProximity property: Storage to Network Proximity
-     *
-     * <p>Provides storage to network proximity information in the region.
-     *
+     * Creates an instance of RegionInfoInner class.
+     */
+    public RegionInfoInner() {
+    }
+
+    /**
+     * Get the storageToNetworkProximity property: Provides storage to network proximity information in the region.
+     * 
      * @return the storageToNetworkProximity value.
      */
     public RegionStorageToNetworkProximity storageToNetworkProximity() {
@@ -41,10 +45,8 @@ public final class RegionInfoInner {
     }
 
     /**
-     * Set the storageToNetworkProximity property: Storage to Network Proximity
-     *
-     * <p>Provides storage to network proximity information in the region.
-     *
+     * Set the storageToNetworkProximity property: Provides storage to network proximity information in the region.
+     * 
      * @param storageToNetworkProximity the storageToNetworkProximity value to set.
      * @return the RegionInfoInner object itself.
      */
@@ -54,10 +56,9 @@ public final class RegionInfoInner {
     }
 
     /**
-     * Get the availabilityZoneMappings property: Logical availability zone mappings.
-     *
-     * <p>Provides logical availability zone mappings for the subscription for a region.
-     *
+     * Get the availabilityZoneMappings property: Provides logical availability zone mappings for the subscription for a
+     * region.
+     * 
      * @return the availabilityZoneMappings value.
      */
     public List<RegionInfoAvailabilityZoneMappingsItem> availabilityZoneMappings() {
@@ -65,27 +66,70 @@ public final class RegionInfoInner {
     }
 
     /**
-     * Set the availabilityZoneMappings property: Logical availability zone mappings.
-     *
-     * <p>Provides logical availability zone mappings for the subscription for a region.
-     *
+     * Set the availabilityZoneMappings property: Provides logical availability zone mappings for the subscription for a
+     * region.
+     * 
      * @param availabilityZoneMappings the availabilityZoneMappings value to set.
      * @return the RegionInfoInner object itself.
      */
-    public RegionInfoInner withAvailabilityZoneMappings(
-        List<RegionInfoAvailabilityZoneMappingsItem> availabilityZoneMappings) {
+    public RegionInfoInner
+        withAvailabilityZoneMappings(List<RegionInfoAvailabilityZoneMappingsItem> availabilityZoneMappings) {
         this.availabilityZoneMappings = availabilityZoneMappings;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (availabilityZoneMappings() != null) {
             availabilityZoneMappings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageToNetworkProximity",
+            this.storageToNetworkProximity == null ? null : this.storageToNetworkProximity.toString());
+        jsonWriter.writeArrayField("availabilityZoneMappings", this.availabilityZoneMappings,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegionInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegionInfoInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegionInfoInner.
+     */
+    public static RegionInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegionInfoInner deserializedRegionInfoInner = new RegionInfoInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageToNetworkProximity".equals(fieldName)) {
+                    deserializedRegionInfoInner.storageToNetworkProximity
+                        = RegionStorageToNetworkProximity.fromString(reader.getString());
+                } else if ("availabilityZoneMappings".equals(fieldName)) {
+                    List<RegionInfoAvailabilityZoneMappingsItem> availabilityZoneMappings
+                        = reader.readArray(reader1 -> RegionInfoAvailabilityZoneMappingsItem.fromJson(reader1));
+                    deserializedRegionInfoInner.availabilityZoneMappings = availabilityZoneMappings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegionInfoInner;
+        });
     }
 }

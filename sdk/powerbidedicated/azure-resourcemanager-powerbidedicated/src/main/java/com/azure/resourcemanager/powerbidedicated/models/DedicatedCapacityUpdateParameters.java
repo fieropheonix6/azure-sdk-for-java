@@ -5,45 +5,43 @@
 package com.azure.resourcemanager.powerbidedicated.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.powerbidedicated.fluent.models.DedicatedCapacityMutableProperties;
+import java.io.IOException;
 import java.util.Map;
 
-/** Provision request specification. */
-@JsonFlatten
+/**
+ * Provision request specification.
+ */
 @Fluent
-public class DedicatedCapacityUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedCapacityUpdateParameters.class);
-
+public final class DedicatedCapacityUpdateParameters implements JsonSerializable<DedicatedCapacityUpdateParameters> {
     /*
      * The SKU of the Dedicated capacity resource.
      */
-    @JsonProperty(value = "sku")
     private CapacitySku sku;
 
     /*
      * Key-value pairs of additional provisioning properties.
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /*
-     * A collection of Dedicated capacity administrators
+     * Properties of the provision operation request.
      */
-    @JsonProperty(value = "properties.administration")
-    private DedicatedCapacityAdministrators administration;
+    private DedicatedCapacityMutableProperties innerProperties;
 
-    /*
-     * The capacity mode.
+    /**
+     * Creates an instance of DedicatedCapacityUpdateParameters class.
      */
-    @JsonProperty(value = "properties.mode")
-    private Mode mode;
+    public DedicatedCapacityUpdateParameters() {
+    }
 
     /**
      * Get the sku property: The SKU of the Dedicated capacity resource.
-     *
+     * 
      * @return the sku value.
      */
     public CapacitySku sku() {
@@ -52,7 +50,7 @@ public class DedicatedCapacityUpdateParameters {
 
     /**
      * Set the sku property: The SKU of the Dedicated capacity resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DedicatedCapacityUpdateParameters object itself.
      */
@@ -63,7 +61,7 @@ public class DedicatedCapacityUpdateParameters {
 
     /**
      * Get the tags property: Key-value pairs of additional provisioning properties.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -72,7 +70,7 @@ public class DedicatedCapacityUpdateParameters {
 
     /**
      * Set the tags property: Key-value pairs of additional provisioning properties.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the DedicatedCapacityUpdateParameters object itself.
      */
@@ -82,56 +80,138 @@ public class DedicatedCapacityUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Properties of the provision operation request.
+     * 
+     * @return the innerProperties value.
+     */
+    private DedicatedCapacityMutableProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the administration property: A collection of Dedicated capacity administrators.
-     *
+     * 
      * @return the administration value.
      */
     public DedicatedCapacityAdministrators administration() {
-        return this.administration;
+        return this.innerProperties() == null ? null : this.innerProperties().administration();
     }
 
     /**
      * Set the administration property: A collection of Dedicated capacity administrators.
-     *
+     * 
      * @param administration the administration value to set.
      * @return the DedicatedCapacityUpdateParameters object itself.
      */
     public DedicatedCapacityUpdateParameters withAdministration(DedicatedCapacityAdministrators administration) {
-        this.administration = administration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedCapacityMutableProperties();
+        }
+        this.innerProperties().withAdministration(administration);
         return this;
     }
 
     /**
-     * Get the mode property: The capacity mode.
-     *
+     * Get the mode property: Specifies the generation of the Power BI Embedded capacity. If no value is specified, the
+     * default value 'Gen2' is used. [Learn
+     * More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2).
+     * 
      * @return the mode value.
      */
     public Mode mode() {
-        return this.mode;
+        return this.innerProperties() == null ? null : this.innerProperties().mode();
     }
 
     /**
-     * Set the mode property: The capacity mode.
-     *
+     * Set the mode property: Specifies the generation of the Power BI Embedded capacity. If no value is specified, the
+     * default value 'Gen2' is used. [Learn
+     * More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2).
+     * 
      * @param mode the mode value to set.
      * @return the DedicatedCapacityUpdateParameters object itself.
      */
     public DedicatedCapacityUpdateParameters withMode(Mode mode) {
-        this.mode = mode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedCapacityMutableProperties();
+        }
+        this.innerProperties().withMode(mode);
         return this;
     }
 
     /**
+     * Get the tenantId property: Tenant ID for the capacity. Used for creating Pro Plus capacity.
+     * 
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
+    }
+
+    /**
+     * Get the friendlyName property: Capacity name.
+     * 
+     * @return the friendlyName value.
+     */
+    public String friendlyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().friendlyName();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() != null) {
             sku().validate();
         }
-        if (administration() != null) {
-            administration().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedCapacityUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedCapacityUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DedicatedCapacityUpdateParameters.
+     */
+    public static DedicatedCapacityUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedCapacityUpdateParameters deserializedDedicatedCapacityUpdateParameters
+                = new DedicatedCapacityUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedDedicatedCapacityUpdateParameters.sku = CapacitySku.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDedicatedCapacityUpdateParameters.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDedicatedCapacityUpdateParameters.innerProperties
+                        = DedicatedCapacityMutableProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedCapacityUpdateParameters;
+        });
     }
 }

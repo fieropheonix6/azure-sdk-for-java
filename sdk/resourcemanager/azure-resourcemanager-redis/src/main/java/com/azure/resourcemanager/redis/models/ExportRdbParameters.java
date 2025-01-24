@@ -6,32 +6,52 @@ package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Parameters for Redis export operation. */
+/**
+ * Parameters for Redis export operation.
+ */
 @Fluent
-public final class ExportRdbParameters {
+public final class ExportRdbParameters implements JsonSerializable<ExportRdbParameters> {
     /*
      * File format.
      */
-    @JsonProperty(value = "format")
     private String format;
 
     /*
      * Prefix to use for exported files.
      */
-    @JsonProperty(value = "prefix", required = true)
     private String prefix;
 
     /*
      * Container name to export to.
      */
-    @JsonProperty(value = "container", required = true)
     private String container;
+
+    /*
+     * Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity,
+     * default value is SAS
+     */
+    private String preferredDataArchiveAuthMethod;
+
+    /*
+     * Subscription id of the storage container for data to be exported using ManagedIdentity.
+     */
+    private String storageSubscriptionId;
+
+    /**
+     * Creates an instance of ExportRdbParameters class.
+     */
+    public ExportRdbParameters() {
+    }
 
     /**
      * Get the format property: File format.
-     *
+     * 
      * @return the format value.
      */
     public String format() {
@@ -40,7 +60,7 @@ public final class ExportRdbParameters {
 
     /**
      * Set the format property: File format.
-     *
+     * 
      * @param format the format value to set.
      * @return the ExportRdbParameters object itself.
      */
@@ -51,7 +71,7 @@ public final class ExportRdbParameters {
 
     /**
      * Get the prefix property: Prefix to use for exported files.
-     *
+     * 
      * @return the prefix value.
      */
     public String prefix() {
@@ -60,7 +80,7 @@ public final class ExportRdbParameters {
 
     /**
      * Set the prefix property: Prefix to use for exported files.
-     *
+     * 
      * @param prefix the prefix value to set.
      * @return the ExportRdbParameters object itself.
      */
@@ -71,7 +91,7 @@ public final class ExportRdbParameters {
 
     /**
      * Get the container property: Container name to export to.
-     *
+     * 
      * @return the container value.
      */
     public String container() {
@@ -80,7 +100,7 @@ public final class ExportRdbParameters {
 
     /**
      * Set the container property: Container name to export to.
-     *
+     * 
      * @param container the container value to set.
      * @return the ExportRdbParameters object itself.
      */
@@ -90,22 +110,113 @@ public final class ExportRdbParameters {
     }
 
     /**
+     * Get the preferredDataArchiveAuthMethod property: Preferred auth method to communicate to storage account used for
+     * data archive, specify SAS or ManagedIdentity, default value is SAS.
+     * 
+     * @return the preferredDataArchiveAuthMethod value.
+     */
+    public String preferredDataArchiveAuthMethod() {
+        return this.preferredDataArchiveAuthMethod;
+    }
+
+    /**
+     * Set the preferredDataArchiveAuthMethod property: Preferred auth method to communicate to storage account used for
+     * data archive, specify SAS or ManagedIdentity, default value is SAS.
+     * 
+     * @param preferredDataArchiveAuthMethod the preferredDataArchiveAuthMethod value to set.
+     * @return the ExportRdbParameters object itself.
+     */
+    public ExportRdbParameters withPreferredDataArchiveAuthMethod(String preferredDataArchiveAuthMethod) {
+        this.preferredDataArchiveAuthMethod = preferredDataArchiveAuthMethod;
+        return this;
+    }
+
+    /**
+     * Get the storageSubscriptionId property: Subscription id of the storage container for data to be exported using
+     * ManagedIdentity.
+     * 
+     * @return the storageSubscriptionId value.
+     */
+    public String storageSubscriptionId() {
+        return this.storageSubscriptionId;
+    }
+
+    /**
+     * Set the storageSubscriptionId property: Subscription id of the storage container for data to be exported using
+     * ManagedIdentity.
+     * 
+     * @param storageSubscriptionId the storageSubscriptionId value to set.
+     * @return the ExportRdbParameters object itself.
+     */
+    public ExportRdbParameters withStorageSubscriptionId(String storageSubscriptionId) {
+        this.storageSubscriptionId = storageSubscriptionId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (prefix() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property prefix in model ExportRdbParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property prefix in model ExportRdbParameters"));
         }
         if (container() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property container in model ExportRdbParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property container in model ExportRdbParameters"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExportRdbParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("prefix", this.prefix);
+        jsonWriter.writeStringField("container", this.container);
+        jsonWriter.writeStringField("format", this.format);
+        jsonWriter.writeStringField("preferred-data-archive-auth-method", this.preferredDataArchiveAuthMethod);
+        jsonWriter.writeStringField("storage-subscription-id", this.storageSubscriptionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportRdbParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportRdbParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExportRdbParameters.
+     */
+    public static ExportRdbParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportRdbParameters deserializedExportRdbParameters = new ExportRdbParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("prefix".equals(fieldName)) {
+                    deserializedExportRdbParameters.prefix = reader.getString();
+                } else if ("container".equals(fieldName)) {
+                    deserializedExportRdbParameters.container = reader.getString();
+                } else if ("format".equals(fieldName)) {
+                    deserializedExportRdbParameters.format = reader.getString();
+                } else if ("preferred-data-archive-auth-method".equals(fieldName)) {
+                    deserializedExportRdbParameters.preferredDataArchiveAuthMethod = reader.getString();
+                } else if ("storage-subscription-id".equals(fieldName)) {
+                    deserializedExportRdbParameters.storageSubscriptionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExportRdbParameters;
+        });
+    }
 }

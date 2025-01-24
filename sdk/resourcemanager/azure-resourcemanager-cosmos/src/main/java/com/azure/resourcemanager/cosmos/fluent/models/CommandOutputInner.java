@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Response of /command api. */
+/**
+ * Response of /command api.
+ */
 @Fluent
-public final class CommandOutputInner {
+public final class CommandOutputInner implements JsonSerializable<CommandOutputInner> {
     /*
      * Output of the command.
      */
-    @JsonProperty(value = "commandOutput")
     private String commandOutput;
 
     /**
+     * Creates an instance of CommandOutputInner class.
+     */
+    public CommandOutputInner() {
+    }
+
+    /**
      * Get the commandOutput property: Output of the command.
-     *
+     * 
      * @return the commandOutput value.
      */
     public String commandOutput() {
@@ -27,7 +38,7 @@ public final class CommandOutputInner {
 
     /**
      * Set the commandOutput property: Output of the command.
-     *
+     * 
      * @param commandOutput the commandOutput value to set.
      * @return the CommandOutputInner object itself.
      */
@@ -38,9 +49,45 @@ public final class CommandOutputInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("commandOutput", this.commandOutput);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommandOutputInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommandOutputInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommandOutputInner.
+     */
+    public static CommandOutputInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommandOutputInner deserializedCommandOutputInner = new CommandOutputInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("commandOutput".equals(fieldName)) {
+                    deserializedCommandOutputInner.commandOutput = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommandOutputInner;
+        });
     }
 }

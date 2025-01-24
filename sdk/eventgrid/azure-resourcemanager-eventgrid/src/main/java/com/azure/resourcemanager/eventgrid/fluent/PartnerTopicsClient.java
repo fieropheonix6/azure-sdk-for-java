@@ -14,11 +14,32 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerTopicInner;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in PartnerTopicsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PartnerTopicsClient.
+ */
 public interface PartnerTopicsClient {
     /**
+     * Get a partner topic.
+     * 
      * Get properties of a partner topic.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a partner topic along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PartnerTopicInner> getByResourceGroupWithResponse(String resourceGroupName, String partnerTopicName,
+        Context context);
+
+    /**
+     * Get a partner topic.
+     * 
+     * Get properties of a partner topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,38 +51,10 @@ public interface PartnerTopicsClient {
     PartnerTopicInner getByResourceGroup(String resourceGroupName, String partnerTopicName);
 
     /**
-     * Get properties of a partner topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerTopicName Name of the partner topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a partner topic along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PartnerTopicInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String partnerTopicName, Context context);
-
-    /**
+     * Create a partner topic.
+     * 
      * Asynchronously creates a new partner topic with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerTopicName Name of the partner topic.
-     * @param partnerTopicInfo Partner Topic information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Topic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PartnerTopicInner createOrUpdate(
-        String resourceGroupName, String partnerTopicName, PartnerTopicInner partnerTopicInfo);
-
-    /**
-     * Asynchronously creates a new partner topic with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param partnerTopicInfo Partner Topic information.
@@ -72,12 +65,31 @@ public interface PartnerTopicsClient {
      * @return event Grid Partner Topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PartnerTopicInner> createOrUpdateWithResponse(
-        String resourceGroupName, String partnerTopicName, PartnerTopicInner partnerTopicInfo, Context context);
+    Response<PartnerTopicInner> createOrUpdateWithResponse(String resourceGroupName, String partnerTopicName,
+        PartnerTopicInner partnerTopicInfo, Context context);
 
     /**
+     * Create a partner topic.
+     * 
+     * Asynchronously creates a new partner topic with the specified parameters.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @param partnerTopicInfo Partner Topic information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Grid Partner Topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PartnerTopicInner createOrUpdate(String resourceGroupName, String partnerTopicName,
+        PartnerTopicInner partnerTopicInfo);
+
+    /**
+     * Delete a partner topic.
+     * 
      * Delete existing partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,8 +101,10 @@ public interface PartnerTopicsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerTopicName);
 
     /**
+     * Delete a partner topic.
+     * 
      * Delete existing partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param context The context to associate with this operation.
@@ -103,8 +117,10 @@ public interface PartnerTopicsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerTopicName, Context context);
 
     /**
+     * Delete a partner topic.
+     * 
      * Delete existing partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,8 +131,10 @@ public interface PartnerTopicsClient {
     void delete(String resourceGroupName, String partnerTopicName);
 
     /**
+     * Delete a partner topic.
+     * 
      * Delete existing partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param context The context to associate with this operation.
@@ -128,23 +146,10 @@ public interface PartnerTopicsClient {
     void delete(String resourceGroupName, String partnerTopicName, Context context);
 
     /**
+     * Update a partner topic.
+     * 
      * Asynchronously updates a partner topic with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerTopicName Name of the partner topic.
-     * @param partnerTopicUpdateParameters PartnerTopic update information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PartnerTopicInner update(
-        String resourceGroupName, String partnerTopicName, PartnerTopicUpdateParameters partnerTopicUpdateParameters);
-
-    /**
-     * Asynchronously updates a partner topic with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param partnerTopicUpdateParameters PartnerTopic update information.
@@ -155,15 +160,31 @@ public interface PartnerTopicsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PartnerTopicInner> updateWithResponse(
-        String resourceGroupName,
-        String partnerTopicName,
-        PartnerTopicUpdateParameters partnerTopicUpdateParameters,
-        Context context);
+    Response<PartnerTopicInner> updateWithResponse(String resourceGroupName, String partnerTopicName,
+        PartnerTopicUpdateParameters partnerTopicUpdateParameters, Context context);
 
     /**
+     * Update a partner topic.
+     * 
+     * Asynchronously updates a partner topic with the specified parameters.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @param partnerTopicUpdateParameters PartnerTopic update information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PartnerTopicInner update(String resourceGroupName, String partnerTopicName,
+        PartnerTopicUpdateParameters partnerTopicUpdateParameters);
+
+    /**
+     * List partner topics under an Azure subscription.
+     * 
      * List all the partner topics under an Azure subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Topics operation as paginated response with {@link PagedIterable}.
@@ -172,16 +193,17 @@ public interface PartnerTopicsClient {
     PagedIterable<PartnerTopicInner> list();
 
     /**
+     * List partner topics under an Azure subscription.
+     * 
      * List all the partner topics under an Azure subscription.
-     *
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -192,8 +214,10 @@ public interface PartnerTopicsClient {
     PagedIterable<PartnerTopicInner> list(String filter, Integer top, Context context);
 
     /**
+     * List partner topics under a resource group.
+     * 
      * List all the partner topics under a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -204,17 +228,18 @@ public interface PartnerTopicsClient {
     PagedIterable<PartnerTopicInner> listByResourceGroup(String resourceGroupName);
 
     /**
+     * List partner topics under a resource group.
+     * 
      * List all the partner topics under a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -222,12 +247,31 @@ public interface PartnerTopicsClient {
      * @return result of the List Partner Topics operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PartnerTopicInner> listByResourceGroup(
-        String resourceGroupName, String filter, Integer top, Context context);
+    PagedIterable<PartnerTopicInner> listByResourceGroup(String resourceGroupName, String filter, Integer top,
+        Context context);
 
     /**
+     * Activate a partner topic.
+     * 
      * Activate a newly created partner topic.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Grid Partner Topic along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PartnerTopicInner> activateWithResponse(String resourceGroupName, String partnerTopicName,
+        Context context);
+
+    /**
+     * Activate a partner topic.
+     * 
+     * Activate a newly created partner topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -239,8 +283,10 @@ public interface PartnerTopicsClient {
     PartnerTopicInner activate(String resourceGroupName, String partnerTopicName);
 
     /**
-     * Activate a newly created partner topic.
-     *
+     * Deactivate a partner topic.
+     * 
+     * Deactivate specific partner topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param context The context to associate with this operation.
@@ -250,12 +296,14 @@ public interface PartnerTopicsClient {
      * @return event Grid Partner Topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PartnerTopicInner> activateWithResponse(
-        String resourceGroupName, String partnerTopicName, Context context);
+    Response<PartnerTopicInner> deactivateWithResponse(String resourceGroupName, String partnerTopicName,
+        Context context);
 
     /**
+     * Deactivate a partner topic.
+     * 
      * Deactivate specific partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -265,19 +313,4 @@ public interface PartnerTopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PartnerTopicInner deactivate(String resourceGroupName, String partnerTopicName);
-
-    /**
-     * Deactivate specific partner topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerTopicName Name of the partner topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Grid Partner Topic along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PartnerTopicInner> deactivateWithResponse(
-        String resourceGroupName, String partnerTopicName, Context context);
 }

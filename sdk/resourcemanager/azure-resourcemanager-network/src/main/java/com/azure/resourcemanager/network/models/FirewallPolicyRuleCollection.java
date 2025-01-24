@@ -5,43 +5,51 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of the rule collection. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "ruleCollectionType",
-    defaultImpl = FirewallPolicyRuleCollection.class)
-@JsonTypeName("FirewallPolicyRuleCollection")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "FirewallPolicyNatRuleCollection", value = FirewallPolicyNatRuleCollection.class),
-    @JsonSubTypes.Type(name = "FirewallPolicyFilterRuleCollection", value = FirewallPolicyFilterRuleCollection.class)
-})
+/**
+ * Properties of the rule collection.
+ */
 @Fluent
-public class FirewallPolicyRuleCollection {
+public class FirewallPolicyRuleCollection implements JsonSerializable<FirewallPolicyRuleCollection> {
+    /*
+     * The type of the rule collection.
+     */
+    private FirewallPolicyRuleCollectionType ruleCollectionType
+        = FirewallPolicyRuleCollectionType.fromString("FirewallPolicyRuleCollection");
+
     /*
      * The name of the rule collection.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Priority of the Firewall Policy Rule Collection resource.
      */
-    @JsonProperty(value = "priority")
     private Integer priority;
 
-    /** Creates an instance of FirewallPolicyRuleCollection class. */
+    /**
+     * Creates an instance of FirewallPolicyRuleCollection class.
+     */
     public FirewallPolicyRuleCollection() {
     }
 
     /**
+     * Get the ruleCollectionType property: The type of the rule collection.
+     * 
+     * @return the ruleCollectionType value.
+     */
+    public FirewallPolicyRuleCollectionType ruleCollectionType() {
+        return this.ruleCollectionType;
+    }
+
+    /**
      * Get the name property: The name of the rule collection.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +58,7 @@ public class FirewallPolicyRuleCollection {
 
     /**
      * Set the name property: The name of the rule collection.
-     *
+     * 
      * @param name the name value to set.
      * @return the FirewallPolicyRuleCollection object itself.
      */
@@ -61,7 +69,7 @@ public class FirewallPolicyRuleCollection {
 
     /**
      * Get the priority property: Priority of the Firewall Policy Rule Collection resource.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -70,7 +78,7 @@ public class FirewallPolicyRuleCollection {
 
     /**
      * Set the priority property: Priority of the Firewall Policy Rule Collection resource.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the FirewallPolicyRuleCollection object itself.
      */
@@ -81,9 +89,80 @@ public class FirewallPolicyRuleCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ruleCollectionType",
+            this.ruleCollectionType == null ? null : this.ruleCollectionType.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("priority", this.priority);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallPolicyRuleCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallPolicyRuleCollection if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallPolicyRuleCollection.
+     */
+    public static FirewallPolicyRuleCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("ruleCollectionType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("FirewallPolicyNatRuleCollection".equals(discriminatorValue)) {
+                    return FirewallPolicyNatRuleCollection.fromJson(readerToUse.reset());
+                } else if ("FirewallPolicyFilterRuleCollection".equals(discriminatorValue)) {
+                    return FirewallPolicyFilterRuleCollection.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static FirewallPolicyRuleCollection fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallPolicyRuleCollection deserializedFirewallPolicyRuleCollection = new FirewallPolicyRuleCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ruleCollectionType".equals(fieldName)) {
+                    deserializedFirewallPolicyRuleCollection.ruleCollectionType
+                        = FirewallPolicyRuleCollectionType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedFirewallPolicyRuleCollection.name = reader.getString();
+                } else if ("priority".equals(fieldName)) {
+                    deserializedFirewallPolicyRuleCollection.priority = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallPolicyRuleCollection;
+        });
     }
 }

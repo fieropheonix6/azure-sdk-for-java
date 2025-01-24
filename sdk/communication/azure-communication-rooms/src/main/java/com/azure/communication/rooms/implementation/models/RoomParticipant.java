@@ -5,67 +5,114 @@
 package com.azure.communication.rooms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A participant of the room. */
+/**
+ * A participant of the room.
+ */
 @Fluent
-public final class RoomParticipant {
+public final class RoomParticipant implements JsonSerializable<RoomParticipant> {
     /*
-     * Identifies a participant in Azure Communication services. A participant
-     * is, for example, an Azure communication user. This model must be
-     * interpreted as a union: Apart from rawId, at most one further property
-     * may be set.
+     * Raw ID representation of the communication identifier. Please refer to the following document for additional
+     * information on Raw ID. <br>
+     * https://learn.microsoft.com/azure/communication-services/concepts/identifiers?pivots=programming-language-rest#
+     * raw-id-representation
      */
-    @JsonProperty(value = "communicationIdentifier", required = true)
-    private CommunicationIdentifierModel communicationIdentifier;
+    private String rawId;
 
     /*
-     * The Role of a room participant.
+     * The role of a room participant. The default value is Attendee.
      */
-    @JsonProperty(value = "role")
-    private RoleType role;
+    private ParticipantRole role;
 
     /**
-     * Get the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
-     * is, for example, an Azure communication user. This model must be interpreted as a union: Apart from rawId, at
-     * most one further property may be set.
-     *
-     * @return the communicationIdentifier value.
+     * Creates an instance of RoomParticipant class.
      */
-    public CommunicationIdentifierModel getCommunicationIdentifier() {
-        return this.communicationIdentifier;
+    public RoomParticipant() {
     }
 
     /**
-     * Set the communicationIdentifier property: Identifies a participant in Azure Communication services. A participant
-     * is, for example, an Azure communication user. This model must be interpreted as a union: Apart from rawId, at
-     * most one further property may be set.
-     *
-     * @param communicationIdentifier the communicationIdentifier value to set.
+     * Get the rawId property: Raw ID representation of the communication identifier. Please refer to the following
+     * document for additional information on Raw ID. &lt;br&gt;
+     * https://learn.microsoft.com/azure/communication-services/concepts/identifiers?pivots=programming-language-rest#raw-id-representation.
+     * 
+     * @return the rawId value.
+     */
+    public String getRawId() {
+        return this.rawId;
+    }
+
+    /**
+     * Set the rawId property: Raw ID representation of the communication identifier. Please refer to the following
+     * document for additional information on Raw ID. &lt;br&gt;
+     * https://learn.microsoft.com/azure/communication-services/concepts/identifiers?pivots=programming-language-rest#raw-id-representation.
+     * 
+     * @param rawId the rawId value to set.
      * @return the RoomParticipant object itself.
      */
-    public RoomParticipant setCommunicationIdentifier(CommunicationIdentifierModel communicationIdentifier) {
-        this.communicationIdentifier = communicationIdentifier;
+    public RoomParticipant setRawId(String rawId) {
+        this.rawId = rawId;
         return this;
     }
 
     /**
-     * Get the role property: The Role of a room participant.
-     *
+     * Get the role property: The role of a room participant. The default value is Attendee.
+     * 
      * @return the role value.
      */
-    public RoleType getRole() {
+    public ParticipantRole getRole() {
         return this.role;
     }
 
     /**
-     * Set the role property: The Role of a room participant.
-     *
+     * Set the role property: The role of a room participant. The default value is Attendee.
+     * 
      * @param role the role value to set.
      * @return the RoomParticipant object itself.
      */
-    public RoomParticipant setRole(RoleType role) {
+    public RoomParticipant setRole(ParticipantRole role) {
         this.role = role;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("rawId", this.rawId);
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoomParticipant from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoomParticipant if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RoomParticipant.
+     */
+    public static RoomParticipant fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoomParticipant deserializedRoomParticipant = new RoomParticipant();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rawId".equals(fieldName)) {
+                    deserializedRoomParticipant.rawId = reader.getString();
+                } else if ("role".equals(fieldName)) {
+                    deserializedRoomParticipant.role = ParticipantRole.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoomParticipant;
+        });
     }
 }

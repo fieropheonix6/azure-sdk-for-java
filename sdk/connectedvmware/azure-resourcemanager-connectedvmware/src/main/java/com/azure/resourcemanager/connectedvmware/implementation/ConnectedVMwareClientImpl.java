@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.connectedvmware.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -25,17 +26,16 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.connectedvmware.fluent.ClustersClient;
 import com.azure.resourcemanager.connectedvmware.fluent.ConnectedVMwareClient;
 import com.azure.resourcemanager.connectedvmware.fluent.DatastoresClient;
-import com.azure.resourcemanager.connectedvmware.fluent.GuestAgentsClient;
 import com.azure.resourcemanager.connectedvmware.fluent.HostsClient;
-import com.azure.resourcemanager.connectedvmware.fluent.HybridIdentityMetadatasClient;
 import com.azure.resourcemanager.connectedvmware.fluent.InventoryItemsClient;
-import com.azure.resourcemanager.connectedvmware.fluent.MachineExtensionsClient;
 import com.azure.resourcemanager.connectedvmware.fluent.OperationsClient;
 import com.azure.resourcemanager.connectedvmware.fluent.ResourcePoolsClient;
 import com.azure.resourcemanager.connectedvmware.fluent.VCentersClient;
+import com.azure.resourcemanager.connectedvmware.fluent.VMInstanceGuestAgentsClient;
+import com.azure.resourcemanager.connectedvmware.fluent.VirtualMachineInstancesClient;
 import com.azure.resourcemanager.connectedvmware.fluent.VirtualMachineTemplatesClient;
-import com.azure.resourcemanager.connectedvmware.fluent.VirtualMachinesClient;
 import com.azure.resourcemanager.connectedvmware.fluent.VirtualNetworksClient;
+import com.azure.resourcemanager.connectedvmware.fluent.VmInstanceHybridIdentityMetadatasClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -45,240 +45,266 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the ConnectedVMwareClientImpl type. */
+/**
+ * Initializes a new instance of the ConnectedVMwareClientImpl type.
+ */
 @ServiceClient(builder = ConnectedVMwareClientBuilder.class)
 public final class ConnectedVMwareClientImpl implements ConnectedVMwareClient {
-    /** The Subscription ID. */
+    /**
+     * The Subscription ID.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The Subscription ID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The VirtualMachinesClient object to access its operations. */
-    private final VirtualMachinesClient virtualMachines;
-
     /**
-     * Gets the VirtualMachinesClient object to access its operations.
-     *
-     * @return the VirtualMachinesClient object.
+     * The ResourcePoolsClient object to access its operations.
      */
-    public VirtualMachinesClient getVirtualMachines() {
-        return this.virtualMachines;
-    }
-
-    /** The ResourcePoolsClient object to access its operations. */
     private final ResourcePoolsClient resourcePools;
 
     /**
      * Gets the ResourcePoolsClient object to access its operations.
-     *
+     * 
      * @return the ResourcePoolsClient object.
      */
     public ResourcePoolsClient getResourcePools() {
         return this.resourcePools;
     }
 
-    /** The ClustersClient object to access its operations. */
+    /**
+     * The ClustersClient object to access its operations.
+     */
     private final ClustersClient clusters;
 
     /**
      * Gets the ClustersClient object to access its operations.
-     *
+     * 
      * @return the ClustersClient object.
      */
     public ClustersClient getClusters() {
         return this.clusters;
     }
 
-    /** The HostsClient object to access its operations. */
+    /**
+     * The HostsClient object to access its operations.
+     */
     private final HostsClient hosts;
 
     /**
      * Gets the HostsClient object to access its operations.
-     *
+     * 
      * @return the HostsClient object.
      */
     public HostsClient getHosts() {
         return this.hosts;
     }
 
-    /** The DatastoresClient object to access its operations. */
+    /**
+     * The DatastoresClient object to access its operations.
+     */
     private final DatastoresClient datastores;
 
     /**
      * Gets the DatastoresClient object to access its operations.
-     *
+     * 
      * @return the DatastoresClient object.
      */
     public DatastoresClient getDatastores() {
         return this.datastores;
     }
 
-    /** The VCentersClient object to access its operations. */
+    /**
+     * The VCentersClient object to access its operations.
+     */
     private final VCentersClient vCenters;
 
     /**
      * Gets the VCentersClient object to access its operations.
-     *
+     * 
      * @return the VCentersClient object.
      */
     public VCentersClient getVCenters() {
         return this.vCenters;
     }
 
-    /** The VirtualMachineTemplatesClient object to access its operations. */
+    /**
+     * The VirtualMachineTemplatesClient object to access its operations.
+     */
     private final VirtualMachineTemplatesClient virtualMachineTemplates;
 
     /**
      * Gets the VirtualMachineTemplatesClient object to access its operations.
-     *
+     * 
      * @return the VirtualMachineTemplatesClient object.
      */
     public VirtualMachineTemplatesClient getVirtualMachineTemplates() {
         return this.virtualMachineTemplates;
     }
 
-    /** The VirtualNetworksClient object to access its operations. */
+    /**
+     * The VirtualNetworksClient object to access its operations.
+     */
     private final VirtualNetworksClient virtualNetworks;
 
     /**
      * Gets the VirtualNetworksClient object to access its operations.
-     *
+     * 
      * @return the VirtualNetworksClient object.
      */
     public VirtualNetworksClient getVirtualNetworks() {
         return this.virtualNetworks;
     }
 
-    /** The InventoryItemsClient object to access its operations. */
+    /**
+     * The InventoryItemsClient object to access its operations.
+     */
     private final InventoryItemsClient inventoryItems;
 
     /**
      * Gets the InventoryItemsClient object to access its operations.
-     *
+     * 
      * @return the InventoryItemsClient object.
      */
     public InventoryItemsClient getInventoryItems() {
         return this.inventoryItems;
     }
 
-    /** The HybridIdentityMetadatasClient object to access its operations. */
-    private final HybridIdentityMetadatasClient hybridIdentityMetadatas;
+    /**
+     * The VirtualMachineInstancesClient object to access its operations.
+     */
+    private final VirtualMachineInstancesClient virtualMachineInstances;
 
     /**
-     * Gets the HybridIdentityMetadatasClient object to access its operations.
-     *
-     * @return the HybridIdentityMetadatasClient object.
+     * Gets the VirtualMachineInstancesClient object to access its operations.
+     * 
+     * @return the VirtualMachineInstancesClient object.
      */
-    public HybridIdentityMetadatasClient getHybridIdentityMetadatas() {
-        return this.hybridIdentityMetadatas;
+    public VirtualMachineInstancesClient getVirtualMachineInstances() {
+        return this.virtualMachineInstances;
     }
 
-    /** The MachineExtensionsClient object to access its operations. */
-    private final MachineExtensionsClient machineExtensions;
+    /**
+     * The VmInstanceHybridIdentityMetadatasClient object to access its operations.
+     */
+    private final VmInstanceHybridIdentityMetadatasClient vmInstanceHybridIdentityMetadatas;
 
     /**
-     * Gets the MachineExtensionsClient object to access its operations.
-     *
-     * @return the MachineExtensionsClient object.
+     * Gets the VmInstanceHybridIdentityMetadatasClient object to access its operations.
+     * 
+     * @return the VmInstanceHybridIdentityMetadatasClient object.
      */
-    public MachineExtensionsClient getMachineExtensions() {
-        return this.machineExtensions;
+    public VmInstanceHybridIdentityMetadatasClient getVmInstanceHybridIdentityMetadatas() {
+        return this.vmInstanceHybridIdentityMetadatas;
     }
 
-    /** The GuestAgentsClient object to access its operations. */
-    private final GuestAgentsClient guestAgents;
+    /**
+     * The VMInstanceGuestAgentsClient object to access its operations.
+     */
+    private final VMInstanceGuestAgentsClient vMInstanceGuestAgents;
 
     /**
-     * Gets the GuestAgentsClient object to access its operations.
-     *
-     * @return the GuestAgentsClient object.
+     * Gets the VMInstanceGuestAgentsClient object to access its operations.
+     * 
+     * @return the VMInstanceGuestAgentsClient object.
      */
-    public GuestAgentsClient getGuestAgents() {
-        return this.guestAgents;
+    public VMInstanceGuestAgentsClient getVMInstanceGuestAgents() {
+        return this.vMInstanceGuestAgents;
     }
 
     /**
      * Initializes an instance of ConnectedVMwareClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -286,21 +312,15 @@ public final class ConnectedVMwareClientImpl implements ConnectedVMwareClient {
      * @param subscriptionId The Subscription ID.
      * @param endpoint server parameter.
      */
-    ConnectedVMwareClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    ConnectedVMwareClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-01-10-preview";
+        this.apiVersion = "2023-10-01";
         this.operations = new OperationsClientImpl(this);
-        this.virtualMachines = new VirtualMachinesClientImpl(this);
         this.resourcePools = new ResourcePoolsClientImpl(this);
         this.clusters = new ClustersClientImpl(this);
         this.hosts = new HostsClientImpl(this);
@@ -309,14 +329,14 @@ public final class ConnectedVMwareClientImpl implements ConnectedVMwareClient {
         this.virtualMachineTemplates = new VirtualMachineTemplatesClientImpl(this);
         this.virtualNetworks = new VirtualNetworksClientImpl(this);
         this.inventoryItems = new InventoryItemsClientImpl(this);
-        this.hybridIdentityMetadatas = new HybridIdentityMetadatasClientImpl(this);
-        this.machineExtensions = new MachineExtensionsClientImpl(this);
-        this.guestAgents = new GuestAgentsClientImpl(this);
+        this.virtualMachineInstances = new VirtualMachineInstancesClientImpl(this);
+        this.vmInstanceHybridIdentityMetadatas = new VmInstanceHybridIdentityMetadatasClientImpl(this);
+        this.vMInstanceGuestAgents = new VMInstanceGuestAgentsClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -325,7 +345,7 @@ public final class ConnectedVMwareClientImpl implements ConnectedVMwareClient {
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -335,7 +355,7 @@ public final class ConnectedVMwareClientImpl implements ConnectedVMwareClient {
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -345,26 +365,15 @@ public final class ConnectedVMwareClientImpl implements ConnectedVMwareClient {
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -377,19 +386,16 @@ public final class ConnectedVMwareClientImpl implements ConnectedVMwareClient {
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -430,7 +436,7 @@ public final class ConnectedVMwareClientImpl implements ConnectedVMwareClient {
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

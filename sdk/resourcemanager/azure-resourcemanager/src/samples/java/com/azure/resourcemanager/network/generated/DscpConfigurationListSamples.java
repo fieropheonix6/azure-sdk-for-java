@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DscpConfiguration List. */
+/**
+ * Samples for DscpConfiguration List.
+ */
 public final class DscpConfigurationListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/DscpConfigurationListAll.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/DscpConfigurationListAll.json
      */
     /**
      * Sample code: List all network interfaces.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAllNetworkInterfaces(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getDscpConfigurations().list(Context.NONE);
+        azure.networks().manager().serviceClient().getDscpConfigurations().list(com.azure.core.util.Context.NONE);
     }
 }

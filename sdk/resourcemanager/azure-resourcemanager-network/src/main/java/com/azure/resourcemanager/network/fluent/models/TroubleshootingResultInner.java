@@ -5,45 +5,51 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.TroubleshootingDetails;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Troubleshooting information gained from specified resource. */
+/**
+ * Troubleshooting information gained from specified resource.
+ */
 @Fluent
-public final class TroubleshootingResultInner {
+public final class TroubleshootingResultInner implements JsonSerializable<TroubleshootingResultInner> {
     /*
      * The start time of the troubleshooting.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The end time of the troubleshooting.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * The result code of the troubleshooting.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * Information from troubleshooting.
      */
-    @JsonProperty(value = "results")
     private List<TroubleshootingDetails> results;
 
-    /** Creates an instance of TroubleshootingResultInner class. */
+    /**
+     * Creates an instance of TroubleshootingResultInner class.
+     */
     public TroubleshootingResultInner() {
     }
 
     /**
      * Get the startTime property: The start time of the troubleshooting.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -52,7 +58,7 @@ public final class TroubleshootingResultInner {
 
     /**
      * Set the startTime property: The start time of the troubleshooting.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the TroubleshootingResultInner object itself.
      */
@@ -63,7 +69,7 @@ public final class TroubleshootingResultInner {
 
     /**
      * Get the endTime property: The end time of the troubleshooting.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -72,7 +78,7 @@ public final class TroubleshootingResultInner {
 
     /**
      * Set the endTime property: The end time of the troubleshooting.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the TroubleshootingResultInner object itself.
      */
@@ -83,7 +89,7 @@ public final class TroubleshootingResultInner {
 
     /**
      * Get the code property: The result code of the troubleshooting.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -92,7 +98,7 @@ public final class TroubleshootingResultInner {
 
     /**
      * Set the code property: The result code of the troubleshooting.
-     *
+     * 
      * @param code the code value to set.
      * @return the TroubleshootingResultInner object itself.
      */
@@ -103,7 +109,7 @@ public final class TroubleshootingResultInner {
 
     /**
      * Get the results property: Information from troubleshooting.
-     *
+     * 
      * @return the results value.
      */
     public List<TroubleshootingDetails> results() {
@@ -112,7 +118,7 @@ public final class TroubleshootingResultInner {
 
     /**
      * Set the results property: Information from troubleshooting.
-     *
+     * 
      * @param results the results value to set.
      * @return the TroubleshootingResultInner object itself.
      */
@@ -123,12 +129,63 @@ public final class TroubleshootingResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (results() != null) {
             results().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeArrayField("results", this.results, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TroubleshootingResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TroubleshootingResultInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TroubleshootingResultInner.
+     */
+    public static TroubleshootingResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TroubleshootingResultInner deserializedTroubleshootingResultInner = new TroubleshootingResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedTroubleshootingResultInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedTroubleshootingResultInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("code".equals(fieldName)) {
+                    deserializedTroubleshootingResultInner.code = reader.getString();
+                } else if ("results".equals(fieldName)) {
+                    List<TroubleshootingDetails> results
+                        = reader.readArray(reader1 -> TroubleshootingDetails.fromJson(reader1));
+                    deserializedTroubleshootingResultInner.results = results;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTroubleshootingResultInner;
+        });
     }
 }

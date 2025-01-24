@@ -9,37 +9,33 @@ import com.azure.resourcemanager.hdinsight.models.VersionSpec;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VersionSpecTests {
-    @Test
-    public void testDeserialize() {
-        VersionSpec model =
-            BinaryData
-                .fromString(
-                    "{\"friendlyName\":\"rdvstkwqqtch\",\"displayName\":\"lmfmtdaay\",\"isDefault\":false,\"componentVersions\":{\"xg\":\"gpiohgwxrtfudxe\",\"pkukghi\":\"qagvrvm\",\"wi\":\"dblx\"}}")
-                .toObject(VersionSpec.class);
-        Assertions.assertEquals("rdvstkwqqtch", model.friendlyName());
-        Assertions.assertEquals("lmfmtdaay", model.displayName());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        VersionSpec model = BinaryData.fromString(
+            "{\"friendlyName\":\"lvkgju\",\"displayName\":\"dknnqvsazn\",\"isDefault\":false,\"componentVersions\":{\"hmk\":\"udsgs\",\"rauwjuetaebu\":\"c\"}}")
+            .toObject(VersionSpec.class);
+        Assertions.assertEquals("lvkgju", model.friendlyName());
+        Assertions.assertEquals("dknnqvsazn", model.displayName());
         Assertions.assertEquals(false, model.isDefault());
-        Assertions.assertEquals("gpiohgwxrtfudxe", model.componentVersions().get("xg"));
+        Assertions.assertEquals("udsgs", model.componentVersions().get("hmk"));
     }
 
-    @Test
-    public void testSerialize() {
-        VersionSpec model =
-            new VersionSpec()
-                .withFriendlyName("rdvstkwqqtch")
-                .withDisplayName("lmfmtdaay")
-                .withIsDefault(false)
-                .withComponentVersions(mapOf("xg", "gpiohgwxrtfudxe", "pkukghi", "qagvrvm", "wi", "dblx"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VersionSpec model = new VersionSpec().withFriendlyName("lvkgju")
+            .withDisplayName("dknnqvsazn")
+            .withIsDefault(false)
+            .withComponentVersions(mapOf("hmk", "udsgs", "rauwjuetaebu", "c"));
         model = BinaryData.fromObject(model).toObject(VersionSpec.class);
-        Assertions.assertEquals("rdvstkwqqtch", model.friendlyName());
-        Assertions.assertEquals("lmfmtdaay", model.displayName());
+        Assertions.assertEquals("lvkgju", model.friendlyName());
+        Assertions.assertEquals("dknnqvsazn", model.displayName());
         Assertions.assertEquals(false, model.isDefault());
-        Assertions.assertEquals("gpiohgwxrtfudxe", model.componentVersions().get("xg"));
+        Assertions.assertEquals("udsgs", model.componentVersions().get("hmk"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -7,23 +7,20 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalAssignmentCheckNameRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DatabasePrincipalAssignmentCheckNameRequestTests {
-    @Test
-    public void testDeserialize() {
-        DatabasePrincipalAssignmentCheckNameRequest model =
-            BinaryData
-                .fromString("{\"name\":\"vxpvgomz\"}")
-                .toObject(DatabasePrincipalAssignmentCheckNameRequest.class);
-        Assertions.assertEquals("vxpvgomz", model.name());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DatabasePrincipalAssignmentCheckNameRequest model
+            = BinaryData.fromString("{\"name\":\"xdy\"}").toObject(DatabasePrincipalAssignmentCheckNameRequest.class);
+        Assertions.assertEquals("xdy", model.name());
     }
 
-    @Test
-    public void testSerialize() {
-        DatabasePrincipalAssignmentCheckNameRequest model =
-            new DatabasePrincipalAssignmentCheckNameRequest().withName("vxpvgomz");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DatabasePrincipalAssignmentCheckNameRequest model
+            = new DatabasePrincipalAssignmentCheckNameRequest().withName("xdy");
         model = BinaryData.fromObject(model).toObject(DatabasePrincipalAssignmentCheckNameRequest.class);
-        Assertions.assertEquals("vxpvgomz", model.name());
+        Assertions.assertEquals("xdy", model.name());
     }
 }

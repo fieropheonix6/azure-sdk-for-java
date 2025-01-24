@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes scaling information of a sku. */
+/**
+ * Describes scaling information of a sku.
+ */
 @Immutable
-public final class VirtualMachineScaleSetSkuCapacity {
+public final class VirtualMachineScaleSetSkuCapacity implements JsonSerializable<VirtualMachineScaleSetSkuCapacity> {
     /*
      * The minimum capacity.
      */
-    @JsonProperty(value = "minimum", access = JsonProperty.Access.WRITE_ONLY)
     private Long minimum;
 
     /*
      * The maximum capacity that can be set.
      */
-    @JsonProperty(value = "maximum", access = JsonProperty.Access.WRITE_ONLY)
     private Long maximum;
 
     /*
      * The default capacity.
      */
-    @JsonProperty(value = "defaultCapacity", access = JsonProperty.Access.WRITE_ONLY)
     private Long defaultCapacity;
 
     /*
      * The scale type applicable to the sku.
      */
-    @JsonProperty(value = "scaleType", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineScaleSetSkuScaleType scaleType;
 
-    /** Creates an instance of VirtualMachineScaleSetSkuCapacity class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetSkuCapacity class.
+     */
     public VirtualMachineScaleSetSkuCapacity() {
     }
 
     /**
      * Get the minimum property: The minimum capacity.
-     *
+     * 
      * @return the minimum value.
      */
     public Long minimum() {
@@ -49,7 +53,7 @@ public final class VirtualMachineScaleSetSkuCapacity {
 
     /**
      * Get the maximum property: The maximum capacity that can be set.
-     *
+     * 
      * @return the maximum value.
      */
     public Long maximum() {
@@ -58,7 +62,7 @@ public final class VirtualMachineScaleSetSkuCapacity {
 
     /**
      * Get the defaultCapacity property: The default capacity.
-     *
+     * 
      * @return the defaultCapacity value.
      */
     public Long defaultCapacity() {
@@ -67,7 +71,7 @@ public final class VirtualMachineScaleSetSkuCapacity {
 
     /**
      * Get the scaleType property: The scale type applicable to the sku.
-     *
+     * 
      * @return the scaleType value.
      */
     public VirtualMachineScaleSetSkuScaleType scaleType() {
@@ -76,9 +80,53 @@ public final class VirtualMachineScaleSetSkuCapacity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetSkuCapacity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetSkuCapacity if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetSkuCapacity.
+     */
+    public static VirtualMachineScaleSetSkuCapacity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetSkuCapacity deserializedVirtualMachineScaleSetSkuCapacity
+                = new VirtualMachineScaleSetSkuCapacity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("minimum".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetSkuCapacity.minimum = reader.getNullable(JsonReader::getLong);
+                } else if ("maximum".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetSkuCapacity.maximum = reader.getNullable(JsonReader::getLong);
+                } else if ("defaultCapacity".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetSkuCapacity.defaultCapacity
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("scaleType".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetSkuCapacity.scaleType
+                        = VirtualMachineScaleSetSkuScaleType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetSkuCapacity;
+        });
     }
 }

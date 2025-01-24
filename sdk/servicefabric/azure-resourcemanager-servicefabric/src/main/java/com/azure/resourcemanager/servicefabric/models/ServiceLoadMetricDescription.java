@@ -6,56 +6,56 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies a metric to load balance a service during runtime. */
+/**
+ * Specifies a metric to load balance a service during runtime.
+ */
 @Fluent
-public final class ServiceLoadMetricDescription {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceLoadMetricDescription.class);
-
+public final class ServiceLoadMetricDescription implements JsonSerializable<ServiceLoadMetricDescription> {
     /*
-     * The name of the metric. If the service chooses to report load during
-     * runtime, the load metric name should match the name that is specified in
-     * Name exactly. Note that metric names are case sensitive.
+     * The name of the metric. If the service chooses to report load during runtime, the load metric name should match
+     * the name that is specified in Name exactly. Note that metric names are case sensitive.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * The service load metric relative weight, compared to other metrics
-     * configured for this service, as a number.
+     * The service load metric relative weight, compared to other metrics configured for this service, as a number.
      */
-    @JsonProperty(value = "weight")
     private ServiceLoadMetricWeight weight;
 
     /*
-     * Used only for Stateful services. The default amount of load, as a
-     * number, that this service creates for this metric when it is a Primary
-     * replica.
+     * Used only for Stateful services. The default amount of load, as a number, that this service creates for this
+     * metric when it is a Primary replica.
      */
-    @JsonProperty(value = "primaryDefaultLoad")
     private Integer primaryDefaultLoad;
 
     /*
-     * Used only for Stateful services. The default amount of load, as a
-     * number, that this service creates for this metric when it is a Secondary
-     * replica.
+     * Used only for Stateful services. The default amount of load, as a number, that this service creates for this
+     * metric when it is a Secondary replica.
      */
-    @JsonProperty(value = "secondaryDefaultLoad")
     private Integer secondaryDefaultLoad;
 
     /*
-     * Used only for Stateless services. The default amount of load, as a
-     * number, that this service creates for this metric.
+     * Used only for Stateless services. The default amount of load, as a number, that this service creates for this
+     * metric.
      */
-    @JsonProperty(value = "defaultLoad")
     private Integer defaultLoad;
+
+    /**
+     * Creates an instance of ServiceLoadMetricDescription class.
+     */
+    public ServiceLoadMetricDescription() {
+    }
 
     /**
      * Get the name property: The name of the metric. If the service chooses to report load during runtime, the load
      * metric name should match the name that is specified in Name exactly. Note that metric names are case sensitive.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -65,7 +65,7 @@ public final class ServiceLoadMetricDescription {
     /**
      * Set the name property: The name of the metric. If the service chooses to report load during runtime, the load
      * metric name should match the name that is specified in Name exactly. Note that metric names are case sensitive.
-     *
+     * 
      * @param name the name value to set.
      * @return the ServiceLoadMetricDescription object itself.
      */
@@ -77,7 +77,7 @@ public final class ServiceLoadMetricDescription {
     /**
      * Get the weight property: The service load metric relative weight, compared to other metrics configured for this
      * service, as a number.
-     *
+     * 
      * @return the weight value.
      */
     public ServiceLoadMetricWeight weight() {
@@ -87,7 +87,7 @@ public final class ServiceLoadMetricDescription {
     /**
      * Set the weight property: The service load metric relative weight, compared to other metrics configured for this
      * service, as a number.
-     *
+     * 
      * @param weight the weight value to set.
      * @return the ServiceLoadMetricDescription object itself.
      */
@@ -99,7 +99,7 @@ public final class ServiceLoadMetricDescription {
     /**
      * Get the primaryDefaultLoad property: Used only for Stateful services. The default amount of load, as a number,
      * that this service creates for this metric when it is a Primary replica.
-     *
+     * 
      * @return the primaryDefaultLoad value.
      */
     public Integer primaryDefaultLoad() {
@@ -109,7 +109,7 @@ public final class ServiceLoadMetricDescription {
     /**
      * Set the primaryDefaultLoad property: Used only for Stateful services. The default amount of load, as a number,
      * that this service creates for this metric when it is a Primary replica.
-     *
+     * 
      * @param primaryDefaultLoad the primaryDefaultLoad value to set.
      * @return the ServiceLoadMetricDescription object itself.
      */
@@ -121,7 +121,7 @@ public final class ServiceLoadMetricDescription {
     /**
      * Get the secondaryDefaultLoad property: Used only for Stateful services. The default amount of load, as a number,
      * that this service creates for this metric when it is a Secondary replica.
-     *
+     * 
      * @return the secondaryDefaultLoad value.
      */
     public Integer secondaryDefaultLoad() {
@@ -131,7 +131,7 @@ public final class ServiceLoadMetricDescription {
     /**
      * Set the secondaryDefaultLoad property: Used only for Stateful services. The default amount of load, as a number,
      * that this service creates for this metric when it is a Secondary replica.
-     *
+     * 
      * @param secondaryDefaultLoad the secondaryDefaultLoad value to set.
      * @return the ServiceLoadMetricDescription object itself.
      */
@@ -143,7 +143,7 @@ public final class ServiceLoadMetricDescription {
     /**
      * Get the defaultLoad property: Used only for Stateless services. The default amount of load, as a number, that
      * this service creates for this metric.
-     *
+     * 
      * @return the defaultLoad value.
      */
     public Integer defaultLoad() {
@@ -153,7 +153,7 @@ public final class ServiceLoadMetricDescription {
     /**
      * Set the defaultLoad property: Used only for Stateless services. The default amount of load, as a number, that
      * this service creates for this metric.
-     *
+     * 
      * @param defaultLoad the defaultLoad value to set.
      * @return the ServiceLoadMetricDescription object itself.
      */
@@ -164,15 +164,68 @@ public final class ServiceLoadMetricDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ServiceLoadMetricDescription"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model ServiceLoadMetricDescription"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceLoadMetricDescription.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("weight", this.weight == null ? null : this.weight.toString());
+        jsonWriter.writeNumberField("primaryDefaultLoad", this.primaryDefaultLoad);
+        jsonWriter.writeNumberField("secondaryDefaultLoad", this.secondaryDefaultLoad);
+        jsonWriter.writeNumberField("defaultLoad", this.defaultLoad);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceLoadMetricDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceLoadMetricDescription if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServiceLoadMetricDescription.
+     */
+    public static ServiceLoadMetricDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceLoadMetricDescription deserializedServiceLoadMetricDescription = new ServiceLoadMetricDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedServiceLoadMetricDescription.name = reader.getString();
+                } else if ("weight".equals(fieldName)) {
+                    deserializedServiceLoadMetricDescription.weight
+                        = ServiceLoadMetricWeight.fromString(reader.getString());
+                } else if ("primaryDefaultLoad".equals(fieldName)) {
+                    deserializedServiceLoadMetricDescription.primaryDefaultLoad
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("secondaryDefaultLoad".equals(fieldName)) {
+                    deserializedServiceLoadMetricDescription.secondaryDefaultLoad
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("defaultLoad".equals(fieldName)) {
+                    deserializedServiceLoadMetricDescription.defaultLoad = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceLoadMetricDescription;
+        });
     }
 }

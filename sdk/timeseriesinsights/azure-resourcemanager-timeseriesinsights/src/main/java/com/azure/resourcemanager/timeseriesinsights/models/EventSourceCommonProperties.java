@@ -5,28 +5,58 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.timeseriesinsights.fluent.models.IngressStartAtProperties;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 
-/** Properties of the event source. */
+/**
+ * Properties of the event source.
+ */
 @Fluent
 public class EventSourceCommonProperties extends ResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventSourceCommonProperties.class);
+    /*
+     * The event property that will be used as the event source's timestamp. If a value isn't specified for
+     * timestampPropertyName, or if null or empty-string is specified, the event creation time will be used.
+     */
+    private String timestampPropertyName;
 
     /*
-     * The event property that will be used as the event source's timestamp. If
-     * a value isn't specified for timestampPropertyName, or if null or
-     * empty-string is specified, the event creation time will be used.
+     * An object that represents the local timestamp property. It contains the format of local timestamp that needs to
+     * be used and the corresponding timezone offset information. If a value isn't specified for localTimestamp, or if
+     * null, then the local timestamp will not be ingressed with the events.
      */
-    @JsonProperty(value = "timestampPropertyName")
-    private String timestampPropertyName;
+    private LocalTimestamp localTimestamp;
+
+    /*
+     * An object that contains the details about the starting point in time to ingest events.
+     */
+    private IngressStartAtProperties innerIngressStartAt;
+
+    /*
+     * The time the resource was created.
+     */
+    private OffsetDateTime creationTime;
+
+    /*
+     * Provisioning state of the resource.
+     */
+    private ProvisioningState provisioningState;
+
+    /**
+     * Creates an instance of EventSourceCommonProperties class.
+     */
+    public EventSourceCommonProperties() {
+    }
 
     /**
      * Get the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
      * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
      * time will be used.
-     *
+     * 
      * @return the timestampPropertyName value.
      */
     public String timestampPropertyName() {
@@ -37,7 +67,7 @@ public class EventSourceCommonProperties extends ResourceProperties {
      * Set the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
      * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
      * time will be used.
-     *
+     * 
      * @param timestampPropertyName the timestampPropertyName value to set.
      * @return the EventSourceCommonProperties object itself.
      */
@@ -47,12 +77,182 @@ public class EventSourceCommonProperties extends ResourceProperties {
     }
 
     /**
+     * Get the localTimestamp property: An object that represents the local timestamp property. It contains the format
+     * of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't
+     * specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
+     * 
+     * @return the localTimestamp value.
+     */
+    public LocalTimestamp localTimestamp() {
+        return this.localTimestamp;
+    }
+
+    /**
+     * Set the localTimestamp property: An object that represents the local timestamp property. It contains the format
+     * of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't
+     * specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
+     * 
+     * @param localTimestamp the localTimestamp value to set.
+     * @return the EventSourceCommonProperties object itself.
+     */
+    public EventSourceCommonProperties withLocalTimestamp(LocalTimestamp localTimestamp) {
+        this.localTimestamp = localTimestamp;
+        return this;
+    }
+
+    /**
+     * Get the innerIngressStartAt property: An object that contains the details about the starting point in time to
+     * ingest events.
+     * 
+     * @return the innerIngressStartAt value.
+     */
+    private IngressStartAtProperties innerIngressStartAt() {
+        return this.innerIngressStartAt;
+    }
+
+    /**
+     * Set the innerIngressStartAt property: An object that contains the details about the starting point in time to
+     * ingest events.
+     * 
+     * @param innerIngressStartAt the innerIngressStartAt value to set.
+     * @return the EventSourceCommonProperties object itself.
+     */
+    EventSourceCommonProperties withInnerIngressStartAt(IngressStartAtProperties innerIngressStartAt) {
+        this.innerIngressStartAt = innerIngressStartAt;
+        return this;
+    }
+
+    /**
+     * Get the creationTime property: The time the resource was created.
+     * 
+     * @return the creationTime value.
+     */
+    @Override
+    public OffsetDateTime creationTime() {
+        return this.creationTime;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the type property: The type of the ingressStartAt, It can be "EarliestAvailable", "EventSourceCreationTime",
+     * "CustomEnqueuedTime".
+     * 
+     * @return the type value.
+     */
+    public IngressStartAtType type() {
+        return this.innerIngressStartAt() == null ? null : this.innerIngressStartAt().type();
+    }
+
+    /**
+     * Set the type property: The type of the ingressStartAt, It can be "EarliestAvailable", "EventSourceCreationTime",
+     * "CustomEnqueuedTime".
+     * 
+     * @param type the type value to set.
+     * @return the EventSourceCommonProperties object itself.
+     */
+    public EventSourceCommonProperties withType(IngressStartAtType type) {
+        if (this.innerIngressStartAt() == null) {
+            this.innerIngressStartAt = new IngressStartAtProperties();
+        }
+        this.innerIngressStartAt().withType(type);
+        return this;
+    }
+
+    /**
+     * Get the time property: ISO8601 UTC datetime with seconds precision (milliseconds are optional), specifying the
+     * date and time that will be the starting point for Events to be consumed.
+     * 
+     * @return the time value.
+     */
+    public String time() {
+        return this.innerIngressStartAt() == null ? null : this.innerIngressStartAt().time();
+    }
+
+    /**
+     * Set the time property: ISO8601 UTC datetime with seconds precision (milliseconds are optional), specifying the
+     * date and time that will be the starting point for Events to be consumed.
+     * 
+     * @param time the time value to set.
+     * @return the EventSourceCommonProperties object itself.
+     */
+    public EventSourceCommonProperties withTime(String time) {
+        if (this.innerIngressStartAt() == null) {
+            this.innerIngressStartAt = new IngressStartAtProperties();
+        }
+        this.innerIngressStartAt().withTime(time);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (localTimestamp() != null) {
+            localTimestamp().validate();
+        }
+        if (innerIngressStartAt() != null) {
+            innerIngressStartAt().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timestampPropertyName", this.timestampPropertyName);
+        jsonWriter.writeJsonField("localTimestamp", this.localTimestamp);
+        jsonWriter.writeJsonField("ingressStartAt", this.innerIngressStartAt);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventSourceCommonProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventSourceCommonProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventSourceCommonProperties.
+     */
+    public static EventSourceCommonProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventSourceCommonProperties deserializedEventSourceCommonProperties = new EventSourceCommonProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedEventSourceCommonProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedEventSourceCommonProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timestampPropertyName".equals(fieldName)) {
+                    deserializedEventSourceCommonProperties.timestampPropertyName = reader.getString();
+                } else if ("localTimestamp".equals(fieldName)) {
+                    deserializedEventSourceCommonProperties.localTimestamp = LocalTimestamp.fromJson(reader);
+                } else if ("ingressStartAt".equals(fieldName)) {
+                    deserializedEventSourceCommonProperties.innerIngressStartAt
+                        = IngressStartAtProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventSourceCommonProperties;
+        });
     }
 }

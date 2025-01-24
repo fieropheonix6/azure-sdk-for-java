@@ -8,31 +8,27 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ManagedIdentity;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ManagedIdentityTests {
-    @Test
-    public void testDeserialize() {
-        ManagedIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"identityType\":\"Managed\",\"clientId\":\"dd0f49f5-db24-4169-b9f5-53147da3f246\",\"objectId\":\"07bfb568-5b32-45ee-82a2-ea5e6a4be770\",\"resourceId\":\"clg\"}")
-                .toObject(ManagedIdentity.class);
-        Assertions.assertEquals(UUID.fromString("dd0f49f5-db24-4169-b9f5-53147da3f246"), model.clientId());
-        Assertions.assertEquals(UUID.fromString("07bfb568-5b32-45ee-82a2-ea5e6a4be770"), model.objectId());
-        Assertions.assertEquals("clg", model.resourceId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ManagedIdentity model = BinaryData.fromString(
+            "{\"identityType\":\"Managed\",\"clientId\":\"c1cac5a4-f742-4da9-85fd-d6c1a568ade8\",\"objectId\":\"571ce55d-766a-492c-b0fc-2ed317841bdc\",\"resourceId\":\"stubw\"}")
+            .toObject(ManagedIdentity.class);
+        Assertions.assertEquals(UUID.fromString("c1cac5a4-f742-4da9-85fd-d6c1a568ade8"), model.clientId());
+        Assertions.assertEquals(UUID.fromString("571ce55d-766a-492c-b0fc-2ed317841bdc"), model.objectId());
+        Assertions.assertEquals("stubw", model.resourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        ManagedIdentity model =
-            new ManagedIdentity()
-                .withClientId(UUID.fromString("dd0f49f5-db24-4169-b9f5-53147da3f246"))
-                .withObjectId(UUID.fromString("07bfb568-5b32-45ee-82a2-ea5e6a4be770"))
-                .withResourceId("clg");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ManagedIdentity model
+            = new ManagedIdentity().withClientId(UUID.fromString("c1cac5a4-f742-4da9-85fd-d6c1a568ade8"))
+                .withObjectId(UUID.fromString("571ce55d-766a-492c-b0fc-2ed317841bdc"))
+                .withResourceId("stubw");
         model = BinaryData.fromObject(model).toObject(ManagedIdentity.class);
-        Assertions.assertEquals(UUID.fromString("dd0f49f5-db24-4169-b9f5-53147da3f246"), model.clientId());
-        Assertions.assertEquals(UUID.fromString("07bfb568-5b32-45ee-82a2-ea5e6a4be770"), model.objectId());
-        Assertions.assertEquals("clg", model.resourceId());
+        Assertions.assertEquals(UUID.fromString("c1cac5a4-f742-4da9-85fd-d6c1a568ade8"), model.clientId());
+        Assertions.assertEquals(UUID.fromString("571ce55d-766a-492c-b0fc-2ed317841bdc"), model.objectId());
+        Assertions.assertEquals("stubw", model.resourceId());
     }
 }

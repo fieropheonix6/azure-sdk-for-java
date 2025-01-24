@@ -13,43 +13,38 @@ import com.azure.resourcemanager.mixedreality.fluent.models.CheckNameAvailabilit
 import com.azure.resourcemanager.mixedreality.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.mixedreality.models.CheckNameAvailabilityResponse;
 import com.azure.resourcemanager.mixedreality.models.ResourceProviders;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourceProvidersImpl implements ResourceProviders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProvidersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersImpl.class);
 
     private final ResourceProvidersClient innerClient;
 
     private final com.azure.resourcemanager.mixedreality.MixedRealityManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient,
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
         com.azure.resourcemanager.mixedreality.MixedRealityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public CheckNameAvailabilityResponse checkNameAvailabilityLocal(
-        String location, CheckNameAvailabilityRequest checkNameAvailability) {
-        CheckNameAvailabilityResponseInner inner =
-            this.serviceClient().checkNameAvailabilityLocal(location, checkNameAvailability);
+    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityLocalWithResponse(String location,
+        CheckNameAvailabilityRequest checkNameAvailability, Context context) {
+        Response<CheckNameAvailabilityResponseInner> inner
+            = this.serviceClient().checkNameAvailabilityLocalWithResponse(location, checkNameAvailability, context);
         if (inner != null) {
-            return new CheckNameAvailabilityResponseImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityLocalWithResponse(
-        String location, CheckNameAvailabilityRequest checkNameAvailability, Context context) {
-        Response<CheckNameAvailabilityResponseInner> inner =
-            this.serviceClient().checkNameAvailabilityLocalWithResponse(location, checkNameAvailability, context);
+    public CheckNameAvailabilityResponse checkNameAvailabilityLocal(String location,
+        CheckNameAvailabilityRequest checkNameAvailability) {
+        CheckNameAvailabilityResponseInner inner
+            = this.serviceClient().checkNameAvailabilityLocal(location, checkNameAvailability);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
+            return new CheckNameAvailabilityResponseImpl(inner, this.manager());
         } else {
             return null;
         }

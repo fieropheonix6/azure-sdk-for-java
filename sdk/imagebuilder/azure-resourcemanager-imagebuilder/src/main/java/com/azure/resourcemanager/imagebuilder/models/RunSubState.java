@@ -4,27 +4,43 @@
 
 package com.azure.resourcemanager.imagebuilder.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for RunSubState. */
+/**
+ * Sub-state of the last run.
+ */
 public enum RunSubState {
-    /** Enum value Queued. */
+    /**
+     * Enum value Queued.
+     */
     QUEUED("Queued"),
 
-    /** Enum value Building. */
+    /**
+     * Enum value Building.
+     */
     BUILDING("Building"),
 
-    /** Enum value Customizing. */
+    /**
+     * Enum value Customizing.
+     */
     CUSTOMIZING("Customizing"),
 
-    /** Enum value Validating. */
+    /**
+     * Enum value Optimizing.
+     */
+    OPTIMIZING("Optimizing"),
+
+    /**
+     * Enum value Validating.
+     */
     VALIDATING("Validating"),
 
-    /** Enum value Distributing. */
+    /**
+     * Enum value Distributing.
+     */
     DISTRIBUTING("Distributing");
 
-    /** The actual serialized value for a RunSubState instance. */
+    /**
+     * The actual serialized value for a RunSubState instance.
+     */
     private final String value;
 
     RunSubState(String value) {
@@ -33,12 +49,14 @@ public enum RunSubState {
 
     /**
      * Parses a serialized value to a RunSubState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RunSubState object, or null if unable to parse.
      */
-    @JsonCreator
     public static RunSubState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RunSubState[] items = RunSubState.values();
         for (RunSubState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,7 +66,9 @@ public enum RunSubState {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -5,23 +5,27 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.ResourceInstanceViewStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The instance view of the role instance. */
+/**
+ * The instance view of the role instance.
+ */
 @Immutable
-public final class RoleInstanceViewInner {
+public final class RoleInstanceViewInner implements JsonSerializable<RoleInstanceViewInner> {
     /*
      * The Update Domain.
      */
-    @JsonProperty(value = "platformUpdateDomain", access = JsonProperty.Access.WRITE_ONLY)
     private Integer platformUpdateDomain;
 
     /*
      * The Fault Domain.
      */
-    @JsonProperty(value = "platformFaultDomain", access = JsonProperty.Access.WRITE_ONLY)
     private Integer platformFaultDomain;
 
     /*
@@ -29,22 +33,22 @@ public final class RoleInstanceViewInner {
      * /><br /> NOTE: If you are using Azure Diagnostics extension, this property can be used as 'DeploymentId' for
      * querying details.
      */
-    @JsonProperty(value = "privateId", access = JsonProperty.Access.WRITE_ONLY)
     private String privateId;
 
     /*
      * The statuses property.
      */
-    @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceInstanceViewStatus> statuses;
 
-    /** Creates an instance of RoleInstanceViewInner class. */
+    /**
+     * Creates an instance of RoleInstanceViewInner class.
+     */
     public RoleInstanceViewInner() {
     }
 
     /**
      * Get the platformUpdateDomain property: The Update Domain.
-     *
+     * 
      * @return the platformUpdateDomain value.
      */
     public Integer platformUpdateDomain() {
@@ -53,7 +57,7 @@ public final class RoleInstanceViewInner {
 
     /**
      * Get the platformFaultDomain property: The Fault Domain.
-     *
+     * 
      * @return the platformFaultDomain value.
      */
     public Integer platformFaultDomain() {
@@ -64,7 +68,7 @@ public final class RoleInstanceViewInner {
      * Get the privateId property: Specifies a unique identifier generated internally for the cloud service associated
      * with this role instance. &lt;br /&gt;&lt;br /&gt; NOTE: If you are using Azure Diagnostics extension, this
      * property can be used as 'DeploymentId' for querying details.
-     *
+     * 
      * @return the privateId value.
      */
     public String privateId() {
@@ -73,7 +77,7 @@ public final class RoleInstanceViewInner {
 
     /**
      * Get the statuses property: The statuses property.
-     *
+     * 
      * @return the statuses value.
      */
     public List<ResourceInstanceViewStatus> statuses() {
@@ -82,12 +86,55 @@ public final class RoleInstanceViewInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleInstanceViewInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleInstanceViewInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleInstanceViewInner.
+     */
+    public static RoleInstanceViewInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleInstanceViewInner deserializedRoleInstanceViewInner = new RoleInstanceViewInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("platformUpdateDomain".equals(fieldName)) {
+                    deserializedRoleInstanceViewInner.platformUpdateDomain = reader.getNullable(JsonReader::getInt);
+                } else if ("platformFaultDomain".equals(fieldName)) {
+                    deserializedRoleInstanceViewInner.platformFaultDomain = reader.getNullable(JsonReader::getInt);
+                } else if ("privateId".equals(fieldName)) {
+                    deserializedRoleInstanceViewInner.privateId = reader.getString();
+                } else if ("statuses".equals(fieldName)) {
+                    List<ResourceInstanceViewStatus> statuses
+                        = reader.readArray(reader1 -> ResourceInstanceViewStatus.fromJson(reader1));
+                    deserializedRoleInstanceViewInner.statuses = statuses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleInstanceViewInner;
+        });
     }
 }

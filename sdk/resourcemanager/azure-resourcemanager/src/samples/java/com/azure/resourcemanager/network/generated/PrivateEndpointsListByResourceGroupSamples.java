@@ -4,19 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for PrivateEndpoints ListByResourceGroup. */
+/**
+ * Samples for PrivateEndpoints ListByResourceGroup.
+ */
 public final class PrivateEndpointsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/PrivateEndpointList.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/PrivateEndpointList.json
      */
     /**
      * Sample code: List private endpoints in resource group.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listPrivateEndpointsInResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPrivateEndpoints().listByResourceGroup("rg1", Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPrivateEndpoints()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

@@ -7,35 +7,58 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.ResourceProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** EventGrid System Topic. */
+/**
+ * EventGrid System Topic.
+ */
 @Fluent
 public final class SystemTopicInner extends Resource {
     /*
      * Properties of the system topic.
      */
-    @JsonProperty(value = "properties")
     private SystemTopicProperties innerProperties;
-
-    /*
-     * Identity information for the resource.
-     */
-    @JsonProperty(value = "identity")
-    private IdentityInfo identity;
 
     /*
      * The system metadata relating to System Topic resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Identity information for the resource.
+     */
+    private IdentityInfo identity;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SystemTopicInner class.
+     */
+    public SystemTopicInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the system topic.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SystemTopicProperties innerProperties() {
@@ -43,8 +66,17 @@ public final class SystemTopicInner extends Resource {
     }
 
     /**
+     * Get the systemData property: The system metadata relating to System Topic resource.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the identity property: Identity information for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityInfo identity() {
@@ -53,7 +85,7 @@ public final class SystemTopicInner extends Resource {
 
     /**
      * Set the identity property: Identity information for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the SystemTopicInner object itself.
      */
@@ -63,22 +95,47 @@ public final class SystemTopicInner extends Resource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to System Topic resource.
-     *
-     * @return the systemData value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public SystemData systemData() {
-        return this.systemData;
+    @Override
+    public String type() {
+        return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SystemTopicInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SystemTopicInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -87,7 +144,7 @@ public final class SystemTopicInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the system topic.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ResourceProvisioningState provisioningState() {
@@ -96,7 +153,7 @@ public final class SystemTopicInner extends Resource {
 
     /**
      * Get the source property: Source for the system topic.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -105,7 +162,7 @@ public final class SystemTopicInner extends Resource {
 
     /**
      * Set the source property: Source for the system topic.
-     *
+     * 
      * @param source the source value to set.
      * @return the SystemTopicInner object itself.
      */
@@ -119,7 +176,7 @@ public final class SystemTopicInner extends Resource {
 
     /**
      * Get the topicType property: TopicType for the system topic.
-     *
+     * 
      * @return the topicType value.
      */
     public String topicType() {
@@ -128,7 +185,7 @@ public final class SystemTopicInner extends Resource {
 
     /**
      * Set the topicType property: TopicType for the system topic.
-     *
+     * 
      * @param topicType the topicType value to set.
      * @return the SystemTopicInner object itself.
      */
@@ -142,7 +199,7 @@ public final class SystemTopicInner extends Resource {
 
     /**
      * Get the metricResourceId property: Metric resource id for the system topic.
-     *
+     * 
      * @return the metricResourceId value.
      */
     public String metricResourceId() {
@@ -151,7 +208,7 @@ public final class SystemTopicInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -161,5 +218,60 @@ public final class SystemTopicInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SystemTopicInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SystemTopicInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SystemTopicInner.
+     */
+    public static SystemTopicInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SystemTopicInner deserializedSystemTopicInner = new SystemTopicInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSystemTopicInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSystemTopicInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSystemTopicInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSystemTopicInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSystemTopicInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSystemTopicInner.innerProperties = SystemTopicProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSystemTopicInner.systemData = SystemData.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedSystemTopicInner.identity = IdentityInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSystemTopicInner;
+        });
     }
 }

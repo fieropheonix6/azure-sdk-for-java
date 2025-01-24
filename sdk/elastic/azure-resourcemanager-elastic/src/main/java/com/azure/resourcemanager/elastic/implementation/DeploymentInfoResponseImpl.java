@@ -7,14 +7,15 @@ package com.azure.resourcemanager.elastic.implementation;
 import com.azure.resourcemanager.elastic.fluent.models.DeploymentInfoResponseInner;
 import com.azure.resourcemanager.elastic.models.DeploymentInfoResponse;
 import com.azure.resourcemanager.elastic.models.ElasticDeploymentStatus;
+import com.azure.resourcemanager.elastic.models.MarketplaceSaaSInfo;
 
 public final class DeploymentInfoResponseImpl implements DeploymentInfoResponse {
     private DeploymentInfoResponseInner innerObject;
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    DeploymentInfoResponseImpl(
-        DeploymentInfoResponseInner innerObject, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
+    DeploymentInfoResponseImpl(DeploymentInfoResponseInner innerObject,
+        com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -33,6 +34,18 @@ public final class DeploymentInfoResponseImpl implements DeploymentInfoResponse 
 
     public String diskCapacity() {
         return this.innerModel().diskCapacity();
+    }
+
+    public String elasticsearchEndPoint() {
+        return this.innerModel().elasticsearchEndPoint();
+    }
+
+    public String deploymentUrl() {
+        return this.innerModel().deploymentUrl();
+    }
+
+    public MarketplaceSaaSInfo marketplaceSaasInfo() {
+        return this.innerModel().marketplaceSaasInfo();
     }
 
     public DeploymentInfoResponseInner innerModel() {

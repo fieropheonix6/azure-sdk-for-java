@@ -8,34 +8,56 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.confluent.models.LinkOrganization;
 import com.azure.resourcemanager.confluent.models.OfferDetail;
 import com.azure.resourcemanager.confluent.models.ProvisionState;
 import com.azure.resourcemanager.confluent.models.UserDetail;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Organization resource. */
+/**
+ * Organization resource.
+ */
 @Fluent
 public final class OrganizationResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrganizationResourceInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the resource
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Organization resource properties
      */
-    @JsonProperty(value = "properties", required = true)
     private OrganizationResourceProperties innerProperties = new OrganizationResourceProperties();
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of OrganizationResourceInner class.
+     */
+    public OrganizationResourceInner() {
+    }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -44,21 +66,55 @@ public final class OrganizationResourceInner extends Resource {
 
     /**
      * Get the innerProperties property: Organization resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private OrganizationResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrganizationResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrganizationResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -67,7 +123,7 @@ public final class OrganizationResourceInner extends Resource {
 
     /**
      * Get the createdTime property: The creation time of the resource.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -75,8 +131,8 @@ public final class OrganizationResourceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: ProvisioningState Provision states for confluent RP.
-     *
+     * Get the provisioningState property: Provision states for confluent RP.
+     * 
      * @return the provisioningState value.
      */
     public ProvisionState provisioningState() {
@@ -85,7 +141,7 @@ public final class OrganizationResourceInner extends Resource {
 
     /**
      * Get the organizationId property: Id of the Confluent organization.
-     *
+     * 
      * @return the organizationId value.
      */
     public String organizationId() {
@@ -94,7 +150,7 @@ public final class OrganizationResourceInner extends Resource {
 
     /**
      * Get the ssoUrl property: SSO url for the Confluent organization.
-     *
+     * 
      * @return the ssoUrl value.
      */
     public String ssoUrl() {
@@ -103,7 +159,7 @@ public final class OrganizationResourceInner extends Resource {
 
     /**
      * Get the offerDetail property: Confluent offer detail.
-     *
+     * 
      * @return the offerDetail value.
      */
     public OfferDetail offerDetail() {
@@ -112,7 +168,7 @@ public final class OrganizationResourceInner extends Resource {
 
     /**
      * Set the offerDetail property: Confluent offer detail.
-     *
+     * 
      * @param offerDetail the offerDetail value to set.
      * @return the OrganizationResourceInner object itself.
      */
@@ -126,7 +182,7 @@ public final class OrganizationResourceInner extends Resource {
 
     /**
      * Get the userDetail property: Subscriber detail.
-     *
+     * 
      * @return the userDetail value.
      */
     public UserDetail userDetail() {
@@ -135,7 +191,7 @@ public final class OrganizationResourceInner extends Resource {
 
     /**
      * Set the userDetail property: Subscriber detail.
-     *
+     * 
      * @param userDetail the userDetail value to set.
      * @return the OrganizationResourceInner object itself.
      */
@@ -148,18 +204,95 @@ public final class OrganizationResourceInner extends Resource {
     }
 
     /**
+     * Get the linkOrganization property: Link an existing Confluent organization.
+     * 
+     * @return the linkOrganization value.
+     */
+    public LinkOrganization linkOrganization() {
+        return this.innerProperties() == null ? null : this.innerProperties().linkOrganization();
+    }
+
+    /**
+     * Set the linkOrganization property: Link an existing Confluent organization.
+     * 
+     * @param linkOrganization the linkOrganization value to set.
+     * @return the OrganizationResourceInner object itself.
+     */
+    public OrganizationResourceInner withLinkOrganization(LinkOrganization linkOrganization) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OrganizationResourceProperties();
+        }
+        this.innerProperties().withLinkOrganization(linkOrganization);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model OrganizationResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model OrganizationResourceInner"));
         } else {
             innerProperties().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OrganizationResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrganizationResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrganizationResourceInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OrganizationResourceInner.
+     */
+    public static OrganizationResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrganizationResourceInner deserializedOrganizationResourceInner = new OrganizationResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOrganizationResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOrganizationResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedOrganizationResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedOrganizationResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedOrganizationResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOrganizationResourceInner.innerProperties
+                        = OrganizationResourceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedOrganizationResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrganizationResourceInner;
+        });
     }
 }

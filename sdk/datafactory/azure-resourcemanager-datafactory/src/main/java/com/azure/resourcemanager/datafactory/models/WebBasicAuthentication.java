@@ -6,35 +6,51 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A WebLinkedService that uses basic authentication to communicate with an HTTP endpoint. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authenticationType")
-@JsonTypeName("Basic")
+/**
+ * A WebLinkedService that uses basic authentication to communicate with an HTTP endpoint.
+ */
 @Fluent
 public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties {
     /*
+     * Type of authentication used to connect to the web table source.
+     */
+    private WebAuthenticationType authenticationType = WebAuthenticationType.BASIC;
+
+    /*
      * User name for Basic authentication. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "username", required = true)
     private Object username;
 
     /*
      * The password for Basic authentication.
      */
-    @JsonProperty(value = "password", required = true)
     private SecretBase password;
 
-    /** Creates an instance of WebBasicAuthentication class. */
+    /**
+     * Creates an instance of WebBasicAuthentication class.
+     */
     public WebBasicAuthentication() {
+    }
+
+    /**
+     * Get the authenticationType property: Type of authentication used to connect to the web table source.
+     * 
+     * @return the authenticationType value.
+     */
+    @Override
+    public WebAuthenticationType authenticationType() {
+        return this.authenticationType;
     }
 
     /**
      * Get the username property: User name for Basic authentication. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -44,7 +60,7 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
     /**
      * Set the username property: User name for Basic authentication. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param username the username value to set.
      * @return the WebBasicAuthentication object itself.
      */
@@ -55,7 +71,7 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
 
     /**
      * Get the password property: The password for Basic authentication.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -64,7 +80,7 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
 
     /**
      * Set the password property: The password for Basic authentication.
-     *
+     * 
      * @param password the password value to set.
      * @return the WebBasicAuthentication object itself.
      */
@@ -73,7 +89,9 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebBasicAuthentication withUrl(Object url) {
         super.withUrl(url);
@@ -82,25 +100,76 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property username in model WebBasicAuthentication"));
         }
         if (password() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property password in model WebBasicAuthentication"));
         } else {
             password().validate();
         }
+        if (url() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property url in model WebBasicAuthentication"));
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WebBasicAuthentication.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("url", url());
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebBasicAuthentication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebBasicAuthentication if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebBasicAuthentication.
+     */
+    public static WebBasicAuthentication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebBasicAuthentication deserializedWebBasicAuthentication = new WebBasicAuthentication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedWebBasicAuthentication.withUrl(reader.readUntyped());
+                } else if ("username".equals(fieldName)) {
+                    deserializedWebBasicAuthentication.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedWebBasicAuthentication.password = SecretBase.fromJson(reader);
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedWebBasicAuthentication.authenticationType
+                        = WebAuthenticationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebBasicAuthentication;
+        });
+    }
 }

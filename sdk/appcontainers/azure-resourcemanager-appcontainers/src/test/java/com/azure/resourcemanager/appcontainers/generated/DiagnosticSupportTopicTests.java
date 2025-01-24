@@ -6,19 +6,16 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.DiagnosticSupportTopic;
-import org.junit.jupiter.api.Test;
 
 public final class DiagnosticSupportTopicTests {
-    @Test
-    public void testDeserialize() {
-        DiagnosticSupportTopic model =
-            BinaryData
-                .fromString("{\"id\":\"wjhhgdnhxmsivf\",\"pesId\":\"iloxggdufiq\"}")
-                .toObject(DiagnosticSupportTopic.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DiagnosticSupportTopic model = BinaryData.fromString("{\"id\":\"tfgxqbawpcb\",\"pesId\":\"zqcyknap\"}")
+            .toObject(DiagnosticSupportTopic.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DiagnosticSupportTopic model = new DiagnosticSupportTopic();
         model = BinaryData.fromObject(model).toObject(DiagnosticSupportTopic.class);
     }

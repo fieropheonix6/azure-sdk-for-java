@@ -6,10 +6,13 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.AmqpLinkProvider;
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
+import com.azure.core.amqp.implementation.ReactorExecutor;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
@@ -35,7 +38,6 @@ import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -44,6 +46,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.stubbing.Answer;
 import reactor.core.scheduler.Scheduler;
 import reactor.test.StepVerifier;
 
@@ -94,43 +97,35 @@ public class EventHubReactorConnectionTest {
 
     private ConnectionOptions connectionOptions;
     private ConnectionHandler connectionHandler;
+    private AmqpLinkProvider linkProvider = new AmqpLinkProvider();
 
     @BeforeAll
     public static void init() {
         Map<String, String> properties = CoreUtils.getProperties("azure-messaging-eventhubs.properties");
         product = properties.get(NAME_KEY);
         clientVersion = properties.get(VERSION_KEY);
-
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
     }
 
     @BeforeEach
     public void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
 
-        final ClientOptions clientOptions = new ClientOptions().setHeaders(
-            Arrays.asList(new Header(NAME_KEY, product), new Header(VERSION_KEY, clientVersion)));
+        final ClientOptions clientOptions = new ClientOptions()
+            .setHeaders(Arrays.asList(new Header(NAME_KEY, product), new Header(VERSION_KEY, clientVersion)));
 
         final ProxyOptions proxy = ProxyOptions.SYSTEM_DEFAULTS;
-        this.connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
-            AmqpTransportType.AMQP, new AmqpRetryOptions(), proxy, scheduler, clientOptions,
-            SslDomain.VerifyMode.VERIFY_PEER_NAME, "product-test",
-            "client-test-version");
+        this.connectionOptions
+            = new ConnectionOptions(HOSTNAME, tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
+                ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, AmqpTransportType.AMQP, new AmqpRetryOptions(), proxy,
+                scheduler, clientOptions, SslDomain.VerifyMode.VERIFY_PEER_NAME, "product-test", "client-test-version");
         final SslPeerDetails peerDetails = Proton.sslPeerDetails(HOSTNAME, ConnectionHandler.AMQPS_PORT);
 
-        connectionHandler = new ConnectionHandler(CONNECTION_ID, connectionOptions,
-            peerDetails, AmqpMetricsProvider.noop());
+        connectionHandler
+            = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
 
         when(reactor.selectable()).thenReturn(selectable);
         when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(),
-            connectionHandler))
-            .thenReturn(reactorConnection);
+            connectionHandler)).thenReturn(reactorConnection);
         when(reactor.process()).thenReturn(true);
         when(reactor.attachments()).thenReturn(record);
 
@@ -139,12 +134,14 @@ public class EventHubReactorConnectionTest {
         when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
         when(reactorProvider.createReactor(connectionHandler.getConnectionId(), connectionHandler.getMaxFrameSize()))
             .thenReturn(reactor);
+        when(reactorProvider.createExecutor(any(Reactor.class), anyString(), anyString(),
+            any(ReactorConnection.ReactorExceptionHandler.class), any(AmqpRetryOptions.class)))
+                .then(answerByCreatingExecutor());
 
         final SessionHandler sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, "EVENT_HUB",
             reactorDispatcher, Duration.ofSeconds(20), AmqpMetricsProvider.noop());
 
-        when(handlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions))
-            .thenReturn(connectionHandler);
+        when(handlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions)).thenReturn(connectionHandler);
         when(handlerProvider.createSessionHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), any(Duration.class)))
             .thenReturn(sessionHandler);
 
@@ -179,24 +176,41 @@ public class EventHubReactorConnectionTest {
         when(receiver.attachments()).thenReturn(linkRecord);
 
         when(handlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), anyString()))
-            .thenReturn(new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, "receiver-name", "test-entity-path", AmqpMetricsProvider.noop()));
+            .thenReturn(new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, "receiver-name", "test-entity-path",
+                AmqpMetricsProvider.noop()));
 
         when(handlerProvider.createSendLinkHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), anyString()))
-            .thenReturn(new SendLinkHandler(CONNECTION_ID, HOSTNAME, "sender-name", "test-entity-path", AmqpMetricsProvider.noop()));
+            .thenReturn(new SendLinkHandler(CONNECTION_ID, HOSTNAME, "sender-name", "test-entity-path",
+                AmqpMetricsProvider.noop()));
 
-        final EventHubReactorAmqpConnection connection = new EventHubReactorAmqpConnection(CONNECTION_ID,
-            connectionOptions, "event-hub-name", reactorProvider, handlerProvider, tokenManagerProvider,
-            messageSerializer);
+        final EventHubReactorAmqpConnection connection
+            = new EventHubReactorAmqpConnection(CONNECTION_ID, connectionOptions, "event-hub-name", reactorProvider,
+                handlerProvider, linkProvider, tokenManagerProvider, messageSerializer, false, false);
 
         // Act & Assert
         StepVerifier.create(connection.getManagementNode())
             .then(() -> connectionHandler.onConnectionRemoteOpen(event))
             .assertNext(node -> Assertions.assertTrue(node instanceof ManagementChannel))
-            .verifyComplete();
+            .expectComplete()
+            .verify(Duration.ofSeconds(10));
     }
 
     @AfterEach
     public void teardown() {
         Mockito.framework().clearInlineMock(this);
+    }
+
+    private Answer<ReactorExecutor> answerByCreatingExecutor() {
+        // Even before introducing 'ReactorProvider.createExecutorForReactor', the tests used to rely on a real
+        // 'ReactorExecutor' object, not on a mock(ReactorExecutor), continue using a real 'ReactorExecutor'
+        //  object for now with this helper method. The tests could be reworked using mock(ReactorExecutor) later.
+        return invocation -> {
+            final Reactor r = invocation.getArgument(0);
+            final String conId = invocation.getArgument(1);
+            final String fqdn = invocation.getArgument(2);
+            final ReactorConnection.ReactorExceptionHandler exceptionHandler = invocation.getArgument(3);
+            final AmqpRetryOptions retry = invocation.getArgument(4);
+            return (new ReactorProvider()).createExecutor(r, conId, fqdn, exceptionHandler, retry);
+        };
     }
 }

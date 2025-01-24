@@ -9,37 +9,28 @@ import com.azure.resourcemanager.devcenter.models.EnvironmentTypeUpdate;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EnvironmentTypeUpdateTests {
-    @Test
-    public void testDeserialize() {
-        EnvironmentTypeUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"eoejzic\":\"nfyhx\",\"hajdeyeamdpha\":\"ifsjttgzfbishcb\",\"wkgshwa\":\"alpbuxwgipwhon\",\"bin\":\"kix\"}}")
-                .toObject(EnvironmentTypeUpdate.class);
-        Assertions.assertEquals("nfyhx", model.tags().get("eoejzic"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        EnvironmentTypeUpdate model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"umveekgpwozuhkf\"},\"tags\":{\"waboe\":\"jyofdxluusdtto\",\"bxwyjsflhhcaa\":\"qvkelnsm\"}}")
+            .toObject(EnvironmentTypeUpdate.class);
+        Assertions.assertEquals("jyofdxluusdtto", model.tags().get("waboe"));
+        Assertions.assertEquals("umveekgpwozuhkf", model.displayName());
     }
 
-    @Test
-    public void testSerialize() {
-        EnvironmentTypeUpdate model =
-            new EnvironmentTypeUpdate()
-                .withTags(
-                    mapOf(
-                        "eoejzic",
-                        "nfyhx",
-                        "hajdeyeamdpha",
-                        "ifsjttgzfbishcb",
-                        "wkgshwa",
-                        "alpbuxwgipwhon",
-                        "bin",
-                        "kix"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        EnvironmentTypeUpdate model
+            = new EnvironmentTypeUpdate().withTags(mapOf("waboe", "jyofdxluusdtto", "bxwyjsflhhcaa", "qvkelnsm"))
+                .withDisplayName("umveekgpwozuhkf");
         model = BinaryData.fromObject(model).toObject(EnvironmentTypeUpdate.class);
-        Assertions.assertEquals("nfyhx", model.tags().get("eoejzic"));
+        Assertions.assertEquals("jyofdxluusdtto", model.tags().get("waboe"));
+        Assertions.assertEquals("umveekgpwozuhkf", model.displayName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

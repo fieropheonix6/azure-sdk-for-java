@@ -7,6 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TelemetryAttributes;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongCounter;
 import com.azure.core.util.metrics.LongGauge;
@@ -25,20 +26,23 @@ import java.util.Objects;
  * {@inheritDoc}
  */
 class OpenTelemetryMeter implements Meter {
-    private static final AutoCloseable NOOP_CLOSEABLE = () -> { };
     private final io.opentelemetry.api.metrics.Meter meter;
     private final boolean isEnabled;
 
-    OpenTelemetryMeter(String libraryName, String libraryVersion, MetricsOptions options) {
+    OpenTelemetryMeter(LibraryTelemetryOptions libraryOptions, MetricsOptions applicationOptions) {
         MeterProvider otelProvider = GlobalOpenTelemetry.getMeterProvider();
-        if (options != null && options.isEnabled() && options instanceof OpenTelemetryMetricsOptions) {
-            OpenTelemetryMetricsOptions otelOptions = (OpenTelemetryMetricsOptions) options;
-            otelProvider = otelOptions.getProvider();
+        if (applicationOptions != null
+            && applicationOptions.isEnabled()
+            && applicationOptions instanceof OpenTelemetryMetricsOptions) {
+            OpenTelemetryMetricsOptions otelOptions = (OpenTelemetryMetricsOptions) applicationOptions;
+            otelProvider = otelOptions.getOpenTelemetryProvider();
         }
 
-        this.isEnabled = (options == null || options.isEnabled()) && otelProvider != MeterProvider.noop();
-        this.meter = otelProvider.meterBuilder(libraryName)
-            .setInstrumentationVersion(libraryVersion)
+        this.isEnabled
+            = (applicationOptions == null || applicationOptions.isEnabled()) && otelProvider != MeterProvider.noop();
+        this.meter = otelProvider.meterBuilder(libraryOptions.getLibraryName())
+            .setInstrumentationVersion(libraryOptions.getLibraryVersion())
+            .setSchemaUrl(libraryOptions.getSchemaUrl())
             .build();
     }
 
@@ -55,8 +59,7 @@ class OpenTelemetryMeter implements Meter {
             return OpenTelemetryDoubleHistogram.NOOP;
         }
 
-        DoubleHistogramBuilder otelMetricBuilder = meter.histogramBuilder(name)
-            .setDescription(description);
+        DoubleHistogramBuilder otelMetricBuilder = meter.histogramBuilder(name).setDescription(description);
         if (!CoreUtils.isNullOrEmpty(unit)) {
             otelMetricBuilder.setUnit(unit);
         }
@@ -77,8 +80,7 @@ class OpenTelemetryMeter implements Meter {
             return NOOP_COUNTER;
         }
 
-        LongCounterBuilder otelMetricBuilder = meter.counterBuilder(name)
-            .setDescription(description);
+        LongCounterBuilder otelMetricBuilder = meter.counterBuilder(name).setDescription(description);
 
         if (!CoreUtils.isNullOrEmpty(unit)) {
             otelMetricBuilder.setUnit(unit);
@@ -100,8 +102,7 @@ class OpenTelemetryMeter implements Meter {
             return NOOP_COUNTER;
         }
 
-        LongUpDownCounterBuilder otelMetricBuilder = meter.upDownCounterBuilder(name)
-            .setDescription(description);
+        LongUpDownCounterBuilder otelMetricBuilder = meter.upDownCounterBuilder(name).setDescription(description);
 
         if (!CoreUtils.isNullOrEmpty(unit)) {
             otelMetricBuilder.setUnit(unit);
@@ -123,9 +124,7 @@ class OpenTelemetryMeter implements Meter {
             return OpenTelemetryLongGauge.NOOP;
         }
 
-        LongGaugeBuilder otelMetricBuilder = meter.gaugeBuilder(name)
-            .setDescription(description)
-            .ofLongs();
+        LongGaugeBuilder otelMetricBuilder = meter.gaugeBuilder(name).setDescription(description).ofLongs();
 
         if (!CoreUtils.isNullOrEmpty(unit)) {
             otelMetricBuilder.setUnit(unit);
@@ -150,7 +149,6 @@ class OpenTelemetryMeter implements Meter {
     @Override
     public void close() {
     }
-
 
     private static final LongCounter NOOP_COUNTER = new LongCounter() {
         @Override

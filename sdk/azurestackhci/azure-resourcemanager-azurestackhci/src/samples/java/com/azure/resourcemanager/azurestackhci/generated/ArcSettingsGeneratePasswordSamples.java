@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.azurestackhci.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ArcSettings GeneratePassword. */
+/**
+ * Samples for ArcSettings GeneratePassword.
+ */
 public final class ArcSettingsGeneratePasswordSamples {
     /*
-     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/GeneratePassword.json
+     * x-ms-original-file:
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
+     * GeneratePassword.json
      */
     /**
      * Sample code: Generate Password.
-     *
+     * 
      * @param manager Entry point to AzureStackHciManager.
      */
     public static void generatePassword(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
-        manager.arcSettings().generatePasswordWithResponse("test-rg", "myCluster", "default", Context.NONE);
+        manager.arcSettings()
+            .generatePasswordWithResponse("test-rg", "myCluster", "default", com.azure.core.util.Context.NONE);
     }
 }

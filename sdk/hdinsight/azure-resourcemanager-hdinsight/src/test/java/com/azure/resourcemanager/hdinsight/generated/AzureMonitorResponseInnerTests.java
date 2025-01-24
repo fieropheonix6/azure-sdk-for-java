@@ -12,48 +12,38 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureMonitorResponseInnerTests {
-    @Test
-    public void testDeserialize() {
-        AzureMonitorResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"clusterMonitoringEnabled\":true,\"workspaceId\":\"lg\",\"selectedConfigurations\":{\"configurationVersion\":\"vtvsexsowueluq\",\"globalConfigurations\":{\"wws\":\"hhxvrhmzkwpj\",\"qxujxukndxd\":\"ughftqsx\"},\"tableList\":[{\"name\":\"guufzd\"},{\"name\":\"yqtfihwh\"},{\"name\":\"tzingamvpph\"},{\"name\":\"zqzudph\"}]}}")
-                .toObject(AzureMonitorResponseInner.class);
-        Assertions.assertEquals(true, model.clusterMonitoringEnabled());
-        Assertions.assertEquals("lg", model.workspaceId());
-        Assertions.assertEquals("vtvsexsowueluq", model.selectedConfigurations().configurationVersion());
-        Assertions.assertEquals("hhxvrhmzkwpj", model.selectedConfigurations().globalConfigurations().get("wws"));
-        Assertions.assertEquals("guufzd", model.selectedConfigurations().tableList().get(0).name());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureMonitorResponseInner model = BinaryData.fromString(
+            "{\"clusterMonitoringEnabled\":false,\"workspaceId\":\"dtlwwrlkd\",\"selectedConfigurations\":{\"configurationVersion\":\"cvokotllxdyhg\",\"globalConfigurations\":{\"hadoocrk\":\"cogjltdtbn\",\"amqgxqquezikyw\":\"cikhnv\"},\"tableList\":[{\"name\":\"allatmelwuipic\"},{\"name\":\"zkzivgvvcnay\"}]}}")
+            .toObject(AzureMonitorResponseInner.class);
+        Assertions.assertEquals(false, model.clusterMonitoringEnabled());
+        Assertions.assertEquals("dtlwwrlkd", model.workspaceId());
+        Assertions.assertEquals("cvokotllxdyhg", model.selectedConfigurations().configurationVersion());
+        Assertions.assertEquals("cogjltdtbn", model.selectedConfigurations().globalConfigurations().get("hadoocrk"));
+        Assertions.assertEquals("allatmelwuipic", model.selectedConfigurations().tableList().get(0).name());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureMonitorResponseInner model =
-            new AzureMonitorResponseInner()
-                .withClusterMonitoringEnabled(true)
-                .withWorkspaceId("lg")
-                .withSelectedConfigurations(
-                    new AzureMonitorSelectedConfigurations()
-                        .withConfigurationVersion("vtvsexsowueluq")
-                        .withGlobalConfigurations(mapOf("wws", "hhxvrhmzkwpj", "qxujxukndxd", "ughftqsx"))
-                        .withTableList(
-                            Arrays
-                                .asList(
-                                    new AzureMonitorTableConfiguration().withName("guufzd"),
-                                    new AzureMonitorTableConfiguration().withName("yqtfihwh"),
-                                    new AzureMonitorTableConfiguration().withName("tzingamvpph"),
-                                    new AzureMonitorTableConfiguration().withName("zqzudph"))));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureMonitorResponseInner model = new AzureMonitorResponseInner().withClusterMonitoringEnabled(false)
+            .withWorkspaceId("dtlwwrlkd")
+            .withSelectedConfigurations(
+                new AzureMonitorSelectedConfigurations().withConfigurationVersion("cvokotllxdyhg")
+                    .withGlobalConfigurations(mapOf("hadoocrk", "cogjltdtbn", "amqgxqquezikyw", "cikhnv"))
+                    .withTableList(Arrays.asList(new AzureMonitorTableConfiguration().withName("allatmelwuipic"),
+                        new AzureMonitorTableConfiguration().withName("zkzivgvvcnay"))));
         model = BinaryData.fromObject(model).toObject(AzureMonitorResponseInner.class);
-        Assertions.assertEquals(true, model.clusterMonitoringEnabled());
-        Assertions.assertEquals("lg", model.workspaceId());
-        Assertions.assertEquals("vtvsexsowueluq", model.selectedConfigurations().configurationVersion());
-        Assertions.assertEquals("hhxvrhmzkwpj", model.selectedConfigurations().globalConfigurations().get("wws"));
-        Assertions.assertEquals("guufzd", model.selectedConfigurations().tableList().get(0).name());
+        Assertions.assertEquals(false, model.clusterMonitoringEnabled());
+        Assertions.assertEquals("dtlwwrlkd", model.workspaceId());
+        Assertions.assertEquals("cvokotllxdyhg", model.selectedConfigurations().configurationVersion());
+        Assertions.assertEquals("cogjltdtbn", model.selectedConfigurations().globalConfigurations().get("hadoocrk"));
+        Assertions.assertEquals("allatmelwuipic", model.selectedConfigurations().tableList().get(0).name());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

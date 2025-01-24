@@ -12,15 +12,13 @@ import com.azure.resourcemanager.logic.fluent.IntegrationServiceEnvironmentNetwo
 import com.azure.resourcemanager.logic.fluent.models.IntegrationServiceEnvironmentSubnetNetworkHealthInner;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentNetworkHealths;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentSubnetNetworkHealth;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public final class IntegrationServiceEnvironmentNetworkHealthsImpl
     implements IntegrationServiceEnvironmentNetworkHealths {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentNetworkHealthsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationServiceEnvironmentNetworkHealthsImpl.class);
 
     private final IntegrationServiceEnvironmentNetworkHealthsClient innerClient;
 
@@ -33,50 +31,35 @@ public final class IntegrationServiceEnvironmentNetworkHealthsImpl
         this.serviceManager = serviceManager;
     }
 
-    public Map<String, IntegrationServiceEnvironmentSubnetNetworkHealth> get(
-        String resourceGroup, String integrationServiceEnvironmentName) {
-        Map<String, IntegrationServiceEnvironmentSubnetNetworkHealthInner> inner =
-            this.serviceClient().get(resourceGroup, integrationServiceEnvironmentName);
+    public Response<Map<String, IntegrationServiceEnvironmentSubnetNetworkHealth>> getWithResponse(String resourceGroup,
+        String integrationServiceEnvironmentName, Context context) {
+        Response<Map<String, IntegrationServiceEnvironmentSubnetNetworkHealthInner>> inner
+            = this.serviceClient().getWithResponse(resourceGroup, integrationServiceEnvironmentName, context);
         if (inner != null) {
-            return Collections
-                .unmodifiableMap(
-                    inner
-                        .entrySet()
-                        .stream()
-                        .collect(
-                            Collectors
-                                .toMap(
-                                    Map.Entry::getKey,
-                                    inner1 ->
-                                        new IntegrationServiceEnvironmentSubnetNetworkHealthImpl(
-                                            inner1.getValue(), this.manager()))));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
+                    .entrySet()
+                    .stream()
+                    .collect(Collectors.toMap(Map.Entry::getKey,
+                        inner1 -> new IntegrationServiceEnvironmentSubnetNetworkHealthImpl(inner1.getValue(),
+                            this.manager()))));
         } else {
-            return Collections.emptyMap();
+            return null;
         }
     }
 
-    public Response<Map<String, IntegrationServiceEnvironmentSubnetNetworkHealth>> getWithResponse(
-        String resourceGroup, String integrationServiceEnvironmentName, Context context) {
-        Response<Map<String, IntegrationServiceEnvironmentSubnetNetworkHealthInner>> inner =
-            this.serviceClient().getWithResponse(resourceGroup, integrationServiceEnvironmentName, context);
+    public Map<String, IntegrationServiceEnvironmentSubnetNetworkHealth> get(String resourceGroup,
+        String integrationServiceEnvironmentName) {
+        Map<String, IntegrationServiceEnvironmentSubnetNetworkHealthInner> inner
+            = this.serviceClient().get(resourceGroup, integrationServiceEnvironmentName);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
-                    .entrySet()
-                    .stream()
-                    .collect(
-                        Collectors
-                            .toMap(
-                                Map.Entry::getKey,
-                                inner1 ->
-                                    new IntegrationServiceEnvironmentSubnetNetworkHealthImpl(
-                                        inner1.getValue(), this.manager()))));
+            return Collections.unmodifiableMap(inner.entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                    inner1 -> new IntegrationServiceEnvironmentSubnetNetworkHealthImpl(inner1.getValue(),
+                        this.manager()))));
         } else {
-            return null;
+            return Collections.emptyMap();
         }
     }
 

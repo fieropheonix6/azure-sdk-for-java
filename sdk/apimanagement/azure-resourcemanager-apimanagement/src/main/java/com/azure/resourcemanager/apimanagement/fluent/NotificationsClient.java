@@ -12,12 +12,14 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.NotificationContractInner;
 import com.azure.resourcemanager.apimanagement.models.NotificationName;
 
-/** An instance of this class provides access to all the operations defined in NotificationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NotificationsClient.
+ */
 public interface NotificationsClient {
     /**
      * Lists a collection of properties defined within a service instance.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -29,8 +31,8 @@ public interface NotificationsClient {
 
     /**
      * Lists a collection of properties defined within a service instance.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
@@ -41,13 +43,29 @@ public interface NotificationsClient {
      * @return paged Notification list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NotificationContractInner> listByService(
-        String resourceGroupName, String serviceName, Integer top, Integer skip, Context context);
+    PagedIterable<NotificationContractInner> listByService(String resourceGroupName, String serviceName, Integer top,
+        Integer skip, Context context);
 
     /**
      * Gets the details of the Notification specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param notificationName Notification Name Identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the Notification specified by its identifier along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<NotificationContractInner> getWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, Context context);
+
+    /**
+     * Gets the details of the Notification specified by its identifier.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -59,40 +77,9 @@ public interface NotificationsClient {
     NotificationContractInner get(String resourceGroupName, String serviceName, NotificationName notificationName);
 
     /**
-     * Gets the details of the Notification specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param notificationName Notification Name Identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the Notification specified by its identifier along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NotificationContractInner> getWithResponse(
-        String resourceGroupName, String serviceName, NotificationName notificationName, Context context);
-
-    /**
      * Create or Update API Management publisher notification.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param notificationName Notification Name Identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notification details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NotificationContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, NotificationName notificationName);
-
-    /**
-     * Create or Update API Management publisher notification.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -103,10 +90,21 @@ public interface NotificationsClient {
      * @return notification details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NotificationContractInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        NotificationName notificationName,
-        String ifMatch,
-        Context context);
+    Response<NotificationContractInner> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String ifMatch, Context context);
+
+    /**
+     * Create or Update API Management publisher notification.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param notificationName Notification Name Identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return notification details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NotificationContractInner createOrUpdate(String resourceGroupName, String serviceName,
+        NotificationName notificationName);
 }

@@ -6,20 +6,20 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.EndpointScheduleAction;
-import org.junit.jupiter.api.Test;
 
 public final class EndpointScheduleActionTests {
-    @Test
-    public void testDeserialize() {
-        EndpointScheduleAction model =
-            BinaryData
-                .fromString("{\"actionType\":\"InvokeBatchEndpoint\",\"endpointInvocationDefinition\":\"datamfzsbf\"}")
-                .toObject(EndpointScheduleAction.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        EndpointScheduleAction model = BinaryData
+            .fromString(
+                "{\"actionType\":\"InvokeBatchEndpoint\",\"endpointInvocationDefinition\":\"datarvvbqvknmpecqxg\"}")
+            .toObject(EndpointScheduleAction.class);
     }
 
-    @Test
-    public void testSerialize() {
-        EndpointScheduleAction model = new EndpointScheduleAction().withEndpointInvocationDefinition("datamfzsbf");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        EndpointScheduleAction model
+            = new EndpointScheduleAction().withEndpointInvocationDefinition("datarvvbqvknmpecqxg");
         model = BinaryData.fromObject(model).toObject(EndpointScheduleAction.class);
     }
 }

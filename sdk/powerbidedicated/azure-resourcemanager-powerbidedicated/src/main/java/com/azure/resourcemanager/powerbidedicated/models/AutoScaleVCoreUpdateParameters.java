@@ -5,39 +5,43 @@
 package com.azure.resourcemanager.powerbidedicated.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.powerbidedicated.fluent.models.AutoScaleVCoreMutableProperties;
+import java.io.IOException;
 import java.util.Map;
 
-/** Update request specification. */
-@JsonFlatten
+/**
+ * Update request specification.
+ */
 @Fluent
-public class AutoScaleVCoreUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoScaleVCoreUpdateParameters.class);
-
+public final class AutoScaleVCoreUpdateParameters implements JsonSerializable<AutoScaleVCoreUpdateParameters> {
     /*
      * The SKU of the auto scale v-core resource.
      */
-    @JsonProperty(value = "sku")
     private AutoScaleVCoreSku sku;
 
     /*
      * Key-value pairs of additional provisioning properties.
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /*
-     * The maximum capacity of an auto scale v-core resource.
+     * Properties of the update operation request.
      */
-    @JsonProperty(value = "properties.capacityLimit")
-    private Integer capacityLimit;
+    private AutoScaleVCoreMutableProperties innerProperties;
+
+    /**
+     * Creates an instance of AutoScaleVCoreUpdateParameters class.
+     */
+    public AutoScaleVCoreUpdateParameters() {
+    }
 
     /**
      * Get the sku property: The SKU of the auto scale v-core resource.
-     *
+     * 
      * @return the sku value.
      */
     public AutoScaleVCoreSku sku() {
@@ -46,7 +50,7 @@ public class AutoScaleVCoreUpdateParameters {
 
     /**
      * Set the sku property: The SKU of the auto scale v-core resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AutoScaleVCoreUpdateParameters object itself.
      */
@@ -57,7 +61,7 @@ public class AutoScaleVCoreUpdateParameters {
 
     /**
      * Get the tags property: Key-value pairs of additional provisioning properties.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -66,7 +70,7 @@ public class AutoScaleVCoreUpdateParameters {
 
     /**
      * Set the tags property: Key-value pairs of additional provisioning properties.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AutoScaleVCoreUpdateParameters object itself.
      */
@@ -76,33 +80,93 @@ public class AutoScaleVCoreUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Properties of the update operation request.
+     * 
+     * @return the innerProperties value.
+     */
+    private AutoScaleVCoreMutableProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the capacityLimit property: The maximum capacity of an auto scale v-core resource.
-     *
+     * 
      * @return the capacityLimit value.
      */
     public Integer capacityLimit() {
-        return this.capacityLimit;
+        return this.innerProperties() == null ? null : this.innerProperties().capacityLimit();
     }
 
     /**
      * Set the capacityLimit property: The maximum capacity of an auto scale v-core resource.
-     *
+     * 
      * @param capacityLimit the capacityLimit value to set.
      * @return the AutoScaleVCoreUpdateParameters object itself.
      */
     public AutoScaleVCoreUpdateParameters withCapacityLimit(Integer capacityLimit) {
-        this.capacityLimit = capacityLimit;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutoScaleVCoreMutableProperties();
+        }
+        this.innerProperties().withCapacityLimit(capacityLimit);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() != null) {
             sku().validate();
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoScaleVCoreUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoScaleVCoreUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutoScaleVCoreUpdateParameters.
+     */
+    public static AutoScaleVCoreUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoScaleVCoreUpdateParameters deserializedAutoScaleVCoreUpdateParameters
+                = new AutoScaleVCoreUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedAutoScaleVCoreUpdateParameters.sku = AutoScaleVCoreSku.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAutoScaleVCoreUpdateParameters.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAutoScaleVCoreUpdateParameters.innerProperties
+                        = AutoScaleVCoreMutableProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoScaleVCoreUpdateParameters;
+        });
     }
 }

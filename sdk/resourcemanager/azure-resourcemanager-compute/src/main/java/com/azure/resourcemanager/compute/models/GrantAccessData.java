@@ -6,36 +6,46 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Data used for requesting a SAS. */
+/**
+ * Data used for requesting a SAS.
+ */
 @Fluent
-public final class GrantAccessData {
+public final class GrantAccessData implements JsonSerializable<GrantAccessData> {
     /*
      * The access property.
      */
-    @JsonProperty(value = "access", required = true)
     private AccessLevel access;
 
     /*
      * Time duration in seconds until the SAS access expires.
      */
-    @JsonProperty(value = "durationInSeconds", required = true)
     private int durationInSeconds;
 
     /*
      * Set this flag to true to get additional SAS for VM guest state
      */
-    @JsonProperty(value = "getSecureVMGuestStateSAS")
     private Boolean getSecureVMGuestStateSas;
 
-    /** Creates an instance of GrantAccessData class. */
+    /*
+     * Used to specify the file format when making request for SAS on a VHDX file format snapshot
+     */
+    private FileFormat fileFormat;
+
+    /**
+     * Creates an instance of GrantAccessData class.
+     */
     public GrantAccessData() {
     }
 
     /**
      * Get the access property: The access property.
-     *
+     * 
      * @return the access value.
      */
     public AccessLevel access() {
@@ -44,7 +54,7 @@ public final class GrantAccessData {
 
     /**
      * Set the access property: The access property.
-     *
+     * 
      * @param access the access value to set.
      * @return the GrantAccessData object itself.
      */
@@ -55,7 +65,7 @@ public final class GrantAccessData {
 
     /**
      * Get the durationInSeconds property: Time duration in seconds until the SAS access expires.
-     *
+     * 
      * @return the durationInSeconds value.
      */
     public int durationInSeconds() {
@@ -64,7 +74,7 @@ public final class GrantAccessData {
 
     /**
      * Set the durationInSeconds property: Time duration in seconds until the SAS access expires.
-     *
+     * 
      * @param durationInSeconds the durationInSeconds value to set.
      * @return the GrantAccessData object itself.
      */
@@ -75,7 +85,7 @@ public final class GrantAccessData {
 
     /**
      * Get the getSecureVMGuestStateSas property: Set this flag to true to get additional SAS for VM guest state.
-     *
+     * 
      * @return the getSecureVMGuestStateSas value.
      */
     public Boolean getSecureVMGuestStateSas() {
@@ -84,7 +94,7 @@ public final class GrantAccessData {
 
     /**
      * Set the getSecureVMGuestStateSas property: Set this flag to true to get additional SAS for VM guest state.
-     *
+     * 
      * @param getSecureVMGuestStateSas the getSecureVMGuestStateSas value to set.
      * @return the GrantAccessData object itself.
      */
@@ -94,17 +104,84 @@ public final class GrantAccessData {
     }
 
     /**
+     * Get the fileFormat property: Used to specify the file format when making request for SAS on a VHDX file format
+     * snapshot.
+     * 
+     * @return the fileFormat value.
+     */
+    public FileFormat fileFormat() {
+        return this.fileFormat;
+    }
+
+    /**
+     * Set the fileFormat property: Used to specify the file format when making request for SAS on a VHDX file format
+     * snapshot.
+     * 
+     * @param fileFormat the fileFormat value to set.
+     * @return the GrantAccessData object itself.
+     */
+    public GrantAccessData withFileFormat(FileFormat fileFormat) {
+        this.fileFormat = fileFormat;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (access() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property access in model GrantAccessData"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property access in model GrantAccessData"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GrantAccessData.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("access", this.access == null ? null : this.access.toString());
+        jsonWriter.writeIntField("durationInSeconds", this.durationInSeconds);
+        jsonWriter.writeBooleanField("getSecureVMGuestStateSAS", this.getSecureVMGuestStateSas);
+        jsonWriter.writeStringField("fileFormat", this.fileFormat == null ? null : this.fileFormat.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GrantAccessData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GrantAccessData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GrantAccessData.
+     */
+    public static GrantAccessData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GrantAccessData deserializedGrantAccessData = new GrantAccessData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("access".equals(fieldName)) {
+                    deserializedGrantAccessData.access = AccessLevel.fromString(reader.getString());
+                } else if ("durationInSeconds".equals(fieldName)) {
+                    deserializedGrantAccessData.durationInSeconds = reader.getInt();
+                } else if ("getSecureVMGuestStateSAS".equals(fieldName)) {
+                    deserializedGrantAccessData.getSecureVMGuestStateSas = reader.getNullable(JsonReader::getBoolean);
+                } else if ("fileFormat".equals(fieldName)) {
+                    deserializedGrantAccessData.fileFormat = FileFormat.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGrantAccessData;
+        });
+    }
 }

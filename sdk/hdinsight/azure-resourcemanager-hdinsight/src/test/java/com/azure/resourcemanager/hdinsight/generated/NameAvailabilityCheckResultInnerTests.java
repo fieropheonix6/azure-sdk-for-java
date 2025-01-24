@@ -7,20 +7,18 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.fluent.models.NameAvailabilityCheckResultInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NameAvailabilityCheckResultInnerTests {
-    @Test
-    public void testDeserialize() {
-        NameAvailabilityCheckResultInner model =
-            BinaryData
-                .fromString("{\"nameAvailable\":false,\"reason\":\"nrfdw\",\"message\":\"uhhziuiefozbhdm\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        NameAvailabilityCheckResultInner model
+            = BinaryData.fromString("{\"nameAvailable\":false,\"reason\":\"chqnrnrpxehuwry\",\"message\":\"gaifmvik\"}")
                 .toObject(NameAvailabilityCheckResultInner.class);
         Assertions.assertEquals(false, model.nameAvailable());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         NameAvailabilityCheckResultInner model = new NameAvailabilityCheckResultInner().withNameAvailable(false);
         model = BinaryData.fromObject(model).toObject(NameAvailabilityCheckResultInner.class);
         Assertions.assertEquals(false, model.nameAvailable());

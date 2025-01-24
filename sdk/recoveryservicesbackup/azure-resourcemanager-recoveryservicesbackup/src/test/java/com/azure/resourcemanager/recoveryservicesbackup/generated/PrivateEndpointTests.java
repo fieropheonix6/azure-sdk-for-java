@@ -7,19 +7,18 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpoint;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointTests {
-    @Test
-    public void testDeserialize() {
-        PrivateEndpoint model = BinaryData.fromString("{\"id\":\"fwnfnb\"}").toObject(PrivateEndpoint.class);
-        Assertions.assertEquals("fwnfnb", model.id());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateEndpoint model = BinaryData.fromString("{\"id\":\"dslfhotwmcy\"}").toObject(PrivateEndpoint.class);
+        Assertions.assertEquals("dslfhotwmcy", model.id());
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateEndpoint model = new PrivateEndpoint().withId("fwnfnb");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateEndpoint model = new PrivateEndpoint().withId("dslfhotwmcy");
         model = BinaryData.fromObject(model).toObject(PrivateEndpoint.class);
-        Assertions.assertEquals("fwnfnb", model.id());
+        Assertions.assertEquals("dslfhotwmcy", model.id());
     }
 }

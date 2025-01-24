@@ -8,8 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.dataprotection.fluent.models.ResourceGuardResourceInner;
-import com.azure.resourcemanager.dataprotection.models.DppIdentityDetails;
-import com.azure.resourcemanager.dataprotection.models.PatchResourceRequestInput;
+import com.azure.resourcemanager.dataprotection.models.PatchResourceGuardInput;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuard;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuardResource;
 import java.util.Collections;
@@ -50,10 +49,6 @@ public final class ResourceGuardResourceImpl
         return this.innerModel().etag();
     }
 
-    public DppIdentityDetails identity() {
-        return this.innerModel().identity();
-    }
-
     public SystemData systemData() {
         return this.innerModel().systemData();
     }
@@ -70,6 +65,10 @@ public final class ResourceGuardResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ResourceGuardResourceInner innerModel() {
         return this.innerObject;
     }
@@ -82,7 +81,7 @@ public final class ResourceGuardResourceImpl
 
     private String resourceGuardsName;
 
-    private PatchResourceRequestInput updateParameters;
+    private PatchResourceGuardInput updateParameters;
 
     public ResourceGuardResourceImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -90,83 +89,70 @@ public final class ResourceGuardResourceImpl
     }
 
     public ResourceGuardResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceGuards()
-                .putWithResponse(resourceGroupName, resourceGuardsName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceGuards()
+            .putWithResponse(resourceGroupName, resourceGuardsName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ResourceGuardResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceGuards()
-                .putWithResponse(resourceGroupName, resourceGuardsName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceGuards()
+            .putWithResponse(resourceGroupName, resourceGuardsName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ResourceGuardResourceImpl(
-        String name, com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
+    ResourceGuardResourceImpl(String name,
+        com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = new ResourceGuardResourceInner();
         this.serviceManager = serviceManager;
         this.resourceGuardsName = name;
     }
 
     public ResourceGuardResourceImpl update() {
-        this.updateParameters = new PatchResourceRequestInput();
+        this.updateParameters = new PatchResourceGuardInput();
         return this;
     }
 
     public ResourceGuardResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceGuards()
-                .patchWithResponse(resourceGroupName, resourceGuardsName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceGuards()
+            .patchWithResponse(resourceGroupName, resourceGuardsName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ResourceGuardResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceGuards()
-                .patchWithResponse(resourceGroupName, resourceGuardsName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceGuards()
+            .patchWithResponse(resourceGroupName, resourceGuardsName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    ResourceGuardResourceImpl(
-        ResourceGuardResourceInner innerObject,
+    ResourceGuardResourceImpl(ResourceGuardResourceInner innerObject,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceGuardsName = Utils.getValueFromIdByName(innerObject.id(), "resourceGuards");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceGuardsName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGuards");
     }
 
     public ResourceGuardResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceGuards()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceGuards()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ResourceGuardResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceGuards()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceGuards()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, context)
+            .getValue();
         return this;
     }
 
@@ -193,16 +179,6 @@ public final class ResourceGuardResourceImpl
     public ResourceGuardResourceImpl withEtag(String etag) {
         this.innerModel().withEtag(etag);
         return this;
-    }
-
-    public ResourceGuardResourceImpl withIdentity(DppIdentityDetails identity) {
-        if (isInCreateMode()) {
-            this.innerModel().withIdentity(identity);
-            return this;
-        } else {
-            this.updateParameters.withIdentity(identity);
-            return this;
-        }
     }
 
     public ResourceGuardResourceImpl withProperties(ResourceGuard properties) {

@@ -6,49 +6,53 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of the web application firewall rule set. */
+/**
+ * Properties of the web application firewall rule set.
+ */
 @Fluent
-public final class ApplicationGatewayFirewallManifestRuleSet {
+public final class ApplicationGatewayFirewallManifestRuleSet
+    implements JsonSerializable<ApplicationGatewayFirewallManifestRuleSet> {
     /*
      * The type of the web application firewall rule set.
      */
-    @JsonProperty(value = "ruleSetType", required = true)
     private String ruleSetType;
 
     /*
      * The version of the web application firewall rule set type.
      */
-    @JsonProperty(value = "ruleSetVersion", required = true)
     private String ruleSetVersion;
 
     /*
      * The rule set status
      */
-    @JsonProperty(value = "status")
     private ApplicationGatewayRuleSetStatusOptions status;
 
     /*
      * Tier of an application gateway that support the rule set.
      */
-    @JsonProperty(value = "tiers")
     private List<ApplicationGatewayTierTypes> tiers;
 
     /*
      * The rule groups of the web application firewall rule set.
      */
-    @JsonProperty(value = "ruleGroups", required = true)
     private List<ApplicationGatewayFirewallRuleGroup> ruleGroups;
 
-    /** Creates an instance of ApplicationGatewayFirewallManifestRuleSet class. */
+    /**
+     * Creates an instance of ApplicationGatewayFirewallManifestRuleSet class.
+     */
     public ApplicationGatewayFirewallManifestRuleSet() {
     }
 
     /**
      * Get the ruleSetType property: The type of the web application firewall rule set.
-     *
+     * 
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -57,7 +61,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Set the ruleSetType property: The type of the web application firewall rule set.
-     *
+     * 
      * @param ruleSetType the ruleSetType value to set.
      * @return the ApplicationGatewayFirewallManifestRuleSet object itself.
      */
@@ -68,7 +72,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Get the ruleSetVersion property: The version of the web application firewall rule set type.
-     *
+     * 
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -77,7 +81,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Set the ruleSetVersion property: The version of the web application firewall rule set type.
-     *
+     * 
      * @param ruleSetVersion the ruleSetVersion value to set.
      * @return the ApplicationGatewayFirewallManifestRuleSet object itself.
      */
@@ -88,7 +92,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Get the status property: The rule set status.
-     *
+     * 
      * @return the status value.
      */
     public ApplicationGatewayRuleSetStatusOptions status() {
@@ -97,7 +101,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Set the status property: The rule set status.
-     *
+     * 
      * @param status the status value to set.
      * @return the ApplicationGatewayFirewallManifestRuleSet object itself.
      */
@@ -108,7 +112,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Get the tiers property: Tier of an application gateway that support the rule set.
-     *
+     * 
      * @return the tiers value.
      */
     public List<ApplicationGatewayTierTypes> tiers() {
@@ -117,7 +121,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Set the tiers property: Tier of an application gateway that support the rule set.
-     *
+     * 
      * @param tiers the tiers value to set.
      * @return the ApplicationGatewayFirewallManifestRuleSet object itself.
      */
@@ -128,7 +132,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Get the ruleGroups property: The rule groups of the web application firewall rule set.
-     *
+     * 
      * @return the ruleGroups value.
      */
     public List<ApplicationGatewayFirewallRuleGroup> ruleGroups() {
@@ -137,43 +141,96 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Set the ruleGroups property: The rule groups of the web application firewall rule set.
-     *
+     * 
      * @param ruleGroups the ruleGroups value to set.
      * @return the ApplicationGatewayFirewallManifestRuleSet object itself.
      */
-    public ApplicationGatewayFirewallManifestRuleSet withRuleGroups(
-        List<ApplicationGatewayFirewallRuleGroup> ruleGroups) {
+    public ApplicationGatewayFirewallManifestRuleSet
+        withRuleGroups(List<ApplicationGatewayFirewallRuleGroup> ruleGroups) {
         this.ruleGroups = ruleGroups;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleSetType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ruleSetType in model ApplicationGatewayFirewallManifestRuleSet"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ruleSetType in model ApplicationGatewayFirewallManifestRuleSet"));
         }
         if (ruleSetVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ruleSetVersion in model ApplicationGatewayFirewallManifestRuleSet"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ruleSetVersion in model ApplicationGatewayFirewallManifestRuleSet"));
         }
         if (ruleGroups() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ruleGroups in model ApplicationGatewayFirewallManifestRuleSet"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ruleGroups in model ApplicationGatewayFirewallManifestRuleSet"));
         } else {
             ruleGroups().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplicationGatewayFirewallManifestRuleSet.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ruleSetType", this.ruleSetType);
+        jsonWriter.writeStringField("ruleSetVersion", this.ruleSetVersion);
+        jsonWriter.writeArrayField("ruleGroups", this.ruleGroups, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeArrayField("tiers", this.tiers,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayFirewallManifestRuleSet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayFirewallManifestRuleSet if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayFirewallManifestRuleSet.
+     */
+    public static ApplicationGatewayFirewallManifestRuleSet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayFirewallManifestRuleSet deserializedApplicationGatewayFirewallManifestRuleSet
+                = new ApplicationGatewayFirewallManifestRuleSet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ruleSetType".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallManifestRuleSet.ruleSetType = reader.getString();
+                } else if ("ruleSetVersion".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallManifestRuleSet.ruleSetVersion = reader.getString();
+                } else if ("ruleGroups".equals(fieldName)) {
+                    List<ApplicationGatewayFirewallRuleGroup> ruleGroups
+                        = reader.readArray(reader1 -> ApplicationGatewayFirewallRuleGroup.fromJson(reader1));
+                    deserializedApplicationGatewayFirewallManifestRuleSet.ruleGroups = ruleGroups;
+                } else if ("status".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallManifestRuleSet.status
+                        = ApplicationGatewayRuleSetStatusOptions.fromString(reader.getString());
+                } else if ("tiers".equals(fieldName)) {
+                    List<ApplicationGatewayTierTypes> tiers
+                        = reader.readArray(reader1 -> ApplicationGatewayTierTypes.fromString(reader1.getString()));
+                    deserializedApplicationGatewayFirewallManifestRuleSet.tiers = tiers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayFirewallManifestRuleSet;
+        });
+    }
 }

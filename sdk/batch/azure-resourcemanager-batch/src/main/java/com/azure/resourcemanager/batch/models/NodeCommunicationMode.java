@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Determines how a pool communicates with the Batch service. */
+/**
+ * Determines how a pool communicates with the Batch service.
+ */
 public enum NodeCommunicationMode {
-    /** Enum value Default. */
+    /**
+     * Enum value Default.
+     */
     DEFAULT("Default"),
 
-    /** Enum value Classic. */
+    /**
+     * Enum value Classic.
+     */
     CLASSIC("Classic"),
 
-    /** Enum value Simplified. */
+    /**
+     * Enum value Simplified.
+     */
     SIMPLIFIED("Simplified");
 
-    /** The actual serialized value for a NodeCommunicationMode instance. */
+    /**
+     * The actual serialized value for a NodeCommunicationMode instance.
+     */
     private final String value;
 
     NodeCommunicationMode(String value) {
@@ -27,11 +34,10 @@ public enum NodeCommunicationMode {
 
     /**
      * Parses a serialized value to a NodeCommunicationMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed NodeCommunicationMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static NodeCommunicationMode fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum NodeCommunicationMode {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

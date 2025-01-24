@@ -5,190 +5,246 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.Address;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.ContactDetails;
 import com.azure.resourcemanager.databoxedge.models.OrderStatus;
 import com.azure.resourcemanager.databoxedge.models.TrackingInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The order details. */
-@JsonFlatten
+/**
+ * The order details.
+ */
 @Fluent
-public class OrderInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrderInner.class);
+public final class OrderInner extends ArmBaseModel {
+    /*
+     * The order properties.
+     */
+    private OrderProperties innerProperties;
 
     /*
-     * The contact details.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.contactInformation")
-    private ContactDetails contactInformation;
+    private String type;
 
     /*
-     * The shipping address.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.shippingAddress")
-    private Address shippingAddress;
+    private String name;
 
     /*
-     * Current status of the order.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.currentStatus")
-    private OrderStatus currentStatus;
+    private String id;
 
-    /*
-     * List of status changes in the order.
+    /**
+     * Creates an instance of OrderInner class.
      */
-    @JsonProperty(value = "properties.orderHistory", access = JsonProperty.Access.WRITE_ONLY)
-    private List<OrderStatus> orderHistory;
+    public OrderInner() {
+    }
 
-    /*
-     * Serial number of the device.
+    /**
+     * Get the innerProperties property: The order properties.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.serialNumber", access = JsonProperty.Access.WRITE_ONLY)
-    private String serialNumber;
+    private OrderProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Tracking information for the package delivered to the customer whether
-     * it has an original or a replacement device.
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.deliveryTrackingInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private List<TrackingInfo> deliveryTrackingInfo;
+    @Override
+    public String type() {
+        return this.type;
+    }
 
-    /*
-     * Tracking information for the package returned from the customer whether
-     * it has an original or a replacement device.
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    @JsonProperty(value = "properties.returnTrackingInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private List<TrackingInfo> returnTrackingInfo;
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the contactInformation property: The contact details.
-     *
+     * 
      * @return the contactInformation value.
      */
     public ContactDetails contactInformation() {
-        return this.contactInformation;
+        return this.innerProperties() == null ? null : this.innerProperties().contactInformation();
     }
 
     /**
      * Set the contactInformation property: The contact details.
-     *
+     * 
      * @param contactInformation the contactInformation value to set.
      * @return the OrderInner object itself.
      */
     public OrderInner withContactInformation(ContactDetails contactInformation) {
-        this.contactInformation = contactInformation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OrderProperties();
+        }
+        this.innerProperties().withContactInformation(contactInformation);
         return this;
     }
 
     /**
      * Get the shippingAddress property: The shipping address.
-     *
+     * 
      * @return the shippingAddress value.
      */
     public Address shippingAddress() {
-        return this.shippingAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().shippingAddress();
     }
 
     /**
      * Set the shippingAddress property: The shipping address.
-     *
+     * 
      * @param shippingAddress the shippingAddress value to set.
      * @return the OrderInner object itself.
      */
     public OrderInner withShippingAddress(Address shippingAddress) {
-        this.shippingAddress = shippingAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OrderProperties();
+        }
+        this.innerProperties().withShippingAddress(shippingAddress);
         return this;
     }
 
     /**
      * Get the currentStatus property: Current status of the order.
-     *
+     * 
      * @return the currentStatus value.
      */
     public OrderStatus currentStatus() {
-        return this.currentStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().currentStatus();
     }
 
     /**
      * Set the currentStatus property: Current status of the order.
-     *
+     * 
      * @param currentStatus the currentStatus value to set.
      * @return the OrderInner object itself.
      */
     public OrderInner withCurrentStatus(OrderStatus currentStatus) {
-        this.currentStatus = currentStatus;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OrderProperties();
+        }
+        this.innerProperties().withCurrentStatus(currentStatus);
         return this;
     }
 
     /**
      * Get the orderHistory property: List of status changes in the order.
-     *
+     * 
      * @return the orderHistory value.
      */
     public List<OrderStatus> orderHistory() {
-        return this.orderHistory;
+        return this.innerProperties() == null ? null : this.innerProperties().orderHistory();
     }
 
     /**
      * Get the serialNumber property: Serial number of the device.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
-        return this.serialNumber;
+        return this.innerProperties() == null ? null : this.innerProperties().serialNumber();
     }
 
     /**
      * Get the deliveryTrackingInfo property: Tracking information for the package delivered to the customer whether it
      * has an original or a replacement device.
-     *
+     * 
      * @return the deliveryTrackingInfo value.
      */
     public List<TrackingInfo> deliveryTrackingInfo() {
-        return this.deliveryTrackingInfo;
+        return this.innerProperties() == null ? null : this.innerProperties().deliveryTrackingInfo();
     }
 
     /**
      * Get the returnTrackingInfo property: Tracking information for the package returned from the customer whether it
      * has an original or a replacement device.
-     *
+     * 
      * @return the returnTrackingInfo value.
      */
     public List<TrackingInfo> returnTrackingInfo() {
-        return this.returnTrackingInfo;
+        return this.innerProperties() == null ? null : this.innerProperties().returnTrackingInfo();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
-        if (contactInformation() != null) {
-            contactInformation().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
-        if (shippingAddress() != null) {
-            shippingAddress().validate();
-        }
-        if (currentStatus() != null) {
-            currentStatus().validate();
-        }
-        if (orderHistory() != null) {
-            orderHistory().forEach(e -> e.validate());
-        }
-        if (deliveryTrackingInfo() != null) {
-            deliveryTrackingInfo().forEach(e -> e.validate());
-        }
-        if (returnTrackingInfo() != null) {
-            returnTrackingInfo().forEach(e -> e.validate());
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrderInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrderInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OrderInner.
+     */
+    public static OrderInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrderInner deserializedOrderInner = new OrderInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOrderInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOrderInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedOrderInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOrderInner.innerProperties = OrderProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrderInner;
+        });
     }
 }

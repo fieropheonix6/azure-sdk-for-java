@@ -4,36 +4,31 @@
 
 package com.azure.resourcemanager.iothub.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.iothub.models.PrivateEndpointConnectionProperties;
 import com.azure.resourcemanager.iothub.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.iothub.models.PrivateLinkServiceConnectionStatus;
 
-/** Samples for PrivateEndpointConnections Update. */
+/**
+ * Samples for PrivateEndpointConnections Update.
+ */
 public final class PrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-04-30-preview/examples/iothub_updateprivateendpointconnection.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/
+     * iothub_updateprivateendpointconnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Update.
-     *
+     * 
      * @param manager Entry point to IotHubManager.
      */
     public static void privateEndpointConnectionUpdate(com.azure.resourcemanager.iothub.IotHubManager manager) {
-        manager
-            .privateEndpointConnections()
-            .update(
-                "myResourceGroup",
-                "testHub",
-                "myPrivateEndpointConnection",
+        manager.privateEndpointConnections()
+            .update("myResourceGroup", "testHub", "myPrivateEndpointConnection",
                 new PrivateEndpointConnectionInner()
-                    .withProperties(
-                        new PrivateEndpointConnectionProperties()
-                            .withPrivateLinkServiceConnectionState(
-                                new PrivateLinkServiceConnectionState()
-                                    .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
-                                    .withDescription("Approved by johndoe@contoso.com"))),
-                Context.NONE);
+                    .withProperties(new PrivateEndpointConnectionProperties().withPrivateLinkServiceConnectionState(
+                        new PrivateLinkServiceConnectionState().withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
+                            .withDescription("Approved by johndoe@contoso.com"))),
+                com.azure.core.util.Context.NONE);
     }
 }

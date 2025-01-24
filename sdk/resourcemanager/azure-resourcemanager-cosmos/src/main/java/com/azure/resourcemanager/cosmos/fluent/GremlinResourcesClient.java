@@ -13,9 +13,11 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.cosmos.fluent.models.BackupInformationInner;
 import com.azure.resourcemanager.cosmos.fluent.models.GremlinDatabaseGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.GremlinGraphGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.ThroughputSettingsGetResultsInner;
+import com.azure.resourcemanager.cosmos.models.ContinuousBackupRestoreLocation;
 import com.azure.resourcemanager.cosmos.models.GremlinDatabaseCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.GremlinGraphCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
@@ -23,39 +25,41 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GremlinResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GremlinResourcesClient.
+ */
 public interface GremlinResourcesClient {
     /**
      * Lists the Gremlin databases under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Gremlin databases and their properties as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<GremlinDatabaseGetResultsInner> listGremlinDatabasesAsync(String resourceGroupName, String accountName);
 
     /**
      * Lists the Gremlin databases under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Gremlin databases and their properties as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GremlinDatabaseGetResultsInner> listGremlinDatabases(String resourceGroupName, String accountName);
 
     /**
      * Lists the Gremlin databases under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -63,15 +67,15 @@ public interface GremlinResourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Gremlin databases and their properties as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GremlinDatabaseGetResultsInner> listGremlinDatabases(
-        String resourceGroupName, String accountName, Context context);
+    PagedIterable<GremlinDatabaseGetResultsInner> listGremlinDatabases(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -79,15 +83,15 @@ public interface GremlinResourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<GremlinDatabaseGetResultsInner>> getGremlinDatabaseWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    Mono<Response<GremlinDatabaseGetResultsInner>> getGremlinDatabaseWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName);
 
     /**
      * Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -95,15 +99,32 @@ public interface GremlinResourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<GremlinDatabaseGetResultsInner> getGremlinDatabaseAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    Mono<GremlinDatabaseGetResultsInner> getGremlinDatabaseAsync(String resourceGroupName, String accountName,
+        String databaseName);
 
     /**
      * Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<GremlinDatabaseGetResultsInner> getGremlinDatabaseWithResponse(String resourceGroupName,
+        String accountName, String databaseName, Context context);
+
+    /**
+     * Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -113,29 +134,12 @@ public interface GremlinResourcesClient {
      * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GremlinDatabaseGetResultsInner getGremlinDatabase(
-        String resourceGroupName, String accountName, String databaseName);
-
-    /**
-     * Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin databases under an existing Azure Cosmos DB database account with the provided name along
-     *     with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GremlinDatabaseGetResultsInner> getGremlinDatabaseWithResponse(
-        String resourceGroupName, String accountName, String databaseName, Context context);
+    GremlinDatabaseGetResultsInner getGremlinDatabase(String resourceGroupName, String accountName,
+        String databaseName);
 
     /**
      * Create or update an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -146,15 +150,13 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB Gremlin database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createUpdateGremlinDatabaseWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
+    Mono<Response<Flux<ByteBuffer>>> createUpdateGremlinDatabaseWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName,
         GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters);
 
     /**
      * Create or update an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -166,15 +168,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<GremlinDatabaseGetResultsInner>, GremlinDatabaseGetResultsInner>
-        beginCreateUpdateGremlinDatabaseAsync(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
+        beginCreateUpdateGremlinDatabaseAsync(String resourceGroupName, String accountName, String databaseName,
             GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters);
 
     /**
      * Create or update an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -186,15 +185,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GremlinDatabaseGetResultsInner>, GremlinDatabaseGetResultsInner>
-        beginCreateUpdateGremlinDatabase(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
+        beginCreateUpdateGremlinDatabase(String resourceGroupName, String accountName, String databaseName,
             GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters);
 
     /**
      * Create or update an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -207,16 +203,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GremlinDatabaseGetResultsInner>, GremlinDatabaseGetResultsInner>
-        beginCreateUpdateGremlinDatabase(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters,
-            Context context);
+        beginCreateUpdateGremlinDatabase(String resourceGroupName, String accountName, String databaseName,
+            GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters, Context context);
 
     /**
      * Create or update an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -227,15 +219,12 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB Gremlin database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<GremlinDatabaseGetResultsInner> createUpdateGremlinDatabaseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters);
+    Mono<GremlinDatabaseGetResultsInner> createUpdateGremlinDatabaseAsync(String resourceGroupName, String accountName,
+        String databaseName, GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters);
 
     /**
      * Create or update an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -246,15 +235,12 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB Gremlin database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GremlinDatabaseGetResultsInner createUpdateGremlinDatabase(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters);
+    GremlinDatabaseGetResultsInner createUpdateGremlinDatabase(String resourceGroupName, String accountName,
+        String databaseName, GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters);
 
     /**
      * Create or update an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -266,16 +252,13 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB Gremlin database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GremlinDatabaseGetResultsInner createUpdateGremlinDatabase(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters,
+    GremlinDatabaseGetResultsInner createUpdateGremlinDatabase(String resourceGroupName, String accountName,
+        String databaseName, GremlinDatabaseCreateUpdateParameters createUpdateGremlinDatabaseParameters,
         Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -285,12 +268,12 @@ public interface GremlinResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteGremlinDatabaseWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    Mono<Response<Flux<ByteBuffer>>> deleteGremlinDatabaseWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName);
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -300,12 +283,12 @@ public interface GremlinResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteGremlinDatabaseAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteGremlinDatabaseAsync(String resourceGroupName, String accountName,
+        String databaseName);
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -315,12 +298,12 @@ public interface GremlinResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteGremlinDatabase(
-        String resourceGroupName, String accountName, String databaseName);
+    SyncPoller<PollResult<Void>, Void> beginDeleteGremlinDatabase(String resourceGroupName, String accountName,
+        String databaseName);
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -331,12 +314,12 @@ public interface GremlinResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteGremlinDatabase(
-        String resourceGroupName, String accountName, String databaseName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeleteGremlinDatabase(String resourceGroupName, String accountName,
+        String databaseName, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -350,7 +333,7 @@ public interface GremlinResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -363,7 +346,7 @@ public interface GremlinResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -378,7 +361,7 @@ public interface GremlinResourcesClient {
     /**
      * Gets the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
      * provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -386,7 +369,7 @@ public interface GremlinResourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
-     *     provided name along with {@link Response} on successful completion of {@link Mono}.
+     * provided name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ThroughputSettingsGetResultsInner>> getGremlinDatabaseThroughputWithResponseAsync(
@@ -395,7 +378,7 @@ public interface GremlinResourcesClient {
     /**
      * Gets the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
      * provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -403,33 +386,16 @@ public interface GremlinResourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
-     *     provided name on successful completion of {@link Mono}.
+     * provided name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> getGremlinDatabaseThroughputAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    Mono<ThroughputSettingsGetResultsInner> getGremlinDatabaseThroughputAsync(String resourceGroupName,
+        String accountName, String databaseName);
 
     /**
      * Gets the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
      * provided name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
-     *     provided name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner getGremlinDatabaseThroughput(
-        String resourceGroupName, String accountName, String databaseName);
-
-    /**
-     * Gets the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
-     * provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -438,41 +404,55 @@ public interface GremlinResourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
-     *     provided name along with {@link Response}.
+     * provided name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ThroughputSettingsGetResultsInner> getGremlinDatabaseThroughputWithResponse(
-        String resourceGroupName, String accountName, String databaseName, Context context);
+    Response<ThroughputSettingsGetResultsInner> getGremlinDatabaseThroughputWithResponse(String resourceGroupName,
+        String accountName, String databaseName, Context context);
 
     /**
-     * Update RUs per second of an Azure Cosmos DB Gremlin database.
-     *
+     * Gets the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
+     * provided name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Gremlin
-     *     database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
+     * provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateGremlinDatabaseThroughputWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters);
+    ThroughputSettingsGetResultsInner getGremlinDatabaseThroughput(String resourceGroupName, String accountName,
+        String databaseName);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Gremlin
-     *     database.
+     * database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> updateGremlinDatabaseThroughputWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters);
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Gremlin database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Gremlin
+     * database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -480,20 +460,17 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateGremlinDatabaseThroughputAsync(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
+        beginUpdateGremlinDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Gremlin
-     *     database.
+     * database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -501,20 +478,17 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateGremlinDatabaseThroughput(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
+        beginUpdateGremlinDatabaseThroughput(String resourceGroupName, String accountName, String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Gremlin
-     *     database.
+     * database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -523,61 +497,51 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateGremlinDatabaseThroughput(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            ThroughputSettingsUpdateParameters updateThroughputParameters,
-            Context context);
+        beginUpdateGremlinDatabaseThroughput(String resourceGroupName, String accountName, String databaseName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters, Context context);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Gremlin
-     *     database.
+     * database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> updateGremlinDatabaseThroughputAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters);
+    Mono<ThroughputSettingsGetResultsInner> updateGremlinDatabaseThroughputAsync(String resourceGroupName,
+        String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Gremlin
-     *     database.
+     * database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner updateGremlinDatabaseThroughput(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters);
+    ThroughputSettingsGetResultsInner updateGremlinDatabaseThroughput(String resourceGroupName, String accountName,
+        String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Gremlin
-     *     database.
+     * database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -585,32 +549,28 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner updateGremlinDatabaseThroughput(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters,
-        Context context);
+    ThroughputSettingsGetResultsInner updateGremlinDatabaseThroughput(String resourceGroupName, String accountName,
+        String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> migrateGremlinDatabaseToAutoscaleWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    Mono<Response<Flux<ByteBuffer>>> migrateGremlinDatabaseToAutoscaleWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -625,7 +585,7 @@ public interface GremlinResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -640,7 +600,7 @@ public interface GremlinResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -652,12 +612,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateGremlinDatabaseToAutoscale(
-            String resourceGroupName, String accountName, String databaseName, Context context);
+        beginMigrateGremlinDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName,
+            Context context);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -667,12 +627,12 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> migrateGremlinDatabaseToAutoscaleAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    Mono<ThroughputSettingsGetResultsInner> migrateGremlinDatabaseToAutoscaleAsync(String resourceGroupName,
+        String accountName, String databaseName);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -682,12 +642,12 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateGremlinDatabaseToAutoscale(
-        String resourceGroupName, String accountName, String databaseName);
+    ThroughputSettingsGetResultsInner migrateGremlinDatabaseToAutoscale(String resourceGroupName, String accountName,
+        String databaseName);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -698,28 +658,28 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateGremlinDatabaseToAutoscale(
-        String resourceGroupName, String accountName, String databaseName, Context context);
+    ThroughputSettingsGetResultsInner migrateGremlinDatabaseToAutoscale(String resourceGroupName, String accountName,
+        String databaseName, Context context);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> migrateGremlinDatabaseToManualThroughputWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    Mono<Response<Flux<ByteBuffer>>> migrateGremlinDatabaseToManualThroughputWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -730,12 +690,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateGremlinDatabaseToManualThroughputAsync(
-            String resourceGroupName, String accountName, String databaseName);
+        beginMigrateGremlinDatabaseToManualThroughputAsync(String resourceGroupName, String accountName,
+            String databaseName);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -746,12 +706,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateGremlinDatabaseToManualThroughput(
-            String resourceGroupName, String accountName, String databaseName);
+        beginMigrateGremlinDatabaseToManualThroughput(String resourceGroupName, String accountName,
+            String databaseName);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -763,12 +723,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateGremlinDatabaseToManualThroughput(
-            String resourceGroupName, String accountName, String databaseName, Context context);
+        beginMigrateGremlinDatabaseToManualThroughput(String resourceGroupName, String accountName, String databaseName,
+            Context context);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -778,12 +738,12 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> migrateGremlinDatabaseToManualThroughputAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    Mono<ThroughputSettingsGetResultsInner> migrateGremlinDatabaseToManualThroughputAsync(String resourceGroupName,
+        String accountName, String databaseName);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -793,12 +753,12 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateGremlinDatabaseToManualThroughput(
-        String resourceGroupName, String accountName, String databaseName);
+    ThroughputSettingsGetResultsInner migrateGremlinDatabaseToManualThroughput(String resourceGroupName,
+        String accountName, String databaseName);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -809,12 +769,12 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateGremlinDatabaseToManualThroughput(
-        String resourceGroupName, String accountName, String databaseName, Context context);
+    ThroughputSettingsGetResultsInner migrateGremlinDatabaseToManualThroughput(String resourceGroupName,
+        String accountName, String databaseName, Context context);
 
     /**
      * Lists the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -822,15 +782,15 @@ public interface GremlinResourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the graphs and their properties as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<GremlinGraphGetResultsInner> listGremlinGraphsAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    PagedFlux<GremlinGraphGetResultsInner> listGremlinGraphsAsync(String resourceGroupName, String accountName,
+        String databaseName);
 
     /**
      * Lists the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -838,15 +798,15 @@ public interface GremlinResourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the graphs and their properties as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GremlinGraphGetResultsInner> listGremlinGraphs(
-        String resourceGroupName, String accountName, String databaseName);
+    PagedIterable<GremlinGraphGetResultsInner> listGremlinGraphs(String resourceGroupName, String accountName,
+        String databaseName);
 
     /**
      * Lists the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -855,15 +815,15 @@ public interface GremlinResourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the graphs and their properties as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GremlinGraphGetResultsInner> listGremlinGraphs(
-        String resourceGroupName, String accountName, String databaseName, Context context);
+    PagedIterable<GremlinGraphGetResultsInner> listGremlinGraphs(String resourceGroupName, String accountName,
+        String databaseName, Context context);
 
     /**
      * Gets the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -872,15 +832,15 @@ public interface GremlinResourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Gremlin graph under an existing Azure Cosmos DB database account along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<GremlinGraphGetResultsInner>> getGremlinGraphWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String graphName);
+    Mono<Response<GremlinGraphGetResultsInner>> getGremlinGraphWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, String graphName);
 
     /**
      * Gets the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -888,32 +848,16 @@ public interface GremlinResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin graph under an existing Azure Cosmos DB database account on successful completion of {@link
-     *     Mono}.
+     * @return the Gremlin graph under an existing Azure Cosmos DB database account on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<GremlinGraphGetResultsInner> getGremlinGraphAsync(
-        String resourceGroupName, String accountName, String databaseName, String graphName);
+    Mono<GremlinGraphGetResultsInner> getGremlinGraphAsync(String resourceGroupName, String accountName,
+        String databaseName, String graphName);
 
     /**
      * Gets the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param graphName Cosmos DB graph name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin graph under an existing Azure Cosmos DB database account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    GremlinGraphGetResultsInner getGremlinGraph(
-        String resourceGroupName, String accountName, String databaseName, String graphName);
-
-    /**
-     * Gets the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -925,12 +869,28 @@ public interface GremlinResourcesClient {
      * @return the Gremlin graph under an existing Azure Cosmos DB database account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GremlinGraphGetResultsInner> getGremlinGraphWithResponse(
-        String resourceGroupName, String accountName, String databaseName, String graphName, Context context);
+    Response<GremlinGraphGetResultsInner> getGremlinGraphWithResponse(String resourceGroupName, String accountName,
+        String databaseName, String graphName, Context context);
+
+    /**
+     * Gets the Gremlin graph under an existing Azure Cosmos DB database account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Gremlin graph under an existing Azure Cosmos DB database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GremlinGraphGetResultsInner getGremlinGraph(String resourceGroupName, String accountName, String databaseName,
+        String graphName);
 
     /**
      * Create or update an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -942,16 +902,13 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB Gremlin graph along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createUpdateGremlinGraphWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String graphName,
+    Mono<Response<Flux<ByteBuffer>>> createUpdateGremlinGraphWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, String graphName,
         GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters);
 
     /**
      * Create or update an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -964,15 +921,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<GremlinGraphGetResultsInner>, GremlinGraphGetResultsInner> beginCreateUpdateGremlinGraphAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String graphName,
+        String resourceGroupName, String accountName, String databaseName, String graphName,
         GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters);
 
     /**
      * Create or update an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -985,15 +939,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GremlinGraphGetResultsInner>, GremlinGraphGetResultsInner> beginCreateUpdateGremlinGraph(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String graphName,
+        String resourceGroupName, String accountName, String databaseName, String graphName,
         GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters);
 
     /**
      * Create or update an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1007,16 +958,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GremlinGraphGetResultsInner>, GremlinGraphGetResultsInner> beginCreateUpdateGremlinGraph(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String graphName,
-        GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters,
-        Context context);
+        String resourceGroupName, String accountName, String databaseName, String graphName,
+        GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters, Context context);
 
     /**
      * Create or update an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1028,16 +975,12 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB Gremlin graph on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<GremlinGraphGetResultsInner> createUpdateGremlinGraphAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String graphName,
-        GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters);
+    Mono<GremlinGraphGetResultsInner> createUpdateGremlinGraphAsync(String resourceGroupName, String accountName,
+        String databaseName, String graphName, GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters);
 
     /**
      * Create or update an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1049,16 +992,12 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB Gremlin graph.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GremlinGraphGetResultsInner createUpdateGremlinGraph(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String graphName,
-        GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters);
+    GremlinGraphGetResultsInner createUpdateGremlinGraph(String resourceGroupName, String accountName,
+        String databaseName, String graphName, GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters);
 
     /**
      * Create or update an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1071,17 +1010,13 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB Gremlin graph.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GremlinGraphGetResultsInner createUpdateGremlinGraph(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String graphName,
-        GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters,
+    GremlinGraphGetResultsInner createUpdateGremlinGraph(String resourceGroupName, String accountName,
+        String databaseName, String graphName, GremlinGraphCreateUpdateParameters createUpdateGremlinGraphParameters,
         Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1092,12 +1027,12 @@ public interface GremlinResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteGremlinGraphWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String graphName);
+    Mono<Response<Flux<ByteBuffer>>> deleteGremlinGraphWithResponseAsync(String resourceGroupName, String accountName,
+        String databaseName, String graphName);
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1108,12 +1043,12 @@ public interface GremlinResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteGremlinGraphAsync(
-        String resourceGroupName, String accountName, String databaseName, String graphName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteGremlinGraphAsync(String resourceGroupName, String accountName,
+        String databaseName, String graphName);
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1124,12 +1059,12 @@ public interface GremlinResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteGremlinGraph(
-        String resourceGroupName, String accountName, String databaseName, String graphName);
+    SyncPoller<PollResult<Void>, Void> beginDeleteGremlinGraph(String resourceGroupName, String accountName,
+        String databaseName, String graphName);
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1141,12 +1076,12 @@ public interface GremlinResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteGremlinGraph(
-        String resourceGroupName, String accountName, String databaseName, String graphName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeleteGremlinGraph(String resourceGroupName, String accountName,
+        String databaseName, String graphName, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1157,12 +1092,12 @@ public interface GremlinResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteGremlinGraphAsync(
-        String resourceGroupName, String accountName, String databaseName, String graphName);
+    Mono<Void> deleteGremlinGraphAsync(String resourceGroupName, String accountName, String databaseName,
+        String graphName);
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1176,7 +1111,7 @@ public interface GremlinResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1187,12 +1122,12 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteGremlinGraph(
-        String resourceGroupName, String accountName, String databaseName, String graphName, Context context);
+    void deleteGremlinGraph(String resourceGroupName, String accountName, String databaseName, String graphName,
+        Context context);
 
     /**
      * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1201,7 +1136,7 @@ public interface GremlinResourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ThroughputSettingsGetResultsInner>> getGremlinGraphThroughputWithResponseAsync(
@@ -1209,7 +1144,7 @@ public interface GremlinResourcesClient {
 
     /**
      * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1218,15 +1153,33 @@ public interface GremlinResourcesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> getGremlinGraphThroughputAsync(
-        String resourceGroupName, String accountName, String databaseName, String graphName);
+    Mono<ThroughputSettingsGetResultsInner> getGremlinGraphThroughputAsync(String resourceGroupName, String accountName,
+        String databaseName, String graphName);
 
     /**
      * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name
+     * along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ThroughputSettingsGetResultsInner> getGremlinGraphThroughputWithResponse(String resourceGroupName,
+        String accountName, String databaseName, String graphName, Context context);
+
+    /**
+     * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1237,30 +1190,12 @@ public interface GremlinResourcesClient {
      * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner getGremlinGraphThroughput(
-        String resourceGroupName, String accountName, String databaseName, String graphName);
-
-    /**
-     * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param graphName Cosmos DB graph name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name
-     *     along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ThroughputSettingsGetResultsInner> getGremlinGraphThroughputWithResponse(
-        String resourceGroupName, String accountName, String databaseName, String graphName, Context context);
+    ThroughputSettingsGetResultsInner getGremlinGraphThroughput(String resourceGroupName, String accountName,
+        String databaseName, String graphName);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1269,20 +1204,17 @@ public interface GremlinResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateGremlinGraphThroughputWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String graphName,
+    Mono<Response<Flux<ByteBuffer>>> updateGremlinGraphThroughputWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, String graphName,
         ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1295,16 +1227,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateGremlinGraphThroughputAsync(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String graphName,
-            ThroughputSettingsUpdateParameters updateThroughputParameters);
+        beginUpdateGremlinGraphThroughputAsync(String resourceGroupName, String accountName, String databaseName,
+            String graphName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1317,16 +1245,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateGremlinGraphThroughput(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String graphName,
-            ThroughputSettingsUpdateParameters updateThroughputParameters);
+        beginUpdateGremlinGraphThroughput(String resourceGroupName, String accountName, String databaseName,
+            String graphName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1340,17 +1264,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateGremlinGraphThroughput(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String graphName,
-            ThroughputSettingsUpdateParameters updateThroughputParameters,
-            Context context);
+        beginUpdateGremlinGraphThroughput(String resourceGroupName, String accountName, String databaseName,
+            String graphName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1362,16 +1281,13 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> updateGremlinGraphThroughputAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String graphName,
+    Mono<ThroughputSettingsGetResultsInner> updateGremlinGraphThroughputAsync(String resourceGroupName,
+        String accountName, String databaseName, String graphName,
         ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1383,16 +1299,12 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner updateGremlinGraphThroughput(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String graphName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters);
+    ThroughputSettingsGetResultsInner updateGremlinGraphThroughput(String resourceGroupName, String accountName,
+        String databaseName, String graphName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1405,17 +1317,13 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner updateGremlinGraphThroughput(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String graphName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters,
+    ThroughputSettingsGetResultsInner updateGremlinGraphThroughput(String resourceGroupName, String accountName,
+        String databaseName, String graphName, ThroughputSettingsUpdateParameters updateThroughputParameters,
         Context context);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1423,16 +1331,16 @@ public interface GremlinResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> migrateGremlinGraphToAutoscaleWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String graphName);
+    Mono<Response<Flux<ByteBuffer>>> migrateGremlinGraphToAutoscaleWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, String graphName);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1444,12 +1352,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateGremlinGraphToAutoscaleAsync(
-            String resourceGroupName, String accountName, String databaseName, String graphName);
+        beginMigrateGremlinGraphToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName,
+            String graphName);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1461,12 +1369,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateGremlinGraphToAutoscale(
-            String resourceGroupName, String accountName, String databaseName, String graphName);
+        beginMigrateGremlinGraphToAutoscale(String resourceGroupName, String accountName, String databaseName,
+            String graphName);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1479,12 +1387,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateGremlinGraphToAutoscale(
-            String resourceGroupName, String accountName, String databaseName, String graphName, Context context);
+        beginMigrateGremlinGraphToAutoscale(String resourceGroupName, String accountName, String databaseName,
+            String graphName, Context context);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1495,12 +1403,12 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> migrateGremlinGraphToAutoscaleAsync(
-        String resourceGroupName, String accountName, String databaseName, String graphName);
+    Mono<ThroughputSettingsGetResultsInner> migrateGremlinGraphToAutoscaleAsync(String resourceGroupName,
+        String accountName, String databaseName, String graphName);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1511,12 +1419,12 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateGremlinGraphToAutoscale(
-        String resourceGroupName, String accountName, String databaseName, String graphName);
+    ThroughputSettingsGetResultsInner migrateGremlinGraphToAutoscale(String resourceGroupName, String accountName,
+        String databaseName, String graphName);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1528,12 +1436,12 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateGremlinGraphToAutoscale(
-        String resourceGroupName, String accountName, String databaseName, String graphName, Context context);
+    ThroughputSettingsGetResultsInner migrateGremlinGraphToAutoscale(String resourceGroupName, String accountName,
+        String databaseName, String graphName, Context context);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1541,16 +1449,16 @@ public interface GremlinResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> migrateGremlinGraphToManualThroughputWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String graphName);
+    Mono<Response<Flux<ByteBuffer>>> migrateGremlinGraphToManualThroughputWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, String graphName);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1562,12 +1470,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateGremlinGraphToManualThroughputAsync(
-            String resourceGroupName, String accountName, String databaseName, String graphName);
+        beginMigrateGremlinGraphToManualThroughputAsync(String resourceGroupName, String accountName,
+            String databaseName, String graphName);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1579,12 +1487,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateGremlinGraphToManualThroughput(
-            String resourceGroupName, String accountName, String databaseName, String graphName);
+        beginMigrateGremlinGraphToManualThroughput(String resourceGroupName, String accountName, String databaseName,
+            String graphName);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1597,12 +1505,12 @@ public interface GremlinResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateGremlinGraphToManualThroughput(
-            String resourceGroupName, String accountName, String databaseName, String graphName, Context context);
+        beginMigrateGremlinGraphToManualThroughput(String resourceGroupName, String accountName, String databaseName,
+            String graphName, Context context);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1613,12 +1521,12 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> migrateGremlinGraphToManualThroughputAsync(
-        String resourceGroupName, String accountName, String databaseName, String graphName);
+    Mono<ThroughputSettingsGetResultsInner> migrateGremlinGraphToManualThroughputAsync(String resourceGroupName,
+        String accountName, String databaseName, String graphName);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1629,12 +1537,12 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateGremlinGraphToManualThroughput(
-        String resourceGroupName, String accountName, String databaseName, String graphName);
+    ThroughputSettingsGetResultsInner migrateGremlinGraphToManualThroughput(String resourceGroupName,
+        String accountName, String databaseName, String graphName);
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1646,6 +1554,130 @@ public interface GremlinResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateGremlinGraphToManualThroughput(
-        String resourceGroupName, String accountName, String databaseName, String graphName, Context context);
+    ThroughputSettingsGetResultsInner migrateGremlinGraphToManualThroughput(String resourceGroupName,
+        String accountName, String databaseName, String graphName, Context context);
+
+    /**
+     * Retrieves continuous backup information for a gremlin graph.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, String graphName, ContinuousBackupRestoreLocation location);
+
+    /**
+     * Retrieves continuous backup information for a gremlin graph.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformationAsync(String resourceGroupName, String accountName, String databaseName,
+            String graphName, ContinuousBackupRestoreLocation location);
+
+    /**
+     * Retrieves continuous backup information for a gremlin graph.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(
+        String resourceGroupName, String accountName, String databaseName, String graphName,
+        ContinuousBackupRestoreLocation location);
+
+    /**
+     * Retrieves continuous backup information for a gremlin graph.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(
+        String resourceGroupName, String accountName, String databaseName, String graphName,
+        ContinuousBackupRestoreLocation location, Context context);
+
+    /**
+     * Retrieves continuous backup information for a gremlin graph.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(String resourceGroupName, String accountName,
+        String databaseName, String graphName, ContinuousBackupRestoreLocation location);
+
+    /**
+     * Retrieves continuous backup information for a gremlin graph.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BackupInformationInner retrieveContinuousBackupInformation(String resourceGroupName, String accountName,
+        String databaseName, String graphName, ContinuousBackupRestoreLocation location);
+
+    /**
+     * Retrieves continuous backup information for a gremlin graph.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BackupInformationInner retrieveContinuousBackupInformation(String resourceGroupName, String accountName,
+        String databaseName, String graphName, ContinuousBackupRestoreLocation location, Context context);
 }

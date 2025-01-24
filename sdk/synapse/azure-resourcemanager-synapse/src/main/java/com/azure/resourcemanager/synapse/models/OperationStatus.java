@@ -5,35 +5,56 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperationStatus. */
+/**
+ * Operation status.
+ */
 public final class OperationStatus extends ExpandableStringEnum<OperationStatus> {
-    /** Static value InProgress for OperationStatus. */
+    /**
+     * Static value InProgress for OperationStatus.
+     */
     public static final OperationStatus IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Succeeded for OperationStatus. */
+    /**
+     * Static value Succeeded for OperationStatus.
+     */
     public static final OperationStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for OperationStatus. */
+    /**
+     * Static value Failed for OperationStatus.
+     */
     public static final OperationStatus FAILED = fromString("Failed");
 
-    /** Static value Canceled for OperationStatus. */
+    /**
+     * Static value Canceled for OperationStatus.
+     */
     public static final OperationStatus CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of OperationStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperationStatus() {
+    }
+
+    /**
      * Creates or finds a OperationStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OperationStatus.
      */
-    @JsonCreator
     public static OperationStatus fromString(String name) {
         return fromString(name, OperationStatus.class);
     }
 
-    /** @return known OperationStatus values. */
+    /**
+     * Gets known OperationStatus values.
+     * 
+     * @return known OperationStatus values.
+     */
     public static Collection<OperationStatus> values() {
         return values(OperationStatus.class);
     }

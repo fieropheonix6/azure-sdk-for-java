@@ -6,20 +6,17 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.ImageListResult;
-import org.junit.jupiter.api.Test;
 
 public final class ImageListResultTests {
-    @Test
-    public void testDeserialize() {
-        ImageListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"tbzaqsqsycbkbfk\",\"publisher\":\"kdkexxp\",\"offer\":\"fmxa\",\"sku\":\"fjpgddtocjjxhvp\",\"provisioningState\":\"Creating\"},\"id\":\"hd\",\"name\":\"xibqeojnx\",\"type\":\"bzv\"},{\"properties\":{\"description\":\"t\",\"publisher\":\"deicbtwnpzao\",\"offer\":\"uhrhcffcyddgl\",\"sku\":\"t\",\"provisioningState\":\"Accepted\"},\"id\":\"pyeicxm\",\"name\":\"ciwqvhk\",\"type\":\"ixuigdtopbobj\"},{\"properties\":{\"description\":\"m\",\"publisher\":\"u\",\"offer\":\"a\",\"sku\":\"rzayv\",\"provisioningState\":\"TransientFailure\"},\"id\":\"dfgiot\",\"name\":\"ftutqxlngxlefgu\",\"type\":\"nxkrx\"},{\"properties\":{\"description\":\"i\",\"publisher\":\"thz\",\"offer\":\"qdrabhjybigehoqf\",\"sku\":\"wska\",\"provisioningState\":\"TransientFailure\"},\"id\":\"lcuiywgqywgndr\",\"name\":\"ynhz\",\"type\":\"pphrcgynco\"}],\"nextLink\":\"ecfvmm\"}")
-                .toObject(ImageListResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ImageListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"description\":\"xjvuujqgidokg\",\"publisher\":\"jyoxgvclt\",\"offer\":\"sncghkjeszz\",\"sku\":\"ijhtxf\",\"recommendedMachineConfiguration\":{\"memory\":{\"min\":615517918,\"max\":1787736845},\"vCPUs\":{\"min\":455021190,\"max\":1543510738}},\"provisioningState\":\"MovingResources\",\"hibernateSupport\":\"Disabled\"},\"id\":\"godebfqkkrbmpu\",\"name\":\"gr\",\"type\":\"wflzlfbxzpuzy\"},{\"properties\":{\"description\":\"pnq\",\"publisher\":\"hmgkbrpyy\",\"offer\":\"ibnuqqkpik\",\"sku\":\"rgvtqag\",\"recommendedMachineConfiguration\":{\"memory\":{\"min\":855671205,\"max\":850338934},\"vCPUs\":{\"min\":1809689220,\"max\":687911821}},\"provisioningState\":\"Deleted\",\"hibernateSupport\":\"Enabled\"},\"id\":\"rbu\",\"name\":\"rcvpnazzmhjrunmp\",\"type\":\"ttdbhrbnl\"},{\"properties\":{\"description\":\"xmyskp\",\"publisher\":\"enbtkcxywny\",\"offer\":\"rsyn\",\"sku\":\"idybyxczf\",\"recommendedMachineConfiguration\":{\"memory\":{\"min\":2035107412,\"max\":1122692891},\"vCPUs\":{\"min\":113016072,\"max\":393084907}},\"provisioningState\":\"TransientFailure\",\"hibernateSupport\":\"Enabled\"},\"id\":\"fkts\",\"name\":\"hsucoc\",\"type\":\"nyyazttbtwwrqpue\"},{\"properties\":{\"description\":\"zywbiex\",\"publisher\":\"eyueaxibxujwb\",\"offer\":\"walm\",\"sku\":\"yoxa\",\"recommendedMachineConfiguration\":{\"memory\":{\"min\":1936487561,\"max\":2111181142},\"vCPUs\":{\"min\":350095412,\"max\":901682674}},\"provisioningState\":\"NotSpecified\",\"hibernateSupport\":\"Enabled\"},\"id\":\"v\",\"name\":\"bniwdj\",\"type\":\"wz\"}],\"nextLink\":\"dbpgnxytxhp\"}")
+            .toObject(ImageListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ImageListResult model = new ImageListResult();
         model = BinaryData.fromObject(model).toObject(ImageListResult.class);
     }

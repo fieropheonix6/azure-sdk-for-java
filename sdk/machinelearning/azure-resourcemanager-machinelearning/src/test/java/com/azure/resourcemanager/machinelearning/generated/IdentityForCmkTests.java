@@ -7,20 +7,18 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.IdentityForCmk;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IdentityForCmkTests {
-    @Test
-    public void testDeserialize() {
-        IdentityForCmk model =
-            BinaryData.fromString("{\"userAssignedIdentity\":\"hanufhfcbjysagi\"}").toObject(IdentityForCmk.class);
-        Assertions.assertEquals("hanufhfcbjysagi", model.userAssignedIdentity());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        IdentityForCmk model = BinaryData.fromString("{\"userAssignedIdentity\":\"o\"}").toObject(IdentityForCmk.class);
+        Assertions.assertEquals("o", model.userAssignedIdentity());
     }
 
-    @Test
-    public void testSerialize() {
-        IdentityForCmk model = new IdentityForCmk().withUserAssignedIdentity("hanufhfcbjysagi");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        IdentityForCmk model = new IdentityForCmk().withUserAssignedIdentity("o");
         model = BinaryData.fromObject(model).toObject(IdentityForCmk.class);
-        Assertions.assertEquals("hanufhfcbjysagi", model.userAssignedIdentity());
+        Assertions.assertEquals("o", model.userAssignedIdentity());
     }
 }

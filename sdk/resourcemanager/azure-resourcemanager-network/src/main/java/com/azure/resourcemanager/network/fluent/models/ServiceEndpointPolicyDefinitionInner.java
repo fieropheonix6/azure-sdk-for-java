@@ -6,44 +6,47 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Service Endpoint policy definitions. */
+/**
+ * Service Endpoint policy definitions.
+ */
 @Fluent
 public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
     /*
      * Properties of the service endpoint policy definition.
      */
-    @JsonProperty(value = "properties")
     private ServiceEndpointPolicyDefinitionPropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * The type of the resource.
      */
-    @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of ServiceEndpointPolicyDefinitionInner class. */
+    /**
+     * Creates an instance of ServiceEndpointPolicyDefinitionInner class.
+     */
     public ServiceEndpointPolicyDefinitionInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the service endpoint policy definition.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServiceEndpointPolicyDefinitionPropertiesFormat innerProperties() {
@@ -53,7 +56,7 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +66,7 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the ServiceEndpointPolicyDefinitionInner object itself.
      */
@@ -74,7 +77,7 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -83,7 +86,7 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
 
     /**
      * Get the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -92,7 +95,7 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
 
     /**
      * Set the type property: The type of the resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the ServiceEndpointPolicyDefinitionInner object itself.
      */
@@ -101,7 +104,9 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceEndpointPolicyDefinitionInner withId(String id) {
         super.withId(id);
@@ -110,7 +115,7 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
 
     /**
      * Get the description property: A description for this rule. Restricted to 140 chars.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -119,7 +124,7 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
 
     /**
      * Set the description property: A description for this rule. Restricted to 140 chars.
-     *
+     * 
      * @param description the description value to set.
      * @return the ServiceEndpointPolicyDefinitionInner object itself.
      */
@@ -133,7 +138,7 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
 
     /**
      * Get the service property: Service endpoint name.
-     *
+     * 
      * @return the service value.
      */
     public String service() {
@@ -142,7 +147,7 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
 
     /**
      * Set the service property: Service endpoint name.
-     *
+     * 
      * @param service the service value to set.
      * @return the ServiceEndpointPolicyDefinitionInner object itself.
      */
@@ -156,7 +161,7 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
 
     /**
      * Get the serviceResources property: A list of service resources.
-     *
+     * 
      * @return the serviceResources value.
      */
     public List<String> serviceResources() {
@@ -165,7 +170,7 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
 
     /**
      * Set the serviceResources property: A list of service resources.
-     *
+     * 
      * @param serviceResources the serviceResources value to set.
      * @return the ServiceEndpointPolicyDefinitionInner object itself.
      */
@@ -179,7 +184,7 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the service endpoint policy definition resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -188,12 +193,61 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceEndpointPolicyDefinitionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceEndpointPolicyDefinitionInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceEndpointPolicyDefinitionInner.
+     */
+    public static ServiceEndpointPolicyDefinitionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceEndpointPolicyDefinitionInner deserializedServiceEndpointPolicyDefinitionInner
+                = new ServiceEndpointPolicyDefinitionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedServiceEndpointPolicyDefinitionInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServiceEndpointPolicyDefinitionInner.innerProperties
+                        = ServiceEndpointPolicyDefinitionPropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedServiceEndpointPolicyDefinitionInner.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedServiceEndpointPolicyDefinitionInner.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServiceEndpointPolicyDefinitionInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceEndpointPolicyDefinitionInner;
+        });
     }
 }

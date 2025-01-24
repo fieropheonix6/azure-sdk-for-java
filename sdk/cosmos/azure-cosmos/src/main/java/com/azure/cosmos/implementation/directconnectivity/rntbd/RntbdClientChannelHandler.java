@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint.Config;
+import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -28,17 +29,20 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
     private final ChannelHealthChecker healthChecker;
     private final Config config;
     private final RntbdConnectionStateListener connectionStateListener;
+    private final RntbdServerErrorInjector serverErrorInjector;
 
     RntbdClientChannelHandler(
         final Config config,
         final ChannelHealthChecker healthChecker,
-        final RntbdConnectionStateListener connectionStateListener) {
+        final RntbdConnectionStateListener connectionStateListener,
+        final RntbdServerErrorInjector serverErrorInjector) {
         checkNotNull(healthChecker, "expected non-null healthChecker");
         checkNotNull(config, "expected non-null config");
 
         this.healthChecker = healthChecker;
         this.config = config;
         this.connectionStateListener = connectionStateListener;
+        this.serverErrorInjector = serverErrorInjector;
     }
 
     /**
@@ -105,9 +109,9 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
 
         final RntbdRequestManager requestManager = new RntbdRequestManager(
             this.healthChecker,
-            this.config.maxRequestsPerChannel(),
+            this.config,
             this.connectionStateListener,
-            this.config.idleConnectionTimerResolutionInNanos());
+            this.serverErrorInjector);
 
         final ChannelPipeline pipeline = channel.pipeline();
 

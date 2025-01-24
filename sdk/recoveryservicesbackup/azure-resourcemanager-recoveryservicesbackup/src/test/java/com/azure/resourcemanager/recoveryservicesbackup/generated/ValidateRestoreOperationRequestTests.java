@@ -7,22 +7,23 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateRestoreOperationRequest;
-import org.junit.jupiter.api.Test;
+import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class ValidateRestoreOperationRequestTests {
-    @Test
-    public void testDeserialize() {
-        ValidateRestoreOperationRequest model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"ValidateRestoreOperationRequest\",\"restoreRequest\":{\"objectType\":\"RestoreRequest\"}}")
-                .toObject(ValidateRestoreOperationRequest.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ValidateRestoreOperationRequest model = BinaryData.fromString(
+            "{\"objectType\":\"ValidateRestoreOperationRequest\",\"restoreRequest\":{\"objectType\":\"RestoreRequest\",\"resourceGuardOperationRequests\":[\"zjkmmykyujxs\"]}}")
+            .toObject(ValidateRestoreOperationRequest.class);
+        Assertions.assertEquals("zjkmmykyujxs", model.restoreRequest().resourceGuardOperationRequests().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        ValidateRestoreOperationRequest model =
-            new ValidateRestoreOperationRequest().withRestoreRequest(new RestoreRequest());
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ValidateRestoreOperationRequest model = new ValidateRestoreOperationRequest()
+            .withRestoreRequest(new RestoreRequest().withResourceGuardOperationRequests(Arrays.asList("zjkmmykyujxs")));
         model = BinaryData.fromObject(model).toObject(ValidateRestoreOperationRequest.class);
+        Assertions.assertEquals("zjkmmykyujxs", model.restoreRequest().resourceGuardOperationRequests().get(0));
     }
 }

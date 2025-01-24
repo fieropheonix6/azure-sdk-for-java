@@ -5,29 +5,71 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for InvoiceSectionState. */
+/**
+ * Identifies the status of an invoice section.
+ */
 public final class InvoiceSectionState extends ExpandableStringEnum<InvoiceSectionState> {
-    /** Static value Active for InvoiceSectionState. */
+    /**
+     * Static value Other for InvoiceSectionState.
+     */
+    public static final InvoiceSectionState OTHER = fromString("Other");
+
+    /**
+     * Static value Active for InvoiceSectionState.
+     */
     public static final InvoiceSectionState ACTIVE = fromString("Active");
 
-    /** Static value Restricted for InvoiceSectionState. */
+    /**
+     * Static value Deleted for InvoiceSectionState.
+     */
+    public static final InvoiceSectionState DELETED = fromString("Deleted");
+
+    /**
+     * Static value Disabled for InvoiceSectionState.
+     */
+    public static final InvoiceSectionState DISABLED = fromString("Disabled");
+
+    /**
+     * Static value UnderReview for InvoiceSectionState.
+     */
+    public static final InvoiceSectionState UNDER_REVIEW = fromString("UnderReview");
+
+    /**
+     * Static value Warned for InvoiceSectionState.
+     */
+    public static final InvoiceSectionState WARNED = fromString("Warned");
+
+    /**
+     * Static value Restricted for InvoiceSectionState.
+     */
     public static final InvoiceSectionState RESTRICTED = fromString("Restricted");
 
     /**
+     * Creates a new instance of InvoiceSectionState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InvoiceSectionState() {
+    }
+
+    /**
      * Creates or finds a InvoiceSectionState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InvoiceSectionState.
      */
-    @JsonCreator
     public static InvoiceSectionState fromString(String name) {
         return fromString(name, InvoiceSectionState.class);
     }
 
-    /** @return known InvoiceSectionState values. */
+    /**
+     * Gets known InvoiceSectionState values.
+     * 
+     * @return known InvoiceSectionState values.
+     */
     public static Collection<InvoiceSectionState> values() {
         return values(InvoiceSectionState.class);
     }

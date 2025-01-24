@@ -6,36 +6,37 @@ package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.OutboundNetworkDependenciesEndpointInner;
+import com.azure.resourcemanager.kusto.models.EndpointDependency;
+import com.azure.resourcemanager.kusto.models.EndpointDetail;
 import com.azure.resourcemanager.kusto.models.OutboundNetworkDependenciesEndpointListResult;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OutboundNetworkDependenciesEndpointListResultTests {
-    @Test
-    public void testDeserialize() {
-        OutboundNetworkDependenciesEndpointListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"category\":\"wlquuijfqkace\",\"endpoints\":[],\"provisioningState\":\"Failed\"},\"etag\":\"pubjibw\",\"id\":\"iftohqkvpu\",\"name\":\"ksgplsa\",\"type\":\"nynfsynljphuo\"},{\"properties\":{\"category\":\"dlqiyntorzih\",\"endpoints\":[],\"provisioningState\":\"Running\"},\"etag\":\"swsrms\",\"id\":\"yzrpzbchckqqzq\",\"name\":\"ox\",\"type\":\"ysuiizynkedya\"}],\"nextLink\":\"wyhqmibzyhwits\"}")
-                .toObject(OutboundNetworkDependenciesEndpointListResult.class);
-        Assertions.assertEquals("wlquuijfqkace", model.value().get(0).category());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OutboundNetworkDependenciesEndpointListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"category\":\"kwpjgwwspughftqs\",\"endpoints\":[{\"domainName\":\"ujxukndxd\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"guufzd\",\"endpointDetails\":[{},{}]},{\"domainName\":\"tfih\",\"endpointDetails\":[{},{},{},{}]}],\"provisioningState\":\"Canceled\"},\"etag\":\"ingamvp\",\"id\":\"ho\",\"name\":\"zqzudph\",\"type\":\"amvdkfwynwcvtbv\"}],\"nextLink\":\"yhmtnvyqiat\"}")
+            .toObject(OutboundNetworkDependenciesEndpointListResult.class);
+        Assertions.assertEquals("kwpjgwwspughftqs", model.value().get(0).category());
+        Assertions.assertEquals("ujxukndxd", model.value().get(0).endpoints().get(0).domainName());
     }
 
-    @Test
-    public void testSerialize() {
-        OutboundNetworkDependenciesEndpointListResult model =
-            new OutboundNetworkDependenciesEndpointListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new OutboundNetworkDependenciesEndpointInner()
-                                .withCategory("wlquuijfqkace")
-                                .withEndpoints(Arrays.asList()),
-                            new OutboundNetworkDependenciesEndpointInner()
-                                .withCategory("dlqiyntorzih")
-                                .withEndpoints(Arrays.asList())));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OutboundNetworkDependenciesEndpointListResult model = new OutboundNetworkDependenciesEndpointListResult()
+            .withValue(Arrays.asList(new OutboundNetworkDependenciesEndpointInner().withCategory("kwpjgwwspughftqs")
+                .withEndpoints(Arrays.asList(
+                    new EndpointDependency().withDomainName("ujxukndxd")
+                        .withEndpointDetails(Arrays.asList(new EndpointDetail(), new EndpointDetail(),
+                            new EndpointDetail(), new EndpointDetail())),
+                    new EndpointDependency().withDomainName("guufzd")
+                        .withEndpointDetails(Arrays.asList(new EndpointDetail(), new EndpointDetail())),
+                    new EndpointDependency().withDomainName("tfih")
+                        .withEndpointDetails(Arrays.asList(new EndpointDetail(), new EndpointDetail(),
+                            new EndpointDetail(), new EndpointDetail()))))));
         model = BinaryData.fromObject(model).toObject(OutboundNetworkDependenciesEndpointListResult.class);
-        Assertions.assertEquals("wlquuijfqkace", model.value().get(0).category());
+        Assertions.assertEquals("kwpjgwwspughftqs", model.value().get(0).category());
+        Assertions.assertEquals("ujxukndxd", model.value().get(0).endpoints().get(0).domainName());
     }
 }

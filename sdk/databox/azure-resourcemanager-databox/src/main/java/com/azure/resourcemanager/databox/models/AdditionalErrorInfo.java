@@ -5,50 +5,36 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Additional error info. */
+/**
+ * This class represents additional info which Resource Providers pass when an error occurs.
+ */
 @Fluent
-public final class AdditionalErrorInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdditionalErrorInfo.class);
-
+public final class AdditionalErrorInfo implements JsonSerializable<AdditionalErrorInfo> {
     /*
-     * Additional error type.
+     * Additional information of the type of error.
      */
-    @JsonProperty(value = "type")
-    private String type;
-
-    /*
-     * Additional error info.
-     */
-    @JsonProperty(value = "info")
     private Object info;
 
-    /**
-     * Get the type property: Additional error type.
-     *
-     * @return the type value.
+    /*
+     * Type of error (e.g. CustomerIntervention, PolicyViolation, SecurityViolation).
      */
-    public String type() {
-        return this.type;
+    private String type;
+
+    /**
+     * Creates an instance of AdditionalErrorInfo class.
+     */
+    public AdditionalErrorInfo() {
     }
 
     /**
-     * Set the type property: Additional error type.
-     *
-     * @param type the type value to set.
-     * @return the AdditionalErrorInfo object itself.
-     */
-    public AdditionalErrorInfo withType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
-     * Get the info property: Additional error info.
-     *
+     * Get the info property: Additional information of the type of error.
+     * 
      * @return the info value.
      */
     public Object info() {
@@ -56,8 +42,8 @@ public final class AdditionalErrorInfo {
     }
 
     /**
-     * Set the info property: Additional error info.
-     *
+     * Set the info property: Additional information of the type of error.
+     * 
      * @param info the info value to set.
      * @return the AdditionalErrorInfo object itself.
      */
@@ -67,10 +53,69 @@ public final class AdditionalErrorInfo {
     }
 
     /**
+     * Get the type property: Type of error (e.g. CustomerIntervention, PolicyViolation, SecurityViolation).
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: Type of error (e.g. CustomerIntervention, PolicyViolation, SecurityViolation).
+     * 
+     * @param type the type value to set.
+     * @return the AdditionalErrorInfo object itself.
+     */
+    public AdditionalErrorInfo withType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("info", this.info);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdditionalErrorInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdditionalErrorInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AdditionalErrorInfo.
+     */
+    public static AdditionalErrorInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdditionalErrorInfo deserializedAdditionalErrorInfo = new AdditionalErrorInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("info".equals(fieldName)) {
+                    deserializedAdditionalErrorInfo.info = reader.readUntyped();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAdditionalErrorInfo.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdditionalErrorInfo;
+        });
     }
 }

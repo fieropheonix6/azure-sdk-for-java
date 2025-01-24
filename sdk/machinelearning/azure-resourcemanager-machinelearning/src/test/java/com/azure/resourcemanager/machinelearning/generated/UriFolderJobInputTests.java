@@ -8,31 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.InputDeliveryMode;
 import com.azure.resourcemanager.machinelearning.models.UriFolderJobInput;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UriFolderJobInputTests {
-    @Test
-    public void testDeserialize() {
-        UriFolderJobInput model =
-            BinaryData
-                .fromString(
-                    "{\"jobInputType\":\"uri_folder\",\"mode\":\"EvalMount\",\"uri\":\"ydoccnxshanzb\",\"description\":\"adh\"}")
-                .toObject(UriFolderJobInput.class);
-        Assertions.assertEquals("adh", model.description());
-        Assertions.assertEquals(InputDeliveryMode.EVAL_MOUNT, model.mode());
-        Assertions.assertEquals("ydoccnxshanzb", model.uri());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        UriFolderJobInput model = BinaryData.fromString(
+            "{\"jobInputType\":\"uri_folder\",\"uri\":\"clvbwatza\",\"mode\":\"ReadWriteMount\",\"description\":\"jngoarsrdrw\"}")
+            .toObject(UriFolderJobInput.class);
+        Assertions.assertEquals("jngoarsrdrw", model.description());
+        Assertions.assertEquals("clvbwatza", model.uri());
+        Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.mode());
     }
 
-    @Test
-    public void testSerialize() {
-        UriFolderJobInput model =
-            new UriFolderJobInput()
-                .withDescription("adh")
-                .withMode(InputDeliveryMode.EVAL_MOUNT)
-                .withUri("ydoccnxshanzb");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        UriFolderJobInput model = new UriFolderJobInput().withDescription("jngoarsrdrw")
+            .withUri("clvbwatza")
+            .withMode(InputDeliveryMode.READ_WRITE_MOUNT);
         model = BinaryData.fromObject(model).toObject(UriFolderJobInput.class);
-        Assertions.assertEquals("adh", model.description());
-        Assertions.assertEquals(InputDeliveryMode.EVAL_MOUNT, model.mode());
-        Assertions.assertEquals("ydoccnxshanzb", model.uri());
+        Assertions.assertEquals("jngoarsrdrw", model.description());
+        Assertions.assertEquals("clvbwatza", model.uri());
+        Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.mode());
     }
 }

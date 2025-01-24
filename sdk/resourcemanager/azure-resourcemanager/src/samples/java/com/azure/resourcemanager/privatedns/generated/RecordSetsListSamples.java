@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for RecordSets List. */
+/**
+ * Samples for RecordSets List.
+ */
 public final class RecordSetsListSamples {
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetALLList.json
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetALLList.json
      */
     /**
      * Sample code: GET Private DNS Zone ALL Record Sets.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void gETPrivateDNSZoneALLRecordSets(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
+        azure.privateDnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .list("resourceGroup1", "privatezone1.com", null, null, Context.NONE);
+            .list("resourceGroup1", "privatezone1.com", null, null, com.azure.core.util.Context.NONE);
     }
 }

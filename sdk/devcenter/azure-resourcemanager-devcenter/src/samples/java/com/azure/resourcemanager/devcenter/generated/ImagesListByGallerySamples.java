@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Images ListByGallery. */
+/**
+ * Samples for Images ListByGallery.
+ */
 public final class ImagesListByGallerySamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Images_ListByGallery.json
+     * x-ms-original-file:
+     * specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Images_ListByGallery.json
      */
     /**
      * Sample code: Images_ListByGallery.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void imagesListByGallery(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.images().listByGallery("rg1", "Contoso", "DevGallery", null, Context.NONE);
+        manager.images().listByGallery("rg1", "Contoso", "DevGallery", null, com.azure.core.util.Context.NONE);
     }
 }

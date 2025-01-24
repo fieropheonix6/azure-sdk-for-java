@@ -6,70 +6,44 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.QuotaUsageStatus;
 import com.azure.resourcemanager.cognitiveservices.models.UnitType;
 import com.azure.resourcemanager.cognitiveservices.models.UsageListResult;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AccountsListUsagesWithResponseMockTests {
     @Test
     public void testListUsagesWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"nextLink\":\"wvsgmwohqfzizvu\",\"value\":[{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"thnwpzte\",\"localizedValue\":\"vmribiat\"},\"quotaPeriod\":\"plucfotangcfhnyk\",\"limit\":34.811432195394524,\"currentValue\":74.0119738169162,\"nextResetTime\":\"wlmzqwmvtxnjmxmc\",\"status\":\"Included\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"unit\":\"Percent\",\"quotaPeriod\":\"aabjyvayffimrz\",\"limit\":73.46061669897502,\"currentValue\":17.91741455628265,\"nextResetTime\":\"exn\",\"status\":\"Included\"},{\"unit\":\"Seconds\",\"quotaPeriod\":\"wmewzsyy\",\"limit\":25.41338781575959,\"currentValue\":89.18262876334961,\"nextResetTime\":\"judpfrxt\",\"status\":\"Included\"},{\"unit\":\"Seconds\",\"quotaPeriod\":\"tdwkqbrq\",\"limit\":22.47264634737206,\"currentValue\":0.7295389823285925,\"nextResetTime\":\"iilivpdtiirqtd\",\"status\":\"InOverage\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        CognitiveServicesManager manager = CognitiveServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        UsageListResult response = manager.accounts()
+            .listUsagesWithResponse("bodthsqqgvri", "bakclacjfrnxous", "au", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        CognitiveServicesManager manager =
-            CognitiveServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        UsageListResult response =
-            manager.accounts().listUsagesWithResponse("beddgssofw", "mzqa", "krmnjijpxacqqud", Context.NONE).getValue();
-
-        Assertions.assertEquals(UnitType.PERCENT, response.value().get(0).unit());
-        Assertions.assertEquals("aabjyvayffimrz", response.value().get(0).quotaPeriod());
-        Assertions.assertEquals(73.46061669897502D, response.value().get(0).limit());
-        Assertions.assertEquals(17.91741455628265D, response.value().get(0).currentValue());
-        Assertions.assertEquals("exn", response.value().get(0).nextResetTime());
+        Assertions.assertEquals("wvsgmwohqfzizvu", response.nextLink());
+        Assertions.assertEquals(UnitType.BYTES_PER_SECOND, response.value().get(0).unit());
+        Assertions.assertEquals("thnwpzte", response.value().get(0).name().value());
+        Assertions.assertEquals("vmribiat", response.value().get(0).name().localizedValue());
+        Assertions.assertEquals("plucfotangcfhnyk", response.value().get(0).quotaPeriod());
+        Assertions.assertEquals(34.811432195394524D, response.value().get(0).limit());
+        Assertions.assertEquals(74.0119738169162D, response.value().get(0).currentValue());
+        Assertions.assertEquals("wlmzqwmvtxnjmxmc", response.value().get(0).nextResetTime());
         Assertions.assertEquals(QuotaUsageStatus.INCLUDED, response.value().get(0).status());
     }
 }

@@ -26,7 +26,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.WorkflowRunActionRepetitionsClient;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowRunActionRepetitionDefinitionInner;
 import com.azure.resourcemanager.logic.models.ExpressionRoot;
@@ -34,26 +33,28 @@ import com.azure.resourcemanager.logic.models.ExpressionTraces;
 import com.azure.resourcemanager.logic.models.WorkflowRunActionRepetitionDefinitionCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkflowRunActionRepetitionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowRunActionRepetitionsClient.
+ */
 public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRunActionRepetitionsClient {
-    private final ClientLogger logger = new ClientLogger(WorkflowRunActionRepetitionsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkflowRunActionRepetitionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final LogicManagementClientImpl client;
 
     /**
      * Initializes an instance of WorkflowRunActionRepetitionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkflowRunActionRepetitionsClientImpl(LogicManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    WorkflowRunActionRepetitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(WorkflowRunActionRepetitionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,65 +64,43 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      */
     @Host("{$host}")
     @ServiceInterface(name = "LogicManagementClien")
-    private interface WorkflowRunActionRepetitionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows"
-                + "/{workflowName}/runs/{runName}/actions/{actionName}/repetitions")
-        @ExpectedResponses({200})
+    public interface WorkflowRunActionRepetitionsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkflowRunActionRepetitionDefinitionCollection>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<WorkflowRunActionRepetitionDefinitionCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workflowName") String workflowName,
-            @PathParam("runName") String runName,
-            @PathParam("actionName") String actionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workflowName") String workflowName,
+            @PathParam("runName") String runName, @PathParam("actionName") String actionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows"
-                + "/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkflowRunActionRepetitionDefinitionInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<WorkflowRunActionRepetitionDefinitionInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workflowName") String workflowName,
-            @PathParam("runName") String runName,
-            @PathParam("actionName") String actionName,
-            @PathParam("repetitionName") String repetitionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workflowName") String workflowName,
+            @PathParam("runName") String runName, @PathParam("actionName") String actionName,
+            @PathParam("repetitionName") String repetitionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows"
-                + "/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}"
-                + "/listExpressionTraces")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/listExpressionTraces")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressionTraces>> listExpressionTraces(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ExpressionTraces>> listExpressionTraces(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workflowName") String workflowName,
-            @PathParam("runName") String runName,
-            @PathParam("actionName") String actionName,
-            @PathParam("repetitionName") String repetitionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workflowName") String workflowName,
+            @PathParam("runName") String runName, @PathParam("actionName") String actionName,
+            @PathParam("repetitionName") String repetitionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get all of a workflow run action repetitions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -129,22 +108,19 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of a workflow run action repetitions.
+     * @return all of a workflow run action repetitions along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkflowRunActionRepetitionDefinitionInner>> listSinglePageAsync(
-        String resourceGroupName, String workflowName, String runName, String actionName) {
+    private Mono<PagedResponse<WorkflowRunActionRepetitionDefinitionInner>>
+        listSinglePageAsync(String resourceGroupName, String workflowName, String runName, String actionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -161,29 +137,16 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workflowName,
-                            runName,
-                            actionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<WorkflowRunActionRepetitionDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workflowName, runName, actionName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<WorkflowRunActionRepetitionDefinitionInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all of a workflow run action repetitions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -192,22 +155,19 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of a workflow run action repetitions.
+     * @return all of a workflow run action repetitions along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowRunActionRepetitionDefinitionInner>> listSinglePageAsync(
         String resourceGroupName, String workflowName, String runName, String actionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -225,25 +185,15 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workflowName,
-                runName,
-                actionName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workflowName, runName,
+                actionName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Get all of a workflow run action repetitions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -251,17 +201,17 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of a workflow run action repetitions.
+     * @return all of a workflow run action repetitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WorkflowRunActionRepetitionDefinitionInner> listAsync(
-        String resourceGroupName, String workflowName, String runName, String actionName) {
+    private PagedFlux<WorkflowRunActionRepetitionDefinitionInner> listAsync(String resourceGroupName,
+        String workflowName, String runName, String actionName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workflowName, runName, actionName));
     }
 
     /**
      * Get all of a workflow run action repetitions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -270,18 +220,18 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of a workflow run action repetitions.
+     * @return all of a workflow run action repetitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WorkflowRunActionRepetitionDefinitionInner> listAsync(
-        String resourceGroupName, String workflowName, String runName, String actionName, Context context) {
+    private PagedFlux<WorkflowRunActionRepetitionDefinitionInner> listAsync(String resourceGroupName,
+        String workflowName, String runName, String actionName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workflowName, runName, actionName, context));
     }
 
     /**
      * Get all of a workflow run action repetitions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -289,17 +239,17 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of a workflow run action repetitions.
+     * @return all of a workflow run action repetitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(
-        String resourceGroupName, String workflowName, String runName, String actionName) {
+    public PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(String resourceGroupName, String workflowName,
+        String runName, String actionName) {
         return new PagedIterable<>(listAsync(resourceGroupName, workflowName, runName, actionName));
     }
 
     /**
      * Get all of a workflow run action repetitions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -308,17 +258,17 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all of a workflow run action repetitions.
+     * @return all of a workflow run action repetitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(
-        String resourceGroupName, String workflowName, String runName, String actionName, Context context) {
+    public PagedIterable<WorkflowRunActionRepetitionDefinitionInner> list(String resourceGroupName, String workflowName,
+        String runName, String actionName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, workflowName, runName, actionName, context));
     }
 
     /**
      * Get a workflow run action repetition.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -327,22 +277,18 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action repetition.
+     * @return a workflow run action repetition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkflowRunActionRepetitionDefinitionInner>> getWithResponseAsync(
-        String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName) {
+    private Mono<Response<WorkflowRunActionRepetitionDefinitionInner>> getWithResponseAsync(String resourceGroupName,
+        String workflowName, String runName, String actionName, String repetitionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -363,25 +309,14 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workflowName,
-                            runName,
-                            actionName,
-                            repetitionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    workflowName, runName, actionName, repetitionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a workflow run action repetition.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -391,27 +326,18 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action repetition.
+     * @return a workflow run action repetition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkflowRunActionRepetitionDefinitionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        Context context) {
+    private Mono<Response<WorkflowRunActionRepetitionDefinitionInner>> getWithResponseAsync(String resourceGroupName,
+        String workflowName, String runName, String actionName, String repetitionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -431,23 +357,13 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workflowName,
-                runName,
-                actionName,
-                repetitionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, workflowName,
+            runName, actionName, repetitionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get a workflow run action repetition.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -456,44 +372,18 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action repetition.
+     * @return a workflow run action repetition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkflowRunActionRepetitionDefinitionInner> getAsync(
-        String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName) {
+    private Mono<WorkflowRunActionRepetitionDefinitionInner> getAsync(String resourceGroupName, String workflowName,
+        String runName, String actionName, String repetitionName) {
         return getWithResponseAsync(resourceGroupName, workflowName, runName, actionName, repetitionName)
-            .flatMap(
-                (Response<WorkflowRunActionRepetitionDefinitionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a workflow run action repetition.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action repetition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkflowRunActionRepetitionDefinitionInner get(
-        String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName) {
-        return getAsync(resourceGroupName, workflowName, runName, actionName, repetitionName).block();
-    }
-
-    /**
-     * Get a workflow run action repetition.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -503,23 +393,18 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run action repetition.
+     * @return a workflow run action repetition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkflowRunActionRepetitionDefinitionInner> getWithResponse(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        Context context) {
+    public Response<WorkflowRunActionRepetitionDefinitionInner> getWithResponse(String resourceGroupName,
+        String workflowName, String runName, String actionName, String repetitionName, Context context) {
         return getWithResponseAsync(resourceGroupName, workflowName, runName, actionName, repetitionName, context)
             .block();
     }
 
     /**
-     * Lists a workflow run expression trace.
-     *
+     * Get a workflow run action repetition.
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -528,22 +413,38 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces.
+     * @return a workflow run action repetition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpressionRoot>> listExpressionTracesSinglePageAsync(
-        String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName) {
+    public WorkflowRunActionRepetitionDefinitionInner get(String resourceGroupName, String workflowName, String runName,
+        String actionName, String repetitionName) {
+        return getWithResponse(resourceGroupName, workflowName, runName, actionName, repetitionName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Lists a workflow run expression trace.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param workflowName The workflow name.
+     * @param runName The workflow run name.
+     * @param actionName The workflow action name.
+     * @param repetitionName The workflow repetition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the expression traces along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ExpressionRoot>> listExpressionTracesSinglePageAsync(String resourceGroupName,
+        String workflowName, String runName, String actionName, String repetitionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -563,30 +464,17 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listExpressionTraces(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workflowName,
-                            runName,
-                            actionName,
-                            repetitionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ExpressionRoot>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().inputs(), null, null))
+            .withContext(context -> service.listExpressionTraces(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, workflowName, runName, actionName, repetitionName,
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ExpressionRoot>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().inputs(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists a workflow run expression trace.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -596,27 +484,18 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces.
+     * @return the expression traces along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpressionRoot>> listExpressionTracesSinglePageAsync(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        Context context) {
+    private Mono<PagedResponse<ExpressionRoot>> listExpressionTracesSinglePageAsync(String resourceGroupName,
+        String workflowName, String runName, String actionName, String repetitionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -637,26 +516,15 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listExpressionTraces(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workflowName,
-                runName,
-                actionName,
-                repetitionName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().inputs(), null, null));
+            .listExpressionTraces(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                workflowName, runName, actionName, repetitionName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().inputs(), null, null));
     }
 
     /**
      * Lists a workflow run expression trace.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -665,20 +533,18 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces.
+     * @return the expression traces as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExpressionRoot> listExpressionTracesAsync(
-        String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName) {
-        return new PagedFlux<>(
-            () ->
-                listExpressionTracesSinglePageAsync(
-                    resourceGroupName, workflowName, runName, actionName, repetitionName));
+    private PagedFlux<ExpressionRoot> listExpressionTracesAsync(String resourceGroupName, String workflowName,
+        String runName, String actionName, String repetitionName) {
+        return new PagedFlux<>(() -> listExpressionTracesSinglePageAsync(resourceGroupName, workflowName, runName,
+            actionName, repetitionName));
     }
 
     /**
      * Lists a workflow run expression trace.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -688,25 +554,18 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces.
+     * @return the expression traces as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExpressionRoot> listExpressionTracesAsync(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listExpressionTracesSinglePageAsync(
-                    resourceGroupName, workflowName, runName, actionName, repetitionName, context));
+    private PagedFlux<ExpressionRoot> listExpressionTracesAsync(String resourceGroupName, String workflowName,
+        String runName, String actionName, String repetitionName, Context context) {
+        return new PagedFlux<>(() -> listExpressionTracesSinglePageAsync(resourceGroupName, workflowName, runName,
+            actionName, repetitionName, context));
     }
 
     /**
      * Lists a workflow run expression trace.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -715,18 +574,18 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces.
+     * @return the expression traces as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExpressionRoot> listExpressionTraces(
-        String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName) {
+    public PagedIterable<ExpressionRoot> listExpressionTraces(String resourceGroupName, String workflowName,
+        String runName, String actionName, String repetitionName) {
         return new PagedIterable<>(
             listExpressionTracesAsync(resourceGroupName, workflowName, runName, actionName, repetitionName));
     }
 
     /**
      * Lists a workflow run expression trace.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -736,16 +595,11 @@ public final class WorkflowRunActionRepetitionsClientImpl implements WorkflowRun
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the expression traces.
+     * @return the expression traces as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExpressionRoot> listExpressionTraces(
-        String resourceGroupName,
-        String workflowName,
-        String runName,
-        String actionName,
-        String repetitionName,
-        Context context) {
+    public PagedIterable<ExpressionRoot> listExpressionTraces(String resourceGroupName, String workflowName,
+        String runName, String actionName, String repetitionName, Context context) {
         return new PagedIterable<>(
             listExpressionTracesAsync(resourceGroupName, workflowName, runName, actionName, repetitionName, context));
     }

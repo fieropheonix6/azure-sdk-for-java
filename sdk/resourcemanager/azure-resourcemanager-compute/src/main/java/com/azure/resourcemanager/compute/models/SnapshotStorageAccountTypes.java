@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The sku name. */
+/**
+ * The sku name.
+ */
 public final class SnapshotStorageAccountTypes extends ExpandableStringEnum<SnapshotStorageAccountTypes> {
-    /** Static value Standard_LRS for SnapshotStorageAccountTypes. */
+    /**
+     * Static value Standard_LRS for SnapshotStorageAccountTypes.
+     */
     public static final SnapshotStorageAccountTypes STANDARD_LRS = fromString("Standard_LRS");
 
-    /** Static value Premium_LRS for SnapshotStorageAccountTypes. */
+    /**
+     * Static value Premium_LRS for SnapshotStorageAccountTypes.
+     */
     public static final SnapshotStorageAccountTypes PREMIUM_LRS = fromString("Premium_LRS");
 
-    /** Static value Standard_ZRS for SnapshotStorageAccountTypes. */
+    /**
+     * Static value Standard_ZRS for SnapshotStorageAccountTypes.
+     */
     public static final SnapshotStorageAccountTypes STANDARD_ZRS = fromString("Standard_ZRS");
 
     /**
+     * Creates a new instance of SnapshotStorageAccountTypes value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SnapshotStorageAccountTypes() {
+    }
+
+    /**
      * Creates or finds a SnapshotStorageAccountTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SnapshotStorageAccountTypes.
      */
-    @JsonCreator
     public static SnapshotStorageAccountTypes fromString(String name) {
         return fromString(name, SnapshotStorageAccountTypes.class);
     }
 
     /**
      * Gets known SnapshotStorageAccountTypes values.
-     *
+     * 
      * @return known SnapshotStorageAccountTypes values.
      */
     public static Collection<SnapshotStorageAccountTypes> values() {

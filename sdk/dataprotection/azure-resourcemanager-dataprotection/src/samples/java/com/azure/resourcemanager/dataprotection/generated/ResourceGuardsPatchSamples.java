@@ -4,30 +4,32 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuardResource;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ResourceGuards Patch. */
+/**
+ * Samples for ResourceGuards Patch.
+ */
 public final class ResourceGuardsPatchSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/ResourceGuardCRUD/PatchResourceGuard.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/
+     * ResourceGuardCRUD/PatchResourceGuard.json
      */
     /**
      * Sample code: Patch ResourceGuard.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void patchResourceGuard(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        ResourceGuardResource resource =
-            manager
-                .resourceGuards()
-                .getByResourceGroupWithResponse("SampleResourceGroup", "swaggerExample", Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("newKey", "newVal")).apply();
+        ResourceGuardResource resource = manager.resourceGuards()
+            .getByResourceGroupWithResponse("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("newKey", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

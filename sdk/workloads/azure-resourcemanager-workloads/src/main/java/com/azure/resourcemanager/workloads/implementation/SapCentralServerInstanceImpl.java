@@ -12,12 +12,15 @@ import com.azure.resourcemanager.workloads.models.CentralServerVmDetails;
 import com.azure.resourcemanager.workloads.models.EnqueueReplicationServerProperties;
 import com.azure.resourcemanager.workloads.models.EnqueueServerProperties;
 import com.azure.resourcemanager.workloads.models.GatewayServerProperties;
+import com.azure.resourcemanager.workloads.models.LoadBalancerDetails;
 import com.azure.resourcemanager.workloads.models.MessageServerProperties;
+import com.azure.resourcemanager.workloads.models.OperationStatusResult;
 import com.azure.resourcemanager.workloads.models.SapCentralServerInstance;
 import com.azure.resourcemanager.workloads.models.SapHealthState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceError;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceProvisioningState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceStatus;
+import com.azure.resourcemanager.workloads.models.StopRequest;
 import com.azure.resourcemanager.workloads.models.UpdateSapCentralInstanceRequest;
 import java.util.Collections;
 import java.util.List;
@@ -90,6 +93,10 @@ public final class SapCentralServerInstanceImpl
         return this.innerModel().kernelPatch();
     }
 
+    public LoadBalancerDetails loadBalancerDetails() {
+        return this.innerModel().loadBalancerDetails();
+    }
+
     public List<CentralServerVmDetails> vmDetails() {
         List<CentralServerVmDetails> inner = this.innerModel().vmDetails();
         if (inner != null) {
@@ -143,29 +150,24 @@ public final class SapCentralServerInstanceImpl
 
     private UpdateSapCentralInstanceRequest updateBody;
 
-    public SapCentralServerInstanceImpl withExistingSapVirtualInstance(
-        String resourceGroupName, String sapVirtualInstanceName) {
+    public SapCentralServerInstanceImpl withExistingSapVirtualInstance(String resourceGroupName,
+        String sapVirtualInstanceName) {
         this.resourceGroupName = resourceGroupName;
         this.sapVirtualInstanceName = sapVirtualInstanceName;
         return this;
     }
 
     public SapCentralServerInstance create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapCentralInstances()
-                .create(
-                    resourceGroupName, sapVirtualInstanceName, centralInstanceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapCentralInstances()
+            .create(resourceGroupName, sapVirtualInstanceName, centralInstanceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SapCentralServerInstance create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapCentralInstances()
-                .create(resourceGroupName, sapVirtualInstanceName, centralInstanceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapCentralInstances()
+            .create(resourceGroupName, sapVirtualInstanceName, centralInstanceName, this.innerModel(), context);
         return this;
     }
 
@@ -181,51 +183,63 @@ public final class SapCentralServerInstanceImpl
     }
 
     public SapCentralServerInstance apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapCentralInstances()
-                .update(resourceGroupName, sapVirtualInstanceName, centralInstanceName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapCentralInstances()
+            .update(resourceGroupName, sapVirtualInstanceName, centralInstanceName, updateBody, Context.NONE);
         return this;
     }
 
     public SapCentralServerInstance apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapCentralInstances()
-                .update(resourceGroupName, sapVirtualInstanceName, centralInstanceName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapCentralInstances()
+            .update(resourceGroupName, sapVirtualInstanceName, centralInstanceName, updateBody, context);
         return this;
     }
 
-    SapCentralServerInstanceImpl(
-        SapCentralServerInstanceInner innerObject,
+    SapCentralServerInstanceImpl(SapCentralServerInstanceInner innerObject,
         com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.sapVirtualInstanceName = Utils.getValueFromIdByName(innerObject.id(), "sapVirtualInstances");
-        this.centralInstanceName = Utils.getValueFromIdByName(innerObject.id(), "centralInstances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.sapVirtualInstanceName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sapVirtualInstances");
+        this.centralInstanceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "centralInstances");
     }
 
     public SapCentralServerInstance refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapCentralInstances()
-                .getWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapCentralInstances()
+            .getWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SapCentralServerInstance refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapCentralInstances()
-                .getWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapCentralInstances()
+            .getWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, context)
+            .getValue();
         return this;
+    }
+
+    public OperationStatusResult startInstance() {
+        return serviceManager.sapCentralInstances()
+            .startInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName);
+    }
+
+    public OperationStatusResult startInstance(Context context) {
+        return serviceManager.sapCentralInstances()
+            .startInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName, context);
+    }
+
+    public OperationStatusResult stopInstance() {
+        return serviceManager.sapCentralInstances()
+            .stopInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName);
+    }
+
+    public OperationStatusResult stopInstance(StopRequest body, Context context) {
+        return serviceManager.sapCentralInstances()
+            .stopInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName, body, context);
     }
 
     public SapCentralServerInstanceImpl withRegion(Region location) {
@@ -263,8 +277,8 @@ public final class SapCentralServerInstanceImpl
         return this;
     }
 
-    public SapCentralServerInstanceImpl withEnqueueReplicationServerProperties(
-        EnqueueReplicationServerProperties enqueueReplicationServerProperties) {
+    public SapCentralServerInstanceImpl
+        withEnqueueReplicationServerProperties(EnqueueReplicationServerProperties enqueueReplicationServerProperties) {
         this.innerModel().withEnqueueReplicationServerProperties(enqueueReplicationServerProperties);
         return this;
     }

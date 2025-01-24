@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TimeseriesAggregationInterval. */
+/**
+ * Defines values for TimeseriesAggregationInterval.
+ */
 public final class TimeseriesAggregationInterval extends ExpandableStringEnum<TimeseriesAggregationInterval> {
-    /** Static value Hourly for TimeseriesAggregationInterval. */
+    /**
+     * Static value Hourly for TimeseriesAggregationInterval.
+     */
     public static final TimeseriesAggregationInterval HOURLY = fromString("Hourly");
 
-    /** Static value Daily for TimeseriesAggregationInterval. */
+    /**
+     * Static value Daily for TimeseriesAggregationInterval.
+     */
     public static final TimeseriesAggregationInterval DAILY = fromString("Daily");
 
     /**
+     * Creates a new instance of TimeseriesAggregationInterval value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TimeseriesAggregationInterval() {
+    }
+
+    /**
      * Creates or finds a TimeseriesAggregationInterval from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TimeseriesAggregationInterval.
      */
-    @JsonCreator
     public static TimeseriesAggregationInterval fromString(String name) {
         return fromString(name, TimeseriesAggregationInterval.class);
     }
 
-    /** @return known TimeseriesAggregationInterval values. */
+    /**
+     * Gets known TimeseriesAggregationInterval values.
+     * 
+     * @return known TimeseriesAggregationInterval values.
+     */
     public static Collection<TimeseriesAggregationInterval> values() {
         return values(TimeseriesAggregationInterval.class);
     }

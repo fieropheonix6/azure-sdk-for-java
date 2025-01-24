@@ -7,23 +7,19 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.WorkspaceConnectionSharedAccessSignature;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WorkspaceConnectionSharedAccessSignatureTests {
-    @Test
-    public void testDeserialize() {
-        WorkspaceConnectionSharedAccessSignature model =
-            BinaryData
-                .fromString("{\"sas\":\"uczkgofxyfsruc\"}")
-                .toObject(WorkspaceConnectionSharedAccessSignature.class);
-        Assertions.assertEquals("uczkgofxyfsruc", model.sas());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        WorkspaceConnectionSharedAccessSignature model
+            = BinaryData.fromString("{\"sas\":\"vo\"}").toObject(WorkspaceConnectionSharedAccessSignature.class);
+        Assertions.assertEquals("vo", model.sas());
     }
 
-    @Test
-    public void testSerialize() {
-        WorkspaceConnectionSharedAccessSignature model =
-            new WorkspaceConnectionSharedAccessSignature().withSas("uczkgofxyfsruc");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        WorkspaceConnectionSharedAccessSignature model = new WorkspaceConnectionSharedAccessSignature().withSas("vo");
         model = BinaryData.fromObject(model).toObject(WorkspaceConnectionSharedAccessSignature.class);
-        Assertions.assertEquals("uczkgofxyfsruc", model.sas());
+        Assertions.assertEquals("vo", model.sas());
     }
 }

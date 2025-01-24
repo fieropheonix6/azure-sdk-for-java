@@ -6,6 +6,11 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
@@ -15,39 +20,38 @@ import com.azure.resourcemanager.compute.models.SecurityProfile;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMNetworkProfileConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProtectionPolicy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 
-/** Describes the properties of a virtual machine scale set virtual machine. */
+/**
+ * Describes the properties of a virtual machine scale set virtual machine.
+ */
 @Fluent
-public final class VirtualMachineScaleSetVMPropertiesInner {
+public final class VirtualMachineScaleSetVMPropertiesInner
+    implements JsonSerializable<VirtualMachineScaleSetVMPropertiesInner> {
     /*
      * Specifies whether the latest model has been applied to the virtual machine.
      */
-    @JsonProperty(value = "latestModelApplied", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean latestModelApplied;
 
     /*
      * Azure VM unique ID.
      */
-    @JsonProperty(value = "vmId", access = JsonProperty.Access.WRITE_ONLY)
     private String vmId;
 
     /*
      * The virtual machine instance view.
      */
-    @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineScaleSetVMInstanceViewInner instanceView;
 
     /*
      * Specifies the hardware settings for the virtual machine.
      */
-    @JsonProperty(value = "hardwareProfile")
     private HardwareProfile hardwareProfile;
 
     /*
      * Specifies the storage settings for the virtual machine disks.
      */
-    @JsonProperty(value = "storageProfile")
     private StorageProfile storageProfile;
 
     /*
@@ -55,97 +59,92 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
      * whether the virtual machine has the capability to support attaching managed data disks with UltraSSD_LRS storage
      * account type.
      */
-    @JsonProperty(value = "additionalCapabilities")
     private AdditionalCapabilities additionalCapabilities;
 
     /*
      * Specifies the operating system settings for the virtual machine.
      */
-    @JsonProperty(value = "osProfile")
     private OSProfile osProfile;
 
     /*
      * Specifies the Security related profile settings for the virtual machine.
      */
-    @JsonProperty(value = "securityProfile")
     private SecurityProfile securityProfile;
 
     /*
      * Specifies the network interfaces of the virtual machine.
      */
-    @JsonProperty(value = "networkProfile")
     private NetworkProfile networkProfile;
 
     /*
      * Specifies the network profile configuration of the virtual machine.
      */
-    @JsonProperty(value = "networkProfileConfiguration")
     private VirtualMachineScaleSetVMNetworkProfileConfiguration networkProfileConfiguration;
 
     /*
-     * Specifies the boot diagnostic settings state. <br><br>Minimum api-version: 2015-06-15.
+     * Specifies the boot diagnostic settings state. Minimum api-version: 2015-06-15.
      */
-    @JsonProperty(value = "diagnosticsProfile")
     private DiagnosticsProfile diagnosticsProfile;
 
     /*
-     * Specifies information about the availability set that the virtual machine should be assigned to. Virtual
-     * machines specified in the same availability set are allocated to different nodes to maximize availability. For
-     * more information about availability sets, see [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). <br><br> For more
-     * information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) <br><br> Currently, a VM can
-     * only be added to availability set at creation time. An existing VM cannot be added to an availability set.
+     * Specifies information about the availability set that the virtual machine should be assigned to. Virtual machines
+     * specified in the same availability set are allocated to different nodes to maximize availability. For more
+     * information about availability sets, see [Availability sets
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). For more information on
+     * Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates). Currently, a VM can only be
+     * added to availability set at creation time. An existing VM cannot be added to an availability set.
      */
-    @JsonProperty(value = "availabilitySet")
     private SubResource availabilitySet;
 
     /*
      * The provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Specifies that the image or disk that is being used was licensed on-premises. <br><br> Possible values for
-     * Windows Server operating system are: <br><br> Windows_Client <br><br> Windows_Server <br><br> Possible values
-     * for Linux Server operating system are: <br><br> RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For
-     * more information, see [Azure Hybrid Use Benefit for Windows
+     * Windows Server operating system are: <br><br> Windows_Client <br><br> Windows_Server <br><br> Possible values for
+     * Linux Server operating system are: <br><br> RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For more
+     * information, see [Azure Hybrid Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing) <br><br> [Azure
      * Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) <br><br> Minimum
      * api-version: 2015-06-15
      */
-    @JsonProperty(value = "licenseType")
     private String licenseType;
 
     /*
      * Specifies whether the model applied to the virtual machine is the model of the virtual machine scale set or the
      * customized model for the virtual machine.
      */
-    @JsonProperty(value = "modelDefinitionApplied", access = JsonProperty.Access.WRITE_ONLY)
     private String modelDefinitionApplied;
 
     /*
      * Specifies the protection policy of the virtual machine.
      */
-    @JsonProperty(value = "protectionPolicy")
     private VirtualMachineScaleSetVMProtectionPolicy protectionPolicy;
 
     /*
-     * UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here.
-     * <br><br>Minimum api-version: 2021-03-01
+     * UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here. Minimum
+     * api-version: 2021-03-01
      */
-    @JsonProperty(value = "userData")
     private String userData;
 
-    /** Creates an instance of VirtualMachineScaleSetVMPropertiesInner class. */
+    /*
+     * Specifies the time at which the Virtual Machine resource was created.
+     */
+    private OffsetDateTime timeCreated;
+
+    /**
+     * Creates an instance of VirtualMachineScaleSetVMPropertiesInner class.
+     */
     public VirtualMachineScaleSetVMPropertiesInner() {
     }
 
     /**
      * Get the latestModelApplied property: Specifies whether the latest model has been applied to the virtual machine.
-     *
+     * 
      * @return the latestModelApplied value.
      */
     public Boolean latestModelApplied() {
@@ -154,7 +153,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
 
     /**
      * Get the vmId property: Azure VM unique ID.
-     *
+     * 
      * @return the vmId value.
      */
     public String vmId() {
@@ -163,7 +162,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
 
     /**
      * Get the instanceView property: The virtual machine instance view.
-     *
+     * 
      * @return the instanceView value.
      */
     public VirtualMachineScaleSetVMInstanceViewInner instanceView() {
@@ -172,7 +171,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
 
     /**
      * Get the hardwareProfile property: Specifies the hardware settings for the virtual machine.
-     *
+     * 
      * @return the hardwareProfile value.
      */
     public HardwareProfile hardwareProfile() {
@@ -181,7 +180,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
 
     /**
      * Set the hardwareProfile property: Specifies the hardware settings for the virtual machine.
-     *
+     * 
      * @param hardwareProfile the hardwareProfile value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -192,7 +191,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
 
     /**
      * Get the storageProfile property: Specifies the storage settings for the virtual machine disks.
-     *
+     * 
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
@@ -201,7 +200,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
 
     /**
      * Set the storageProfile property: Specifies the storage settings for the virtual machine disks.
-     *
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -214,7 +213,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
      * Get the additionalCapabilities property: Specifies additional capabilities enabled or disabled on the virtual
      * machine in the scale set. For instance: whether the virtual machine has the capability to support attaching
      * managed data disks with UltraSSD_LRS storage account type.
-     *
+     * 
      * @return the additionalCapabilities value.
      */
     public AdditionalCapabilities additionalCapabilities() {
@@ -225,19 +224,19 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
      * Set the additionalCapabilities property: Specifies additional capabilities enabled or disabled on the virtual
      * machine in the scale set. For instance: whether the virtual machine has the capability to support attaching
      * managed data disks with UltraSSD_LRS storage account type.
-     *
+     * 
      * @param additionalCapabilities the additionalCapabilities value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
-    public VirtualMachineScaleSetVMPropertiesInner withAdditionalCapabilities(
-        AdditionalCapabilities additionalCapabilities) {
+    public VirtualMachineScaleSetVMPropertiesInner
+        withAdditionalCapabilities(AdditionalCapabilities additionalCapabilities) {
         this.additionalCapabilities = additionalCapabilities;
         return this;
     }
 
     /**
      * Get the osProfile property: Specifies the operating system settings for the virtual machine.
-     *
+     * 
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
@@ -246,7 +245,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
 
     /**
      * Set the osProfile property: Specifies the operating system settings for the virtual machine.
-     *
+     * 
      * @param osProfile the osProfile value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -257,7 +256,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
 
     /**
      * Get the securityProfile property: Specifies the Security related profile settings for the virtual machine.
-     *
+     * 
      * @return the securityProfile value.
      */
     public SecurityProfile securityProfile() {
@@ -266,7 +265,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
 
     /**
      * Set the securityProfile property: Specifies the Security related profile settings for the virtual machine.
-     *
+     * 
      * @param securityProfile the securityProfile value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -277,7 +276,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
 
     /**
      * Get the networkProfile property: Specifies the network interfaces of the virtual machine.
-     *
+     * 
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
@@ -286,7 +285,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
 
     /**
      * Set the networkProfile property: Specifies the network interfaces of the virtual machine.
-     *
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -297,7 +296,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
 
     /**
      * Get the networkProfileConfiguration property: Specifies the network profile configuration of the virtual machine.
-     *
+     * 
      * @return the networkProfileConfiguration value.
      */
     public VirtualMachineScaleSetVMNetworkProfileConfiguration networkProfileConfiguration() {
@@ -306,7 +305,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
 
     /**
      * Set the networkProfileConfiguration property: Specifies the network profile configuration of the virtual machine.
-     *
+     * 
      * @param networkProfileConfiguration the networkProfileConfiguration value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -317,9 +316,9 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
     }
 
     /**
-     * Get the diagnosticsProfile property: Specifies the boot diagnostic settings state. &lt;br&gt;&lt;br&gt;Minimum
-     * api-version: 2015-06-15.
-     *
+     * Get the diagnosticsProfile property: Specifies the boot diagnostic settings state. Minimum api-version:
+     * 2015-06-15.
+     * 
      * @return the diagnosticsProfile value.
      */
     public DiagnosticsProfile diagnosticsProfile() {
@@ -327,9 +326,9 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
     }
 
     /**
-     * Set the diagnosticsProfile property: Specifies the boot diagnostic settings state. &lt;br&gt;&lt;br&gt;Minimum
-     * api-version: 2015-06-15.
-     *
+     * Set the diagnosticsProfile property: Specifies the boot diagnostic settings state. Minimum api-version:
+     * 2015-06-15.
+     * 
      * @param diagnosticsProfile the diagnosticsProfile value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -342,12 +341,11 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
      * Get the availabilitySet property: Specifies information about the availability set that the virtual machine
      * should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes
      * to maximize availability. For more information about availability sets, see [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). &lt;br&gt;&lt;br&gt; For
-     * more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) &lt;br&gt;&lt;br&gt; Currently,
-     * a VM can only be added to availability set at creation time. An existing VM cannot be added to an availability
-     * set.
-     *
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). For more information on
+     * Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates). Currently, a VM can only be
+     * added to availability set at creation time. An existing VM cannot be added to an availability set.
+     * 
      * @return the availabilitySet value.
      */
     public SubResource availabilitySet() {
@@ -358,12 +356,11 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
      * Set the availabilitySet property: Specifies information about the availability set that the virtual machine
      * should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes
      * to maximize availability. For more information about availability sets, see [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). &lt;br&gt;&lt;br&gt; For
-     * more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) &lt;br&gt;&lt;br&gt; Currently,
-     * a VM can only be added to availability set at creation time. An existing VM cannot be added to an availability
-     * set.
-     *
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). For more information on
+     * Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates). Currently, a VM can only be
+     * added to availability set at creation time. An existing VM cannot be added to an availability set.
+     * 
      * @param availabilitySet the availabilitySet value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -374,7 +371,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
 
     /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -391,7 +388,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
      * Minimum api-version: 2015-06-15.
-     *
+     * 
      * @return the licenseType value.
      */
     public String licenseType() {
@@ -408,7 +405,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
      * Minimum api-version: 2015-06-15.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -420,7 +417,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
     /**
      * Get the modelDefinitionApplied property: Specifies whether the model applied to the virtual machine is the model
      * of the virtual machine scale set or the customized model for the virtual machine.
-     *
+     * 
      * @return the modelDefinitionApplied value.
      */
     public String modelDefinitionApplied() {
@@ -429,7 +426,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
 
     /**
      * Get the protectionPolicy property: Specifies the protection policy of the virtual machine.
-     *
+     * 
      * @return the protectionPolicy value.
      */
     public VirtualMachineScaleSetVMProtectionPolicy protectionPolicy() {
@@ -438,20 +435,20 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
 
     /**
      * Set the protectionPolicy property: Specifies the protection policy of the virtual machine.
-     *
+     * 
      * @param protectionPolicy the protectionPolicy value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
-    public VirtualMachineScaleSetVMPropertiesInner withProtectionPolicy(
-        VirtualMachineScaleSetVMProtectionPolicy protectionPolicy) {
+    public VirtualMachineScaleSetVMPropertiesInner
+        withProtectionPolicy(VirtualMachineScaleSetVMProtectionPolicy protectionPolicy) {
         this.protectionPolicy = protectionPolicy;
         return this;
     }
 
     /**
      * Get the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
-     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
-     *
+     * secrets in here. Minimum api-version: 2021-03-01.
+     * 
      * @return the userData value.
      */
     public String userData() {
@@ -460,8 +457,8 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
 
     /**
      * Set the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
-     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
-     *
+     * secrets in here. Minimum api-version: 2021-03-01.
+     * 
      * @param userData the userData value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
      */
@@ -471,8 +468,17 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
     }
 
     /**
+     * Get the timeCreated property: Specifies the time at which the Virtual Machine resource was created.
+     * 
+     * @return the timeCreated value.
+     */
+    public OffsetDateTime timeCreated() {
+        return this.timeCreated;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -506,5 +512,98 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
         if (protectionPolicy() != null) {
             protectionPolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("hardwareProfile", this.hardwareProfile);
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        jsonWriter.writeJsonField("additionalCapabilities", this.additionalCapabilities);
+        jsonWriter.writeJsonField("osProfile", this.osProfile);
+        jsonWriter.writeJsonField("securityProfile", this.securityProfile);
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        jsonWriter.writeJsonField("networkProfileConfiguration", this.networkProfileConfiguration);
+        jsonWriter.writeJsonField("diagnosticsProfile", this.diagnosticsProfile);
+        jsonWriter.writeJsonField("availabilitySet", this.availabilitySet);
+        jsonWriter.writeStringField("licenseType", this.licenseType);
+        jsonWriter.writeJsonField("protectionPolicy", this.protectionPolicy);
+        jsonWriter.writeStringField("userData", this.userData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetVMPropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetVMPropertiesInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetVMPropertiesInner.
+     */
+    public static VirtualMachineScaleSetVMPropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetVMPropertiesInner deserializedVirtualMachineScaleSetVMPropertiesInner
+                = new VirtualMachineScaleSetVMPropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("latestModelApplied".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.latestModelApplied
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("vmId".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.vmId = reader.getString();
+                } else if ("instanceView".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.instanceView
+                        = VirtualMachineScaleSetVMInstanceViewInner.fromJson(reader);
+                } else if ("hardwareProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.hardwareProfile
+                        = HardwareProfile.fromJson(reader);
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.storageProfile
+                        = StorageProfile.fromJson(reader);
+                } else if ("additionalCapabilities".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.additionalCapabilities
+                        = AdditionalCapabilities.fromJson(reader);
+                } else if ("osProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.osProfile = OSProfile.fromJson(reader);
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.securityProfile
+                        = SecurityProfile.fromJson(reader);
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.networkProfile
+                        = NetworkProfile.fromJson(reader);
+                } else if ("networkProfileConfiguration".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.networkProfileConfiguration
+                        = VirtualMachineScaleSetVMNetworkProfileConfiguration.fromJson(reader);
+                } else if ("diagnosticsProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.diagnosticsProfile
+                        = DiagnosticsProfile.fromJson(reader);
+                } else if ("availabilitySet".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.availabilitySet = SubResource.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.provisioningState = reader.getString();
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.licenseType = reader.getString();
+                } else if ("modelDefinitionApplied".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.modelDefinitionApplied = reader.getString();
+                } else if ("protectionPolicy".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.protectionPolicy
+                        = VirtualMachineScaleSetVMProtectionPolicy.fromJson(reader);
+                } else if ("userData".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.userData = reader.getString();
+                } else if ("timeCreated".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMPropertiesInner.timeCreated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetVMPropertiesInner;
+        });
     }
 }

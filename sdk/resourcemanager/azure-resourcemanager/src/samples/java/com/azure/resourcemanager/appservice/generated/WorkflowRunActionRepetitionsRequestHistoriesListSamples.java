@@ -4,31 +4,25 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for WorkflowRunActionRepetitionsRequestHistories List. */
+/**
+ * Samples for WorkflowRunActionRepetitionsRequestHistories List.
+ */
 public final class WorkflowRunActionRepetitionsRequestHistoriesListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/WorkflowRunActionRepetitionsRequestHistories_List.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/
+     * WorkflowRunActionRepetitionsRequestHistories_List.json
      */
     /**
      * Sample code: List repetition request history.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listRepetitionRequestHistory(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
+        azure.webApps()
             .manager()
             .serviceClient()
             .getWorkflowRunActionRepetitionsRequestHistories()
-            .list(
-                "test-resource-group",
-                "test-name",
-                "test-workflow",
-                "08586776228332053161046300351",
-                "HTTP_Webhook",
-                "000001",
-                Context.NONE);
+            .list("test-resource-group", "test-name", "test-workflow", "08586776228332053161046300351", "HTTP_Webhook",
+                "000001", com.azure.core.util.Context.NONE);
     }
 }

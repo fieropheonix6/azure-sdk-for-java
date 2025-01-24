@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The serviceName of an AvailableDelegation indicates a possible delegation for a subnet. */
+/**
+ * The serviceName of an AvailableDelegation indicates a possible delegation for a subnet.
+ */
 @Fluent
-public final class AvailableDelegationInner {
+public final class AvailableDelegationInner implements JsonSerializable<AvailableDelegationInner> {
     /*
      * The name of the AvailableDelegation resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique identifier of the AvailableDelegation resource.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The name of the service and resource.
      */
-    @JsonProperty(value = "serviceName")
     private String serviceName;
 
     /*
      * The actions permitted to the service upon delegation.
      */
-    @JsonProperty(value = "actions")
     private List<String> actions;
 
-    /** Creates an instance of AvailableDelegationInner class. */
+    /**
+     * Creates an instance of AvailableDelegationInner class.
+     */
     public AvailableDelegationInner() {
     }
 
     /**
      * Get the name property: The name of the AvailableDelegation resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,7 +59,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Set the name property: The name of the AvailableDelegation resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the AvailableDelegationInner object itself.
      */
@@ -67,7 +70,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Get the id property: A unique identifier of the AvailableDelegation resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -76,7 +79,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Set the id property: A unique identifier of the AvailableDelegation resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the AvailableDelegationInner object itself.
      */
@@ -87,7 +90,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -96,7 +99,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Set the type property: Resource type.
-     *
+     * 
      * @param type the type value to set.
      * @return the AvailableDelegationInner object itself.
      */
@@ -107,7 +110,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Get the serviceName property: The name of the service and resource.
-     *
+     * 
      * @return the serviceName value.
      */
     public String serviceName() {
@@ -116,7 +119,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Set the serviceName property: The name of the service and resource.
-     *
+     * 
      * @param serviceName the serviceName value to set.
      * @return the AvailableDelegationInner object itself.
      */
@@ -127,7 +130,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Get the actions property: The actions permitted to the service upon delegation.
-     *
+     * 
      * @return the actions value.
      */
     public List<String> actions() {
@@ -136,7 +139,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Set the actions property: The actions permitted to the service upon delegation.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the AvailableDelegationInner object itself.
      */
@@ -147,9 +150,58 @@ public final class AvailableDelegationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("serviceName", this.serviceName);
+        jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableDelegationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableDelegationInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableDelegationInner.
+     */
+    public static AvailableDelegationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableDelegationInner deserializedAvailableDelegationInner = new AvailableDelegationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAvailableDelegationInner.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedAvailableDelegationInner.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAvailableDelegationInner.type = reader.getString();
+                } else if ("serviceName".equals(fieldName)) {
+                    deserializedAvailableDelegationInner.serviceName = reader.getString();
+                } else if ("actions".equals(fieldName)) {
+                    List<String> actions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAvailableDelegationInner.actions = actions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableDelegationInner;
+        });
     }
 }

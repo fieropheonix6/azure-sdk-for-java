@@ -5,48 +5,56 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.ApiType;
 import com.azure.resourcemanager.cosmos.models.RestorableLocationResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** A Azure Cosmos DB restorable database account. */
+/**
+ * A Azure Cosmos DB restorable database account.
+ */
 @Fluent
-public final class RestorableDatabaseAccountGetResultInner {
+public final class RestorableDatabaseAccountGetResultInner
+    implements JsonSerializable<RestorableDatabaseAccountGetResultInner> {
     /*
      * The properties of a restorable database account.
      */
-    @JsonProperty(value = "properties")
     private RestorableDatabaseAccountProperties innerProperties;
 
     /*
      * The unique resource identifier of the ARM resource.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the ARM resource.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The type of Azure resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The location of the resource group to which the resource belongs.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /**
+     * Creates an instance of RestorableDatabaseAccountGetResultInner class.
+     */
+    public RestorableDatabaseAccountGetResultInner() {
+    }
+
+    /**
      * Get the innerProperties property: The properties of a restorable database account.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RestorableDatabaseAccountProperties innerProperties() {
@@ -55,7 +63,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Get the id property: The unique resource identifier of the ARM resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -64,7 +72,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Get the name property: The name of the ARM resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -73,7 +81,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Get the type property: The type of Azure resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -82,7 +90,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Get the location property: The location of the resource group to which the resource belongs.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -91,7 +99,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Set the location property: The location of the resource group to which the resource belongs.
-     *
+     * 
      * @param location the location value to set.
      * @return the RestorableDatabaseAccountGetResultInner object itself.
      */
@@ -102,7 +110,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Get the accountName property: The name of the global database account.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -111,7 +119,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Set the accountName property: The name of the global database account.
-     *
+     * 
      * @param accountName the accountName value to set.
      * @return the RestorableDatabaseAccountGetResultInner object itself.
      */
@@ -125,7 +133,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Get the creationTime property: The creation time of the restorable database account (ISO-8601 format).
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -134,7 +142,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Set the creationTime property: The creation time of the restorable database account (ISO-8601 format).
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the RestorableDatabaseAccountGetResultInner object itself.
      */
@@ -149,7 +157,7 @@ public final class RestorableDatabaseAccountGetResultInner {
     /**
      * Get the deletionTime property: The time at which the restorable database account has been deleted (ISO-8601
      * format).
-     *
+     * 
      * @return the deletionTime value.
      */
     public OffsetDateTime deletionTime() {
@@ -159,7 +167,7 @@ public final class RestorableDatabaseAccountGetResultInner {
     /**
      * Set the deletionTime property: The time at which the restorable database account has been deleted (ISO-8601
      * format).
-     *
+     * 
      * @param deletionTime the deletionTime value to set.
      * @return the RestorableDatabaseAccountGetResultInner object itself.
      */
@@ -172,8 +180,33 @@ public final class RestorableDatabaseAccountGetResultInner {
     }
 
     /**
+     * Get the oldestRestorableTime property: The least recent time at which the database account can be restored to
+     * (ISO-8601 format).
+     * 
+     * @return the oldestRestorableTime value.
+     */
+    public OffsetDateTime oldestRestorableTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().oldestRestorableTime();
+    }
+
+    /**
+     * Set the oldestRestorableTime property: The least recent time at which the database account can be restored to
+     * (ISO-8601 format).
+     * 
+     * @param oldestRestorableTime the oldestRestorableTime value to set.
+     * @return the RestorableDatabaseAccountGetResultInner object itself.
+     */
+    public RestorableDatabaseAccountGetResultInner withOldestRestorableTime(OffsetDateTime oldestRestorableTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorableDatabaseAccountProperties();
+        }
+        this.innerProperties().withOldestRestorableTime(oldestRestorableTime);
+        return this;
+    }
+
+    /**
      * Get the apiType property: The API type of the restorable database account.
-     *
+     * 
      * @return the apiType value.
      */
     public ApiType apiType() {
@@ -182,7 +215,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Get the restorableLocations property: List of regions where the of the database account can be restored from.
-     *
+     * 
      * @return the restorableLocations value.
      */
     public List<RestorableLocationResource> restorableLocations() {
@@ -191,12 +224,59 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableDatabaseAccountGetResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableDatabaseAccountGetResultInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorableDatabaseAccountGetResultInner.
+     */
+    public static RestorableDatabaseAccountGetResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableDatabaseAccountGetResultInner deserializedRestorableDatabaseAccountGetResultInner
+                = new RestorableDatabaseAccountGetResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedRestorableDatabaseAccountGetResultInner.innerProperties
+                        = RestorableDatabaseAccountProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedRestorableDatabaseAccountGetResultInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRestorableDatabaseAccountGetResultInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRestorableDatabaseAccountGetResultInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedRestorableDatabaseAccountGetResultInner.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableDatabaseAccountGetResultInner;
+        });
     }
 }

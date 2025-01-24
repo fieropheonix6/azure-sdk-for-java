@@ -15,10 +15,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-// This class wraps a Netty HttpHeaders instance and provides an azure-core HttpHeaders view onto it.
-// This avoids the need to copy the Netty HttpHeaders into an azure-core HttpHeaders instance.
-// Whilst it is not necessary to support mutability (as these headers are the result of a Netty response), we do so in
-// any case, given the additional implementation cost is minimal.
+/**
+ * This class wraps a Netty HttpHeaders instance and provides an azure-core HttpHeaders view onto it.
+ * <p>
+ * This avoids the need to copy the Netty HttpHeaders into an azure-core HttpHeaders instance.
+ * <p>
+ * Whilst it is not necessary to support mutability (as these headers are the result of a Netty response), we do so any
+ * case, given the additional implementation cost is minimal.
+ */
 public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     // This wrapper is frequently created, so we are OK with creating a single shared logger instance here,
     // to lessen the cost of this type.
@@ -35,6 +39,11 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     // toMultiMap API. We lazily instantiate it when toMap is called, and then reuse that for all future calls.
     private Map<String, String[]> abstractMultiMap;
 
+    /**
+     * Creates a new instance of NettyToAzureCoreHttpHeadersWrapper.
+     *
+     * @param nettyHeaders The Netty HttpHeaders to wrap.
+     */
     public NettyToAzureCoreHttpHeadersWrapper(io.netty.handler.codec.http.HttpHeaders nettyHeaders) {
         this.nettyHeaders = nettyHeaders;
     }
@@ -45,6 +54,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    @Deprecated
     public HttpHeaders add(String name, String value) {
         nettyHeaders.add(name, value);
         return this;
@@ -56,6 +66,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    @Deprecated
     public HttpHeaders set(String name, String value) {
         nettyHeaders.set(name, value);
         return this;
@@ -67,6 +78,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    @Deprecated
     public HttpHeaders set(String name, List<String> values) {
         nettyHeaders.set(name, values);
         return this;
@@ -78,6 +90,19 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    public HttpHeaders setAll(Map<String, List<String>> headers) {
+        headers.forEach(this::set);
+        return this;
+    }
+
+    @Override
+    public HttpHeaders setAllHttpHeaders(HttpHeaders headers) {
+        headers.forEach(header -> set(header.getName(), header.getValuesList()));
+        return this;
+    }
+
+    @Override
+    @Deprecated
     public HttpHeader get(String name) {
         // Be careful here: Netty's HttpHeaders 'get' method will return only the first value, which is obviously not
         // what we want to call! We call 'getAll' instead, but unfortunately there is a representation mismatch:
@@ -93,6 +118,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    @Deprecated
     public HttpHeader remove(String name) {
         HttpHeader header = get(name);
         if (header != null) {
@@ -108,6 +134,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    @Deprecated
     public String getValue(String name) {
         List<String> values = nettyHeaders.getAll(name);
         return CoreUtils.isNullOrEmpty(values) ? null : CoreUtils.stringJoin(",", values);
@@ -119,6 +146,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    @Deprecated
     public String[] getValues(String name) {
         List<String> values = nettyHeaders.getAll(name);
         return CoreUtils.isNullOrEmpty(values) ? null : values.toArray(new String[0]);
@@ -153,8 +181,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
 
     @Override
     public Stream<HttpHeader> stream() {
-        return nettyHeaders.names().stream()
-            .map(name -> new NettyHttpHeader(this, name, nettyHeaders.getAll(name)));
+        return nettyHeaders.names().stream().map(name -> new NettyHttpHeader(this, name, nettyHeaders.getAll(name)));
     }
 
     static class NettyHttpHeader extends HttpHeader {
@@ -185,7 +212,6 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
             this.allHeaders = allHeaders;
             this.headerNames = allHeaders.nettyHeaders.names().iterator();
         }
-
 
         @Override
         public boolean hasNext() {

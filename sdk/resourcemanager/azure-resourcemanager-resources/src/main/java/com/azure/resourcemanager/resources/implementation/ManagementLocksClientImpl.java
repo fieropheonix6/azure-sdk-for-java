@@ -36,26 +36,29 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsLi
 import com.azure.resourcemanager.resources.models.ManagementLockListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagementLocksClient. */
-public final class ManagementLocksClientImpl
-    implements InnerSupportsGet<ManagementLockObjectInner>,
-        InnerSupportsListing<ManagementLockObjectInner>,
-        InnerSupportsDelete<Void>,
-        ManagementLocksClient {
-    /** The proxy service used to perform REST calls. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagementLocksClient.
+ */
+public final class ManagementLocksClientImpl implements InnerSupportsGet<ManagementLockObjectInner>,
+    InnerSupportsListing<ManagementLockObjectInner>, InnerSupportsDelete<Void>, ManagementLocksClient {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ManagementLocksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ManagementLockClientImpl client;
 
     /**
      * Initializes an instance of ManagementLocksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ManagementLocksClientImpl(ManagementLockClientImpl client) {
-        this.service =
-            RestProxy.create(ManagementLocksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ManagementLocksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,295 +68,209 @@ public final class ManagementLocksClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "ManagementLockClient")
-    private interface ManagementLocksService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks"
-                + "/{lockName}")
-        @ExpectedResponses({200, 201})
+    public interface ManagementLocksService {
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks/{lockName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagementLockObjectInner>> createOrUpdateAtResourceGroupLevel(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("lockName") String lockName,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("lockName") String lockName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ManagementLockObjectInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ManagementLockObjectInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks"
-                + "/{lockName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks/{lockName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("lockName") String lockName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("lockName") String lockName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks"
-                + "/{lockName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks/{lockName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementLockObjectInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("lockName") String lockName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ManagementLockObjectInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("lockName") String lockName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/{scope}/providers/Microsoft.Authorization/locks/{lockName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementLockObjectInner>> createOrUpdateByScope(
-            @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
-            @PathParam("lockName") String lockName,
+        Mono<Response<ManagementLockObjectInner>> createOrUpdateByScope(@HostParam("$host") String endpoint,
+            @PathParam("scope") String scope, @PathParam("lockName") String lockName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ManagementLockObjectInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ManagementLockObjectInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/{scope}/providers/Microsoft.Authorization/locks/{lockName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> deleteByScope(
-            @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
-            @PathParam("lockName") String lockName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> deleteByScope(@HostParam("$host") String endpoint, @PathParam("scope") String scope,
+            @PathParam("lockName") String lockName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Authorization/locks/{lockName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementLockObjectInner>> getByScope(
-            @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
-            @PathParam("lockName") String lockName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ManagementLockObjectInner>> getByScope(@HostParam("$host") String endpoint,
+            @PathParam("scope") String scope, @PathParam("lockName") String lockName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
-                + "/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks"
-                + "/{lockName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks/{lockName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementLockObjectInner>> createOrUpdateAtResourceLevel(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ManagementLockObjectInner>> createOrUpdateAtResourceLevel(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
             @PathParam(value = "resourceType", encoded = true) String resourceType,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("lockName") String lockName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ManagementLockObjectInner parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceName") String resourceName, @PathParam("lockName") String lockName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") ManagementLockObjectInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
-                + "/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks"
-                + "/{lockName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks/{lockName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> deleteAtResourceLevel(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> deleteAtResourceLevel(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
             @PathParam(value = "resourceType", encoded = true) String resourceType,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("lockName") String lockName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceName") String resourceName, @PathParam("lockName") String lockName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
-                + "/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks"
-                + "/{lockName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks/{lockName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementLockObjectInner>> getAtResourceLevel(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ManagementLockObjectInner>> getAtResourceLevel(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
             @PathParam(value = "resourceType", encoded = true) String resourceType,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("lockName") String lockName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceName") String resourceName, @PathParam("lockName") String lockName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/locks/{lockName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementLockObjectInner>> createOrUpdateAtSubscriptionLevel(
-            @HostParam("$host") String endpoint,
-            @PathParam("lockName") String lockName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<ManagementLockObjectInner>> createOrUpdateAtSubscriptionLevel(@HostParam("$host") String endpoint,
+            @PathParam("lockName") String lockName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ManagementLockObjectInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ManagementLockObjectInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/locks/{lockName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> deleteAtSubscriptionLevel(
-            @HostParam("$host") String endpoint,
-            @PathParam("lockName") String lockName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> deleteAtSubscriptionLevel(@HostParam("$host") String endpoint,
+            @PathParam("lockName") String lockName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/locks/{lockName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementLockObjectInner>> getAtSubscriptionLevel(
-            @HostParam("$host") String endpoint,
-            @PathParam("lockName") String lockName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ManagementLockObjectInner>> getAtSubscriptionLevel(@HostParam("$host") String endpoint,
+            @PathParam("lockName") String lockName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization"
-                + "/locks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementLockListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ManagementLockListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$filter") String filter,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
-                + "/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementLockListResult>> listAtResourceLevel(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ManagementLockListResult>> listAtResourceLevel(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
             @PathParam(value = "resourceType", encoded = true) String resourceType,
-            @PathParam("resourceName") String resourceName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceName") String resourceName, @QueryParam("$filter") String filter,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/locks")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementLockListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ManagementLockListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Authorization/locks")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementLockListResult>> listByScope(
-            @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ManagementLockListResult>> listByScope(@HostParam("$host") String endpoint,
+            @PathParam("scope") String scope, @QueryParam("$filter") String filter,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagementLockListResult>> listAtResourceGroupLevelNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagementLockListResult>> listAtResourceLevelNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagementLockListResult>> listAtSubscriptionLevelNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagementLockListResult>> listByScopeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
+     * Creates or updates a management lock at the resource group level.
+     * 
      * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
      * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
      * roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to lock.
      * @param lockName The lock name. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt; %,
-     *     &amp;, :, \, ?, /, or any control characters.
+     * &amp;, :, \, ?, /, or any control characters.
      * @param parameters The management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -364,10 +281,8 @@ public final class ManagementLocksClientImpl
     public Mono<Response<ManagementLockObjectInner>> createOrUpdateAtResourceGroupLevelWithResponseAsync(
         String resourceGroupName, String lockName, ManagementLockObjectInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -377,10 +292,8 @@ public final class ManagementLocksClientImpl
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -389,29 +302,22 @@ public final class ManagementLocksClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdateAtResourceGroupLevel(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            lockName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdateAtResourceGroupLevel(this.client.getEndpoint(),
+                resourceGroupName, lockName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Creates or updates a management lock at the resource group level.
+     * 
      * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
      * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
      * roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to lock.
      * @param lockName The lock name. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt; %,
-     *     &amp;, :, \, ?, /, or any control characters.
+     * &amp;, :, \, ?, /, or any control characters.
      * @param parameters The management lock parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -423,10 +329,8 @@ public final class ManagementLocksClientImpl
     private Mono<Response<ManagementLockObjectInner>> createOrUpdateAtResourceGroupLevelWithResponseAsync(
         String resourceGroupName, String lockName, ManagementLockObjectInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -436,10 +340,8 @@ public final class ManagementLocksClientImpl
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -448,26 +350,20 @@ public final class ManagementLocksClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdateAtResourceGroupLevel(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                lockName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdateAtResourceGroupLevel(this.client.getEndpoint(), resourceGroupName, lockName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
+     * Creates or updates a management lock at the resource group level.
+     * 
      * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
      * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
      * roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to lock.
      * @param lockName The lock name. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt; %,
-     *     &amp;, :, \, ?, /, or any control characters.
+     * &amp;, :, \, ?, /, or any control characters.
      * @param parameters The management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -475,40 +371,22 @@ public final class ManagementLocksClientImpl
      * @return the lock information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagementLockObjectInner> createOrUpdateAtResourceGroupLevelAsync(
-        String resourceGroupName, String lockName, ManagementLockObjectInner parameters) {
+    public Mono<ManagementLockObjectInner> createOrUpdateAtResourceGroupLevelAsync(String resourceGroupName,
+        String lockName, ManagementLockObjectInner parameters) {
         return createOrUpdateAtResourceGroupLevelWithResponseAsync(resourceGroupName, lockName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
+     * Creates or updates a management lock at the resource group level.
+     * 
      * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
      * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
      * roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to lock.
      * @param lockName The lock name. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt; %,
-     *     &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The management lock parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementLockObjectInner createOrUpdateAtResourceGroupLevel(
-        String resourceGroupName, String lockName, ManagementLockObjectInner parameters) {
-        return createOrUpdateAtResourceGroupLevelAsync(resourceGroupName, lockName, parameters).block();
-    }
-
-    /**
-     * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
-     * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
-     * roles, only Owner and User Access Administrator are granted those actions.
-     *
-     * @param resourceGroupName The name of the resource group to lock.
-     * @param lockName The lock name. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt; %,
-     *     &amp;, :, \, ?, /, or any control characters.
+     * &amp;, :, \, ?, /, or any control characters.
      * @param parameters The management lock parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -517,16 +395,41 @@ public final class ManagementLocksClientImpl
      * @return the lock information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagementLockObjectInner> createOrUpdateAtResourceGroupLevelWithResponse(
-        String resourceGroupName, String lockName, ManagementLockObjectInner parameters, Context context) {
+    public Response<ManagementLockObjectInner> createOrUpdateAtResourceGroupLevelWithResponse(String resourceGroupName,
+        String lockName, ManagementLockObjectInner parameters, Context context) {
         return createOrUpdateAtResourceGroupLevelWithResponseAsync(resourceGroupName, lockName, parameters, context)
             .block();
     }
 
     /**
+     * Creates or updates a management lock at the resource group level.
+     * 
+     * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
+     * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
+     * roles, only Owner and User Access Administrator are granted those actions.
+     * 
+     * @param resourceGroupName The name of the resource group to lock.
+     * @param lockName The lock name. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt; %,
+     * &amp;, :, \, ?, /, or any control characters.
+     * @param parameters The management lock parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the lock information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagementLockObjectInner createOrUpdateAtResourceGroupLevel(String resourceGroupName, String lockName,
+        ManagementLockObjectInner parameters) {
+        return createOrUpdateAtResourceGroupLevelWithResponse(resourceGroupName, lockName, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Deletes a management lock at the resource group level.
+     * 
      * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
      * actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the lock.
      * @param lockName The name of lock to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -537,10 +440,8 @@ public final class ManagementLocksClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String lockName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -550,31 +451,22 @@ public final class ManagementLocksClientImpl
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            lockName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, lockName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Deletes a management lock at the resource group level.
+     * 
      * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
      * actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the lock.
      * @param lockName The name of lock to delete.
      * @param context The context to associate with this operation.
@@ -586,10 +478,8 @@ public final class ManagementLocksClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String lockName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -599,28 +489,21 @@ public final class ManagementLocksClientImpl
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                lockName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, lockName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
+     * Deletes a management lock at the resource group level.
+     * 
      * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
      * actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the lock.
      * @param lockName The name of lock to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -634,24 +517,11 @@ public final class ManagementLocksClientImpl
     }
 
     /**
+     * Deletes a management lock at the resource group level.
+     * 
      * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
      * actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
-     * @param resourceGroupName The name of the resource group containing the lock.
-     * @param lockName The name of lock to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String lockName) {
-        deleteAsync(resourceGroupName, lockName).block();
-    }
-
-    /**
-     * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
-     * actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the lock.
      * @param lockName The name of lock to delete.
      * @param context The context to associate with this operation.
@@ -666,24 +536,39 @@ public final class ManagementLocksClientImpl
     }
 
     /**
+     * Deletes a management lock at the resource group level.
+     * 
+     * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
+     * actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
+     * 
+     * @param resourceGroupName The name of the resource group containing the lock.
+     * @param lockName The name of lock to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String lockName) {
+        deleteWithResponse(resourceGroupName, lockName, Context.NONE);
+    }
+
+    /**
      * Gets a management lock at the resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the locked resource group.
      * @param lockName The name of the lock to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a management lock at the resource group level along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagementLockObjectInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String lockName) {
+    public Mono<Response<ManagementLockObjectInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String lockName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -693,30 +578,19 @@ public final class ManagementLocksClientImpl
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            lockName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, lockName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a management lock at the resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the locked resource group.
      * @param lockName The name of the lock to get.
      * @param context The context to associate with this operation.
@@ -724,16 +598,14 @@ public final class ManagementLocksClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a management lock at the resource group level along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementLockObjectInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String lockName, Context context) {
+    private Mono<Response<ManagementLockObjectInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String lockName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -743,27 +615,18 @@ public final class ManagementLocksClientImpl
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                lockName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, lockName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets a management lock at the resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the locked resource group.
      * @param lockName The name of the lock to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -779,22 +642,7 @@ public final class ManagementLocksClientImpl
 
     /**
      * Gets a management lock at the resource group level.
-     *
-     * @param resourceGroupName The name of the locked resource group.
-     * @param lockName The name of the lock to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management lock at the resource group level.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementLockObjectInner getByResourceGroup(String resourceGroupName, String lockName) {
-        return getByResourceGroupAsync(resourceGroupName, lockName).block();
-    }
-
-    /**
-     * Gets a management lock at the resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the locked resource group.
      * @param lockName The name of the lock to get.
      * @param context The context to associate with this operation.
@@ -804,19 +652,34 @@ public final class ManagementLocksClientImpl
      * @return a management lock at the resource group level along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagementLockObjectInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String lockName, Context context) {
+    public Response<ManagementLockObjectInner> getByResourceGroupWithResponse(String resourceGroupName, String lockName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, lockName, context).block();
     }
 
     /**
+     * Gets a management lock at the resource group level.
+     * 
+     * @param resourceGroupName The name of the locked resource group.
+     * @param lockName The name of the lock to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a management lock at the resource group level.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagementLockObjectInner getByResourceGroup(String resourceGroupName, String lockName) {
+        return getByResourceGroupWithResponse(resourceGroupName, lockName, Context.NONE).getValue();
+    }
+
+    /**
      * Create or update a management lock by scope.
-     *
+     * 
      * @param scope The scope for the lock. When providing a scope for the assignment, use
-     *     '/subscriptions/{subscriptionId}' for subscriptions,
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
-     *     for resources.
+     * '/subscriptions/{subscriptionId}' for subscriptions,
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
+     * for resources.
      * @param lockName The name of lock.
      * @param parameters Create or update management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -825,13 +688,11 @@ public final class ManagementLocksClientImpl
      * @return the lock information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagementLockObjectInner>> createOrUpdateByScopeWithResponseAsync(
-        String scope, String lockName, ManagementLockObjectInner parameters) {
+    public Mono<Response<ManagementLockObjectInner>> createOrUpdateByScopeWithResponseAsync(String scope,
+        String lockName, ManagementLockObjectInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -846,28 +707,19 @@ public final class ManagementLocksClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdateByScope(
-                            this.client.getEndpoint(),
-                            scope,
-                            lockName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdateByScope(this.client.getEndpoint(), scope, lockName,
+                this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a management lock by scope.
-     *
+     * 
      * @param scope The scope for the lock. When providing a scope for the assignment, use
-     *     '/subscriptions/{subscriptionId}' for subscriptions,
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
-     *     for resources.
+     * '/subscriptions/{subscriptionId}' for subscriptions,
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
+     * for resources.
      * @param lockName The name of lock.
      * @param parameters Create or update management lock parameters.
      * @param context The context to associate with this operation.
@@ -877,13 +729,11 @@ public final class ManagementLocksClientImpl
      * @return the lock information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementLockObjectInner>> createOrUpdateByScopeWithResponseAsync(
-        String scope, String lockName, ManagementLockObjectInner parameters, Context context) {
+    private Mono<Response<ManagementLockObjectInner>> createOrUpdateByScopeWithResponseAsync(String scope,
+        String lockName, ManagementLockObjectInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -898,19 +748,18 @@ public final class ManagementLocksClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdateByScope(
-                this.client.getEndpoint(), scope, lockName, this.client.getApiVersion(), parameters, accept, context);
+        return service.createOrUpdateByScope(this.client.getEndpoint(), scope, lockName, this.client.getApiVersion(),
+            parameters, accept, context);
     }
 
     /**
      * Create or update a management lock by scope.
-     *
+     * 
      * @param scope The scope for the lock. When providing a scope for the assignment, use
-     *     '/subscriptions/{subscriptionId}' for subscriptions,
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
-     *     for resources.
+     * '/subscriptions/{subscriptionId}' for subscriptions,
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
+     * for resources.
      * @param lockName The name of lock.
      * @param parameters Create or update management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -919,41 +768,20 @@ public final class ManagementLocksClientImpl
      * @return the lock information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagementLockObjectInner> createOrUpdateByScopeAsync(
-        String scope, String lockName, ManagementLockObjectInner parameters) {
+    public Mono<ManagementLockObjectInner> createOrUpdateByScopeAsync(String scope, String lockName,
+        ManagementLockObjectInner parameters) {
         return createOrUpdateByScopeWithResponseAsync(scope, lockName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or update a management lock by scope.
-     *
+     * 
      * @param scope The scope for the lock. When providing a scope for the assignment, use
-     *     '/subscriptions/{subscriptionId}' for subscriptions,
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
-     *     for resources.
-     * @param lockName The name of lock.
-     * @param parameters Create or update management lock parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementLockObjectInner createOrUpdateByScope(
-        String scope, String lockName, ManagementLockObjectInner parameters) {
-        return createOrUpdateByScopeAsync(scope, lockName, parameters).block();
-    }
-
-    /**
-     * Create or update a management lock by scope.
-     *
-     * @param scope The scope for the lock. When providing a scope for the assignment, use
-     *     '/subscriptions/{subscriptionId}' for subscriptions,
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
-     *     for resources.
+     * '/subscriptions/{subscriptionId}' for subscriptions,
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
+     * for resources.
      * @param lockName The name of lock.
      * @param parameters Create or update management lock parameters.
      * @param context The context to associate with this operation.
@@ -963,14 +791,35 @@ public final class ManagementLocksClientImpl
      * @return the lock information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagementLockObjectInner> createOrUpdateByScopeWithResponse(
-        String scope, String lockName, ManagementLockObjectInner parameters, Context context) {
+    public Response<ManagementLockObjectInner> createOrUpdateByScopeWithResponse(String scope, String lockName,
+        ManagementLockObjectInner parameters, Context context) {
         return createOrUpdateByScopeWithResponseAsync(scope, lockName, parameters, context).block();
     }
 
     /**
+     * Create or update a management lock by scope.
+     * 
+     * @param scope The scope for the lock. When providing a scope for the assignment, use
+     * '/subscriptions/{subscriptionId}' for subscriptions,
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
+     * for resources.
+     * @param lockName The name of lock.
+     * @param parameters Create or update management lock parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the lock information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagementLockObjectInner createOrUpdateByScope(String scope, String lockName,
+        ManagementLockObjectInner parameters) {
+        return createOrUpdateByScopeWithResponse(scope, lockName, parameters, Context.NONE).getValue();
+    }
+
+    /**
      * Delete a management lock by scope.
-     *
+     * 
      * @param scope The scope for the lock.
      * @param lockName The name of lock.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -981,10 +830,8 @@ public final class ManagementLocksClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteByScopeWithResponseAsync(String scope, String lockName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -994,17 +841,14 @@ public final class ManagementLocksClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .deleteByScope(
-                            this.client.getEndpoint(), scope, lockName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.deleteByScope(this.client.getEndpoint(), scope, lockName,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a management lock by scope.
-     *
+     * 
      * @param scope The scope for the lock.
      * @param lockName The name of lock.
      * @param context The context to associate with this operation.
@@ -1016,10 +860,8 @@ public final class ManagementLocksClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteByScopeWithResponseAsync(String scope, String lockName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1029,13 +871,13 @@ public final class ManagementLocksClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .deleteByScope(this.client.getEndpoint(), scope, lockName, this.client.getApiVersion(), accept, context);
+        return service.deleteByScope(this.client.getEndpoint(), scope, lockName, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
      * Delete a management lock by scope.
-     *
+     * 
      * @param scope The scope for the lock.
      * @param lockName The name of lock.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1050,21 +892,7 @@ public final class ManagementLocksClientImpl
 
     /**
      * Delete a management lock by scope.
-     *
-     * @param scope The scope for the lock.
-     * @param lockName The name of lock.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteByScope(String scope, String lockName) {
-        deleteByScopeAsync(scope, lockName).block();
-    }
-
-    /**
-     * Delete a management lock by scope.
-     *
+     * 
      * @param scope The scope for the lock.
      * @param lockName The name of lock.
      * @param context The context to associate with this operation.
@@ -1079,8 +907,22 @@ public final class ManagementLocksClientImpl
     }
 
     /**
+     * Delete a management lock by scope.
+     * 
+     * @param scope The scope for the lock.
+     * @param lockName The name of lock.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteByScope(String scope, String lockName) {
+        deleteByScopeWithResponse(scope, lockName, Context.NONE);
+    }
+
+    /**
      * Get a management lock by scope.
-     *
+     * 
      * @param scope The scope for the lock.
      * @param lockName The name of lock.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1091,10 +933,8 @@ public final class ManagementLocksClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagementLockObjectInner>> getByScopeWithResponseAsync(String scope, String lockName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1104,17 +944,14 @@ public final class ManagementLocksClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByScope(
-                            this.client.getEndpoint(), scope, lockName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.getByScope(this.client.getEndpoint(), scope, lockName,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a management lock by scope.
-     *
+     * 
      * @param scope The scope for the lock.
      * @param lockName The name of lock.
      * @param context The context to associate with this operation.
@@ -1124,13 +961,11 @@ public final class ManagementLocksClientImpl
      * @return a management lock by scope along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementLockObjectInner>> getByScopeWithResponseAsync(
-        String scope, String lockName, Context context) {
+    private Mono<Response<ManagementLockObjectInner>> getByScopeWithResponseAsync(String scope, String lockName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1140,13 +975,13 @@ public final class ManagementLocksClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByScope(this.client.getEndpoint(), scope, lockName, this.client.getApiVersion(), accept, context);
+        return service.getByScope(this.client.getEndpoint(), scope, lockName, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
      * Get a management lock by scope.
-     *
+     * 
      * @param scope The scope for the lock.
      * @param lockName The name of lock.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1161,22 +996,7 @@ public final class ManagementLocksClientImpl
 
     /**
      * Get a management lock by scope.
-     *
-     * @param scope The scope for the lock.
-     * @param lockName The name of lock.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management lock by scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementLockObjectInner getByScope(String scope, String lockName) {
-        return getByScopeAsync(scope, lockName).block();
-    }
-
-    /**
-     * Get a management lock by scope.
-     *
+     * 
      * @param scope The scope for the lock.
      * @param lockName The name of lock.
      * @param context The context to associate with this operation.
@@ -1191,17 +1011,34 @@ public final class ManagementLocksClientImpl
     }
 
     /**
+     * Get a management lock by scope.
+     * 
+     * @param scope The scope for the lock.
+     * @param lockName The name of lock.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a management lock by scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagementLockObjectInner getByScope(String scope, String lockName) {
+        return getByScopeWithResponse(scope, lockName, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a management lock at the resource level or any level below the resource.
+     * 
      * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
      * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
      * roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the resource to lock.
      * @param resourceProviderNamespace The resource provider namespace of the resource to lock.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the resource to lock.
      * @param resourceName The name of the resource to lock.
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
-     *     %, &amp;, :, \, ?, /, or any control characters.
+     * %, &amp;, :, \, ?, /, or any control characters.
      * @param parameters Parameters for creating or updating a management lock.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1210,28 +1047,19 @@ public final class ManagementLocksClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagementLockObjectInner>> createOrUpdateAtResourceLevelWithResponseAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String lockName,
-        ManagementLockObjectInner parameters) {
+        String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType,
+        String resourceName, String lockName, ManagementLockObjectInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         if (parentResourcePath == null) {
             return Mono
@@ -1247,10 +1075,8 @@ public final class ManagementLocksClientImpl
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1259,37 +1085,26 @@ public final class ManagementLocksClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdateAtResourceLevel(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            resourceProviderNamespace,
-                            parentResourcePath,
-                            resourceType,
-                            resourceName,
-                            lockName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdateAtResourceLevel(this.client.getEndpoint(), resourceGroupName,
+                resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Creates or updates a management lock at the resource level or any level below the resource.
+     * 
      * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
      * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
      * roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the resource to lock.
      * @param resourceProviderNamespace The resource provider namespace of the resource to lock.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the resource to lock.
      * @param resourceName The name of the resource to lock.
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
-     *     %, &amp;, :, \, ?, /, or any control characters.
+     * %, &amp;, :, \, ?, /, or any control characters.
      * @param parameters Parameters for creating or updating a management lock.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1299,29 +1114,19 @@ public final class ManagementLocksClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementLockObjectInner>> createOrUpdateAtResourceLevelWithResponseAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String lockName,
-        ManagementLockObjectInner parameters,
-        Context context) {
+        String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType,
+        String resourceName, String lockName, ManagementLockObjectInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         if (parentResourcePath == null) {
             return Mono
@@ -1337,10 +1142,8 @@ public final class ManagementLocksClientImpl
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1349,34 +1152,25 @@ public final class ManagementLocksClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdateAtResourceLevel(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                resourceProviderNamespace,
-                parentResourcePath,
-                resourceType,
-                resourceName,
-                lockName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdateAtResourceLevel(this.client.getEndpoint(), resourceGroupName,
+            resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
+     * Creates or updates a management lock at the resource level or any level below the resource.
+     * 
      * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
      * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
      * roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the resource to lock.
      * @param resourceProviderNamespace The resource provider namespace of the resource to lock.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the resource to lock.
      * @param resourceName The name of the resource to lock.
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
-     *     %, &amp;, :, \, ?, /, or any control characters.
+     * %, &amp;, :, \, ?, /, or any control characters.
      * @param parameters Parameters for creating or updating a management lock.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1384,75 +1178,28 @@ public final class ManagementLocksClientImpl
      * @return the lock information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagementLockObjectInner> createOrUpdateAtResourceLevelAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String lockName,
-        ManagementLockObjectInner parameters) {
-        return createOrUpdateAtResourceLevelWithResponseAsync(
-                resourceGroupName,
-                resourceProviderNamespace,
-                parentResourcePath,
-                resourceType,
-                resourceName,
-                lockName,
-                parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<ManagementLockObjectInner> createOrUpdateAtResourceLevelAsync(String resourceGroupName,
+        String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
+        String lockName, ManagementLockObjectInner parameters) {
+        return createOrUpdateAtResourceLevelWithResponseAsync(resourceGroupName, resourceProviderNamespace,
+            parentResourcePath, resourceType, resourceName, lockName, parameters)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
+     * Creates or updates a management lock at the resource level or any level below the resource.
+     * 
      * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
      * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
      * roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the resource to lock.
      * @param resourceProviderNamespace The resource provider namespace of the resource to lock.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the resource to lock.
      * @param resourceName The name of the resource to lock.
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
-     *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters Parameters for creating or updating a management lock.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementLockObjectInner createOrUpdateAtResourceLevel(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String lockName,
-        ManagementLockObjectInner parameters) {
-        return createOrUpdateAtResourceLevelAsync(
-                resourceGroupName,
-                resourceProviderNamespace,
-                parentResourcePath,
-                resourceType,
-                resourceName,
-                lockName,
-                parameters)
-            .block();
-    }
-
-    /**
-     * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
-     * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
-     * roles, only Owner and User Access Administrator are granted those actions.
-     *
-     * @param resourceGroupName The name of the resource group containing the resource to lock.
-     * @param resourceProviderNamespace The resource provider namespace of the resource to lock.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type of the resource to lock.
-     * @param resourceName The name of the resource to lock.
-     * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
-     *     %, &amp;, :, \, ?, /, or any control characters.
+     * %, &amp;, :, \, ?, /, or any control characters.
      * @param parameters Parameters for creating or updating a management lock.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1461,31 +1208,47 @@ public final class ManagementLocksClientImpl
      * @return the lock information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagementLockObjectInner> createOrUpdateAtResourceLevelWithResponse(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String lockName,
-        ManagementLockObjectInner parameters,
-        Context context) {
-        return createOrUpdateAtResourceLevelWithResponseAsync(
-                resourceGroupName,
-                resourceProviderNamespace,
-                parentResourcePath,
-                resourceType,
-                resourceName,
-                lockName,
-                parameters,
-                context)
-            .block();
+    public Response<ManagementLockObjectInner> createOrUpdateAtResourceLevelWithResponse(String resourceGroupName,
+        String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
+        String lockName, ManagementLockObjectInner parameters, Context context) {
+        return createOrUpdateAtResourceLevelWithResponseAsync(resourceGroupName, resourceProviderNamespace,
+            parentResourcePath, resourceType, resourceName, lockName, parameters, context).block();
     }
 
     /**
+     * Creates or updates a management lock at the resource level or any level below the resource.
+     * 
+     * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
+     * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
+     * roles, only Owner and User Access Administrator are granted those actions.
+     * 
+     * @param resourceGroupName The name of the resource group containing the resource to lock.
+     * @param resourceProviderNamespace The resource provider namespace of the resource to lock.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to lock.
+     * @param resourceName The name of the resource to lock.
+     * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
+     * %, &amp;, :, \, ?, /, or any control characters.
+     * @param parameters Parameters for creating or updating a management lock.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the lock information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagementLockObjectInner createOrUpdateAtResourceLevel(String resourceGroupName,
+        String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
+        String lockName, ManagementLockObjectInner parameters) {
+        return createOrUpdateAtResourceLevelWithResponse(resourceGroupName, resourceProviderNamespace,
+            parentResourcePath, resourceType, resourceName, lockName, parameters, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes the management lock of a resource or any level below the resource.
+     * 
      * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
      * actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the resource with the lock to delete.
      * @param resourceProviderNamespace The resource provider namespace of the resource with the lock to delete.
      * @param parentResourcePath The parent resource identity.
@@ -1498,28 +1261,20 @@ public final class ManagementLocksClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteAtResourceLevelWithResponseAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
+    public Mono<Response<Void>> deleteAtResourceLevelWithResponseAsync(String resourceGroupName,
+        String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
         String lockName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         if (parentResourcePath == null) {
             return Mono
@@ -1535,35 +1290,23 @@ public final class ManagementLocksClientImpl
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .deleteAtResourceLevel(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            resourceProviderNamespace,
-                            parentResourcePath,
-                            resourceType,
-                            resourceName,
-                            lockName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.deleteAtResourceLevel(this.client.getEndpoint(), resourceGroupName,
+                resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Deletes the management lock of a resource or any level below the resource.
+     * 
      * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
      * actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the resource with the lock to delete.
      * @param resourceProviderNamespace The resource provider namespace of the resource with the lock to delete.
      * @param parentResourcePath The parent resource identity.
@@ -1577,29 +1320,20 @@ public final class ManagementLocksClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteAtResourceLevelWithResponseAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String lockName,
-        Context context) {
+    private Mono<Response<Void>> deleteAtResourceLevelWithResponseAsync(String resourceGroupName,
+        String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
+        String lockName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         if (parentResourcePath == null) {
             return Mono
@@ -1615,32 +1349,22 @@ public final class ManagementLocksClientImpl
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .deleteAtResourceLevel(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                resourceProviderNamespace,
-                parentResourcePath,
-                resourceType,
-                resourceName,
-                lockName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.deleteAtResourceLevel(this.client.getEndpoint(), resourceGroupName, resourceProviderNamespace,
+            parentResourcePath, resourceType, resourceName, lockName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
+     * Deletes the management lock of a resource or any level below the resource.
+     * 
      * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
      * actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the resource with the lock to delete.
      * @param resourceProviderNamespace The resource provider namespace of the resource with the lock to delete.
      * @param parentResourcePath The parent resource identity.
@@ -1653,49 +1377,18 @@ public final class ManagementLocksClientImpl
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAtResourceLevelAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String lockName) {
-        return deleteAtResourceLevelWithResponseAsync(
-                resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName)
-            .flatMap(ignored -> Mono.empty());
+    public Mono<Void> deleteAtResourceLevelAsync(String resourceGroupName, String resourceProviderNamespace,
+        String parentResourcePath, String resourceType, String resourceName, String lockName) {
+        return deleteAtResourceLevelWithResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath,
+            resourceType, resourceName, lockName).flatMap(ignored -> Mono.empty());
     }
 
     /**
+     * Deletes the management lock of a resource or any level below the resource.
+     * 
      * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
      * actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
-     * @param resourceGroupName The name of the resource group containing the resource with the lock to delete.
-     * @param resourceProviderNamespace The resource provider namespace of the resource with the lock to delete.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type of the resource with the lock to delete.
-     * @param resourceName The name of the resource with the lock to delete.
-     * @param lockName The name of the lock to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteAtResourceLevel(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String lockName) {
-        deleteAtResourceLevelAsync(
-                resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName)
-            .block();
-    }
-
-    /**
-     * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
-     * actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the resource with the lock to delete.
      * @param resourceProviderNamespace The resource provider namespace of the resource with the lock to delete.
      * @param parentResourcePath The parent resource identity.
@@ -1709,28 +1402,38 @@ public final class ManagementLocksClientImpl
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteAtResourceLevelWithResponse(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String lockName,
-        Context context) {
-        return deleteAtResourceLevelWithResponseAsync(
-                resourceGroupName,
-                resourceProviderNamespace,
-                parentResourcePath,
-                resourceType,
-                resourceName,
-                lockName,
-                context)
-            .block();
+    public Response<Void> deleteAtResourceLevelWithResponse(String resourceGroupName, String resourceProviderNamespace,
+        String parentResourcePath, String resourceType, String resourceName, String lockName, Context context) {
+        return deleteAtResourceLevelWithResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath,
+            resourceType, resourceName, lockName, context).block();
+    }
+
+    /**
+     * Deletes the management lock of a resource or any level below the resource.
+     * 
+     * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
+     * actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
+     * 
+     * @param resourceGroupName The name of the resource group containing the resource with the lock to delete.
+     * @param resourceProviderNamespace The resource provider namespace of the resource with the lock to delete.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource with the lock to delete.
+     * @param resourceName The name of the resource with the lock to delete.
+     * @param lockName The name of the lock to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteAtResourceLevel(String resourceGroupName, String resourceProviderNamespace,
+        String parentResourcePath, String resourceType, String resourceName, String lockName) {
+        deleteAtResourceLevelWithResponse(resourceGroupName, resourceProviderNamespace, parentResourcePath,
+            resourceType, resourceName, lockName, Context.NONE);
     }
 
     /**
      * Get the management lock of a resource or any level below resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath An extra path parameter needed in some services, like SQL Databases.
@@ -1741,31 +1444,23 @@ public final class ManagementLocksClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the management lock of a resource or any level below resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagementLockObjectInner>> getAtResourceLevelWithResponseAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
+    public Mono<Response<ManagementLockObjectInner>> getAtResourceLevelWithResponseAsync(String resourceGroupName,
+        String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
         String lockName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         if (parentResourcePath == null) {
             return Mono
@@ -1781,34 +1476,20 @@ public final class ManagementLocksClientImpl
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getAtResourceLevel(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            resourceProviderNamespace,
-                            parentResourcePath,
-                            resourceType,
-                            resourceName,
-                            lockName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getAtResourceLevel(this.client.getEndpoint(), resourceGroupName,
+                resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the management lock of a resource or any level below resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath An extra path parameter needed in some services, like SQL Databases.
@@ -1820,32 +1501,23 @@ public final class ManagementLocksClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the management lock of a resource or any level below resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementLockObjectInner>> getAtResourceLevelWithResponseAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String lockName,
-        Context context) {
+    private Mono<Response<ManagementLockObjectInner>> getAtResourceLevelWithResponseAsync(String resourceGroupName,
+        String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
+        String lockName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         if (parentResourcePath == null) {
             return Mono
@@ -1861,31 +1533,19 @@ public final class ManagementLocksClientImpl
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getAtResourceLevel(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                resourceProviderNamespace,
-                parentResourcePath,
-                resourceType,
-                resourceName,
-                lockName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getAtResourceLevel(this.client.getEndpoint(), resourceGroupName, resourceProviderNamespace,
+            parentResourcePath, resourceType, resourceName, lockName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Get the management lock of a resource or any level below resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath An extra path parameter needed in some services, like SQL Databases.
@@ -1898,48 +1558,16 @@ public final class ManagementLocksClientImpl
      * @return the management lock of a resource or any level below resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagementLockObjectInner> getAtResourceLevelAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
+    public Mono<ManagementLockObjectInner> getAtResourceLevelAsync(String resourceGroupName,
+        String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
         String lockName) {
-        return getAtResourceLevelWithResponseAsync(
-                resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return getAtResourceLevelWithResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath,
+            resourceType, resourceName, lockName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the management lock of a resource or any level below resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath An extra path parameter needed in some services, like SQL Databases.
-     * @param resourceType The type of the resource.
-     * @param resourceName The name of the resource.
-     * @param lockName The name of lock.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the management lock of a resource or any level below resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementLockObjectInner getAtResourceLevel(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String lockName) {
-        return getAtResourceLevelAsync(
-                resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName)
-            .block();
-    }
-
-    /**
-     * Get the management lock of a resource or any level below resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath An extra path parameter needed in some services, like SQL Databases.
@@ -1953,32 +1581,43 @@ public final class ManagementLocksClientImpl
      * @return the management lock of a resource or any level below resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagementLockObjectInner> getAtResourceLevelWithResponse(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String lockName,
-        Context context) {
-        return getAtResourceLevelWithResponseAsync(
-                resourceGroupName,
-                resourceProviderNamespace,
-                parentResourcePath,
-                resourceType,
-                resourceName,
-                lockName,
-                context)
-            .block();
+    public Response<ManagementLockObjectInner> getAtResourceLevelWithResponse(String resourceGroupName,
+        String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
+        String lockName, Context context) {
+        return getAtResourceLevelWithResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath,
+            resourceType, resourceName, lockName, context).block();
     }
 
     /**
+     * Get the management lock of a resource or any level below resource.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath An extra path parameter needed in some services, like SQL Databases.
+     * @param resourceType The type of the resource.
+     * @param resourceName The name of the resource.
+     * @param lockName The name of lock.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the management lock of a resource or any level below resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagementLockObjectInner getAtResourceLevel(String resourceGroupName, String resourceProviderNamespace,
+        String parentResourcePath, String resourceType, String resourceName, String lockName) {
+        return getAtResourceLevelWithResponse(resourceGroupName, resourceProviderNamespace, parentResourcePath,
+            resourceType, resourceName, lockName, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a management lock at the subscription level.
+     * 
      * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
      * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
      * roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
-     *     %, &amp;, :, \, ?, /, or any control characters.
+     * %, &amp;, :, \, ?, /, or any control characters.
      * @param parameters The management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1986,22 +1625,18 @@ public final class ManagementLocksClientImpl
      * @return the lock information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagementLockObjectInner>> createOrUpdateAtSubscriptionLevelWithResponseAsync(
-        String lockName, ManagementLockObjectInner parameters) {
+    public Mono<Response<ManagementLockObjectInner>> createOrUpdateAtSubscriptionLevelWithResponseAsync(String lockName,
+        ManagementLockObjectInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (lockName == null) {
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -2010,27 +1645,20 @@ public final class ManagementLocksClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdateAtSubscriptionLevel(
-                            this.client.getEndpoint(),
-                            lockName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdateAtSubscriptionLevel(this.client.getEndpoint(), lockName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Creates or updates a management lock at the subscription level.
+     * 
      * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
      * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
      * roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
-     *     %, &amp;, :, \, ?, /, or any control characters.
+     * %, &amp;, :, \, ?, /, or any control characters.
      * @param parameters The management lock parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2042,19 +1670,15 @@ public final class ManagementLocksClientImpl
     private Mono<Response<ManagementLockObjectInner>> createOrUpdateAtSubscriptionLevelWithResponseAsync(
         String lockName, ManagementLockObjectInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (lockName == null) {
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -2063,24 +1687,19 @@ public final class ManagementLocksClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdateAtSubscriptionLevel(
-                this.client.getEndpoint(),
-                lockName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdateAtSubscriptionLevel(this.client.getEndpoint(), lockName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
+     * Creates or updates a management lock at the subscription level.
+     * 
      * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
      * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
      * roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
-     *     %, &amp;, :, \, ?, /, or any control characters.
+     * %, &amp;, :, \, ?, /, or any control characters.
      * @param parameters The management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2088,38 +1707,21 @@ public final class ManagementLocksClientImpl
      * @return the lock information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagementLockObjectInner> createOrUpdateAtSubscriptionLevelAsync(
-        String lockName, ManagementLockObjectInner parameters) {
+    public Mono<ManagementLockObjectInner> createOrUpdateAtSubscriptionLevelAsync(String lockName,
+        ManagementLockObjectInner parameters) {
         return createOrUpdateAtSubscriptionLevelWithResponseAsync(lockName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
+     * Creates or updates a management lock at the subscription level.
+     * 
      * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
      * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
      * roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
-     *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The management lock parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementLockObjectInner createOrUpdateAtSubscriptionLevel(
-        String lockName, ManagementLockObjectInner parameters) {
-        return createOrUpdateAtSubscriptionLevelAsync(lockName, parameters).block();
-    }
-
-    /**
-     * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
-     * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
-     * roles, only Owner and User Access Administrator are granted those actions.
-     *
-     * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
-     *     %, &amp;, :, \, ?, /, or any control characters.
+     * %, &amp;, :, \, ?, /, or any control characters.
      * @param parameters The management lock parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2128,15 +1730,38 @@ public final class ManagementLocksClientImpl
      * @return the lock information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagementLockObjectInner> createOrUpdateAtSubscriptionLevelWithResponse(
-        String lockName, ManagementLockObjectInner parameters, Context context) {
+    public Response<ManagementLockObjectInner> createOrUpdateAtSubscriptionLevelWithResponse(String lockName,
+        ManagementLockObjectInner parameters, Context context) {
         return createOrUpdateAtSubscriptionLevelWithResponseAsync(lockName, parameters, context).block();
     }
 
     /**
+     * Creates or updates a management lock at the subscription level.
+     * 
+     * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
+     * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
+     * roles, only Owner and User Access Administrator are granted those actions.
+     * 
+     * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
+     * %, &amp;, :, \, ?, /, or any control characters.
+     * @param parameters The management lock parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the lock information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagementLockObjectInner createOrUpdateAtSubscriptionLevel(String lockName,
+        ManagementLockObjectInner parameters) {
+        return createOrUpdateAtSubscriptionLevelWithResponse(lockName, parameters, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes the management lock at the subscription level.
+     * 
      * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
      * actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param lockName The name of lock to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2146,39 +1771,29 @@ public final class ManagementLocksClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAtSubscriptionLevelWithResponseAsync(String lockName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (lockName == null) {
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .deleteAtSubscriptionLevel(
-                            this.client.getEndpoint(),
-                            lockName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.deleteAtSubscriptionLevel(this.client.getEndpoint(), lockName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Deletes the management lock at the subscription level.
+     * 
      * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
      * actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param lockName The name of lock to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2189,36 +1804,28 @@ public final class ManagementLocksClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteAtSubscriptionLevelWithResponseAsync(String lockName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (lockName == null) {
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .deleteAtSubscriptionLevel(
-                this.client.getEndpoint(),
-                lockName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.deleteAtSubscriptionLevel(this.client.getEndpoint(), lockName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
+     * Deletes the management lock at the subscription level.
+     * 
      * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
      * actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param lockName The name of lock to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2231,23 +1838,11 @@ public final class ManagementLocksClientImpl
     }
 
     /**
+     * Deletes the management lock at the subscription level.
+     * 
      * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
      * actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
-     * @param lockName The name of lock to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteAtSubscriptionLevel(String lockName) {
-        deleteAtSubscriptionLevelAsync(lockName).block();
-    }
-
-    /**
-     * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
-     * actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
+     * 
      * @param lockName The name of lock to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2261,91 +1856,85 @@ public final class ManagementLocksClientImpl
     }
 
     /**
+     * Deletes the management lock at the subscription level.
+     * 
+     * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
+     * actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
+     * 
+     * @param lockName The name of lock to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteAtSubscriptionLevel(String lockName) {
+        deleteAtSubscriptionLevelWithResponse(lockName, Context.NONE);
+    }
+
+    /**
      * Gets a management lock at the subscription level.
-     *
+     * 
      * @param lockName The name of the lock to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a management lock at the subscription level along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagementLockObjectInner>> getAtSubscriptionLevelWithResponseAsync(String lockName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (lockName == null) {
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getAtSubscriptionLevel(
-                            this.client.getEndpoint(),
-                            lockName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getAtSubscriptionLevel(this.client.getEndpoint(), lockName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a management lock at the subscription level.
-     *
+     * 
      * @param lockName The name of the lock to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a management lock at the subscription level along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementLockObjectInner>> getAtSubscriptionLevelWithResponseAsync(
-        String lockName, Context context) {
+    private Mono<Response<ManagementLockObjectInner>> getAtSubscriptionLevelWithResponseAsync(String lockName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (lockName == null) {
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getAtSubscriptionLevel(
-                this.client.getEndpoint(),
-                lockName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getAtSubscriptionLevel(this.client.getEndpoint(), lockName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets a management lock at the subscription level.
-     *
+     * 
      * @param lockName The name of the lock to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2359,21 +1948,7 @@ public final class ManagementLocksClientImpl
 
     /**
      * Gets a management lock at the subscription level.
-     *
-     * @param lockName The name of the lock to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management lock at the subscription level.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementLockObjectInner getAtSubscriptionLevel(String lockName) {
-        return getAtSubscriptionLevelAsync(lockName).block();
-    }
-
-    /**
-     * Gets a management lock at the subscription level.
-     *
+     * 
      * @param lockName The name of the lock to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2387,63 +1962,57 @@ public final class ManagementLocksClientImpl
     }
 
     /**
+     * Gets a management lock at the subscription level.
+     * 
+     * @param lockName The name of the lock to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a management lock at the subscription level.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagementLockObjectInner getAtSubscriptionLevel(String lockName) {
+        return getAtSubscriptionLevelWithResponse(lockName, Context.NONE).getValue();
+    }
+
+    /**
      * Gets all the management locks for a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the locks to get.
      * @param filter The filter to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the management locks for a resource group along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagementLockObjectInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter) {
+    private Mono<PagedResponse<ManagementLockObjectInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            filter,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ManagementLockObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, filter,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ManagementLockObjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the management locks for a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the locks to get.
      * @param filter The filter to apply on the operation.
      * @param context The context to associate with this operation.
@@ -2451,52 +2020,35 @@ public final class ManagementLocksClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the management locks for a resource group along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagementLockObjectInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter, Context context) {
+    private Mono<PagedResponse<ManagementLockObjectInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                filter,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, filter, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all the management locks for a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the locks to get.
      * @param filter The filter to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2506,14 +2058,13 @@ public final class ManagementLocksClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagementLockObjectInner> listByResourceGroupAsync(String resourceGroupName, String filter) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
             nextLink -> listAtResourceGroupLevelNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the management locks for a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the locks to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2523,14 +2074,13 @@ public final class ManagementLocksClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagementLockObjectInner> listByResourceGroupAsync(String resourceGroupName) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
             nextLink -> listAtResourceGroupLevelNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the management locks for a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the locks to get.
      * @param filter The filter to apply on the operation.
      * @param context The context to associate with this operation.
@@ -2540,16 +2090,15 @@ public final class ManagementLocksClientImpl
      * @return all the management locks for a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagementLockObjectInner> listByResourceGroupAsync(
-        String resourceGroupName, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, context),
+    private PagedFlux<ManagementLockObjectInner> listByResourceGroupAsync(String resourceGroupName, String filter,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, context),
             nextLink -> listAtResourceGroupLevelNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all the management locks for a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the locks to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2564,7 +2113,7 @@ public final class ManagementLocksClientImpl
 
     /**
      * Gets all the management locks for a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the locks to get.
      * @param filter The filter to apply on the operation.
      * @param context The context to associate with this operation.
@@ -2574,16 +2123,16 @@ public final class ManagementLocksClientImpl
      * @return all the management locks for a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagementLockObjectInner> listByResourceGroup(
-        String resourceGroupName, String filter, Context context) {
+    public PagedIterable<ManagementLockObjectInner> listByResourceGroup(String resourceGroupName, String filter,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, context));
     }
 
     /**
      * Gets all the management locks for a resource or any level below resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the locked resource. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the locked resource.
@@ -2593,31 +2142,23 @@ public final class ManagementLocksClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the management locks for a resource or any level below resource along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagementLockObjectInner>> listAtResourceLevelSinglePageAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
+    private Mono<PagedResponse<ManagementLockObjectInner>> listAtResourceLevelSinglePageAsync(String resourceGroupName,
+        String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
         String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         if (parentResourcePath == null) {
             return Mono
@@ -2630,45 +2171,24 @@ public final class ManagementLocksClientImpl
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAtResourceLevel(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            resourceProviderNamespace,
-                            parentResourcePath,
-                            resourceType,
-                            resourceName,
-                            filter,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ManagementLockObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listAtResourceLevel(this.client.getEndpoint(), resourceGroupName,
+                resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ManagementLockObjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the management locks for a resource or any level below resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the locked resource. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the locked resource.
@@ -2679,32 +2199,23 @@ public final class ManagementLocksClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the management locks for a resource or any level below resource along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagementLockObjectInner>> listAtResourceLevelSinglePageAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String filter,
-        Context context) {
+    private Mono<PagedResponse<ManagementLockObjectInner>> listAtResourceLevelSinglePageAsync(String resourceGroupName,
+        String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
+        String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         if (parentResourcePath == null) {
             return Mono
@@ -2717,42 +2228,24 @@ public final class ManagementLocksClientImpl
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listAtResourceLevel(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                resourceProviderNamespace,
-                parentResourcePath,
-                resourceType,
-                resourceName,
-                filter,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listAtResourceLevel(this.client.getEndpoint(), resourceGroupName, resourceProviderNamespace,
+                parentResourcePath, resourceType, resourceName, filter, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all the management locks for a resource or any level below resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the locked resource. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the locked resource.
@@ -2761,34 +2254,23 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource or any level below resource as paginated response with {@link
-     *     PagedFlux}.
+     * @return all the management locks for a resource or any level below resource as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagementLockObjectInner> listAtResourceLevelAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
+    public PagedFlux<ManagementLockObjectInner> listAtResourceLevelAsync(String resourceGroupName,
+        String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
         String filter) {
-        return new PagedFlux<>(
-            () ->
-                listAtResourceLevelSinglePageAsync(
-                    resourceGroupName,
-                    resourceProviderNamespace,
-                    parentResourcePath,
-                    resourceType,
-                    resourceName,
-                    filter),
+        return new PagedFlux<>(() -> listAtResourceLevelSinglePageAsync(resourceGroupName, resourceProviderNamespace,
+            parentResourcePath, resourceType, resourceName, filter),
             nextLink -> listAtResourceLevelNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the management locks for a resource or any level below resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the locked resource. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the locked resource.
@@ -2796,34 +2278,23 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource or any level below resource as paginated response with {@link
-     *     PagedFlux}.
+     * @return all the management locks for a resource or any level below resource as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagementLockObjectInner> listAtResourceLevelAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName) {
+    public PagedFlux<ManagementLockObjectInner> listAtResourceLevelAsync(String resourceGroupName,
+        String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName) {
         final String filter = null;
-        return new PagedFlux<>(
-            () ->
-                listAtResourceLevelSinglePageAsync(
-                    resourceGroupName,
-                    resourceProviderNamespace,
-                    parentResourcePath,
-                    resourceType,
-                    resourceName,
-                    filter),
+        return new PagedFlux<>(() -> listAtResourceLevelSinglePageAsync(resourceGroupName, resourceProviderNamespace,
+            parentResourcePath, resourceType, resourceName, filter),
             nextLink -> listAtResourceLevelNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the management locks for a resource or any level below resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the locked resource. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the locked resource.
@@ -2833,36 +2304,24 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource or any level below resource as paginated response with {@link
-     *     PagedFlux}.
+     * @return all the management locks for a resource or any level below resource as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagementLockObjectInner> listAtResourceLevelAsync(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String filter,
-        Context context) {
+    private PagedFlux<ManagementLockObjectInner> listAtResourceLevelAsync(String resourceGroupName,
+        String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
+        String filter, Context context) {
         return new PagedFlux<>(
-            () ->
-                listAtResourceLevelSinglePageAsync(
-                    resourceGroupName,
-                    resourceProviderNamespace,
-                    parentResourcePath,
-                    resourceType,
-                    resourceName,
-                    filter,
-                    context),
+            () -> listAtResourceLevelSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath,
+                resourceType, resourceName, filter, context),
             nextLink -> listAtResourceLevelNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all the management locks for a resource or any level below resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the locked resource. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the locked resource.
@@ -2870,27 +2329,22 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource or any level below resource as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the management locks for a resource or any level below resource as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagementLockObjectInner> listAtResourceLevel(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName) {
+    public PagedIterable<ManagementLockObjectInner> listAtResourceLevel(String resourceGroupName,
+        String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName) {
         final String filter = null;
-        return new PagedIterable<>(
-            listAtResourceLevelAsync(
-                resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter));
+        return new PagedIterable<>(listAtResourceLevelAsync(resourceGroupName, resourceProviderNamespace,
+            parentResourcePath, resourceType, resourceName, filter));
     }
 
     /**
      * Gets all the management locks for a resource or any level below resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing the locked resource. The name is case
-     *     insensitive.
+     * insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the locked resource.
@@ -2900,126 +2354,79 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource or any level below resource as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the management locks for a resource or any level below resource as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagementLockObjectInner> listAtResourceLevel(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName,
-        String filter,
-        Context context) {
-        return new PagedIterable<>(
-            listAtResourceLevelAsync(
-                resourceGroupName,
-                resourceProviderNamespace,
-                parentResourcePath,
-                resourceType,
-                resourceName,
-                filter,
-                context));
+    public PagedIterable<ManagementLockObjectInner> listAtResourceLevel(String resourceGroupName,
+        String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName,
+        String filter, Context context) {
+        return new PagedIterable<>(listAtResourceLevelAsync(resourceGroupName, resourceProviderNamespace,
+            parentResourcePath, resourceType, resourceName, filter, context));
     }
 
     /**
      * Gets all the management locks for a subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the management locks for a subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listSinglePageAsync(String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            filter,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ManagementLockObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), filter, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ManagementLockObjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the management locks for a subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the management locks for a subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listSinglePageAsync(String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                filter,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), filter, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all the management locks for a subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3028,13 +2435,13 @@ public final class ManagementLocksClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagementLockObjectInner> listAsync(String filter) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter), nextLink -> listAtSubscriptionLevelNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter),
+            nextLink -> listAtSubscriptionLevelNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the management locks for a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the management locks for a subscription as paginated response with {@link PagedFlux}.
@@ -3042,13 +2449,13 @@ public final class ManagementLocksClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagementLockObjectInner> listAsync() {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter), nextLink -> listAtSubscriptionLevelNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter),
+            nextLink -> listAtSubscriptionLevelNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the management locks for a subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3058,14 +2465,13 @@ public final class ManagementLocksClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ManagementLockObjectInner> listAsync(String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, context),
             nextLink -> listAtSubscriptionLevelNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all the management locks for a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the management locks for a subscription as paginated response with {@link PagedIterable}.
@@ -3078,7 +2484,7 @@ public final class ManagementLocksClientImpl
 
     /**
      * Gets all the management locks for a subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3093,73 +2499,59 @@ public final class ManagementLocksClientImpl
 
     /**
      * Gets all the management locks for a scope.
-     *
+     * 
      * @param scope The scope for the lock. When providing a scope for the assignment, use
-     *     '/subscriptions/{subscriptionId}' for subscriptions,
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
-     *     for resources.
+     * '/subscriptions/{subscriptionId}' for subscriptions,
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
+     * for resources.
      * @param filter The filter to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a scope along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return all the management locks for a scope along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listByScopeSinglePageAsync(String scope, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByScope(
-                            this.client.getEndpoint(), scope, filter, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<ManagementLockObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByScope(this.client.getEndpoint(), scope, filter,
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ManagementLockObjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the management locks for a scope.
-     *
+     * 
      * @param scope The scope for the lock. When providing a scope for the assignment, use
-     *     '/subscriptions/{subscriptionId}' for subscriptions,
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
-     *     for resources.
+     * '/subscriptions/{subscriptionId}' for subscriptions,
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
+     * for resources.
      * @param filter The filter to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a scope along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return all the management locks for a scope along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagementLockObjectInner>> listByScopeSinglePageAsync(
-        String scope, String filter, Context context) {
+    private Mono<PagedResponse<ManagementLockObjectInner>> listByScopeSinglePageAsync(String scope, String filter,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -3168,25 +2560,18 @@ public final class ManagementLocksClientImpl
         context = this.client.mergeContext(context);
         return service
             .listByScope(this.client.getEndpoint(), scope, filter, this.client.getApiVersion(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all the management locks for a scope.
-     *
+     * 
      * @param scope The scope for the lock. When providing a scope for the assignment, use
-     *     '/subscriptions/{subscriptionId}' for subscriptions,
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
-     *     for resources.
+     * '/subscriptions/{subscriptionId}' for subscriptions,
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
+     * for resources.
      * @param filter The filter to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3195,18 +2580,18 @@ public final class ManagementLocksClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagementLockObjectInner> listByScopeAsync(String scope, String filter) {
-        return new PagedFlux<>(
-            () -> listByScopeSinglePageAsync(scope, filter), nextLink -> listByScopeNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByScopeSinglePageAsync(scope, filter),
+            nextLink -> listByScopeNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the management locks for a scope.
-     *
+     * 
      * @param scope The scope for the lock. When providing a scope for the assignment, use
-     *     '/subscriptions/{subscriptionId}' for subscriptions,
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
-     *     for resources.
+     * '/subscriptions/{subscriptionId}' for subscriptions,
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
+     * for resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3215,18 +2600,18 @@ public final class ManagementLocksClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagementLockObjectInner> listByScopeAsync(String scope) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listByScopeSinglePageAsync(scope, filter), nextLink -> listByScopeNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByScopeSinglePageAsync(scope, filter),
+            nextLink -> listByScopeNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the management locks for a scope.
-     *
+     * 
      * @param scope The scope for the lock. When providing a scope for the assignment, use
-     *     '/subscriptions/{subscriptionId}' for subscriptions,
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
-     *     for resources.
+     * '/subscriptions/{subscriptionId}' for subscriptions,
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
+     * for resources.
      * @param filter The filter to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3236,19 +2621,18 @@ public final class ManagementLocksClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ManagementLockObjectInner> listByScopeAsync(String scope, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listByScopeSinglePageAsync(scope, filter, context),
+        return new PagedFlux<>(() -> listByScopeSinglePageAsync(scope, filter, context),
             nextLink -> listByScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all the management locks for a scope.
-     *
+     * 
      * @param scope The scope for the lock. When providing a scope for the assignment, use
-     *     '/subscriptions/{subscriptionId}' for subscriptions,
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
-     *     for resources.
+     * '/subscriptions/{subscriptionId}' for subscriptions,
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
+     * for resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3262,12 +2646,12 @@ public final class ManagementLocksClientImpl
 
     /**
      * Gets all the management locks for a scope.
-     *
+     * 
      * @param scope The scope for the lock. When providing a scope for the assignment, use
-     *     '/subscriptions/{subscriptionId}' for subscriptions,
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
-     *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
-     *     for resources.
+     * '/subscriptions/{subscriptionId}' for subscriptions,
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and
+     * '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
+     * for resources.
      * @param filter The filter to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3282,45 +2666,36 @@ public final class ManagementLocksClientImpl
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagementLockObjectInner>> listAtResourceGroupLevelNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<ManagementLockObjectInner>>
+        listAtResourceGroupLevelNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listAtResourceGroupLevelNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ManagementLockObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ManagementLockObjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3328,36 +2703,26 @@ public final class ManagementLocksClientImpl
      * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagementLockObjectInner>> listAtResourceGroupLevelNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ManagementLockObjectInner>> listAtResourceGroupLevelNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAtResourceGroupLevelNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAtResourceGroupLevelNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3369,31 +2734,22 @@ public final class ManagementLocksClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listAtResourceLevelNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ManagementLockObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ManagementLockObjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3401,36 +2757,26 @@ public final class ManagementLocksClientImpl
      * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagementLockObjectInner>> listAtResourceLevelNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ManagementLockObjectInner>> listAtResourceLevelNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAtResourceLevelNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAtResourceLevelNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3442,31 +2788,22 @@ public final class ManagementLocksClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listAtSubscriptionLevelNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ManagementLockObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ManagementLockObjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3474,36 +2811,26 @@ public final class ManagementLocksClientImpl
      * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagementLockObjectInner>> listAtSubscriptionLevelNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ManagementLockObjectInner>> listAtSubscriptionLevelNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAtSubscriptionLevelNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAtSubscriptionLevelNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3515,30 +2842,21 @@ public final class ManagementLocksClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByScopeNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ManagementLockObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ManagementLockObjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3546,29 +2864,19 @@ public final class ManagementLocksClientImpl
      * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagementLockObjectInner>> listByScopeNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ManagementLockObjectInner>> listByScopeNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByScopeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByScopeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -5,28 +5,28 @@
 package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.kusto.models.ResourceSkuZoneDetails;
 import com.azure.resourcemanager.kusto.models.SkuLocationInfoItem;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SkuLocationInfoItemTests {
-    @Test
-    public void testDeserialize() {
-        SkuLocationInfoItem model =
-            BinaryData
-                .fromString("{\"location\":\"lxotogtwrupq\",\"zones\":[\"nmic\"]}")
-                .toObject(SkuLocationInfoItem.class);
-        Assertions.assertEquals("lxotogtwrupq", model.location());
-        Assertions.assertEquals("nmic", model.zones().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SkuLocationInfoItem model = BinaryData.fromString(
+            "{\"location\":\"yhtozfikdowwqu\",\"zones\":[\"zx\",\"lvithhqzonosgg\"],\"zoneDetails\":[{\"name\":[\"fwdsj\",\"ka\",\"jutiiswacff\",\"dkzzewkfvhqcrail\"],\"capabilities\":[{\"name\":\"pfuflrw\",\"value\":\"hdlxyjrxsagafcn\"}]}]}")
+            .toObject(SkuLocationInfoItem.class);
+        Assertions.assertEquals("yhtozfikdowwqu", model.location());
+        Assertions.assertEquals("zx", model.zones().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        SkuLocationInfoItem model =
-            new SkuLocationInfoItem().withLocation("lxotogtwrupq").withZones(Arrays.asList("nmic"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SkuLocationInfoItem model = new SkuLocationInfoItem().withLocation("yhtozfikdowwqu")
+            .withZones(Arrays.asList("zx", "lvithhqzonosgg"))
+            .withZoneDetails(Arrays.asList(new ResourceSkuZoneDetails()));
         model = BinaryData.fromObject(model).toObject(SkuLocationInfoItem.class);
-        Assertions.assertEquals("lxotogtwrupq", model.location());
-        Assertions.assertEquals("nmic", model.zones().get(0));
+        Assertions.assertEquals("yhtozfikdowwqu", model.location());
+        Assertions.assertEquals("zx", model.zones().get(0));
     }
 }

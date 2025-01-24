@@ -7,19 +7,18 @@ package com.azure.resourcemanager.signalr.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.models.PrivateEndpoint;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointTests {
-    @Test
-    public void testDeserialize() {
-        PrivateEndpoint model = BinaryData.fromString("{\"id\":\"uzbpzkafku\"}").toObject(PrivateEndpoint.class);
-        Assertions.assertEquals("uzbpzkafku", model.id());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateEndpoint model = BinaryData.fromString("{\"id\":\"kvtkkg\"}").toObject(PrivateEndpoint.class);
+        Assertions.assertEquals("kvtkkg", model.id());
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateEndpoint model = new PrivateEndpoint().withId("uzbpzkafku");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateEndpoint model = new PrivateEndpoint().withId("kvtkkg");
         model = BinaryData.fromObject(model).toObject(PrivateEndpoint.class);
-        Assertions.assertEquals("uzbpzkafku", model.id());
+        Assertions.assertEquals("kvtkkg", model.id());
     }
 }

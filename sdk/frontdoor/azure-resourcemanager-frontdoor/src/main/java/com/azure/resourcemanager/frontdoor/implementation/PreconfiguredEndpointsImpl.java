@@ -11,30 +11,29 @@ import com.azure.resourcemanager.frontdoor.fluent.PreconfiguredEndpointsClient;
 import com.azure.resourcemanager.frontdoor.fluent.models.PreconfiguredEndpointInner;
 import com.azure.resourcemanager.frontdoor.models.PreconfiguredEndpoint;
 import com.azure.resourcemanager.frontdoor.models.PreconfiguredEndpoints;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PreconfiguredEndpointsImpl implements PreconfiguredEndpoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PreconfiguredEndpointsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PreconfiguredEndpointsImpl.class);
 
     private final PreconfiguredEndpointsClient innerClient;
 
     private final com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager;
 
-    public PreconfiguredEndpointsImpl(
-        PreconfiguredEndpointsClient innerClient, com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
+    public PreconfiguredEndpointsImpl(PreconfiguredEndpointsClient innerClient,
+        com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<PreconfiguredEndpoint> list(String resourceGroupName, String profileName) {
         PagedIterable<PreconfiguredEndpointInner> inner = this.serviceClient().list(resourceGroupName, profileName);
-        return Utils.mapPage(inner, inner1 -> new PreconfiguredEndpointImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PreconfiguredEndpointImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PreconfiguredEndpoint> list(String resourceGroupName, String profileName, Context context) {
-        PagedIterable<PreconfiguredEndpointInner> inner =
-            this.serviceClient().list(resourceGroupName, profileName, context);
-        return Utils.mapPage(inner, inner1 -> new PreconfiguredEndpointImpl(inner1, this.manager()));
+        PagedIterable<PreconfiguredEndpointInner> inner
+            = this.serviceClient().list(resourceGroupName, profileName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PreconfiguredEndpointImpl(inner1, this.manager()));
     }
 
     private PreconfiguredEndpointsClient serviceClient() {

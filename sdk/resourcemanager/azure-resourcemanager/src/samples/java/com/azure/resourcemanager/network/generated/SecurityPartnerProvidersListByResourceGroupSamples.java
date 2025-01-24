@@ -4,25 +4,25 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for SecurityPartnerProviders ListByResourceGroup. */
+/**
+ * Samples for SecurityPartnerProviders ListByResourceGroup.
+ */
 public final class SecurityPartnerProvidersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/SecurityPartnerProviderListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * SecurityPartnerProviderListByResourceGroup.json
      */
     /**
      * Sample code: List all Security Partner Providers for a given resource group.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listAllSecurityPartnerProvidersForAGivenResourceGroup(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+    public static void
+        listAllSecurityPartnerProvidersForAGivenResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
             .manager()
             .serviceClient()
             .getSecurityPartnerProviders()
-            .listByResourceGroup("rg1", Context.NONE);
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

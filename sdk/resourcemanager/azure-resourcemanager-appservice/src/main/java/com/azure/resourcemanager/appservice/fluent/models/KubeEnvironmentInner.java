@@ -6,38 +6,63 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appservice.models.ArcConfiguration;
 import com.azure.resourcemanager.appservice.models.ContainerAppsConfiguration;
 import com.azure.resourcemanager.appservice.models.ExtendedLocation;
 import com.azure.resourcemanager.appservice.models.KubeEnvironmentProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** A Kubernetes cluster specialized for web workloads by Azure App Service. */
+/**
+ * A Kubernetes cluster specialized for web workloads by Azure App Service.
+ */
 @Fluent
 public final class KubeEnvironmentInner extends Resource {
     /*
      * KubeEnvironment resource specific properties
      */
-    @JsonProperty(value = "properties")
     private KubeEnvironmentProperties innerProperties;
 
     /*
      * Extended Location.
      */
-    @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
     /*
-     * Kind of resource.
+     * Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-
+     * resource-kind-reference for details supported values for kind.
      */
-    @JsonProperty(value = "kind")
     private String kind;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of KubeEnvironmentInner class.
+     */
+    public KubeEnvironmentInner() {
+    }
 
     /**
      * Get the innerProperties property: KubeEnvironment resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private KubeEnvironmentProperties innerProperties() {
@@ -46,7 +71,7 @@ public final class KubeEnvironmentInner extends Resource {
 
     /**
      * Get the extendedLocation property: Extended Location.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -55,7 +80,7 @@ public final class KubeEnvironmentInner extends Resource {
 
     /**
      * Set the extendedLocation property: Extended Location.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the KubeEnvironmentInner object itself.
      */
@@ -65,8 +90,10 @@ public final class KubeEnvironmentInner extends Resource {
     }
 
     /**
-     * Get the kind property: Kind of resource.
-     *
+     * Get the kind property: Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
+     * for details supported values for kind.
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -74,8 +101,10 @@ public final class KubeEnvironmentInner extends Resource {
     }
 
     /**
-     * Set the kind property: Kind of resource.
-     *
+     * Set the kind property: Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
+     * for details supported values for kind.
+     * 
      * @param kind the kind value to set.
      * @return the KubeEnvironmentInner object itself.
      */
@@ -84,14 +113,48 @@ public final class KubeEnvironmentInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KubeEnvironmentInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KubeEnvironmentInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -100,7 +163,7 @@ public final class KubeEnvironmentInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the Kubernetes Environment.
-     *
+     * 
      * @return the provisioningState value.
      */
     public KubeEnvironmentProvisioningState provisioningState() {
@@ -109,7 +172,7 @@ public final class KubeEnvironmentInner extends Resource {
 
     /**
      * Get the deploymentErrors property: Any errors that occurred during deployment or deployment validation.
-     *
+     * 
      * @return the deploymentErrors value.
      */
     public String deploymentErrors() {
@@ -118,7 +181,7 @@ public final class KubeEnvironmentInner extends Resource {
 
     /**
      * Get the internalLoadBalancerEnabled property: Only visible within Vnet/Subnet.
-     *
+     * 
      * @return the internalLoadBalancerEnabled value.
      */
     public Boolean internalLoadBalancerEnabled() {
@@ -127,7 +190,7 @@ public final class KubeEnvironmentInner extends Resource {
 
     /**
      * Set the internalLoadBalancerEnabled property: Only visible within Vnet/Subnet.
-     *
+     * 
      * @param internalLoadBalancerEnabled the internalLoadBalancerEnabled value to set.
      * @return the KubeEnvironmentInner object itself.
      */
@@ -141,7 +204,7 @@ public final class KubeEnvironmentInner extends Resource {
 
     /**
      * Get the defaultDomain property: Default Domain Name for the cluster.
-     *
+     * 
      * @return the defaultDomain value.
      */
     public String defaultDomain() {
@@ -150,7 +213,7 @@ public final class KubeEnvironmentInner extends Resource {
 
     /**
      * Get the staticIp property: Static IP of the KubeEnvironment.
-     *
+     * 
      * @return the staticIp value.
      */
     public String staticIp() {
@@ -159,7 +222,7 @@ public final class KubeEnvironmentInner extends Resource {
 
     /**
      * Set the staticIp property: Static IP of the KubeEnvironment.
-     *
+     * 
      * @param staticIp the staticIp value to set.
      * @return the KubeEnvironmentInner object itself.
      */
@@ -174,7 +237,7 @@ public final class KubeEnvironmentInner extends Resource {
     /**
      * Get the environmentType property: Type of Kubernetes Environment. Only supported for Container App Environments
      * with value as Managed.
-     *
+     * 
      * @return the environmentType value.
      */
     public String environmentType() {
@@ -184,7 +247,7 @@ public final class KubeEnvironmentInner extends Resource {
     /**
      * Set the environmentType property: Type of Kubernetes Environment. Only supported for Container App Environments
      * with value as Managed.
-     *
+     * 
      * @param environmentType the environmentType value to set.
      * @return the KubeEnvironmentInner object itself.
      */
@@ -197,9 +260,10 @@ public final class KubeEnvironmentInner extends Resource {
     }
 
     /**
-     * Get the arcConfiguration property: Cluster configuration which determines the ARC cluster components types. Eg:
-     * Choosing between BuildService kind, FrontEnd Service ArtifactsStorageType etc.
-     *
+     * Get the arcConfiguration property: Cluster configuration which determines the ARC cluster
+     * components types. Eg: Choosing between BuildService kind,
+     * FrontEnd Service ArtifactsStorageType etc.
+     * 
      * @return the arcConfiguration value.
      */
     public ArcConfiguration arcConfiguration() {
@@ -207,9 +271,10 @@ public final class KubeEnvironmentInner extends Resource {
     }
 
     /**
-     * Set the arcConfiguration property: Cluster configuration which determines the ARC cluster components types. Eg:
-     * Choosing between BuildService kind, FrontEnd Service ArtifactsStorageType etc.
-     *
+     * Set the arcConfiguration property: Cluster configuration which determines the ARC cluster
+     * components types. Eg: Choosing between BuildService kind,
+     * FrontEnd Service ArtifactsStorageType etc.
+     * 
      * @param arcConfiguration the arcConfiguration value to set.
      * @return the KubeEnvironmentInner object itself.
      */
@@ -222,9 +287,10 @@ public final class KubeEnvironmentInner extends Resource {
     }
 
     /**
-     * Get the appLogsConfiguration property: Cluster configuration which enables the log daemon to export app logs to a
-     * destination. Currently only "log-analytics" is supported.
-     *
+     * Get the appLogsConfiguration property: Cluster configuration which enables the log daemon to export
+     * app logs to a destination. Currently only "log-analytics" is
+     * supported.
+     * 
      * @return the appLogsConfiguration value.
      */
     public AppLogsConfiguration appLogsConfiguration() {
@@ -232,9 +298,10 @@ public final class KubeEnvironmentInner extends Resource {
     }
 
     /**
-     * Set the appLogsConfiguration property: Cluster configuration which enables the log daemon to export app logs to a
-     * destination. Currently only "log-analytics" is supported.
-     *
+     * Set the appLogsConfiguration property: Cluster configuration which enables the log daemon to export
+     * app logs to a destination. Currently only "log-analytics" is
+     * supported.
+     * 
      * @param appLogsConfiguration the appLogsConfiguration value to set.
      * @return the KubeEnvironmentInner object itself.
      */
@@ -249,7 +316,7 @@ public final class KubeEnvironmentInner extends Resource {
     /**
      * Get the containerAppsConfiguration property: Cluster configuration for Container Apps Environments to configure
      * Dapr Instrumentation Key and VNET Configuration.
-     *
+     * 
      * @return the containerAppsConfiguration value.
      */
     public ContainerAppsConfiguration containerAppsConfiguration() {
@@ -259,7 +326,7 @@ public final class KubeEnvironmentInner extends Resource {
     /**
      * Set the containerAppsConfiguration property: Cluster configuration for Container Apps Environments to configure
      * Dapr Instrumentation Key and VNET Configuration.
-     *
+     * 
      * @param containerAppsConfiguration the containerAppsConfiguration value to set.
      * @return the KubeEnvironmentInner object itself.
      */
@@ -273,7 +340,7 @@ public final class KubeEnvironmentInner extends Resource {
 
     /**
      * Get the aksResourceId property: The aksResourceID property.
-     *
+     * 
      * @return the aksResourceId value.
      */
     public String aksResourceId() {
@@ -282,7 +349,7 @@ public final class KubeEnvironmentInner extends Resource {
 
     /**
      * Set the aksResourceId property: The aksResourceID property.
-     *
+     * 
      * @param aksResourceId the aksResourceId value to set.
      * @return the KubeEnvironmentInner object itself.
      */
@@ -296,7 +363,7 @@ public final class KubeEnvironmentInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -306,5 +373,61 @@ public final class KubeEnvironmentInner extends Resource {
         if (extendedLocation() != null) {
             extendedLocation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubeEnvironmentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubeEnvironmentInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KubeEnvironmentInner.
+     */
+    public static KubeEnvironmentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubeEnvironmentInner deserializedKubeEnvironmentInner = new KubeEnvironmentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedKubeEnvironmentInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedKubeEnvironmentInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedKubeEnvironmentInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedKubeEnvironmentInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedKubeEnvironmentInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedKubeEnvironmentInner.innerProperties = KubeEnvironmentProperties.fromJson(reader);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedKubeEnvironmentInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedKubeEnvironmentInner.kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubeEnvironmentInner;
+        });
     }
 }

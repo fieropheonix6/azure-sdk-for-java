@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information about rollback on failed VM instances after a OS Upgrade operation. */
+/**
+ * Information about rollback on failed VM instances after a OS Upgrade operation.
+ */
 @Immutable
-public final class RollbackStatusInfo {
+public final class RollbackStatusInfo implements JsonSerializable<RollbackStatusInfo> {
     /*
      * The number of instances which have been successfully rolled back.
      */
-    @JsonProperty(value = "successfullyRolledbackInstanceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer successfullyRolledbackInstanceCount;
 
     /*
      * The number of instances which failed to rollback.
      */
-    @JsonProperty(value = "failedRolledbackInstanceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer failedRolledbackInstanceCount;
 
     /*
      * Error details if OS rollback failed.
      */
-    @JsonProperty(value = "rollbackError", access = JsonProperty.Access.WRITE_ONLY)
     private ApiError rollbackError;
 
-    /** Creates an instance of RollbackStatusInfo class. */
+    /**
+     * Creates an instance of RollbackStatusInfo class.
+     */
     public RollbackStatusInfo() {
     }
 
     /**
      * Get the successfullyRolledbackInstanceCount property: The number of instances which have been successfully rolled
      * back.
-     *
+     * 
      * @return the successfullyRolledbackInstanceCount value.
      */
     public Integer successfullyRolledbackInstanceCount() {
@@ -44,7 +49,7 @@ public final class RollbackStatusInfo {
 
     /**
      * Get the failedRolledbackInstanceCount property: The number of instances which failed to rollback.
-     *
+     * 
      * @return the failedRolledbackInstanceCount value.
      */
     public Integer failedRolledbackInstanceCount() {
@@ -53,7 +58,7 @@ public final class RollbackStatusInfo {
 
     /**
      * Get the rollbackError property: Error details if OS rollback failed.
-     *
+     * 
      * @return the rollbackError value.
      */
     public ApiError rollbackError() {
@@ -62,12 +67,53 @@ public final class RollbackStatusInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (rollbackError() != null) {
             rollbackError().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RollbackStatusInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RollbackStatusInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RollbackStatusInfo.
+     */
+    public static RollbackStatusInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RollbackStatusInfo deserializedRollbackStatusInfo = new RollbackStatusInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("successfullyRolledbackInstanceCount".equals(fieldName)) {
+                    deserializedRollbackStatusInfo.successfullyRolledbackInstanceCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("failedRolledbackInstanceCount".equals(fieldName)) {
+                    deserializedRollbackStatusInfo.failedRolledbackInstanceCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("rollbackError".equals(fieldName)) {
+                    deserializedRollbackStatusInfo.rollbackError = ApiError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRollbackStatusInfo;
+        });
     }
 }

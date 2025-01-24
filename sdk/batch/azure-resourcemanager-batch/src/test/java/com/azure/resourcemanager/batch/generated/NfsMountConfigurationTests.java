@@ -7,31 +7,27 @@ package com.azure.resourcemanager.batch.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.NfsMountConfiguration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NfsMountConfigurationTests {
-    @Test
-    public void testDeserialize() {
-        NfsMountConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"source\":\"wi\",\"relativeMountPath\":\"fnjhfjxwmszkkfo\",\"mountOptions\":\"eyfkzikfja\"}")
-                .toObject(NfsMountConfiguration.class);
-        Assertions.assertEquals("wi", model.source());
-        Assertions.assertEquals("fnjhfjxwmszkkfo", model.relativeMountPath());
-        Assertions.assertEquals("eyfkzikfja", model.mountOptions());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        NfsMountConfiguration model = BinaryData
+            .fromString(
+                "{\"source\":\"wtl\",\"relativeMountPath\":\"nguxawqaldsy\",\"mountOptions\":\"ximerqfobwyznk\"}")
+            .toObject(NfsMountConfiguration.class);
+        Assertions.assertEquals("wtl", model.source());
+        Assertions.assertEquals("nguxawqaldsy", model.relativeMountPath());
+        Assertions.assertEquals("ximerqfobwyznk", model.mountOptions());
     }
 
-    @Test
-    public void testSerialize() {
-        NfsMountConfiguration model =
-            new NfsMountConfiguration()
-                .withSource("wi")
-                .withRelativeMountPath("fnjhfjxwmszkkfo")
-                .withMountOptions("eyfkzikfja");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        NfsMountConfiguration model = new NfsMountConfiguration().withSource("wtl")
+            .withRelativeMountPath("nguxawqaldsy")
+            .withMountOptions("ximerqfobwyznk");
         model = BinaryData.fromObject(model).toObject(NfsMountConfiguration.class);
-        Assertions.assertEquals("wi", model.source());
-        Assertions.assertEquals("fnjhfjxwmszkkfo", model.relativeMountPath());
-        Assertions.assertEquals("eyfkzikfja", model.mountOptions());
+        Assertions.assertEquals("wtl", model.source());
+        Assertions.assertEquals("nguxawqaldsy", model.relativeMountPath());
+        Assertions.assertEquals("ximerqfobwyznk", model.mountOptions());
     }
 }

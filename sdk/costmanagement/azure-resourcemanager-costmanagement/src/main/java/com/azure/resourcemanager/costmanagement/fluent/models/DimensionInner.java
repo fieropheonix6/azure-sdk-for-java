@@ -5,36 +5,59 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.costmanagement.models.CostManagementResource;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The Dimension model. */
+/**
+ * List of Dimension.
+ */
 @Fluent
-public final class DimensionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DimensionInner.class);
-
+public final class DimensionInner extends CostManagementResource {
     /*
-     * The properties property.
+     * Dimension properties.
      */
-    @JsonProperty(value = "properties")
     private DimensionProperties innerProperties;
 
     /*
-     * Resource tags.
+     * ETag of the resource.
      */
-    @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
+    private String etag;
+
+    /*
+     * SKU of the resource.
+     */
+    private String sku;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
-     * Get the innerProperties property: The properties property.
-     *
+     * Creates an instance of DimensionInner class.
+     */
+    public DimensionInner() {
+    }
+
+    /**
+     * Get the innerProperties property: Dimension properties.
+     * 
      * @return the innerProperties value.
      */
     private DimensionProperties innerProperties() {
@@ -42,17 +65,76 @@ public final class DimensionInner extends ProxyResource {
     }
 
     /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
+     * Get the etag property: ETag of the resource.
+     * 
+     * @return the etag value.
      */
-    public Map<String, String> tags() {
-        return this.tags;
+    @Override
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the sku property: SKU of the resource.
+     * 
+     * @return the sku value.
+     */
+    @Override
+    public String sku() {
+        return this.sku;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DimensionInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DimensionInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**
      * Get the description property: Dimension description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -61,7 +143,7 @@ public final class DimensionInner extends ProxyResource {
 
     /**
      * Get the filterEnabled property: Filter enabled.
-     *
+     * 
      * @return the filterEnabled value.
      */
     public Boolean filterEnabled() {
@@ -70,7 +152,7 @@ public final class DimensionInner extends ProxyResource {
 
     /**
      * Get the groupingEnabled property: Grouping enabled.
-     *
+     * 
      * @return the groupingEnabled value.
      */
     public Boolean groupingEnabled() {
@@ -78,8 +160,8 @@ public final class DimensionInner extends ProxyResource {
     }
 
     /**
-     * Get the data property: The data property.
-     *
+     * Get the data property: Dimension data.
+     * 
      * @return the data value.
      */
     public List<String> data() {
@@ -87,8 +169,8 @@ public final class DimensionInner extends ProxyResource {
     }
 
     /**
-     * Set the data property: The data property.
-     *
+     * Set the data property: Dimension data.
+     * 
      * @param data the data value to set.
      * @return the DimensionInner object itself.
      */
@@ -102,7 +184,7 @@ public final class DimensionInner extends ProxyResource {
 
     /**
      * Get the total property: Total number of data for the dimension.
-     *
+     * 
      * @return the total value.
      */
     public Integer total() {
@@ -111,7 +193,7 @@ public final class DimensionInner extends ProxyResource {
 
     /**
      * Get the category property: Dimension category.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -120,7 +202,7 @@ public final class DimensionInner extends ProxyResource {
 
     /**
      * Get the usageStart property: Usage start.
-     *
+     * 
      * @return the usageStart value.
      */
     public OffsetDateTime usageStart() {
@@ -129,7 +211,7 @@ public final class DimensionInner extends ProxyResource {
 
     /**
      * Get the usageEnd property: Usage end.
-     *
+     * 
      * @return the usageEnd value.
      */
     public OffsetDateTime usageEnd() {
@@ -138,7 +220,7 @@ public final class DimensionInner extends ProxyResource {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -147,12 +229,67 @@ public final class DimensionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DimensionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DimensionInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DimensionInner.
+     */
+    public static DimensionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DimensionInner deserializedDimensionInner = new DimensionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDimensionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDimensionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDimensionInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDimensionInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDimensionInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDimensionInner.sku = reader.getString();
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedDimensionInner.etag = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDimensionInner.innerProperties = DimensionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDimensionInner;
+        });
     }
 }

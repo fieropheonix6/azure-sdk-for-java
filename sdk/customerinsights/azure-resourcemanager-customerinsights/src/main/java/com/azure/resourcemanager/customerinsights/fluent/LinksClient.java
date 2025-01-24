@@ -13,11 +13,46 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.customerinsights.fluent.models.LinkResourceFormatInner;
 
-/** An instance of this class provides access to all the operations defined in LinksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LinksClient.
+ */
 public interface LinksClient {
     /**
      * Creates a link or updates an existing link in the hub.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param linkName The name of the link.
+     * @param parameters Parameters supplied to the CreateOrUpdate Link operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the link resource format.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LinkResourceFormatInner>, LinkResourceFormatInner> beginCreateOrUpdate(
+        String resourceGroupName, String hubName, String linkName, LinkResourceFormatInner parameters);
+
+    /**
+     * Creates a link or updates an existing link in the hub.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param linkName The name of the link.
+     * @param parameters Parameters supplied to the CreateOrUpdate Link operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the link resource format.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LinkResourceFormatInner>, LinkResourceFormatInner> beginCreateOrUpdate(
+        String resourceGroupName, String hubName, String linkName, LinkResourceFormatInner parameters, Context context);
+
+    /**
+     * Creates a link or updates an existing link in the hub.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param linkName The name of the link.
@@ -28,12 +63,12 @@ public interface LinksClient {
      * @return the link resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<LinkResourceFormatInner>, LinkResourceFormatInner> beginCreateOrUpdate(
-        String resourceGroupName, String hubName, String linkName, LinkResourceFormatInner parameters);
+    LinkResourceFormatInner createOrUpdate(String resourceGroupName, String hubName, String linkName,
+        LinkResourceFormatInner parameters);
 
     /**
      * Creates a link or updates an existing link in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param linkName The name of the link.
@@ -45,45 +80,28 @@ public interface LinksClient {
      * @return the link resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<LinkResourceFormatInner>, LinkResourceFormatInner> beginCreateOrUpdate(
-        String resourceGroupName, String hubName, String linkName, LinkResourceFormatInner parameters, Context context);
-
-    /**
-     * Creates a link or updates an existing link in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param linkName The name of the link.
-     * @param parameters Parameters supplied to the CreateOrUpdate Link operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the link resource format.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LinkResourceFormatInner createOrUpdate(
-        String resourceGroupName, String hubName, String linkName, LinkResourceFormatInner parameters);
-
-    /**
-     * Creates a link or updates an existing link in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param linkName The name of the link.
-     * @param parameters Parameters supplied to the CreateOrUpdate Link operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the link resource format.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LinkResourceFormatInner createOrUpdate(
-        String resourceGroupName, String hubName, String linkName, LinkResourceFormatInner parameters, Context context);
+    LinkResourceFormatInner createOrUpdate(String resourceGroupName, String hubName, String linkName,
+        LinkResourceFormatInner parameters, Context context);
 
     /**
      * Gets a link in the hub.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param linkName The name of the link.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a link in the hub along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<LinkResourceFormatInner> getWithResponse(String resourceGroupName, String hubName, String linkName,
+        Context context);
+
+    /**
+     * Gets a link in the hub.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param linkName The name of the link.
@@ -96,8 +114,8 @@ public interface LinksClient {
     LinkResourceFormatInner get(String resourceGroupName, String hubName, String linkName);
 
     /**
-     * Gets a link in the hub.
-     *
+     * Deletes a link in the hub.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param linkName The name of the link.
@@ -105,15 +123,14 @@ public interface LinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a link in the hub.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LinkResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String linkName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String hubName, String linkName, Context context);
 
     /**
      * Deletes a link in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param linkName The name of the link.
@@ -125,43 +142,28 @@ public interface LinksClient {
     void delete(String resourceGroupName, String hubName, String linkName);
 
     /**
-     * Deletes a link in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param linkName The name of the link.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String hubName, String linkName, Context context);
-
-    /**
      * Gets all the links in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the links in the specified hub.
+     * @return all the links in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LinkResourceFormatInner> listByHub(String resourceGroupName, String hubName);
 
     /**
      * Gets all the links in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the links in the specified hub.
+     * @return all the links in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LinkResourceFormatInner> listByHub(String resourceGroupName, String hubName, Context context);

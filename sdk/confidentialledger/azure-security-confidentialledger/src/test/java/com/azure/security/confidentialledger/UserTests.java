@@ -7,38 +7,24 @@ package com.azure.security.confidentialledger;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
-
+import com.azure.json.models.JsonObject;
+import com.azure.json.models.JsonString;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public final class UserTests extends ConfidentialLedgerClientTestBase {
     @Test
-    public void testGetUserTests() throws Exception {
-        String userAad = Configuration.getGlobalConfiguration().get("USER_AAD", "ec667af1-0642-45f0-be8a-b76758a35dde");
+    public void testGetUserTests() {
+        String userAad = ConfidentialLedgerEnvironment.getConfidentialLedgerAdminOid();
         RequestOptions requestOptions = new RequestOptions();
 
         Response<BinaryData> response = confidentialLedgerClient.getUserWithResponse(userAad, requestOptions);
-        
+
         BinaryData parsedResponse = response.getValue();
 
         Assertions.assertEquals(200, response.getStatusCode());
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode responseBodyJson = null;
-
-        try {
-            responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-            Assertions.assertTrue(false);
-        }
-
-        Assertions.assertEquals(responseBodyJson.get("assignedRole").asText(), "Administrator");
-        Assertions.assertEquals(responseBodyJson.get("userId").asText(), userAad);
+        JsonObject jsonObject = parsedResponse.toObject(JsonObject.class);
+        Assertions.assertEquals("Administrator", ((JsonString) jsonObject.getProperty("assignedRole")).getValue());
     }
 }

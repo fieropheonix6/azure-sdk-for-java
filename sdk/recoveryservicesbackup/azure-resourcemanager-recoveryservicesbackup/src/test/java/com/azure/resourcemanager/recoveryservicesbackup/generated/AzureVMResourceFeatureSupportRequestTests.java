@@ -7,25 +7,23 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureVMResourceFeatureSupportRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureVMResourceFeatureSupportRequestTests {
-    @Test
-    public void testDeserialize() {
-        AzureVMResourceFeatureSupportRequest model =
-            BinaryData
-                .fromString("{\"featureType\":\"AzureVMResourceBackup\",\"vmSize\":\"guamlj\",\"vmSku\":\"rgmsplzga\"}")
-                .toObject(AzureVMResourceFeatureSupportRequest.class);
-        Assertions.assertEquals("guamlj", model.vmSize());
-        Assertions.assertEquals("rgmsplzga", model.vmSku());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureVMResourceFeatureSupportRequest model = BinaryData.fromString(
+            "{\"featureType\":\"AzureVMResourceBackup\",\"vmSize\":\"qqtlffhzbkrkj\",\"vmSku\":\"avfqnvhnqoewdogi\"}")
+            .toObject(AzureVMResourceFeatureSupportRequest.class);
+        Assertions.assertEquals("qqtlffhzbkrkj", model.vmSize());
+        Assertions.assertEquals("avfqnvhnqoewdogi", model.vmSku());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureVMResourceFeatureSupportRequest model =
-            new AzureVMResourceFeatureSupportRequest().withVmSize("guamlj").withVmSku("rgmsplzga");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureVMResourceFeatureSupportRequest model
+            = new AzureVMResourceFeatureSupportRequest().withVmSize("qqtlffhzbkrkj").withVmSku("avfqnvhnqoewdogi");
         model = BinaryData.fromObject(model).toObject(AzureVMResourceFeatureSupportRequest.class);
-        Assertions.assertEquals("guamlj", model.vmSize());
-        Assertions.assertEquals("rgmsplzga", model.vmSku());
+        Assertions.assertEquals("qqtlffhzbkrkj", model.vmSize());
+        Assertions.assertEquals("avfqnvhnqoewdogi", model.vmSku());
     }
 }

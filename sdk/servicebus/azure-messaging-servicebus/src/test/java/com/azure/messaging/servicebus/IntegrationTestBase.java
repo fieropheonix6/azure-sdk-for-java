@@ -7,33 +7,33 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.models.AmqpMessageBody;
-import com.azure.core.amqp.implementation.ConnectionStringProperties;
-import com.azure.core.test.TestBase;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.AsyncCloseable;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
-
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.provider.Arguments;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
-import reactor.test.StepVerifier;
 
 import java.io.Closeable;
 import java.net.InetSocketAddress;
@@ -42,10 +42,13 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
+import static com.azure.messaging.servicebus.TestUtils.MESSAGE_POSITION_ID;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
 import static com.azure.messaging.servicebus.TestUtils.getQueueBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSessionQueueBaseName;
@@ -55,17 +58,21 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-public abstract class IntegrationTestBase extends TestBase {
+public abstract class IntegrationTestBase extends TestProxyTestBase {
     protected static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
     protected static final Duration TIMEOUT = Duration.ofSeconds(60);
-    protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
+    // Tests use timeouts of 20-60 seconds to verify something has happened
+    // We need a short try timeout so that if transient issue happens we have a chance to retry it before overall test timeout.
+    // This is a good idea to do in any production application as well - no point in waiting too long
+    protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(3));
     protected final ClientLogger logger;
-
+    protected ClientOptions optionsWithTracing;
     private static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
     private static final Configuration GLOBAL_CONFIGURATION = TestUtils.getGlobalConfiguration();
-
+    private List<AutoCloseable> toClose = new ArrayList<>();
     private String testName;
     private final Scheduler scheduler = Schedulers.parallel();
+    private final AtomicReference<TokenCredential> credentialCached = new AtomicReference<>();
 
     protected static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     protected String sessionId;
@@ -77,66 +84,29 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     @BeforeEach
-    public void setupTest(TestInfo testInfo) {
-        logger.info("========= SET-UP [{}] =========", testInfo.getDisplayName());
+    @Override
+    public void setupTest(TestContextManager testContextManager) {
+        this.testContextManager = testContextManager;
+        testName = testContextManager.getTrackerTestName();
 
-        testName = testInfo.getDisplayName();
-        assumeTrue(getTestMode() == TestMode.RECORD);
+        logger.info("========= SET-UP [{}] =========", testName);
 
-        StepVerifier.setDefaultTimeout(TIMEOUT);
+        assertRunnable();
+
+        toClose = new ArrayList<>();
+        optionsWithTracing = new ClientOptions().setTracingOptions(new LoggingTracerProvider.LoggingTracingOptions());
         beforeTest();
     }
 
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
-
     // These are overridden because we don't use the Interceptor Manager.
-    @Override
     @AfterEach
-    public void teardownTest(TestInfo testInfo) {
-        logger.info("========= TEARDOWN [{}] =========", testInfo.getDisplayName());
-        StepVerifier.resetDefaultTimeout();
-        afterTest();
-    }
-
-    /**
-     * Gets the test mode for this API test. If AZURE_TEST_MODE equals {@link TestMode#RECORD} and Event Hubs connection
-     * string is set, then we return {@link TestMode#RECORD}. Otherwise, {@link TestMode#PLAYBACK} is returned.
-     */
     @Override
-    public TestMode getTestMode() {
-        if (super.getTestMode() == TestMode.PLAYBACK) {
-            return TestMode.PLAYBACK;
-        }
+    public void teardownTest() {
+        logger.info("========= TEARDOWN [{}] =========", testName);
+        afterTest();
 
-        return CoreUtils.isNullOrEmpty(getConnectionString()) ? TestMode.PLAYBACK : TestMode.RECORD;
-    }
-
-    public static String getConnectionString() {
-        return TestUtils.getConnectionString(false);
-    }
-
-    public static String getConnectionString(boolean withSas) {
-        return TestUtils.getConnectionString(withSas);
-    }
-
-    protected static ConnectionStringProperties getConnectionStringProperties() {
-        return new ConnectionStringProperties(getConnectionString(false));
-    }
-
-    protected static ConnectionStringProperties getConnectionStringProperties(boolean withSas) {
-        return new ConnectionStringProperties(getConnectionString(withSas));
-    }
-
-    public String getFullyQualifiedDomainName() {
-        return TestUtils.getFullyQualifiedDomainName();
+        logger.info("Disposing of subscriptions, consumers and clients.");
+        dispose();
     }
 
     /**
@@ -202,98 +172,120 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     /**
-     * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings and uses a
-     * connection string to authenticate.
+     * Creates a new instance of {@link ServiceBusClientBuilder} with authentication set up in {@link TestMode#LIVE} and
+     * {@link TestMode#RECORD} modes.
+     *
+     * @return the builder with authentication set up.
+     * @throws org.opentest4j.TestAbortedException if the test mode is {@link TestMode#PLAYBACK}.
      */
-    protected ServiceBusClientBuilder getBuilder() {
-        return getBuilder(false);
-    }
-
-    /**
-     * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings and uses a
-     * connection string to authenticate if {@code useCredentials} is false. Otherwise, uses a service principal through
-     * {@link com.azure.identity.ClientSecretCredential}.
-     */
-    protected ServiceBusClientBuilder getBuilder(boolean useCredentials) {
-        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
-            .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
-            .retryOptions(RETRY_OPTIONS)
-            .transportType(AmqpTransportType.AMQP)
-            .scheduler(scheduler);
-
-        logger.info("Getting Builder using credentials : [{}] ", useCredentials);
-        if (useCredentials) {
-            final String fullyQualifiedDomainName = getFullyQualifiedDomainName();
-
-            assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
-                "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
-
-            final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-                .clientId(TestUtils.getPropertyValue("AZURE_CLIENT_ID"))
-                .clientSecret(TestUtils.getPropertyValue("AZURE_CLIENT_SECRET"))
-                .tenantId(TestUtils.getPropertyValue("AZURE_TENANT_ID"))
-                .build();
-
-            return builder.credential(fullyQualifiedDomainName, clientSecretCredential);
+    protected ServiceBusClientBuilder getAuthenticatedBuilder() {
+        final TestMode mode = super.getTestMode();
+        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
+        if (mode == TestMode.LIVE) {
+            final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName(false);
+            assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
+            final TokenCredential credential = TestUtils.getPipelineCredential(credentialCached);
+            return builder.credential(fullyQualifiedDomainName, credential);
+        } else if (mode == TestMode.RECORD) {
+            final String connectionString = TestUtils.getConnectionString(false);
+            if (CoreUtils.isNullOrEmpty(connectionString)) {
+                final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName(false);
+                assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
+                final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+                return builder.credential(fullyQualifiedDomainName, credential);
+            } else {
+                return builder.connectionString(connectionString);
+            }
         } else {
-            return builder.connectionString(getConnectionString());
+            // Throws org.opentest4j.TestAbortedException exception.
+            assumeTrue(false, "Integration tests are not enabled in playback mode.");
+            return null;
         }
     }
 
-    protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType,
-        int entityIndex, boolean isSessionAware, boolean sharedConnection) {
+    /**
+     * Creates a new instance of {@link ServiceBusClientBuilder} with the default integration test settings.
+     */
+    protected ServiceBusClientBuilder getBuilder() {
+        return getAuthenticatedBuilder().proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
+            .retryOptions(RETRY_OPTIONS)
+            .clientOptions(optionsWithTracing)
+            .transportType(AmqpTransportType.AMQP)
+            .scheduler(scheduler)
+            .configuration(v1OrV2(true));
+    }
 
-        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
+    protected ServiceBusClientBuilder getBuilder(boolean sharedConnection) {
+        ServiceBusClientBuilder builder;
+        if (sharedConnection && sharedBuilder == null) {
+            sharedBuilder = getBuilder();
+            builder = sharedBuilder;
+        } else if (sharedConnection) {
+            builder = sharedBuilder;
+        } else {
+            builder = getBuilder();
+        }
+        return builder;
+    }
+
+    protected ServiceBusSenderClientBuilder getSenderBuilder(MessagingEntityType entityType, int entityIndex,
+        boolean isSessionAware, boolean sharedConnection) {
+
+        ServiceBusClientBuilder builder = getBuilder(sharedConnection);
         switch (entityType) {
             case QUEUE:
                 final String queueName = isSessionAware ? getSessionQueueName(entityIndex) : getQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
-                return builder.sender()
-                    .queueName(queueName);
+                return builder.sender().queueName(queueName);
+
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
                 assertNotNull(topicName, "'topicName' cannot be null.");
 
                 return builder.sender().topicName(topicName);
+
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
     }
 
-    protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials, MessagingEntityType entityType,
-        int entityIndex, boolean sharedConnection) {
+    protected ServiceBusReceiverClientBuilder getReceiverBuilder(MessagingEntityType entityType, int entityIndex,
+        boolean sharedConnection) {
 
-        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
+        ServiceBusClientBuilder builder = getBuilder(sharedConnection);
         switch (entityType) {
             case QUEUE:
                 final String queueName = getQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
 
                 return builder.receiver().receiveMode(ServiceBusReceiveMode.PEEK_LOCK).queueName(queueName);
+
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
                 final String subscriptionName = getSubscriptionBaseName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                return builder.receiver().receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                    .topicName(topicName).subscriptionName(subscriptionName);
+                return builder.receiver()
+                    .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+                    .topicName(topicName)
+                    .subscriptionName(subscriptionName);
+
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
     }
 
-    protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(boolean useCredentials,
-        MessagingEntityType entityType, int entityIndex,
-        boolean sharedConnection) {
+    protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(MessagingEntityType entityType,
+        int entityIndex, boolean sharedConnection, AmqpRetryOptions retryOptions) {
 
-        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
+        ServiceBusClientBuilder builder = getBuilder(sharedConnection);
 
         switch (entityType) {
             case QUEUE:
                 final String queueName = getSessionQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
-                return builder
+                return builder.retryOptions(retryOptions)
                     .sessionReceiver()
                     .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
                     .queueName(queueName);
@@ -303,39 +295,52 @@ public abstract class IntegrationTestBase extends TestBase {
                 final String subscriptionName = getSessionSubscriptionBaseName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
-                return builder.sessionReceiver()
+                return builder.retryOptions(retryOptions)
+                    .sessionReceiver()
                     .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-                    .topicName(topicName).subscriptionName(subscriptionName);
+                    .topicName(topicName)
+                    .subscriptionName(subscriptionName);
+
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
     }
 
     protected static Stream<Arguments> messagingEntityProvider() {
-        return Stream.of(
-            Arguments.of(MessagingEntityType.QUEUE),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION)
-        );
+        return Stream.of(Arguments.of(MessagingEntityType.QUEUE), Arguments.of(MessagingEntityType.SUBSCRIPTION));
     }
 
     protected static Stream<Arguments> messagingEntityWithSessions() {
-        return Stream.of(
-            Arguments.of(MessagingEntityType.QUEUE, false),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, false),
-            Arguments.of(MessagingEntityType.QUEUE, true),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, true)
-        );
+        return Stream.of(Arguments.of(MessagingEntityType.QUEUE, false),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false), Arguments.of(MessagingEntityType.QUEUE, true),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true));
     }
 
     protected static Stream<Arguments> receiveDeferredMessageBySequenceNumber() {
-        return Stream.of(
-            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.COMPLETED),
+        return Stream.of(Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.COMPLETED),
             Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.ABANDONED),
             Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.SUSPENDED),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.ABANDONED),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.COMPLETED),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.SUSPENDED)
-        );
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.SUSPENDED));
+    }
+
+    protected <T extends AutoCloseable> T toClose(T closeable) {
+        toClose.add(closeable);
+        return closeable;
+    }
+
+    protected Disposable toClose(Disposable closeable) {
+        toClose.add(() -> closeable.dispose());
+        return closeable;
+    }
+
+    /**
+     * Disposes of registered with {@code toClose} method resources.
+     */
+    protected void dispose() {
+        dispose(toClose.toArray(new AutoCloseable[0]));
+        toClose.clear();
     }
 
     /**
@@ -372,24 +377,54 @@ public abstract class IntegrationTestBase extends TestBase {
         Mono.when(closeableMonos).block(TIMEOUT);
     }
 
-    protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled, AmqpMessageBody amqpMessageBody) {
+    protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled,
+        AmqpMessageBody amqpMessageBody) {
         final ServiceBusMessage message = new ServiceBusMessage(amqpMessageBody);
         message.setMessageId(messageId);
-        logger.info("Message id '{}'.", messageId);
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
         message.setMessageId(messageId);
-        logger.info("Message id '{}'.", messageId);
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
-    protected void assertMessageEquals(ServiceBusMessageContext context, String messageId, boolean isSessionEnabled) {
-        Assertions.assertNotNull(context);
-        Assertions.assertNotNull(context.getMessage());
-        assertMessageEquals(context.getMessage(), messageId, isSessionEnabled);
+    protected void logMessage(ServiceBusMessage message, String entity, String description) {
+        logMessage(message.getMessageId(), -1, message.getApplicationProperties().get(MESSAGE_POSITION_ID), entity,
+            description);
+    }
+
+    protected void logMessage(ServiceBusReceivedMessage message, String entity, String description) {
+        if (message == null) {
+            logMessage(null, -1, entity, null, description);
+        } else {
+            logMessage(message.getMessageId(), message.getSequenceNumber(),
+                message.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description);
+        }
+    }
+
+    private void logMessage(String id, long seqNo, Object positionId, String entity, String description) {
+        logger.atInfo()
+            .addKeyValue("test", testName)
+            .addKeyValue("entity", entity)
+            .addKeyValue("sequenceNo", seqNo)
+            .addKeyValue("messageId", id)
+            .addKeyValue("positionId", positionId)
+            .log(description == null ? "logging messages" : description);
+    }
+
+    protected void logMessages(List<ServiceBusMessage> messages, String entity, String description) {
+        messages.forEach(m -> logMessage(m.getMessageId(), -1, m.getApplicationProperties().get(MESSAGE_POSITION_ID),
+            entity, description));
+    }
+
+    protected List<ServiceBusReceivedMessage> logReceivedMessages(IterableStream<ServiceBusReceivedMessage> messages,
+        String entity, String description) {
+        List<ServiceBusReceivedMessage> list = messages.stream().collect(Collectors.toList());
+        list.forEach(m -> logMessage(m.getMessageId(), m.getSequenceNumber(),
+            m.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description));
+        return list;
     }
 
     protected void assertMessageEquals(ServiceBusReceivedMessage message, String messageId, boolean isSessionEnabled) {
@@ -409,16 +444,57 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-    private ServiceBusClientBuilder getBuilder(boolean useCredentials, boolean sharedConnection) {
-        ServiceBusClientBuilder builder;
-        if (sharedConnection && sharedBuilder == null) {
-            sharedBuilder = getBuilder(useCredentials);
-            builder = sharedBuilder;
-        } else if (sharedConnection) {
-            builder = sharedBuilder;
+    protected final Configuration v1OrV2(boolean isV2) {
+        final TestConfigurationSource configSource = new TestConfigurationSource();
+        if (isV2) {
+            configSource.put("com.azure.messaging.servicebus.nonSession.asyncReceive.v2", "true");
+            configSource.put("com.azure.messaging.servicebus.nonSession.syncReceive.v2", "true");
+            configSource.put("com.azure.messaging.servicebus.session.processor.asyncReceive.v2", "true");
+            configSource.put("com.azure.messaging.servicebus.session.reactor.asyncReceive.v2", "true");
+            configSource.put("com.azure.messaging.servicebus.session.syncReceive.v2", "true");
+            configSource.put("com.azure.messaging.servicebus.sendAndManageRules.v2", "true");
         } else {
-            builder = getBuilder(useCredentials);
+            configSource.put("com.azure.messaging.servicebus.nonSession.asyncReceive.v2", "false");
+            configSource.put("com.azure.messaging.servicebus.nonSession.syncReceive.v2", "false");
+            configSource.put("com.azure.messaging.servicebus.session.processor.asyncReceive.v2", "false");
+            configSource.put("com.azure.messaging.servicebus.session.reactor.asyncReceive.v2", "false");
+            configSource.put("com.azure.messaging.servicebus.session.syncReceive.v2", "false");
+            configSource.put("com.azure.messaging.servicebus.sendAndManageRules.v2", "false");
         }
-        return builder;
+        return new ConfigurationBuilder(configSource).build();
+    }
+
+    /**
+     * Asserts that if the integration tests can be run. This method is expected to be called at the beginning of each
+     * test run.
+     *
+     * @throws org.opentest4j.TestAbortedException if the integration tests cannot be run.
+     */
+    protected void assertRunnable() {
+        final TestMode mode = super.getTestMode();
+        if (mode == TestMode.PLAYBACK) {
+            // AMQP traffic never gets recorded so there is no PLAYBACK supported.
+            assumeTrue(false, "Skipping integration tests in playback mode.");
+            return;
+        }
+
+        if (mode == TestMode.RECORD) {
+            // RECORD mode used in SDK-dev setup not on CI pipeline.
+            if (!CoreUtils.isNullOrEmpty(TestUtils.getConnectionString(false))) {
+                // integration tests are runnable using the connection string.
+                return;
+            }
+            if (!CoreUtils.isNullOrEmpty(TestUtils.getFullyQualifiedDomainName(false))) {
+                // best effort check:
+                // integration tests are potentially runnable using DefaultAzureCredential. Here we're assuming that
+                // in RECORD mode with FullyQualifiedDomainName set, the dev environment is also set up for one of the
+                // token credential type in DefaultAzureCredential (all token credentials requires FullyQualifiedDomainName).
+                return;
+            }
+            assumeTrue(false, "Not running integration in record mode (missing authentication set up).");
+            return;
+        }
+        // The CI pipeline is expected to have federated identity configured, so tests are runnable.
+        assert mode == TestMode.LIVE;
     }
 }

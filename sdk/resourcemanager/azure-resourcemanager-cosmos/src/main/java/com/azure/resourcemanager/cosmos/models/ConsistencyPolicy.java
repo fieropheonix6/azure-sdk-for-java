@@ -6,15 +6,20 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The consistency policy for the Cosmos DB database account. */
+/**
+ * The consistency policy for the Cosmos DB database account.
+ */
 @Fluent
-public final class ConsistencyPolicy {
+public final class ConsistencyPolicy implements JsonSerializable<ConsistencyPolicy> {
     /*
      * The default consistency level and configuration settings of the Cosmos DB account.
      */
-    @JsonProperty(value = "defaultConsistencyLevel", required = true)
     private DefaultConsistencyLevel defaultConsistencyLevel;
 
     /*
@@ -22,7 +27,6 @@ public final class ConsistencyPolicy {
      * tolerated. Accepted range for this value is 1 – 2,147,483,647. Required when defaultConsistencyPolicy is set to
      * 'BoundedStaleness'.
      */
-    @JsonProperty(value = "maxStalenessPrefix")
     private Long maxStalenessPrefix;
 
     /*
@@ -30,13 +34,18 @@ public final class ConsistencyPolicy {
      * seconds) tolerated. Accepted range for this value is 5 - 86400. Required when defaultConsistencyPolicy is set to
      * 'BoundedStaleness'.
      */
-    @JsonProperty(value = "maxIntervalInSeconds")
     private Integer maxIntervalInSeconds;
+
+    /**
+     * Creates an instance of ConsistencyPolicy class.
+     */
+    public ConsistencyPolicy() {
+    }
 
     /**
      * Get the defaultConsistencyLevel property: The default consistency level and configuration settings of the Cosmos
      * DB account.
-     *
+     * 
      * @return the defaultConsistencyLevel value.
      */
     public DefaultConsistencyLevel defaultConsistencyLevel() {
@@ -46,7 +55,7 @@ public final class ConsistencyPolicy {
     /**
      * Set the defaultConsistencyLevel property: The default consistency level and configuration settings of the Cosmos
      * DB account.
-     *
+     * 
      * @param defaultConsistencyLevel the defaultConsistencyLevel value to set.
      * @return the ConsistencyPolicy object itself.
      */
@@ -59,7 +68,7 @@ public final class ConsistencyPolicy {
      * Get the maxStalenessPrefix property: When used with the Bounded Staleness consistency level, this value
      * represents the number of stale requests tolerated. Accepted range for this value is 1 – 2,147,483,647. Required
      * when defaultConsistencyPolicy is set to 'BoundedStaleness'.
-     *
+     * 
      * @return the maxStalenessPrefix value.
      */
     public Long maxStalenessPrefix() {
@@ -70,7 +79,7 @@ public final class ConsistencyPolicy {
      * Set the maxStalenessPrefix property: When used with the Bounded Staleness consistency level, this value
      * represents the number of stale requests tolerated. Accepted range for this value is 1 – 2,147,483,647. Required
      * when defaultConsistencyPolicy is set to 'BoundedStaleness'.
-     *
+     * 
      * @param maxStalenessPrefix the maxStalenessPrefix value to set.
      * @return the ConsistencyPolicy object itself.
      */
@@ -83,7 +92,7 @@ public final class ConsistencyPolicy {
      * Get the maxIntervalInSeconds property: When used with the Bounded Staleness consistency level, this value
      * represents the time amount of staleness (in seconds) tolerated. Accepted range for this value is 5 - 86400.
      * Required when defaultConsistencyPolicy is set to 'BoundedStaleness'.
-     *
+     * 
      * @return the maxIntervalInSeconds value.
      */
     public Integer maxIntervalInSeconds() {
@@ -94,7 +103,7 @@ public final class ConsistencyPolicy {
      * Set the maxIntervalInSeconds property: When used with the Bounded Staleness consistency level, this value
      * represents the time amount of staleness (in seconds) tolerated. Accepted range for this value is 5 - 86400.
      * Required when defaultConsistencyPolicy is set to 'BoundedStaleness'.
-     *
+     * 
      * @param maxIntervalInSeconds the maxIntervalInSeconds value to set.
      * @return the ConsistencyPolicy object itself.
      */
@@ -105,17 +114,61 @@ public final class ConsistencyPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (defaultConsistencyLevel() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property defaultConsistencyLevel in model ConsistencyPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property defaultConsistencyLevel in model ConsistencyPolicy"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConsistencyPolicy.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("defaultConsistencyLevel",
+            this.defaultConsistencyLevel == null ? null : this.defaultConsistencyLevel.toString());
+        jsonWriter.writeNumberField("maxStalenessPrefix", this.maxStalenessPrefix);
+        jsonWriter.writeNumberField("maxIntervalInSeconds", this.maxIntervalInSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConsistencyPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConsistencyPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConsistencyPolicy.
+     */
+    public static ConsistencyPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConsistencyPolicy deserializedConsistencyPolicy = new ConsistencyPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("defaultConsistencyLevel".equals(fieldName)) {
+                    deserializedConsistencyPolicy.defaultConsistencyLevel
+                        = DefaultConsistencyLevel.fromString(reader.getString());
+                } else if ("maxStalenessPrefix".equals(fieldName)) {
+                    deserializedConsistencyPolicy.maxStalenessPrefix = reader.getNullable(JsonReader::getLong);
+                } else if ("maxIntervalInSeconds".equals(fieldName)) {
+                    deserializedConsistencyPolicy.maxIntervalInSeconds = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConsistencyPolicy;
+        });
+    }
 }

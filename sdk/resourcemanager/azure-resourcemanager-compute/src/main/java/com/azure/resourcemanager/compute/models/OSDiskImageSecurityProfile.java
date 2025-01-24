@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Contains security profile for an OS disk image. */
+/**
+ * Contains security profile for an OS disk image.
+ */
 @Fluent
-public final class OSDiskImageSecurityProfile {
+public final class OSDiskImageSecurityProfile implements JsonSerializable<OSDiskImageSecurityProfile> {
     /*
      * confidential VM encryption types
      */
-    @JsonProperty(value = "confidentialVMEncryptionType")
     private ConfidentialVMEncryptionType confidentialVMEncryptionType;
 
     /*
      * secure VM disk encryption set id
      */
-    @JsonProperty(value = "secureVMDiskEncryptionSetId")
     private String secureVMDiskEncryptionSetId;
 
-    /** Creates an instance of OSDiskImageSecurityProfile class. */
+    /**
+     * Creates an instance of OSDiskImageSecurityProfile class.
+     */
     public OSDiskImageSecurityProfile() {
     }
 
     /**
      * Get the confidentialVMEncryptionType property: confidential VM encryption types.
-     *
+     * 
      * @return the confidentialVMEncryptionType value.
      */
     public ConfidentialVMEncryptionType confidentialVMEncryptionType() {
@@ -37,19 +43,19 @@ public final class OSDiskImageSecurityProfile {
 
     /**
      * Set the confidentialVMEncryptionType property: confidential VM encryption types.
-     *
+     * 
      * @param confidentialVMEncryptionType the confidentialVMEncryptionType value to set.
      * @return the OSDiskImageSecurityProfile object itself.
      */
-    public OSDiskImageSecurityProfile withConfidentialVMEncryptionType(
-        ConfidentialVMEncryptionType confidentialVMEncryptionType) {
+    public OSDiskImageSecurityProfile
+        withConfidentialVMEncryptionType(ConfidentialVMEncryptionType confidentialVMEncryptionType) {
         this.confidentialVMEncryptionType = confidentialVMEncryptionType;
         return this;
     }
 
     /**
      * Get the secureVMDiskEncryptionSetId property: secure VM disk encryption set id.
-     *
+     * 
      * @return the secureVMDiskEncryptionSetId value.
      */
     public String secureVMDiskEncryptionSetId() {
@@ -58,7 +64,7 @@ public final class OSDiskImageSecurityProfile {
 
     /**
      * Set the secureVMDiskEncryptionSetId property: secure VM disk encryption set id.
-     *
+     * 
      * @param secureVMDiskEncryptionSetId the secureVMDiskEncryptionSetId value to set.
      * @return the OSDiskImageSecurityProfile object itself.
      */
@@ -69,9 +75,50 @@ public final class OSDiskImageSecurityProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("confidentialVMEncryptionType",
+            this.confidentialVMEncryptionType == null ? null : this.confidentialVMEncryptionType.toString());
+        jsonWriter.writeStringField("secureVMDiskEncryptionSetId", this.secureVMDiskEncryptionSetId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OSDiskImageSecurityProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OSDiskImageSecurityProfile if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OSDiskImageSecurityProfile.
+     */
+    public static OSDiskImageSecurityProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OSDiskImageSecurityProfile deserializedOSDiskImageSecurityProfile = new OSDiskImageSecurityProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("confidentialVMEncryptionType".equals(fieldName)) {
+                    deserializedOSDiskImageSecurityProfile.confidentialVMEncryptionType
+                        = ConfidentialVMEncryptionType.fromString(reader.getString());
+                } else if ("secureVMDiskEncryptionSetId".equals(fieldName)) {
+                    deserializedOSDiskImageSecurityProfile.secureVMDiskEncryptionSetId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOSDiskImageSecurityProfile;
+        });
     }
 }

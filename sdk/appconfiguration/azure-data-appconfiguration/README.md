@@ -6,13 +6,14 @@ Modern programs, especially programs running in a cloud, generally have many com
 Use the client library for App Configuration to create and manage application configuration settings.
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation]
-| [Product documentation][azconfig_docs] | [Samples][samples]
+| [Product documentation][app_config_docs] | [Samples][samples] | [Troubleshooting][troubleshooting]
 
 ## Getting started
 
 ### Prerequisites
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Azure Subscription][azure_subscription]
 - [App Configuration Store][app_config_store]
 
@@ -55,7 +56,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-appconfiguration</artifactId>
-  <version>1.3.9</version>
+  <version>1.7.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -177,6 +178,8 @@ A configuration setting is the fundamental resource within a configuration store
 
 The Label property of a configuration setting provides a way to separate configuration settings into different dimensions. These dimensions are user defined and can take any form. Some common examples of dimensions to use for a label include regions, semantic versions, or environments. Many applications have a required set of configuration keys that have varying values as the application exists across different dimensions. For example, MaxRequests may be 100 in "NorthAmerica", and 200 in "WestEurope". By creating a configuration setting named MaxRequests with a label of "NorthAmerica" and another, only with a different value, in the "WestEurope" label, a solution can be achieved that allows the application to seamlessly retrieve Configuration Settings as it runs in these two dimensions.
 
+Azure App Configuration allows users to create a point-in-time snapshot of their configuration store, providing them with the ability to treat settings as one consistent version. This feature enables applications to hold a consistent view of configuration, ensuring that there are no version mismatches to individual settings due to reading as updates were made. Snapshots are immutable, ensuring that configuration can confidently be rolled back to a last-known-good configuration in the event of a problem.
+
 ### Configuration Client
 
 The client performs the interactions with the App Configuration service, getting, setting, deleting, and selecting configuration settings. An asynchronous, `ConfigurationAsyncClient`, and synchronous, `ConfigurationClient`, client exists in the SDK allowing for selection of a client based on an application's use case.
@@ -221,6 +224,24 @@ configurationClient.listConfigurationSettings(new SettingSelector().setLabelFilt
 
 The following sections provide several code snippets covering some of the most common configuration service tasks, including:
 For "Feature Flag" and "Secret Reference" configuration settings, see [samples][samples_readme] for more detail.
+
+* [Create a Configuration Client](#create-a-client)
+* [Create a Configuration Setting](#create-a-configuration-setting)
+* [Retrieve a Configuration Setting](#retrieve-a-configuration-setting)
+* [Update an existing Configuration Setting](#update-an-existing-configuration-setting)
+* [Delete a Configuration Setting](#delete-a-configuration-setting)
+* [List Configuration Settings with multiple keys](#list-configuration-settings-with-multiple-keys)
+* [List revisions of multiple Configuration Settings](#list-revisions-of-multiple-configuration-settings)
+* [Set a Configuration Setting to read only](#set-a-configuration-setting-to-read-only)
+* [Clear read only from a Configuration Setting](#clear-read-only-from-a-configuration-setting)
+* [Create a client with Proxy Options](#create-a-client-with-proxy-options)
+* [Create a Snapshot](#create-a-snapshot)
+* [Retrieve a Snapshot](#retrieve-a-snapshot)
+* [Archive a Snapshot](#archive-a-snapshot)
+* [Recover a snapshot](#recover-a-snapshot)
+* [Retrieve all Snapshots](#retrieve-all-snapshots)
+* [Retrieve Configuration Settings in a Snapshot](#retrieve-configuration-settings-in-a-snapshot)
+* [Retrieve Labels](#retrieve-labels)
 
 ### Create a Configuration Client
 
@@ -380,6 +401,7 @@ configurationClient.setConfigurationSetting(key2, "new_label", "new_value");
 SettingSelector selector = new SettingSelector().setKeyFilter(key + "," + key2);
 PagedIterable<ConfigurationSetting> settings = configurationClient.listConfigurationSettings(selector);
 ```
+For more filters see class `SettingSelector`, such as `tagsFilter` see [samples][samples].
 
 ### List revisions of multiple Configuration Settings
 
@@ -401,6 +423,7 @@ Set a configuration setting to read-only status.
 configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
 ConfigurationSetting setting = configurationClient.setReadOnly("some_key", "some_label", true);
 ```
+
 ### Clear read only from a Configuration Setting
 
 Clear read-only from a configuration setting.
@@ -429,6 +452,103 @@ ConfigurationAsyncClient configurationAsyncClient = new ConfigurationClientBuild
     .buildAsyncClient();
 ```
 
+### Create a Snapshot
+
+To create a snapshot, you need to instantiate the `ConfigurationSnapshot` class and specify filters to determine 
+which configuration settings should be included. The creation process is a Long-Running Operation (LRO) and can be 
+achieved by calling the `beginCreateSnapshot` method.
+
+```java readme-sample-createSnapshot
+String snapshotName = "{snapshotName}";
+// Prepare the snapshot filters
+List<ConfigurationSettingsFilter> filters = new ArrayList<>();
+// Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
+filters.add(new ConfigurationSettingsFilter("Test*"));
+SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
+    configurationClient.beginCreateSnapshot(snapshotName, new ConfigurationSnapshot(filters), Context.NONE);
+poller.setPollInterval(Duration.ofSeconds(10));
+poller.waitForCompletion();
+ConfigurationSnapshot snapshot = poller.getFinalResult();
+System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
+    snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
+```
+
+### Retrieve a Snapshot
+
+Once a configuration setting snapshot is created, you can retrieve it using the `getSnapshot` method.
+
+```java readme-sample-getSnapshot
+String snapshotName = "{snapshotName}";
+ConfigurationSnapshot getSnapshot = configurationClient.getSnapshot(snapshotName);
+System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
+    getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
+```
+
+### Archive a Snapshot
+
+To archive a snapshot, you can utilize the `archiveSnapshot` method. This operation updates the status of the snapshot 
+to `archived`.
+
+```java readme-sample-archiveSnapshot
+String snapshotName = "{snapshotName}";
+ConfigurationSnapshot archivedSnapshot = configurationClient.archiveSnapshot(snapshotName);
+System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
+    archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
+```
+
+### Recover a snapshot
+
+You can recover an archived snapshot by using the `recoverSnapshot` method. This operation updates the status of the 
+snapshot to `ready`.
+
+```java readme-sample-recoverSnapshot
+String snapshotName = "{snapshotName}";
+ConfigurationSnapshot recoveredSnapshot = configurationClient.recoverSnapshot(snapshotName);
+System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
+    recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
+```
+
+### Retrieve all Snapshots
+
+To retrieve all snapshots, you can use the `listSnapshots` method.
+
+```java readme-sample-getAllSnapshots
+String snapshotNameProduct = "{snapshotNameInProduct}";
+SnapshotSelector snapshotSelector = new SnapshotSelector().setNameFilter(snapshotNameProduct);
+PagedIterable<ConfigurationSnapshot> configurationSnapshots =
+    configurationClient.listSnapshots(snapshotSelector);
+for (ConfigurationSnapshot snapshot : configurationSnapshots) {
+    System.out.printf("Listed Snapshot name = %s is created at %s, snapshot status is %s.%n",
+        snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
+}
+```
+
+### Retrieve Configuration Settings in a Snapshot
+List multiple configuration settings in a snapshot by calling `listConfigurationSettingsForSnapshot`.
+
+```java readme-sample-listSettingsInSnapshot
+String snapshotNameProduct = "{snapshotNameInProduct}";
+PagedIterable<ConfigurationSetting> configurationSettings =
+    configurationClient.listConfigurationSettingsForSnapshot(snapshotNameProduct);
+
+for (ConfigurationSetting setting : configurationSettings) {
+    System.out.printf("[ConfigurationSetting in snapshot] Key: %s, Value: %s%n",
+        setting.getKey(), setting.getValue());
+}
+```
+
+### Retrieve Labels
+List multiple labels in the App Configuration store by calling `listLabels`.
+
+```java readme-sample-listLabels
+String labelNameFilter = "{labelNamePrefix}*";
+configurationClient.listLabels(new SettingLabelSelector().setNameFilter(labelNameFilter))
+        .forEach(label -> {
+            System.out.println("label name = " + label.getName());
+        });
+```
+
+
 ## Troubleshooting
 
 ### General
@@ -454,7 +574,7 @@ For more detail information, check out the [AddHeadersFromContextPolicy][add_hea
 ### Default HTTP Client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
-[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
 
 ### Default SSL library
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL 
@@ -478,10 +598,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 <!-- LINKS -->
 [add_headers_from_context_policy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/AddHeadersFromContextPolicy.java
 [api_documentation]: https://aka.ms/java-docs
-[app_config_store]: https://docs.microsoft.com/azure/azure-app-configuration/quickstart-dotnet-core-app#create-an-app-configuration-store
-[app_config_role]: https://docs.microsoft.com/azure/azure-app-configuration/rest-api-authorization-azure-ad#roles
-[azconfig_docs]: https://docs.microsoft.com/azure/azure-app-configuration
-[azure_cli]: https://docs.microsoft.com/cli/azure
+[app_config_store]: https://learn.microsoft.com/azure/azure-app-configuration/quickstart-dotnet-core-app#create-an-app-configuration-store
+[app_config_role]: https://learn.microsoft.com/azure/azure-app-configuration/rest-api-authorization-azure-ad#roles
+[app_config_docs]: https://learn.microsoft.com/azure/azure-app-configuration
+[azure_cli]: https://learn.microsoft.com/cli/azure
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [azure_subscription]: https://azure.microsoft.com/free
 [cla]: https://cla.microsoft.com
@@ -489,13 +609,14 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [default_cred_ref]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-identity/1.0.1/com/azure/identity/DefaultAzureCredential.html
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
-[package]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration
+[package]: https://central.sonatype.com/artifact/com.azure/azure-data-appconfiguration
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [rest_api]: https://github.com/Azure/AppConfiguration#rest-api-reference
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/README.md
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src
-[spring_quickstart]: https://docs.microsoft.com/azure/azure-app-configuration/quickstart-java-spring-app
+[spring_quickstart]: https://learn.microsoft.com/azure/azure-app-configuration/quickstart-java-spring-app
+[troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/TROUBLESHOOTING.md
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fappconfiguration%2Fazure-data-appconfiguration%2FREADME.png)

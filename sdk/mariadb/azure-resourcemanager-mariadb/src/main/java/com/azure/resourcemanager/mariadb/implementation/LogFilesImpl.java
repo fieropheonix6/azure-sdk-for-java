@@ -11,10 +11,9 @@ import com.azure.resourcemanager.mariadb.fluent.LogFilesClient;
 import com.azure.resourcemanager.mariadb.fluent.models.LogFileInner;
 import com.azure.resourcemanager.mariadb.models.LogFile;
 import com.azure.resourcemanager.mariadb.models.LogFiles;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LogFilesImpl implements LogFiles {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogFilesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LogFilesImpl.class);
 
     private final LogFilesClient innerClient;
 
@@ -27,12 +26,12 @@ public final class LogFilesImpl implements LogFiles {
 
     public PagedIterable<LogFile> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<LogFileInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return Utils.mapPage(inner, inner1 -> new LogFileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LogFileImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LogFile> listByServer(String resourceGroupName, String serverName, Context context) {
         PagedIterable<LogFileInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return Utils.mapPage(inner, inner1 -> new LogFileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LogFileImpl(inner1, this.manager()));
     }
 
     private LogFilesClient serviceClient() {

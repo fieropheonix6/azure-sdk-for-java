@@ -4,42 +4,76 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualNetworkPeerings Get. */
+/**
+ * Samples for VirtualNetworkPeerings Get.
+ */
 public final class VirtualNetworkPeeringsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualNetworkPeeringGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualNetworkPeeringGet.json
      */
     /**
      * Sample code: Get peering.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getPeering(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getVirtualNetworkPeerings()
-            .getWithResponse("peerTest", "vnet1", "peer", Context.NONE);
+            .getWithResponse("peerTest", "vnet1", "peer", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualNetworkPeeringGetWithRemoteVirtualNetworkEncryption.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * VirtualNetworkPeeringGetWithRemoteVirtualNetworkEncryption.json
      */
     /**
      * Sample code: Get peering with remote virtual network encryption.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getPeeringWithRemoteVirtualNetworkEncryption(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+    public static void
+        getPeeringWithRemoteVirtualNetworkEncryption(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
             .manager()
             .serviceClient()
             .getVirtualNetworkPeerings()
-            .getWithResponse("peerTest", "vnet1", "peer", Context.NONE);
+            .getWithResponse("peerTest", "vnet1", "peer", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * VirtualNetworkSubnetPeeringGet.json
+     */
+    /**
+     * Sample code: Get subnet peering.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getSubnetPeering(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkPeerings()
+            .getWithResponse("peerTest", "vnet1", "peer", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * VirtualNetworkV6SubnetPeeringGet.json
+     */
+    /**
+     * Sample code: Get V6 subnet peering.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getV6SubnetPeering(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkPeerings()
+            .getWithResponse("peerTest", "vnet1", "peer", com.azure.core.util.Context.NONE);
     }
 }

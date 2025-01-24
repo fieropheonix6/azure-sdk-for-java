@@ -6,6 +6,7 @@ package com.azure.resourcemanager.orbital.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.orbital.fluent.models.SpacecraftInner;
 import com.azure.resourcemanager.orbital.models.AvailableContacts;
@@ -48,8 +49,8 @@ public final class SpacecraftImpl implements Spacecraft, Spacecraft.Definition, 
         }
     }
 
-    public String etag() {
-        return this.innerModel().etag();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public SpacecraftsPropertiesProvisioningState provisioningState() {
@@ -113,20 +114,16 @@ public final class SpacecraftImpl implements Spacecraft, Spacecraft.Definition, 
     }
 
     public Spacecraft create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSpacecrafts()
-                .createOrUpdate(resourceGroupName, spacecraftName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSpacecrafts()
+            .createOrUpdate(resourceGroupName, spacecraftName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Spacecraft create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSpacecrafts()
-                .createOrUpdate(resourceGroupName, spacecraftName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSpacecrafts()
+            .createOrUpdate(resourceGroupName, spacecraftName, this.innerModel(), context);
         return this;
     }
 
@@ -142,47 +139,39 @@ public final class SpacecraftImpl implements Spacecraft, Spacecraft.Definition, 
     }
 
     public Spacecraft apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSpacecrafts()
-                .updateTags(resourceGroupName, spacecraftName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSpacecrafts()
+            .updateTags(resourceGroupName, spacecraftName, updateParameters, Context.NONE);
         return this;
     }
 
     public Spacecraft apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSpacecrafts()
-                .updateTags(resourceGroupName, spacecraftName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSpacecrafts()
+            .updateTags(resourceGroupName, spacecraftName, updateParameters, context);
         return this;
     }
 
     SpacecraftImpl(SpacecraftInner innerObject, com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.spacecraftName = Utils.getValueFromIdByName(innerObject.id(), "spacecrafts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.spacecraftName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "spacecrafts");
     }
 
     public Spacecraft refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSpacecrafts()
-                .getByResourceGroupWithResponse(resourceGroupName, spacecraftName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSpacecrafts()
+            .getByResourceGroupWithResponse(resourceGroupName, spacecraftName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Spacecraft refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSpacecrafts()
-                .getByResourceGroupWithResponse(resourceGroupName, spacecraftName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSpacecrafts()
+            .getByResourceGroupWithResponse(resourceGroupName, spacecraftName, context)
+            .getValue();
         return this;
     }
 
@@ -191,8 +180,7 @@ public final class SpacecraftImpl implements Spacecraft, Spacecraft.Definition, 
     }
 
     public PagedIterable<AvailableContacts> listAvailableContacts(ContactParameters parameters, Context context) {
-        return serviceManager
-            .spacecrafts()
+        return serviceManager.spacecrafts()
             .listAvailableContacts(resourceGroupName, spacecraftName, parameters, context);
     }
 
@@ -203,26 +191,6 @@ public final class SpacecraftImpl implements Spacecraft, Spacecraft.Definition, 
 
     public SpacecraftImpl withRegion(String location) {
         this.innerModel().withLocation(location);
-        return this;
-    }
-
-    public SpacecraftImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateParameters.withTags(tags);
-            return this;
-        }
-    }
-
-    public SpacecraftImpl withProvisioningState(SpacecraftsPropertiesProvisioningState provisioningState) {
-        this.innerModel().withProvisioningState(provisioningState);
-        return this;
-    }
-
-    public SpacecraftImpl withNoradId(String noradId) {
-        this.innerModel().withNoradId(noradId);
         return this;
     }
 
@@ -243,6 +211,26 @@ public final class SpacecraftImpl implements Spacecraft, Spacecraft.Definition, 
 
     public SpacecraftImpl withLinks(List<SpacecraftLink> links) {
         this.innerModel().withLinks(links);
+        return this;
+    }
+
+    public SpacecraftImpl withTags(Map<String, String> tags) {
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateParameters.withTags(tags);
+            return this;
+        }
+    }
+
+    public SpacecraftImpl withProvisioningState(SpacecraftsPropertiesProvisioningState provisioningState) {
+        this.innerModel().withProvisioningState(provisioningState);
+        return this;
+    }
+
+    public SpacecraftImpl withNoradId(String noradId) {
+        this.innerModel().withNoradId(noradId);
         return this;
     }
 

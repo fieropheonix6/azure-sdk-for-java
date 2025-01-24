@@ -7,7 +7,6 @@ package com.azure.resourcemanager.databoxedge.implementation;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
@@ -15,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the DataBoxEdgeManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {DataBoxEdgeManagementClientImpl.class})
+/**
+ * A builder for creating a new instance of the DataBoxEdgeManagementClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { DataBoxEdgeManagementClientImpl.class })
 public final class DataBoxEdgeManagementClientBuilder {
     /*
      * The subscription ID.
@@ -25,7 +26,7 @@ public final class DataBoxEdgeManagementClientBuilder {
 
     /**
      * Sets The subscription ID.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the DataBoxEdgeManagementClientBuilder.
      */
@@ -41,7 +42,7 @@ public final class DataBoxEdgeManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the DataBoxEdgeManagementClientBuilder.
      */
@@ -57,28 +58,12 @@ public final class DataBoxEdgeManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the DataBoxEdgeManagementClientBuilder.
      */
     public DataBoxEdgeManagementClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
-        return this;
-    }
-
-    /*
-     * The default poll interval for long-running operation
-     */
-    private Duration defaultPollInterval;
-
-    /**
-     * Sets The default poll interval for long-running operation.
-     *
-     * @param defaultPollInterval the defaultPollInterval value.
-     * @return the DataBoxEdgeManagementClientBuilder.
-     */
-    public DataBoxEdgeManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
-        this.defaultPollInterval = defaultPollInterval;
         return this;
     }
 
@@ -89,12 +74,28 @@ public final class DataBoxEdgeManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the DataBoxEdgeManagementClientBuilder.
      */
     public DataBoxEdgeManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
+        return this;
+    }
+
+    /*
+     * The default poll interval for long-running operation
+     */
+    private Duration defaultPollInterval;
+
+    /**
+     * Sets The default poll interval for long-running operation.
+     * 
+     * @param defaultPollInterval the defaultPollInterval value.
+     * @return the DataBoxEdgeManagementClientBuilder.
+     */
+    public DataBoxEdgeManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+        this.defaultPollInterval = defaultPollInterval;
         return this;
     }
 
@@ -105,7 +106,7 @@ public final class DataBoxEdgeManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the DataBoxEdgeManagementClientBuilder.
      */
@@ -116,31 +117,22 @@ public final class DataBoxEdgeManagementClientBuilder {
 
     /**
      * Builds an instance of DataBoxEdgeManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of DataBoxEdgeManagementClientImpl.
      */
     public DataBoxEdgeManagementClientImpl buildClient() {
-        if (endpoint == null) {
-            this.endpoint = "https://management.azure.com";
-        }
-        if (environment == null) {
-            this.environment = AzureEnvironment.AZURE;
-        }
-        if (defaultPollInterval == null) {
-            this.defaultPollInterval = Duration.ofSeconds(30);
-        }
-        if (pipeline == null) {
-            this.pipeline =
-                new HttpPipelineBuilder()
-                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                    .build();
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
-        }
-        DataBoxEdgeManagementClientImpl client =
-            new DataBoxEdgeManagementClientImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+        String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
+        AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        DataBoxEdgeManagementClientImpl client = new DataBoxEdgeManagementClientImpl(localPipeline,
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

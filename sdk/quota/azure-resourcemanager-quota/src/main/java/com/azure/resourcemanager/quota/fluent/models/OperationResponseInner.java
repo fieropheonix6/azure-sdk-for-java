@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.quota.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.quota.models.OperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The OperationResponse model. */
+/**
+ * The OperationResponse model.
+ */
 @Fluent
-public final class OperationResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResponseInner.class);
-
+public final class OperationResponseInner implements JsonSerializable<OperationResponseInner> {
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The display property.
      */
-    @JsonProperty(value = "display")
     private OperationDisplay display;
 
     /*
      * The origin property.
      */
-    @JsonProperty(value = "origin")
     private String origin;
 
     /**
+     * Creates an instance of OperationResponseInner class.
+     */
+    public OperationResponseInner() {
+    }
+
+    /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +49,7 @@ public final class OperationResponseInner {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationResponseInner object itself.
      */
@@ -55,7 +60,7 @@ public final class OperationResponseInner {
 
     /**
      * Get the display property: The display property.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -64,7 +69,7 @@ public final class OperationResponseInner {
 
     /**
      * Set the display property: The display property.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationResponseInner object itself.
      */
@@ -75,7 +80,7 @@ public final class OperationResponseInner {
 
     /**
      * Get the origin property: The origin property.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -84,7 +89,7 @@ public final class OperationResponseInner {
 
     /**
      * Set the origin property: The origin property.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the OperationResponseInner object itself.
      */
@@ -95,12 +100,54 @@ public final class OperationResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (display() != null) {
             display().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeStringField("origin", this.origin);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResponseInner.
+     */
+    public static OperationResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResponseInner deserializedOperationResponseInner = new OperationResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperationResponseInner.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperationResponseInner.display = OperationDisplay.fromJson(reader);
+                } else if ("origin".equals(fieldName)) {
+                    deserializedOperationResponseInner.origin = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResponseInner;
+        });
     }
 }

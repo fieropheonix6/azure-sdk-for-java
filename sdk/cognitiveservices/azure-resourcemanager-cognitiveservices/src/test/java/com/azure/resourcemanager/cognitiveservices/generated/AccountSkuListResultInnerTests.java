@@ -11,46 +11,36 @@ import com.azure.resourcemanager.cognitiveservices.models.Sku;
 import com.azure.resourcemanager.cognitiveservices.models.SkuTier;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AccountSkuListResultInnerTests {
-    @Test
-    public void testDeserialize() {
-        AccountSkuListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"resourceType\":\"w\",\"sku\":{\"name\":\"m\",\"tier\":\"Enterprise\",\"size\":\"z\",\"family\":\"vvtpgvdfgio\",\"capacity\":1858576873}}]}")
-                .toObject(AccountSkuListResultInner.class);
-        Assertions.assertEquals("w", model.value().get(0).resourceType());
-        Assertions.assertEquals("m", model.value().get(0).sku().name());
-        Assertions.assertEquals(SkuTier.ENTERPRISE, model.value().get(0).sku().tier());
-        Assertions.assertEquals("z", model.value().get(0).sku().size());
-        Assertions.assertEquals("vvtpgvdfgio", model.value().get(0).sku().family());
-        Assertions.assertEquals(1858576873, model.value().get(0).sku().capacity());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AccountSkuListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"resourceType\":\"bdlwtgrhpdjpj\",\"sku\":{\"name\":\"asxazjpqyegualhb\",\"tier\":\"Free\",\"size\":\"jj\",\"family\":\"v\",\"capacity\":303390013}}]}")
+            .toObject(AccountSkuListResultInner.class);
+        Assertions.assertEquals("bdlwtgrhpdjpj", model.value().get(0).resourceType());
+        Assertions.assertEquals("asxazjpqyegualhb", model.value().get(0).sku().name());
+        Assertions.assertEquals(SkuTier.FREE, model.value().get(0).sku().tier());
+        Assertions.assertEquals("jj", model.value().get(0).sku().size());
+        Assertions.assertEquals("v", model.value().get(0).sku().family());
+        Assertions.assertEquals(303390013, model.value().get(0).sku().capacity());
     }
 
-    @Test
-    public void testSerialize() {
-        AccountSkuListResultInner model =
-            new AccountSkuListResultInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AccountSku()
-                                .withResourceType("w")
-                                .withSku(
-                                    new Sku()
-                                        .withName("m")
-                                        .withTier(SkuTier.ENTERPRISE)
-                                        .withSize("z")
-                                        .withFamily("vvtpgvdfgio")
-                                        .withCapacity(1858576873))));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AccountSkuListResultInner model
+            = new AccountSkuListResultInner().withValue(Arrays.asList(new AccountSku().withResourceType("bdlwtgrhpdjpj")
+                .withSku(new Sku().withName("asxazjpqyegualhb")
+                    .withTier(SkuTier.FREE)
+                    .withSize("jj")
+                    .withFamily("v")
+                    .withCapacity(303390013))));
         model = BinaryData.fromObject(model).toObject(AccountSkuListResultInner.class);
-        Assertions.assertEquals("w", model.value().get(0).resourceType());
-        Assertions.assertEquals("m", model.value().get(0).sku().name());
-        Assertions.assertEquals(SkuTier.ENTERPRISE, model.value().get(0).sku().tier());
-        Assertions.assertEquals("z", model.value().get(0).sku().size());
-        Assertions.assertEquals("vvtpgvdfgio", model.value().get(0).sku().family());
-        Assertions.assertEquals(1858576873, model.value().get(0).sku().capacity());
+        Assertions.assertEquals("bdlwtgrhpdjpj", model.value().get(0).resourceType());
+        Assertions.assertEquals("asxazjpqyegualhb", model.value().get(0).sku().name());
+        Assertions.assertEquals(SkuTier.FREE, model.value().get(0).sku().tier());
+        Assertions.assertEquals("jj", model.value().get(0).sku().size());
+        Assertions.assertEquals("v", model.value().get(0).sku().family());
+        Assertions.assertEquals(303390013, model.value().get(0).sku().capacity());
     }
 }

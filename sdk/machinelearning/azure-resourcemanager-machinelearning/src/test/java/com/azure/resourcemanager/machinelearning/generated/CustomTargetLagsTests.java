@@ -8,22 +8,19 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.CustomTargetLags;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CustomTargetLagsTests {
-    @Test
-    public void testDeserialize() {
-        CustomTargetLags model =
-            BinaryData
-                .fromString("{\"mode\":\"Custom\",\"values\":[915823701,1407190218,425904374]}")
-                .toObject(CustomTargetLags.class);
-        Assertions.assertEquals(915823701, model.values().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CustomTargetLags model = BinaryData.fromString("{\"mode\":\"Custom\",\"values\":[798032974,467459839]}")
+            .toObject(CustomTargetLags.class);
+        Assertions.assertEquals(798032974, model.values().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        CustomTargetLags model = new CustomTargetLags().withValues(Arrays.asList(915823701, 1407190218, 425904374));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CustomTargetLags model = new CustomTargetLags().withValues(Arrays.asList(798032974, 467459839));
         model = BinaryData.fromObject(model).toObject(CustomTargetLags.class);
-        Assertions.assertEquals(915823701, model.values().get(0));
+        Assertions.assertEquals(798032974, model.values().get(0));
     }
 }

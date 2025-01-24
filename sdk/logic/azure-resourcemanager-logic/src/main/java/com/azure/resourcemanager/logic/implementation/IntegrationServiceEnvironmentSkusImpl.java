@@ -11,36 +11,34 @@ import com.azure.resourcemanager.logic.fluent.IntegrationServiceEnvironmentSkusC
 import com.azure.resourcemanager.logic.fluent.models.IntegrationServiceEnvironmentSkuDefinitionInner;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentSkuDefinition;
 import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironmentSkus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationServiceEnvironmentSkusImpl implements IntegrationServiceEnvironmentSkus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationServiceEnvironmentSkusImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationServiceEnvironmentSkusImpl.class);
 
     private final IntegrationServiceEnvironmentSkusClient innerClient;
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    public IntegrationServiceEnvironmentSkusImpl(
-        IntegrationServiceEnvironmentSkusClient innerClient,
+    public IntegrationServiceEnvironmentSkusImpl(IntegrationServiceEnvironmentSkusClient innerClient,
         com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<IntegrationServiceEnvironmentSkuDefinition> list(
-        String resourceGroup, String integrationServiceEnvironmentName) {
-        PagedIterable<IntegrationServiceEnvironmentSkuDefinitionInner> inner =
-            this.serviceClient().list(resourceGroup, integrationServiceEnvironmentName);
-        return Utils
-            .mapPage(inner, inner1 -> new IntegrationServiceEnvironmentSkuDefinitionImpl(inner1, this.manager()));
+    public PagedIterable<IntegrationServiceEnvironmentSkuDefinition> list(String resourceGroup,
+        String integrationServiceEnvironmentName) {
+        PagedIterable<IntegrationServiceEnvironmentSkuDefinitionInner> inner
+            = this.serviceClient().list(resourceGroup, integrationServiceEnvironmentName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new IntegrationServiceEnvironmentSkuDefinitionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<IntegrationServiceEnvironmentSkuDefinition> list(
-        String resourceGroup, String integrationServiceEnvironmentName, Context context) {
-        PagedIterable<IntegrationServiceEnvironmentSkuDefinitionInner> inner =
-            this.serviceClient().list(resourceGroup, integrationServiceEnvironmentName, context);
-        return Utils
-            .mapPage(inner, inner1 -> new IntegrationServiceEnvironmentSkuDefinitionImpl(inner1, this.manager()));
+    public PagedIterable<IntegrationServiceEnvironmentSkuDefinition> list(String resourceGroup,
+        String integrationServiceEnvironmentName, Context context) {
+        PagedIterable<IntegrationServiceEnvironmentSkuDefinitionInner> inner
+            = this.serviceClient().list(resourceGroup, integrationServiceEnvironmentName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new IntegrationServiceEnvironmentSkuDefinitionImpl(inner1, this.manager()));
     }
 
     private IntegrationServiceEnvironmentSkusClient serviceClient() {

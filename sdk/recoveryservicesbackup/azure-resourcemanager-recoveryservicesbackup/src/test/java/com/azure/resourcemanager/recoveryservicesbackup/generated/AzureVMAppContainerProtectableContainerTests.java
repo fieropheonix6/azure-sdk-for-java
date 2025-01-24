@@ -8,34 +8,30 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureVMAppContainerProtectableContainer;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureVMAppContainerProtectableContainerTests {
-    @Test
-    public void testDeserialize() {
-        AzureVMAppContainerProtectableContainer model =
-            BinaryData
-                .fromString(
-                    "{\"protectableContainerType\":\"VMAppContainer\",\"friendlyName\":\"qs\",\"backupManagementType\":\"DPM\",\"healthStatus\":\"aelcat\",\"containerId\":\"ju\"}")
-                .toObject(AzureVMAppContainerProtectableContainer.class);
-        Assertions.assertEquals("qs", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.DPM, model.backupManagementType());
-        Assertions.assertEquals("aelcat", model.healthStatus());
-        Assertions.assertEquals("ju", model.containerId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureVMAppContainerProtectableContainer model = BinaryData.fromString(
+            "{\"protectableContainerType\":\"VMAppContainer\",\"friendlyName\":\"izmoaeds\",\"backupManagementType\":\"MAB\",\"healthStatus\":\"ive\",\"containerId\":\"cgyee\"}")
+            .toObject(AzureVMAppContainerProtectableContainer.class);
+        Assertions.assertEquals("izmoaeds", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
+        Assertions.assertEquals("ive", model.healthStatus());
+        Assertions.assertEquals("cgyee", model.containerId());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureVMAppContainerProtectableContainer model =
-            new AzureVMAppContainerProtectableContainer()
-                .withFriendlyName("qs")
-                .withBackupManagementType(BackupManagementType.DPM)
-                .withHealthStatus("aelcat")
-                .withContainerId("ju");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureVMAppContainerProtectableContainer model
+            = new AzureVMAppContainerProtectableContainer().withFriendlyName("izmoaeds")
+                .withBackupManagementType(BackupManagementType.MAB)
+                .withHealthStatus("ive")
+                .withContainerId("cgyee");
         model = BinaryData.fromObject(model).toObject(AzureVMAppContainerProtectableContainer.class);
-        Assertions.assertEquals("qs", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.DPM, model.backupManagementType());
-        Assertions.assertEquals("aelcat", model.healthStatus());
-        Assertions.assertEquals("ju", model.containerId());
+        Assertions.assertEquals("izmoaeds", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
+        Assertions.assertEquals("ive", model.healthStatus());
+        Assertions.assertEquals("cgyee", model.containerId());
     }
 }

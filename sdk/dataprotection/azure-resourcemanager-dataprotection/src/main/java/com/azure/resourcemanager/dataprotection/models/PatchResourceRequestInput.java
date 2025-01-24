@@ -5,33 +5,44 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** PatchResourceRequestInput Patch Request content for Microsoft.DataProtection resources. */
+/**
+ * PatchResourceRequestInput
+ * 
+ * Patch Request content for Microsoft.DataProtection resources.
+ */
 @Fluent
-public final class PatchResourceRequestInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PatchResourceRequestInput.class);
+public final class PatchResourceRequestInput implements JsonSerializable<PatchResourceRequestInput> {
+    /*
+     * Input Managed Identity Details
+     */
+    private DppIdentityDetails identity;
 
     /*
-     * DppIdentityDetails Input Managed Identity Details
+     * Resource properties.
      */
-    @JsonProperty(value = "identity")
-    private DppIdentityDetails identity;
+    private PatchBackupVaultInput properties;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
-     * Get the identity property: DppIdentityDetails Input Managed Identity Details.
-     *
+     * Creates an instance of PatchResourceRequestInput class.
+     */
+    public PatchResourceRequestInput() {
+    }
+
+    /**
+     * Get the identity property: Input Managed Identity Details.
+     * 
      * @return the identity value.
      */
     public DppIdentityDetails identity() {
@@ -39,8 +50,8 @@ public final class PatchResourceRequestInput {
     }
 
     /**
-     * Set the identity property: DppIdentityDetails Input Managed Identity Details.
-     *
+     * Set the identity property: Input Managed Identity Details.
+     * 
      * @param identity the identity value to set.
      * @return the PatchResourceRequestInput object itself.
      */
@@ -50,8 +61,28 @@ public final class PatchResourceRequestInput {
     }
 
     /**
+     * Get the properties property: Resource properties.
+     * 
+     * @return the properties value.
+     */
+    public PatchBackupVaultInput properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Resource properties.
+     * 
+     * @param properties the properties value to set.
+     * @return the PatchResourceRequestInput object itself.
+     */
+    public PatchResourceRequestInput withProperties(PatchBackupVaultInput properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -60,7 +91,7 @@ public final class PatchResourceRequestInput {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the PatchResourceRequestInput object itself.
      */
@@ -71,12 +102,58 @@ public final class PatchResourceRequestInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (identity() != null) {
             identity().validate();
         }
+        if (properties() != null) {
+            properties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PatchResourceRequestInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PatchResourceRequestInput if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PatchResourceRequestInput.
+     */
+    public static PatchResourceRequestInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PatchResourceRequestInput deserializedPatchResourceRequestInput = new PatchResourceRequestInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedPatchResourceRequestInput.identity = DppIdentityDetails.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPatchResourceRequestInput.properties = PatchBackupVaultInput.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPatchResourceRequestInput.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPatchResourceRequestInput;
+        });
     }
 }

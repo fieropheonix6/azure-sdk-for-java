@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerNamespaceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Result of the List Partner Namespaces operation. */
+/**
+ * Result of the List Partner Namespaces operation.
+ */
 @Fluent
-public final class PartnerNamespacesListResult {
+public final class PartnerNamespacesListResult implements JsonSerializable<PartnerNamespacesListResult> {
     /*
      * A collection of partner namespaces.
      */
-    @JsonProperty(value = "value")
     private List<PartnerNamespaceInner> value;
 
     /*
      * A link for the next page of partner namespaces.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of PartnerNamespacesListResult class.
+     */
+    public PartnerNamespacesListResult() {
+    }
+
+    /**
      * Get the value property: A collection of partner namespaces.
-     *
+     * 
      * @return the value value.
      */
     public List<PartnerNamespaceInner> value() {
@@ -35,7 +45,7 @@ public final class PartnerNamespacesListResult {
 
     /**
      * Set the value property: A collection of partner namespaces.
-     *
+     * 
      * @param value the value value to set.
      * @return the PartnerNamespacesListResult object itself.
      */
@@ -46,7 +56,7 @@ public final class PartnerNamespacesListResult {
 
     /**
      * Get the nextLink property: A link for the next page of partner namespaces.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,7 +65,7 @@ public final class PartnerNamespacesListResult {
 
     /**
      * Set the nextLink property: A link for the next page of partner namespaces.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PartnerNamespacesListResult object itself.
      */
@@ -66,12 +76,53 @@ public final class PartnerNamespacesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartnerNamespacesListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartnerNamespacesListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartnerNamespacesListResult.
+     */
+    public static PartnerNamespacesListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartnerNamespacesListResult deserializedPartnerNamespacesListResult = new PartnerNamespacesListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PartnerNamespaceInner> value
+                        = reader.readArray(reader1 -> PartnerNamespaceInner.fromJson(reader1));
+                    deserializedPartnerNamespacesListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPartnerNamespacesListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartnerNamespacesListResult;
+        });
     }
 }

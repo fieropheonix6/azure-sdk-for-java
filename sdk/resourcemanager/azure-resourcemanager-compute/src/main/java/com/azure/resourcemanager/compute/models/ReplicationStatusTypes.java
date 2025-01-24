@@ -5,28 +5,44 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ReplicationStatusTypes. */
+/**
+ * Defines values for ReplicationStatusTypes.
+ */
 public final class ReplicationStatusTypes extends ExpandableStringEnum<ReplicationStatusTypes> {
-    /** Static value ReplicationStatus for ReplicationStatusTypes. */
+    /**
+     * Static value ReplicationStatus for ReplicationStatusTypes.
+     */
     public static final ReplicationStatusTypes REPLICATION_STATUS = fromString("ReplicationStatus");
 
     /**
+     * Static value UefiSettings for ReplicationStatusTypes.
+     */
+    public static final ReplicationStatusTypes UEFI_SETTINGS = fromString("UefiSettings");
+
+    /**
+     * Creates a new instance of ReplicationStatusTypes value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReplicationStatusTypes() {
+    }
+
+    /**
      * Creates or finds a ReplicationStatusTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReplicationStatusTypes.
      */
-    @JsonCreator
     public static ReplicationStatusTypes fromString(String name) {
         return fromString(name, ReplicationStatusTypes.class);
     }
 
     /**
      * Gets known ReplicationStatusTypes values.
-     *
+     * 
      * @return known ReplicationStatusTypes values.
      */
     public static Collection<ReplicationStatusTypes> values() {

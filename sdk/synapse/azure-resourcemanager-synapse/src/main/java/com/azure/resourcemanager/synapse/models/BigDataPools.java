@@ -8,11 +8,32 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of BigDataPools. */
+/**
+ * Resource collection API of BigDataPools.
+ */
 public interface BigDataPools {
     /**
+     * Get Big Data pool
+     * 
      * Get a Big Data pool.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param bigDataPoolName Big Data pool name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Big Data pool along with {@link Response}.
+     */
+    Response<BigDataPoolResourceInfo> getWithResponse(String resourceGroupName, String workspaceName,
+        String bigDataPoolName, Context context);
+
+    /**
+     * Get Big Data pool
+     * 
+     * Get a Big Data pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
@@ -24,23 +45,10 @@ public interface BigDataPools {
     BigDataPoolResourceInfo get(String resourceGroupName, String workspaceName, String bigDataPoolName);
 
     /**
-     * Get a Big Data pool.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param bigDataPoolName Big Data pool name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Big Data pool along with {@link Response}.
-     */
-    Response<BigDataPoolResourceInfo> getWithResponse(
-        String resourceGroupName, String workspaceName, String bigDataPoolName, Context context);
-
-    /**
+     * Delete a Big Data pool.
+     * 
      * Delete a Big Data pool from the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
@@ -52,8 +60,10 @@ public interface BigDataPools {
     Object delete(String resourceGroupName, String workspaceName, String bigDataPoolName);
 
     /**
+     * Delete a Big Data pool.
+     * 
      * Delete a Big Data pool from the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
@@ -66,8 +76,10 @@ public interface BigDataPools {
     Object delete(String resourceGroupName, String workspaceName, String bigDataPoolName, Context context);
 
     /**
+     * List the Big Data pools in a workspace.
+     * 
      * List Big Data pools in a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -78,8 +90,10 @@ public interface BigDataPools {
     PagedIterable<BigDataPoolResourceInfo> listByWorkspace(String resourceGroupName, String workspaceName);
 
     /**
+     * List the Big Data pools in a workspace.
+     * 
      * List Big Data pools in a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -88,12 +102,14 @@ public interface BigDataPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Big Data pools as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BigDataPoolResourceInfo> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<BigDataPoolResourceInfo> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
+     * Get Big Data pool
+     * 
      * Get a Big Data pool.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -103,8 +119,10 @@ public interface BigDataPools {
     BigDataPoolResourceInfo getById(String id);
 
     /**
+     * Get Big Data pool
+     * 
      * Get a Big Data pool.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,8 +133,10 @@ public interface BigDataPools {
     Response<BigDataPoolResourceInfo> getByIdWithResponse(String id, Context context);
 
     /**
+     * Delete a Big Data pool.
+     * 
      * Delete a Big Data pool from the workspace.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -126,8 +146,10 @@ public interface BigDataPools {
     Object deleteById(String id);
 
     /**
+     * Delete a Big Data pool.
+     * 
      * Delete a Big Data pool from the workspace.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,7 +161,7 @@ public interface BigDataPools {
 
     /**
      * Begins definition for a new BigDataPoolResourceInfo resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new BigDataPoolResourceInfo definition.
      */

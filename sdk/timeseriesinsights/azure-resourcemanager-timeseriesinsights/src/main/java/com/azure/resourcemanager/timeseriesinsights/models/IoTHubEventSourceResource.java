@@ -5,205 +5,113 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.EventSourceResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.resourcemanager.timeseriesinsights.fluent.models.IoTHubEventSourceResourceProperties;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** An event source that receives its data from an Azure IoTHub. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Microsoft.IoTHub")
-@JsonFlatten
+/**
+ * An event source that receives its data from an Azure IoTHub.
+ */
 @Fluent
-public class IoTHubEventSourceResource extends EventSourceResourceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IoTHubEventSourceResource.class);
+public final class IoTHubEventSourceResource extends EventSourceResourceInner {
+    /*
+     * The kind of the event source.
+     */
+    private EventSourceResourceKind kind = EventSourceResourceKind.MICROSOFT_IO_THUB;
 
     /*
-     * Provisioning state of the resource.
+     * Properties of the IoTHub event source resource.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private IoTHubEventSourceResourceProperties innerProperties = new IoTHubEventSourceResourceProperties();
 
     /*
-     * The time the resource was created.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
+    private String type;
 
     /*
-     * The event property that will be used as the event source's timestamp. If
-     * a value isn't specified for timestampPropertyName, or if null or
-     * empty-string is specified, the event creation time will be used.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.timestampPropertyName")
-    private String timestampPropertyName;
+    private String name;
 
     /*
-     * The resource id of the event source in Azure Resource Manager.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.eventSourceResourceId", required = true)
-    private String eventSourceResourceId;
-
-    /*
-     * The name of the iot hub.
-     */
-    @JsonProperty(value = "properties.iotHubName", required = true)
-    private String iotHubName;
-
-    /*
-     * The name of the iot hub's consumer group that holds the partitions from
-     * which events will be read.
-     */
-    @JsonProperty(value = "properties.consumerGroupName", required = true)
-    private String consumerGroupName;
-
-    /*
-     * The name of the Shared Access Policy key that grants the Time Series
-     * Insights service access to the iot hub. This shared access policy key
-     * must grant 'service connect' permissions to the iot hub.
-     */
-    @JsonProperty(value = "properties.keyName", required = true)
-    private String keyName;
+    private String id;
 
     /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     *
-     * @return the provisioningState value.
+     * Creates an instance of IoTHubEventSourceResource class.
      */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
+    public IoTHubEventSourceResource() {
     }
 
     /**
-     * Get the creationTime property: The time the resource was created.
-     *
-     * @return the creationTime value.
+     * Get the kind property: The kind of the event source.
+     * 
+     * @return the kind value.
      */
-    public OffsetDateTime creationTime() {
-        return this.creationTime;
+    @Override
+    public EventSourceResourceKind kind() {
+        return this.kind;
     }
 
     /**
-     * Get the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
-     * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
-     * time will be used.
-     *
-     * @return the timestampPropertyName value.
+     * Get the innerProperties property: Properties of the IoTHub event source resource.
+     * 
+     * @return the innerProperties value.
      */
-    public String timestampPropertyName() {
-        return this.timestampPropertyName;
+    private IoTHubEventSourceResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Set the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
-     * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
-     * time will be used.
-     *
-     * @param timestampPropertyName the timestampPropertyName value to set.
-     * @return the IoTHubEventSourceResource object itself.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public IoTHubEventSourceResource withTimestampPropertyName(String timestampPropertyName) {
-        this.timestampPropertyName = timestampPropertyName;
-        return this;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the eventSourceResourceId property: The resource id of the event source in Azure Resource Manager.
-     *
-     * @return the eventSourceResourceId value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public String eventSourceResourceId() {
-        return this.eventSourceResourceId;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Set the eventSourceResourceId property: The resource id of the event source in Azure Resource Manager.
-     *
-     * @param eventSourceResourceId the eventSourceResourceId value to set.
-     * @return the IoTHubEventSourceResource object itself.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public IoTHubEventSourceResource withEventSourceResourceId(String eventSourceResourceId) {
-        this.eventSourceResourceId = eventSourceResourceId;
-        return this;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the iotHubName property: The name of the iot hub.
-     *
-     * @return the iotHubName value.
+     * {@inheritDoc}
      */
-    public String iotHubName() {
-        return this.iotHubName;
-    }
-
-    /**
-     * Set the iotHubName property: The name of the iot hub.
-     *
-     * @param iotHubName the iotHubName value to set.
-     * @return the IoTHubEventSourceResource object itself.
-     */
-    public IoTHubEventSourceResource withIotHubName(String iotHubName) {
-        this.iotHubName = iotHubName;
-        return this;
-    }
-
-    /**
-     * Get the consumerGroupName property: The name of the iot hub's consumer group that holds the partitions from which
-     * events will be read.
-     *
-     * @return the consumerGroupName value.
-     */
-    public String consumerGroupName() {
-        return this.consumerGroupName;
-    }
-
-    /**
-     * Set the consumerGroupName property: The name of the iot hub's consumer group that holds the partitions from which
-     * events will be read.
-     *
-     * @param consumerGroupName the consumerGroupName value to set.
-     * @return the IoTHubEventSourceResource object itself.
-     */
-    public IoTHubEventSourceResource withConsumerGroupName(String consumerGroupName) {
-        this.consumerGroupName = consumerGroupName;
-        return this;
-    }
-
-    /**
-     * Get the keyName property: The name of the Shared Access Policy key that grants the Time Series Insights service
-     * access to the iot hub. This shared access policy key must grant 'service connect' permissions to the iot hub.
-     *
-     * @return the keyName value.
-     */
-    public String keyName() {
-        return this.keyName;
-    }
-
-    /**
-     * Set the keyName property: The name of the Shared Access Policy key that grants the Time Series Insights service
-     * access to the iot hub. This shared access policy key must grant 'service connect' permissions to the iot hub.
-     *
-     * @param keyName the keyName value to set.
-     * @return the IoTHubEventSourceResource object itself.
-     */
-    public IoTHubEventSourceResource withKeyName(String keyName) {
-        this.keyName = keyName;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public IoTHubEventSourceResource withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IoTHubEventSourceResource withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -211,36 +119,292 @@ public class IoTHubEventSourceResource extends EventSourceResourceInner {
     }
 
     /**
+     * Get the iotHubName property: The name of the iot hub.
+     * 
+     * @return the iotHubName value.
+     */
+    public String iotHubName() {
+        return this.innerProperties() == null ? null : this.innerProperties().iotHubName();
+    }
+
+    /**
+     * Set the iotHubName property: The name of the iot hub.
+     * 
+     * @param iotHubName the iotHubName value to set.
+     * @return the IoTHubEventSourceResource object itself.
+     */
+    public IoTHubEventSourceResource withIotHubName(String iotHubName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTHubEventSourceResourceProperties();
+        }
+        this.innerProperties().withIotHubName(iotHubName);
+        return this;
+    }
+
+    /**
+     * Get the consumerGroupName property: The name of the iot hub's consumer group that holds the partitions from which
+     * events will be read.
+     * 
+     * @return the consumerGroupName value.
+     */
+    public String consumerGroupName() {
+        return this.innerProperties() == null ? null : this.innerProperties().consumerGroupName();
+    }
+
+    /**
+     * Set the consumerGroupName property: The name of the iot hub's consumer group that holds the partitions from which
+     * events will be read.
+     * 
+     * @param consumerGroupName the consumerGroupName value to set.
+     * @return the IoTHubEventSourceResource object itself.
+     */
+    public IoTHubEventSourceResource withConsumerGroupName(String consumerGroupName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTHubEventSourceResourceProperties();
+        }
+        this.innerProperties().withConsumerGroupName(consumerGroupName);
+        return this;
+    }
+
+    /**
+     * Get the keyName property: The name of the Shared Access Policy key that grants the Time Series Insights service
+     * access to the iot hub. This shared access policy key must grant 'service connect' permissions to the iot hub.
+     * 
+     * @return the keyName value.
+     */
+    public String keyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().keyName();
+    }
+
+    /**
+     * Set the keyName property: The name of the Shared Access Policy key that grants the Time Series Insights service
+     * access to the iot hub. This shared access policy key must grant 'service connect' permissions to the iot hub.
+     * 
+     * @param keyName the keyName value to set.
+     * @return the IoTHubEventSourceResource object itself.
+     */
+    public IoTHubEventSourceResource withKeyName(String keyName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTHubEventSourceResourceProperties();
+        }
+        this.innerProperties().withKeyName(keyName);
+        return this;
+    }
+
+    /**
+     * Get the eventSourceResourceId property: The resource id of the event source in Azure Resource Manager.
+     * 
+     * @return the eventSourceResourceId value.
+     */
+    public String eventSourceResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventSourceResourceId();
+    }
+
+    /**
+     * Set the eventSourceResourceId property: The resource id of the event source in Azure Resource Manager.
+     * 
+     * @param eventSourceResourceId the eventSourceResourceId value to set.
+     * @return the IoTHubEventSourceResource object itself.
+     */
+    public IoTHubEventSourceResource withEventSourceResourceId(String eventSourceResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTHubEventSourceResourceProperties();
+        }
+        this.innerProperties().withEventSourceResourceId(eventSourceResourceId);
+        return this;
+    }
+
+    /**
+     * Get the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
+     * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
+     * time will be used.
+     * 
+     * @return the timestampPropertyName value.
+     */
+    public String timestampPropertyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().timestampPropertyName();
+    }
+
+    /**
+     * Set the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
+     * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
+     * time will be used.
+     * 
+     * @param timestampPropertyName the timestampPropertyName value to set.
+     * @return the IoTHubEventSourceResource object itself.
+     */
+    public IoTHubEventSourceResource withTimestampPropertyName(String timestampPropertyName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTHubEventSourceResourceProperties();
+        }
+        this.innerProperties().withTimestampPropertyName(timestampPropertyName);
+        return this;
+    }
+
+    /**
+     * Get the localTimestamp property: An object that represents the local timestamp property. It contains the format
+     * of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't
+     * specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
+     * 
+     * @return the localTimestamp value.
+     */
+    public LocalTimestamp localTimestamp() {
+        return this.innerProperties() == null ? null : this.innerProperties().localTimestamp();
+    }
+
+    /**
+     * Set the localTimestamp property: An object that represents the local timestamp property. It contains the format
+     * of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't
+     * specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
+     * 
+     * @param localTimestamp the localTimestamp value to set.
+     * @return the IoTHubEventSourceResource object itself.
+     */
+    public IoTHubEventSourceResource withLocalTimestamp(LocalTimestamp localTimestamp) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTHubEventSourceResourceProperties();
+        }
+        this.innerProperties().withLocalTimestamp(localTimestamp);
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the ingressStartAt, It can be "EarliestAvailable", "EventSourceCreationTime",
+     * "CustomEnqueuedTime".
+     * 
+     * @return the type value.
+     */
+    public IngressStartAtType typePropertiesType() {
+        return this.innerProperties() == null ? null : this.innerProperties().type();
+    }
+
+    /**
+     * Set the type property: The type of the ingressStartAt, It can be "EarliestAvailable", "EventSourceCreationTime",
+     * "CustomEnqueuedTime".
+     * 
+     * @param type the type value to set.
+     * @return the IoTHubEventSourceResource object itself.
+     */
+    public IoTHubEventSourceResource withTypePropertiesType(IngressStartAtType type) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTHubEventSourceResourceProperties();
+        }
+        this.innerProperties().withType(type);
+        return this;
+    }
+
+    /**
+     * Get the time property: ISO8601 UTC datetime with seconds precision (milliseconds are optional), specifying the
+     * date and time that will be the starting point for Events to be consumed.
+     * 
+     * @return the time value.
+     */
+    public String time() {
+        return this.innerProperties() == null ? null : this.innerProperties().time();
+    }
+
+    /**
+     * Set the time property: ISO8601 UTC datetime with seconds precision (milliseconds are optional), specifying the
+     * date and time that will be the starting point for Events to be consumed.
+     * 
+     * @param time the time value to set.
+     * @return the IoTHubEventSourceResource object itself.
+     */
+    public IoTHubEventSourceResource withTime(String time) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTHubEventSourceResourceProperties();
+        }
+        this.innerProperties().withTime(time);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the creationTime property: The time the resource was created.
+     * 
+     * @return the creationTime value.
+     */
+    public OffsetDateTime creationTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
-        if (eventSourceResourceId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property eventSourceResourceId in model IoTHubEventSourceResource"));
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model IoTHubEventSourceResource"));
+        } else {
+            innerProperties().validate();
         }
-        if (iotHubName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property iotHubName in model IoTHubEventSourceResource"));
-        }
-        if (consumerGroupName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property consumerGroupName in model IoTHubEventSourceResource"));
-        }
-        if (keyName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyName in model IoTHubEventSourceResource"));
-        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IoTHubEventSourceResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IoTHubEventSourceResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IoTHubEventSourceResource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IoTHubEventSourceResource.
+     */
+    public static IoTHubEventSourceResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IoTHubEventSourceResource deserializedIoTHubEventSourceResource = new IoTHubEventSourceResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIoTHubEventSourceResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIoTHubEventSourceResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIoTHubEventSourceResource.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedIoTHubEventSourceResource.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIoTHubEventSourceResource.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIoTHubEventSourceResource.innerProperties
+                        = IoTHubEventSourceResourceProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedIoTHubEventSourceResource.kind = EventSourceResourceKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIoTHubEventSourceResource;
+        });
     }
 }

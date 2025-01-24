@@ -5,61 +5,62 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Effective Route. */
+/**
+ * Effective Route.
+ */
 @Fluent
-public final class EffectiveRoute {
+public final class EffectiveRoute implements JsonSerializable<EffectiveRoute> {
     /*
      * The name of the user defined route. This is optional.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * If true, on-premises routes are not propagated to the network interfaces in the subnet.
      */
-    @JsonProperty(value = "disableBgpRoutePropagation")
     private Boolean disableBgpRoutePropagation;
 
     /*
      * Who created the route.
      */
-    @JsonProperty(value = "source")
     private EffectiveRouteSource source;
 
     /*
      * The value of effective route.
      */
-    @JsonProperty(value = "state")
     private EffectiveRouteState state;
 
     /*
      * The address prefixes of the effective routes in CIDR notation.
      */
-    @JsonProperty(value = "addressPrefix")
     private List<String> addressPrefix;
 
     /*
      * The IP address of the next hop of the effective route.
      */
-    @JsonProperty(value = "nextHopIpAddress")
     private List<String> nextHopIpAddress;
 
     /*
      * The type of Azure hop the packet should be sent to.
      */
-    @JsonProperty(value = "nextHopType")
     private RouteNextHopType nextHopType;
 
-    /** Creates an instance of EffectiveRoute class. */
+    /**
+     * Creates an instance of EffectiveRoute class.
+     */
     public EffectiveRoute() {
     }
 
     /**
      * Get the name property: The name of the user defined route. This is optional.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,7 +69,7 @@ public final class EffectiveRoute {
 
     /**
      * Set the name property: The name of the user defined route. This is optional.
-     *
+     * 
      * @param name the name value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -80,7 +81,7 @@ public final class EffectiveRoute {
     /**
      * Get the disableBgpRoutePropagation property: If true, on-premises routes are not propagated to the network
      * interfaces in the subnet.
-     *
+     * 
      * @return the disableBgpRoutePropagation value.
      */
     public Boolean disableBgpRoutePropagation() {
@@ -90,7 +91,7 @@ public final class EffectiveRoute {
     /**
      * Set the disableBgpRoutePropagation property: If true, on-premises routes are not propagated to the network
      * interfaces in the subnet.
-     *
+     * 
      * @param disableBgpRoutePropagation the disableBgpRoutePropagation value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -101,7 +102,7 @@ public final class EffectiveRoute {
 
     /**
      * Get the source property: Who created the route.
-     *
+     * 
      * @return the source value.
      */
     public EffectiveRouteSource source() {
@@ -110,7 +111,7 @@ public final class EffectiveRoute {
 
     /**
      * Set the source property: Who created the route.
-     *
+     * 
      * @param source the source value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -121,7 +122,7 @@ public final class EffectiveRoute {
 
     /**
      * Get the state property: The value of effective route.
-     *
+     * 
      * @return the state value.
      */
     public EffectiveRouteState state() {
@@ -130,7 +131,7 @@ public final class EffectiveRoute {
 
     /**
      * Set the state property: The value of effective route.
-     *
+     * 
      * @param state the state value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -141,7 +142,7 @@ public final class EffectiveRoute {
 
     /**
      * Get the addressPrefix property: The address prefixes of the effective routes in CIDR notation.
-     *
+     * 
      * @return the addressPrefix value.
      */
     public List<String> addressPrefix() {
@@ -150,7 +151,7 @@ public final class EffectiveRoute {
 
     /**
      * Set the addressPrefix property: The address prefixes of the effective routes in CIDR notation.
-     *
+     * 
      * @param addressPrefix the addressPrefix value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -161,7 +162,7 @@ public final class EffectiveRoute {
 
     /**
      * Get the nextHopIpAddress property: The IP address of the next hop of the effective route.
-     *
+     * 
      * @return the nextHopIpAddress value.
      */
     public List<String> nextHopIpAddress() {
@@ -170,7 +171,7 @@ public final class EffectiveRoute {
 
     /**
      * Set the nextHopIpAddress property: The IP address of the next hop of the effective route.
-     *
+     * 
      * @param nextHopIpAddress the nextHopIpAddress value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -181,7 +182,7 @@ public final class EffectiveRoute {
 
     /**
      * Get the nextHopType property: The type of Azure hop the packet should be sent to.
-     *
+     * 
      * @return the nextHopType value.
      */
     public RouteNextHopType nextHopType() {
@@ -190,7 +191,7 @@ public final class EffectiveRoute {
 
     /**
      * Set the nextHopType property: The type of Azure hop the packet should be sent to.
-     *
+     * 
      * @param nextHopType the nextHopType value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -201,9 +202,67 @@ public final class EffectiveRoute {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("disableBgpRoutePropagation", this.disableBgpRoutePropagation);
+        jsonWriter.writeStringField("source", this.source == null ? null : this.source.toString());
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeArrayField("addressPrefix", this.addressPrefix,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("nextHopIpAddress", this.nextHopIpAddress,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("nextHopType", this.nextHopType == null ? null : this.nextHopType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EffectiveRoute from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EffectiveRoute if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EffectiveRoute.
+     */
+    public static EffectiveRoute fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EffectiveRoute deserializedEffectiveRoute = new EffectiveRoute();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedEffectiveRoute.name = reader.getString();
+                } else if ("disableBgpRoutePropagation".equals(fieldName)) {
+                    deserializedEffectiveRoute.disableBgpRoutePropagation = reader.getNullable(JsonReader::getBoolean);
+                } else if ("source".equals(fieldName)) {
+                    deserializedEffectiveRoute.source = EffectiveRouteSource.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedEffectiveRoute.state = EffectiveRouteState.fromString(reader.getString());
+                } else if ("addressPrefix".equals(fieldName)) {
+                    List<String> addressPrefix = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEffectiveRoute.addressPrefix = addressPrefix;
+                } else if ("nextHopIpAddress".equals(fieldName)) {
+                    List<String> nextHopIpAddress = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEffectiveRoute.nextHopIpAddress = nextHopIpAddress;
+                } else if ("nextHopType".equals(fieldName)) {
+                    deserializedEffectiveRoute.nextHopType = RouteNextHopType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEffectiveRoute;
+        });
     }
 }

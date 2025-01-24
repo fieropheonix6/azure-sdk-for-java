@@ -6,56 +6,58 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Virtual Router definition. */
+/**
+ * Virtual Router definition.
+ */
 @Fluent
-public final class VirtualRouterPropertiesFormat {
+public final class VirtualRouterPropertiesFormat implements JsonSerializable<VirtualRouterPropertiesFormat> {
     /*
      * VirtualRouter ASN.
      */
-    @JsonProperty(value = "virtualRouterAsn")
     private Long virtualRouterAsn;
 
     /*
      * VirtualRouter IPs.
      */
-    @JsonProperty(value = "virtualRouterIps")
     private List<String> virtualRouterIps;
 
     /*
      * The Subnet on which VirtualRouter is hosted.
      */
-    @JsonProperty(value = "hostedSubnet")
     private SubResource hostedSubnet;
 
     /*
      * The Gateway on which VirtualRouter is hosted.
      */
-    @JsonProperty(value = "hostedGateway")
     private SubResource hostedGateway;
 
     /*
      * List of references to VirtualRouterPeerings.
      */
-    @JsonProperty(value = "peerings", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> peerings;
 
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of VirtualRouterPropertiesFormat class. */
+    /**
+     * Creates an instance of VirtualRouterPropertiesFormat class.
+     */
     public VirtualRouterPropertiesFormat() {
     }
 
     /**
      * Get the virtualRouterAsn property: VirtualRouter ASN.
-     *
+     * 
      * @return the virtualRouterAsn value.
      */
     public Long virtualRouterAsn() {
@@ -64,7 +66,7 @@ public final class VirtualRouterPropertiesFormat {
 
     /**
      * Set the virtualRouterAsn property: VirtualRouter ASN.
-     *
+     * 
      * @param virtualRouterAsn the virtualRouterAsn value to set.
      * @return the VirtualRouterPropertiesFormat object itself.
      */
@@ -75,7 +77,7 @@ public final class VirtualRouterPropertiesFormat {
 
     /**
      * Get the virtualRouterIps property: VirtualRouter IPs.
-     *
+     * 
      * @return the virtualRouterIps value.
      */
     public List<String> virtualRouterIps() {
@@ -84,7 +86,7 @@ public final class VirtualRouterPropertiesFormat {
 
     /**
      * Set the virtualRouterIps property: VirtualRouter IPs.
-     *
+     * 
      * @param virtualRouterIps the virtualRouterIps value to set.
      * @return the VirtualRouterPropertiesFormat object itself.
      */
@@ -95,7 +97,7 @@ public final class VirtualRouterPropertiesFormat {
 
     /**
      * Get the hostedSubnet property: The Subnet on which VirtualRouter is hosted.
-     *
+     * 
      * @return the hostedSubnet value.
      */
     public SubResource hostedSubnet() {
@@ -104,7 +106,7 @@ public final class VirtualRouterPropertiesFormat {
 
     /**
      * Set the hostedSubnet property: The Subnet on which VirtualRouter is hosted.
-     *
+     * 
      * @param hostedSubnet the hostedSubnet value to set.
      * @return the VirtualRouterPropertiesFormat object itself.
      */
@@ -115,7 +117,7 @@ public final class VirtualRouterPropertiesFormat {
 
     /**
      * Get the hostedGateway property: The Gateway on which VirtualRouter is hosted.
-     *
+     * 
      * @return the hostedGateway value.
      */
     public SubResource hostedGateway() {
@@ -124,7 +126,7 @@ public final class VirtualRouterPropertiesFormat {
 
     /**
      * Set the hostedGateway property: The Gateway on which VirtualRouter is hosted.
-     *
+     * 
      * @param hostedGateway the hostedGateway value to set.
      * @return the VirtualRouterPropertiesFormat object itself.
      */
@@ -135,7 +137,7 @@ public final class VirtualRouterPropertiesFormat {
 
     /**
      * Get the peerings property: List of references to VirtualRouterPeerings.
-     *
+     * 
      * @return the peerings value.
      */
     public List<SubResource> peerings() {
@@ -144,7 +146,7 @@ public final class VirtualRouterPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -153,9 +155,64 @@ public final class VirtualRouterPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("virtualRouterAsn", this.virtualRouterAsn);
+        jsonWriter.writeArrayField("virtualRouterIps", this.virtualRouterIps,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("hostedSubnet", this.hostedSubnet);
+        jsonWriter.writeJsonField("hostedGateway", this.hostedGateway);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualRouterPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualRouterPropertiesFormat if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualRouterPropertiesFormat.
+     */
+    public static VirtualRouterPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualRouterPropertiesFormat deserializedVirtualRouterPropertiesFormat
+                = new VirtualRouterPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualRouterAsn".equals(fieldName)) {
+                    deserializedVirtualRouterPropertiesFormat.virtualRouterAsn
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("virtualRouterIps".equals(fieldName)) {
+                    List<String> virtualRouterIps = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualRouterPropertiesFormat.virtualRouterIps = virtualRouterIps;
+                } else if ("hostedSubnet".equals(fieldName)) {
+                    deserializedVirtualRouterPropertiesFormat.hostedSubnet = SubResource.fromJson(reader);
+                } else if ("hostedGateway".equals(fieldName)) {
+                    deserializedVirtualRouterPropertiesFormat.hostedGateway = SubResource.fromJson(reader);
+                } else if ("peerings".equals(fieldName)) {
+                    List<SubResource> peerings = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVirtualRouterPropertiesFormat.peerings = peerings;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualRouterPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualRouterPropertiesFormat;
+        });
     }
 }

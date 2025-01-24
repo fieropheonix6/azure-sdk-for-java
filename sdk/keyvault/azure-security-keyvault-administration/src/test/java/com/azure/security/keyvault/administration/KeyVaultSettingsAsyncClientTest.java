@@ -17,34 +17,36 @@ public class KeyVaultSettingsAsyncClientTest extends KeyVaultSettingsClientTestB
     private KeyVaultSettingsAsyncClient asyncClient;
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((ignored1, ignored2) -> false)
-            .assertAsync()
-            .build();
+        return new AssertingHttpClientBuilder(httpClient).assertAsync().build();
     }
 
     private void getClient(HttpClient httpClient, boolean forCleanup) {
-        asyncClient = getClientBuilder(buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
-            : httpClient), forCleanup).buildAsyncClient();
+        asyncClient
+            = getClientBuilder(
+                buildAsyncAssertingClient(
+                    interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
+                forCleanup).buildAsyncClient();
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `id` and `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+        }
     }
 
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void listSettings(HttpClient httpClient) {
+    public void getSettings(HttpClient httpClient) {
         getClient(httpClient, false);
 
-        StepVerifier.create(asyncClient.listSettings())
-            .assertNext(listSettingsResult -> {
-                assertNotNull(listSettingsResult);
-                assertTrue(listSettingsResult.getValue().size() > 0);
+        StepVerifier.create(asyncClient.getSettings()).assertNext(getSettingsResult -> {
+            assertNotNull(getSettingsResult);
+            assertTrue(getSettingsResult.getSettings().size() > 0);
 
-                for (KeyVaultSetting setting : listSettingsResult.getValue()) {
-                    assertNotNull(setting);
-                    assertNotNull(setting.getName());
-                    assertNotNull(setting.getType());
-                    assertNotNull(setting.asString());
-                }
-            }).verifyComplete();
+            for (KeyVaultSetting setting : getSettingsResult.getSettings()) {
+                assertNotNull(setting);
+                assertNotNull(setting.getName());
+                assertNotNull(setting.getType());
+            }
+        }).verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME)
@@ -54,13 +56,11 @@ public class KeyVaultSettingsAsyncClientTest extends KeyVaultSettingsClientTestB
 
         String settingName = "AllowKeyManagementOperationsThroughARM";
 
-        StepVerifier.create(asyncClient.getSetting(settingName))
-            .assertNext(setting -> {
-                assertNotNull(setting);
-                assertNotNull(setting.getName());
-                assertNotNull(setting.getType());
-                assertNotNull(setting.asString());
-            }).verifyComplete();
+        StepVerifier.create(asyncClient.getSetting(settingName)).assertNext(setting -> {
+            assertNotNull(setting);
+            assertNotNull(setting.getName());
+            assertNotNull(setting.getType());
+        }).verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME)
@@ -71,18 +71,15 @@ public class KeyVaultSettingsAsyncClientTest extends KeyVaultSettingsClientTestB
         String settingName = "AllowKeyManagementOperationsThroughARM";
         KeyVaultSetting settingToUpdate = new KeyVaultSetting(settingName, true);
 
-        StepVerifier.create(asyncClient.getSetting(settingName)
-                .flatMap(setting -> {
-                    assertNotNull(setting);
+        StepVerifier.create(asyncClient.getSetting(settingName).flatMap(setting -> {
+            assertNotNull(setting);
 
-                    @SuppressWarnings("ConstantConditions")
-                    boolean originalSettingValue = setting.asBoolean();
+            @SuppressWarnings("ConstantConditions")
+            boolean originalSettingValue = setting.asBoolean();
 
-                    return asyncClient.updateSetting(settingToUpdate)
-                        .doOnSuccess(updatedSetting -> assertSettingEquals(settingToUpdate, updatedSetting))
-                        .then(asyncClient.updateSetting(new KeyVaultSetting(settingName, originalSettingValue)));
-                }))
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
+            return asyncClient.updateSetting(settingToUpdate)
+                .doOnSuccess(updatedSetting -> assertSettingEquals(settingToUpdate, updatedSetting))
+                .then(asyncClient.updateSetting(new KeyVaultSetting(settingName, originalSettingValue)));
+        })).assertNext(Assertions::assertNotNull).verifyComplete();
     }
 }

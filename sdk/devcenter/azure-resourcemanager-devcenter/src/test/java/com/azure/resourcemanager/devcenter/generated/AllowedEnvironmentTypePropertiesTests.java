@@ -6,19 +6,17 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.AllowedEnvironmentTypeProperties;
-import org.junit.jupiter.api.Test;
 
 public final class AllowedEnvironmentTypePropertiesTests {
-    @Test
-    public void testDeserialize() {
-        AllowedEnvironmentTypeProperties model =
-            BinaryData
-                .fromString("{\"provisioningState\":\"Accepted\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AllowedEnvironmentTypeProperties model
+            = BinaryData.fromString("{\"provisioningState\":\"Updated\",\"displayName\":\"xxjyngudivkrtsw\"}")
                 .toObject(AllowedEnvironmentTypeProperties.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AllowedEnvironmentTypeProperties model = new AllowedEnvironmentTypeProperties();
         model = BinaryData.fromObject(model).toObject(AllowedEnvironmentTypeProperties.class);
     }

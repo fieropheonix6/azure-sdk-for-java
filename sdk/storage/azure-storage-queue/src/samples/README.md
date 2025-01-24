@@ -18,7 +18,7 @@ More detail is defined at [queue key concept][queue_key_concept].
 ## Getting started
 Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
-For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://search.maven.org/artifact/com.azure/azure-core).
+For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://central.sonatype.com/artifact/com.azure/azure-core).
 
 ## Examples
 
@@ -50,8 +50,8 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [samples_message]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-queue/src/samples/java/com/azure/storage/queue/MessageSamples.java
 [samples_queue_exception]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-queue/src/samples/java/com/azure/storage/queue/QueueExceptionSamples.java
 [samples_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-queue/src/samples/java/com/azure/storage/queue/AsyncSamples.java
-[storage_queue_rest]: https://docs.microsoft.com/rest/api/storageservices/queue-service-rest-api
-[error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
+[storage_queue_rest]: https://learn.microsoft.com/rest/api/storageservices/queue-service-rest-api
+[error_codes]: https://learn.microsoft.com/rest/api/storageservices/blob-service-error-codes
 [queue_key_concept]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-queue/README.md#key-concepts
 [samples]: java/samples/
 

@@ -7,20 +7,19 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.ManagedPrivateEndpointsCheckNameRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ManagedPrivateEndpointsCheckNameRequestTests {
-    @Test
-    public void testDeserialize() {
-        ManagedPrivateEndpointsCheckNameRequest model =
-            BinaryData.fromString("{\"name\":\"dhbt\"}").toObject(ManagedPrivateEndpointsCheckNameRequest.class);
-        Assertions.assertEquals("dhbt", model.name());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ManagedPrivateEndpointsCheckNameRequest model
+            = BinaryData.fromString("{\"name\":\"fvmwy\"}").toObject(ManagedPrivateEndpointsCheckNameRequest.class);
+        Assertions.assertEquals("fvmwy", model.name());
     }
 
-    @Test
-    public void testSerialize() {
-        ManagedPrivateEndpointsCheckNameRequest model = new ManagedPrivateEndpointsCheckNameRequest().withName("dhbt");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ManagedPrivateEndpointsCheckNameRequest model = new ManagedPrivateEndpointsCheckNameRequest().withName("fvmwy");
         model = BinaryData.fromObject(model).toObject(ManagedPrivateEndpointsCheckNameRequest.class);
-        Assertions.assertEquals("dhbt", model.name());
+        Assertions.assertEquals("fvmwy", model.name());
     }
 }

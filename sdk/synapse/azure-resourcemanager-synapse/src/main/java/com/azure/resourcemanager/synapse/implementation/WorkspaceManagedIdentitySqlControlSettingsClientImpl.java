@@ -38,24 +38,24 @@ import reactor.core.publisher.Mono;
  */
 public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
     implements WorkspaceManagedIdentitySqlControlSettingsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkspaceManagedIdentitySqlControlSettingsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of WorkspaceManagedIdentitySqlControlSettingsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkspaceManagedIdentitySqlControlSettingsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    WorkspaceManagedIdentitySqlControlSettingsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(WorkspaceManagedIdentitySqlControlSettingsService.class,
+            client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,65 +65,48 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface WorkspaceManagedIdentitySqlControlSettingsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/managedIdentitySqlControlSettings/default")
-        @ExpectedResponses({200})
+    public interface WorkspaceManagedIdentitySqlControlSettingsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/managedIdentitySqlControlSettings/default")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedIdentitySqlControlSettingsModelInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ManagedIdentitySqlControlSettingsModelInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/managedIdentitySqlControlSettings/default")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/managedIdentitySqlControlSettings/default")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @BodyParam("application/json")
-                ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @BodyParam("application/json") ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedIdentitySqlControlSettingsModelInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName) {
+    private Mono<Response<ManagedIdentitySqlControlSettingsModelInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -132,49 +115,35 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedIdentitySqlControlSettingsModelInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<Response<ManagedIdentitySqlControlSettingsModelInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -183,23 +152,15 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, accept, context);
     }
 
     /**
      * Get Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -209,35 +170,12 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ManagedIdentitySqlControlSettingsModelInner> getAsync(String resourceGroupName, String workspaceName) {
-        return getWithResponseAsync(resourceGroupName, workspaceName)
-            .flatMap(
-                (Response<ManagedIdentitySqlControlSettingsModelInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceGroupName, workspaceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get Managed Identity Sql Control Settings.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Identity Sql Control Settings.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedIdentitySqlControlSettingsModelInner get(String resourceGroupName, String workspaceName) {
-        return getAsync(resourceGroupName, workspaceName).block();
-    }
-
-    /**
-     * Get Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -247,39 +185,48 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @return managed Identity Sql Control Settings along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedIdentitySqlControlSettingsModelInner> getWithResponse(
-        String resourceGroupName, String workspaceName, Context context) {
+    public Response<ManagedIdentitySqlControlSettingsModelInner> getWithResponse(String resourceGroupName,
+        String workspaceName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, context).block();
     }
 
     /**
+     * Get Managed Identity Sql Control Settings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return managed Identity Sql Control Settings.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedIdentitySqlControlSettingsModelInner get(String resourceGroupName, String workspaceName) {
+        return getWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
+    }
+
+    /**
      * Create or update Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param managedIdentitySqlControlSettings Managed Identity Sql Control Settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -289,34 +236,22 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (managedIdentitySqlControlSettings == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter managedIdentitySqlControlSettings is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter managedIdentitySqlControlSettings is required and cannot be null."));
         } else {
             managedIdentitySqlControlSettings.validate();
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            managedIdentitySqlControlSettings,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, managedIdentitySqlControlSettings,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param managedIdentitySqlControlSettings Managed Identity Sql Control Settings.
@@ -324,26 +259,20 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return managed Identity Sql Control Settings along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -353,31 +282,21 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (managedIdentitySqlControlSettings == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter managedIdentitySqlControlSettings is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter managedIdentitySqlControlSettings is required and cannot be null."));
         } else {
             managedIdentitySqlControlSettings.validate();
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                managedIdentitySqlControlSettings,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, workspaceName, managedIdentitySqlControlSettings,
+            accept, context);
     }
 
     /**
      * Create or update Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param managedIdentitySqlControlSettings Managed Identity Sql Control Settings.
@@ -387,27 +306,21 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @return the {@link PollerFlux} for polling of managed Identity Sql Control Settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String workspaceName,
+    private
+        PollerFlux<PollResult<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String workspaceName,
             ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, managedIdentitySqlControlSettings);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, managedIdentitySqlControlSettings);
+        return this.client
             .<ManagedIdentitySqlControlSettingsModelInner, ManagedIdentitySqlControlSettingsModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ManagedIdentitySqlControlSettingsModelInner.class,
-                ManagedIdentitySqlControlSettingsModelInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), ManagedIdentitySqlControlSettingsModelInner.class,
+                ManagedIdentitySqlControlSettingsModelInner.class, this.client.getContext());
     }
 
     /**
      * Create or update Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param managedIdentitySqlControlSettings Managed Identity Sql Control Settings.
@@ -418,30 +331,22 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @return the {@link PollerFlux} for polling of managed Identity Sql Control Settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String workspaceName,
-            ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings,
-            Context context) {
+    private
+        PollerFlux<PollResult<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String workspaceName,
+            ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, managedIdentitySqlControlSettings, context);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName,
+            managedIdentitySqlControlSettings, context);
+        return this.client
             .<ManagedIdentitySqlControlSettingsModelInner, ManagedIdentitySqlControlSettingsModelInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ManagedIdentitySqlControlSettingsModelInner.class,
-                ManagedIdentitySqlControlSettingsModelInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), ManagedIdentitySqlControlSettingsModelInner.class,
+                ManagedIdentitySqlControlSettingsModelInner.class, context);
     }
 
     /**
      * Create or update Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param managedIdentitySqlControlSettings Managed Identity Sql Control Settings.
@@ -451,19 +356,17 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @return the {@link SyncPoller} for polling of managed Identity Sql Control Settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String workspaceName,
+    public
+        SyncPoller<PollResult<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>
+        beginCreateOrUpdate(String resourceGroupName, String workspaceName,
             ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, managedIdentitySqlControlSettings)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, managedIdentitySqlControlSettings)
             .getSyncPoller();
     }
 
     /**
      * Create or update Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param managedIdentitySqlControlSettings Managed Identity Sql Control Settings.
@@ -474,20 +377,18 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @return the {@link SyncPoller} for polling of managed Identity Sql Control Settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String workspaceName,
-            ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings,
-            Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, managedIdentitySqlControlSettings, context)
+    public
+        SyncPoller<PollResult<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>
+        beginCreateOrUpdate(String resourceGroupName, String workspaceName,
+            ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings, Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, managedIdentitySqlControlSettings, context)
             .getSyncPoller();
     }
 
     /**
      * Create or update Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param managedIdentitySqlControlSettings Managed Identity Sql Control Settings.
@@ -497,18 +398,15 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @return managed Identity Sql Control Settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedIdentitySqlControlSettingsModelInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, managedIdentitySqlControlSettings)
-            .last()
+    private Mono<ManagedIdentitySqlControlSettingsModelInner> createOrUpdateAsync(String resourceGroupName,
+        String workspaceName, ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, managedIdentitySqlControlSettings).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param managedIdentitySqlControlSettings Managed Identity Sql Control Settings.
@@ -519,10 +417,8 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @return managed Identity Sql Control Settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedIdentitySqlControlSettingsModelInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings,
+    private Mono<ManagedIdentitySqlControlSettingsModelInner> createOrUpdateAsync(String resourceGroupName,
+        String workspaceName, ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings,
         Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, managedIdentitySqlControlSettings, context)
             .last()
@@ -531,7 +427,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
 
     /**
      * Create or update Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param managedIdentitySqlControlSettings Managed Identity Sql Control Settings.
@@ -541,16 +437,14 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @return managed Identity Sql Control Settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedIdentitySqlControlSettingsModelInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
+    public ManagedIdentitySqlControlSettingsModelInner createOrUpdate(String resourceGroupName, String workspaceName,
         ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, managedIdentitySqlControlSettings).block();
     }
 
     /**
      * Create or update Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param managedIdentitySqlControlSettings Managed Identity Sql Control Settings.
@@ -561,11 +455,8 @@ public final class WorkspaceManagedIdentitySqlControlSettingsClientImpl
      * @return managed Identity Sql Control Settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedIdentitySqlControlSettingsModelInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings,
-        Context context) {
+    public ManagedIdentitySqlControlSettingsModelInner createOrUpdate(String resourceGroupName, String workspaceName,
+        ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings, Context context) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, managedIdentitySqlControlSettings, context)
             .block();
     }

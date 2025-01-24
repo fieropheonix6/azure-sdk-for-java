@@ -15,39 +15,38 @@ import com.azure.resourcemanager.storagepool.fluent.models.OutboundEnvironmentEn
 import com.azure.resourcemanager.storagepool.models.DiskPool;
 import com.azure.resourcemanager.storagepool.models.DiskPools;
 import com.azure.resourcemanager.storagepool.models.OutboundEnvironmentEndpoint;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DiskPoolsImpl implements DiskPools {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskPoolsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DiskPoolsImpl.class);
 
     private final DiskPoolsClient innerClient;
 
     private final com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager;
 
-    public DiskPoolsImpl(
-        DiskPoolsClient innerClient, com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager) {
+    public DiskPoolsImpl(DiskPoolsClient innerClient,
+        com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<DiskPool> list() {
         PagedIterable<DiskPoolInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new DiskPoolImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DiskPoolImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DiskPool> list(Context context) {
         PagedIterable<DiskPoolInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new DiskPoolImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DiskPoolImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DiskPool> listByResourceGroup(String resourceGroupName) {
         PagedIterable<DiskPoolInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new DiskPoolImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DiskPoolImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DiskPool> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<DiskPoolInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new DiskPoolImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DiskPoolImpl(inner1, this.manager()));
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String diskPoolName) {
@@ -56,6 +55,18 @@ public final class DiskPoolsImpl implements DiskPools {
 
     public void delete(String resourceGroupName, String diskPoolName, Context context) {
         this.serviceClient().delete(resourceGroupName, diskPoolName, context);
+    }
+
+    public Response<DiskPool> getByResourceGroupWithResponse(String resourceGroupName, String diskPoolName,
+        Context context) {
+        Response<DiskPoolInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, diskPoolName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DiskPoolImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DiskPool getByResourceGroup(String resourceGroupName, String diskPoolName) {
@@ -67,33 +78,20 @@ public final class DiskPoolsImpl implements DiskPools {
         }
     }
 
-    public Response<DiskPool> getByResourceGroupWithResponse(
-        String resourceGroupName, String diskPoolName, Context context) {
-        Response<DiskPoolInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, diskPoolName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new DiskPoolImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String diskPoolName) {
+        PagedIterable<OutboundEnvironmentEndpointInner> inner
+            = this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, diskPoolName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String diskPoolName) {
-        PagedIterable<OutboundEnvironmentEndpointInner> inner =
-            this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, diskPoolName);
-        return Utils.mapPage(inner, inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String diskPoolName, Context context) {
-        PagedIterable<OutboundEnvironmentEndpointInner> inner =
-            this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, diskPoolName, context);
-        return Utils.mapPage(inner, inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
+    public PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String diskPoolName, Context context) {
+        PagedIterable<OutboundEnvironmentEndpointInner> inner
+            = this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, diskPoolName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()));
     }
 
     public void start(String resourceGroupName, String diskPoolName) {
@@ -121,77 +119,57 @@ public final class DiskPoolsImpl implements DiskPools {
     }
 
     public DiskPool getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String diskPoolName = Utils.getValueFromIdByName(id, "diskPools");
+        String diskPoolName = ResourceManagerUtils.getValueFromIdByName(id, "diskPools");
         if (diskPoolName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'diskPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'diskPools'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, diskPoolName, Context.NONE).getValue();
     }
 
     public Response<DiskPool> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String diskPoolName = Utils.getValueFromIdByName(id, "diskPools");
+        String diskPoolName = ResourceManagerUtils.getValueFromIdByName(id, "diskPools");
         if (diskPoolName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'diskPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'diskPools'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, diskPoolName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String diskPoolName = Utils.getValueFromIdByName(id, "diskPools");
+        String diskPoolName = ResourceManagerUtils.getValueFromIdByName(id, "diskPools");
         if (diskPoolName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'diskPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'diskPools'.", id)));
         }
         this.delete(resourceGroupName, diskPoolName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String diskPoolName = Utils.getValueFromIdByName(id, "diskPools");
+        String diskPoolName = ResourceManagerUtils.getValueFromIdByName(id, "diskPools");
         if (diskPoolName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'diskPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'diskPools'.", id)));
         }
         this.delete(resourceGroupName, diskPoolName, context);
     }

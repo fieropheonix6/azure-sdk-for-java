@@ -5,21 +5,33 @@
 package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of private link resources. */
+/**
+ * A list of private link resources.
+ */
 @Fluent
-public final class PrivateLinkResourceListResultDescriptionInner {
+public final class PrivateLinkResourceListResultDescriptionInner
+    implements JsonSerializable<PrivateLinkResourceListResultDescriptionInner> {
     /*
      * Array of private link resources
      */
-    @JsonProperty(value = "value")
     private List<PrivateLinkResourceDescriptionInner> value;
 
     /**
+     * Creates an instance of PrivateLinkResourceListResultDescriptionInner class.
+     */
+    public PrivateLinkResourceListResultDescriptionInner() {
+    }
+
+    /**
      * Get the value property: Array of private link resources.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateLinkResourceDescriptionInner> value() {
@@ -28,7 +40,7 @@ public final class PrivateLinkResourceListResultDescriptionInner {
 
     /**
      * Set the value property: Array of private link resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateLinkResourceListResultDescriptionInner object itself.
      */
@@ -39,12 +51,51 @@ public final class PrivateLinkResourceListResultDescriptionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkResourceListResultDescriptionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkResourceListResultDescriptionInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateLinkResourceListResultDescriptionInner.
+     */
+    public static PrivateLinkResourceListResultDescriptionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkResourceListResultDescriptionInner deserializedPrivateLinkResourceListResultDescriptionInner
+                = new PrivateLinkResourceListResultDescriptionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PrivateLinkResourceDescriptionInner> value
+                        = reader.readArray(reader1 -> PrivateLinkResourceDescriptionInner.fromJson(reader1));
+                    deserializedPrivateLinkResourceListResultDescriptionInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkResourceListResultDescriptionInner;
+        });
     }
 }

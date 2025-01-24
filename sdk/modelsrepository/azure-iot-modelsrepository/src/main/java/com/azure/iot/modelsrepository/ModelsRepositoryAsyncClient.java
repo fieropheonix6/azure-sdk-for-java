@@ -19,7 +19,6 @@ import java.net.URI;
 import java.util.Map;
 
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This class provides a client for interacting asynchronously with a ModelsRepository instance.
@@ -28,29 +27,25 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 @ServiceClient(builder = ModelsRepositoryClientBuilder.class, isAsync = true)
 public final class ModelsRepositoryAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(ModelsRepositoryAsyncClient.class);
-    private static final String MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE = "Azure.IoT.ModelsRepository";
     private final ModelsRepositoryServiceVersion serviceVersion;
     private final RepositoryHandler repositoryHandler;
     private final ModelDependencyResolution defaultDependencyResolutionOption;
     private final URI repositoryEndpoint;
 
-    ModelsRepositoryAsyncClient(
-        URI repositoryEndpoint,
-        HttpPipeline pipeline,
-        ModelsRepositoryServiceVersion serviceVersion,
-        ModelDependencyResolution dependencyResolutionOption) {
+    ModelsRepositoryAsyncClient(URI repositoryEndpoint, HttpPipeline pipeline,
+        ModelsRepositoryServiceVersion serviceVersion, ModelDependencyResolution dependencyResolutionOption) {
 
         this.serviceVersion = serviceVersion;
 
         this.defaultDependencyResolutionOption = dependencyResolutionOption;
         this.repositoryEndpoint = repositoryEndpoint;
 
-        ModelsRepositoryAPIImpl protocolLayer = new ModelsRepositoryAPIImplBuilder()
-            .apiVersion(this.serviceVersion.toString())
-            .host(repositoryEndpoint.toString())
-            .pipeline(pipeline)
-            .serializerAdapter(JacksonAdapter.createDefaultSerializerAdapter())
-            .buildClient();
+        ModelsRepositoryAPIImpl protocolLayer
+            = new ModelsRepositoryAPIImplBuilder().apiVersion(this.serviceVersion.toString())
+                .host(repositoryEndpoint.toString())
+                .pipeline(pipeline)
+                .serializerAdapter(JacksonAdapter.createDefaultSerializerAdapter())
+                .buildClient();
 
         this.repositoryHandler = new RepositoryHandler(repositoryEndpoint, protocolLayer);
     }
@@ -100,7 +95,6 @@ public final class ModelsRepositoryAsyncClient {
     }
 
     Mono<Map<String, String>> getModels(String dtmi, ModelDependencyResolution dependencyResolution, Context context) {
-        context = context.addData(AZ_TRACING_NAMESPACE_KEY, MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE);
         return repositoryHandler.processAsync(dtmi, dependencyResolution, context);
     }
 
@@ -129,8 +123,8 @@ public final class ModelsRepositoryAsyncClient {
         return withContext(context -> getModels(dtmis, dependencyResolution, context));
     }
 
-    Mono<Map<String, String>> getModels(Iterable<String> dtmis, ModelDependencyResolution dependencyResolution, Context context) {
-        context = context.addData(AZ_TRACING_NAMESPACE_KEY, MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE);
+    Mono<Map<String, String>> getModels(Iterable<String> dtmis, ModelDependencyResolution dependencyResolution,
+        Context context) {
         return repositoryHandler.processAsync(dtmis, dependencyResolution, context);
     }
 }

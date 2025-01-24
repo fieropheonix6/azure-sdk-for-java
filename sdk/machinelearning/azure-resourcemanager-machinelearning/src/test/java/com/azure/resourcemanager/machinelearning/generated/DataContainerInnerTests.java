@@ -11,42 +11,37 @@ import com.azure.resourcemanager.machinelearning.models.DataType;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DataContainerInnerTests {
-    @Test
-    public void testDeserialize() {
-        DataContainerInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"dataType\":\"uri_folder\",\"isArchived\":true,\"latestVersion\":\"ycnunvjsrtk\",\"nextVersion\":\"wnopqgikyzirtx\",\"description\":\"uxzejntpsew\",\"properties\":{\"rydxtqm\":\"ilqu\"},\"tags\":{\"f\":\"xorgg\"}},\"id\":\"aomtbghhavgrvkff\",\"name\":\"vjzhpjbib\",\"type\":\"jmfxumvf\"}")
-                .toObject(DataContainerInner.class);
-        Assertions.assertEquals("uxzejntpsew", model.properties().description());
-        Assertions.assertEquals("ilqu", model.properties().properties().get("rydxtqm"));
-        Assertions.assertEquals("xorgg", model.properties().tags().get("f"));
-        Assertions.assertEquals(true, model.properties().isArchived());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DataContainerInner model = BinaryData.fromString(
+            "{\"properties\":{\"dataType\":\"uri_folder\",\"isArchived\":false,\"latestVersion\":\"fa\",\"nextVersion\":\"vnqqybaryeua\",\"description\":\"kq\",\"tags\":{\"w\":\"gzslesjcbhernnti\",\"uwrbehwagoh\":\"jcvb\"},\"properties\":{\"emvvhm\":\"fkmr\"}},\"id\":\"drjf\",\"name\":\"tac\",\"type\":\"ebjvewzcjzn\"}")
+            .toObject(DataContainerInner.class);
+        Assertions.assertEquals("kq", model.properties().description());
+        Assertions.assertEquals("gzslesjcbhernnti", model.properties().tags().get("w"));
+        Assertions.assertEquals("fkmr", model.properties().properties().get("emvvhm"));
+        Assertions.assertEquals(false, model.properties().isArchived());
         Assertions.assertEquals(DataType.URI_FOLDER, model.properties().dataType());
     }
 
-    @Test
-    public void testSerialize() {
-        DataContainerInner model =
-            new DataContainerInner()
-                .withProperties(
-                    new DataContainerProperties()
-                        .withDescription("uxzejntpsew")
-                        .withProperties(mapOf("rydxtqm", "ilqu"))
-                        .withTags(mapOf("f", "xorgg"))
-                        .withIsArchived(true)
-                        .withDataType(DataType.URI_FOLDER));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DataContainerInner model
+            = new DataContainerInner().withProperties(new DataContainerProperties().withDescription("kq")
+                .withTags(mapOf("w", "gzslesjcbhernnti", "uwrbehwagoh", "jcvb"))
+                .withProperties(mapOf("emvvhm", "fkmr"))
+                .withIsArchived(false)
+                .withDataType(DataType.URI_FOLDER));
         model = BinaryData.fromObject(model).toObject(DataContainerInner.class);
-        Assertions.assertEquals("uxzejntpsew", model.properties().description());
-        Assertions.assertEquals("ilqu", model.properties().properties().get("rydxtqm"));
-        Assertions.assertEquals("xorgg", model.properties().tags().get("f"));
-        Assertions.assertEquals(true, model.properties().isArchived());
+        Assertions.assertEquals("kq", model.properties().description());
+        Assertions.assertEquals("gzslesjcbhernnti", model.properties().tags().get("w"));
+        Assertions.assertEquals("fkmr", model.properties().properties().get("emvvhm"));
+        Assertions.assertEquals(false, model.properties().isArchived());
         Assertions.assertEquals(DataType.URI_FOLDER, model.properties().dataType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

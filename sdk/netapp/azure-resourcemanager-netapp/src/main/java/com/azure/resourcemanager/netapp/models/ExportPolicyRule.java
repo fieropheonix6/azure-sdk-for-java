@@ -5,105 +5,102 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Volume Export Policy Rule. */
+/**
+ * Volume Export Policy Rule.
+ */
 @Fluent
-public final class ExportPolicyRule {
+public final class ExportPolicyRule implements JsonSerializable<ExportPolicyRule> {
     /*
      * Order index
      */
-    @JsonProperty(value = "ruleIndex")
     private Integer ruleIndex;
 
     /*
      * Read only access
      */
-    @JsonProperty(value = "unixReadOnly")
     private Boolean unixReadOnly;
 
     /*
      * Read and write access
      */
-    @JsonProperty(value = "unixReadWrite")
     private Boolean unixReadWrite;
 
     /*
      * Kerberos5 Read only access. To be use with swagger version 2020-05-01 or later
      */
-    @JsonProperty(value = "kerberos5ReadOnly")
     private Boolean kerberos5ReadOnly;
 
     /*
      * Kerberos5 Read and write access. To be use with swagger version 2020-05-01 or later
      */
-    @JsonProperty(value = "kerberos5ReadWrite")
     private Boolean kerberos5ReadWrite;
 
     /*
      * Kerberos5i Read only access. To be use with swagger version 2020-05-01 or later
      */
-    @JsonProperty(value = "kerberos5iReadOnly")
     private Boolean kerberos5IReadOnly;
 
     /*
      * Kerberos5i Read and write access. To be use with swagger version 2020-05-01 or later
      */
-    @JsonProperty(value = "kerberos5iReadWrite")
     private Boolean kerberos5IReadWrite;
 
     /*
      * Kerberos5p Read only access. To be use with swagger version 2020-05-01 or later
      */
-    @JsonProperty(value = "kerberos5pReadOnly")
     private Boolean kerberos5PReadOnly;
 
     /*
      * Kerberos5p Read and write access. To be use with swagger version 2020-05-01 or later
      */
-    @JsonProperty(value = "kerberos5pReadWrite")
     private Boolean kerberos5PReadWrite;
 
     /*
      * Allows CIFS protocol
      */
-    @JsonProperty(value = "cifs")
     private Boolean cifs;
 
     /*
      * Allows NFSv3 protocol. Enable only for NFSv3 type volumes
      */
-    @JsonProperty(value = "nfsv3")
     private Boolean nfsv3;
 
     /*
      * Allows NFSv4.1 protocol. Enable only for NFSv4.1 type volumes
      */
-    @JsonProperty(value = "nfsv41")
     private Boolean nfsv41;
 
     /*
      * Client ingress specification as comma separated string with IPv4 CIDRs, IPv4 host addresses and host names
      */
-    @JsonProperty(value = "allowedClients")
     private String allowedClients;
 
     /*
      * Has root access to volume
      */
-    @JsonProperty(value = "hasRootAccess")
     private Boolean hasRootAccess;
 
     /*
      * This parameter specifies who is authorized to change the ownership of a file. restricted - Only root user can
      * change the ownership of the file. unrestricted - Non-root users can change ownership of files that they own.
      */
-    @JsonProperty(value = "chownMode")
     private ChownMode chownMode;
 
     /**
+     * Creates an instance of ExportPolicyRule class.
+     */
+    public ExportPolicyRule() {
+    }
+
+    /**
      * Get the ruleIndex property: Order index.
-     *
+     * 
      * @return the ruleIndex value.
      */
     public Integer ruleIndex() {
@@ -112,7 +109,7 @@ public final class ExportPolicyRule {
 
     /**
      * Set the ruleIndex property: Order index.
-     *
+     * 
      * @param ruleIndex the ruleIndex value to set.
      * @return the ExportPolicyRule object itself.
      */
@@ -123,7 +120,7 @@ public final class ExportPolicyRule {
 
     /**
      * Get the unixReadOnly property: Read only access.
-     *
+     * 
      * @return the unixReadOnly value.
      */
     public Boolean unixReadOnly() {
@@ -132,7 +129,7 @@ public final class ExportPolicyRule {
 
     /**
      * Set the unixReadOnly property: Read only access.
-     *
+     * 
      * @param unixReadOnly the unixReadOnly value to set.
      * @return the ExportPolicyRule object itself.
      */
@@ -143,7 +140,7 @@ public final class ExportPolicyRule {
 
     /**
      * Get the unixReadWrite property: Read and write access.
-     *
+     * 
      * @return the unixReadWrite value.
      */
     public Boolean unixReadWrite() {
@@ -152,7 +149,7 @@ public final class ExportPolicyRule {
 
     /**
      * Set the unixReadWrite property: Read and write access.
-     *
+     * 
      * @param unixReadWrite the unixReadWrite value to set.
      * @return the ExportPolicyRule object itself.
      */
@@ -164,7 +161,7 @@ public final class ExportPolicyRule {
     /**
      * Get the kerberos5ReadOnly property: Kerberos5 Read only access. To be use with swagger version 2020-05-01 or
      * later.
-     *
+     * 
      * @return the kerberos5ReadOnly value.
      */
     public Boolean kerberos5ReadOnly() {
@@ -174,7 +171,7 @@ public final class ExportPolicyRule {
     /**
      * Set the kerberos5ReadOnly property: Kerberos5 Read only access. To be use with swagger version 2020-05-01 or
      * later.
-     *
+     * 
      * @param kerberos5ReadOnly the kerberos5ReadOnly value to set.
      * @return the ExportPolicyRule object itself.
      */
@@ -186,7 +183,7 @@ public final class ExportPolicyRule {
     /**
      * Get the kerberos5ReadWrite property: Kerberos5 Read and write access. To be use with swagger version 2020-05-01
      * or later.
-     *
+     * 
      * @return the kerberos5ReadWrite value.
      */
     public Boolean kerberos5ReadWrite() {
@@ -196,7 +193,7 @@ public final class ExportPolicyRule {
     /**
      * Set the kerberos5ReadWrite property: Kerberos5 Read and write access. To be use with swagger version 2020-05-01
      * or later.
-     *
+     * 
      * @param kerberos5ReadWrite the kerberos5ReadWrite value to set.
      * @return the ExportPolicyRule object itself.
      */
@@ -208,7 +205,7 @@ public final class ExportPolicyRule {
     /**
      * Get the kerberos5IReadOnly property: Kerberos5i Read only access. To be use with swagger version 2020-05-01 or
      * later.
-     *
+     * 
      * @return the kerberos5IReadOnly value.
      */
     public Boolean kerberos5IReadOnly() {
@@ -218,7 +215,7 @@ public final class ExportPolicyRule {
     /**
      * Set the kerberos5IReadOnly property: Kerberos5i Read only access. To be use with swagger version 2020-05-01 or
      * later.
-     *
+     * 
      * @param kerberos5IReadOnly the kerberos5IReadOnly value to set.
      * @return the ExportPolicyRule object itself.
      */
@@ -230,7 +227,7 @@ public final class ExportPolicyRule {
     /**
      * Get the kerberos5IReadWrite property: Kerberos5i Read and write access. To be use with swagger version 2020-05-01
      * or later.
-     *
+     * 
      * @return the kerberos5IReadWrite value.
      */
     public Boolean kerberos5IReadWrite() {
@@ -240,7 +237,7 @@ public final class ExportPolicyRule {
     /**
      * Set the kerberos5IReadWrite property: Kerberos5i Read and write access. To be use with swagger version 2020-05-01
      * or later.
-     *
+     * 
      * @param kerberos5IReadWrite the kerberos5IReadWrite value to set.
      * @return the ExportPolicyRule object itself.
      */
@@ -252,7 +249,7 @@ public final class ExportPolicyRule {
     /**
      * Get the kerberos5PReadOnly property: Kerberos5p Read only access. To be use with swagger version 2020-05-01 or
      * later.
-     *
+     * 
      * @return the kerberos5PReadOnly value.
      */
     public Boolean kerberos5PReadOnly() {
@@ -262,7 +259,7 @@ public final class ExportPolicyRule {
     /**
      * Set the kerberos5PReadOnly property: Kerberos5p Read only access. To be use with swagger version 2020-05-01 or
      * later.
-     *
+     * 
      * @param kerberos5PReadOnly the kerberos5PReadOnly value to set.
      * @return the ExportPolicyRule object itself.
      */
@@ -274,7 +271,7 @@ public final class ExportPolicyRule {
     /**
      * Get the kerberos5PReadWrite property: Kerberos5p Read and write access. To be use with swagger version 2020-05-01
      * or later.
-     *
+     * 
      * @return the kerberos5PReadWrite value.
      */
     public Boolean kerberos5PReadWrite() {
@@ -284,7 +281,7 @@ public final class ExportPolicyRule {
     /**
      * Set the kerberos5PReadWrite property: Kerberos5p Read and write access. To be use with swagger version 2020-05-01
      * or later.
-     *
+     * 
      * @param kerberos5PReadWrite the kerberos5PReadWrite value to set.
      * @return the ExportPolicyRule object itself.
      */
@@ -295,7 +292,7 @@ public final class ExportPolicyRule {
 
     /**
      * Get the cifs property: Allows CIFS protocol.
-     *
+     * 
      * @return the cifs value.
      */
     public Boolean cifs() {
@@ -304,7 +301,7 @@ public final class ExportPolicyRule {
 
     /**
      * Set the cifs property: Allows CIFS protocol.
-     *
+     * 
      * @param cifs the cifs value to set.
      * @return the ExportPolicyRule object itself.
      */
@@ -315,7 +312,7 @@ public final class ExportPolicyRule {
 
     /**
      * Get the nfsv3 property: Allows NFSv3 protocol. Enable only for NFSv3 type volumes.
-     *
+     * 
      * @return the nfsv3 value.
      */
     public Boolean nfsv3() {
@@ -324,7 +321,7 @@ public final class ExportPolicyRule {
 
     /**
      * Set the nfsv3 property: Allows NFSv3 protocol. Enable only for NFSv3 type volumes.
-     *
+     * 
      * @param nfsv3 the nfsv3 value to set.
      * @return the ExportPolicyRule object itself.
      */
@@ -335,7 +332,7 @@ public final class ExportPolicyRule {
 
     /**
      * Get the nfsv41 property: Allows NFSv4.1 protocol. Enable only for NFSv4.1 type volumes.
-     *
+     * 
      * @return the nfsv41 value.
      */
     public Boolean nfsv41() {
@@ -344,7 +341,7 @@ public final class ExportPolicyRule {
 
     /**
      * Set the nfsv41 property: Allows NFSv4.1 protocol. Enable only for NFSv4.1 type volumes.
-     *
+     * 
      * @param nfsv41 the nfsv41 value to set.
      * @return the ExportPolicyRule object itself.
      */
@@ -356,7 +353,7 @@ public final class ExportPolicyRule {
     /**
      * Get the allowedClients property: Client ingress specification as comma separated string with IPv4 CIDRs, IPv4
      * host addresses and host names.
-     *
+     * 
      * @return the allowedClients value.
      */
     public String allowedClients() {
@@ -366,7 +363,7 @@ public final class ExportPolicyRule {
     /**
      * Set the allowedClients property: Client ingress specification as comma separated string with IPv4 CIDRs, IPv4
      * host addresses and host names.
-     *
+     * 
      * @param allowedClients the allowedClients value to set.
      * @return the ExportPolicyRule object itself.
      */
@@ -377,7 +374,7 @@ public final class ExportPolicyRule {
 
     /**
      * Get the hasRootAccess property: Has root access to volume.
-     *
+     * 
      * @return the hasRootAccess value.
      */
     public Boolean hasRootAccess() {
@@ -386,7 +383,7 @@ public final class ExportPolicyRule {
 
     /**
      * Set the hasRootAccess property: Has root access to volume.
-     *
+     * 
      * @param hasRootAccess the hasRootAccess value to set.
      * @return the ExportPolicyRule object itself.
      */
@@ -399,7 +396,7 @@ public final class ExportPolicyRule {
      * Get the chownMode property: This parameter specifies who is authorized to change the ownership of a file.
      * restricted - Only root user can change the ownership of the file. unrestricted - Non-root users can change
      * ownership of files that they own.
-     *
+     * 
      * @return the chownMode value.
      */
     public ChownMode chownMode() {
@@ -410,7 +407,7 @@ public final class ExportPolicyRule {
      * Set the chownMode property: This parameter specifies who is authorized to change the ownership of a file.
      * restricted - Only root user can change the ownership of the file. unrestricted - Non-root users can change
      * ownership of files that they own.
-     *
+     * 
      * @param chownMode the chownMode value to set.
      * @return the ExportPolicyRule object itself.
      */
@@ -421,9 +418,87 @@ public final class ExportPolicyRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("ruleIndex", this.ruleIndex);
+        jsonWriter.writeBooleanField("unixReadOnly", this.unixReadOnly);
+        jsonWriter.writeBooleanField("unixReadWrite", this.unixReadWrite);
+        jsonWriter.writeBooleanField("kerberos5ReadOnly", this.kerberos5ReadOnly);
+        jsonWriter.writeBooleanField("kerberos5ReadWrite", this.kerberos5ReadWrite);
+        jsonWriter.writeBooleanField("kerberos5iReadOnly", this.kerberos5IReadOnly);
+        jsonWriter.writeBooleanField("kerberos5iReadWrite", this.kerberos5IReadWrite);
+        jsonWriter.writeBooleanField("kerberos5pReadOnly", this.kerberos5PReadOnly);
+        jsonWriter.writeBooleanField("kerberos5pReadWrite", this.kerberos5PReadWrite);
+        jsonWriter.writeBooleanField("cifs", this.cifs);
+        jsonWriter.writeBooleanField("nfsv3", this.nfsv3);
+        jsonWriter.writeBooleanField("nfsv41", this.nfsv41);
+        jsonWriter.writeStringField("allowedClients", this.allowedClients);
+        jsonWriter.writeBooleanField("hasRootAccess", this.hasRootAccess);
+        jsonWriter.writeStringField("chownMode", this.chownMode == null ? null : this.chownMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportPolicyRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportPolicyRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExportPolicyRule.
+     */
+    public static ExportPolicyRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportPolicyRule deserializedExportPolicyRule = new ExportPolicyRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ruleIndex".equals(fieldName)) {
+                    deserializedExportPolicyRule.ruleIndex = reader.getNullable(JsonReader::getInt);
+                } else if ("unixReadOnly".equals(fieldName)) {
+                    deserializedExportPolicyRule.unixReadOnly = reader.getNullable(JsonReader::getBoolean);
+                } else if ("unixReadWrite".equals(fieldName)) {
+                    deserializedExportPolicyRule.unixReadWrite = reader.getNullable(JsonReader::getBoolean);
+                } else if ("kerberos5ReadOnly".equals(fieldName)) {
+                    deserializedExportPolicyRule.kerberos5ReadOnly = reader.getNullable(JsonReader::getBoolean);
+                } else if ("kerberos5ReadWrite".equals(fieldName)) {
+                    deserializedExportPolicyRule.kerberos5ReadWrite = reader.getNullable(JsonReader::getBoolean);
+                } else if ("kerberos5iReadOnly".equals(fieldName)) {
+                    deserializedExportPolicyRule.kerberos5IReadOnly = reader.getNullable(JsonReader::getBoolean);
+                } else if ("kerberos5iReadWrite".equals(fieldName)) {
+                    deserializedExportPolicyRule.kerberos5IReadWrite = reader.getNullable(JsonReader::getBoolean);
+                } else if ("kerberos5pReadOnly".equals(fieldName)) {
+                    deserializedExportPolicyRule.kerberos5PReadOnly = reader.getNullable(JsonReader::getBoolean);
+                } else if ("kerberos5pReadWrite".equals(fieldName)) {
+                    deserializedExportPolicyRule.kerberos5PReadWrite = reader.getNullable(JsonReader::getBoolean);
+                } else if ("cifs".equals(fieldName)) {
+                    deserializedExportPolicyRule.cifs = reader.getNullable(JsonReader::getBoolean);
+                } else if ("nfsv3".equals(fieldName)) {
+                    deserializedExportPolicyRule.nfsv3 = reader.getNullable(JsonReader::getBoolean);
+                } else if ("nfsv41".equals(fieldName)) {
+                    deserializedExportPolicyRule.nfsv41 = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowedClients".equals(fieldName)) {
+                    deserializedExportPolicyRule.allowedClients = reader.getString();
+                } else if ("hasRootAccess".equals(fieldName)) {
+                    deserializedExportPolicyRule.hasRootAccess = reader.getNullable(JsonReader::getBoolean);
+                } else if ("chownMode".equals(fieldName)) {
+                    deserializedExportPolicyRule.chownMode = ChownMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExportPolicyRule;
+        });
     }
 }

@@ -21,7 +21,7 @@ This document describes how to use samples and what is done in each sample.
 ## Getting started
 Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
-For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://search.maven.org/artifact/com.azure/azure-core).
+For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://central.sonatype.com/artifact/com.azure/azure-core).
 
 ## Examples
    Following section document various examples.
@@ -58,7 +58,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [samples_list_containers]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob/ListContainersExample.java
 [samples_metadata]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob/SetMetadataAndHTTPHeadersExample.java
 [samples_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob/AzureIdentityExample.java
-[storageblob_rest]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
-[error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
+[storageblob_rest]: https://learn.microsoft.com/rest/api/storageservices/blob-service-rest-api
+[error_codes]: https://learn.microsoft.com/rest/api/storageservices/blob-service-error-codes
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fsrc%2Fsamples%2FREADME.png)

@@ -5,22 +5,33 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiContractUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** API update contract details. */
+/**
+ * API update contract details.
+ */
 @Fluent
-public final class ApiUpdateContract {
+public final class ApiUpdateContract implements JsonSerializable<ApiUpdateContract> {
     /*
      * Properties of the API entity that can be updated.
      */
-    @JsonProperty(value = "properties")
     private ApiContractUpdateProperties innerProperties;
 
     /**
+     * Creates an instance of ApiUpdateContract class.
+     */
+    public ApiUpdateContract() {
+    }
+
+    /**
      * Get the innerProperties property: Properties of the API entity that can be updated.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApiContractUpdateProperties innerProperties() {
@@ -29,7 +40,7 @@ public final class ApiUpdateContract {
 
     /**
      * Get the displayName property: API name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -38,7 +49,7 @@ public final class ApiUpdateContract {
 
     /**
      * Set the displayName property: API name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ApiUpdateContract object itself.
      */
@@ -52,7 +63,7 @@ public final class ApiUpdateContract {
 
     /**
      * Get the serviceUrl property: Absolute URL of the backend service implementing this API.
-     *
+     * 
      * @return the serviceUrl value.
      */
     public String serviceUrl() {
@@ -61,7 +72,7 @@ public final class ApiUpdateContract {
 
     /**
      * Set the serviceUrl property: Absolute URL of the backend service implementing this API.
-     *
+     * 
      * @param serviceUrl the serviceUrl value to set.
      * @return the ApiUpdateContract object itself.
      */
@@ -77,7 +88,7 @@ public final class ApiUpdateContract {
      * Get the path property: Relative URL uniquely identifying this API and all of its resource paths within the API
      * Management service instance. It is appended to the API endpoint base URL specified during the service instance
      * creation to form a public URL for this API.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -88,7 +99,7 @@ public final class ApiUpdateContract {
      * Set the path property: Relative URL uniquely identifying this API and all of its resource paths within the API
      * Management service instance. It is appended to the API endpoint base URL specified during the service instance
      * creation to form a public URL for this API.
-     *
+     * 
      * @param path the path value to set.
      * @return the ApiUpdateContract object itself.
      */
@@ -102,7 +113,7 @@ public final class ApiUpdateContract {
 
     /**
      * Get the protocols property: Describes on which protocols the operations in this API can be invoked.
-     *
+     * 
      * @return the protocols value.
      */
     public List<Protocol> protocols() {
@@ -111,7 +122,7 @@ public final class ApiUpdateContract {
 
     /**
      * Set the protocols property: Describes on which protocols the operations in this API can be invoked.
-     *
+     * 
      * @param protocols the protocols value to set.
      * @return the ApiUpdateContract object itself.
      */
@@ -125,7 +136,7 @@ public final class ApiUpdateContract {
 
     /**
      * Get the description property: Description of the API. May include HTML formatting tags.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -134,7 +145,7 @@ public final class ApiUpdateContract {
 
     /**
      * Set the description property: Description of the API. May include HTML formatting tags.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApiUpdateContract object itself.
      */
@@ -148,7 +159,7 @@ public final class ApiUpdateContract {
 
     /**
      * Get the authenticationSettings property: Collection of authentication settings included into this API.
-     *
+     * 
      * @return the authenticationSettings value.
      */
     public AuthenticationSettingsContract authenticationSettings() {
@@ -157,7 +168,7 @@ public final class ApiUpdateContract {
 
     /**
      * Set the authenticationSettings property: Collection of authentication settings included into this API.
-     *
+     * 
      * @param authenticationSettings the authenticationSettings value to set.
      * @return the ApiUpdateContract object itself.
      */
@@ -171,7 +182,7 @@ public final class ApiUpdateContract {
 
     /**
      * Get the subscriptionKeyParameterNames property: Protocols over which API is made available.
-     *
+     * 
      * @return the subscriptionKeyParameterNames value.
      */
     public SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames() {
@@ -180,12 +191,12 @@ public final class ApiUpdateContract {
 
     /**
      * Set the subscriptionKeyParameterNames property: Protocols over which API is made available.
-     *
+     * 
      * @param subscriptionKeyParameterNames the subscriptionKeyParameterNames value to set.
      * @return the ApiUpdateContract object itself.
      */
-    public ApiUpdateContract withSubscriptionKeyParameterNames(
-        SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
+    public ApiUpdateContract
+        withSubscriptionKeyParameterNames(SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApiContractUpdateProperties();
         }
@@ -195,7 +206,7 @@ public final class ApiUpdateContract {
 
     /**
      * Get the apiType property: Type of API.
-     *
+     * 
      * @return the apiType value.
      */
     public ApiType apiType() {
@@ -204,7 +215,7 @@ public final class ApiUpdateContract {
 
     /**
      * Set the apiType property: Type of API.
-     *
+     * 
      * @param apiType the apiType value to set.
      * @return the ApiUpdateContract object itself.
      */
@@ -219,7 +230,7 @@ public final class ApiUpdateContract {
     /**
      * Get the apiRevision property: Describes the revision of the API. If no value is provided, default revision 1 is
      * created.
-     *
+     * 
      * @return the apiRevision value.
      */
     public String apiRevision() {
@@ -229,7 +240,7 @@ public final class ApiUpdateContract {
     /**
      * Set the apiRevision property: Describes the revision of the API. If no value is provided, default revision 1 is
      * created.
-     *
+     * 
      * @param apiRevision the apiRevision value to set.
      * @return the ApiUpdateContract object itself.
      */
@@ -243,7 +254,7 @@ public final class ApiUpdateContract {
 
     /**
      * Get the apiVersion property: Indicates the version identifier of the API if the API is versioned.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String apiVersion() {
@@ -252,7 +263,7 @@ public final class ApiUpdateContract {
 
     /**
      * Set the apiVersion property: Indicates the version identifier of the API if the API is versioned.
-     *
+     * 
      * @param apiVersion the apiVersion value to set.
      * @return the ApiUpdateContract object itself.
      */
@@ -266,7 +277,7 @@ public final class ApiUpdateContract {
 
     /**
      * Get the isCurrent property: Indicates if API revision is current api revision.
-     *
+     * 
      * @return the isCurrent value.
      */
     public Boolean isCurrent() {
@@ -275,7 +286,7 @@ public final class ApiUpdateContract {
 
     /**
      * Set the isCurrent property: Indicates if API revision is current api revision.
-     *
+     * 
      * @param isCurrent the isCurrent value to set.
      * @return the ApiUpdateContract object itself.
      */
@@ -289,7 +300,7 @@ public final class ApiUpdateContract {
 
     /**
      * Get the isOnline property: Indicates if API revision is accessible via the gateway.
-     *
+     * 
      * @return the isOnline value.
      */
     public Boolean isOnline() {
@@ -298,7 +309,7 @@ public final class ApiUpdateContract {
 
     /**
      * Get the apiRevisionDescription property: Description of the API Revision.
-     *
+     * 
      * @return the apiRevisionDescription value.
      */
     public String apiRevisionDescription() {
@@ -307,7 +318,7 @@ public final class ApiUpdateContract {
 
     /**
      * Set the apiRevisionDescription property: Description of the API Revision.
-     *
+     * 
      * @param apiRevisionDescription the apiRevisionDescription value to set.
      * @return the ApiUpdateContract object itself.
      */
@@ -321,7 +332,7 @@ public final class ApiUpdateContract {
 
     /**
      * Get the apiVersionDescription property: Description of the API Version.
-     *
+     * 
      * @return the apiVersionDescription value.
      */
     public String apiVersionDescription() {
@@ -330,7 +341,7 @@ public final class ApiUpdateContract {
 
     /**
      * Set the apiVersionDescription property: Description of the API Version.
-     *
+     * 
      * @param apiVersionDescription the apiVersionDescription value to set.
      * @return the ApiUpdateContract object itself.
      */
@@ -344,7 +355,7 @@ public final class ApiUpdateContract {
 
     /**
      * Get the apiVersionSetId property: A resource identifier for the related ApiVersionSet.
-     *
+     * 
      * @return the apiVersionSetId value.
      */
     public String apiVersionSetId() {
@@ -353,7 +364,7 @@ public final class ApiUpdateContract {
 
     /**
      * Set the apiVersionSetId property: A resource identifier for the related ApiVersionSet.
-     *
+     * 
      * @param apiVersionSetId the apiVersionSetId value to set.
      * @return the ApiUpdateContract object itself.
      */
@@ -368,7 +379,7 @@ public final class ApiUpdateContract {
     /**
      * Get the subscriptionRequired property: Specifies whether an API or Product subscription is required for accessing
      * the API.
-     *
+     * 
      * @return the subscriptionRequired value.
      */
     public Boolean subscriptionRequired() {
@@ -378,7 +389,7 @@ public final class ApiUpdateContract {
     /**
      * Set the subscriptionRequired property: Specifies whether an API or Product subscription is required for accessing
      * the API.
-     *
+     * 
      * @param subscriptionRequired the subscriptionRequired value to set.
      * @return the ApiUpdateContract object itself.
      */
@@ -392,7 +403,7 @@ public final class ApiUpdateContract {
 
     /**
      * Get the termsOfServiceUrl property: A URL to the Terms of Service for the API. MUST be in the format of a URL.
-     *
+     * 
      * @return the termsOfServiceUrl value.
      */
     public String termsOfServiceUrl() {
@@ -401,7 +412,7 @@ public final class ApiUpdateContract {
 
     /**
      * Set the termsOfServiceUrl property: A URL to the Terms of Service for the API. MUST be in the format of a URL.
-     *
+     * 
      * @param termsOfServiceUrl the termsOfServiceUrl value to set.
      * @return the ApiUpdateContract object itself.
      */
@@ -415,7 +426,7 @@ public final class ApiUpdateContract {
 
     /**
      * Get the contact property: Contact information for the API.
-     *
+     * 
      * @return the contact value.
      */
     public ApiContactInformation contact() {
@@ -424,7 +435,7 @@ public final class ApiUpdateContract {
 
     /**
      * Set the contact property: Contact information for the API.
-     *
+     * 
      * @param contact the contact value to set.
      * @return the ApiUpdateContract object itself.
      */
@@ -438,7 +449,7 @@ public final class ApiUpdateContract {
 
     /**
      * Get the license property: License information for the API.
-     *
+     * 
      * @return the license value.
      */
     public ApiLicenseInformation license() {
@@ -447,7 +458,7 @@ public final class ApiUpdateContract {
 
     /**
      * Set the license property: License information for the API.
-     *
+     * 
      * @param license the license value to set.
      * @return the ApiUpdateContract object itself.
      */
@@ -461,12 +472,48 @@ public final class ApiUpdateContract {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiUpdateContract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiUpdateContract if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiUpdateContract.
+     */
+    public static ApiUpdateContract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiUpdateContract deserializedApiUpdateContract = new ApiUpdateContract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedApiUpdateContract.innerProperties = ApiContractUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiUpdateContract;
+        });
     }
 }

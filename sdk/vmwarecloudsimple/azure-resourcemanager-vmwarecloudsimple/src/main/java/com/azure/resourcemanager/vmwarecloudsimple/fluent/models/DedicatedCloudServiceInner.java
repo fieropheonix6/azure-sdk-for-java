@@ -5,102 +5,96 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.vmwarecloudsimple.models.OnboardingStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Dedicated cloud service model. */
-@JsonFlatten
+/**
+ * Dedicated cloud service model.
+ */
 @Fluent
-public class DedicatedCloudServiceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedCloudServiceInner.class);
+public final class DedicatedCloudServiceInner extends Resource {
+    /*
+     * The properties of Dedicated Node Service
+     */
+    private DedicatedCloudServiceProperties innerProperties;
 
     /*
-     * gateway Subnet for the account. It will collect the subnet address and
-     * always treat it as /28
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.gatewaySubnet")
-    private String gatewaySubnet;
+    private String type;
 
     /*
-     * indicates whether account onboarded or not in a given region
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.isAccountOnboarded", access = JsonProperty.Access.WRITE_ONLY)
-    private OnboardingStatus isAccountOnboarded;
+    private String name;
 
     /*
-     * total nodes purchased
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.nodes", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer nodes;
-
-    /*
-     * link to a service management web portal
-     */
-    @JsonProperty(value = "properties.serviceURL", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceUrl;
+    private String id;
 
     /**
-     * Get the gatewaySubnet property: gateway Subnet for the account. It will collect the subnet address and always
-     * treat it as /28.
-     *
-     * @return the gatewaySubnet value.
+     * Creates an instance of DedicatedCloudServiceInner class.
      */
-    public String gatewaySubnet() {
-        return this.gatewaySubnet;
+    public DedicatedCloudServiceInner() {
     }
 
     /**
-     * Set the gatewaySubnet property: gateway Subnet for the account. It will collect the subnet address and always
-     * treat it as /28.
-     *
-     * @param gatewaySubnet the gatewaySubnet value to set.
-     * @return the DedicatedCloudServiceInner object itself.
+     * Get the innerProperties property: The properties of Dedicated Node Service.
+     * 
+     * @return the innerProperties value.
      */
-    public DedicatedCloudServiceInner withGatewaySubnet(String gatewaySubnet) {
-        this.gatewaySubnet = gatewaySubnet;
-        return this;
+    private DedicatedCloudServiceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the isAccountOnboarded property: indicates whether account onboarded or not in a given region.
-     *
-     * @return the isAccountOnboarded value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public OnboardingStatus isAccountOnboarded() {
-        return this.isAccountOnboarded;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the nodes property: total nodes purchased.
-     *
-     * @return the nodes value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public Integer nodes() {
-        return this.nodes;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the serviceUrl property: link to a service management web portal.
-     *
-     * @return the serviceUrl value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public String serviceUrl() {
-        return this.serviceUrl;
+    @Override
+    public String id() {
+        return this.id;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DedicatedCloudServiceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DedicatedCloudServiceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -108,10 +102,116 @@ public class DedicatedCloudServiceInner extends Resource {
     }
 
     /**
+     * Get the gatewaySubnet property: gateway Subnet for the account. It will collect the subnet address and always
+     * treat it as /28.
+     * 
+     * @return the gatewaySubnet value.
+     */
+    public String gatewaySubnet() {
+        return this.innerProperties() == null ? null : this.innerProperties().gatewaySubnet();
+    }
+
+    /**
+     * Set the gatewaySubnet property: gateway Subnet for the account. It will collect the subnet address and always
+     * treat it as /28.
+     * 
+     * @param gatewaySubnet the gatewaySubnet value to set.
+     * @return the DedicatedCloudServiceInner object itself.
+     */
+    public DedicatedCloudServiceInner withGatewaySubnet(String gatewaySubnet) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedCloudServiceProperties();
+        }
+        this.innerProperties().withGatewaySubnet(gatewaySubnet);
+        return this;
+    }
+
+    /**
+     * Get the isAccountOnboarded property: indicates whether account onboarded or not in a given region.
+     * 
+     * @return the isAccountOnboarded value.
+     */
+    public OnboardingStatus isAccountOnboarded() {
+        return this.innerProperties() == null ? null : this.innerProperties().isAccountOnboarded();
+    }
+
+    /**
+     * Get the nodes property: total nodes purchased.
+     * 
+     * @return the nodes value.
+     */
+    public Integer nodes() {
+        return this.innerProperties() == null ? null : this.innerProperties().nodes();
+    }
+
+    /**
+     * Get the serviceUrl property: link to a service management web portal.
+     * 
+     * @return the serviceUrl value.
+     */
+    public String serviceUrl() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceUrl();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedCloudServiceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedCloudServiceInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DedicatedCloudServiceInner.
+     */
+    public static DedicatedCloudServiceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedCloudServiceInner deserializedDedicatedCloudServiceInner = new DedicatedCloudServiceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDedicatedCloudServiceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDedicatedCloudServiceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDedicatedCloudServiceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDedicatedCloudServiceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDedicatedCloudServiceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDedicatedCloudServiceInner.innerProperties
+                        = DedicatedCloudServiceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedCloudServiceInner;
+        });
     }
 }

@@ -7,24 +7,23 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TargetAfsRestoreInfo;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TargetAfsRestoreInfoTests {
-    @Test
-    public void testDeserialize() {
-        TargetAfsRestoreInfo model =
-            BinaryData
-                .fromString("{\"name\":\"kwcf\",\"targetResourceId\":\"ljyxgtczhe\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        TargetAfsRestoreInfo model
+            = BinaryData.fromString("{\"name\":\"bibgjmfxumv\",\"targetResourceId\":\"luyovwxnbkfezzx\"}")
                 .toObject(TargetAfsRestoreInfo.class);
-        Assertions.assertEquals("kwcf", model.name());
-        Assertions.assertEquals("ljyxgtczhe", model.targetResourceId());
+        Assertions.assertEquals("bibgjmfxumv", model.name());
+        Assertions.assertEquals("luyovwxnbkfezzx", model.targetResourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        TargetAfsRestoreInfo model = new TargetAfsRestoreInfo().withName("kwcf").withTargetResourceId("ljyxgtczhe");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        TargetAfsRestoreInfo model
+            = new TargetAfsRestoreInfo().withName("bibgjmfxumv").withTargetResourceId("luyovwxnbkfezzx");
         model = BinaryData.fromObject(model).toObject(TargetAfsRestoreInfo.class);
-        Assertions.assertEquals("kwcf", model.name());
-        Assertions.assertEquals("ljyxgtczhe", model.targetResourceId());
+        Assertions.assertEquals("bibgjmfxumv", model.name());
+        Assertions.assertEquals("luyovwxnbkfezzx", model.targetResourceId());
     }
 }

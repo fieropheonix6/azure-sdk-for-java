@@ -8,35 +8,58 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.VolumeBackups;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Backup policy information. */
+/**
+ * Backup policy information.
+ */
 @Fluent
 public final class BackupPolicyInner extends Resource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Backup policy Properties
      */
-    @JsonProperty(value = "properties", required = true)
     private BackupPolicyProperties innerProperties = new BackupPolicyProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of BackupPolicyInner class.
+     */
+    public BackupPolicyInner() {
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -45,7 +68,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the innerProperties property: Backup policy Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BackupPolicyProperties innerProperties() {
@@ -54,21 +77,55 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupPolicyInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupPolicyInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -77,7 +134,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the backupPolicyId property: Backup Policy Resource ID.
-     *
+     * 
      * @return the backupPolicyId value.
      */
     public String backupPolicyId() {
@@ -86,7 +143,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -95,7 +152,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the dailyBackupsToKeep property: Daily backups count to keep.
-     *
+     * 
      * @return the dailyBackupsToKeep value.
      */
     public Integer dailyBackupsToKeep() {
@@ -104,7 +161,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Set the dailyBackupsToKeep property: Daily backups count to keep.
-     *
+     * 
      * @param dailyBackupsToKeep the dailyBackupsToKeep value to set.
      * @return the BackupPolicyInner object itself.
      */
@@ -118,7 +175,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the weeklyBackupsToKeep property: Weekly backups count to keep.
-     *
+     * 
      * @return the weeklyBackupsToKeep value.
      */
     public Integer weeklyBackupsToKeep() {
@@ -127,7 +184,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Set the weeklyBackupsToKeep property: Weekly backups count to keep.
-     *
+     * 
      * @param weeklyBackupsToKeep the weeklyBackupsToKeep value to set.
      * @return the BackupPolicyInner object itself.
      */
@@ -141,7 +198,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the monthlyBackupsToKeep property: Monthly backups count to keep.
-     *
+     * 
      * @return the monthlyBackupsToKeep value.
      */
     public Integer monthlyBackupsToKeep() {
@@ -150,7 +207,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Set the monthlyBackupsToKeep property: Monthly backups count to keep.
-     *
+     * 
      * @param monthlyBackupsToKeep the monthlyBackupsToKeep value to set.
      * @return the BackupPolicyInner object itself.
      */
@@ -164,7 +221,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the volumesAssigned property: Volumes using current backup policy.
-     *
+     * 
      * @return the volumesAssigned value.
      */
     public Integer volumesAssigned() {
@@ -173,7 +230,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the enabled property: The property to decide policy is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -182,7 +239,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Set the enabled property: The property to decide policy is enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the BackupPolicyInner object itself.
      */
@@ -196,7 +253,7 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Get the volumeBackups property: A list of volumes assigned to this policy.
-     *
+     * 
      * @return the volumeBackups value.
      */
     public List<VolumeBackups> volumeBackups() {
@@ -205,19 +262,72 @@ public final class BackupPolicyInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model BackupPolicyInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model BackupPolicyInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BackupPolicyInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupPolicyInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BackupPolicyInner.
+     */
+    public static BackupPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupPolicyInner deserializedBackupPolicyInner = new BackupPolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBackupPolicyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBackupPolicyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBackupPolicyInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedBackupPolicyInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBackupPolicyInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBackupPolicyInner.innerProperties = BackupPolicyProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedBackupPolicyInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedBackupPolicyInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupPolicyInner;
+        });
+    }
 }

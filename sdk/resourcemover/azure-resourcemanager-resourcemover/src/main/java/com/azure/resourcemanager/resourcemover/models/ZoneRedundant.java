@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ZoneRedundant. */
+/**
+ * Defines the zone redundant resource setting.
+ */
 public final class ZoneRedundant extends ExpandableStringEnum<ZoneRedundant> {
-    /** Static value Enable for ZoneRedundant. */
+    /**
+     * Static value Enable for ZoneRedundant.
+     */
     public static final ZoneRedundant ENABLE = fromString("Enable");
 
-    /** Static value Disable for ZoneRedundant. */
+    /**
+     * Static value Disable for ZoneRedundant.
+     */
     public static final ZoneRedundant DISABLE = fromString("Disable");
 
     /**
+     * Creates a new instance of ZoneRedundant value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ZoneRedundant() {
+    }
+
+    /**
      * Creates or finds a ZoneRedundant from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ZoneRedundant.
      */
-    @JsonCreator
     public static ZoneRedundant fromString(String name) {
         return fromString(name, ZoneRedundant.class);
     }
 
-    /** @return known ZoneRedundant values. */
+    /**
+     * Gets known ZoneRedundant values.
+     * 
+     * @return known ZoneRedundant values.
+     */
     public static Collection<ZoneRedundant> values() {
         return values(ZoneRedundant.class);
     }

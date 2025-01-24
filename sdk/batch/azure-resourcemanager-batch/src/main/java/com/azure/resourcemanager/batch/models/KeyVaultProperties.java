@@ -5,35 +5,43 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** KeyVault configuration when using an encryption KeySource of Microsoft.KeyVault. */
+/**
+ * KeyVault configuration when using an encryption KeySource of Microsoft.KeyVault.
+ */
 @Fluent
-public final class KeyVaultProperties {
+public final class KeyVaultProperties implements JsonSerializable<KeyVaultProperties> {
     /*
-     * Full path to the versioned secret. Example
-     * https://mykeyvault.vault.azure.net/keys/testkey/6e34a81fef704045975661e297a4c053. To be usable the following
-     * prerequisites must be met:
-     *
+     * Full path to the secret with or without version. Example
+     * https://mykeyvault.vault.azure.net/keys/testkey/6e34a81fef704045975661e297a4c053. or
+     * https://mykeyvault.vault.azure.net/keys/testkey. To be usable the following prerequisites must be met:
+     * 
      * The Batch Account has a System Assigned identity
      * The account identity has been granted Key/Get, Key/Unwrap and Key/Wrap permissions
      * The KeyVault has soft-delete and purge protection enabled
      */
-    @JsonProperty(value = "keyIdentifier")
     private String keyIdentifier;
 
-    /** Creates an instance of KeyVaultProperties class. */
+    /**
+     * Creates an instance of KeyVaultProperties class.
+     */
     public KeyVaultProperties() {
     }
 
     /**
-     * Get the keyIdentifier property: Full path to the versioned secret. Example
-     * https://mykeyvault.vault.azure.net/keys/testkey/6e34a81fef704045975661e297a4c053. To be usable the following
-     * prerequisites must be met:
-     *
-     * <p>The Batch Account has a System Assigned identity The account identity has been granted Key/Get, Key/Unwrap and
-     * Key/Wrap permissions The KeyVault has soft-delete and purge protection enabled.
-     *
+     * Get the keyIdentifier property: Full path to the secret with or without version. Example
+     * https://mykeyvault.vault.azure.net/keys/testkey/6e34a81fef704045975661e297a4c053. or
+     * https://mykeyvault.vault.azure.net/keys/testkey. To be usable the following prerequisites must be met:
+     * 
+     * The Batch Account has a System Assigned identity
+     * The account identity has been granted Key/Get, Key/Unwrap and Key/Wrap permissions
+     * The KeyVault has soft-delete and purge protection enabled.
+     * 
      * @return the keyIdentifier value.
      */
     public String keyIdentifier() {
@@ -41,13 +49,14 @@ public final class KeyVaultProperties {
     }
 
     /**
-     * Set the keyIdentifier property: Full path to the versioned secret. Example
-     * https://mykeyvault.vault.azure.net/keys/testkey/6e34a81fef704045975661e297a4c053. To be usable the following
-     * prerequisites must be met:
-     *
-     * <p>The Batch Account has a System Assigned identity The account identity has been granted Key/Get, Key/Unwrap and
-     * Key/Wrap permissions The KeyVault has soft-delete and purge protection enabled.
-     *
+     * Set the keyIdentifier property: Full path to the secret with or without version. Example
+     * https://mykeyvault.vault.azure.net/keys/testkey/6e34a81fef704045975661e297a4c053. or
+     * https://mykeyvault.vault.azure.net/keys/testkey. To be usable the following prerequisites must be met:
+     * 
+     * The Batch Account has a System Assigned identity
+     * The account identity has been granted Key/Get, Key/Unwrap and Key/Wrap permissions
+     * The KeyVault has soft-delete and purge protection enabled.
+     * 
      * @param keyIdentifier the keyIdentifier value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -58,9 +67,45 @@ public final class KeyVaultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyIdentifier", this.keyIdentifier);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyVaultProperties.
+     */
+    public static KeyVaultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultProperties deserializedKeyVaultProperties = new KeyVaultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyIdentifier".equals(fieldName)) {
+                    deserializedKeyVaultProperties.keyIdentifier = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultProperties;
+        });
     }
 }

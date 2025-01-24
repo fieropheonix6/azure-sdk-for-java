@@ -4,27 +4,79 @@
 
 package com.azure.resourcemanager.resourceconnector.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Appliance SSHKey definition. */
-@Fluent
-public final class SshKey {
+/**
+ * Appliance SSHKey definition.
+ */
+@Immutable
+public final class SshKey implements JsonSerializable<SshKey> {
     /*
-     * User Private Key.
+     * Certificate associated with the public key if the key is signed.
      */
-    @JsonProperty(value = "privateKey")
+    private String certificate;
+
+    /*
+     * Certificate creation timestamp (Unix).
+     */
+    private Long creationTimestamp;
+
+    /*
+     * Certificate expiration timestamp (Unix).
+     */
+    private Long expirationTimestamp;
+
+    /*
+     * Private Key.
+     */
     private String privateKey;
 
     /*
-     * User Public Key.
+     * Public Key.
      */
-    @JsonProperty(value = "publicKey")
     private String publicKey;
 
     /**
-     * Get the privateKey property: User Private Key.
-     *
+     * Creates an instance of SshKey class.
+     */
+    public SshKey() {
+    }
+
+    /**
+     * Get the certificate property: Certificate associated with the public key if the key is signed.
+     * 
+     * @return the certificate value.
+     */
+    public String certificate() {
+        return this.certificate;
+    }
+
+    /**
+     * Get the creationTimestamp property: Certificate creation timestamp (Unix).
+     * 
+     * @return the creationTimestamp value.
+     */
+    public Long creationTimestamp() {
+        return this.creationTimestamp;
+    }
+
+    /**
+     * Get the expirationTimestamp property: Certificate expiration timestamp (Unix).
+     * 
+     * @return the expirationTimestamp value.
+     */
+    public Long expirationTimestamp() {
+        return this.expirationTimestamp;
+    }
+
+    /**
+     * Get the privateKey property: Private Key.
+     * 
      * @return the privateKey value.
      */
     public String privateKey() {
@@ -32,19 +84,8 @@ public final class SshKey {
     }
 
     /**
-     * Set the privateKey property: User Private Key.
-     *
-     * @param privateKey the privateKey value to set.
-     * @return the SshKey object itself.
-     */
-    public SshKey withPrivateKey(String privateKey) {
-        this.privateKey = privateKey;
-        return this;
-    }
-
-    /**
-     * Get the publicKey property: User Public Key.
-     *
+     * Get the publicKey property: Public Key.
+     * 
      * @return the publicKey value.
      */
     public String publicKey() {
@@ -52,21 +93,53 @@ public final class SshKey {
     }
 
     /**
-     * Set the publicKey property: User Public Key.
-     *
-     * @param publicKey the publicKey value to set.
-     * @return the SshKey object itself.
-     */
-    public SshKey withPublicKey(String publicKey) {
-        this.publicKey = publicKey;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SshKey from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SshKey if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the SshKey.
+     */
+    public static SshKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SshKey deserializedSshKey = new SshKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("certificate".equals(fieldName)) {
+                    deserializedSshKey.certificate = reader.getString();
+                } else if ("creationTimeStamp".equals(fieldName)) {
+                    deserializedSshKey.creationTimestamp = reader.getNullable(JsonReader::getLong);
+                } else if ("expirationTimeStamp".equals(fieldName)) {
+                    deserializedSshKey.expirationTimestamp = reader.getNullable(JsonReader::getLong);
+                } else if ("privateKey".equals(fieldName)) {
+                    deserializedSshKey.privateKey = reader.getString();
+                } else if ("publicKey".equals(fieldName)) {
+                    deserializedSshKey.publicKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSshKey;
+        });
     }
 }

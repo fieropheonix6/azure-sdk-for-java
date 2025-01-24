@@ -11,75 +11,48 @@ import com.azure.resourcemanager.maintenance.fluent.UpdatesClient;
 import com.azure.resourcemanager.maintenance.fluent.models.UpdateInner;
 import com.azure.resourcemanager.maintenance.models.Update;
 import com.azure.resourcemanager.maintenance.models.Updates;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class UpdatesImpl implements Updates {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdatesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(UpdatesImpl.class);
 
     private final UpdatesClient innerClient;
 
     private final com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager;
 
-    public UpdatesImpl(
-        UpdatesClient innerClient, com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
+    public UpdatesImpl(UpdatesClient innerClient,
+        com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Update> listParent(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
+    public PagedIterable<Update> listParent(String resourceGroupName, String providerName, String resourceParentType,
+        String resourceParentName, String resourceType, String resourceName) {
+        PagedIterable<UpdateInner> inner = this.serviceClient()
+            .listParent(resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType,
+                resourceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UpdateImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Update> listParent(String resourceGroupName, String providerName, String resourceParentType,
+        String resourceParentName, String resourceType, String resourceName, Context context) {
+        PagedIterable<UpdateInner> inner = this.serviceClient()
+            .listParent(resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType,
+                resourceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UpdateImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Update> list(String resourceGroupName, String providerName, String resourceType,
         String resourceName) {
-        PagedIterable<UpdateInner> inner =
-            this
-                .serviceClient()
-                .listParent(
-                    resourceGroupName,
-                    providerName,
-                    resourceParentType,
-                    resourceParentName,
-                    resourceType,
-                    resourceName);
-        return Utils.mapPage(inner, inner1 -> new UpdateImpl(inner1, this.manager()));
+        PagedIterable<UpdateInner> inner
+            = this.serviceClient().list(resourceGroupName, providerName, resourceType, resourceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UpdateImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Update> listParent(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName,
-        Context context) {
-        PagedIterable<UpdateInner> inner =
-            this
-                .serviceClient()
-                .listParent(
-                    resourceGroupName,
-                    providerName,
-                    resourceParentType,
-                    resourceParentName,
-                    resourceType,
-                    resourceName,
-                    context);
-        return Utils.mapPage(inner, inner1 -> new UpdateImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Update> list(
-        String resourceGroupName, String providerName, String resourceType, String resourceName) {
-        PagedIterable<UpdateInner> inner =
-            this.serviceClient().list(resourceGroupName, providerName, resourceType, resourceName);
-        return Utils.mapPage(inner, inner1 -> new UpdateImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Update> list(
-        String resourceGroupName, String providerName, String resourceType, String resourceName, Context context) {
-        PagedIterable<UpdateInner> inner =
-            this.serviceClient().list(resourceGroupName, providerName, resourceType, resourceName, context);
-        return Utils.mapPage(inner, inner1 -> new UpdateImpl(inner1, this.manager()));
+    public PagedIterable<Update> list(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, Context context) {
+        PagedIterable<UpdateInner> inner
+            = this.serviceClient().list(resourceGroupName, providerName, resourceType, resourceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UpdateImpl(inner1, this.manager()));
     }
 
     private UpdatesClient serviceClient() {

@@ -5,33 +5,42 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Identity for the image template. */
+/**
+ * Identity for the image template.
+ */
 @Fluent
-public class ImageTemplateIdentity {
+public final class ImageTemplateIdentity implements JsonSerializable<ImageTemplateIdentity> {
     /*
-     * The type of identity used for the image template. The type 'None' will
-     * remove any identities from the image template.
+     * The type of identity used for the image template. The type 'None' will remove any identities from the image
+     * template.
      */
-    @JsonProperty(value = "type")
     private ResourceIdentityType type;
 
     /*
-     * The list of user identities associated with the image template. The user
-     * identity dictionary key references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will
+     * be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}. The dictionary values can be empty objects ({}) in requests.
      */
-    @JsonProperty(value = "userAssignedIdentities")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, ImageTemplateIdentityUserAssignedIdentities> userAssignedIdentities;
+    private Map<String, UserAssignedIdentity> userAssignedIdentities;
+
+    /**
+     * Creates an instance of ImageTemplateIdentity class.
+     */
+    public ImageTemplateIdentity() {
+    }
 
     /**
      * Get the type property: The type of identity used for the image template. The type 'None' will remove any
      * identities from the image template.
-     *
+     * 
      * @return the type value.
      */
     public ResourceIdentityType type() {
@@ -41,7 +50,7 @@ public class ImageTemplateIdentity {
     /**
      * Set the type property: The type of identity used for the image template. The type 'None' will remove any
      * identities from the image template.
-     *
+     * 
      * @param type the type value to set.
      * @return the ImageTemplateIdentity object itself.
      */
@@ -51,45 +60,85 @@ public class ImageTemplateIdentity {
     }
 
     /**
-     * Get the userAssignedIdentities property: The list of user identities associated with the image template. The user
-     * identity dictionary key references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     *
+     * Get the userAssignedIdentities property: The set of user assigned identities associated with the resource. The
+     * userAssignedIdentities dictionary keys will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+     * The dictionary values can be empty objects ({}) in requests.
+     * 
      * @return the userAssignedIdentities value.
      */
-    public Map<String, ImageTemplateIdentityUserAssignedIdentities> userAssignedIdentities() {
+    public Map<String, UserAssignedIdentity> userAssignedIdentities() {
         return this.userAssignedIdentities;
     }
 
     /**
-     * Set the userAssignedIdentities property: The list of user identities associated with the image template. The user
-     * identity dictionary key references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     *
+     * Set the userAssignedIdentities property: The set of user assigned identities associated with the resource. The
+     * userAssignedIdentities dictionary keys will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+     * The dictionary values can be empty objects ({}) in requests.
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ImageTemplateIdentity object itself.
      */
-    public ImageTemplateIdentity withUserAssignedIdentities(
-        Map<String, ImageTemplateIdentityUserAssignedIdentities> userAssignedIdentities) {
+    public ImageTemplateIdentity withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateIdentity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageTemplateIdentity.
+     */
+    public static ImageTemplateIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateIdentity deserializedImageTemplateIdentity = new ImageTemplateIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedImageTemplateIdentity.type = ResourceIdentityType.fromString(reader.getString());
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, UserAssignedIdentity> userAssignedIdentities
+                        = reader.readMap(reader1 -> UserAssignedIdentity.fromJson(reader1));
+                    deserializedImageTemplateIdentity.userAssignedIdentities = userAssignedIdentities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateIdentity;
+        });
     }
 }

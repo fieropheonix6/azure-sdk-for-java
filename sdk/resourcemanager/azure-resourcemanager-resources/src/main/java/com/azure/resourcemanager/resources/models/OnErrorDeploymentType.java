@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.resources.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for OnErrorDeploymentType. */
+/**
+ * The deployment on error behavior type. Possible values are LastSuccessful and SpecificDeployment.
+ */
 public enum OnErrorDeploymentType {
-    /** Enum value LastSuccessful. */
+    /**
+     * Enum value LastSuccessful.
+     */
     LAST_SUCCESSFUL("LastSuccessful"),
 
-    /** Enum value SpecificDeployment. */
+    /**
+     * Enum value SpecificDeployment.
+     */
     SPECIFIC_DEPLOYMENT("SpecificDeployment");
 
-    /** The actual serialized value for a OnErrorDeploymentType instance. */
+    /**
+     * The actual serialized value for a OnErrorDeploymentType instance.
+     */
     private final String value;
 
     OnErrorDeploymentType(String value) {
@@ -24,12 +29,14 @@ public enum OnErrorDeploymentType {
 
     /**
      * Parses a serialized value to a OnErrorDeploymentType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed OnErrorDeploymentType object, or null if unable to parse.
      */
-    @JsonCreator
     public static OnErrorDeploymentType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         OnErrorDeploymentType[] items = OnErrorDeploymentType.values();
         for (OnErrorDeploymentType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum OnErrorDeploymentType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

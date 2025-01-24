@@ -6,45 +6,49 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.Activity;
 import com.azure.resourcemanager.datafactory.models.Expression;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** ForEach activity properties. */
+/**
+ * ForEach activity properties.
+ */
 @Fluent
-public final class ForEachActivityTypeProperties {
+public final class ForEachActivityTypeProperties implements JsonSerializable<ForEachActivityTypeProperties> {
     /*
      * Should the loop be executed in sequence or in parallel (max 50)
      */
-    @JsonProperty(value = "isSequential")
     private Boolean isSequential;
 
     /*
      * Batch count to be used for controlling the number of parallel execution (when isSequential is set to false).
      */
-    @JsonProperty(value = "batchCount")
     private Integer batchCount;
 
     /*
      * Collection to iterate.
      */
-    @JsonProperty(value = "items", required = true)
     private Expression items;
 
     /*
      * List of activities to execute .
      */
-    @JsonProperty(value = "activities", required = true)
     private List<Activity> activities;
 
-    /** Creates an instance of ForEachActivityTypeProperties class. */
+    /**
+     * Creates an instance of ForEachActivityTypeProperties class.
+     */
     public ForEachActivityTypeProperties() {
     }
 
     /**
      * Get the isSequential property: Should the loop be executed in sequence or in parallel (max 50).
-     *
+     * 
      * @return the isSequential value.
      */
     public Boolean isSequential() {
@@ -53,7 +57,7 @@ public final class ForEachActivityTypeProperties {
 
     /**
      * Set the isSequential property: Should the loop be executed in sequence or in parallel (max 50).
-     *
+     * 
      * @param isSequential the isSequential value to set.
      * @return the ForEachActivityTypeProperties object itself.
      */
@@ -65,7 +69,7 @@ public final class ForEachActivityTypeProperties {
     /**
      * Get the batchCount property: Batch count to be used for controlling the number of parallel execution (when
      * isSequential is set to false).
-     *
+     * 
      * @return the batchCount value.
      */
     public Integer batchCount() {
@@ -75,7 +79,7 @@ public final class ForEachActivityTypeProperties {
     /**
      * Set the batchCount property: Batch count to be used for controlling the number of parallel execution (when
      * isSequential is set to false).
-     *
+     * 
      * @param batchCount the batchCount value to set.
      * @return the ForEachActivityTypeProperties object itself.
      */
@@ -86,7 +90,7 @@ public final class ForEachActivityTypeProperties {
 
     /**
      * Get the items property: Collection to iterate.
-     *
+     * 
      * @return the items value.
      */
     public Expression items() {
@@ -95,7 +99,7 @@ public final class ForEachActivityTypeProperties {
 
     /**
      * Set the items property: Collection to iterate.
-     *
+     * 
      * @param items the items value to set.
      * @return the ForEachActivityTypeProperties object itself.
      */
@@ -106,7 +110,7 @@ public final class ForEachActivityTypeProperties {
 
     /**
      * Get the activities property: List of activities to execute .
-     *
+     * 
      * @return the activities value.
      */
     public List<Activity> activities() {
@@ -115,7 +119,7 @@ public final class ForEachActivityTypeProperties {
 
     /**
      * Set the activities property: List of activities to execute .
-     *
+     * 
      * @param activities the activities value to set.
      * @return the ForEachActivityTypeProperties object itself.
      */
@@ -126,27 +130,73 @@ public final class ForEachActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (items() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property items in model ForEachActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property items in model ForEachActivityTypeProperties"));
         } else {
             items().validate();
         }
         if (activities() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property activities in model ForEachActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property activities in model ForEachActivityTypeProperties"));
         } else {
             activities().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ForEachActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("items", this.items);
+        jsonWriter.writeArrayField("activities", this.activities, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("isSequential", this.isSequential);
+        jsonWriter.writeNumberField("batchCount", this.batchCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ForEachActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ForEachActivityTypeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ForEachActivityTypeProperties.
+     */
+    public static ForEachActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ForEachActivityTypeProperties deserializedForEachActivityTypeProperties
+                = new ForEachActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("items".equals(fieldName)) {
+                    deserializedForEachActivityTypeProperties.items = Expression.fromJson(reader);
+                } else if ("activities".equals(fieldName)) {
+                    List<Activity> activities = reader.readArray(reader1 -> Activity.fromJson(reader1));
+                    deserializedForEachActivityTypeProperties.activities = activities;
+                } else if ("isSequential".equals(fieldName)) {
+                    deserializedForEachActivityTypeProperties.isSequential = reader.getNullable(JsonReader::getBoolean);
+                } else if ("batchCount".equals(fieldName)) {
+                    deserializedForEachActivityTypeProperties.batchCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedForEachActivityTypeProperties;
+        });
+    }
 }

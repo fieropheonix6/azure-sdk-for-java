@@ -4,18 +4,28 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The network access type for operating on the resources in the Batch account. */
+/**
+ * The network access type for operating on the resources in the Batch account.
+ */
 public enum PublicNetworkAccessType {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Disabled. */
-    DISABLED("Disabled");
+    /**
+     * Enum value Disabled.
+     */
+    DISABLED("Disabled"),
 
-    /** The actual serialized value for a PublicNetworkAccessType instance. */
+    /**
+     * Enum value SecuredByPerimeter.
+     */
+    SECURED_BY_PERIMETER("SecuredByPerimeter");
+
+    /**
+     * The actual serialized value for a PublicNetworkAccessType instance.
+     */
     private final String value;
 
     PublicNetworkAccessType(String value) {
@@ -24,11 +34,10 @@ public enum PublicNetworkAccessType {
 
     /**
      * Parses a serialized value to a PublicNetworkAccessType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed PublicNetworkAccessType object, or null if unable to parse.
      */
-    @JsonCreator
     public static PublicNetworkAccessType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +51,9 @@ public enum PublicNetworkAccessType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

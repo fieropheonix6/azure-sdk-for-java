@@ -4,38 +4,37 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.IpGroupInner;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for IpGroups CreateOrUpdate. */
+/**
+ * Samples for IpGroups CreateOrUpdate.
+ */
 public final class IpGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/IpGroupsCreate.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/IpGroupsCreate.json
      */
     /**
      * Sample code: CreateOrUpdate_IpGroups.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateIpGroups(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getIpGroups()
-            .createOrUpdate(
-                "myResourceGroup",
-                "ipGroups1",
-                new IpGroupInner()
-                    .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
+            .createOrUpdate("myResourceGroup", "ipGroups1",
+                new IpGroupInner().withLocation("West US")
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withIpAddresses(Arrays.asList("13.64.39.16/32", "40.74.146.80/31", "40.74.147.32/28")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

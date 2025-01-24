@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Contains SKU in an ExpressRouteCircuit. */
+/**
+ * Contains SKU in an ExpressRouteCircuit.
+ */
 @Fluent
-public final class ExpressRouteCircuitSku {
+public final class ExpressRouteCircuitSku implements JsonSerializable<ExpressRouteCircuitSku> {
     /*
      * The name of the SKU.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The tier of the SKU.
      */
-    @JsonProperty(value = "tier")
     private ExpressRouteCircuitSkuTier tier;
 
     /*
      * The family of the SKU.
      */
-    @JsonProperty(value = "family")
     private ExpressRouteCircuitSkuFamily family;
 
-    /** Creates an instance of ExpressRouteCircuitSku class. */
+    /**
+     * Creates an instance of ExpressRouteCircuitSku class.
+     */
     public ExpressRouteCircuitSku() {
     }
 
     /**
      * Get the name property: The name of the SKU.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +48,7 @@ public final class ExpressRouteCircuitSku {
 
     /**
      * Set the name property: The name of the SKU.
-     *
+     * 
      * @param name the name value to set.
      * @return the ExpressRouteCircuitSku object itself.
      */
@@ -54,7 +59,7 @@ public final class ExpressRouteCircuitSku {
 
     /**
      * Get the tier property: The tier of the SKU.
-     *
+     * 
      * @return the tier value.
      */
     public ExpressRouteCircuitSkuTier tier() {
@@ -63,7 +68,7 @@ public final class ExpressRouteCircuitSku {
 
     /**
      * Set the tier property: The tier of the SKU.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the ExpressRouteCircuitSku object itself.
      */
@@ -74,7 +79,7 @@ public final class ExpressRouteCircuitSku {
 
     /**
      * Get the family property: The family of the SKU.
-     *
+     * 
      * @return the family value.
      */
     public ExpressRouteCircuitSkuFamily family() {
@@ -83,7 +88,7 @@ public final class ExpressRouteCircuitSku {
 
     /**
      * Set the family property: The family of the SKU.
-     *
+     * 
      * @param family the family value to set.
      * @return the ExpressRouteCircuitSku object itself.
      */
@@ -94,9 +99,52 @@ public final class ExpressRouteCircuitSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        jsonWriter.writeStringField("family", this.family == null ? null : this.family.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteCircuitSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteCircuitSku if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRouteCircuitSku.
+     */
+    public static ExpressRouteCircuitSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteCircuitSku deserializedExpressRouteCircuitSku = new ExpressRouteCircuitSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedExpressRouteCircuitSku.name = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedExpressRouteCircuitSku.tier = ExpressRouteCircuitSkuTier.fromString(reader.getString());
+                } else if ("family".equals(fieldName)) {
+                    deserializedExpressRouteCircuitSku.family
+                        = ExpressRouteCircuitSkuFamily.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteCircuitSku;
+        });
     }
 }

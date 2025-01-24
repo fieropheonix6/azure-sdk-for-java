@@ -5,59 +5,59 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.HopLinkProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Hop link. */
+/**
+ * Hop link.
+ */
 @Immutable
-public final class HopLink {
+public final class HopLink implements JsonSerializable<HopLink> {
     /*
      * The ID of the next hop.
      */
-    @JsonProperty(value = "nextHopId", access = JsonProperty.Access.WRITE_ONLY)
     private String nextHopId;
 
     /*
      * Link type.
      */
-    @JsonProperty(value = "linkType", access = JsonProperty.Access.WRITE_ONLY)
     private String linkType;
 
     /*
      * Hop link properties.
      */
-    @JsonProperty(value = "properties")
     private HopLinkProperties innerProperties;
 
     /*
      * List of issues.
      */
-    @JsonProperty(value = "issues", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectivityIssue> issues;
 
     /*
      * Provides additional context on links.
      */
-    @JsonProperty(value = "context", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> context;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceId;
 
-    /** Creates an instance of HopLink class. */
+    /**
+     * Creates an instance of HopLink class.
+     */
     public HopLink() {
     }
 
     /**
      * Get the nextHopId property: The ID of the next hop.
-     *
+     * 
      * @return the nextHopId value.
      */
     public String nextHopId() {
@@ -66,7 +66,7 @@ public final class HopLink {
 
     /**
      * Get the linkType property: Link type.
-     *
+     * 
      * @return the linkType value.
      */
     public String linkType() {
@@ -75,7 +75,7 @@ public final class HopLink {
 
     /**
      * Get the innerProperties property: Hop link properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HopLinkProperties innerProperties() {
@@ -84,7 +84,7 @@ public final class HopLink {
 
     /**
      * Get the issues property: List of issues.
-     *
+     * 
      * @return the issues value.
      */
     public List<ConnectivityIssue> issues() {
@@ -93,7 +93,7 @@ public final class HopLink {
 
     /**
      * Get the context property: Provides additional context on links.
-     *
+     * 
      * @return the context value.
      */
     public Map<String, String> context() {
@@ -102,7 +102,7 @@ public final class HopLink {
 
     /**
      * Get the resourceId property: Resource ID.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -111,7 +111,7 @@ public final class HopLink {
 
     /**
      * Get the roundTripTimeMin property: Minimum roundtrip time in milliseconds.
-     *
+     * 
      * @return the roundTripTimeMin value.
      */
     public Long roundTripTimeMin() {
@@ -120,7 +120,7 @@ public final class HopLink {
 
     /**
      * Get the roundTripTimeAvg property: Average roundtrip time in milliseconds.
-     *
+     * 
      * @return the roundTripTimeAvg value.
      */
     public Long roundTripTimeAvg() {
@@ -129,7 +129,7 @@ public final class HopLink {
 
     /**
      * Get the roundTripTimeMax property: Maximum roundtrip time in milliseconds.
-     *
+     * 
      * @return the roundTripTimeMax value.
      */
     public Long roundTripTimeMax() {
@@ -138,7 +138,7 @@ public final class HopLink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -148,5 +148,53 @@ public final class HopLink {
         if (issues() != null) {
             issues().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HopLink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HopLink if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the HopLink.
+     */
+    public static HopLink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HopLink deserializedHopLink = new HopLink();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextHopId".equals(fieldName)) {
+                    deserializedHopLink.nextHopId = reader.getString();
+                } else if ("linkType".equals(fieldName)) {
+                    deserializedHopLink.linkType = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedHopLink.innerProperties = HopLinkProperties.fromJson(reader);
+                } else if ("issues".equals(fieldName)) {
+                    List<ConnectivityIssue> issues = reader.readArray(reader1 -> ConnectivityIssue.fromJson(reader1));
+                    deserializedHopLink.issues = issues;
+                } else if ("context".equals(fieldName)) {
+                    Map<String, String> context = reader.readMap(reader1 -> reader1.getString());
+                    deserializedHopLink.context = context;
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedHopLink.resourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHopLink;
+        });
     }
 }

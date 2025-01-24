@@ -5,69 +5,72 @@
 package com.azure.resourcemanager.deviceupdate.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Remote private endpoint details. */
+/**
+ * Remote private endpoint details.
+ */
 @Fluent
-public final class RemotePrivateEndpoint {
+public final class RemotePrivateEndpoint implements JsonSerializable<RemotePrivateEndpoint> {
     /*
      * Remote endpoint resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * ARM location of the remote private endpoint.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Original subscription ID needed by Microsoft.Network.
      */
-    @JsonProperty(value = "immutableSubscriptionId")
     private String immutableSubscriptionId;
 
     /*
      * Original resource ID needed by Microsoft.Network.
      */
-    @JsonProperty(value = "immutableResourceId")
     private String immutableResourceId;
 
     /*
      * Virtual network traffic tag.
      */
-    @JsonProperty(value = "vnetTrafficTag")
     private String vnetTrafficTag;
 
     /*
      * List of private link service connections that need manual approval.
      */
-    @JsonProperty(value = "manualPrivateLinkServiceConnections")
     private List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections;
 
     /*
      * List of automatically approved private link service connections.
      */
-    @JsonProperty(value = "privateLinkServiceConnections")
     private List<PrivateLinkServiceConnection> privateLinkServiceConnections;
 
     /*
      * List of private link service proxies.
      */
-    @JsonProperty(value = "privateLinkServiceProxies")
     private List<PrivateLinkServiceProxy> privateLinkServiceProxies;
 
     /*
      * List of connection details.
      */
-    @JsonProperty(value = "connectionDetails")
     private List<ConnectionDetails> connectionDetails;
 
     /**
+     * Creates an instance of RemotePrivateEndpoint class.
+     */
+    public RemotePrivateEndpoint() {
+    }
+
+    /**
      * Get the id property: Remote endpoint resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -76,7 +79,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Set the id property: Remote endpoint resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the RemotePrivateEndpoint object itself.
      */
@@ -87,7 +90,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Get the location property: ARM location of the remote private endpoint.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -96,7 +99,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Set the location property: ARM location of the remote private endpoint.
-     *
+     * 
      * @param location the location value to set.
      * @return the RemotePrivateEndpoint object itself.
      */
@@ -107,7 +110,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Get the immutableSubscriptionId property: Original subscription ID needed by Microsoft.Network.
-     *
+     * 
      * @return the immutableSubscriptionId value.
      */
     public String immutableSubscriptionId() {
@@ -116,7 +119,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Set the immutableSubscriptionId property: Original subscription ID needed by Microsoft.Network.
-     *
+     * 
      * @param immutableSubscriptionId the immutableSubscriptionId value to set.
      * @return the RemotePrivateEndpoint object itself.
      */
@@ -127,7 +130,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Get the immutableResourceId property: Original resource ID needed by Microsoft.Network.
-     *
+     * 
      * @return the immutableResourceId value.
      */
     public String immutableResourceId() {
@@ -136,7 +139,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Set the immutableResourceId property: Original resource ID needed by Microsoft.Network.
-     *
+     * 
      * @param immutableResourceId the immutableResourceId value to set.
      * @return the RemotePrivateEndpoint object itself.
      */
@@ -147,7 +150,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Get the vnetTrafficTag property: Virtual network traffic tag.
-     *
+     * 
      * @return the vnetTrafficTag value.
      */
     public String vnetTrafficTag() {
@@ -156,7 +159,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Set the vnetTrafficTag property: Virtual network traffic tag.
-     *
+     * 
      * @param vnetTrafficTag the vnetTrafficTag value to set.
      * @return the RemotePrivateEndpoint object itself.
      */
@@ -168,7 +171,7 @@ public final class RemotePrivateEndpoint {
     /**
      * Get the manualPrivateLinkServiceConnections property: List of private link service connections that need manual
      * approval.
-     *
+     * 
      * @return the manualPrivateLinkServiceConnections value.
      */
     public List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections() {
@@ -178,7 +181,7 @@ public final class RemotePrivateEndpoint {
     /**
      * Set the manualPrivateLinkServiceConnections property: List of private link service connections that need manual
      * approval.
-     *
+     * 
      * @param manualPrivateLinkServiceConnections the manualPrivateLinkServiceConnections value to set.
      * @return the RemotePrivateEndpoint object itself.
      */
@@ -190,7 +193,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Get the privateLinkServiceConnections property: List of automatically approved private link service connections.
-     *
+     * 
      * @return the privateLinkServiceConnections value.
      */
     public List<PrivateLinkServiceConnection> privateLinkServiceConnections() {
@@ -199,19 +202,19 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Set the privateLinkServiceConnections property: List of automatically approved private link service connections.
-     *
+     * 
      * @param privateLinkServiceConnections the privateLinkServiceConnections value to set.
      * @return the RemotePrivateEndpoint object itself.
      */
-    public RemotePrivateEndpoint withPrivateLinkServiceConnections(
-        List<PrivateLinkServiceConnection> privateLinkServiceConnections) {
+    public RemotePrivateEndpoint
+        withPrivateLinkServiceConnections(List<PrivateLinkServiceConnection> privateLinkServiceConnections) {
         this.privateLinkServiceConnections = privateLinkServiceConnections;
         return this;
     }
 
     /**
      * Get the privateLinkServiceProxies property: List of private link service proxies.
-     *
+     * 
      * @return the privateLinkServiceProxies value.
      */
     public List<PrivateLinkServiceProxy> privateLinkServiceProxies() {
@@ -220,19 +223,19 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Set the privateLinkServiceProxies property: List of private link service proxies.
-     *
+     * 
      * @param privateLinkServiceProxies the privateLinkServiceProxies value to set.
      * @return the RemotePrivateEndpoint object itself.
      */
-    public RemotePrivateEndpoint withPrivateLinkServiceProxies(
-        List<PrivateLinkServiceProxy> privateLinkServiceProxies) {
+    public RemotePrivateEndpoint
+        withPrivateLinkServiceProxies(List<PrivateLinkServiceProxy> privateLinkServiceProxies) {
         this.privateLinkServiceProxies = privateLinkServiceProxies;
         return this;
     }
 
     /**
      * Get the connectionDetails property: List of connection details.
-     *
+     * 
      * @return the connectionDetails value.
      */
     public List<ConnectionDetails> connectionDetails() {
@@ -241,7 +244,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Set the connectionDetails property: List of connection details.
-     *
+     * 
      * @param connectionDetails the connectionDetails value to set.
      * @return the RemotePrivateEndpoint object itself.
      */
@@ -252,7 +255,7 @@ public final class RemotePrivateEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -268,5 +271,78 @@ public final class RemotePrivateEndpoint {
         if (connectionDetails() != null) {
             connectionDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeStringField("immutableSubscriptionId", this.immutableSubscriptionId);
+        jsonWriter.writeStringField("immutableResourceId", this.immutableResourceId);
+        jsonWriter.writeStringField("vnetTrafficTag", this.vnetTrafficTag);
+        jsonWriter.writeArrayField("manualPrivateLinkServiceConnections", this.manualPrivateLinkServiceConnections,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("privateLinkServiceConnections", this.privateLinkServiceConnections,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("privateLinkServiceProxies", this.privateLinkServiceProxies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("connectionDetails", this.connectionDetails,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemotePrivateEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemotePrivateEndpoint if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RemotePrivateEndpoint.
+     */
+    public static RemotePrivateEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RemotePrivateEndpoint deserializedRemotePrivateEndpoint = new RemotePrivateEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRemotePrivateEndpoint.id = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedRemotePrivateEndpoint.location = reader.getString();
+                } else if ("immutableSubscriptionId".equals(fieldName)) {
+                    deserializedRemotePrivateEndpoint.immutableSubscriptionId = reader.getString();
+                } else if ("immutableResourceId".equals(fieldName)) {
+                    deserializedRemotePrivateEndpoint.immutableResourceId = reader.getString();
+                } else if ("vnetTrafficTag".equals(fieldName)) {
+                    deserializedRemotePrivateEndpoint.vnetTrafficTag = reader.getString();
+                } else if ("manualPrivateLinkServiceConnections".equals(fieldName)) {
+                    List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections
+                        = reader.readArray(reader1 -> PrivateLinkServiceConnection.fromJson(reader1));
+                    deserializedRemotePrivateEndpoint.manualPrivateLinkServiceConnections
+                        = manualPrivateLinkServiceConnections;
+                } else if ("privateLinkServiceConnections".equals(fieldName)) {
+                    List<PrivateLinkServiceConnection> privateLinkServiceConnections
+                        = reader.readArray(reader1 -> PrivateLinkServiceConnection.fromJson(reader1));
+                    deserializedRemotePrivateEndpoint.privateLinkServiceConnections = privateLinkServiceConnections;
+                } else if ("privateLinkServiceProxies".equals(fieldName)) {
+                    List<PrivateLinkServiceProxy> privateLinkServiceProxies
+                        = reader.readArray(reader1 -> PrivateLinkServiceProxy.fromJson(reader1));
+                    deserializedRemotePrivateEndpoint.privateLinkServiceProxies = privateLinkServiceProxies;
+                } else if ("connectionDetails".equals(fieldName)) {
+                    List<ConnectionDetails> connectionDetails
+                        = reader.readArray(reader1 -> ConnectionDetails.fromJson(reader1));
+                    deserializedRemotePrivateEndpoint.connectionDetails = connectionDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRemotePrivateEndpoint;
+        });
     }
 }

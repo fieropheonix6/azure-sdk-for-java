@@ -5,66 +5,76 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** The compute resource properties for managed integration runtime. */
+/**
+ * The compute resource properties for managed integration runtime.
+ */
 @Fluent
-public final class IntegrationRuntimeComputeProperties {
+public final class IntegrationRuntimeComputeProperties
+    implements JsonSerializable<IntegrationRuntimeComputeProperties> {
     /*
      * The location for managed integration runtime. The supported regions could be found on
      * https://docs.microsoft.com/en-us/azure/data-factory/data-factory-data-movement-activities
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The node size requirement to managed integration runtime.
      */
-    @JsonProperty(value = "nodeSize")
     private String nodeSize;
 
     /*
      * The required number of nodes for managed integration runtime.
      */
-    @JsonProperty(value = "numberOfNodes")
     private Integer numberOfNodes;
 
     /*
      * Maximum parallel executions count per node for managed integration runtime.
      */
-    @JsonProperty(value = "maxParallelExecutionsPerNode")
     private Integer maxParallelExecutionsPerNode;
 
     /*
      * Data flow properties for managed integration runtime.
      */
-    @JsonProperty(value = "dataFlowProperties")
     private IntegrationRuntimeDataFlowProperties dataFlowProperties;
 
     /*
      * VNet properties for managed integration runtime.
      */
-    @JsonProperty(value = "vNetProperties")
     private IntegrationRuntimeVNetProperties vNetProperties;
+
+    /*
+     * CopyComputeScale properties for managed integration runtime.
+     */
+    private CopyComputeScaleProperties copyComputeScaleProperties;
+
+    /*
+     * PipelineExternalComputeScale properties for managed integration runtime.
+     */
+    private PipelineExternalComputeScaleProperties pipelineExternalComputeScaleProperties;
 
     /*
      * The compute resource properties for managed integration runtime.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of IntegrationRuntimeComputeProperties class. */
+    /**
+     * Creates an instance of IntegrationRuntimeComputeProperties class.
+     */
     public IntegrationRuntimeComputeProperties() {
     }
 
     /**
      * Get the location property: The location for managed integration runtime. The supported regions could be found on
      * https://docs.microsoft.com/en-us/azure/data-factory/data-factory-data-movement-activities.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -74,7 +84,7 @@ public final class IntegrationRuntimeComputeProperties {
     /**
      * Set the location property: The location for managed integration runtime. The supported regions could be found on
      * https://docs.microsoft.com/en-us/azure/data-factory/data-factory-data-movement-activities.
-     *
+     * 
      * @param location the location value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
@@ -85,7 +95,7 @@ public final class IntegrationRuntimeComputeProperties {
 
     /**
      * Get the nodeSize property: The node size requirement to managed integration runtime.
-     *
+     * 
      * @return the nodeSize value.
      */
     public String nodeSize() {
@@ -94,7 +104,7 @@ public final class IntegrationRuntimeComputeProperties {
 
     /**
      * Set the nodeSize property: The node size requirement to managed integration runtime.
-     *
+     * 
      * @param nodeSize the nodeSize value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
@@ -105,7 +115,7 @@ public final class IntegrationRuntimeComputeProperties {
 
     /**
      * Get the numberOfNodes property: The required number of nodes for managed integration runtime.
-     *
+     * 
      * @return the numberOfNodes value.
      */
     public Integer numberOfNodes() {
@@ -114,7 +124,7 @@ public final class IntegrationRuntimeComputeProperties {
 
     /**
      * Set the numberOfNodes property: The required number of nodes for managed integration runtime.
-     *
+     * 
      * @param numberOfNodes the numberOfNodes value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
@@ -126,7 +136,7 @@ public final class IntegrationRuntimeComputeProperties {
     /**
      * Get the maxParallelExecutionsPerNode property: Maximum parallel executions count per node for managed integration
      * runtime.
-     *
+     * 
      * @return the maxParallelExecutionsPerNode value.
      */
     public Integer maxParallelExecutionsPerNode() {
@@ -136,7 +146,7 @@ public final class IntegrationRuntimeComputeProperties {
     /**
      * Set the maxParallelExecutionsPerNode property: Maximum parallel executions count per node for managed integration
      * runtime.
-     *
+     * 
      * @param maxParallelExecutionsPerNode the maxParallelExecutionsPerNode value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
@@ -147,7 +157,7 @@ public final class IntegrationRuntimeComputeProperties {
 
     /**
      * Get the dataFlowProperties property: Data flow properties for managed integration runtime.
-     *
+     * 
      * @return the dataFlowProperties value.
      */
     public IntegrationRuntimeDataFlowProperties dataFlowProperties() {
@@ -156,19 +166,19 @@ public final class IntegrationRuntimeComputeProperties {
 
     /**
      * Set the dataFlowProperties property: Data flow properties for managed integration runtime.
-     *
+     * 
      * @param dataFlowProperties the dataFlowProperties value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
-    public IntegrationRuntimeComputeProperties withDataFlowProperties(
-        IntegrationRuntimeDataFlowProperties dataFlowProperties) {
+    public IntegrationRuntimeComputeProperties
+        withDataFlowProperties(IntegrationRuntimeDataFlowProperties dataFlowProperties) {
         this.dataFlowProperties = dataFlowProperties;
         return this;
     }
 
     /**
      * Get the vNetProperties property: VNet properties for managed integration runtime.
-     *
+     * 
      * @return the vNetProperties value.
      */
     public IntegrationRuntimeVNetProperties vNetProperties() {
@@ -177,7 +187,7 @@ public final class IntegrationRuntimeComputeProperties {
 
     /**
      * Set the vNetProperties property: VNet properties for managed integration runtime.
-     *
+     * 
      * @param vNetProperties the vNetProperties value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
@@ -187,18 +197,61 @@ public final class IntegrationRuntimeComputeProperties {
     }
 
     /**
+     * Get the copyComputeScaleProperties property: CopyComputeScale properties for managed integration runtime.
+     * 
+     * @return the copyComputeScaleProperties value.
+     */
+    public CopyComputeScaleProperties copyComputeScaleProperties() {
+        return this.copyComputeScaleProperties;
+    }
+
+    /**
+     * Set the copyComputeScaleProperties property: CopyComputeScale properties for managed integration runtime.
+     * 
+     * @param copyComputeScaleProperties the copyComputeScaleProperties value to set.
+     * @return the IntegrationRuntimeComputeProperties object itself.
+     */
+    public IntegrationRuntimeComputeProperties
+        withCopyComputeScaleProperties(CopyComputeScaleProperties copyComputeScaleProperties) {
+        this.copyComputeScaleProperties = copyComputeScaleProperties;
+        return this;
+    }
+
+    /**
+     * Get the pipelineExternalComputeScaleProperties property: PipelineExternalComputeScale properties for managed
+     * integration runtime.
+     * 
+     * @return the pipelineExternalComputeScaleProperties value.
+     */
+    public PipelineExternalComputeScaleProperties pipelineExternalComputeScaleProperties() {
+        return this.pipelineExternalComputeScaleProperties;
+    }
+
+    /**
+     * Set the pipelineExternalComputeScaleProperties property: PipelineExternalComputeScale properties for managed
+     * integration runtime.
+     * 
+     * @param pipelineExternalComputeScaleProperties the pipelineExternalComputeScaleProperties value to set.
+     * @return the IntegrationRuntimeComputeProperties object itself.
+     */
+    public IntegrationRuntimeComputeProperties withPipelineExternalComputeScaleProperties(
+        PipelineExternalComputeScaleProperties pipelineExternalComputeScaleProperties) {
+        this.pipelineExternalComputeScaleProperties = pipelineExternalComputeScaleProperties;
+        return this;
+    }
+
+    /**
      * Get the additionalProperties property: The compute resource properties for managed integration runtime.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: The compute resource properties for managed integration runtime.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
@@ -207,17 +260,9 @@ public final class IntegrationRuntimeComputeProperties {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -227,5 +272,87 @@ public final class IntegrationRuntimeComputeProperties {
         if (vNetProperties() != null) {
             vNetProperties().validate();
         }
+        if (copyComputeScaleProperties() != null) {
+            copyComputeScaleProperties().validate();
+        }
+        if (pipelineExternalComputeScaleProperties() != null) {
+            pipelineExternalComputeScaleProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeStringField("nodeSize", this.nodeSize);
+        jsonWriter.writeNumberField("numberOfNodes", this.numberOfNodes);
+        jsonWriter.writeNumberField("maxParallelExecutionsPerNode", this.maxParallelExecutionsPerNode);
+        jsonWriter.writeJsonField("dataFlowProperties", this.dataFlowProperties);
+        jsonWriter.writeJsonField("vNetProperties", this.vNetProperties);
+        jsonWriter.writeJsonField("copyComputeScaleProperties", this.copyComputeScaleProperties);
+        jsonWriter.writeJsonField("pipelineExternalComputeScaleProperties",
+            this.pipelineExternalComputeScaleProperties);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationRuntimeComputeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationRuntimeComputeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationRuntimeComputeProperties.
+     */
+    public static IntegrationRuntimeComputeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationRuntimeComputeProperties deserializedIntegrationRuntimeComputeProperties
+                = new IntegrationRuntimeComputeProperties();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedIntegrationRuntimeComputeProperties.location = reader.getString();
+                } else if ("nodeSize".equals(fieldName)) {
+                    deserializedIntegrationRuntimeComputeProperties.nodeSize = reader.getString();
+                } else if ("numberOfNodes".equals(fieldName)) {
+                    deserializedIntegrationRuntimeComputeProperties.numberOfNodes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("maxParallelExecutionsPerNode".equals(fieldName)) {
+                    deserializedIntegrationRuntimeComputeProperties.maxParallelExecutionsPerNode
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("dataFlowProperties".equals(fieldName)) {
+                    deserializedIntegrationRuntimeComputeProperties.dataFlowProperties
+                        = IntegrationRuntimeDataFlowProperties.fromJson(reader);
+                } else if ("vNetProperties".equals(fieldName)) {
+                    deserializedIntegrationRuntimeComputeProperties.vNetProperties
+                        = IntegrationRuntimeVNetProperties.fromJson(reader);
+                } else if ("copyComputeScaleProperties".equals(fieldName)) {
+                    deserializedIntegrationRuntimeComputeProperties.copyComputeScaleProperties
+                        = CopyComputeScaleProperties.fromJson(reader);
+                } else if ("pipelineExternalComputeScaleProperties".equals(fieldName)) {
+                    deserializedIntegrationRuntimeComputeProperties.pipelineExternalComputeScaleProperties
+                        = PipelineExternalComputeScaleProperties.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedIntegrationRuntimeComputeProperties.additionalProperties = additionalProperties;
+
+            return deserializedIntegrationRuntimeComputeProperties;
+        });
     }
 }

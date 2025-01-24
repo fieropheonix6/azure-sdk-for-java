@@ -25,31 +25,33 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.support.fluent.ProblemClassificationsClient;
 import com.azure.resourcemanager.support.fluent.models.ProblemClassificationInner;
 import com.azure.resourcemanager.support.models.ProblemClassificationsListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ProblemClassificationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProblemClassificationsClient.
+ */
 public final class ProblemClassificationsClientImpl implements ProblemClassificationsClient {
-    private final ClientLogger logger = new ClientLogger(ProblemClassificationsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProblemClassificationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftSupportImpl client;
 
     /**
      * Initializes an instance of ProblemClassificationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ProblemClassificationsClientImpl(MicrosoftSupportImpl client) {
-        this.service =
-            RestProxy
-                .create(ProblemClassificationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ProblemClassificationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,62 +61,52 @@ public final class ProblemClassificationsClientImpl implements ProblemClassifica
      */
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftSupportProb")
-    private interface ProblemClassificationsService {
-        @Headers({"Content-Type: application/json"})
+    public interface ProblemClassificationsService {
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Support/services/{serviceName}/problemClassifications")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProblemClassificationsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ProblemClassificationsListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("serviceName") String serviceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Support/services/{serviceName}/problemClassifications/{problemClassificationName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProblemClassificationInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ProblemClassificationInner>> get(@HostParam("$host") String endpoint,
             @PathParam("serviceName") String serviceName,
             @PathParam("problemClassificationName") String problemClassificationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all the problem classifications (categories) available for a specific Azure service. Always use the service
      * and problem classifications obtained programmatically. This practice ensures that you always have the most recent
      * set of service and problem classification Ids.
-     *
+     * 
      * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ProblemClassification resources.
+     * @return collection of ProblemClassification resources along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProblemClassificationInner>> listSinglePageAsync(String serviceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.list(this.client.getEndpoint(), serviceName, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<ProblemClassificationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), serviceName, this.client.getApiVersion(),
+                accept, context))
+            .<PagedResponse<ProblemClassificationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -122,45 +114,41 @@ public final class ProblemClassificationsClientImpl implements ProblemClassifica
      * Lists all the problem classifications (categories) available for a specific Azure service. Always use the service
      * and problem classifications obtained programmatically. This practice ensures that you always have the most recent
      * set of service and problem classification Ids.
-     *
+     * 
      * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ProblemClassification resources.
+     * @return collection of ProblemClassification resources along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProblemClassificationInner>> listSinglePageAsync(String serviceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), serviceName, this.client.getApiVersion(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+        return service.list(this.client.getEndpoint(), serviceName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Lists all the problem classifications (categories) available for a specific Azure service. Always use the service
      * and problem classifications obtained programmatically. This practice ensures that you always have the most recent
      * set of service and problem classification Ids.
-     *
+     * 
      * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ProblemClassification resources.
+     * @return collection of ProblemClassification resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProblemClassificationInner> listAsync(String serviceName) {
@@ -171,13 +159,13 @@ public final class ProblemClassificationsClientImpl implements ProblemClassifica
      * Lists all the problem classifications (categories) available for a specific Azure service. Always use the service
      * and problem classifications obtained programmatically. This practice ensures that you always have the most recent
      * set of service and problem classification Ids.
-     *
+     * 
      * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ProblemClassification resources.
+     * @return collection of ProblemClassification resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProblemClassificationInner> listAsync(String serviceName, Context context) {
@@ -188,12 +176,12 @@ public final class ProblemClassificationsClientImpl implements ProblemClassifica
      * Lists all the problem classifications (categories) available for a specific Azure service. Always use the service
      * and problem classifications obtained programmatically. This practice ensures that you always have the most recent
      * set of service and problem classification Ids.
-     *
+     * 
      * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ProblemClassification resources.
+     * @return collection of ProblemClassification resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProblemClassificationInner> list(String serviceName) {
@@ -204,13 +192,13 @@ public final class ProblemClassificationsClientImpl implements ProblemClassifica
      * Lists all the problem classifications (categories) available for a specific Azure service. Always use the service
      * and problem classifications obtained programmatically. This practice ensures that you always have the most recent
      * set of service and problem classification Ids.
-     *
+     * 
      * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of ProblemClassification resources.
+     * @return collection of ProblemClassification resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProblemClassificationInner> list(String serviceName, Context context) {
@@ -219,114 +207,104 @@ public final class ProblemClassificationsClientImpl implements ProblemClassifica
 
     /**
      * Get problem classification details for a specific Azure service.
-     *
+     * 
      * @param serviceName Name of the Azure service available for support.
      * @param problemClassificationName Name of problem classification.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return problem classification details for a specific Azure service.
+     * @return problem classification details for a specific Azure service along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProblemClassificationInner>> getWithResponseAsync(
-        String serviceName, String problemClassificationName) {
+    private Mono<Response<ProblemClassificationInner>> getWithResponseAsync(String serviceName,
+        String problemClassificationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (problemClassificationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter problemClassificationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter problemClassificationName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            serviceName,
-                            problemClassificationName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), serviceName, problemClassificationName,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get problem classification details for a specific Azure service.
-     *
+     * 
      * @param serviceName Name of the Azure service available for support.
      * @param problemClassificationName Name of problem classification.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return problem classification details for a specific Azure service.
+     * @return problem classification details for a specific Azure service along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProblemClassificationInner>> getWithResponseAsync(
-        String serviceName, String problemClassificationName, Context context) {
+    private Mono<Response<ProblemClassificationInner>> getWithResponseAsync(String serviceName,
+        String problemClassificationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (serviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (problemClassificationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter problemClassificationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter problemClassificationName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                serviceName,
-                problemClassificationName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), serviceName, problemClassificationName,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get problem classification details for a specific Azure service.
-     *
+     * 
      * @param serviceName Name of the Azure service available for support.
      * @param problemClassificationName Name of problem classification.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return problem classification details for a specific Azure service.
+     * @return problem classification details for a specific Azure service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProblemClassificationInner> getAsync(String serviceName, String problemClassificationName) {
         return getWithResponseAsync(serviceName, problemClassificationName)
-            .flatMap(
-                (Response<ProblemClassificationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get problem classification details for a specific Azure service.
-     *
+     * 
+     * @param serviceName Name of the Azure service available for support.
+     * @param problemClassificationName Name of problem classification.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return problem classification details for a specific Azure service along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProblemClassificationInner> getWithResponse(String serviceName, String problemClassificationName,
+        Context context) {
+        return getWithResponseAsync(serviceName, problemClassificationName, context).block();
+    }
+
+    /**
+     * Get problem classification details for a specific Azure service.
+     * 
      * @param serviceName Name of the Azure service available for support.
      * @param problemClassificationName Name of problem classification.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -336,23 +314,6 @@ public final class ProblemClassificationsClientImpl implements ProblemClassifica
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProblemClassificationInner get(String serviceName, String problemClassificationName) {
-        return getAsync(serviceName, problemClassificationName).block();
-    }
-
-    /**
-     * Get problem classification details for a specific Azure service.
-     *
-     * @param serviceName Name of the Azure service available for support.
-     * @param problemClassificationName Name of problem classification.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return problem classification details for a specific Azure service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProblemClassificationInner> getWithResponse(
-        String serviceName, String problemClassificationName, Context context) {
-        return getWithResponseAsync(serviceName, problemClassificationName, context).block();
+        return getWithResponse(serviceName, problemClassificationName, Context.NONE).getValue();
     }
 }

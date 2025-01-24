@@ -6,151 +6,150 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.NetworkInterfaceAuxiliaryMode;
+import com.azure.resourcemanager.network.models.NetworkInterfaceAuxiliarySku;
 import com.azure.resourcemanager.network.models.NetworkInterfaceDnsSettings;
 import com.azure.resourcemanager.network.models.NetworkInterfaceMigrationPhase;
 import com.azure.resourcemanager.network.models.NetworkInterfaceNicType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** NetworkInterface properties. */
+/**
+ * NetworkInterface properties.
+ */
 @Fluent
-public final class NetworkInterfacePropertiesFormatInner {
+public final class NetworkInterfacePropertiesFormatInner
+    implements JsonSerializable<NetworkInterfacePropertiesFormatInner> {
     /*
      * The reference to a virtual machine.
      */
-    @JsonProperty(value = "virtualMachine", access = JsonProperty.Access.WRITE_ONLY)
     private SubResource virtualMachine;
 
     /*
      * The reference to the NetworkSecurityGroup resource.
      */
-    @JsonProperty(value = "networkSecurityGroup")
     private NetworkSecurityGroupInner networkSecurityGroup;
 
     /*
      * A reference to the private endpoint to which the network interface is linked.
      */
-    @JsonProperty(value = "privateEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointInner privateEndpoint;
 
     /*
      * A list of IPConfigurations of the network interface.
      */
-    @JsonProperty(value = "ipConfigurations")
     private List<NetworkInterfaceIpConfigurationInner> ipConfigurations;
 
     /*
      * A list of TapConfigurations of the network interface.
      */
-    @JsonProperty(value = "tapConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterfaceTapConfigurationInner> tapConfigurations;
 
     /*
      * The DNS settings in network interface.
      */
-    @JsonProperty(value = "dnsSettings")
     private NetworkInterfaceDnsSettings dnsSettings;
 
     /*
      * The MAC address of the network interface.
      */
-    @JsonProperty(value = "macAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String macAddress;
 
     /*
      * Whether this is a primary network interface on a virtual machine.
      */
-    @JsonProperty(value = "primary", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean primary;
 
     /*
      * Whether the virtual machine this nic is attached to supports encryption.
      */
-    @JsonProperty(value = "vnetEncryptionSupported", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean vnetEncryptionSupported;
+
+    /*
+     * Whether default outbound connectivity for nic was configured or not.
+     */
+    private Boolean defaultOutboundConnectivityEnabled;
 
     /*
      * If the network interface is configured for accelerated networking. Not applicable to VM sizes which require
      * accelerated networking.
      */
-    @JsonProperty(value = "enableAcceleratedNetworking")
     private Boolean enableAcceleratedNetworking;
 
     /*
      * Indicates whether to disable tcp state tracking.
      */
-    @JsonProperty(value = "disableTcpStateTracking")
     private Boolean disableTcpStateTracking;
 
     /*
      * Indicates whether IP forwarding is enabled on this network interface.
      */
-    @JsonProperty(value = "enableIPForwarding")
     private Boolean enableIpForwarding;
 
     /*
      * A list of references to linked BareMetal resources.
      */
-    @JsonProperty(value = "hostedWorkloads", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> hostedWorkloads;
 
     /*
      * A reference to the dscp configuration to which the network interface is linked.
      */
-    @JsonProperty(value = "dscpConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private SubResource dscpConfiguration;
 
     /*
      * The resource GUID property of the network interface resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
      * The provisioning state of the network interface resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * WorkloadType of the NetworkInterface for BareMetal resources
      */
-    @JsonProperty(value = "workloadType")
     private String workloadType;
 
     /*
      * Type of Network Interface resource.
      */
-    @JsonProperty(value = "nicType")
     private NetworkInterfaceNicType nicType;
 
     /*
      * Privatelinkservice of the network interface resource.
      */
-    @JsonProperty(value = "privateLinkService")
     private PrivateLinkServiceInner privateLinkService;
 
     /*
      * Migration phase of Network Interface resource.
      */
-    @JsonProperty(value = "migrationPhase")
     private NetworkInterfaceMigrationPhase migrationPhase;
 
     /*
      * Auxiliary mode of Network Interface resource.
      */
-    @JsonProperty(value = "auxiliaryMode")
     private NetworkInterfaceAuxiliaryMode auxiliaryMode;
 
-    /** Creates an instance of NetworkInterfacePropertiesFormatInner class. */
+    /*
+     * Auxiliary sku of Network Interface resource.
+     */
+    private NetworkInterfaceAuxiliarySku auxiliarySku;
+
+    /**
+     * Creates an instance of NetworkInterfacePropertiesFormatInner class.
+     */
     public NetworkInterfacePropertiesFormatInner() {
     }
 
     /**
      * Get the virtualMachine property: The reference to a virtual machine.
-     *
+     * 
      * @return the virtualMachine value.
      */
     public SubResource virtualMachine() {
@@ -159,7 +158,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Get the networkSecurityGroup property: The reference to the NetworkSecurityGroup resource.
-     *
+     * 
      * @return the networkSecurityGroup value.
      */
     public NetworkSecurityGroupInner networkSecurityGroup() {
@@ -168,19 +167,19 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Set the networkSecurityGroup property: The reference to the NetworkSecurityGroup resource.
-     *
+     * 
      * @param networkSecurityGroup the networkSecurityGroup value to set.
      * @return the NetworkInterfacePropertiesFormatInner object itself.
      */
-    public NetworkInterfacePropertiesFormatInner withNetworkSecurityGroup(
-        NetworkSecurityGroupInner networkSecurityGroup) {
+    public NetworkInterfacePropertiesFormatInner
+        withNetworkSecurityGroup(NetworkSecurityGroupInner networkSecurityGroup) {
         this.networkSecurityGroup = networkSecurityGroup;
         return this;
     }
 
     /**
      * Get the privateEndpoint property: A reference to the private endpoint to which the network interface is linked.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public PrivateEndpointInner privateEndpoint() {
@@ -189,7 +188,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Get the ipConfigurations property: A list of IPConfigurations of the network interface.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<NetworkInterfaceIpConfigurationInner> ipConfigurations() {
@@ -198,19 +197,19 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Set the ipConfigurations property: A list of IPConfigurations of the network interface.
-     *
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the NetworkInterfacePropertiesFormatInner object itself.
      */
-    public NetworkInterfacePropertiesFormatInner withIpConfigurations(
-        List<NetworkInterfaceIpConfigurationInner> ipConfigurations) {
+    public NetworkInterfacePropertiesFormatInner
+        withIpConfigurations(List<NetworkInterfaceIpConfigurationInner> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
 
     /**
      * Get the tapConfigurations property: A list of TapConfigurations of the network interface.
-     *
+     * 
      * @return the tapConfigurations value.
      */
     public List<NetworkInterfaceTapConfigurationInner> tapConfigurations() {
@@ -219,7 +218,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Get the dnsSettings property: The DNS settings in network interface.
-     *
+     * 
      * @return the dnsSettings value.
      */
     public NetworkInterfaceDnsSettings dnsSettings() {
@@ -228,7 +227,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Set the dnsSettings property: The DNS settings in network interface.
-     *
+     * 
      * @param dnsSettings the dnsSettings value to set.
      * @return the NetworkInterfacePropertiesFormatInner object itself.
      */
@@ -239,7 +238,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Get the macAddress property: The MAC address of the network interface.
-     *
+     * 
      * @return the macAddress value.
      */
     public String macAddress() {
@@ -248,7 +247,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Get the primary property: Whether this is a primary network interface on a virtual machine.
-     *
+     * 
      * @return the primary value.
      */
     public Boolean primary() {
@@ -258,7 +257,7 @@ public final class NetworkInterfacePropertiesFormatInner {
     /**
      * Get the vnetEncryptionSupported property: Whether the virtual machine this nic is attached to supports
      * encryption.
-     *
+     * 
      * @return the vnetEncryptionSupported value.
      */
     public Boolean vnetEncryptionSupported() {
@@ -266,9 +265,19 @@ public final class NetworkInterfacePropertiesFormatInner {
     }
 
     /**
+     * Get the defaultOutboundConnectivityEnabled property: Whether default outbound connectivity for nic was configured
+     * or not.
+     * 
+     * @return the defaultOutboundConnectivityEnabled value.
+     */
+    public Boolean defaultOutboundConnectivityEnabled() {
+        return this.defaultOutboundConnectivityEnabled;
+    }
+
+    /**
      * Get the enableAcceleratedNetworking property: If the network interface is configured for accelerated networking.
      * Not applicable to VM sizes which require accelerated networking.
-     *
+     * 
      * @return the enableAcceleratedNetworking value.
      */
     public Boolean enableAcceleratedNetworking() {
@@ -278,7 +287,7 @@ public final class NetworkInterfacePropertiesFormatInner {
     /**
      * Set the enableAcceleratedNetworking property: If the network interface is configured for accelerated networking.
      * Not applicable to VM sizes which require accelerated networking.
-     *
+     * 
      * @param enableAcceleratedNetworking the enableAcceleratedNetworking value to set.
      * @return the NetworkInterfacePropertiesFormatInner object itself.
      */
@@ -289,7 +298,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Get the disableTcpStateTracking property: Indicates whether to disable tcp state tracking.
-     *
+     * 
      * @return the disableTcpStateTracking value.
      */
     public Boolean disableTcpStateTracking() {
@@ -298,7 +307,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Set the disableTcpStateTracking property: Indicates whether to disable tcp state tracking.
-     *
+     * 
      * @param disableTcpStateTracking the disableTcpStateTracking value to set.
      * @return the NetworkInterfacePropertiesFormatInner object itself.
      */
@@ -309,7 +318,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Get the enableIpForwarding property: Indicates whether IP forwarding is enabled on this network interface.
-     *
+     * 
      * @return the enableIpForwarding value.
      */
     public Boolean enableIpForwarding() {
@@ -318,7 +327,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Set the enableIpForwarding property: Indicates whether IP forwarding is enabled on this network interface.
-     *
+     * 
      * @param enableIpForwarding the enableIpForwarding value to set.
      * @return the NetworkInterfacePropertiesFormatInner object itself.
      */
@@ -329,7 +338,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Get the hostedWorkloads property: A list of references to linked BareMetal resources.
-     *
+     * 
      * @return the hostedWorkloads value.
      */
     public List<String> hostedWorkloads() {
@@ -339,7 +348,7 @@ public final class NetworkInterfacePropertiesFormatInner {
     /**
      * Get the dscpConfiguration property: A reference to the dscp configuration to which the network interface is
      * linked.
-     *
+     * 
      * @return the dscpConfiguration value.
      */
     public SubResource dscpConfiguration() {
@@ -348,7 +357,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the network interface resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -357,7 +366,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Get the provisioningState property: The provisioning state of the network interface resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -366,7 +375,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Get the workloadType property: WorkloadType of the NetworkInterface for BareMetal resources.
-     *
+     * 
      * @return the workloadType value.
      */
     public String workloadType() {
@@ -375,7 +384,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Set the workloadType property: WorkloadType of the NetworkInterface for BareMetal resources.
-     *
+     * 
      * @param workloadType the workloadType value to set.
      * @return the NetworkInterfacePropertiesFormatInner object itself.
      */
@@ -386,7 +395,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Get the nicType property: Type of Network Interface resource.
-     *
+     * 
      * @return the nicType value.
      */
     public NetworkInterfaceNicType nicType() {
@@ -395,7 +404,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Set the nicType property: Type of Network Interface resource.
-     *
+     * 
      * @param nicType the nicType value to set.
      * @return the NetworkInterfacePropertiesFormatInner object itself.
      */
@@ -406,7 +415,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Get the privateLinkService property: Privatelinkservice of the network interface resource.
-     *
+     * 
      * @return the privateLinkService value.
      */
     public PrivateLinkServiceInner privateLinkService() {
@@ -415,7 +424,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Set the privateLinkService property: Privatelinkservice of the network interface resource.
-     *
+     * 
      * @param privateLinkService the privateLinkService value to set.
      * @return the NetworkInterfacePropertiesFormatInner object itself.
      */
@@ -426,7 +435,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Get the migrationPhase property: Migration phase of Network Interface resource.
-     *
+     * 
      * @return the migrationPhase value.
      */
     public NetworkInterfaceMigrationPhase migrationPhase() {
@@ -435,7 +444,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Set the migrationPhase property: Migration phase of Network Interface resource.
-     *
+     * 
      * @param migrationPhase the migrationPhase value to set.
      * @return the NetworkInterfacePropertiesFormatInner object itself.
      */
@@ -446,7 +455,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Get the auxiliaryMode property: Auxiliary mode of Network Interface resource.
-     *
+     * 
      * @return the auxiliaryMode value.
      */
     public NetworkInterfaceAuxiliaryMode auxiliaryMode() {
@@ -455,7 +464,7 @@ public final class NetworkInterfacePropertiesFormatInner {
 
     /**
      * Set the auxiliaryMode property: Auxiliary mode of Network Interface resource.
-     *
+     * 
      * @param auxiliaryMode the auxiliaryMode value to set.
      * @return the NetworkInterfacePropertiesFormatInner object itself.
      */
@@ -465,8 +474,28 @@ public final class NetworkInterfacePropertiesFormatInner {
     }
 
     /**
+     * Get the auxiliarySku property: Auxiliary sku of Network Interface resource.
+     * 
+     * @return the auxiliarySku value.
+     */
+    public NetworkInterfaceAuxiliarySku auxiliarySku() {
+        return this.auxiliarySku;
+    }
+
+    /**
+     * Set the auxiliarySku property: Auxiliary sku of Network Interface resource.
+     * 
+     * @param auxiliarySku the auxiliarySku value to set.
+     * @return the NetworkInterfacePropertiesFormatInner object itself.
+     */
+    public NetworkInterfacePropertiesFormatInner withAuxiliarySku(NetworkInterfaceAuxiliarySku auxiliarySku) {
+        this.auxiliarySku = auxiliarySku;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -488,5 +517,119 @@ public final class NetworkInterfacePropertiesFormatInner {
         if (privateLinkService() != null) {
             privateLinkService().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("networkSecurityGroup", this.networkSecurityGroup);
+        jsonWriter.writeArrayField("ipConfigurations", this.ipConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("dnsSettings", this.dnsSettings);
+        jsonWriter.writeBooleanField("enableAcceleratedNetworking", this.enableAcceleratedNetworking);
+        jsonWriter.writeBooleanField("disableTcpStateTracking", this.disableTcpStateTracking);
+        jsonWriter.writeBooleanField("enableIPForwarding", this.enableIpForwarding);
+        jsonWriter.writeStringField("workloadType", this.workloadType);
+        jsonWriter.writeStringField("nicType", this.nicType == null ? null : this.nicType.toString());
+        jsonWriter.writeJsonField("privateLinkService", this.privateLinkService);
+        jsonWriter.writeStringField("migrationPhase",
+            this.migrationPhase == null ? null : this.migrationPhase.toString());
+        jsonWriter.writeStringField("auxiliaryMode", this.auxiliaryMode == null ? null : this.auxiliaryMode.toString());
+        jsonWriter.writeStringField("auxiliarySku", this.auxiliarySku == null ? null : this.auxiliarySku.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkInterfacePropertiesFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkInterfacePropertiesFormatInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkInterfacePropertiesFormatInner.
+     */
+    public static NetworkInterfacePropertiesFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkInterfacePropertiesFormatInner deserializedNetworkInterfacePropertiesFormatInner
+                = new NetworkInterfacePropertiesFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualMachine".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.virtualMachine = SubResource.fromJson(reader);
+                } else if ("networkSecurityGroup".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.networkSecurityGroup
+                        = NetworkSecurityGroupInner.fromJson(reader);
+                } else if ("privateEndpoint".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.privateEndpoint
+                        = PrivateEndpointInner.fromJson(reader);
+                } else if ("ipConfigurations".equals(fieldName)) {
+                    List<NetworkInterfaceIpConfigurationInner> ipConfigurations
+                        = reader.readArray(reader1 -> NetworkInterfaceIpConfigurationInner.fromJson(reader1));
+                    deserializedNetworkInterfacePropertiesFormatInner.ipConfigurations = ipConfigurations;
+                } else if ("tapConfigurations".equals(fieldName)) {
+                    List<NetworkInterfaceTapConfigurationInner> tapConfigurations
+                        = reader.readArray(reader1 -> NetworkInterfaceTapConfigurationInner.fromJson(reader1));
+                    deserializedNetworkInterfacePropertiesFormatInner.tapConfigurations = tapConfigurations;
+                } else if ("dnsSettings".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.dnsSettings
+                        = NetworkInterfaceDnsSettings.fromJson(reader);
+                } else if ("macAddress".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.macAddress = reader.getString();
+                } else if ("primary".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.primary
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("vnetEncryptionSupported".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.vnetEncryptionSupported
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("defaultOutboundConnectivityEnabled".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.defaultOutboundConnectivityEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableAcceleratedNetworking".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.enableAcceleratedNetworking
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("disableTcpStateTracking".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.disableTcpStateTracking
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableIPForwarding".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.enableIpForwarding
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("hostedWorkloads".equals(fieldName)) {
+                    List<String> hostedWorkloads = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkInterfacePropertiesFormatInner.hostedWorkloads = hostedWorkloads;
+                } else if ("dscpConfiguration".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.dscpConfiguration = SubResource.fromJson(reader);
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.resourceGuid = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.workloadType = reader.getString();
+                } else if ("nicType".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.nicType
+                        = NetworkInterfaceNicType.fromString(reader.getString());
+                } else if ("privateLinkService".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.privateLinkService
+                        = PrivateLinkServiceInner.fromJson(reader);
+                } else if ("migrationPhase".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.migrationPhase
+                        = NetworkInterfaceMigrationPhase.fromString(reader.getString());
+                } else if ("auxiliaryMode".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.auxiliaryMode
+                        = NetworkInterfaceAuxiliaryMode.fromString(reader.getString());
+                } else if ("auxiliarySku".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.auxiliarySku
+                        = NetworkInterfaceAuxiliarySku.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkInterfacePropertiesFormatInner;
+        });
     }
 }

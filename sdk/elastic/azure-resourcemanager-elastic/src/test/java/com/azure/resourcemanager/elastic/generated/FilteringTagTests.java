@@ -8,26 +8,25 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elastic.models.FilteringTag;
 import com.azure.resourcemanager.elastic.models.TagAction;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class FilteringTagTests {
-    @Test
-    public void testDeserialize() {
-        FilteringTag model =
-            BinaryData
-                .fromString("{\"name\":\"ixuigdtopbobj\",\"value\":\"hm\",\"action\":\"Include\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        FilteringTag model
+            = BinaryData.fromString("{\"name\":\"icohoqqnwvl\",\"value\":\"avwhheunm\",\"action\":\"Exclude\"}")
                 .toObject(FilteringTag.class);
-        Assertions.assertEquals("ixuigdtopbobj", model.name());
-        Assertions.assertEquals("hm", model.value());
-        Assertions.assertEquals(TagAction.INCLUDE, model.action());
+        Assertions.assertEquals("icohoqqnwvl", model.name());
+        Assertions.assertEquals("avwhheunm", model.value());
+        Assertions.assertEquals(TagAction.EXCLUDE, model.action());
     }
 
-    @Test
-    public void testSerialize() {
-        FilteringTag model = new FilteringTag().withName("ixuigdtopbobj").withValue("hm").withAction(TagAction.INCLUDE);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        FilteringTag model
+            = new FilteringTag().withName("icohoqqnwvl").withValue("avwhheunm").withAction(TagAction.EXCLUDE);
         model = BinaryData.fromObject(model).toObject(FilteringTag.class);
-        Assertions.assertEquals("ixuigdtopbobj", model.name());
-        Assertions.assertEquals("hm", model.value());
-        Assertions.assertEquals(TagAction.INCLUDE, model.action());
+        Assertions.assertEquals("icohoqqnwvl", model.name());
+        Assertions.assertEquals("avwhheunm", model.value());
+        Assertions.assertEquals(TagAction.EXCLUDE, model.action());
     }
 }

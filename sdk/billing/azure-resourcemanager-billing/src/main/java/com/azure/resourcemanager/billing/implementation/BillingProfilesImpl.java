@@ -11,33 +11,65 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.BillingProfilesClient;
 import com.azure.resourcemanager.billing.fluent.models.BillingProfileInner;
+import com.azure.resourcemanager.billing.fluent.models.DeleteBillingProfileEligibilityResultInner;
 import com.azure.resourcemanager.billing.models.BillingProfile;
 import com.azure.resourcemanager.billing.models.BillingProfiles;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.billing.models.DeleteBillingProfileEligibilityResult;
 
 public final class BillingProfilesImpl implements BillingProfiles {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingProfilesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BillingProfilesImpl.class);
 
     private final BillingProfilesClient innerClient;
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    public BillingProfilesImpl(
-        BillingProfilesClient innerClient, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    public BillingProfilesImpl(BillingProfilesClient innerClient,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<BillingProfile> listByBillingAccount(String billingAccountName) {
-        PagedIterable<BillingProfileInner> inner = this.serviceClient().listByBillingAccount(billingAccountName);
-        return Utils.mapPage(inner, inner1 -> new BillingProfileImpl(inner1, this.manager()));
+    public Response<DeleteBillingProfileEligibilityResult>
+        validateDeleteEligibilityWithResponse(String billingAccountName, String billingProfileName, Context context) {
+        Response<DeleteBillingProfileEligibilityResultInner> inner = this.serviceClient()
+            .validateDeleteEligibilityWithResponse(billingAccountName, billingProfileName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DeleteBillingProfileEligibilityResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<BillingProfile> listByBillingAccount(
-        String billingAccountName, String expand, Context context) {
-        PagedIterable<BillingProfileInner> inner =
-            this.serviceClient().listByBillingAccount(billingAccountName, expand, context);
-        return Utils.mapPage(inner, inner1 -> new BillingProfileImpl(inner1, this.manager()));
+    public DeleteBillingProfileEligibilityResult validateDeleteEligibility(String billingAccountName,
+        String billingProfileName) {
+        DeleteBillingProfileEligibilityResultInner inner
+            = this.serviceClient().validateDeleteEligibility(billingAccountName, billingProfileName);
+        if (inner != null) {
+            return new DeleteBillingProfileEligibilityResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public void deleteByResourceGroup(String billingAccountName, String billingProfileName) {
+        this.serviceClient().delete(billingAccountName, billingProfileName);
+    }
+
+    public void delete(String billingAccountName, String billingProfileName, Context context) {
+        this.serviceClient().delete(billingAccountName, billingProfileName, context);
+    }
+
+    public Response<BillingProfile> getWithResponse(String billingAccountName, String billingProfileName,
+        Context context) {
+        Response<BillingProfileInner> inner
+            = this.serviceClient().getWithResponse(billingAccountName, billingProfileName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BillingProfileImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public BillingProfile get(String billingAccountName, String billingProfileName) {
@@ -49,25 +81,10 @@ public final class BillingProfilesImpl implements BillingProfiles {
         }
     }
 
-    public Response<BillingProfile> getWithResponse(
-        String billingAccountName, String billingProfileName, String expand, Context context) {
-        Response<BillingProfileInner> inner =
-            this.serviceClient().getWithResponse(billingAccountName, billingProfileName, expand, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new BillingProfileImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public BillingProfile createOrUpdate(
-        String billingAccountName, String billingProfileName, BillingProfileInner parameters) {
-        BillingProfileInner inner =
-            this.serviceClient().createOrUpdate(billingAccountName, billingProfileName, parameters);
+    public BillingProfile createOrUpdate(String billingAccountName, String billingProfileName,
+        BillingProfileInner parameters) {
+        BillingProfileInner inner
+            = this.serviceClient().createOrUpdate(billingAccountName, billingProfileName, parameters);
         if (inner != null) {
             return new BillingProfileImpl(inner, this.manager());
         } else {
@@ -75,15 +92,28 @@ public final class BillingProfilesImpl implements BillingProfiles {
         }
     }
 
-    public BillingProfile createOrUpdate(
-        String billingAccountName, String billingProfileName, BillingProfileInner parameters, Context context) {
-        BillingProfileInner inner =
-            this.serviceClient().createOrUpdate(billingAccountName, billingProfileName, parameters, context);
+    public BillingProfile createOrUpdate(String billingAccountName, String billingProfileName,
+        BillingProfileInner parameters, Context context) {
+        BillingProfileInner inner
+            = this.serviceClient().createOrUpdate(billingAccountName, billingProfileName, parameters, context);
         if (inner != null) {
             return new BillingProfileImpl(inner, this.manager());
         } else {
             return null;
         }
+    }
+
+    public PagedIterable<BillingProfile> listByBillingAccount(String billingAccountName) {
+        PagedIterable<BillingProfileInner> inner = this.serviceClient().listByBillingAccount(billingAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingProfileImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<BillingProfile> listByBillingAccount(String billingAccountName, Boolean includeDeleted,
+        String filter, String orderBy, Long top, Long skip, Boolean count, String search, Context context) {
+        PagedIterable<BillingProfileInner> inner = this.serviceClient()
+            .listByBillingAccount(billingAccountName, includeDeleted, filter, orderBy, top, skip, count, search,
+                context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingProfileImpl(inner1, this.manager()));
     }
 
     private BillingProfilesClient serviceClient() {

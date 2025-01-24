@@ -7,20 +7,19 @@ package com.azure.resourcemanager.batch.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.ActivateApplicationPackageParameters;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ActivateApplicationPackageParametersTests {
-    @Test
-    public void testDeserialize() {
-        ActivateApplicationPackageParameters model =
-            BinaryData.fromString("{\"format\":\"ufufsrp\"}").toObject(ActivateApplicationPackageParameters.class);
-        Assertions.assertEquals("ufufsrp", model.format());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ActivateApplicationPackageParameters model
+            = BinaryData.fromString("{\"format\":\"ugpbkw\"}").toObject(ActivateApplicationPackageParameters.class);
+        Assertions.assertEquals("ugpbkw", model.format());
     }
 
-    @Test
-    public void testSerialize() {
-        ActivateApplicationPackageParameters model = new ActivateApplicationPackageParameters().withFormat("ufufsrp");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ActivateApplicationPackageParameters model = new ActivateApplicationPackageParameters().withFormat("ugpbkw");
         model = BinaryData.fromObject(model).toObject(ActivateApplicationPackageParameters.class);
-        Assertions.assertEquals("ufufsrp", model.format());
+        Assertions.assertEquals("ugpbkw", model.format());
     }
 }

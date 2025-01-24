@@ -5,119 +5,160 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.mariadb.fluent.models.WaitStatisticsInputProperties;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Input to get wait statistics. */
-@JsonFlatten
+/**
+ * Input to get wait statistics.
+ */
 @Fluent
-public class WaitStatisticsInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WaitStatisticsInput.class);
-
+public final class WaitStatisticsInput implements JsonSerializable<WaitStatisticsInput> {
     /*
-     * Observation start time.
+     * The properties of a wait statistics input.
      */
-    @JsonProperty(value = "properties.observationStartTime", required = true)
-    private OffsetDateTime observationStartTime;
+    private WaitStatisticsInputProperties innerProperties = new WaitStatisticsInputProperties();
 
-    /*
-     * Observation end time.
+    /**
+     * Creates an instance of WaitStatisticsInput class.
      */
-    @JsonProperty(value = "properties.observationEndTime", required = true)
-    private OffsetDateTime observationEndTime;
+    public WaitStatisticsInput() {
+    }
 
-    /*
-     * Aggregation interval type in ISO 8601 format.
+    /**
+     * Get the innerProperties property: The properties of a wait statistics input.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.aggregationWindow", required = true)
-    private String aggregationWindow;
+    private WaitStatisticsInputProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the observationStartTime property: Observation start time.
-     *
+     * 
      * @return the observationStartTime value.
      */
     public OffsetDateTime observationStartTime() {
-        return this.observationStartTime;
+        return this.innerProperties() == null ? null : this.innerProperties().observationStartTime();
     }
 
     /**
      * Set the observationStartTime property: Observation start time.
-     *
+     * 
      * @param observationStartTime the observationStartTime value to set.
      * @return the WaitStatisticsInput object itself.
      */
     public WaitStatisticsInput withObservationStartTime(OffsetDateTime observationStartTime) {
-        this.observationStartTime = observationStartTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticsInputProperties();
+        }
+        this.innerProperties().withObservationStartTime(observationStartTime);
         return this;
     }
 
     /**
      * Get the observationEndTime property: Observation end time.
-     *
+     * 
      * @return the observationEndTime value.
      */
     public OffsetDateTime observationEndTime() {
-        return this.observationEndTime;
+        return this.innerProperties() == null ? null : this.innerProperties().observationEndTime();
     }
 
     /**
      * Set the observationEndTime property: Observation end time.
-     *
+     * 
      * @param observationEndTime the observationEndTime value to set.
      * @return the WaitStatisticsInput object itself.
      */
     public WaitStatisticsInput withObservationEndTime(OffsetDateTime observationEndTime) {
-        this.observationEndTime = observationEndTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticsInputProperties();
+        }
+        this.innerProperties().withObservationEndTime(observationEndTime);
         return this;
     }
 
     /**
      * Get the aggregationWindow property: Aggregation interval type in ISO 8601 format.
-     *
+     * 
      * @return the aggregationWindow value.
      */
     public String aggregationWindow() {
-        return this.aggregationWindow;
+        return this.innerProperties() == null ? null : this.innerProperties().aggregationWindow();
     }
 
     /**
      * Set the aggregationWindow property: Aggregation interval type in ISO 8601 format.
-     *
+     * 
      * @param aggregationWindow the aggregationWindow value to set.
      * @return the WaitStatisticsInput object itself.
      */
     public WaitStatisticsInput withAggregationWindow(String aggregationWindow) {
-        this.aggregationWindow = aggregationWindow;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticsInputProperties();
+        }
+        this.innerProperties().withAggregationWindow(aggregationWindow);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (observationStartTime() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property observationStartTime in model WaitStatisticsInput"));
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model WaitStatisticsInput"));
+        } else {
+            innerProperties().validate();
         }
-        if (observationEndTime() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property observationEndTime in model WaitStatisticsInput"));
-        }
-        if (aggregationWindow() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property aggregationWindow in model WaitStatisticsInput"));
-        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WaitStatisticsInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WaitStatisticsInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WaitStatisticsInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WaitStatisticsInput.
+     */
+    public static WaitStatisticsInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WaitStatisticsInput deserializedWaitStatisticsInput = new WaitStatisticsInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedWaitStatisticsInput.innerProperties = WaitStatisticsInputProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWaitStatisticsInput;
+        });
     }
 }

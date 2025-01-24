@@ -5,41 +5,44 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.batch.fluent.models.BatchAccountUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Parameters for updating an Azure Batch account. */
+/**
+ * Parameters for updating an Azure Batch account.
+ */
 @Fluent
-public final class BatchAccountUpdateParameters {
+public final class BatchAccountUpdateParameters implements JsonSerializable<BatchAccountUpdateParameters> {
     /*
      * The user-specified tags associated with the account.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The properties of the account.
      */
-    @JsonProperty(value = "properties")
     private BatchAccountUpdateProperties innerProperties;
 
     /*
      * The identity of the Batch account.
      */
-    @JsonProperty(value = "identity")
     private BatchAccountIdentity identity;
 
-    /** Creates an instance of BatchAccountUpdateParameters class. */
+    /**
+     * Creates an instance of BatchAccountUpdateParameters class.
+     */
     public BatchAccountUpdateParameters() {
     }
 
     /**
      * Get the tags property: The user-specified tags associated with the account.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -48,7 +51,7 @@ public final class BatchAccountUpdateParameters {
 
     /**
      * Set the tags property: The user-specified tags associated with the account.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the BatchAccountUpdateParameters object itself.
      */
@@ -59,7 +62,7 @@ public final class BatchAccountUpdateParameters {
 
     /**
      * Get the innerProperties property: The properties of the account.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BatchAccountUpdateProperties innerProperties() {
@@ -68,7 +71,7 @@ public final class BatchAccountUpdateParameters {
 
     /**
      * Get the identity property: The identity of the Batch account.
-     *
+     * 
      * @return the identity value.
      */
     public BatchAccountIdentity identity() {
@@ -77,7 +80,7 @@ public final class BatchAccountUpdateParameters {
 
     /**
      * Set the identity property: The identity of the Batch account.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the BatchAccountUpdateParameters object itself.
      */
@@ -88,7 +91,7 @@ public final class BatchAccountUpdateParameters {
 
     /**
      * Get the autoStorage property: The properties related to the auto-storage account.
-     *
+     * 
      * @return the autoStorage value.
      */
     public AutoStorageBaseProperties autoStorage() {
@@ -97,7 +100,7 @@ public final class BatchAccountUpdateParameters {
 
     /**
      * Set the autoStorage property: The properties related to the auto-storage account.
-     *
+     * 
      * @param autoStorage the autoStorage value to set.
      * @return the BatchAccountUpdateParameters object itself.
      */
@@ -113,7 +116,7 @@ public final class BatchAccountUpdateParameters {
      * Get the encryption property: Configures how customer data is encrypted inside the Batch account. By default,
      * accounts are encrypted using a Microsoft managed key. For additional control, a customer-managed key can be used
      * instead.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperties encryption() {
@@ -124,7 +127,7 @@ public final class BatchAccountUpdateParameters {
      * Set the encryption property: Configures how customer data is encrypted inside the Batch account. By default,
      * accounts are encrypted using a Microsoft managed key. For additional control, a customer-managed key can be used
      * instead.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the BatchAccountUpdateParameters object itself.
      */
@@ -139,7 +142,7 @@ public final class BatchAccountUpdateParameters {
     /**
      * Get the allowedAuthenticationModes property: List of allowed authentication modes for the Batch account that can
      * be used to authenticate with the data plane. This does not affect authentication with the control plane.
-     *
+     * 
      * @return the allowedAuthenticationModes value.
      */
     public List<AuthenticationMode> allowedAuthenticationModes() {
@@ -149,12 +152,12 @@ public final class BatchAccountUpdateParameters {
     /**
      * Set the allowedAuthenticationModes property: List of allowed authentication modes for the Batch account that can
      * be used to authenticate with the data plane. This does not affect authentication with the control plane.
-     *
+     * 
      * @param allowedAuthenticationModes the allowedAuthenticationModes value to set.
      * @return the BatchAccountUpdateParameters object itself.
      */
-    public BatchAccountUpdateParameters withAllowedAuthenticationModes(
-        List<AuthenticationMode> allowedAuthenticationModes) {
+    public BatchAccountUpdateParameters
+        withAllowedAuthenticationModes(List<AuthenticationMode> allowedAuthenticationModes) {
         if (this.innerProperties() == null) {
             this.innerProperties = new BatchAccountUpdateProperties();
         }
@@ -164,7 +167,7 @@ public final class BatchAccountUpdateParameters {
 
     /**
      * Get the publicNetworkAccess property: If not specified, the default value is 'enabled'.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccessType publicNetworkAccess() {
@@ -173,7 +176,7 @@ public final class BatchAccountUpdateParameters {
 
     /**
      * Set the publicNetworkAccess property: If not specified, the default value is 'enabled'.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the BatchAccountUpdateParameters object itself.
      */
@@ -187,7 +190,7 @@ public final class BatchAccountUpdateParameters {
 
     /**
      * Get the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
-     *
+     * 
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
@@ -196,7 +199,7 @@ public final class BatchAccountUpdateParameters {
 
     /**
      * Set the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
-     *
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the BatchAccountUpdateParameters object itself.
      */
@@ -210,7 +213,7 @@ public final class BatchAccountUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -220,5 +223,49 @@ public final class BatchAccountUpdateParameters {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchAccountUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchAccountUpdateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchAccountUpdateParameters.
+     */
+    public static BatchAccountUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchAccountUpdateParameters deserializedBatchAccountUpdateParameters = new BatchAccountUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBatchAccountUpdateParameters.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBatchAccountUpdateParameters.innerProperties
+                        = BatchAccountUpdateProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedBatchAccountUpdateParameters.identity = BatchAccountIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBatchAccountUpdateParameters;
+        });
     }
 }

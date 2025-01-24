@@ -1,15 +1,327 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.8.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added `getEnpoint()` method to both App Configuration synchronous and asynchronous clients.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.7.3 (2024-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+
+## 1.7.2 (2024-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+
+## 1.7.1 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+
+## 1.7.0 (2024-08-07)
+
+### Features Added
+
+- Added a new service API support: `2023-11-01`.
+- Added a new method `listLabels` to support listing labels capabilities.
+- Added new class `SettingLabel` and `SettingLabelSelector`, and a new enum `SettingLabelFields`.
+- Added a new property `tagsFilter` to `SettingSelector` to support filtering settings or revisions with tags filter.
+- Added a new property `tags` to `ConfigurationSettingsFilter` to support filtering settings with tags filter for snapshot.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+- Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
+
+## 1.6.3 (2024-07-26)
+
+### Bugs Fixed
+
+Fixed `FeatureFlagConfigurationSetting`'s `setKey()` which should always add the feature flag prefix `.appconfig.featureflag/` before the input key. ([#33332](https://github.com/Azure/azure-sdk-for-java/issues/33332))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+
+## 1.6.2 (2024-06-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+
+## 1.6.1 (2024-05-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+
+## 1.6.0 (2024-04-09)
+
+### Features Added
+
+- Added Page ETag support in listing configuration setting, which returns empty body and status code `304 not modified`
+  if settings in the page and ETag of the page are not changed. If status code `200` returns in the page response,
+  which means page's settings and ETag have changed. A full page of settings and a new page ETag will be returned in
+  response.
+  Use the new parameter `matchConditions` in the `SettingSelector` to assign the page ETags in the request to service.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
+
+## 1.5.3 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+
+
+## 1.6.0-beta.1 (2024-03-04)
+
+### Features Added
+
+- Added Page ETag support in listing configuration setting, which returns empty body and status code `304 not modified` 
+  if settings in the page and ETag of the page are not changed. If status code `200` returns in the page response, 
+  which means page's settings and ETag have changed. A full page of settings and a new page ETag will be returned in
+  response.
+  Use the new parameter `matchConditions` in the `SettingSelector` to assign the page ETags in the request to service.
+
+
+## 1.5.2 (2024-02-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+
+
+## 1.5.1 (2023-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
+- Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+
+
+## 1.5.0 (2023-11-08)
+
+### Features Added
+
+- Added support for the `2023-10-01` service version.
+
+### Breaking Changes
+
+Note: Below breaking changes only affect the version `1.5.0-beta.2`.
+
+- Removed `azure-core-experimental` as a dependency and replaced usage of `PollResult` by `PollOperationDetails`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
+
+## 1.4.10 (2023-10-20)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+
+## 1.5.0-beta.2 (2023-10-11)
+
+### Features Added
+
+- Added `SnapshotFields` enum to support fields selection for snapshot.
+- Added a property `List<SnapshotFields> fields` in class `SnapshotSelector` to support fields selection for snapshot.
+
+### Breaking Changes
+Note: Below breaking changes only affect the version `1.5.0-beta.1`.
+
+- Changed `listConfigurationSettingsForSnapshot` method's `SettingFields[] fields` parameter type to `List<SettingFields> fields`.
+- Renamed `ConfigurationSettingSnapshot` to `ConfigurationSnapshot`.
+- Renamed `ConfigurationSettingSnapshot`'s properties name,
+  - `size` to `sizeInBytes`,
+  - `compositionType` to `snapshotComposition`.
+- Renamed `SnapshotSettingFilter` to `ConfigurationSettingsFilter`.
+- Added `azure-core-experimental` as a dependency and replaced usage of `CreateSnapshotOperationDetail` by `PollResult` 
+  and removed `CreateSnapshotOperationDetail` class.
+- Replaced
+   - `archiveSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean)` by `archiveSnapshotWithResponse(String, MatchConditions)`
+   - `recoverSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean)` by `recoverSnapshotWithResponse(String, MatchConditions)`
+   - `archiveSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean, Context)` by `archiveSnapshotWithResponse(String, MatchConditions, Context)`
+   - `recoverSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean, Context)` by `recoverSnapshotWithResponse(String, MatchConditions, Context)`
+
+### Bugs Fixed
+- `FeatureFlagConfigurationSetting` and `SecretReferenceConfigurationSetting` will now retain custom attributes in the setting value.
+  Previously, only attributes that were defined in the associated JSON schema were allowed and unknown attributes were discarded. ([#36725](https://github.com/Azure/azure-sdk-for-java/pull/36725))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.0`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.8`.
+
+## 1.4.9 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+
+## 1.4.8 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+
+## 1.4.7 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
+
+
+## 1.5.0-beta.1 (2023-07-11)
+
+### Features Added
+
+- Added new feature, `Configuration Setting Snapshot` to the library. You can create, get,
+  update(archive and recover) a snapshot, and list snapshots.
+- Added new APIs to support listing configuration settings by given snapshot name and setting 
+  fields.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Added a new dependency `azure-json`, version `1.0.1`.
+- Upgraded `azure-core` from `1.40.0` to version `1.40.1`.
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
+
+## 1.4.6 (2023-06-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+
+## 1.4.5 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
+## 1.4.4 (2023-04-18)
+
+### Breaking Changes
+
+- Fixed the bug that multiple authentications coexist per builder. App Configuration client builder should only
+  support single authentication per builder instance.
+- Moved the validation of authentication to client builder's `build()` method.
+
+### Bugs Fixed
+
+- Fixed a race condition of invalid signature issue by not sharing `Mac` instance in class-level per request operation.
+  `Mac` isn't thread-safe, multiple threads could use it at once.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+
+## 1.4.3 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 1.4.2 (2023-02-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+
+## 1.4.1 (2023-01-17)
+
+### Bugs Fixed
+- Fixed shared `SyncTokenToken` and `RetryPolicy` policies across Configuration clients. 
+
+## 1.4.0 (2023-01-11)
+
+### Features Added
+- Added `getEndpoint()` method to both App Configuration synchronous and asynchronous clients.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.35.0`.
+- Updated `azure-core-http-netty` to `1.12.8`.
 
 ## 1.3.9 (2022-11-09)
 
@@ -238,7 +550,7 @@ and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration) 
 
 ## 1.0.0-preview.5 (2019-10-11)
-- Fixed a explored bug that ConfigurationClientCredential is already pacakge-private. Using connection String instead.
+- Fixed a explored bug that ConfigurationClientCredential is already package-private. Using connection String instead.
 
 This package's 
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/README.md) 
@@ -261,7 +573,7 @@ demonstrate the new API.
 
 ## 1.0.0-preview.3 (2019-09-10)
 - Removed dependency on Netty.
-- Added logging when throwing `RutimeException`s.
+- Added logging when throwing `RuntimeException`s.
 
 This package's 
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/4375acbb70d4b85db238d6b5147b697d9355f45e/sdk/appconfiguration/azure-data-appconfiguration/README.md) 

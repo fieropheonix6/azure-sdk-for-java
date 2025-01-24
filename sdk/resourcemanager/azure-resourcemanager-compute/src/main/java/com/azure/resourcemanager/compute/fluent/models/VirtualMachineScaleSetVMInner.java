@@ -7,6 +7,9 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
@@ -19,65 +22,84 @@ import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMNetworkProfileConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProtectionPolicy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Describes a virtual machine scale set virtual machine. */
+/**
+ * Describes a virtual machine scale set virtual machine.
+ */
 @Fluent
 public final class VirtualMachineScaleSetVMInner extends Resource {
     /*
      * The virtual machine instance ID.
      */
-    @JsonProperty(value = "instanceId", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceId;
 
     /*
      * The virtual machine SKU.
      */
-    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
 
     /*
      * Describes the properties of a virtual machine scale set virtual machine.
      */
-    @JsonProperty(value = "properties")
     private VirtualMachineScaleSetVMPropertiesInner innerProperties;
 
     /*
      * Specifies information about the marketplace image used to create the virtual machine. This element is only used
      * for marketplace images. Before you can use a marketplace image from an API, you must enable the image for
-     * programmatic use.  In the Azure portal, find the marketplace image that you want to use and then click **Want to
+     * programmatic use. In the Azure portal, find the marketplace image that you want to use and then click **Want to
      * deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
      */
-    @JsonProperty(value = "plan")
     private Plan plan;
 
     /*
      * The virtual machine child extension resources.
      */
-    @JsonProperty(value = "resources", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineExtensionInner> resources;
 
     /*
      * The virtual machine zones.
      */
-    @JsonProperty(value = "zones", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> zones;
 
     /*
      * The identity of the virtual machine, if configured.
      */
-    @JsonProperty(value = "identity")
     private VirtualMachineIdentity identity;
 
-    /** Creates an instance of VirtualMachineScaleSetVMInner class. */
+    /*
+     * Etag is property returned in Update/Get response of the VMSS VM, so that customer can supply it in the header to
+     * ensure optimistic updates.
+     */
+    private String etag;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of VirtualMachineScaleSetVMInner class.
+     */
     public VirtualMachineScaleSetVMInner() {
     }
 
     /**
      * Get the instanceId property: The virtual machine instance ID.
-     *
+     * 
      * @return the instanceId value.
      */
     public String instanceId() {
@@ -86,7 +108,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the sku property: The virtual machine SKU.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -95,7 +117,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the innerProperties property: Describes the properties of a virtual machine scale set virtual machine.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualMachineScaleSetVMPropertiesInner innerProperties() {
@@ -108,7 +130,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then
      * click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
      * **Save**.
-     *
+     * 
      * @return the plan value.
      */
     public Plan plan() {
@@ -121,7 +143,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then
      * click **Want to deploy programmatically, Get Started -&gt;**. Enter any required information and then click
      * **Save**.
-     *
+     * 
      * @param plan the plan value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
@@ -132,7 +154,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the resources property: The virtual machine child extension resources.
-     *
+     * 
      * @return the resources value.
      */
     public List<VirtualMachineExtensionInner> resources() {
@@ -141,7 +163,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the zones property: The virtual machine zones.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -150,7 +172,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the identity property: The identity of the virtual machine, if configured.
-     *
+     * 
      * @return the identity value.
      */
     public VirtualMachineIdentity identity() {
@@ -159,7 +181,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Set the identity property: The identity of the virtual machine, if configured.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
@@ -168,14 +190,58 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the etag property: Etag is property returned in Update/Get response of the VMSS VM, so that customer can
+     * supply it in the header to ensure optimistic updates.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineScaleSetVMInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineScaleSetVMInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -184,7 +250,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the latestModelApplied property: Specifies whether the latest model has been applied to the virtual machine.
-     *
+     * 
      * @return the latestModelApplied value.
      */
     public Boolean latestModelApplied() {
@@ -193,7 +259,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the vmId property: Azure VM unique ID.
-     *
+     * 
      * @return the vmId value.
      */
     public String vmId() {
@@ -202,7 +268,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the instanceView property: The virtual machine instance view.
-     *
+     * 
      * @return the instanceView value.
      */
     public VirtualMachineScaleSetVMInstanceViewInner instanceView() {
@@ -211,7 +277,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the hardwareProfile property: Specifies the hardware settings for the virtual machine.
-     *
+     * 
      * @return the hardwareProfile value.
      */
     public HardwareProfile hardwareProfile() {
@@ -220,7 +286,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Set the hardwareProfile property: Specifies the hardware settings for the virtual machine.
-     *
+     * 
      * @param hardwareProfile the hardwareProfile value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
@@ -234,7 +300,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the storageProfile property: Specifies the storage settings for the virtual machine disks.
-     *
+     * 
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
@@ -243,7 +309,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Set the storageProfile property: Specifies the storage settings for the virtual machine disks.
-     *
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
@@ -259,7 +325,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * Get the additionalCapabilities property: Specifies additional capabilities enabled or disabled on the virtual
      * machine in the scale set. For instance: whether the virtual machine has the capability to support attaching
      * managed data disks with UltraSSD_LRS storage account type.
-     *
+     * 
      * @return the additionalCapabilities value.
      */
     public AdditionalCapabilities additionalCapabilities() {
@@ -270,7 +336,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * Set the additionalCapabilities property: Specifies additional capabilities enabled or disabled on the virtual
      * machine in the scale set. For instance: whether the virtual machine has the capability to support attaching
      * managed data disks with UltraSSD_LRS storage account type.
-     *
+     * 
      * @param additionalCapabilities the additionalCapabilities value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
@@ -284,7 +350,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the osProfile property: Specifies the operating system settings for the virtual machine.
-     *
+     * 
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
@@ -293,7 +359,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Set the osProfile property: Specifies the operating system settings for the virtual machine.
-     *
+     * 
      * @param osProfile the osProfile value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
@@ -307,7 +373,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the securityProfile property: Specifies the Security related profile settings for the virtual machine.
-     *
+     * 
      * @return the securityProfile value.
      */
     public SecurityProfile securityProfile() {
@@ -316,7 +382,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Set the securityProfile property: Specifies the Security related profile settings for the virtual machine.
-     *
+     * 
      * @param securityProfile the securityProfile value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
@@ -330,7 +396,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the networkProfile property: Specifies the network interfaces of the virtual machine.
-     *
+     * 
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
@@ -339,7 +405,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Set the networkProfile property: Specifies the network interfaces of the virtual machine.
-     *
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
@@ -353,7 +419,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the networkProfileConfiguration property: Specifies the network profile configuration of the virtual machine.
-     *
+     * 
      * @return the networkProfileConfiguration value.
      */
     public VirtualMachineScaleSetVMNetworkProfileConfiguration networkProfileConfiguration() {
@@ -362,7 +428,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Set the networkProfileConfiguration property: Specifies the network profile configuration of the virtual machine.
-     *
+     * 
      * @param networkProfileConfiguration the networkProfileConfiguration value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
@@ -376,9 +442,9 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     }
 
     /**
-     * Get the diagnosticsProfile property: Specifies the boot diagnostic settings state. &lt;br&gt;&lt;br&gt;Minimum
-     * api-version: 2015-06-15.
-     *
+     * Get the diagnosticsProfile property: Specifies the boot diagnostic settings state. Minimum api-version:
+     * 2015-06-15.
+     * 
      * @return the diagnosticsProfile value.
      */
     public DiagnosticsProfile diagnosticsProfile() {
@@ -386,9 +452,9 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     }
 
     /**
-     * Set the diagnosticsProfile property: Specifies the boot diagnostic settings state. &lt;br&gt;&lt;br&gt;Minimum
-     * api-version: 2015-06-15.
-     *
+     * Set the diagnosticsProfile property: Specifies the boot diagnostic settings state. Minimum api-version:
+     * 2015-06-15.
+     * 
      * @param diagnosticsProfile the diagnosticsProfile value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
@@ -404,12 +470,11 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * Get the availabilitySet property: Specifies information about the availability set that the virtual machine
      * should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes
      * to maximize availability. For more information about availability sets, see [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). &lt;br&gt;&lt;br&gt; For
-     * more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) &lt;br&gt;&lt;br&gt; Currently,
-     * a VM can only be added to availability set at creation time. An existing VM cannot be added to an availability
-     * set.
-     *
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). For more information on
+     * Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates). Currently, a VM can only be
+     * added to availability set at creation time. An existing VM cannot be added to an availability set.
+     * 
      * @return the availabilitySet value.
      */
     public SubResource availabilitySet() {
@@ -420,12 +485,11 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * Set the availabilitySet property: Specifies information about the availability set that the virtual machine
      * should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes
      * to maximize availability. For more information about availability sets, see [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). &lt;br&gt;&lt;br&gt; For
-     * more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) &lt;br&gt;&lt;br&gt; Currently,
-     * a VM can only be added to availability set at creation time. An existing VM cannot be added to an availability
-     * set.
-     *
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). For more information on
+     * Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates). Currently, a VM can only be
+     * added to availability set at creation time. An existing VM cannot be added to an availability set.
+     * 
      * @param availabilitySet the availabilitySet value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
@@ -439,7 +503,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -456,7 +520,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
      * Minimum api-version: 2015-06-15.
-     *
+     * 
      * @return the licenseType value.
      */
     public String licenseType() {
@@ -473,7 +537,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
      * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
      * Minimum api-version: 2015-06-15.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
@@ -488,7 +552,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     /**
      * Get the modelDefinitionApplied property: Specifies whether the model applied to the virtual machine is the model
      * of the virtual machine scale set or the customized model for the virtual machine.
-     *
+     * 
      * @return the modelDefinitionApplied value.
      */
     public String modelDefinitionApplied() {
@@ -497,7 +561,7 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the protectionPolicy property: Specifies the protection policy of the virtual machine.
-     *
+     * 
      * @return the protectionPolicy value.
      */
     public VirtualMachineScaleSetVMProtectionPolicy protectionPolicy() {
@@ -506,12 +570,12 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Set the protectionPolicy property: Specifies the protection policy of the virtual machine.
-     *
+     * 
      * @param protectionPolicy the protectionPolicy value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
-    public VirtualMachineScaleSetVMInner withProtectionPolicy(
-        VirtualMachineScaleSetVMProtectionPolicy protectionPolicy) {
+    public VirtualMachineScaleSetVMInner
+        withProtectionPolicy(VirtualMachineScaleSetVMProtectionPolicy protectionPolicy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineScaleSetVMPropertiesInner();
         }
@@ -521,8 +585,8 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Get the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
-     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
-     *
+     * secrets in here. Minimum api-version: 2021-03-01.
+     * 
      * @return the userData value.
      */
     public String userData() {
@@ -531,8 +595,8 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
 
     /**
      * Set the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
-     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
-     *
+     * secrets in here. Minimum api-version: 2021-03-01.
+     * 
      * @param userData the userData value to set.
      * @return the VirtualMachineScaleSetVMInner object itself.
      */
@@ -545,8 +609,17 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     }
 
     /**
+     * Get the timeCreated property: Specifies the time at which the Virtual Machine resource was created.
+     * 
+     * @return the timeCreated value.
+     */
+    public OffsetDateTime timeCreated() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeCreated();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -565,5 +638,76 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("plan", this.plan);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetVMInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetVMInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetVMInner.
+     */
+    public static VirtualMachineScaleSetVMInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetVMInner deserializedVirtualMachineScaleSetVMInner
+                = new VirtualMachineScaleSetVMInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualMachineScaleSetVMInner.withTags(tags);
+                } else if ("instanceId".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.instanceId = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.sku = Sku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.innerProperties
+                        = VirtualMachineScaleSetVMPropertiesInner.fromJson(reader);
+                } else if ("plan".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.plan = Plan.fromJson(reader);
+                } else if ("resources".equals(fieldName)) {
+                    List<VirtualMachineExtensionInner> resources
+                        = reader.readArray(reader1 -> VirtualMachineExtensionInner.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetVMInner.resources = resources;
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualMachineScaleSetVMInner.zones = zones;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.identity = VirtualMachineIdentity.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetVMInner;
+        });
     }
 }

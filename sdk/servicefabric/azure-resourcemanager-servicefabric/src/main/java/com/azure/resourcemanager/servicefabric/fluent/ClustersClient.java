@@ -6,66 +6,76 @@ package com.azure.resourcemanager.servicefabric.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicefabric.fluent.models.ClusterInner;
-import com.azure.resourcemanager.servicefabric.fluent.models.ClusterListResultInner;
 import com.azure.resourcemanager.servicefabric.fluent.models.UpgradableVersionPathResultInner;
 import com.azure.resourcemanager.servicefabric.models.ClusterUpdateParameters;
 import com.azure.resourcemanager.servicefabric.models.UpgradableVersionsDescription;
 
-/** An instance of this class provides access to all the operations defined in ClustersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ClustersClient.
+ */
 public interface ClustersClient {
     /**
+     * Gets a Service Fabric cluster resource.
+     * 
      * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Service Fabric cluster resource created or in the process of being created in the specified resource
+     * group along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
+        Context context);
+
+    /**
+     * Gets a Service Fabric cluster resource.
+     * 
+     * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric cluster resource created or in the process of being created in the specified resource
-     *     group.
+     * group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ClusterInner getByResourceGroup(String resourceGroupName, String clusterName);
 
     /**
-     * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric cluster resource created or in the process of being created in the specified resource
-     *     group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterName, Context context);
-
-    /**
+     * Creates or updates a Service Fabric cluster resource.
+     * 
      * Create or update a Service Fabric cluster resource with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param parameters The cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource.
+     * @return the {@link SyncPoller} for polling of the cluster resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterName, ClusterInner parameters);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(String resourceGroupName, String clusterName,
+        ClusterInner parameters);
 
     /**
+     * Creates or updates a Service Fabric cluster resource.
+     * 
      * Create or update a Service Fabric cluster resource with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param parameters The cluster resource.
@@ -73,15 +83,17 @@ public interface ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource.
+     * @return the {@link SyncPoller} for polling of the cluster resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterName, ClusterInner parameters, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(String resourceGroupName, String clusterName,
+        ClusterInner parameters, Context context);
 
     /**
+     * Creates or updates a Service Fabric cluster resource.
+     * 
      * Create or update a Service Fabric cluster resource with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param parameters The cluster resource.
@@ -94,8 +106,10 @@ public interface ClustersClient {
     ClusterInner createOrUpdate(String resourceGroupName, String clusterName, ClusterInner parameters);
 
     /**
+     * Creates or updates a Service Fabric cluster resource.
+     * 
      * Create or update a Service Fabric cluster resource with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param parameters The cluster resource.
@@ -109,45 +123,51 @@ public interface ClustersClient {
     ClusterInner createOrUpdate(String resourceGroupName, String clusterName, ClusterInner parameters, Context context);
 
     /**
+     * Updates the configuration of a Service Fabric cluster resource.
+     * 
      * Update the configuration of a Service Fabric cluster resource with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param parameters The parameters which contains the property value and property name which used to update the
-     *     cluster configuration.
+     * cluster configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource.
+     * @return the {@link SyncPoller} for polling of the cluster resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
-        String resourceGroupName, String clusterName, ClusterUpdateParameters parameters);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
+        ClusterUpdateParameters parameters);
 
     /**
+     * Updates the configuration of a Service Fabric cluster resource.
+     * 
      * Update the configuration of a Service Fabric cluster resource with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param parameters The parameters which contains the property value and property name which used to update the
-     *     cluster configuration.
+     * cluster configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the cluster resource.
+     * @return the {@link SyncPoller} for polling of the cluster resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
-        String resourceGroupName, String clusterName, ClusterUpdateParameters parameters, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
+        ClusterUpdateParameters parameters, Context context);
 
     /**
+     * Updates the configuration of a Service Fabric cluster resource.
+     * 
      * Update the configuration of a Service Fabric cluster resource with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param parameters The parameters which contains the property value and property name which used to update the
-     *     cluster configuration.
+     * cluster configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -157,12 +177,14 @@ public interface ClustersClient {
     ClusterInner update(String resourceGroupName, String clusterName, ClusterUpdateParameters parameters);
 
     /**
+     * Updates the configuration of a Service Fabric cluster resource.
+     * 
      * Update the configuration of a Service Fabric cluster resource with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param parameters The parameters which contains the property value and property name which used to update the
-     *     cluster configuration.
+     * cluster configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -170,12 +192,30 @@ public interface ClustersClient {
      * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner update(
-        String resourceGroupName, String clusterName, ClusterUpdateParameters parameters, Context context);
+    ClusterInner update(String resourceGroupName, String clusterName, ClusterUpdateParameters parameters,
+        Context context);
 
     /**
+     * Deletes a Service Fabric cluster resource.
+     * 
      * Delete a Service Fabric cluster resource with the specified name.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Deletes a Service Fabric cluster resource.
+     * 
+     * Delete a Service Fabric cluster resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -186,71 +226,93 @@ public interface ClustersClient {
     void delete(String resourceGroupName, String clusterName);
 
     /**
-     * Delete a Service Fabric cluster resource with the specified name.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String clusterName, Context context);
-
-    /**
+     * Gets the list of Service Fabric cluster resources created in the specified resource group.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the resource group.
+     * @return all Service Fabric cluster resources created or in the process of being created in the resource group as
+     * paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterListResultInner listByResourceGroup(String resourceGroupName);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ClusterInner> listByResourceGroup(String resourceGroupName);
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified resource group.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the resource group.
+     * @return all Service Fabric cluster resources created or in the process of being created in the resource group as
+     * paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterListResultInner> listByResourceGroupWithResponse(String resourceGroupName, Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ClusterInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified subscription.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the subscription.
+     * @return all Service Fabric cluster resources created or in the process of being created in the subscription as
+     * paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterListResultInner list();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ClusterInner> list();
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified subscription.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the subscription.
+     * @return all Service Fabric cluster resources created or in the process of being created in the subscription as
+     * paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterListResultInner> listWithResponse(Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ClusterInner> list(Context context);
 
     /**
+     * Operation to get the minimum and maximum upgradable version from the current cluster version, or the required
+     * path to get to the an specific target version.
+     * 
      * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
      * version. If a target is given, it will provide the required path to get from the current cluster version to the
      * target version.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @param versionsDescription The upgrade path description with target version.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of intermediate cluster code versions for an upgrade or downgrade along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<UpgradableVersionPathResultInner> listUpgradableVersionsWithResponse(String resourceGroupName,
+        String clusterName, UpgradableVersionsDescription versionsDescription, Context context);
+
+    /**
+     * Operation to get the minimum and maximum upgradable version from the current cluster version, or the required
+     * path to get to the an specific target version.
+     * 
+     * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
+     * version. If a target is given, it will provide the required path to get from the current cluster version to the
+     * target version.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -260,25 +322,4 @@ public interface ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     UpgradableVersionPathResultInner listUpgradableVersions(String resourceGroupName, String clusterName);
-
-    /**
-     * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
-     * version. If a target is given, it will provide the required path to get from the current cluster version to the
-     * target version.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster resource.
-     * @param versionsDescription The upgrade path description with target version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of intermediate cluster code versions for an upgrade or downgrade.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UpgradableVersionPathResultInner> listUpgradableVersionsWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        UpgradableVersionsDescription versionsDescription,
-        Context context);
 }

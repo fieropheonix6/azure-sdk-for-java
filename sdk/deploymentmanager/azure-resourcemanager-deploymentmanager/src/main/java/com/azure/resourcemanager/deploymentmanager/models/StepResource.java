@@ -68,6 +68,13 @@ public interface StepResource {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.deploymentmanager.fluent.models.StepResourceInner object.
      *
      * @return the inner object.
@@ -75,18 +82,16 @@ public interface StepResource {
     StepResourceInner innerModel();
 
     /** The entirety of the StepResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
+
     /** The StepResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the StepResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the StepResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -105,6 +110,7 @@ public interface StepResource {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the StepResource definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -115,6 +121,7 @@ public interface StepResource {
              */
             WithProperties withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the StepResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -125,6 +132,7 @@ public interface StepResource {
              */
             WithCreate withProperties(StepProperties properties);
         }
+
         /**
          * The stage of the StepResource definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -145,6 +153,7 @@ public interface StepResource {
              */
             StepResource create(Context context);
         }
+
         /** The stage of the StepResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -156,6 +165,7 @@ public interface StepResource {
             WithCreate withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Begins update for the StepResource resource.
      *
@@ -180,6 +190,7 @@ public interface StepResource {
          */
         StepResource apply(Context context);
     }
+
     /** The StepResource update stages. */
     interface UpdateStages {
         /** The stage of the StepResource update allowing to specify tags. */
@@ -192,6 +203,7 @@ public interface StepResource {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the StepResource update allowing to specify properties. */
         interface WithProperties {
             /**
@@ -203,6 +215,7 @@ public interface StepResource {
             Update withProperties(StepProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for StagingEnvironmentPolicy. */
+/**
+ * State indicating whether staging environments are allowed or not allowed for a static web app.
+ */
 public enum StagingEnvironmentPolicy {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled");
 
-    /** The actual serialized value for a StagingEnvironmentPolicy instance. */
+    /**
+     * The actual serialized value for a StagingEnvironmentPolicy instance.
+     */
     private final String value;
 
     StagingEnvironmentPolicy(String value) {
@@ -24,12 +29,14 @@ public enum StagingEnvironmentPolicy {
 
     /**
      * Parses a serialized value to a StagingEnvironmentPolicy instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed StagingEnvironmentPolicy object, or null if unable to parse.
      */
-    @JsonCreator
     public static StagingEnvironmentPolicy fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         StagingEnvironmentPolicy[] items = StagingEnvironmentPolicy.values();
         for (StagingEnvironmentPolicy item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum StagingEnvironmentPolicy {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

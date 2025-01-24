@@ -12,35 +12,39 @@ import com.azure.resourcemanager.synapse.models.NodeSizeFamily;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for BigDataPools CreateOrUpdate. */
+/**
+ * Samples for BigDataPools CreateOrUpdate.
+ */
 public final class BigDataPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/CreateOrUpdateBigDataPool.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/CreateOrUpdateBigDataPool.
+     * json
      */
     /**
      * Sample code: Create or update a Big Data pool.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void createOrUpdateABigDataPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .bigDataPools()
+        manager.bigDataPools()
             .define("ExamplePool")
             .withRegion("West US 2")
             .withExistingWorkspace("ExampleResourceGroup", "ExampleWorkspace")
-            .withTags(mapOf("key", "value"))
+            .withTags(mapOf("key", "fakeTokenPlaceholder"))
             .withAutoScale(new AutoScaleProperties().withMinNodeCount(3).withEnabled(true).withMaxNodeCount(50))
             .withAutoPause(new AutoPauseProperties().withDelayInMinutes(15).withEnabled(true))
             .withSparkEventsFolder("/events")
             .withNodeCount(4)
             .withLibraryRequirements(new LibraryRequirements().withContent("").withFilename("requirements.txt"))
-            .withSparkVersion("2.4")
+            .withSparkVersion("3.3")
             .withDefaultSparkLogFolder("/logs")
             .withNodeSize(NodeSize.MEDIUM)
             .withNodeSizeFamily(NodeSizeFamily.MEMORY_OPTIMIZED)
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

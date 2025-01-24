@@ -7,26 +7,23 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.EarlyTerminationPolicy;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EarlyTerminationPolicyTests {
-    @Test
-    public void testDeserialize() {
-        EarlyTerminationPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"policyType\":\"EarlyTerminationPolicy\",\"delayEvaluation\":1491450827,\"evaluationInterval\":935954000}")
-                .toObject(EarlyTerminationPolicy.class);
-        Assertions.assertEquals(1491450827, model.delayEvaluation());
-        Assertions.assertEquals(935954000, model.evaluationInterval());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        EarlyTerminationPolicy model = BinaryData.fromString(
+            "{\"policyType\":\"EarlyTerminationPolicy\",\"evaluationInterval\":1134110366,\"delayEvaluation\":1352080232}")
+            .toObject(EarlyTerminationPolicy.class);
+        Assertions.assertEquals(1134110366, model.evaluationInterval());
+        Assertions.assertEquals(1352080232, model.delayEvaluation());
     }
 
-    @Test
-    public void testSerialize() {
-        EarlyTerminationPolicy model =
-            new EarlyTerminationPolicy().withDelayEvaluation(1491450827).withEvaluationInterval(935954000);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        EarlyTerminationPolicy model
+            = new EarlyTerminationPolicy().withEvaluationInterval(1134110366).withDelayEvaluation(1352080232);
         model = BinaryData.fromObject(model).toObject(EarlyTerminationPolicy.class);
-        Assertions.assertEquals(1491450827, model.delayEvaluation());
-        Assertions.assertEquals(935954000, model.evaluationInterval());
+        Assertions.assertEquals(1134110366, model.evaluationInterval());
+        Assertions.assertEquals(1352080232, model.delayEvaluation());
     }
 }

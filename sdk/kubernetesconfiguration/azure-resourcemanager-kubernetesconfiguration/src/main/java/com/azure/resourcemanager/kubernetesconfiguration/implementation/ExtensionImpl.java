@@ -11,6 +11,7 @@ import com.azure.resourcemanager.kubernetesconfiguration.models.Extension;
 import com.azure.resourcemanager.kubernetesconfiguration.models.ExtensionPropertiesAksAssignedIdentity;
 import com.azure.resourcemanager.kubernetesconfiguration.models.ExtensionStatus;
 import com.azure.resourcemanager.kubernetesconfiguration.models.Identity;
+import com.azure.resourcemanager.kubernetesconfiguration.models.Plan;
 import com.azure.resourcemanager.kubernetesconfiguration.models.ProvisioningState;
 import com.azure.resourcemanager.kubernetesconfiguration.models.Scope;
 import java.util.Collections;
@@ -22,8 +23,7 @@ public final class ExtensionImpl implements Extension {
 
     private final com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager serviceManager;
 
-    ExtensionImpl(
-        ExtensionInner innerObject,
+    ExtensionImpl(ExtensionInner innerObject,
         com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -47,6 +47,10 @@ public final class ExtensionImpl implements Extension {
 
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public Plan plan() {
+        return this.innerModel().plan();
     }
 
     public String extensionType() {
@@ -87,8 +91,8 @@ public final class ExtensionImpl implements Extension {
         }
     }
 
-    public String installedVersion() {
-        return this.innerModel().installedVersion();
+    public String currentVersion() {
+        return this.innerModel().currentVersion();
     }
 
     public ProvisioningState provisioningState() {
@@ -123,6 +127,10 @@ public final class ExtensionImpl implements Extension {
 
     public ExtensionPropertiesAksAssignedIdentity aksAssignedIdentity() {
         return this.innerModel().aksAssignedIdentity();
+    }
+
+    public Boolean isSystemExtension() {
+        return this.innerModel().isSystemExtension();
     }
 
     public ExtensionInner innerModel() {

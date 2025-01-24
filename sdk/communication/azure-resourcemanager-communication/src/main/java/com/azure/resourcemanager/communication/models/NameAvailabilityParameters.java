@@ -5,18 +5,34 @@
 package com.azure.resourcemanager.communication.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Data POST-ed to the nameAvailability action. */
+/**
+ * Data POST-ed to the nameAvailability action.
+ */
 @Fluent
 public final class NameAvailabilityParameters extends CheckNameAvailabilityRequest {
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of NameAvailabilityParameters class.
+     */
+    public NameAvailabilityParameters() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NameAvailabilityParameters withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NameAvailabilityParameters withType(String type) {
         super.withType(type);
@@ -25,11 +41,49 @@ public final class NameAvailabilityParameters extends CheckNameAvailabilityReque
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("type", type());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NameAvailabilityParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NameAvailabilityParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NameAvailabilityParameters.
+     */
+    public static NameAvailabilityParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NameAvailabilityParameters deserializedNameAvailabilityParameters = new NameAvailabilityParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNameAvailabilityParameters.withName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedNameAvailabilityParameters.withType(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNameAvailabilityParameters;
+        });
     }
 }

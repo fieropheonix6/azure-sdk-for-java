@@ -22,20 +22,27 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Rules. */
+/**
+ * An instance of this class provides access to all the operations defined in Rules.
+ */
 public final class RulesImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ServiceBusManagementClientImpl client;
 
     /**
      * Initializes an instance of RulesImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RulesImpl(ServiceBusManagementClientImpl client) {
@@ -51,89 +58,61 @@ public final class RulesImpl {
     @ServiceInterface(name = "ServiceBusManagement")
     public interface RulesService {
         @Get("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<Object>> get(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("topicName") String topicName,
-            @PathParam("subscriptionName") String subscriptionName,
-            @PathParam("ruleName") String ruleName,
-            @QueryParam("enrich") Boolean enrich,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RuleDescriptionEntryImpl>> get(@HostParam("endpoint") String endpoint,
+            @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
+            @PathParam("ruleName") String ruleName, @QueryParam("enrich") Boolean enrich,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<Object> getSync(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("topicName") String topicName,
-            @PathParam("subscriptionName") String subscriptionName,
-            @PathParam("ruleName") String ruleName,
-            @QueryParam("enrich") Boolean enrich,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Response<RuleDescriptionEntryImpl> getSync(@HostParam("endpoint") String endpoint,
+            @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
+            @PathParam("ruleName") String ruleName, @QueryParam("enrich") Boolean enrich,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<Object>> put(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("topicName") String topicName,
-            @PathParam("subscriptionName") String subscriptionName,
-            @PathParam("ruleName") String ruleName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-Match") String ifMatch,
-            @BodyParam("application/atom+xml") Object requestBody,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RuleDescriptionEntryImpl>> put(@HostParam("endpoint") String endpoint,
+            @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
+            @PathParam("ruleName") String ruleName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @BodyParam("application/atom+xml") Object requestBody,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<Object> putSync(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("topicName") String topicName,
-            @PathParam("subscriptionName") String subscriptionName,
-            @PathParam("ruleName") String ruleName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-Match") String ifMatch,
-            @BodyParam("application/atom+xml") Object requestBody,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Response<RuleDescriptionEntryImpl> putSync(@HostParam("endpoint") String endpoint,
+            @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
+            @PathParam("ruleName") String ruleName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @BodyParam("application/atom+xml") Object requestBody,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<Object>> delete(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("topicName") String topicName,
-            @PathParam("subscriptionName") String subscriptionName,
-            @PathParam("ruleName") String ruleName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RuleDescriptionEntryImpl>> delete(@HostParam("endpoint") String endpoint,
+            @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
+            @PathParam("ruleName") String ruleName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<Object> deleteSync(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("topicName") String topicName,
-            @PathParam("subscriptionName") String subscriptionName,
-            @PathParam("ruleName") String ruleName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Response<RuleDescriptionEntryImpl> deleteSync(@HostParam("endpoint") String endpoint,
+            @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
+            @PathParam("ruleName") String ruleName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get Rule
-     *
-     * <p>Get the details about the rule of a subscription of a topic.
-     *
+     * 
+     * Get the details about the rule of a subscription of a topic.
+     * 
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param ruleName name of the filter.
@@ -142,30 +121,20 @@ public final class RulesImpl {
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details about the rule of a subscription of a topic along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getWithResponseAsync(
-        String topicName, String subscriptionName, String ruleName, Boolean enrich) {
-        final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(
-            context ->
-                service.get(
-                    this.client.getEndpoint(),
-                    topicName,
-                    subscriptionName,
-                    ruleName,
-                    enrich,
-                    this.client.getApiVersion(),
-                    accept,
-                    context));
+    public Mono<Response<RuleDescriptionEntryImpl>> getWithResponseAsync(String topicName, String subscriptionName,
+        String ruleName, Boolean enrich) {
+        return FluxUtil
+            .withContext(context -> getWithResponseAsync(topicName, subscriptionName, ruleName, enrich, context));
     }
 
     /**
      * Get Rule
-     *
-     * <p>Get the details about the rule of a subscription of a topic.
-     *
+     * 
+     * Get the details about the rule of a subscription of a topic.
+     * 
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param ruleName name of the filter.
@@ -175,28 +144,21 @@ public final class RulesImpl {
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details about the rule of a subscription of a topic along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> getWithResponseAsync(
-        String topicName, String subscriptionName, String ruleName, Boolean enrich, Context context) {
+    public Mono<Response<RuleDescriptionEntryImpl>> getWithResponseAsync(String topicName, String subscriptionName,
+        String ruleName, Boolean enrich, Context context) {
         final String accept = "application/xml, application/atom+xml";
-        return service.get(
-            this.client.getEndpoint(),
-            topicName,
-            subscriptionName,
-            ruleName,
-            enrich,
-            this.client.getApiVersion(),
-            accept,
-            context);
+        return service.get(this.client.getEndpoint(), topicName, subscriptionName, ruleName, enrich,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get Rule
-     *
-     * <p>Get the details about the rule of a subscription of a topic.
-     *
+     * 
+     * Get the details about the rule of a subscription of a topic.
+     * 
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param ruleName name of the filter.
@@ -207,16 +169,17 @@ public final class RulesImpl {
      * @return the details about the rule of a subscription of a topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getAsync(String topicName, String subscriptionName, String ruleName, Boolean enrich) {
+    public Mono<RuleDescriptionEntryImpl> getAsync(String topicName, String subscriptionName, String ruleName,
+        Boolean enrich) {
         return getWithResponseAsync(topicName, subscriptionName, ruleName, enrich)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get Rule
-     *
-     * <p>Get the details about the rule of a subscription of a topic.
-     *
+     * 
+     * Get the details about the rule of a subscription of a topic.
+     * 
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param ruleName name of the filter.
@@ -228,46 +191,17 @@ public final class RulesImpl {
      * @return the details about the rule of a subscription of a topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> getAsync(
-        String topicName, String subscriptionName, String ruleName, Boolean enrich, Context context) {
+    public Mono<RuleDescriptionEntryImpl> getAsync(String topicName, String subscriptionName, String ruleName,
+        Boolean enrich, Context context) {
         return getWithResponseAsync(topicName, subscriptionName, ruleName, enrich, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get Rule
-     *
-     * <p>Get the details about the rule of a subscription of a topic.
-     *
-     * @param topicName name of the topic.
-     * @param subscriptionName name of the subscription.
-     * @param ruleName name of the filter.
-     * @param enrich A query parameter that sets enrich to true or false.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details about the rule of a subscription of a topic along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> getSyncWithResponse(
-        String topicName, String subscriptionName, String ruleName, Boolean enrich) {
-        final String accept = "application/xml, application/atom+xml";
-        return service.getSync(
-            this.client.getEndpoint(),
-            topicName,
-            subscriptionName,
-            ruleName,
-            enrich,
-            this.client.getApiVersion(),
-            accept,
-            Context.NONE);
-    }
-
-    /**
-     * Get Rule
-     *
-     * <p>Get the details about the rule of a subscription of a topic.
-     *
+     * 
+     * Get the details about the rule of a subscription of a topic.
+     * 
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param ruleName name of the filter.
@@ -279,25 +213,18 @@ public final class RulesImpl {
      * @return the details about the rule of a subscription of a topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> getSyncWithResponse(
-        String topicName, String subscriptionName, String ruleName, Boolean enrich, Context context) {
+    public Response<RuleDescriptionEntryImpl> getWithResponse(String topicName, String subscriptionName,
+        String ruleName, Boolean enrich, Context context) {
         final String accept = "application/xml, application/atom+xml";
-        return service.getSync(
-            this.client.getEndpoint(),
-            topicName,
-            subscriptionName,
-            ruleName,
-            enrich,
-            this.client.getApiVersion(),
-            accept,
-            context);
+        return service.getSync(this.client.getEndpoint(), topicName, subscriptionName, ruleName, enrich,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get Rule
-     *
-     * <p>Get the details about the rule of a subscription of a topic.
-     *
+     * 
+     * Get the details about the rule of a subscription of a topic.
+     * 
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param ruleName name of the filter.
@@ -308,308 +235,179 @@ public final class RulesImpl {
      * @return the details about the rule of a subscription of a topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object getSync(String topicName, String subscriptionName, String ruleName, Boolean enrich) {
-        return getSyncWithResponse(topicName, subscriptionName, ruleName, enrich, Context.NONE).getValue();
-    }
-
-    /**
-     * Get Rule
-     *
-     * <p>Get the details about the rule of a subscription of a topic.
-     *
-     * @param topicName name of the topic.
-     * @param subscriptionName name of the subscription.
-     * @param ruleName name of the filter.
-     * @param enrich A query parameter that sets enrich to true or false.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details about the rule of a subscription of a topic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object getSync(String topicName, String subscriptionName, String ruleName, Boolean enrich, Context context) {
-        return getSyncWithResponse(topicName, subscriptionName, ruleName, enrich, context).getValue();
+    public RuleDescriptionEntryImpl get(String topicName, String subscriptionName, String ruleName, Boolean enrich) {
+        return getWithResponse(topicName, subscriptionName, ruleName, enrich, Context.NONE).getValue();
     }
 
     /**
      * Create or update a rule.
-     *
+     * 
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param ruleName name of the filter.
      * @param requestBody Parameters required to make or edit a rule.
      * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents an entry in the feed when querying rules along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> putWithResponseAsync(
-        String topicName, String subscriptionName, String ruleName, Object requestBody, String ifMatch) {
-        final String accept = "application/xml, application/atom+xml";
+    public Mono<Response<RuleDescriptionEntryImpl>> putWithResponseAsync(String topicName, String subscriptionName,
+        String ruleName, Object requestBody, String ifMatch) {
         return FluxUtil.withContext(
-            context ->
-                service.put(
-                    this.client.getEndpoint(),
-                    topicName,
-                    subscriptionName,
-                    ruleName,
-                    this.client.getApiVersion(),
-                    ifMatch,
-                    requestBody,
-                    accept,
-                    context));
+            context -> putWithResponseAsync(topicName, subscriptionName, ruleName, requestBody, ifMatch, context));
     }
 
     /**
      * Create or update a rule.
-     *
+     * 
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param ruleName name of the filter.
      * @param requestBody Parameters required to make or edit a rule.
      * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents an entry in the feed when querying rules along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> putWithResponseAsync(
-        String topicName,
-        String subscriptionName,
-        String ruleName,
-        Object requestBody,
-        String ifMatch,
-        Context context) {
+    public Mono<Response<RuleDescriptionEntryImpl>> putWithResponseAsync(String topicName, String subscriptionName,
+        String ruleName, Object requestBody, String ifMatch, Context context) {
         final String accept = "application/xml, application/atom+xml";
-        return service.put(
-            this.client.getEndpoint(),
-            topicName,
-            subscriptionName,
-            ruleName,
-            this.client.getApiVersion(),
-            ifMatch,
-            requestBody,
-            accept,
-            context);
+        return service.put(this.client.getEndpoint(), topicName, subscriptionName, ruleName,
+            this.client.getApiVersion(), ifMatch, requestBody, accept, context);
     }
 
     /**
      * Create or update a rule.
-     *
+     * 
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param ruleName name of the filter.
      * @param requestBody Parameters required to make or edit a rule.
      * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return represents an entry in the feed when querying rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> putAsync(
-        String topicName, String subscriptionName, String ruleName, Object requestBody, String ifMatch) {
+    public Mono<RuleDescriptionEntryImpl> putAsync(String topicName, String subscriptionName, String ruleName,
+        Object requestBody, String ifMatch) {
         return putWithResponseAsync(topicName, subscriptionName, ruleName, requestBody, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or update a rule.
-     *
+     * 
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param ruleName name of the filter.
      * @param requestBody Parameters required to make or edit a rule.
      * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return represents an entry in the feed when querying rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> putAsync(
-        String topicName,
-        String subscriptionName,
-        String ruleName,
-        Object requestBody,
-        String ifMatch,
-        Context context) {
+    public Mono<RuleDescriptionEntryImpl> putAsync(String topicName, String subscriptionName, String ruleName,
+        Object requestBody, String ifMatch, Context context) {
         return putWithResponseAsync(topicName, subscriptionName, ruleName, requestBody, ifMatch, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or update a rule.
-     *
+     * 
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param ruleName name of the filter.
      * @param requestBody Parameters required to make or edit a rule.
      * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> putSyncWithResponse(
-        String topicName, String subscriptionName, String ruleName, Object requestBody, String ifMatch) {
-        final String accept = "application/xml, application/atom+xml";
-        return service.putSync(
-            this.client.getEndpoint(),
-            topicName,
-            subscriptionName,
-            ruleName,
-            this.client.getApiVersion(),
-            ifMatch,
-            requestBody,
-            accept,
-            Context.NONE);
-    }
-
-    /**
-     * Create or update a rule.
-     *
-     * @param topicName name of the topic.
-     * @param subscriptionName name of the subscription.
-     * @param ruleName name of the filter.
-     * @param requestBody Parameters required to make or edit a rule.
-     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response}.
+     * @return represents an entry in the feed when querying rules along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> putSyncWithResponse(
-        String topicName,
-        String subscriptionName,
-        String ruleName,
-        Object requestBody,
-        String ifMatch,
-        Context context) {
+    public Response<RuleDescriptionEntryImpl> putWithResponse(String topicName, String subscriptionName,
+        String ruleName, Object requestBody, String ifMatch, Context context) {
         final String accept = "application/xml, application/atom+xml";
-        return service.putSync(
-            this.client.getEndpoint(),
-            topicName,
-            subscriptionName,
-            ruleName,
-            this.client.getApiVersion(),
-            ifMatch,
-            requestBody,
-            accept,
-            context);
+        return service.putSync(this.client.getEndpoint(), topicName, subscriptionName, ruleName,
+            this.client.getApiVersion(), ifMatch, requestBody, accept, context);
     }
 
     /**
      * Create or update a rule.
-     *
+     * 
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param ruleName name of the filter.
      * @param requestBody Parameters required to make or edit a rule.
      * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return represents an entry in the feed when querying rules.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object putSync(
-        String topicName, String subscriptionName, String ruleName, Object requestBody, String ifMatch) {
-        return putSyncWithResponse(topicName, subscriptionName, ruleName, requestBody, ifMatch, Context.NONE)
-            .getValue();
-    }
-
-    /**
-     * Create or update a rule.
-     *
-     * @param topicName name of the topic.
-     * @param subscriptionName name of the subscription.
-     * @param ruleName name of the filter.
-     * @param requestBody Parameters required to make or edit a rule.
-     * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object putSync(
-        String topicName,
-        String subscriptionName,
-        String ruleName,
-        Object requestBody,
-        String ifMatch,
-        Context context) {
-        return putSyncWithResponse(topicName, subscriptionName, ruleName, requestBody, ifMatch, context).getValue();
+    public RuleDescriptionEntryImpl put(String topicName, String subscriptionName, String ruleName, Object requestBody,
+        String ifMatch) {
+        return putWithResponse(topicName, subscriptionName, ruleName, requestBody, ifMatch, Context.NONE).getValue();
     }
 
     /**
      * Delete Subscription
-     *
-     * <p>Delete the rule with the given topicName, subscriptionName and ruleName.
-     *
+     * 
+     * Delete the rule with the given topicName, subscriptionName and ruleName.
+     * 
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param ruleName name of the filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents an entry in the feed when querying rules along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> deleteWithResponseAsync(String topicName, String subscriptionName, String ruleName) {
-        final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(
-            context ->
-                service.delete(
-                    this.client.getEndpoint(),
-                    topicName,
-                    subscriptionName,
-                    ruleName,
-                    this.client.getApiVersion(),
-                    accept,
-                    context));
+    public Mono<Response<RuleDescriptionEntryImpl>> deleteWithResponseAsync(String topicName, String subscriptionName,
+        String ruleName) {
+        return FluxUtil.withContext(context -> deleteWithResponseAsync(topicName, subscriptionName, ruleName, context));
     }
 
     /**
      * Delete Subscription
-     *
-     * <p>Delete the rule with the given topicName, subscriptionName and ruleName.
-     *
+     * 
+     * Delete the rule with the given topicName, subscriptionName and ruleName.
+     * 
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param ruleName name of the filter.
@@ -617,46 +415,41 @@ public final class RulesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return represents an entry in the feed when querying rules along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> deleteWithResponseAsync(
-        String topicName, String subscriptionName, String ruleName, Context context) {
+    public Mono<Response<RuleDescriptionEntryImpl>> deleteWithResponseAsync(String topicName, String subscriptionName,
+        String ruleName, Context context) {
         final String accept = "application/xml, application/atom+xml";
-        return service.delete(
-            this.client.getEndpoint(),
-            topicName,
-            subscriptionName,
-            ruleName,
-            this.client.getApiVersion(),
-            accept,
-            context);
+        return service.delete(this.client.getEndpoint(), topicName, subscriptionName, ruleName,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete Subscription
-     *
-     * <p>Delete the rule with the given topicName, subscriptionName and ruleName.
-     *
+     * 
+     * Delete the rule with the given topicName, subscriptionName and ruleName.
+     * 
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param ruleName name of the filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return represents an entry in the feed when querying rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> deleteAsync(String topicName, String subscriptionName, String ruleName) {
+    public Mono<RuleDescriptionEntryImpl> deleteAsync(String topicName, String subscriptionName, String ruleName) {
         return deleteWithResponseAsync(topicName, subscriptionName, ruleName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Delete Subscription
-     *
-     * <p>Delete the rule with the given topicName, subscriptionName and ruleName.
-     *
+     * 
+     * Delete the rule with the given topicName, subscriptionName and ruleName.
+     * 
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param ruleName name of the filter.
@@ -664,45 +457,20 @@ public final class RulesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
+     * @return represents an entry in the feed when querying rules on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> deleteAsync(String topicName, String subscriptionName, String ruleName, Context context) {
+    public Mono<RuleDescriptionEntryImpl> deleteAsync(String topicName, String subscriptionName, String ruleName,
+        Context context) {
         return deleteWithResponseAsync(topicName, subscriptionName, ruleName, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Delete Subscription
-     *
-     * <p>Delete the rule with the given topicName, subscriptionName and ruleName.
-     *
-     * @param topicName name of the topic.
-     * @param subscriptionName name of the subscription.
-     * @param ruleName name of the filter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> deleteSyncWithResponse(String topicName, String subscriptionName, String ruleName) {
-        final String accept = "application/xml, application/atom+xml";
-        return service.deleteSync(
-            this.client.getEndpoint(),
-            topicName,
-            subscriptionName,
-            ruleName,
-            this.client.getApiVersion(),
-            accept,
-            Context.NONE);
-    }
-
-    /**
-     * Delete Subscription
-     *
-     * <p>Delete the rule with the given topicName, subscriptionName and ruleName.
-     *
+     * 
+     * Delete the rule with the given topicName, subscriptionName and ruleName.
+     * 
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param ruleName name of the filter.
@@ -710,56 +478,31 @@ public final class RulesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response}.
+     * @return represents an entry in the feed when querying rules along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> deleteSyncWithResponse(
-        String topicName, String subscriptionName, String ruleName, Context context) {
+    public Response<RuleDescriptionEntryImpl> deleteWithResponse(String topicName, String subscriptionName,
+        String ruleName, Context context) {
         final String accept = "application/xml, application/atom+xml";
-        return service.deleteSync(
-            this.client.getEndpoint(),
-            topicName,
-            subscriptionName,
-            ruleName,
-            this.client.getApiVersion(),
-            accept,
-            context);
+        return service.deleteSync(this.client.getEndpoint(), topicName, subscriptionName, ruleName,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete Subscription
-     *
-     * <p>Delete the rule with the given topicName, subscriptionName and ruleName.
-     *
+     * 
+     * Delete the rule with the given topicName, subscriptionName and ruleName.
+     * 
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param ruleName name of the filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return represents an entry in the feed when querying rules.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object deleteSync(String topicName, String subscriptionName, String ruleName) {
-        return deleteSyncWithResponse(topicName, subscriptionName, ruleName, Context.NONE).getValue();
-    }
-
-    /**
-     * Delete Subscription
-     *
-     * <p>Delete the rule with the given topicName, subscriptionName and ruleName.
-     *
-     * @param topicName name of the topic.
-     * @param subscriptionName name of the subscription.
-     * @param ruleName name of the filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object deleteSync(String topicName, String subscriptionName, String ruleName, Context context) {
-        return deleteSyncWithResponse(topicName, subscriptionName, ruleName, context).getValue();
+    public RuleDescriptionEntryImpl delete(String topicName, String subscriptionName, String ruleName) {
+        return deleteWithResponse(topicName, subscriptionName, ruleName, Context.NONE).getValue();
     }
 }

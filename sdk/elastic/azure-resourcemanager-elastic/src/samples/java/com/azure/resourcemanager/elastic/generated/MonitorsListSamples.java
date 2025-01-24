@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.elastic.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Monitors List. */
+/**
+ * Samples for Monitors List.
+ */
 public final class MonitorsListSamples {
     /*
-     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2022-07-01-preview/examples/Monitors_List.json
+     * x-ms-original-file:
+     * specification/elastic/resource-manager/Microsoft.Elastic/stable/2024-03-01/examples/Monitors_List.json
      */
     /**
      * Sample code: Monitors_List.
-     *
+     * 
      * @param manager Entry point to ElasticManager.
      */
     public static void monitorsList(com.azure.resourcemanager.elastic.ElasticManager manager) {
-        manager.monitors().list(Context.NONE);
+        manager.monitors().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -8,15 +8,18 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -37,8 +40,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-/** Entry point to DelegatedNetworkManager. DNC web api provides way to create, get and delete dnc controller. */
+/**
+ * Entry point to DelegatedNetworkManager.
+ * DNC web api provides way to create, get and delete dnc controller.
+ */
 public final class DelegatedNetworkManager {
     private Controllers controllers;
 
@@ -55,18 +62,16 @@ public final class DelegatedNetworkManager {
     private DelegatedNetworkManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new DncBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new DncBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of DelegatedNetwork service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the DelegatedNetwork service API instance.
@@ -78,22 +83,39 @@ public final class DelegatedNetworkManager {
     }
 
     /**
+     * Creates an instance of DelegatedNetwork service API entry point.
+     * 
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the DelegatedNetwork service API instance.
+     */
+    public static DelegatedNetworkManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new DelegatedNetworkManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create DelegatedNetworkManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new DelegatedNetworkManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -133,6 +155,17 @@ public final class DelegatedNetworkManager {
         }
 
         /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
+            return this;
+        }
+
+        /**
          * Sets the retry policy to the HTTP pipeline.
          *
          * @param retryPolicy the HTTP pipeline retry policy.
@@ -144,15 +177,30 @@ public final class DelegatedNetworkManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -169,15 +217,13 @@ public final class DelegatedNetworkManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.delegatednetwork")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -188,31 +234,44 @@ public final class DelegatedNetworkManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new DelegatedNetworkManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
-    /** @return Resource collection API of Controllers. */
+    /**
+     * Gets the resource collection API of Controllers. It manages DelegatedController.
+     * 
+     * @return Resource collection API of Controllers.
+     */
     public Controllers controllers() {
         if (this.controllers == null) {
             this.controllers = new ControllersImpl(clientObject.getControllers(), this);
@@ -220,7 +279,11 @@ public final class DelegatedNetworkManager {
         return controllers;
     }
 
-    /** @return Resource collection API of DelegatedNetworks. */
+    /**
+     * Gets the resource collection API of DelegatedNetworks.
+     * 
+     * @return Resource collection API of DelegatedNetworks.
+     */
     public DelegatedNetworks delegatedNetworks() {
         if (this.delegatedNetworks == null) {
             this.delegatedNetworks = new DelegatedNetworksImpl(clientObject.getDelegatedNetworks(), this);
@@ -228,25 +291,37 @@ public final class DelegatedNetworkManager {
         return delegatedNetworks;
     }
 
-    /** @return Resource collection API of OrchestratorInstanceServices. */
+    /**
+     * Gets the resource collection API of OrchestratorInstanceServices. It manages Orchestrator.
+     * 
+     * @return Resource collection API of OrchestratorInstanceServices.
+     */
     public OrchestratorInstanceServices orchestratorInstanceServices() {
         if (this.orchestratorInstanceServices == null) {
-            this.orchestratorInstanceServices =
-                new OrchestratorInstanceServicesImpl(clientObject.getOrchestratorInstanceServices(), this);
+            this.orchestratorInstanceServices
+                = new OrchestratorInstanceServicesImpl(clientObject.getOrchestratorInstanceServices(), this);
         }
         return orchestratorInstanceServices;
     }
 
-    /** @return Resource collection API of DelegatedSubnetServices. */
+    /**
+     * Gets the resource collection API of DelegatedSubnetServices. It manages DelegatedSubnet.
+     * 
+     * @return Resource collection API of DelegatedSubnetServices.
+     */
     public DelegatedSubnetServices delegatedSubnetServices() {
         if (this.delegatedSubnetServices == null) {
-            this.delegatedSubnetServices =
-                new DelegatedSubnetServicesImpl(clientObject.getDelegatedSubnetServices(), this);
+            this.delegatedSubnetServices
+                = new DelegatedSubnetServicesImpl(clientObject.getDelegatedSubnetServices(), this);
         }
         return delegatedSubnetServices;
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     * 
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -255,8 +330,10 @@ public final class DelegatedNetworkManager {
     }
 
     /**
-     * @return Wrapped service client Dnc providing direct access to the underlying auto-generated API implementation,
-     *     based on Azure REST API.
+     * Gets wrapped service client Dnc providing direct access to the underlying auto-generated API implementation,
+     * based on Azure REST API.
+     * 
+     * @return Wrapped service client Dnc.
      */
     public Dnc serviceClient() {
         return this.clientObject;

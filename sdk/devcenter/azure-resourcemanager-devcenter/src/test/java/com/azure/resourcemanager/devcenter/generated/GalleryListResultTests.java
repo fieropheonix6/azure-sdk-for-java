@@ -6,20 +6,17 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.GalleryListResult;
-import org.junit.jupiter.api.Test;
 
 public final class GalleryListResultTests {
-    @Test
-    public void testDeserialize() {
-        GalleryListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"galleryResourceId\":\"cyshurzafbljjgp\"},\"id\":\"oq\",\"name\":\"jmkljavbqidtqajz\",\"type\":\"ulpkudjkrl\"},{\"properties\":{\"provisioningState\":\"NotSpecified\",\"galleryResourceId\":\"hfepgzgqex\"},\"id\":\"ocxscpaierhhbcs\",\"name\":\"l\",\"type\":\"mmajtjaodx\"}],\"nextLink\":\"nbdxk\"}")
-                .toObject(GalleryListResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        GalleryListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updated\",\"galleryResourceId\":\"uxwgipwho\"},\"id\":\"wkgshwa\",\"name\":\"kix\",\"type\":\"bin\"},{\"properties\":{\"provisioningState\":\"TransientFailure\",\"galleryResourceId\":\"ttmrywnuzoqf\"},\"id\":\"yqzrnkcqvyxlw\",\"name\":\"zlsico\",\"type\":\"oqqnwvlryav\"},{\"properties\":{\"provisioningState\":\"Running\",\"galleryResourceId\":\"unmmq\"},\"id\":\"yxzk\",\"name\":\"noc\",\"type\":\"koklya\"},{\"properties\":{\"provisioningState\":\"Creating\",\"galleryResourceId\":\"nuqszfkbey\"},\"id\":\"wrmjmwvvjektc\",\"name\":\"senhwlrs\",\"type\":\"frzpwvlqdqgb\"}],\"nextLink\":\"ylihkaetckt\"}")
+            .toObject(GalleryListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         GalleryListResult model = new GalleryListResult();
         model = BinaryData.fromObject(model).toObject(GalleryListResult.class);
     }

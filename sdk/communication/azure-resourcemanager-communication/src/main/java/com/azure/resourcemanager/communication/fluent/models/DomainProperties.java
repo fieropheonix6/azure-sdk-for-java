@@ -6,76 +6,71 @@ package com.azure.resourcemanager.communication.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.communication.models.DomainManagement;
 import com.azure.resourcemanager.communication.models.DomainPropertiesVerificationRecords;
 import com.azure.resourcemanager.communication.models.DomainPropertiesVerificationStates;
 import com.azure.resourcemanager.communication.models.DomainsProvisioningState;
 import com.azure.resourcemanager.communication.models.UserEngagementTracking;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
+import java.io.IOException;
 
-/** A class that describes the properties of a Domains resource. */
+/**
+ * A class that describes the properties of a Domains resource.
+ */
 @Fluent
-public final class DomainProperties {
+public final class DomainProperties implements JsonSerializable<DomainProperties> {
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private DomainsProvisioningState provisioningState;
 
     /*
      * The location where the Domains resource data is stored at rest.
      */
-    @JsonProperty(value = "dataLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String dataLocation;
 
     /*
      * P2 sender domain that is displayed to the email recipients [RFC 5322].
      */
-    @JsonProperty(value = "fromSenderDomain", access = JsonProperty.Access.WRITE_ONLY)
     private String fromSenderDomain;
 
     /*
      * P1 sender domain that is present on the email envelope [RFC 5321].
      */
-    @JsonProperty(value = "mailFromSenderDomain", access = JsonProperty.Access.WRITE_ONLY)
     private String mailFromSenderDomain;
 
     /*
      * Describes how a Domains resource is being managed.
      */
-    @JsonProperty(value = "domainManagement", required = true)
     private DomainManagement domainManagement;
 
     /*
      * List of VerificationStatusRecord
      */
-    @JsonProperty(value = "verificationStates", access = JsonProperty.Access.WRITE_ONLY)
     private DomainPropertiesVerificationStates verificationStates;
 
     /*
      * List of DnsRecord
      */
-    @JsonProperty(value = "verificationRecords", access = JsonProperty.Access.WRITE_ONLY)
     private DomainPropertiesVerificationRecords verificationRecords;
-
-    /*
-     * Collection of valid sender usernames. This is a key-value pair where key=username and value=display name.
-     */
-    @JsonProperty(value = "validSenderUsernames")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> validSenderUsernames;
 
     /*
      * Describes whether user engagement tracking is enabled or disabled.
      */
-    @JsonProperty(value = "userEngagementTracking")
     private UserEngagementTracking userEngagementTracking;
 
     /**
+     * Creates an instance of DomainProperties class.
+     */
+    public DomainProperties() {
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public DomainsProvisioningState provisioningState() {
@@ -84,7 +79,7 @@ public final class DomainProperties {
 
     /**
      * Get the dataLocation property: The location where the Domains resource data is stored at rest.
-     *
+     * 
      * @return the dataLocation value.
      */
     public String dataLocation() {
@@ -93,7 +88,7 @@ public final class DomainProperties {
 
     /**
      * Get the fromSenderDomain property: P2 sender domain that is displayed to the email recipients [RFC 5322].
-     *
+     * 
      * @return the fromSenderDomain value.
      */
     public String fromSenderDomain() {
@@ -102,7 +97,7 @@ public final class DomainProperties {
 
     /**
      * Get the mailFromSenderDomain property: P1 sender domain that is present on the email envelope [RFC 5321].
-     *
+     * 
      * @return the mailFromSenderDomain value.
      */
     public String mailFromSenderDomain() {
@@ -111,7 +106,7 @@ public final class DomainProperties {
 
     /**
      * Get the domainManagement property: Describes how a Domains resource is being managed.
-     *
+     * 
      * @return the domainManagement value.
      */
     public DomainManagement domainManagement() {
@@ -120,7 +115,7 @@ public final class DomainProperties {
 
     /**
      * Set the domainManagement property: Describes how a Domains resource is being managed.
-     *
+     * 
      * @param domainManagement the domainManagement value to set.
      * @return the DomainProperties object itself.
      */
@@ -131,7 +126,7 @@ public final class DomainProperties {
 
     /**
      * Get the verificationStates property: List of VerificationStatusRecord.
-     *
+     * 
      * @return the verificationStates value.
      */
     public DomainPropertiesVerificationStates verificationStates() {
@@ -140,7 +135,7 @@ public final class DomainProperties {
 
     /**
      * Get the verificationRecords property: List of DnsRecord.
-     *
+     * 
      * @return the verificationRecords value.
      */
     public DomainPropertiesVerificationRecords verificationRecords() {
@@ -148,30 +143,8 @@ public final class DomainProperties {
     }
 
     /**
-     * Get the validSenderUsernames property: Collection of valid sender usernames. This is a key-value pair where
-     * key=username and value=display name.
-     *
-     * @return the validSenderUsernames value.
-     */
-    public Map<String, String> validSenderUsernames() {
-        return this.validSenderUsernames;
-    }
-
-    /**
-     * Set the validSenderUsernames property: Collection of valid sender usernames. This is a key-value pair where
-     * key=username and value=display name.
-     *
-     * @param validSenderUsernames the validSenderUsernames value to set.
-     * @return the DomainProperties object itself.
-     */
-    public DomainProperties withValidSenderUsernames(Map<String, String> validSenderUsernames) {
-        this.validSenderUsernames = validSenderUsernames;
-        return this;
-    }
-
-    /**
      * Get the userEngagementTracking property: Describes whether user engagement tracking is enabled or disabled.
-     *
+     * 
      * @return the userEngagementTracking value.
      */
     public UserEngagementTracking userEngagementTracking() {
@@ -180,7 +153,7 @@ public final class DomainProperties {
 
     /**
      * Set the userEngagementTracking property: Describes whether user engagement tracking is enabled or disabled.
-     *
+     * 
      * @param userEngagementTracking the userEngagementTracking value to set.
      * @return the DomainProperties object itself.
      */
@@ -191,15 +164,14 @@ public final class DomainProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (domainManagement() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property domainManagement in model DomainProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property domainManagement in model DomainProperties"));
         }
         if (verificationStates() != null) {
             verificationStates().validate();
@@ -210,4 +182,62 @@ public final class DomainProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DomainProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("domainManagement",
+            this.domainManagement == null ? null : this.domainManagement.toString());
+        jsonWriter.writeStringField("userEngagementTracking",
+            this.userEngagementTracking == null ? null : this.userEngagementTracking.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DomainProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DomainProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DomainProperties.
+     */
+    public static DomainProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DomainProperties deserializedDomainProperties = new DomainProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("domainManagement".equals(fieldName)) {
+                    deserializedDomainProperties.domainManagement = DomainManagement.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDomainProperties.provisioningState
+                        = DomainsProvisioningState.fromString(reader.getString());
+                } else if ("dataLocation".equals(fieldName)) {
+                    deserializedDomainProperties.dataLocation = reader.getString();
+                } else if ("fromSenderDomain".equals(fieldName)) {
+                    deserializedDomainProperties.fromSenderDomain = reader.getString();
+                } else if ("mailFromSenderDomain".equals(fieldName)) {
+                    deserializedDomainProperties.mailFromSenderDomain = reader.getString();
+                } else if ("verificationStates".equals(fieldName)) {
+                    deserializedDomainProperties.verificationStates
+                        = DomainPropertiesVerificationStates.fromJson(reader);
+                } else if ("verificationRecords".equals(fieldName)) {
+                    deserializedDomainProperties.verificationRecords
+                        = DomainPropertiesVerificationRecords.fromJson(reader);
+                } else if ("userEngagementTracking".equals(fieldName)) {
+                    deserializedDomainProperties.userEngagementTracking
+                        = UserEngagementTracking.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDomainProperties;
+        });
+    }
 }

@@ -3,13 +3,12 @@
 
 package com.azure.storage.blob.perf;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.perf.core.ContainerTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
-
-import java.util.UUID;
 
 public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
     public ListBlobsTest(PerfStressOptions options) {
@@ -25,15 +24,14 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
         // this edge case, whether we had a design flaw in the performance tests, or if there is a configuration change
         // needed in Reactor Netty.
         int parallel = options.getParallel();
-        return super.globalSetupAsync().then(
-            Flux.range(0, options.getCount())
-                .parallel(parallel)
-                .runOn(Schedulers.parallel())
-                .flatMap(iteration -> blobContainerAsyncClient.getBlobAsyncClient("getblobstest-" + UUID.randomUUID())
-                    .getBlockBlobAsyncClient()
-                    .upload(Flux.empty(), 0L), false, parallel, 1)
-                .sequential()
-                .then());
+        return super.globalSetupAsync().then(Flux.range(0, options.getCount())
+            .parallel(parallel)
+            .runOn(Schedulers.parallel())
+            .flatMap(iteration -> blobContainerAsyncClient.getBlobAsyncClient("getblobstest-" + CoreUtils.randomUuid())
+                .getBlockBlobAsyncClient()
+                .upload(Flux.empty(), 0L), false, parallel, 1)
+            .sequential()
+            .then());
     }
 
     @Override
@@ -44,7 +42,6 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return blobContainerAsyncClient.listBlobs()
-            .then();
+        return blobContainerAsyncClient.listBlobs().then();
     }
 }

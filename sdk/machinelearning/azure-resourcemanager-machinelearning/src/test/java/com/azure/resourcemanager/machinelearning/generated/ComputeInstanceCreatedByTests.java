@@ -6,20 +6,17 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ComputeInstanceCreatedBy;
-import org.junit.jupiter.api.Test;
 
 public final class ComputeInstanceCreatedByTests {
-    @Test
-    public void testDeserialize() {
-        ComputeInstanceCreatedBy model =
-            BinaryData
-                .fromString(
-                    "{\"userName\":\"vtrrmhwrbfdpyflu\",\"userOrgId\":\"vjglrocuyzlwhhme\",\"userId\":\"ooclutnp\"}")
-                .toObject(ComputeInstanceCreatedBy.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ComputeInstanceCreatedBy model = BinaryData
+            .fromString("{\"userName\":\"jjmztnlmsoodtmv\",\"userOrgId\":\"dhdyswcrptveaj\",\"userId\":\"xvl\"}")
+            .toObject(ComputeInstanceCreatedBy.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ComputeInstanceCreatedBy model = new ComputeInstanceCreatedBy();
         model = BinaryData.fromObject(model).toObject(ComputeInstanceCreatedBy.class);
     }

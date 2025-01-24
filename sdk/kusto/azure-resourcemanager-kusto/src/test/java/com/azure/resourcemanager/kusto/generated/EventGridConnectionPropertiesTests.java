@@ -10,55 +10,51 @@ import com.azure.resourcemanager.kusto.models.BlobStorageEventType;
 import com.azure.resourcemanager.kusto.models.DatabaseRouting;
 import com.azure.resourcemanager.kusto.models.EventGridDataFormat;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EventGridConnectionPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        EventGridConnectionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"storageAccountResourceId\":\"zi\",\"eventGridResourceId\":\"yuhqlbjbsybbqwrv\",\"eventHubResourceId\":\"ldgmfpgvmpip\",\"consumerGroup\":\"slthaq\",\"tableName\":\"ss\",\"mappingRuleName\":\"u\",\"dataFormat\":\"SOHSV\",\"ignoreFirstRecord\":false,\"blobStorageEventType\":\"Microsoft.Storage.BlobRenamed\",\"managedIdentityResourceId\":\"pdrhne\",\"managedIdentityObjectId\":\"owqkdwytisi\",\"databaseRouting\":\"Single\",\"provisioningState\":\"Failed\"}")
-                .toObject(EventGridConnectionProperties.class);
-        Assertions.assertEquals("zi", model.storageAccountResourceId());
-        Assertions.assertEquals("yuhqlbjbsybbqwrv", model.eventGridResourceId());
-        Assertions.assertEquals("ldgmfpgvmpip", model.eventHubResourceId());
-        Assertions.assertEquals("slthaq", model.consumerGroup());
-        Assertions.assertEquals("ss", model.tableName());
-        Assertions.assertEquals("u", model.mappingRuleName());
-        Assertions.assertEquals(EventGridDataFormat.SOHSV, model.dataFormat());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        EventGridConnectionProperties model = BinaryData.fromString(
+            "{\"storageAccountResourceId\":\"gnjdgkynscliqhz\",\"eventGridResourceId\":\"xnkomtkubo\",\"eventHubResourceId\":\"ppnvdxz\",\"consumerGroup\":\"hihfrbbcevqagtlt\",\"tableName\":\"lfkqojpy\",\"mappingRuleName\":\"gtrd\",\"dataFormat\":\"PSV\",\"ignoreFirstRecord\":false,\"blobStorageEventType\":\"Microsoft.Storage.BlobRenamed\",\"managedIdentityResourceId\":\"dymbrny\",\"managedIdentityObjectId\":\"xmprafwg\",\"databaseRouting\":\"Multi\",\"provisioningState\":\"Creating\"}")
+            .toObject(EventGridConnectionProperties.class);
+        Assertions.assertEquals("gnjdgkynscliqhz", model.storageAccountResourceId());
+        Assertions.assertEquals("xnkomtkubo", model.eventGridResourceId());
+        Assertions.assertEquals("ppnvdxz", model.eventHubResourceId());
+        Assertions.assertEquals("hihfrbbcevqagtlt", model.consumerGroup());
+        Assertions.assertEquals("lfkqojpy", model.tableName());
+        Assertions.assertEquals("gtrd", model.mappingRuleName());
+        Assertions.assertEquals(EventGridDataFormat.PSV, model.dataFormat());
         Assertions.assertEquals(false, model.ignoreFirstRecord());
         Assertions.assertEquals(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_RENAMED, model.blobStorageEventType());
-        Assertions.assertEquals("pdrhne", model.managedIdentityResourceId());
-        Assertions.assertEquals(DatabaseRouting.SINGLE, model.databaseRouting());
+        Assertions.assertEquals("dymbrny", model.managedIdentityResourceId());
+        Assertions.assertEquals(DatabaseRouting.MULTI, model.databaseRouting());
     }
 
-    @Test
-    public void testSerialize() {
-        EventGridConnectionProperties model =
-            new EventGridConnectionProperties()
-                .withStorageAccountResourceId("zi")
-                .withEventGridResourceId("yuhqlbjbsybbqwrv")
-                .withEventHubResourceId("ldgmfpgvmpip")
-                .withConsumerGroup("slthaq")
-                .withTableName("ss")
-                .withMappingRuleName("u")
-                .withDataFormat(EventGridDataFormat.SOHSV)
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        EventGridConnectionProperties model
+            = new EventGridConnectionProperties().withStorageAccountResourceId("gnjdgkynscliqhz")
+                .withEventGridResourceId("xnkomtkubo")
+                .withEventHubResourceId("ppnvdxz")
+                .withConsumerGroup("hihfrbbcevqagtlt")
+                .withTableName("lfkqojpy")
+                .withMappingRuleName("gtrd")
+                .withDataFormat(EventGridDataFormat.PSV)
                 .withIgnoreFirstRecord(false)
                 .withBlobStorageEventType(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_RENAMED)
-                .withManagedIdentityResourceId("pdrhne")
-                .withDatabaseRouting(DatabaseRouting.SINGLE);
+                .withManagedIdentityResourceId("dymbrny")
+                .withDatabaseRouting(DatabaseRouting.MULTI);
         model = BinaryData.fromObject(model).toObject(EventGridConnectionProperties.class);
-        Assertions.assertEquals("zi", model.storageAccountResourceId());
-        Assertions.assertEquals("yuhqlbjbsybbqwrv", model.eventGridResourceId());
-        Assertions.assertEquals("ldgmfpgvmpip", model.eventHubResourceId());
-        Assertions.assertEquals("slthaq", model.consumerGroup());
-        Assertions.assertEquals("ss", model.tableName());
-        Assertions.assertEquals("u", model.mappingRuleName());
-        Assertions.assertEquals(EventGridDataFormat.SOHSV, model.dataFormat());
+        Assertions.assertEquals("gnjdgkynscliqhz", model.storageAccountResourceId());
+        Assertions.assertEquals("xnkomtkubo", model.eventGridResourceId());
+        Assertions.assertEquals("ppnvdxz", model.eventHubResourceId());
+        Assertions.assertEquals("hihfrbbcevqagtlt", model.consumerGroup());
+        Assertions.assertEquals("lfkqojpy", model.tableName());
+        Assertions.assertEquals("gtrd", model.mappingRuleName());
+        Assertions.assertEquals(EventGridDataFormat.PSV, model.dataFormat());
         Assertions.assertEquals(false, model.ignoreFirstRecord());
         Assertions.assertEquals(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_RENAMED, model.blobStorageEventType());
-        Assertions.assertEquals("pdrhne", model.managedIdentityResourceId());
-        Assertions.assertEquals(DatabaseRouting.SINGLE, model.databaseRouting());
+        Assertions.assertEquals("dymbrny", model.managedIdentityResourceId());
+        Assertions.assertEquals(DatabaseRouting.MULTI, model.databaseRouting());
     }
 }

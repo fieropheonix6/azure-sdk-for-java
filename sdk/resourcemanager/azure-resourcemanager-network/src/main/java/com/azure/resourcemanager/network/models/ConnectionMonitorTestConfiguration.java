@@ -6,67 +6,67 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes a connection monitor test configuration. */
+/**
+ * Describes a connection monitor test configuration.
+ */
 @Fluent
-public final class ConnectionMonitorTestConfiguration {
+public final class ConnectionMonitorTestConfiguration implements JsonSerializable<ConnectionMonitorTestConfiguration> {
     /*
      * The name of the connection monitor test configuration.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The frequency of test evaluation, in seconds.
      */
-    @JsonProperty(value = "testFrequencySec")
     private Integer testFrequencySec;
 
     /*
      * The protocol to use in test evaluation.
      */
-    @JsonProperty(value = "protocol", required = true)
     private ConnectionMonitorTestConfigurationProtocol protocol;
 
     /*
      * The preferred IP version to use in test evaluation. The connection monitor may choose to use a different version
      * depending on other parameters.
      */
-    @JsonProperty(value = "preferredIPVersion")
     private PreferredIpVersion preferredIpVersion;
 
     /*
      * The parameters used to perform test evaluation over HTTP.
      */
-    @JsonProperty(value = "httpConfiguration")
     private ConnectionMonitorHttpConfiguration httpConfiguration;
 
     /*
      * The parameters used to perform test evaluation over TCP.
      */
-    @JsonProperty(value = "tcpConfiguration")
     private ConnectionMonitorTcpConfiguration tcpConfiguration;
 
     /*
      * The parameters used to perform test evaluation over ICMP.
      */
-    @JsonProperty(value = "icmpConfiguration")
     private ConnectionMonitorIcmpConfiguration icmpConfiguration;
 
     /*
      * The threshold for declaring a test successful.
      */
-    @JsonProperty(value = "successThreshold")
     private ConnectionMonitorSuccessThreshold successThreshold;
 
-    /** Creates an instance of ConnectionMonitorTestConfiguration class. */
+    /**
+     * Creates an instance of ConnectionMonitorTestConfiguration class.
+     */
     public ConnectionMonitorTestConfiguration() {
     }
 
     /**
      * Get the name property: The name of the connection monitor test configuration.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -75,7 +75,7 @@ public final class ConnectionMonitorTestConfiguration {
 
     /**
      * Set the name property: The name of the connection monitor test configuration.
-     *
+     * 
      * @param name the name value to set.
      * @return the ConnectionMonitorTestConfiguration object itself.
      */
@@ -86,7 +86,7 @@ public final class ConnectionMonitorTestConfiguration {
 
     /**
      * Get the testFrequencySec property: The frequency of test evaluation, in seconds.
-     *
+     * 
      * @return the testFrequencySec value.
      */
     public Integer testFrequencySec() {
@@ -95,7 +95,7 @@ public final class ConnectionMonitorTestConfiguration {
 
     /**
      * Set the testFrequencySec property: The frequency of test evaluation, in seconds.
-     *
+     * 
      * @param testFrequencySec the testFrequencySec value to set.
      * @return the ConnectionMonitorTestConfiguration object itself.
      */
@@ -106,7 +106,7 @@ public final class ConnectionMonitorTestConfiguration {
 
     /**
      * Get the protocol property: The protocol to use in test evaluation.
-     *
+     * 
      * @return the protocol value.
      */
     public ConnectionMonitorTestConfigurationProtocol protocol() {
@@ -115,7 +115,7 @@ public final class ConnectionMonitorTestConfiguration {
 
     /**
      * Set the protocol property: The protocol to use in test evaluation.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the ConnectionMonitorTestConfiguration object itself.
      */
@@ -127,7 +127,7 @@ public final class ConnectionMonitorTestConfiguration {
     /**
      * Get the preferredIpVersion property: The preferred IP version to use in test evaluation. The connection monitor
      * may choose to use a different version depending on other parameters.
-     *
+     * 
      * @return the preferredIpVersion value.
      */
     public PreferredIpVersion preferredIpVersion() {
@@ -137,7 +137,7 @@ public final class ConnectionMonitorTestConfiguration {
     /**
      * Set the preferredIpVersion property: The preferred IP version to use in test evaluation. The connection monitor
      * may choose to use a different version depending on other parameters.
-     *
+     * 
      * @param preferredIpVersion the preferredIpVersion value to set.
      * @return the ConnectionMonitorTestConfiguration object itself.
      */
@@ -148,7 +148,7 @@ public final class ConnectionMonitorTestConfiguration {
 
     /**
      * Get the httpConfiguration property: The parameters used to perform test evaluation over HTTP.
-     *
+     * 
      * @return the httpConfiguration value.
      */
     public ConnectionMonitorHttpConfiguration httpConfiguration() {
@@ -157,19 +157,19 @@ public final class ConnectionMonitorTestConfiguration {
 
     /**
      * Set the httpConfiguration property: The parameters used to perform test evaluation over HTTP.
-     *
+     * 
      * @param httpConfiguration the httpConfiguration value to set.
      * @return the ConnectionMonitorTestConfiguration object itself.
      */
-    public ConnectionMonitorTestConfiguration withHttpConfiguration(
-        ConnectionMonitorHttpConfiguration httpConfiguration) {
+    public ConnectionMonitorTestConfiguration
+        withHttpConfiguration(ConnectionMonitorHttpConfiguration httpConfiguration) {
         this.httpConfiguration = httpConfiguration;
         return this;
     }
 
     /**
      * Get the tcpConfiguration property: The parameters used to perform test evaluation over TCP.
-     *
+     * 
      * @return the tcpConfiguration value.
      */
     public ConnectionMonitorTcpConfiguration tcpConfiguration() {
@@ -178,7 +178,7 @@ public final class ConnectionMonitorTestConfiguration {
 
     /**
      * Set the tcpConfiguration property: The parameters used to perform test evaluation over TCP.
-     *
+     * 
      * @param tcpConfiguration the tcpConfiguration value to set.
      * @return the ConnectionMonitorTestConfiguration object itself.
      */
@@ -189,7 +189,7 @@ public final class ConnectionMonitorTestConfiguration {
 
     /**
      * Get the icmpConfiguration property: The parameters used to perform test evaluation over ICMP.
-     *
+     * 
      * @return the icmpConfiguration value.
      */
     public ConnectionMonitorIcmpConfiguration icmpConfiguration() {
@@ -198,19 +198,19 @@ public final class ConnectionMonitorTestConfiguration {
 
     /**
      * Set the icmpConfiguration property: The parameters used to perform test evaluation over ICMP.
-     *
+     * 
      * @param icmpConfiguration the icmpConfiguration value to set.
      * @return the ConnectionMonitorTestConfiguration object itself.
      */
-    public ConnectionMonitorTestConfiguration withIcmpConfiguration(
-        ConnectionMonitorIcmpConfiguration icmpConfiguration) {
+    public ConnectionMonitorTestConfiguration
+        withIcmpConfiguration(ConnectionMonitorIcmpConfiguration icmpConfiguration) {
         this.icmpConfiguration = icmpConfiguration;
         return this;
     }
 
     /**
      * Get the successThreshold property: The threshold for declaring a test successful.
-     *
+     * 
      * @return the successThreshold value.
      */
     public ConnectionMonitorSuccessThreshold successThreshold() {
@@ -219,7 +219,7 @@ public final class ConnectionMonitorTestConfiguration {
 
     /**
      * Set the successThreshold property: The threshold for declaring a test successful.
-     *
+     * 
      * @param successThreshold the successThreshold value to set.
      * @return the ConnectionMonitorTestConfiguration object itself.
      */
@@ -230,21 +230,19 @@ public final class ConnectionMonitorTestConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ConnectionMonitorTestConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model ConnectionMonitorTestConfiguration"));
         }
         if (protocol() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property protocol in model ConnectionMonitorTestConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protocol in model ConnectionMonitorTestConfiguration"));
         }
         if (httpConfiguration() != null) {
             httpConfiguration().validate();
@@ -261,4 +259,71 @@ public final class ConnectionMonitorTestConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectionMonitorTestConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeNumberField("testFrequencySec", this.testFrequencySec);
+        jsonWriter.writeStringField("preferredIPVersion",
+            this.preferredIpVersion == null ? null : this.preferredIpVersion.toString());
+        jsonWriter.writeJsonField("httpConfiguration", this.httpConfiguration);
+        jsonWriter.writeJsonField("tcpConfiguration", this.tcpConfiguration);
+        jsonWriter.writeJsonField("icmpConfiguration", this.icmpConfiguration);
+        jsonWriter.writeJsonField("successThreshold", this.successThreshold);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionMonitorTestConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionMonitorTestConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectionMonitorTestConfiguration.
+     */
+    public static ConnectionMonitorTestConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionMonitorTestConfiguration deserializedConnectionMonitorTestConfiguration
+                = new ConnectionMonitorTestConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedConnectionMonitorTestConfiguration.name = reader.getString();
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedConnectionMonitorTestConfiguration.protocol
+                        = ConnectionMonitorTestConfigurationProtocol.fromString(reader.getString());
+                } else if ("testFrequencySec".equals(fieldName)) {
+                    deserializedConnectionMonitorTestConfiguration.testFrequencySec
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("preferredIPVersion".equals(fieldName)) {
+                    deserializedConnectionMonitorTestConfiguration.preferredIpVersion
+                        = PreferredIpVersion.fromString(reader.getString());
+                } else if ("httpConfiguration".equals(fieldName)) {
+                    deserializedConnectionMonitorTestConfiguration.httpConfiguration
+                        = ConnectionMonitorHttpConfiguration.fromJson(reader);
+                } else if ("tcpConfiguration".equals(fieldName)) {
+                    deserializedConnectionMonitorTestConfiguration.tcpConfiguration
+                        = ConnectionMonitorTcpConfiguration.fromJson(reader);
+                } else if ("icmpConfiguration".equals(fieldName)) {
+                    deserializedConnectionMonitorTestConfiguration.icmpConfiguration
+                        = ConnectionMonitorIcmpConfiguration.fromJson(reader);
+                } else if ("successThreshold".equals(fieldName)) {
+                    deserializedConnectionMonitorTestConfiguration.successThreshold
+                        = ConnectionMonitorSuccessThreshold.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionMonitorTestConfiguration;
+        });
+    }
 }

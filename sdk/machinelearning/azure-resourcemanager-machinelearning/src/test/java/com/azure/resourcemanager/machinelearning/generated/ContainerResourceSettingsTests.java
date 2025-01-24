@@ -7,27 +7,25 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ContainerResourceSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ContainerResourceSettingsTests {
-    @Test
-    public void testDeserialize() {
-        ContainerResourceSettings model =
-            BinaryData
-                .fromString("{\"cpu\":\"ustcpoq\",\"gpu\":\"vnwqjwgo\",\"memory\":\"lejjjkxy\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ContainerResourceSettings model
+            = BinaryData.fromString("{\"cpu\":\"bqgdird\",\"memory\":\"m\",\"gpu\":\"jgcf\"}")
                 .toObject(ContainerResourceSettings.class);
-        Assertions.assertEquals("ustcpoq", model.cpu());
-        Assertions.assertEquals("vnwqjwgo", model.gpu());
-        Assertions.assertEquals("lejjjkxy", model.memory());
+        Assertions.assertEquals("bqgdird", model.cpu());
+        Assertions.assertEquals("m", model.memory());
+        Assertions.assertEquals("jgcf", model.gpu());
     }
 
-    @Test
-    public void testSerialize() {
-        ContainerResourceSettings model =
-            new ContainerResourceSettings().withCpu("ustcpoq").withGpu("vnwqjwgo").withMemory("lejjjkxy");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ContainerResourceSettings model
+            = new ContainerResourceSettings().withCpu("bqgdird").withMemory("m").withGpu("jgcf");
         model = BinaryData.fromObject(model).toObject(ContainerResourceSettings.class);
-        Assertions.assertEquals("ustcpoq", model.cpu());
-        Assertions.assertEquals("vnwqjwgo", model.gpu());
-        Assertions.assertEquals("lejjjkxy", model.memory());
+        Assertions.assertEquals("bqgdird", model.cpu());
+        Assertions.assertEquals("m", model.memory());
+        Assertions.assertEquals("jgcf", model.gpu());
     }
 }

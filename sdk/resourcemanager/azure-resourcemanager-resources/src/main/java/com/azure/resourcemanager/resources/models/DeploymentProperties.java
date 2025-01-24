@@ -6,82 +6,79 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Map;
 
-/** Deployment properties. */
+/**
+ * Deployment properties.
+ */
 @Fluent
-public class DeploymentProperties {
+public class DeploymentProperties implements JsonSerializable<DeploymentProperties> {
     /*
-     * The template content. You use this element when you want to pass the
-     * template syntax directly in the request rather than link to an existing
-     * template. It can be a JObject or well-formed JSON string. Use either the
+     * The template content. You use this element when you want to pass the template syntax directly in the request
+     * rather than link to an existing template. It can be a JObject or well-formed JSON string. Use either the
      * templateLink property or the template property, but not both.
      */
-    @JsonProperty(value = "template")
     private Object template;
 
     /*
-     * The URI of the template. Use either the templateLink property or the
-     * template property, but not both.
+     * The URI of the template. Use either the templateLink property or the template property, but not both.
      */
-    @JsonProperty(value = "templateLink")
     private TemplateLink templateLink;
 
     /*
-     * Name and value pairs that define the deployment parameters for the
-     * template. You use this element when you want to provide the parameter
-     * values directly in the request rather than link to an existing parameter
-     * file. Use either the parametersLink property or the parameters property,
-     * but not both. It can be a JObject or a well formed JSON string.
+     * Name and value pairs that define the deployment parameters for the template. You use this element when you want
+     * to provide the parameter values directly in the request rather than link to an existing parameter file. Use
+     * either the parametersLink property or the parameters property, but not both. It can be a JObject or a well formed
+     * JSON string.
      */
-    @JsonProperty(value = "parameters")
-    private Object parameters;
+    private Map<String, DeploymentParameter> parameters;
 
     /*
-     * The URI of parameters file. You use this element to link to an existing
-     * parameters file. Use either the parametersLink property or the
-     * parameters property, but not both.
+     * The URI of parameters file. You use this element to link to an existing parameters file. Use either the
+     * parametersLink property or the parameters property, but not both.
      */
-    @JsonProperty(value = "parametersLink")
     private ParametersLink parametersLink;
 
     /*
-     * The mode that is used to deploy resources. This value can be either
-     * Incremental or Complete. In Incremental mode, resources are deployed
-     * without deleting existing resources that are not included in the
-     * template. In Complete mode, resources are deployed and existing
-     * resources in the resource group that are not included in the template
-     * are deleted. Be careful when using Complete mode as you may
-     * unintentionally delete resources.
+     * The mode that is used to deploy resources. This value can be either Incremental or Complete. In Incremental mode,
+     * resources are deployed without deleting existing resources that are not included in the template. In Complete
+     * mode, resources are deployed and existing resources in the resource group that are not included in the template
+     * are deleted. Be careful when using Complete mode as you may unintentionally delete resources.
      */
-    @JsonProperty(value = "mode", required = true)
     private DeploymentMode mode;
 
     /*
      * The debug setting of the deployment.
      */
-    @JsonProperty(value = "debugSetting")
     private DebugSetting debugSetting;
 
     /*
      * The deployment on error behavior.
      */
-    @JsonProperty(value = "onErrorDeployment")
     private OnErrorDeployment onErrorDeployment;
 
     /*
-     * Specifies whether template expressions are evaluated within the scope of
-     * the parent template or nested template. Only applicable to nested
-     * templates. If not specified, default value is outer.
+     * Specifies whether template expressions are evaluated within the scope of the parent template or nested template.
+     * Only applicable to nested templates. If not specified, default value is outer.
      */
-    @JsonProperty(value = "expressionEvaluationOptions")
     private ExpressionEvaluationOptions expressionEvaluationOptions;
+
+    /**
+     * Creates an instance of DeploymentProperties class.
+     */
+    public DeploymentProperties() {
+    }
 
     /**
      * Get the template property: The template content. You use this element when you want to pass the template syntax
      * directly in the request rather than link to an existing template. It can be a JObject or well-formed JSON string.
      * Use either the templateLink property or the template property, but not both.
-     *
+     * 
      * @return the template value.
      */
     public Object template() {
@@ -92,7 +89,7 @@ public class DeploymentProperties {
      * Set the template property: The template content. You use this element when you want to pass the template syntax
      * directly in the request rather than link to an existing template. It can be a JObject or well-formed JSON string.
      * Use either the templateLink property or the template property, but not both.
-     *
+     * 
      * @param template the template value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -104,7 +101,7 @@ public class DeploymentProperties {
     /**
      * Get the templateLink property: The URI of the template. Use either the templateLink property or the template
      * property, but not both.
-     *
+     * 
      * @return the templateLink value.
      */
     public TemplateLink templateLink() {
@@ -114,7 +111,7 @@ public class DeploymentProperties {
     /**
      * Set the templateLink property: The URI of the template. Use either the templateLink property or the template
      * property, but not both.
-     *
+     * 
      * @param templateLink the templateLink value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -128,10 +125,10 @@ public class DeploymentProperties {
      * this element when you want to provide the parameter values directly in the request rather than link to an
      * existing parameter file. Use either the parametersLink property or the parameters property, but not both. It can
      * be a JObject or a well formed JSON string.
-     *
+     * 
      * @return the parameters value.
      */
-    public Object parameters() {
+    public Map<String, DeploymentParameter> parameters() {
         return this.parameters;
     }
 
@@ -140,11 +137,11 @@ public class DeploymentProperties {
      * this element when you want to provide the parameter values directly in the request rather than link to an
      * existing parameter file. Use either the parametersLink property or the parameters property, but not both. It can
      * be a JObject or a well formed JSON string.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DeploymentProperties object itself.
      */
-    public DeploymentProperties withParameters(Object parameters) {
+    public DeploymentProperties withParameters(Map<String, DeploymentParameter> parameters) {
         this.parameters = parameters;
         return this;
     }
@@ -152,7 +149,7 @@ public class DeploymentProperties {
     /**
      * Get the parametersLink property: The URI of parameters file. You use this element to link to an existing
      * parameters file. Use either the parametersLink property or the parameters property, but not both.
-     *
+     * 
      * @return the parametersLink value.
      */
     public ParametersLink parametersLink() {
@@ -162,7 +159,7 @@ public class DeploymentProperties {
     /**
      * Set the parametersLink property: The URI of parameters file. You use this element to link to an existing
      * parameters file. Use either the parametersLink property or the parameters property, but not both.
-     *
+     * 
      * @param parametersLink the parametersLink value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -177,7 +174,7 @@ public class DeploymentProperties {
      * in the template. In Complete mode, resources are deployed and existing resources in the resource group that are
      * not included in the template are deleted. Be careful when using Complete mode as you may unintentionally delete
      * resources.
-     *
+     * 
      * @return the mode value.
      */
     public DeploymentMode mode() {
@@ -190,7 +187,7 @@ public class DeploymentProperties {
      * in the template. In Complete mode, resources are deployed and existing resources in the resource group that are
      * not included in the template are deleted. Be careful when using Complete mode as you may unintentionally delete
      * resources.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -201,7 +198,7 @@ public class DeploymentProperties {
 
     /**
      * Get the debugSetting property: The debug setting of the deployment.
-     *
+     * 
      * @return the debugSetting value.
      */
     public DebugSetting debugSetting() {
@@ -210,7 +207,7 @@ public class DeploymentProperties {
 
     /**
      * Set the debugSetting property: The debug setting of the deployment.
-     *
+     * 
      * @param debugSetting the debugSetting value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -221,7 +218,7 @@ public class DeploymentProperties {
 
     /**
      * Get the onErrorDeployment property: The deployment on error behavior.
-     *
+     * 
      * @return the onErrorDeployment value.
      */
     public OnErrorDeployment onErrorDeployment() {
@@ -230,7 +227,7 @@ public class DeploymentProperties {
 
     /**
      * Set the onErrorDeployment property: The deployment on error behavior.
-     *
+     * 
      * @param onErrorDeployment the onErrorDeployment value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -243,7 +240,7 @@ public class DeploymentProperties {
      * Get the expressionEvaluationOptions property: Specifies whether template expressions are evaluated within the
      * scope of the parent template or nested template. Only applicable to nested templates. If not specified, default
      * value is outer.
-     *
+     * 
      * @return the expressionEvaluationOptions value.
      */
     public ExpressionEvaluationOptions expressionEvaluationOptions() {
@@ -254,32 +251,38 @@ public class DeploymentProperties {
      * Set the expressionEvaluationOptions property: Specifies whether template expressions are evaluated within the
      * scope of the parent template or nested template. Only applicable to nested templates. If not specified, default
      * value is outer.
-     *
+     * 
      * @param expressionEvaluationOptions the expressionEvaluationOptions value to set.
      * @return the DeploymentProperties object itself.
      */
-    public DeploymentProperties withExpressionEvaluationOptions(
-        ExpressionEvaluationOptions expressionEvaluationOptions) {
+    public DeploymentProperties
+        withExpressionEvaluationOptions(ExpressionEvaluationOptions expressionEvaluationOptions) {
         this.expressionEvaluationOptions = expressionEvaluationOptions;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (templateLink() != null) {
             templateLink().validate();
         }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
         if (parametersLink() != null) {
             parametersLink().validate();
         }
         if (mode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property mode in model DeploymentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property mode in model DeploymentProperties"));
         }
         if (debugSetting() != null) {
             debugSetting().validate();
@@ -293,4 +296,65 @@ public class DeploymentProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DeploymentProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeUntypedField("template", this.template);
+        jsonWriter.writeJsonField("templateLink", this.templateLink);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("parametersLink", this.parametersLink);
+        jsonWriter.writeJsonField("debugSetting", this.debugSetting);
+        jsonWriter.writeJsonField("onErrorDeployment", this.onErrorDeployment);
+        jsonWriter.writeJsonField("expressionEvaluationOptions", this.expressionEvaluationOptions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeploymentProperties.
+     */
+    public static DeploymentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentProperties deserializedDeploymentProperties = new DeploymentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mode".equals(fieldName)) {
+                    deserializedDeploymentProperties.mode = DeploymentMode.fromString(reader.getString());
+                } else if ("template".equals(fieldName)) {
+                    deserializedDeploymentProperties.template = reader.readUntyped();
+                } else if ("templateLink".equals(fieldName)) {
+                    deserializedDeploymentProperties.templateLink = TemplateLink.fromJson(reader);
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, DeploymentParameter> parameters
+                        = reader.readMap(reader1 -> DeploymentParameter.fromJson(reader1));
+                    deserializedDeploymentProperties.parameters = parameters;
+                } else if ("parametersLink".equals(fieldName)) {
+                    deserializedDeploymentProperties.parametersLink = ParametersLink.fromJson(reader);
+                } else if ("debugSetting".equals(fieldName)) {
+                    deserializedDeploymentProperties.debugSetting = DebugSetting.fromJson(reader);
+                } else if ("onErrorDeployment".equals(fieldName)) {
+                    deserializedDeploymentProperties.onErrorDeployment = OnErrorDeployment.fromJson(reader);
+                } else if ("expressionEvaluationOptions".equals(fieldName)) {
+                    deserializedDeploymentProperties.expressionEvaluationOptions
+                        = ExpressionEvaluationOptions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentProperties;
+        });
+    }
 }

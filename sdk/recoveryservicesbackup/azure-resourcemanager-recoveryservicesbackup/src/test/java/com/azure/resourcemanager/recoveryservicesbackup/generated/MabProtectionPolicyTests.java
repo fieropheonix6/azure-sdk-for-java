@@ -10,30 +10,25 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionPolicy;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SchedulePolicy;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MabProtectionPolicyTests {
-    @Test
-    public void testDeserialize() {
-        MabProtectionPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"backupManagementType\":\"MAB\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"protectedItemsCount\":1055225558,\"resourceGuardOperationRequests\":[\"tefypococtfjgti\"]}")
-                .toObject(MabProtectionPolicy.class);
-        Assertions.assertEquals(1055225558, model.protectedItemsCount());
-        Assertions.assertEquals("tefypococtfjgti", model.resourceGuardOperationRequests().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        MabProtectionPolicy model = BinaryData.fromString(
+            "{\"backupManagementType\":\"MAB\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"protectedItemsCount\":1896459173,\"resourceGuardOperationRequests\":[\"qyki\",\"mdksaoa\",\"cluqvo\"]}")
+            .toObject(MabProtectionPolicy.class);
+        Assertions.assertEquals(1896459173, model.protectedItemsCount());
+        Assertions.assertEquals("qyki", model.resourceGuardOperationRequests().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        MabProtectionPolicy model =
-            new MabProtectionPolicy()
-                .withProtectedItemsCount(1055225558)
-                .withResourceGuardOperationRequests(Arrays.asList("tefypococtfjgti"))
-                .withSchedulePolicy(new SchedulePolicy())
-                .withRetentionPolicy(new RetentionPolicy());
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        MabProtectionPolicy model = new MabProtectionPolicy().withProtectedItemsCount(1896459173)
+            .withResourceGuardOperationRequests(Arrays.asList("qyki", "mdksaoa", "cluqvo"))
+            .withSchedulePolicy(new SchedulePolicy())
+            .withRetentionPolicy(new RetentionPolicy());
         model = BinaryData.fromObject(model).toObject(MabProtectionPolicy.class);
-        Assertions.assertEquals(1055225558, model.protectedItemsCount());
-        Assertions.assertEquals("tefypococtfjgti", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(1896459173, model.protectedItemsCount());
+        Assertions.assertEquals("qyki", model.resourceGuardOperationRequests().get(0));
     }
 }

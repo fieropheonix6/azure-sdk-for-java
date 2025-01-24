@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Target rolling windows size mode. */
+/**
+ * Target rolling windows size mode.
+ */
 public final class TargetRollingWindowSizeMode extends ExpandableStringEnum<TargetRollingWindowSizeMode> {
-    /** Static value Auto for TargetRollingWindowSizeMode. */
+    /**
+     * Static value Auto for TargetRollingWindowSizeMode.
+     */
     public static final TargetRollingWindowSizeMode AUTO = fromString("Auto");
 
-    /** Static value Custom for TargetRollingWindowSizeMode. */
+    /**
+     * Static value Custom for TargetRollingWindowSizeMode.
+     */
     public static final TargetRollingWindowSizeMode CUSTOM = fromString("Custom");
 
     /**
+     * Creates a new instance of TargetRollingWindowSizeMode value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TargetRollingWindowSizeMode() {
+    }
+
+    /**
      * Creates or finds a TargetRollingWindowSizeMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TargetRollingWindowSizeMode.
      */
-    @JsonCreator
     public static TargetRollingWindowSizeMode fromString(String name) {
         return fromString(name, TargetRollingWindowSizeMode.class);
     }
 
     /**
      * Gets known TargetRollingWindowSizeMode values.
-     *
+     * 
      * @return known TargetRollingWindowSizeMode values.
      */
     public static Collection<TargetRollingWindowSizeMode> values() {

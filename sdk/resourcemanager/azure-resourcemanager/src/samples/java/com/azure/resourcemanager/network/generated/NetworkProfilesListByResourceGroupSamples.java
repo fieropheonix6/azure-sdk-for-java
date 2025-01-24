@@ -4,19 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for NetworkProfiles ListByResourceGroup. */
+/**
+ * Samples for NetworkProfiles ListByResourceGroup.
+ */
 public final class NetworkProfilesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkProfileList.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkProfileList.json
      */
     /**
      * Sample code: List resource group network profiles.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listResourceGroupNetworkProfiles(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkProfiles().listByResourceGroup("rg1", Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkProfiles()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

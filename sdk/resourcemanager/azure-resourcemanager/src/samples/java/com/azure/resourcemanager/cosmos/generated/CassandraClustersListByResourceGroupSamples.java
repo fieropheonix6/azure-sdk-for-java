@@ -4,25 +4,25 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for CassandraClusters ListByResourceGroup. */
+/**
+ * Samples for CassandraClusters ListByResourceGroup.
+ */
 public final class CassandraClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBManagedCassandraClusterListByResourceGroup.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
+     * CosmosDBManagedCassandraClusterListByResourceGroup.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraClusterListByResourceGroup.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBManagedCassandraClusterListByResourceGroup(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
+    public static void
+        cosmosDBManagedCassandraClusterListByResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getCassandraClusters()
-            .listByResourceGroup("cassandra-prod-rg", Context.NONE);
+            .listByResourceGroup("cassandra-prod-rg", com.azure.core.util.Context.NONE);
     }
 }

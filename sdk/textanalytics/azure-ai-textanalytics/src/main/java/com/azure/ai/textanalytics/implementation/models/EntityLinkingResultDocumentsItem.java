@@ -5,66 +5,105 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The EntityLinkingResultDocumentsItem model. */
+/**
+ * The EntityLinkingResultDocumentsItem model.
+ */
 @Fluent
 public final class EntityLinkingResultDocumentsItem extends LinkedEntitiesDocumentResult {
-    /*
-     * If 'language' is set to 'auto' for the document in the request this field will contain a 2 letter ISO 639-1
-     * representation of the language detected for this document.
-     */
-    @JsonProperty(value = "detectedLanguage")
-    private DetectedLanguage detectedLanguage;
-
     /**
-     * Get the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
-     * contain a 2 letter ISO 639-1 representation of the language detected for this document.
-     *
-     * @return the detectedLanguage value.
+     * Creates an instance of EntityLinkingResultDocumentsItem class.
      */
-    public DetectedLanguage getDetectedLanguage() {
-        return this.detectedLanguage;
+    public EntityLinkingResultDocumentsItem() {
     }
 
     /**
-     * Set the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
-     * contain a 2 letter ISO 639-1 representation of the language detected for this document.
-     *
-     * @param detectedLanguage the detectedLanguage value to set.
-     * @return the EntityLinkingResultDocumentsItem object itself.
+     * {@inheritDoc}
      */
-    public EntityLinkingResultDocumentsItem setDetectedLanguage(DetectedLanguage detectedLanguage) {
-        this.detectedLanguage = detectedLanguage;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public EntityLinkingResultDocumentsItem setEntities(List<LinkedEntity> entities) {
         super.setEntities(entities);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EntityLinkingResultDocumentsItem setId(String id) {
         super.setId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EntityLinkingResultDocumentsItem setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EntityLinkingResultDocumentsItem setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeArrayField("warnings", getWarnings(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("entities", getEntities(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("statistics", getStatistics());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityLinkingResultDocumentsItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityLinkingResultDocumentsItem if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EntityLinkingResultDocumentsItem.
+     */
+    public static EntityLinkingResultDocumentsItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityLinkingResultDocumentsItem deserializedEntityLinkingResultDocumentsItem
+                = new EntityLinkingResultDocumentsItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEntityLinkingResultDocumentsItem.setId(reader.getString());
+                } else if ("warnings".equals(fieldName)) {
+                    List<DocumentWarning> warnings = reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
+                    deserializedEntityLinkingResultDocumentsItem.setWarnings(warnings);
+                } else if ("entities".equals(fieldName)) {
+                    List<LinkedEntity> entities = reader.readArray(reader1 -> LinkedEntity.fromJson(reader1));
+                    deserializedEntityLinkingResultDocumentsItem.setEntities(entities);
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedEntityLinkingResultDocumentsItem.setStatistics(DocumentStatistics.fromJson(reader));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityLinkingResultDocumentsItem;
+        });
     }
 }

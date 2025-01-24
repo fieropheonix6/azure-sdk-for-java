@@ -4,25 +4,25 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for CassandraResources MigrateCassandraKeyspaceToAutoscale. */
+/**
+ * Samples for CassandraResources MigrateCassandraKeyspaceToAutoscale.
+ */
 public final class CassandraResourcesMigrateCassandraKeyspaceToAutoscaleSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBCassandraKeyspaceMigrateToAutoscale.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
+     * CosmosDBCassandraKeyspaceMigrateToAutoscale.json
      */
     /**
      * Sample code: CosmosDBCassandraKeyspaceMigrateToAutoscale.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBCassandraKeyspaceMigrateToAutoscale(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
+    public static void
+        cosmosDBCassandraKeyspaceMigrateToAutoscale(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getCassandraResources()
-            .migrateCassandraKeyspaceToAutoscale("rg1", "ddb1", "keyspaceName", Context.NONE);
+            .migrateCassandraKeyspaceToAutoscale("rg1", "ddb1", "keyspaceName", com.azure.core.util.Context.NONE);
     }
 }

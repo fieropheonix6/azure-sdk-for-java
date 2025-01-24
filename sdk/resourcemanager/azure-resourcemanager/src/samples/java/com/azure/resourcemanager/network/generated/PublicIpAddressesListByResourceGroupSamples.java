@@ -4,19 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for PublicIpAddresses ListByResourceGroup. */
+/**
+ * Samples for PublicIpAddresses ListByResourceGroup.
+ */
 public final class PublicIpAddressesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/PublicIpAddressList.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/PublicIpAddressList.json
      */
     /**
      * Sample code: List resource group public IP addresses.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listResourceGroupPublicIPAddresses(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPublicIpAddresses().listByResourceGroup("rg1", Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPublicIpAddresses()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

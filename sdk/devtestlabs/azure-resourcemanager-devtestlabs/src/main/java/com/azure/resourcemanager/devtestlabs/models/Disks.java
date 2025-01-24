@@ -8,24 +8,26 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Disks. */
+/**
+ * Resource collection API of Disks.
+ */
 public interface Disks {
     /**
      * List disks in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Disk> list(String resourceGroupName, String labName, String username);
 
     /**
      * List disks in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -37,21 +39,31 @@ public interface Disks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Disk> list(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<Disk> list(String resourceGroupName, String labName, String username, String expand, String filter,
+        Integer top, String orderby, Context context);
 
     /**
      * Get disk.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param labName The name of the lab.
+     * @param username The name of the user profile.
+     * @param name The name of the disk.
+     * @param expand Specify the $expand query. Example: 'properties($select=diskType)'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return disk along with {@link Response}.
+     */
+    Response<Disk> getWithResponse(String resourceGroupName, String labName, String username, String name,
+        String expand, Context context);
+
+    /**
+     * Get disk.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -64,25 +76,8 @@ public interface Disks {
     Disk get(String resourceGroupName, String labName, String username, String name);
 
     /**
-     * Get disk.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param username The name of the user profile.
-     * @param name The name of the disk.
-     * @param expand Specify the $expand query. Example: 'properties($select=diskType)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk.
-     */
-    Response<Disk> getWithResponse(
-        String resourceGroupName, String labName, String username, String name, String expand, Context context);
-
-    /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -95,7 +90,7 @@ public interface Disks {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -109,7 +104,7 @@ public interface Disks {
 
     /**
      * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -119,16 +114,12 @@ public interface Disks {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void attach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
+    void attach(String resourceGroupName, String labName, String username, String name,
         AttachDiskProperties attachDiskProperties);
 
     /**
      * Attach and create the lease of the disk to the virtual machine. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -139,18 +130,13 @@ public interface Disks {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void attach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        AttachDiskProperties attachDiskProperties,
-        Context context);
+    void attach(String resourceGroupName, String labName, String username, String name,
+        AttachDiskProperties attachDiskProperties, Context context);
 
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
      * complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -160,17 +146,13 @@ public interface Disks {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void detach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
+    void detach(String resourceGroupName, String labName, String username, String name,
         DetachDiskProperties detachDiskProperties);
 
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
      * complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -181,41 +163,36 @@ public interface Disks {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void detach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        DetachDiskProperties detachDiskProperties,
-        Context context);
+    void detach(String resourceGroupName, String labName, String username, String name,
+        DetachDiskProperties detachDiskProperties, Context context);
 
     /**
      * Get disk.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk.
+     * @return disk along with {@link Response}.
      */
     Disk getById(String id);
 
     /**
      * Get disk.
-     *
+     * 
      * @param id the resource ID.
      * @param expand Specify the $expand query. Example: 'properties($select=diskType)'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk.
+     * @return disk along with {@link Response}.
      */
     Response<Disk> getByIdWithResponse(String id, String expand, Context context);
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -225,7 +202,7 @@ public interface Disks {
 
     /**
      * Delete disk. This operation can take a while to complete.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,7 +213,7 @@ public interface Disks {
 
     /**
      * Begins definition for a new Disk resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Disk definition.
      */

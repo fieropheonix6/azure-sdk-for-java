@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RegistryUsageUnit. */
+/**
+ * The unit of measurement.
+ */
 public final class RegistryUsageUnit extends ExpandableStringEnum<RegistryUsageUnit> {
-    /** Static value Count for RegistryUsageUnit. */
+    /**
+     * Static value Count for RegistryUsageUnit.
+     */
     public static final RegistryUsageUnit COUNT = fromString("Count");
 
-    /** Static value Bytes for RegistryUsageUnit. */
+    /**
+     * Static value Bytes for RegistryUsageUnit.
+     */
     public static final RegistryUsageUnit BYTES = fromString("Bytes");
 
     /**
+     * Creates a new instance of RegistryUsageUnit value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RegistryUsageUnit() {
+    }
+
+    /**
      * Creates or finds a RegistryUsageUnit from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RegistryUsageUnit.
      */
-    @JsonCreator
     public static RegistryUsageUnit fromString(String name) {
         return fromString(name, RegistryUsageUnit.class);
     }
 
-    /** @return known RegistryUsageUnit values. */
+    /**
+     * Gets known RegistryUsageUnit values.
+     * 
+     * @return known RegistryUsageUnit values.
+     */
     public static Collection<RegistryUsageUnit> values() {
         return values(RegistryUsageUnit.class);
     }

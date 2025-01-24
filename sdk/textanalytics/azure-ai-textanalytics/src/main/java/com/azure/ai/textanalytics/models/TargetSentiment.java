@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.implementation.TargetSentimentPropertiesHelper
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link TargetSentiment} model.
+ * The {@code TargetSentiment} model.
  */
 @Immutable
 public final class TargetSentiment {
@@ -30,7 +30,8 @@ public final class TargetSentiment {
             }
 
             @Override
-            public void setConfidenceScores(TargetSentiment targetSentiment, SentimentConfidenceScores confidenceScores) {
+            public void setConfidenceScores(TargetSentiment targetSentiment,
+                SentimentConfidenceScores confidenceScores) {
                 targetSentiment.setConfidenceScores(confidenceScores);
             }
 
@@ -44,6 +45,12 @@ public final class TargetSentiment {
                 targetSentiment.setLength(length);
             }
         });
+    }
+
+    /**
+     * Constructs a {@code TargetSentiment} model.
+     */
+    public TargetSentiment() {
     }
 
     /**

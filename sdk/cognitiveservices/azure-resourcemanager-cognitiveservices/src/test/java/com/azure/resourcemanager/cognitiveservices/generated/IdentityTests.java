@@ -11,30 +11,25 @@ import com.azure.resourcemanager.cognitiveservices.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IdentityTests {
-    @Test
-    public void testDeserialize() {
-        Identity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SystemAssigned,"
-                        + " UserAssigned\",\"tenantId\":\"kohdbiha\",\"principalId\":\"fhfcb\",\"userAssignedIdentities\":{\"yscnpqxu\":{\"principalId\":\"git\",\"clientId\":\"qhabifpikxwcz\"}}}")
-                .toObject(Identity.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        Identity model = BinaryData.fromString(
+            "{\"type\":\"SystemAssigned, UserAssigned\",\"tenantId\":\"kohdbiha\",\"principalId\":\"fhfcb\",\"userAssignedIdentities\":{\"yscnpqxu\":{\"principalId\":\"git\",\"clientId\":\"qhabifpikxwcz\"}}}")
+            .toObject(Identity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
-    @Test
-    public void testSerialize() {
-        Identity model =
-            new Identity()
-                .withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("yscnpqxu", new UserAssignedIdentity()));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        Identity model = new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("yscnpqxu", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(Identity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

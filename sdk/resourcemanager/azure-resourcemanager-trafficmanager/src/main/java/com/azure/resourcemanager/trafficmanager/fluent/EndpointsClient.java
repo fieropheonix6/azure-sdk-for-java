@@ -10,14 +10,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.trafficmanager.fluent.models.DeleteOperationResultInner;
 import com.azure.resourcemanager.trafficmanager.fluent.models.EndpointInner;
+import com.azure.resourcemanager.trafficmanager.models.EndpointTypes;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in EndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EndpointsClient.
+ */
 public interface EndpointsClient {
     /**
      * Update a Traffic Manager endpoint.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be updated.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
@@ -26,20 +29,16 @@ public interface EndpointsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Traffic Manager endpoint along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<EndpointInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointType,
-        String endpointName,
-        EndpointInner parameters);
+    Mono<Response<EndpointInner>> updateWithResponseAsync(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName, EndpointInner parameters);
 
     /**
      * Update a Traffic Manager endpoint.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be updated.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
@@ -50,17 +49,13 @@ public interface EndpointsClient {
      * @return class representing a Traffic Manager endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<EndpointInner> updateAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointType,
-        String endpointName,
-        EndpointInner parameters);
+    Mono<EndpointInner> updateAsync(String resourceGroupName, String profileName, EndpointTypes endpointType,
+        String endpointName, EndpointInner parameters);
 
     /**
      * Update a Traffic Manager endpoint.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be updated.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
@@ -72,18 +67,13 @@ public interface EndpointsClient {
      * @return class representing a Traffic Manager endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EndpointInner> updateWithResponse(
-        String resourceGroupName,
-        String profileName,
-        String endpointType,
-        String endpointName,
-        EndpointInner parameters,
-        Context context);
+    Response<EndpointInner> updateWithResponse(String resourceGroupName, String profileName, EndpointTypes endpointType,
+        String endpointName, EndpointInner parameters, Context context);
 
     /**
      * Update a Traffic Manager endpoint.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be updated.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be updated.
      * @param endpointName The name of the Traffic Manager endpoint to be updated.
@@ -94,17 +84,13 @@ public interface EndpointsClient {
      * @return class representing a Traffic Manager endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EndpointInner update(
-        String resourceGroupName,
-        String profileName,
-        String endpointType,
-        String endpointName,
+    EndpointInner update(String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName,
         EndpointInner parameters);
 
     /**
      * Gets a Traffic Manager endpoint.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
      * @param endpointName The name of the Traffic Manager endpoint.
@@ -114,13 +100,13 @@ public interface EndpointsClient {
      * @return a Traffic Manager endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<EndpointInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointType, String endpointName);
+    Mono<Response<EndpointInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName);
 
     /**
      * Gets a Traffic Manager endpoint.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
      * @param endpointName The name of the Traffic Manager endpoint.
@@ -130,13 +116,13 @@ public interface EndpointsClient {
      * @return a Traffic Manager endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<EndpointInner> getAsync(
-        String resourceGroupName, String profileName, String endpointType, String endpointName);
+    Mono<EndpointInner> getAsync(String resourceGroupName, String profileName, EndpointTypes endpointType,
+        String endpointName);
 
     /**
      * Gets a Traffic Manager endpoint.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
      * @param endpointName The name of the Traffic Manager endpoint.
@@ -147,13 +133,13 @@ public interface EndpointsClient {
      * @return a Traffic Manager endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EndpointInner> getWithResponse(
-        String resourceGroupName, String profileName, String endpointType, String endpointName, Context context);
+    Response<EndpointInner> getWithResponse(String resourceGroupName, String profileName, EndpointTypes endpointType,
+        String endpointName, Context context);
 
     /**
      * Gets a Traffic Manager endpoint.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint.
      * @param endpointName The name of the Traffic Manager endpoint.
@@ -163,13 +149,12 @@ public interface EndpointsClient {
      * @return a Traffic Manager endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EndpointInner get(String resourceGroupName, String profileName, String endpointType, String endpointName);
+    EndpointInner get(String resourceGroupName, String profileName, EndpointTypes endpointType, String endpointName);
 
     /**
      * Create or update a Traffic Manager endpoint.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be created or
-     *     updated.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
@@ -178,21 +163,16 @@ public interface EndpointsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Traffic Manager endpoint along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<EndpointInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointType,
-        String endpointName,
-        EndpointInner parameters);
+    Mono<Response<EndpointInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName, EndpointInner parameters);
 
     /**
      * Create or update a Traffic Manager endpoint.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be created or
-     *     updated.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
@@ -203,18 +183,13 @@ public interface EndpointsClient {
      * @return class representing a Traffic Manager endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<EndpointInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointType,
-        String endpointName,
-        EndpointInner parameters);
+    Mono<EndpointInner> createOrUpdateAsync(String resourceGroupName, String profileName, EndpointTypes endpointType,
+        String endpointName, EndpointInner parameters);
 
     /**
      * Create or update a Traffic Manager endpoint.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be created or
-     *     updated.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
@@ -226,19 +201,13 @@ public interface EndpointsClient {
      * @return class representing a Traffic Manager endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EndpointInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String profileName,
-        String endpointType,
-        String endpointName,
-        EndpointInner parameters,
-        Context context);
+    Response<EndpointInner> createOrUpdateWithResponse(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName, EndpointInner parameters, Context context);
 
     /**
      * Create or update a Traffic Manager endpoint.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be created or
-     *     updated.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be created or updated.
      * @param endpointName The name of the Traffic Manager endpoint to be created or updated.
@@ -249,34 +218,30 @@ public interface EndpointsClient {
      * @return class representing a Traffic Manager endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EndpointInner createOrUpdate(
-        String resourceGroupName,
-        String profileName,
-        String endpointType,
-        String endpointName,
-        EndpointInner parameters);
+    EndpointInner createOrUpdate(String resourceGroupName, String profileName, EndpointTypes endpointType,
+        String endpointName, EndpointInner parameters);
 
     /**
      * Deletes a Traffic Manager endpoint.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be deleted.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the result of the request or operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointType, String endpointName);
+    Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName);
 
     /**
      * Deletes a Traffic Manager endpoint.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be deleted.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
@@ -286,13 +251,13 @@ public interface EndpointsClient {
      * @return the result of the request or operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeleteOperationResultInner> deleteAsync(
-        String resourceGroupName, String profileName, String endpointType, String endpointName);
+    Mono<DeleteOperationResultInner> deleteAsync(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName);
 
     /**
      * Deletes a Traffic Manager endpoint.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be deleted.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
@@ -303,13 +268,13 @@ public interface EndpointsClient {
      * @return the result of the request or operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeleteOperationResultInner> deleteWithResponse(
-        String resourceGroupName, String profileName, String endpointType, String endpointName, Context context);
+    Response<DeleteOperationResultInner> deleteWithResponse(String resourceGroupName, String profileName,
+        EndpointTypes endpointType, String endpointName, Context context);
 
     /**
      * Deletes a Traffic Manager endpoint.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint to be deleted.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param endpointType The type of the Traffic Manager endpoint to be deleted.
      * @param endpointName The name of the Traffic Manager endpoint to be deleted.
@@ -319,6 +284,6 @@ public interface EndpointsClient {
      * @return the result of the request or operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeleteOperationResultInner delete(
-        String resourceGroupName, String profileName, String endpointType, String endpointName);
+    DeleteOperationResultInner delete(String resourceGroupName, String profileName, EndpointTypes endpointType,
+        String endpointName);
 }

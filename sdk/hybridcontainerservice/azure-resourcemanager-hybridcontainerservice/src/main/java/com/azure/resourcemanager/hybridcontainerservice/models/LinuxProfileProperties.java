@@ -5,50 +5,31 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** LinuxProfile - Profile for Linux VMs in the container service cluster. */
+/**
+ * SSH profile for control plane and nodepool VMs of the provisioned cluster.
+ */
 @Fluent
-public final class LinuxProfileProperties {
+public final class LinuxProfileProperties implements JsonSerializable<LinuxProfileProperties> {
     /*
-     * AdminUsername - The administrator username to use for Linux VMs.
+     * SSH configuration for VMs of the provisioned cluster.
      */
-    @JsonProperty(value = "adminUsername")
-    private String adminUsername;
-
-    /*
-     * SSH - SSH configuration for Linux-based VMs running on Azure.
-     */
-    @JsonProperty(value = "ssh")
     private LinuxProfilePropertiesSsh ssh;
 
-    /** Creates an instance of LinuxProfileProperties class. */
+    /**
+     * Creates an instance of LinuxProfileProperties class.
+     */
     public LinuxProfileProperties() {
     }
 
     /**
-     * Get the adminUsername property: AdminUsername - The administrator username to use for Linux VMs.
-     *
-     * @return the adminUsername value.
-     */
-    public String adminUsername() {
-        return this.adminUsername;
-    }
-
-    /**
-     * Set the adminUsername property: AdminUsername - The administrator username to use for Linux VMs.
-     *
-     * @param adminUsername the adminUsername value to set.
-     * @return the LinuxProfileProperties object itself.
-     */
-    public LinuxProfileProperties withAdminUsername(String adminUsername) {
-        this.adminUsername = adminUsername;
-        return this;
-    }
-
-    /**
-     * Get the ssh property: SSH - SSH configuration for Linux-based VMs running on Azure.
-     *
+     * Get the ssh property: SSH configuration for VMs of the provisioned cluster.
+     * 
      * @return the ssh value.
      */
     public LinuxProfilePropertiesSsh ssh() {
@@ -56,8 +37,8 @@ public final class LinuxProfileProperties {
     }
 
     /**
-     * Set the ssh property: SSH - SSH configuration for Linux-based VMs running on Azure.
-     *
+     * Set the ssh property: SSH configuration for VMs of the provisioned cluster.
+     * 
      * @param ssh the ssh value to set.
      * @return the LinuxProfileProperties object itself.
      */
@@ -68,12 +49,48 @@ public final class LinuxProfileProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ssh() != null) {
             ssh().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("ssh", this.ssh);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinuxProfileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinuxProfileProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinuxProfileProperties.
+     */
+    public static LinuxProfileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinuxProfileProperties deserializedLinuxProfileProperties = new LinuxProfileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ssh".equals(fieldName)) {
+                    deserializedLinuxProfileProperties.ssh = LinuxProfilePropertiesSsh.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinuxProfileProperties;
+        });
     }
 }

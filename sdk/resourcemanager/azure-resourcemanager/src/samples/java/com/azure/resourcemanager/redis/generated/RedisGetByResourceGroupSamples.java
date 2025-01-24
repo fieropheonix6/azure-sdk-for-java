@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Redis GetByResourceGroup. */
+/**
+ * Samples for Redis GetByResourceGroup.
+ */
 public final class RedisGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheGet.json
+     * x-ms-original-file:
+     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheGet.json
      */
     /**
      * Sample code: RedisCacheGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void redisCacheGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .redisCaches()
+        azure.redisCaches()
             .manager()
             .serviceClient()
             .getRedis()
-            .getByResourceGroupWithResponse("rg1", "cache1", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "cache1", com.azure.core.util.Context.NONE);
     }
 }

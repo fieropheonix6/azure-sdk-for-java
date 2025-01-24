@@ -86,6 +86,13 @@ public interface ArtifactSource {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.deploymentmanager.fluent.models.ArtifactSourceInner object.
      *
      * @return the inner object.
@@ -93,17 +100,16 @@ public interface ArtifactSource {
     ArtifactSourceInner innerModel();
 
     /** The entirety of the ArtifactSource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
+
     /** The ArtifactSource definition stages. */
     interface DefinitionStages {
         /** The first stage of the ArtifactSource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ArtifactSource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -122,6 +128,7 @@ public interface ArtifactSource {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the ArtifactSource definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -132,15 +139,13 @@ public interface ArtifactSource {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the ArtifactSource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithSourceType,
-                DefinitionStages.WithArtifactRoot,
-                DefinitionStages.WithAuthentication {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSourceType,
+            DefinitionStages.WithArtifactRoot, DefinitionStages.WithAuthentication {
             /**
              * Executes the create request.
              *
@@ -156,6 +161,7 @@ public interface ArtifactSource {
              */
             ArtifactSource create(Context context);
         }
+
         /** The stage of the ArtifactSource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -166,6 +172,7 @@ public interface ArtifactSource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ArtifactSource definition allowing to specify sourceType. */
         interface WithSourceType {
             /**
@@ -176,6 +183,7 @@ public interface ArtifactSource {
              */
             WithCreate withSourceType(String sourceType);
         }
+
         /** The stage of the ArtifactSource definition allowing to specify artifactRoot. */
         interface WithArtifactRoot {
             /**
@@ -194,6 +202,7 @@ public interface ArtifactSource {
              */
             WithCreate withArtifactRoot(String artifactRoot);
         }
+
         /** The stage of the ArtifactSource definition allowing to specify authentication. */
         interface WithAuthentication {
             /**
@@ -205,6 +214,7 @@ public interface ArtifactSource {
             WithCreate withAuthentication(Authentication authentication);
         }
     }
+
     /**
      * Begins update for the ArtifactSource resource.
      *
@@ -213,11 +223,8 @@ public interface ArtifactSource {
     ArtifactSource.Update update();
 
     /** The template for ArtifactSource update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithSourceType,
-            UpdateStages.WithArtifactRoot,
-            UpdateStages.WithAuthentication {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithSourceType, UpdateStages.WithArtifactRoot,
+        UpdateStages.WithAuthentication {
         /**
          * Executes the update request.
          *
@@ -233,6 +240,7 @@ public interface ArtifactSource {
          */
         ArtifactSource apply(Context context);
     }
+
     /** The ArtifactSource update stages. */
     interface UpdateStages {
         /** The stage of the ArtifactSource update allowing to specify tags. */
@@ -245,6 +253,7 @@ public interface ArtifactSource {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the ArtifactSource update allowing to specify sourceType. */
         interface WithSourceType {
             /**
@@ -255,6 +264,7 @@ public interface ArtifactSource {
              */
             Update withSourceType(String sourceType);
         }
+
         /** The stage of the ArtifactSource update allowing to specify artifactRoot. */
         interface WithArtifactRoot {
             /**
@@ -273,6 +283,7 @@ public interface ArtifactSource {
              */
             Update withArtifactRoot(String artifactRoot);
         }
+
         /** The stage of the ArtifactSource update allowing to specify authentication. */
         interface WithAuthentication {
             /**
@@ -284,6 +295,7 @@ public interface ArtifactSource {
             Update withAuthentication(Authentication authentication);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

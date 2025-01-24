@@ -5,6 +5,7 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
@@ -26,7 +27,6 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Code snippets for {@link DataLakeFileSystemClient}
@@ -69,7 +69,8 @@ public class FileSystemClientJavaDocCodeSamples {
      */
     public void getRootDirectoryClient() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.getRootDirectoryClient
-        DataLakeDirectoryClient dataLakeDirectoryClient = client.getRootDirectoryClient();
+        DataLakeDirectoryClient dataLakeDirectoryClient =
+            client.getDirectoryClient(DataLakeFileSystemClient.ROOT_DIRECTORY_NAME);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.getRootDirectoryClient
     }
 
@@ -266,7 +267,7 @@ public class FileSystemClientJavaDocCodeSamples {
         String umask = "umask";
         String owner = "rwx";
         String group = "r--";
-        String leaseId = UUID.randomUUID().toString();
+        String leaseId = CoreUtils.randomUuid().toString();
         Integer duration = 15;
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
             .setPermissions(permissions)
@@ -347,7 +348,7 @@ public class FileSystemClientJavaDocCodeSamples {
         String umask = "umask";
         String owner = "rwx";
         String group = "r--";
-        String leaseId = UUID.randomUUID().toString();
+        String leaseId = CoreUtils.randomUuid().toString();
         Integer duration = 15;
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
             .setPermissions(permissions)

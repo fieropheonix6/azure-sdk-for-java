@@ -3,6 +3,7 @@
 
 package com.azure.core.test.http;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -26,9 +27,7 @@ public class MockHttpResponse extends HttpResponse {
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
     private final int statusCode;
-
     private final HttpHeaders headers;
-
     private final byte[] bodyBytes;
 
     /**
@@ -117,33 +116,27 @@ public class MockHttpResponse extends HttpResponse {
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getStatusCode() {
         return statusCode;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
+    @Deprecated
     public String getHeaderValue(String name) {
         return headers.getValue(name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public HttpHeaders getHeaders() {
-        return new HttpHeaders(headers);
+    public String getHeaderValue(HttpHeaderName headerName) {
+        return headers.getValue(headerName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public HttpHeaders getHeaders() {
+        return headers;
+    }
+
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
         if (bodyBytes == null) {
@@ -153,9 +146,6 @@ public class MockHttpResponse extends HttpResponse {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Flux<ByteBuffer> getBody() {
         if (bodyBytes == null) {
@@ -165,9 +155,6 @@ public class MockHttpResponse extends HttpResponse {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Mono<String> getBodyAsString() {
         return (bodyBytes == null)
@@ -175,16 +162,11 @@ public class MockHttpResponse extends HttpResponse {
             : Mono.just(CoreUtils.bomAwareToString(bodyBytes, getHeaderValue("Content-Type")));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
         Objects.requireNonNull(charset, "'charset' cannot be null.");
 
-        return bodyBytes == null
-                ? Mono.empty()
-                : Mono.just(new String(bodyBytes, charset));
+        return bodyBytes == null ? Mono.empty() : Mono.just(new String(bodyBytes, charset));
     }
 
     /**
@@ -192,7 +174,9 @@ public class MockHttpResponse extends HttpResponse {
      * @param name The header to add
      * @param value The header value.
      * @return The updated response object.
+     * @deprecated Don't use this method.
      */
+    @Deprecated
     public MockHttpResponse addHeader(String name, String value) {
         headers.set(name, value);
         return this;

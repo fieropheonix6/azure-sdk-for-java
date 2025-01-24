@@ -4,24 +4,33 @@
 
 package com.azure.resourcemanager.servicefabric.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ManagedIdentityType. */
+/**
+ * The type of managed identity for the resource.
+ */
 public enum ManagedIdentityType {
-    /** Enum value SystemAssigned. */
+    /**
+     * Enum value SystemAssigned.
+     */
     SYSTEM_ASSIGNED("SystemAssigned"),
 
-    /** Enum value UserAssigned. */
+    /**
+     * Enum value UserAssigned.
+     */
     USER_ASSIGNED("UserAssigned"),
 
-    /** Enum value SystemAssigned, UserAssigned. */
+    /**
+     * Enum value SystemAssigned, UserAssigned.
+     */
     SYSTEM_ASSIGNED_USER_ASSIGNED("SystemAssigned, UserAssigned"),
 
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None");
 
-    /** The actual serialized value for a ManagedIdentityType instance. */
+    /**
+     * The actual serialized value for a ManagedIdentityType instance.
+     */
     private final String value;
 
     ManagedIdentityType(String value) {
@@ -30,12 +39,14 @@ public enum ManagedIdentityType {
 
     /**
      * Parses a serialized value to a ManagedIdentityType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ManagedIdentityType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ManagedIdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ManagedIdentityType[] items = ManagedIdentityType.values();
         for (ManagedIdentityType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,7 +56,9 @@ public enum ManagedIdentityType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

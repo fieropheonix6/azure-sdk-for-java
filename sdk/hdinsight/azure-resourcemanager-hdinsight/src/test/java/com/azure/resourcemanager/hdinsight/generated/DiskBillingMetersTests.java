@@ -8,27 +8,25 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.DiskBillingMeters;
 import com.azure.resourcemanager.hdinsight.models.Tier;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DiskBillingMetersTests {
-    @Test
-    public void testDeserialize() {
-        DiskBillingMeters model =
-            BinaryData
-                .fromString("{\"diskRpMeter\":\"wpusdsttwvogv\",\"sku\":\"ejdcngqqmoakuf\",\"tier\":\"Premium\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DiskBillingMeters model
+            = BinaryData.fromString("{\"diskRpMeter\":\"ydfce\",\"sku\":\"vlhv\",\"tier\":\"Premium\"}")
                 .toObject(DiskBillingMeters.class);
-        Assertions.assertEquals("wpusdsttwvogv", model.diskRpMeter());
-        Assertions.assertEquals("ejdcngqqmoakuf", model.sku());
+        Assertions.assertEquals("ydfce", model.diskRpMeter());
+        Assertions.assertEquals("vlhv", model.sku());
         Assertions.assertEquals(Tier.PREMIUM, model.tier());
     }
 
-    @Test
-    public void testSerialize() {
-        DiskBillingMeters model =
-            new DiskBillingMeters().withDiskRpMeter("wpusdsttwvogv").withSku("ejdcngqqmoakuf").withTier(Tier.PREMIUM);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DiskBillingMeters model
+            = new DiskBillingMeters().withDiskRpMeter("ydfce").withSku("vlhv").withTier(Tier.PREMIUM);
         model = BinaryData.fromObject(model).toObject(DiskBillingMeters.class);
-        Assertions.assertEquals("wpusdsttwvogv", model.diskRpMeter());
-        Assertions.assertEquals("ejdcngqqmoakuf", model.sku());
+        Assertions.assertEquals("ydfce", model.diskRpMeter());
+        Assertions.assertEquals("vlhv", model.sku());
         Assertions.assertEquals(Tier.PREMIUM, model.tier());
     }
 }

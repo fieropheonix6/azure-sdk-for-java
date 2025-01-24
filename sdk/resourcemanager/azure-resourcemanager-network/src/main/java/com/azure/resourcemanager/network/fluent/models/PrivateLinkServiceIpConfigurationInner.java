@@ -6,45 +6,48 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The private link service ip configuration. */
+/**
+ * The private link service ip configuration.
+ */
 @Fluent
 public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
     /*
      * Properties of the private link service ip configuration.
      */
-    @JsonProperty(value = "properties")
     private PrivateLinkServiceIpConfigurationPropertiesInner innerProperties;
 
     /*
      * The name of private link service ip configuration.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * The resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of PrivateLinkServiceIpConfigurationInner class. */
+    /**
+     * Creates an instance of PrivateLinkServiceIpConfigurationInner class.
+     */
     public PrivateLinkServiceIpConfigurationInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the private link service ip configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateLinkServiceIpConfigurationPropertiesInner innerProperties() {
@@ -53,7 +56,7 @@ public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
 
     /**
      * Get the name property: The name of private link service ip configuration.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +65,7 @@ public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
 
     /**
      * Set the name property: The name of private link service ip configuration.
-     *
+     * 
      * @param name the name value to set.
      * @return the PrivateLinkServiceIpConfigurationInner object itself.
      */
@@ -73,7 +76,7 @@ public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -82,14 +85,16 @@ public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PrivateLinkServiceIpConfigurationInner withId(String id) {
         super.withId(id);
@@ -98,7 +103,7 @@ public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
 
     /**
      * Get the privateIpAddress property: The private IP address of the IP configuration.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -107,7 +112,7 @@ public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
 
     /**
      * Set the privateIpAddress property: The private IP address of the IP configuration.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the PrivateLinkServiceIpConfigurationInner object itself.
      */
@@ -121,7 +126,7 @@ public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
 
     /**
      * Get the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
@@ -130,12 +135,12 @@ public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
 
     /**
      * Set the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the PrivateLinkServiceIpConfigurationInner object itself.
      */
-    public PrivateLinkServiceIpConfigurationInner withPrivateIpAllocationMethod(
-        IpAllocationMethod privateIpAllocationMethod) {
+    public PrivateLinkServiceIpConfigurationInner
+        withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PrivateLinkServiceIpConfigurationPropertiesInner();
         }
@@ -145,7 +150,7 @@ public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
 
     /**
      * Get the subnet property: The reference to the subnet resource.
-     *
+     * 
      * @return the subnet value.
      */
     public SubnetInner subnet() {
@@ -154,7 +159,7 @@ public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
 
     /**
      * Set the subnet property: The reference to the subnet resource.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the PrivateLinkServiceIpConfigurationInner object itself.
      */
@@ -168,7 +173,7 @@ public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
 
     /**
      * Get the primary property: Whether the ip configuration is primary or not.
-     *
+     * 
      * @return the primary value.
      */
     public Boolean primary() {
@@ -177,7 +182,7 @@ public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
 
     /**
      * Set the primary property: Whether the ip configuration is primary or not.
-     *
+     * 
      * @param primary the primary value to set.
      * @return the PrivateLinkServiceIpConfigurationInner object itself.
      */
@@ -191,7 +196,7 @@ public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the private link service IP configuration resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -200,7 +205,7 @@ public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
 
     /**
      * Get the privateIpAddressVersion property: Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
-     *
+     * 
      * @return the privateIpAddressVersion value.
      */
     public IpVersion privateIpAddressVersion() {
@@ -209,7 +214,7 @@ public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
 
     /**
      * Set the privateIpAddressVersion property: Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
-     *
+     * 
      * @param privateIpAddressVersion the privateIpAddressVersion value to set.
      * @return the PrivateLinkServiceIpConfigurationInner object itself.
      */
@@ -223,12 +228,60 @@ public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkServiceIpConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkServiceIpConfigurationInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateLinkServiceIpConfigurationInner.
+     */
+    public static PrivateLinkServiceIpConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkServiceIpConfigurationInner deserializedPrivateLinkServiceIpConfigurationInner
+                = new PrivateLinkServiceIpConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPrivateLinkServiceIpConfigurationInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPrivateLinkServiceIpConfigurationInner.innerProperties
+                        = PrivateLinkServiceIpConfigurationPropertiesInner.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrivateLinkServiceIpConfigurationInner.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedPrivateLinkServiceIpConfigurationInner.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrivateLinkServiceIpConfigurationInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkServiceIpConfigurationInner;
+        });
     }
 }

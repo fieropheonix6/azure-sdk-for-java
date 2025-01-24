@@ -6,29 +6,39 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties to create and update Azure Cosmos DB MongoDB database. */
+/**
+ * Properties to create and update Azure Cosmos DB MongoDB database.
+ */
 @Fluent
-public final class MongoDBDatabaseCreateUpdateProperties {
+public final class MongoDBDatabaseCreateUpdateProperties
+    implements JsonSerializable<MongoDBDatabaseCreateUpdateProperties> {
     /*
      * The standard JSON format of a MongoDB database
      */
-    @JsonProperty(value = "resource", required = true)
     private MongoDBDatabaseResource resource;
 
     /*
-     * A key-value pair of options to be applied for the request. This corresponds to the headers sent with the
-     * request.
+     * A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
      */
-    @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
     /**
+     * Creates an instance of MongoDBDatabaseCreateUpdateProperties class.
+     */
+    public MongoDBDatabaseCreateUpdateProperties() {
+    }
+
+    /**
      * Get the resource property: The standard JSON format of a MongoDB database.
-     *
+     * 
      * @return the resource value.
      */
     public MongoDBDatabaseResource resource() {
@@ -37,7 +47,7 @@ public final class MongoDBDatabaseCreateUpdateProperties {
 
     /**
      * Set the resource property: The standard JSON format of a MongoDB database.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the MongoDBDatabaseCreateUpdateProperties object itself.
      */
@@ -49,7 +59,7 @@ public final class MongoDBDatabaseCreateUpdateProperties {
     /**
      * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @return the options value.
      */
     public CreateUpdateOptions options() {
@@ -59,7 +69,7 @@ public final class MongoDBDatabaseCreateUpdateProperties {
     /**
      * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @param options the options value to set.
      * @return the MongoDBDatabaseCreateUpdateProperties object itself.
      */
@@ -70,15 +80,14 @@ public final class MongoDBDatabaseCreateUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resource in model MongoDBDatabaseCreateUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resource in model MongoDBDatabaseCreateUpdateProperties"));
         } else {
             resource().validate();
         }
@@ -88,4 +97,46 @@ public final class MongoDBDatabaseCreateUpdateProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MongoDBDatabaseCreateUpdateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resource", this.resource);
+        jsonWriter.writeJsonField("options", this.options);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MongoDBDatabaseCreateUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MongoDBDatabaseCreateUpdateProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MongoDBDatabaseCreateUpdateProperties.
+     */
+    public static MongoDBDatabaseCreateUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MongoDBDatabaseCreateUpdateProperties deserializedMongoDBDatabaseCreateUpdateProperties
+                = new MongoDBDatabaseCreateUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resource".equals(fieldName)) {
+                    deserializedMongoDBDatabaseCreateUpdateProperties.resource
+                        = MongoDBDatabaseResource.fromJson(reader);
+                } else if ("options".equals(fieldName)) {
+                    deserializedMongoDBDatabaseCreateUpdateProperties.options = CreateUpdateOptions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMongoDBDatabaseCreateUpdateProperties;
+        });
+    }
 }

@@ -6,66 +6,67 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The connector mapping properties. */
+/**
+ * The connector mapping properties.
+ */
 @Fluent
-public final class ConnectorMappingProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectorMappingProperties.class);
-
+public final class ConnectorMappingProperties implements JsonSerializable<ConnectorMappingProperties> {
     /*
      * The folder path for the mapping.
      */
-    @JsonProperty(value = "folderPath")
     private String folderPath;
 
     /*
      * The file filter for the mapping.
      */
-    @JsonProperty(value = "fileFilter")
     private String fileFilter;
 
     /*
      * If the file contains a header or not.
      */
-    @JsonProperty(value = "hasHeader")
     private Boolean hasHeader;
 
     /*
      * The error management setting for the mapping.
      */
-    @JsonProperty(value = "errorManagement", required = true)
     private ConnectorMappingErrorManagement errorManagement;
 
     /*
      * The format of mapping property.
      */
-    @JsonProperty(value = "format", required = true)
     private ConnectorMappingFormat format;
 
     /*
      * The availability of mapping property.
      */
-    @JsonProperty(value = "availability", required = true)
     private ConnectorMappingAvailability availability;
 
     /*
      * Ingestion mapping information at property level.
      */
-    @JsonProperty(value = "structure", required = true)
     private List<ConnectorMappingStructure> structure;
 
     /*
      * The operation after import is done.
      */
-    @JsonProperty(value = "completeOperation", required = true)
     private ConnectorMappingCompleteOperation completeOperation;
 
     /**
+     * Creates an instance of ConnectorMappingProperties class.
+     */
+    public ConnectorMappingProperties() {
+    }
+
+    /**
      * Get the folderPath property: The folder path for the mapping.
-     *
+     * 
      * @return the folderPath value.
      */
     public String folderPath() {
@@ -74,7 +75,7 @@ public final class ConnectorMappingProperties {
 
     /**
      * Set the folderPath property: The folder path for the mapping.
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the ConnectorMappingProperties object itself.
      */
@@ -85,7 +86,7 @@ public final class ConnectorMappingProperties {
 
     /**
      * Get the fileFilter property: The file filter for the mapping.
-     *
+     * 
      * @return the fileFilter value.
      */
     public String fileFilter() {
@@ -94,7 +95,7 @@ public final class ConnectorMappingProperties {
 
     /**
      * Set the fileFilter property: The file filter for the mapping.
-     *
+     * 
      * @param fileFilter the fileFilter value to set.
      * @return the ConnectorMappingProperties object itself.
      */
@@ -105,7 +106,7 @@ public final class ConnectorMappingProperties {
 
     /**
      * Get the hasHeader property: If the file contains a header or not.
-     *
+     * 
      * @return the hasHeader value.
      */
     public Boolean hasHeader() {
@@ -114,7 +115,7 @@ public final class ConnectorMappingProperties {
 
     /**
      * Set the hasHeader property: If the file contains a header or not.
-     *
+     * 
      * @param hasHeader the hasHeader value to set.
      * @return the ConnectorMappingProperties object itself.
      */
@@ -125,7 +126,7 @@ public final class ConnectorMappingProperties {
 
     /**
      * Get the errorManagement property: The error management setting for the mapping.
-     *
+     * 
      * @return the errorManagement value.
      */
     public ConnectorMappingErrorManagement errorManagement() {
@@ -134,7 +135,7 @@ public final class ConnectorMappingProperties {
 
     /**
      * Set the errorManagement property: The error management setting for the mapping.
-     *
+     * 
      * @param errorManagement the errorManagement value to set.
      * @return the ConnectorMappingProperties object itself.
      */
@@ -145,7 +146,7 @@ public final class ConnectorMappingProperties {
 
     /**
      * Get the format property: The format of mapping property.
-     *
+     * 
      * @return the format value.
      */
     public ConnectorMappingFormat format() {
@@ -154,7 +155,7 @@ public final class ConnectorMappingProperties {
 
     /**
      * Set the format property: The format of mapping property.
-     *
+     * 
      * @param format the format value to set.
      * @return the ConnectorMappingProperties object itself.
      */
@@ -165,7 +166,7 @@ public final class ConnectorMappingProperties {
 
     /**
      * Get the availability property: The availability of mapping property.
-     *
+     * 
      * @return the availability value.
      */
     public ConnectorMappingAvailability availability() {
@@ -174,7 +175,7 @@ public final class ConnectorMappingProperties {
 
     /**
      * Set the availability property: The availability of mapping property.
-     *
+     * 
      * @param availability the availability value to set.
      * @return the ConnectorMappingProperties object itself.
      */
@@ -185,7 +186,7 @@ public final class ConnectorMappingProperties {
 
     /**
      * Get the structure property: Ingestion mapping information at property level.
-     *
+     * 
      * @return the structure value.
      */
     public List<ConnectorMappingStructure> structure() {
@@ -194,7 +195,7 @@ public final class ConnectorMappingProperties {
 
     /**
      * Set the structure property: Ingestion mapping information at property level.
-     *
+     * 
      * @param structure the structure value to set.
      * @return the ConnectorMappingProperties object itself.
      */
@@ -205,7 +206,7 @@ public final class ConnectorMappingProperties {
 
     /**
      * Get the completeOperation property: The operation after import is done.
-     *
+     * 
      * @return the completeOperation value.
      */
     public ConnectorMappingCompleteOperation completeOperation() {
@@ -214,7 +215,7 @@ public final class ConnectorMappingProperties {
 
     /**
      * Set the completeOperation property: The operation after import is done.
-     *
+     * 
      * @param completeOperation the completeOperation value to set.
      * @return the ConnectorMappingProperties object itself.
      */
@@ -225,49 +226,108 @@ public final class ConnectorMappingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (errorManagement() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property errorManagement in model ConnectorMappingProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property errorManagement in model ConnectorMappingProperties"));
         } else {
             errorManagement().validate();
         }
         if (format() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property format in model ConnectorMappingProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property format in model ConnectorMappingProperties"));
         } else {
             format().validate();
         }
         if (availability() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property availability in model ConnectorMappingProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property availability in model ConnectorMappingProperties"));
         } else {
             availability().validate();
         }
         if (structure() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property structure in model ConnectorMappingProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property structure in model ConnectorMappingProperties"));
         } else {
             structure().forEach(e -> e.validate());
         }
         if (completeOperation() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property completeOperation in model ConnectorMappingProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property completeOperation in model ConnectorMappingProperties"));
         } else {
             completeOperation().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectorMappingProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("errorManagement", this.errorManagement);
+        jsonWriter.writeJsonField("format", this.format);
+        jsonWriter.writeJsonField("availability", this.availability);
+        jsonWriter.writeArrayField("structure", this.structure, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("completeOperation", this.completeOperation);
+        jsonWriter.writeStringField("folderPath", this.folderPath);
+        jsonWriter.writeStringField("fileFilter", this.fileFilter);
+        jsonWriter.writeBooleanField("hasHeader", this.hasHeader);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectorMappingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectorMappingProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectorMappingProperties.
+     */
+    public static ConnectorMappingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectorMappingProperties deserializedConnectorMappingProperties = new ConnectorMappingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errorManagement".equals(fieldName)) {
+                    deserializedConnectorMappingProperties.errorManagement
+                        = ConnectorMappingErrorManagement.fromJson(reader);
+                } else if ("format".equals(fieldName)) {
+                    deserializedConnectorMappingProperties.format = ConnectorMappingFormat.fromJson(reader);
+                } else if ("availability".equals(fieldName)) {
+                    deserializedConnectorMappingProperties.availability = ConnectorMappingAvailability.fromJson(reader);
+                } else if ("structure".equals(fieldName)) {
+                    List<ConnectorMappingStructure> structure
+                        = reader.readArray(reader1 -> ConnectorMappingStructure.fromJson(reader1));
+                    deserializedConnectorMappingProperties.structure = structure;
+                } else if ("completeOperation".equals(fieldName)) {
+                    deserializedConnectorMappingProperties.completeOperation
+                        = ConnectorMappingCompleteOperation.fromJson(reader);
+                } else if ("folderPath".equals(fieldName)) {
+                    deserializedConnectorMappingProperties.folderPath = reader.getString();
+                } else if ("fileFilter".equals(fieldName)) {
+                    deserializedConnectorMappingProperties.fileFilter = reader.getString();
+                } else if ("hasHeader".equals(fieldName)) {
+                    deserializedConnectorMappingProperties.hasHeader = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectorMappingProperties;
+        });
     }
 }

@@ -12,14 +12,16 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maps.fluent.AccountsClient;
 import com.azure.resourcemanager.maps.fluent.models.MapsAccountInner;
 import com.azure.resourcemanager.maps.fluent.models.MapsAccountKeysInner;
+import com.azure.resourcemanager.maps.fluent.models.MapsAccountSasTokenInner;
+import com.azure.resourcemanager.maps.models.AccountSasParameters;
 import com.azure.resourcemanager.maps.models.Accounts;
 import com.azure.resourcemanager.maps.models.MapsAccount;
 import com.azure.resourcemanager.maps.models.MapsAccountKeys;
+import com.azure.resourcemanager.maps.models.MapsAccountSasToken;
 import com.azure.resourcemanager.maps.models.MapsKeySpecification;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AccountsImpl implements Accounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AccountsImpl.class);
 
     private final AccountsClient innerClient;
 
@@ -30,12 +32,25 @@ public final class AccountsImpl implements Accounts {
         this.serviceManager = serviceManager;
     }
 
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, context);
+    }
+
     public void deleteByResourceGroup(String resourceGroupName, String accountName) {
         this.serviceClient().delete(resourceGroupName, accountName);
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, context);
+    public Response<MapsAccount> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context) {
+        Response<MapsAccountInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accountName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MapsAccountImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public MapsAccount getByResourceGroup(String resourceGroupName, String accountName) {
@@ -47,39 +62,59 @@ public final class AccountsImpl implements Accounts {
         }
     }
 
-    public Response<MapsAccount> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context) {
-        Response<MapsAccountInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accountName, context);
+    public PagedIterable<MapsAccount> listByResourceGroup(String resourceGroupName) {
+        PagedIterable<MapsAccountInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MapsAccountImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<MapsAccount> listByResourceGroup(String resourceGroupName, Context context) {
+        PagedIterable<MapsAccountInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MapsAccountImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<MapsAccount> list() {
+        PagedIterable<MapsAccountInner> inner = this.serviceClient().list();
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MapsAccountImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<MapsAccount> list(Context context) {
+        PagedIterable<MapsAccountInner> inner = this.serviceClient().list(context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MapsAccountImpl(inner1, this.manager()));
+    }
+
+    public Response<MapsAccountSasToken> listSasWithResponse(String resourceGroupName, String accountName,
+        AccountSasParameters mapsAccountSasParameters, Context context) {
+        Response<MapsAccountSasTokenInner> inner = this.serviceClient()
+            .listSasWithResponse(resourceGroupName, accountName, mapsAccountSasParameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new MapsAccountImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MapsAccountSasTokenImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PagedIterable<MapsAccount> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<MapsAccountInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new MapsAccountImpl(inner1, this.manager()));
+    public MapsAccountSasToken listSas(String resourceGroupName, String accountName,
+        AccountSasParameters mapsAccountSasParameters) {
+        MapsAccountSasTokenInner inner
+            = this.serviceClient().listSas(resourceGroupName, accountName, mapsAccountSasParameters);
+        if (inner != null) {
+            return new MapsAccountSasTokenImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<MapsAccount> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<MapsAccountInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new MapsAccountImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<MapsAccount> list() {
-        PagedIterable<MapsAccountInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new MapsAccountImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<MapsAccount> list(Context context) {
-        PagedIterable<MapsAccountInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new MapsAccountImpl(inner1, this.manager()));
+    public Response<MapsAccountKeys> listKeysWithResponse(String resourceGroupName, String accountName,
+        Context context) {
+        Response<MapsAccountKeysInner> inner
+            = this.serviceClient().listKeysWithResponse(resourceGroupName, accountName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MapsAccountKeysImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public MapsAccountKeys listKeys(String resourceGroupName, String accountName) {
@@ -91,25 +126,22 @@ public final class AccountsImpl implements Accounts {
         }
     }
 
-    public Response<MapsAccountKeys> listKeysWithResponse(
-        String resourceGroupName, String accountName, Context context) {
-        Response<MapsAccountKeysInner> inner =
-            this.serviceClient().listKeysWithResponse(resourceGroupName, accountName, context);
+    public Response<MapsAccountKeys> regenerateKeysWithResponse(String resourceGroupName, String accountName,
+        MapsKeySpecification keySpecification, Context context) {
+        Response<MapsAccountKeysInner> inner = this.serviceClient()
+            .regenerateKeysWithResponse(resourceGroupName, accountName, keySpecification, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MapsAccountKeysImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public MapsAccountKeys regenerateKeys(
-        String resourceGroupName, String accountName, MapsKeySpecification keySpecification) {
-        MapsAccountKeysInner inner =
-            this.serviceClient().regenerateKeys(resourceGroupName, accountName, keySpecification);
+    public MapsAccountKeys regenerateKeys(String resourceGroupName, String accountName,
+        MapsKeySpecification keySpecification) {
+        MapsAccountKeysInner inner
+            = this.serviceClient().regenerateKeys(resourceGroupName, accountName, keySpecification);
         if (inner != null) {
             return new MapsAccountKeysImpl(inner, this.manager());
         } else {
@@ -117,95 +149,60 @@ public final class AccountsImpl implements Accounts {
         }
     }
 
-    public Response<MapsAccountKeys> regenerateKeysWithResponse(
-        String resourceGroupName, String accountName, MapsKeySpecification keySpecification, Context context) {
-        Response<MapsAccountKeysInner> inner =
-            this.serviceClient().regenerateKeysWithResponse(resourceGroupName, accountName, keySpecification, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new MapsAccountKeysImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public MapsAccount getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     public Response<MapsAccount> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, accountName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, accountName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, accountName, context);
     }
 
     private AccountsClient serviceClient() {

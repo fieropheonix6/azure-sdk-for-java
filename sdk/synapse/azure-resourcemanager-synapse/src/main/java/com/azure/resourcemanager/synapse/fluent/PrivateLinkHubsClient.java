@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.models.PrivateLinkHubInner;
 import com.azure.resourcemanager.synapse.models.PrivateLinkHubPatchInfo;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkHubsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkHubsClient.
+ */
 public interface PrivateLinkHubsClient {
     /**
      * Returns a list of privateLinkHubs in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -30,7 +32,7 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Returns a list of privateLinkHubs in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,7 +45,22 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Gets a privateLinkHub.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateLinkHubName Name of the privateLinkHub.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a privateLinkHub along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PrivateLinkHubInner> getByResourceGroupWithResponse(String resourceGroupName, String privateLinkHubName,
+        Context context);
+
+    /**
+     * Gets a privateLinkHub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,38 +72,8 @@ public interface PrivateLinkHubsClient {
     PrivateLinkHubInner getByResourceGroup(String resourceGroupName, String privateLinkHubName);
 
     /**
-     * Gets a privateLinkHub.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a privateLinkHub along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkHubInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String privateLinkHubName, Context context);
-
-    /**
      * Updates a privateLinkHub.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub.
-     * @param privateLinkHubPatchInfo PrivateLinkHub patch request properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a privateLinkHub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkHubInner update(
-        String resourceGroupName, String privateLinkHubName, PrivateLinkHubPatchInfo privateLinkHubPatchInfo);
-
-    /**
-     * Updates a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateLinkHubPatchInfo PrivateLinkHub patch request properties.
@@ -97,30 +84,27 @@ public interface PrivateLinkHubsClient {
      * @return a privateLinkHub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkHubInner> updateWithResponse(
-        String resourceGroupName,
-        String privateLinkHubName,
-        PrivateLinkHubPatchInfo privateLinkHubPatchInfo,
-        Context context);
+    Response<PrivateLinkHubInner> updateWithResponse(String resourceGroupName, String privateLinkHubName,
+        PrivateLinkHubPatchInfo privateLinkHubPatchInfo, Context context);
 
     /**
-     * Creates or updates a privateLinkHub.
-     *
+     * Updates a privateLinkHub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
-     * @param privateLinkHubInfo PrivateLinkHub create or update request properties.
+     * @param privateLinkHubPatchInfo PrivateLinkHub patch request properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a privateLinkHub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkHubInner createOrUpdate(
-        String resourceGroupName, String privateLinkHubName, PrivateLinkHubInner privateLinkHubInfo);
+    PrivateLinkHubInner update(String resourceGroupName, String privateLinkHubName,
+        PrivateLinkHubPatchInfo privateLinkHubPatchInfo);
 
     /**
      * Creates or updates a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateLinkHubInfo PrivateLinkHub create or update request properties.
@@ -131,12 +115,27 @@ public interface PrivateLinkHubsClient {
      * @return a privateLinkHub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkHubInner> createOrUpdateWithResponse(
-        String resourceGroupName, String privateLinkHubName, PrivateLinkHubInner privateLinkHubInfo, Context context);
+    Response<PrivateLinkHubInner> createOrUpdateWithResponse(String resourceGroupName, String privateLinkHubName,
+        PrivateLinkHubInner privateLinkHubInfo, Context context);
+
+    /**
+     * Creates or updates a privateLinkHub.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateLinkHubName Name of the privateLinkHub.
+     * @param privateLinkHubInfo PrivateLinkHub create or update request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a privateLinkHub.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateLinkHubInner createOrUpdate(String resourceGroupName, String privateLinkHubName,
+        PrivateLinkHubInner privateLinkHubInfo);
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -149,7 +148,7 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -159,12 +158,12 @@ public interface PrivateLinkHubsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String privateLinkHubName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateLinkHubName,
+        Context context);
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -176,7 +175,7 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -189,7 +188,7 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Returns a list of privateLinkHubs in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of privateLinkHubs as paginated response with {@link PagedIterable}.
@@ -199,7 +198,7 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Returns a list of privateLinkHubs in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

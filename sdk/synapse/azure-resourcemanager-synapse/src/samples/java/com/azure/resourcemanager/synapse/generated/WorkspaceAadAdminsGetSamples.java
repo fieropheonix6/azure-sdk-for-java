@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for WorkspaceAadAdmins Get. */
+/**
+ * Samples for WorkspaceAadAdmins Get.
+ */
 public final class WorkspaceAadAdminsGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetWorkspaceAadAdmin.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetWorkspaceAadAdmin.json
      */
     /**
      * Sample code: Get workspace active directory admin.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void getWorkspaceActiveDirectoryAdmin(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaceAadAdmins().getWithResponse("resourceGroup1", "workspace1", Context.NONE);
+        manager.workspaceAadAdmins().getWithResponse("resourceGroup1", "workspace1", com.azure.core.util.Context.NONE);
     }
 }

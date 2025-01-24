@@ -5,31 +5,38 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Specification of the service. */
+/**
+ * Specification of the service.
+ */
 @Fluent
-public final class OperationPropertiesFormatServiceSpecification {
+public final class OperationPropertiesFormatServiceSpecification
+    implements JsonSerializable<OperationPropertiesFormatServiceSpecification> {
     /*
      * Operation service specification.
      */
-    @JsonProperty(value = "metricSpecifications")
     private List<MetricSpecification> metricSpecifications;
 
     /*
      * Operation log specification.
      */
-    @JsonProperty(value = "logSpecifications")
     private List<LogSpecification> logSpecifications;
 
-    /** Creates an instance of OperationPropertiesFormatServiceSpecification class. */
+    /**
+     * Creates an instance of OperationPropertiesFormatServiceSpecification class.
+     */
     public OperationPropertiesFormatServiceSpecification() {
     }
 
     /**
      * Get the metricSpecifications property: Operation service specification.
-     *
+     * 
      * @return the metricSpecifications value.
      */
     public List<MetricSpecification> metricSpecifications() {
@@ -38,19 +45,19 @@ public final class OperationPropertiesFormatServiceSpecification {
 
     /**
      * Set the metricSpecifications property: Operation service specification.
-     *
+     * 
      * @param metricSpecifications the metricSpecifications value to set.
      * @return the OperationPropertiesFormatServiceSpecification object itself.
      */
-    public OperationPropertiesFormatServiceSpecification withMetricSpecifications(
-        List<MetricSpecification> metricSpecifications) {
+    public OperationPropertiesFormatServiceSpecification
+        withMetricSpecifications(List<MetricSpecification> metricSpecifications) {
         this.metricSpecifications = metricSpecifications;
         return this;
     }
 
     /**
      * Get the logSpecifications property: Operation log specification.
-     *
+     * 
      * @return the logSpecifications value.
      */
     public List<LogSpecification> logSpecifications() {
@@ -59,19 +66,19 @@ public final class OperationPropertiesFormatServiceSpecification {
 
     /**
      * Set the logSpecifications property: Operation log specification.
-     *
+     * 
      * @param logSpecifications the logSpecifications value to set.
      * @return the OperationPropertiesFormatServiceSpecification object itself.
      */
-    public OperationPropertiesFormatServiceSpecification withLogSpecifications(
-        List<LogSpecification> logSpecifications) {
+    public OperationPropertiesFormatServiceSpecification
+        withLogSpecifications(List<LogSpecification> logSpecifications) {
         this.logSpecifications = logSpecifications;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -81,5 +88,52 @@ public final class OperationPropertiesFormatServiceSpecification {
         if (logSpecifications() != null) {
             logSpecifications().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("metricSpecifications", this.metricSpecifications,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("logSpecifications", this.logSpecifications,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationPropertiesFormatServiceSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationPropertiesFormatServiceSpecification if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationPropertiesFormatServiceSpecification.
+     */
+    public static OperationPropertiesFormatServiceSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationPropertiesFormatServiceSpecification deserializedOperationPropertiesFormatServiceSpecification
+                = new OperationPropertiesFormatServiceSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metricSpecifications".equals(fieldName)) {
+                    List<MetricSpecification> metricSpecifications
+                        = reader.readArray(reader1 -> MetricSpecification.fromJson(reader1));
+                    deserializedOperationPropertiesFormatServiceSpecification.metricSpecifications
+                        = metricSpecifications;
+                } else if ("logSpecifications".equals(fieldName)) {
+                    List<LogSpecification> logSpecifications
+                        = reader.readArray(reader1 -> LogSpecification.fromJson(reader1));
+                    deserializedOperationPropertiesFormatServiceSpecification.logSpecifications = logSpecifications;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationPropertiesFormatServiceSpecification;
+        });
     }
 }

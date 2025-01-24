@@ -6,32 +6,41 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Quota availability request content. */
+/**
+ * Quota availability request content.
+ */
 @Fluent
-public final class QuotaAvailabilityRequest {
+public final class QuotaAvailabilityRequest implements JsonSerializable<QuotaAvailabilityRequest> {
     /*
      * Name of the resource to verify.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Resource type used for verification.
      */
-    @JsonProperty(value = "type", required = true)
     private CheckQuotaNameResourceTypes type;
 
     /*
      * Resource group name.
      */
-    @JsonProperty(value = "resourceGroup", required = true)
     private String resourceGroup;
 
     /**
+     * Creates an instance of QuotaAvailabilityRequest class.
+     */
+    public QuotaAvailabilityRequest() {
+    }
+
+    /**
      * Get the name property: Name of the resource to verify.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -40,7 +49,7 @@ public final class QuotaAvailabilityRequest {
 
     /**
      * Set the name property: Name of the resource to verify.
-     *
+     * 
      * @param name the name value to set.
      * @return the QuotaAvailabilityRequest object itself.
      */
@@ -51,7 +60,7 @@ public final class QuotaAvailabilityRequest {
 
     /**
      * Get the type property: Resource type used for verification.
-     *
+     * 
      * @return the type value.
      */
     public CheckQuotaNameResourceTypes type() {
@@ -60,7 +69,7 @@ public final class QuotaAvailabilityRequest {
 
     /**
      * Set the type property: Resource type used for verification.
-     *
+     * 
      * @param type the type value to set.
      * @return the QuotaAvailabilityRequest object itself.
      */
@@ -71,7 +80,7 @@ public final class QuotaAvailabilityRequest {
 
     /**
      * Get the resourceGroup property: Resource group name.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -80,7 +89,7 @@ public final class QuotaAvailabilityRequest {
 
     /**
      * Set the resourceGroup property: Resource group name.
-     *
+     * 
      * @param resourceGroup the resourceGroup value to set.
      * @return the QuotaAvailabilityRequest object itself.
      */
@@ -91,27 +100,68 @@ public final class QuotaAvailabilityRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model QuotaAvailabilityRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model QuotaAvailabilityRequest"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model QuotaAvailabilityRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model QuotaAvailabilityRequest"));
         }
         if (resourceGroup() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceGroup in model QuotaAvailabilityRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceGroup in model QuotaAvailabilityRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(QuotaAvailabilityRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("resourceGroup", this.resourceGroup);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaAvailabilityRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaAvailabilityRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the QuotaAvailabilityRequest.
+     */
+    public static QuotaAvailabilityRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaAvailabilityRequest deserializedQuotaAvailabilityRequest = new QuotaAvailabilityRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedQuotaAvailabilityRequest.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedQuotaAvailabilityRequest.type
+                        = CheckQuotaNameResourceTypes.fromString(reader.getString());
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedQuotaAvailabilityRequest.resourceGroup = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaAvailabilityRequest;
+        });
+    }
 }

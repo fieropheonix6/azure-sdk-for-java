@@ -5,196 +5,100 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.ExternalSubnet;
 import com.azure.resourcemanager.devtestlabs.models.Subnet;
 import com.azure.resourcemanager.devtestlabs.models.SubnetOverride;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** A virtual network. */
-@JsonFlatten
+/**
+ * A virtual network.
+ */
 @Fluent
-public class VirtualNetworkInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkInner.class);
+public final class VirtualNetworkInner extends Resource {
+    /*
+     * The properties of the resource.
+     */
+    private VirtualNetworkProperties innerProperties;
 
     /*
-     * The allowed subnets of the virtual network.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.allowedSubnets")
-    private List<Subnet> allowedSubnets;
+    private String type;
 
     /*
-     * The description of the virtual network.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    private String name;
 
     /*
-     * The Microsoft.Network resource identifier of the virtual network.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.externalProviderResourceId")
-    private String externalProviderResourceId;
-
-    /*
-     * The external subnet properties.
-     */
-    @JsonProperty(value = "properties.externalSubnets", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ExternalSubnet> externalSubnets;
-
-    /*
-     * The subnet overrides of the virtual network.
-     */
-    @JsonProperty(value = "properties.subnetOverrides")
-    private List<SubnetOverride> subnetOverrides;
-
-    /*
-     * The creation date of the virtual network.
-     */
-    @JsonProperty(value = "properties.createdDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdDate;
-
-    /*
-     * The provisioning status of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The unique immutable identifier of a resource (Guid).
-     */
-    @JsonProperty(value = "properties.uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
-    private String uniqueIdentifier;
+    private String id;
 
     /**
-     * Get the allowedSubnets property: The allowed subnets of the virtual network.
-     *
-     * @return the allowedSubnets value.
+     * Creates an instance of VirtualNetworkInner class.
      */
-    public List<Subnet> allowedSubnets() {
-        return this.allowedSubnets;
+    public VirtualNetworkInner() {
     }
 
     /**
-     * Set the allowedSubnets property: The allowed subnets of the virtual network.
-     *
-     * @param allowedSubnets the allowedSubnets value to set.
-     * @return the VirtualNetworkInner object itself.
+     * Get the innerProperties property: The properties of the resource.
+     * 
+     * @return the innerProperties value.
      */
-    public VirtualNetworkInner withAllowedSubnets(List<Subnet> allowedSubnets) {
-        this.allowedSubnets = allowedSubnets;
-        return this;
+    private VirtualNetworkProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the description property: The description of the virtual network.
-     *
-     * @return the description value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public String description() {
-        return this.description;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Set the description property: The description of the virtual network.
-     *
-     * @param description the description value to set.
-     * @return the VirtualNetworkInner object itself.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public VirtualNetworkInner withDescription(String description) {
-        this.description = description;
-        return this;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the externalProviderResourceId property: The Microsoft.Network resource identifier of the virtual network.
-     *
-     * @return the externalProviderResourceId value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public String externalProviderResourceId() {
-        return this.externalProviderResourceId;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Set the externalProviderResourceId property: The Microsoft.Network resource identifier of the virtual network.
-     *
-     * @param externalProviderResourceId the externalProviderResourceId value to set.
-     * @return the VirtualNetworkInner object itself.
+     * {@inheritDoc}
      */
-    public VirtualNetworkInner withExternalProviderResourceId(String externalProviderResourceId) {
-        this.externalProviderResourceId = externalProviderResourceId;
-        return this;
-    }
-
-    /**
-     * Get the externalSubnets property: The external subnet properties.
-     *
-     * @return the externalSubnets value.
-     */
-    public List<ExternalSubnet> externalSubnets() {
-        return this.externalSubnets;
-    }
-
-    /**
-     * Get the subnetOverrides property: The subnet overrides of the virtual network.
-     *
-     * @return the subnetOverrides value.
-     */
-    public List<SubnetOverride> subnetOverrides() {
-        return this.subnetOverrides;
-    }
-
-    /**
-     * Set the subnetOverrides property: The subnet overrides of the virtual network.
-     *
-     * @param subnetOverrides the subnetOverrides value to set.
-     * @return the VirtualNetworkInner object itself.
-     */
-    public VirtualNetworkInner withSubnetOverrides(List<SubnetOverride> subnetOverrides) {
-        this.subnetOverrides = subnetOverrides;
-        return this;
-    }
-
-    /**
-     * Get the createdDate property: The creation date of the virtual network.
-     *
-     * @return the createdDate value.
-     */
-    public OffsetDateTime createdDate() {
-        return this.createdDate;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning status of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
-     * @return the uniqueIdentifier value.
-     */
-    public String uniqueIdentifier() {
-        return this.uniqueIdentifier;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public VirtualNetworkInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualNetworkInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -202,19 +106,191 @@ public class VirtualNetworkInner extends Resource {
     }
 
     /**
+     * Get the allowedSubnets property: The allowed subnets of the virtual network.
+     * 
+     * @return the allowedSubnets value.
+     */
+    public List<Subnet> allowedSubnets() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowedSubnets();
+    }
+
+    /**
+     * Set the allowedSubnets property: The allowed subnets of the virtual network.
+     * 
+     * @param allowedSubnets the allowedSubnets value to set.
+     * @return the VirtualNetworkInner object itself.
+     */
+    public VirtualNetworkInner withAllowedSubnets(List<Subnet> allowedSubnets) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkProperties();
+        }
+        this.innerProperties().withAllowedSubnets(allowedSubnets);
+        return this;
+    }
+
+    /**
+     * Get the description property: The description of the virtual network.
+     * 
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: The description of the virtual network.
+     * 
+     * @param description the description value to set.
+     * @return the VirtualNetworkInner object itself.
+     */
+    public VirtualNetworkInner withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the externalProviderResourceId property: The Microsoft.Network resource identifier of the virtual network.
+     * 
+     * @return the externalProviderResourceId value.
+     */
+    public String externalProviderResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().externalProviderResourceId();
+    }
+
+    /**
+     * Set the externalProviderResourceId property: The Microsoft.Network resource identifier of the virtual network.
+     * 
+     * @param externalProviderResourceId the externalProviderResourceId value to set.
+     * @return the VirtualNetworkInner object itself.
+     */
+    public VirtualNetworkInner withExternalProviderResourceId(String externalProviderResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkProperties();
+        }
+        this.innerProperties().withExternalProviderResourceId(externalProviderResourceId);
+        return this;
+    }
+
+    /**
+     * Get the externalSubnets property: The external subnet properties.
+     * 
+     * @return the externalSubnets value.
+     */
+    public List<ExternalSubnet> externalSubnets() {
+        return this.innerProperties() == null ? null : this.innerProperties().externalSubnets();
+    }
+
+    /**
+     * Get the subnetOverrides property: The subnet overrides of the virtual network.
+     * 
+     * @return the subnetOverrides value.
+     */
+    public List<SubnetOverride> subnetOverrides() {
+        return this.innerProperties() == null ? null : this.innerProperties().subnetOverrides();
+    }
+
+    /**
+     * Set the subnetOverrides property: The subnet overrides of the virtual network.
+     * 
+     * @param subnetOverrides the subnetOverrides value to set.
+     * @return the VirtualNetworkInner object itself.
+     */
+    public VirtualNetworkInner withSubnetOverrides(List<SubnetOverride> subnetOverrides) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkProperties();
+        }
+        this.innerProperties().withSubnetOverrides(subnetOverrides);
+        return this;
+    }
+
+    /**
+     * Get the createdDate property: The creation date of the virtual network.
+     * 
+     * @return the createdDate value.
+     */
+    public OffsetDateTime createdDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning status of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
+     * 
+     * @return the uniqueIdentifier value.
+     */
+    public String uniqueIdentifier() {
+        return this.innerProperties() == null ? null : this.innerProperties().uniqueIdentifier();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (allowedSubnets() != null) {
-            allowedSubnets().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
-        if (externalSubnets() != null) {
-            externalSubnets().forEach(e -> e.validate());
-        }
-        if (subnetOverrides() != null) {
-            subnetOverrides().forEach(e -> e.validate());
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualNetworkInner.
+     */
+    public static VirtualNetworkInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkInner deserializedVirtualNetworkInner = new VirtualNetworkInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualNetworkInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualNetworkInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualNetworkInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualNetworkInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualNetworkInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualNetworkInner.innerProperties = VirtualNetworkProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkInner;
+        });
     }
 }

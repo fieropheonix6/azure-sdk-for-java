@@ -4,59 +4,57 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.RestorePointCollectionSourceProperties;
 import com.azure.resourcemanager.compute.models.RestorePointCollectionUpdate;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for RestorePointCollections Update. */
+/**
+ * Samples for RestorePointCollections Update.
+ */
 public final class RestorePointCollectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/restorePointExamples/RestorePointCollections_Update_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * restorePointExamples/RestorePointCollection_Update_MaximumSet_Gen.json
      */
     /**
-     * Sample code: RestorePointCollections_Update_MaximumSet_Gen.
-     *
+     * Sample code: RestorePointCollection_Update_MaximumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void restorePointCollectionsUpdateMaximumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void restorePointCollectionUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getRestorePointCollections()
-            .updateWithResponse(
-                "rgcompute",
-                "aaaaaaaaaaaaaaaaaaaa",
-                new RestorePointCollectionUpdate()
-                    .withTags(mapOf("key8536", "aaaaaaaaaaaaaaaaaaa"))
-                    .withSource(
-                        new RestorePointCollectionSourceProperties()
-                            .withId(
-                                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM")),
-                Context.NONE);
+            .updateWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaa", new RestorePointCollectionUpdate()
+                .withTags(mapOf("key8536", "fakeTokenPlaceholder"))
+                .withSource(new RestorePointCollectionSourceProperties().withId(
+                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/restorePointExamples/RestorePointCollections_Update_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * restorePointExamples/RestorePointCollection_Update_MinimumSet_Gen.json
      */
     /**
-     * Sample code: RestorePointCollections_Update_MinimumSet_Gen.
-     *
+     * Sample code: RestorePointCollection_Update_MinimumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void restorePointCollectionsUpdateMinimumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void restorePointCollectionUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getRestorePointCollections()
-            .updateWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaa", new RestorePointCollectionUpdate(), Context.NONE);
+            .updateWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaa", new RestorePointCollectionUpdate(),
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

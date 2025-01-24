@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AccessType. */
+/**
+ * The type of access to be used for the storage account.
+ */
 public final class AccessType extends ExpandableStringEnum<AccessType> {
-    /** Static value AccessKey for AccessType. */
+    /**
+     * Static value AccessKey for AccessType.
+     */
     public static final AccessType ACCESS_KEY = fromString("AccessKey");
 
-    /** Static value SystemAssignedManagedIdentity for AccessType. */
+    /**
+     * Static value SystemAssignedManagedIdentity for AccessType.
+     */
     public static final AccessType SYSTEM_ASSIGNED_MANAGED_IDENTITY = fromString("SystemAssignedManagedIdentity");
 
-    /** Static value UserAssignedManagedIdentity for AccessType. */
+    /**
+     * Static value UserAssignedManagedIdentity for AccessType.
+     */
     public static final AccessType USER_ASSIGNED_MANAGED_IDENTITY = fromString("UserAssignedManagedIdentity");
 
     /**
+     * Creates a new instance of AccessType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AccessType() {
+    }
+
+    /**
      * Creates or finds a AccessType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AccessType.
      */
-    @JsonCreator
     public static AccessType fromString(String name) {
         return fromString(name, AccessType.class);
     }
 
-    /** @return known AccessType values. */
+    /**
+     * Gets known AccessType values.
+     * 
+     * @return known AccessType values.
+     */
     public static Collection<AccessType> values() {
         return values(AccessType.class);
     }

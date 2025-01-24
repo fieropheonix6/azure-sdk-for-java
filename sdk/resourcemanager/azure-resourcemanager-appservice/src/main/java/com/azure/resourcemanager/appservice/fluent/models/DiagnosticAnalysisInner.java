@@ -5,32 +5,89 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.AbnormalTimePeriod;
 import com.azure.resourcemanager.appservice.models.AnalysisData;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Class representing a diagnostic analysis done on an application. */
+/**
+ * Class representing a diagnostic analysis done on an application.
+ */
 @Fluent
 public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
     /*
      * DiagnosticAnalysis resource specific properties
      */
-    @JsonProperty(value = "properties")
     private DiagnosticAnalysisProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DiagnosticAnalysisInner class.
+     */
+    public DiagnosticAnalysisInner() {
+    }
 
     /**
      * Get the innerProperties property: DiagnosticAnalysis resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DiagnosticAnalysisProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DiagnosticAnalysisInner withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +96,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Get the startTime property: Start time of the period.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -48,7 +105,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Set the startTime property: Start time of the period.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the DiagnosticAnalysisInner object itself.
      */
@@ -62,7 +119,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Get the endTime property: End time of the period.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -71,7 +128,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Set the endTime property: End time of the period.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the DiagnosticAnalysisInner object itself.
      */
@@ -85,7 +142,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Get the abnormalTimePeriods property: List of time periods.
-     *
+     * 
      * @return the abnormalTimePeriods value.
      */
     public List<AbnormalTimePeriod> abnormalTimePeriods() {
@@ -94,7 +151,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Set the abnormalTimePeriods property: List of time periods.
-     *
+     * 
      * @param abnormalTimePeriods the abnormalTimePeriods value to set.
      * @return the DiagnosticAnalysisInner object itself.
      */
@@ -108,7 +165,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Get the payload property: Data by each detector.
-     *
+     * 
      * @return the payload value.
      */
     public List<AnalysisData> payload() {
@@ -117,7 +174,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Set the payload property: Data by each detector.
-     *
+     * 
      * @param payload the payload value to set.
      * @return the DiagnosticAnalysisInner object itself.
      */
@@ -131,7 +188,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Get the nonCorrelatedDetectors property: Data by each detector for detectors that did not corelate.
-     *
+     * 
      * @return the nonCorrelatedDetectors value.
      */
     public List<DetectorDefinition> nonCorrelatedDetectors() {
@@ -140,7 +197,7 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Set the nonCorrelatedDetectors property: Data by each detector for detectors that did not corelate.
-     *
+     * 
      * @param nonCorrelatedDetectors the nonCorrelatedDetectors value to set.
      * @return the DiagnosticAnalysisInner object itself.
      */
@@ -154,14 +211,59 @@ public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnosticAnalysisInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnosticAnalysisInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DiagnosticAnalysisInner.
+     */
+    public static DiagnosticAnalysisInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnosticAnalysisInner deserializedDiagnosticAnalysisInner = new DiagnosticAnalysisInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDiagnosticAnalysisInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDiagnosticAnalysisInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDiagnosticAnalysisInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedDiagnosticAnalysisInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDiagnosticAnalysisInner.innerProperties = DiagnosticAnalysisProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnosticAnalysisInner;
+        });
     }
 }

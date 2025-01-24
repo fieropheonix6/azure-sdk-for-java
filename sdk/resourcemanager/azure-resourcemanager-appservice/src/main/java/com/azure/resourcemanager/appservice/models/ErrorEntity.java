@@ -5,63 +5,67 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Body of the error response returned from the API. */
+/**
+ * Body of the error response returned from the API.
+ */
 @Fluent
-public final class ErrorEntity {
+public final class ErrorEntity implements JsonSerializable<ErrorEntity> {
     /*
      * Type of error.
      */
-    @JsonProperty(value = "extendedCode")
     private String extendedCode;
 
     /*
      * Message template.
      */
-    @JsonProperty(value = "messageTemplate")
     private String messageTemplate;
 
     /*
      * Parameters for the template.
      */
-    @JsonProperty(value = "parameters")
     private List<String> parameters;
 
     /*
      * Inner errors.
      */
-    @JsonProperty(value = "innerErrors")
     private List<ErrorEntity> innerErrors;
 
     /*
      * Error Details.
      */
-    @JsonProperty(value = "details")
     private List<ErrorEntity> details;
 
     /*
      * The error target.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * Basic error code.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * Any details of the error.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /**
+     * Creates an instance of ErrorEntity class.
+     */
+    public ErrorEntity() {
+    }
+
+    /**
      * Get the extendedCode property: Type of error.
-     *
+     * 
      * @return the extendedCode value.
      */
     public String extendedCode() {
@@ -70,7 +74,7 @@ public final class ErrorEntity {
 
     /**
      * Set the extendedCode property: Type of error.
-     *
+     * 
      * @param extendedCode the extendedCode value to set.
      * @return the ErrorEntity object itself.
      */
@@ -81,7 +85,7 @@ public final class ErrorEntity {
 
     /**
      * Get the messageTemplate property: Message template.
-     *
+     * 
      * @return the messageTemplate value.
      */
     public String messageTemplate() {
@@ -90,7 +94,7 @@ public final class ErrorEntity {
 
     /**
      * Set the messageTemplate property: Message template.
-     *
+     * 
      * @param messageTemplate the messageTemplate value to set.
      * @return the ErrorEntity object itself.
      */
@@ -101,7 +105,7 @@ public final class ErrorEntity {
 
     /**
      * Get the parameters property: Parameters for the template.
-     *
+     * 
      * @return the parameters value.
      */
     public List<String> parameters() {
@@ -110,7 +114,7 @@ public final class ErrorEntity {
 
     /**
      * Set the parameters property: Parameters for the template.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the ErrorEntity object itself.
      */
@@ -121,7 +125,7 @@ public final class ErrorEntity {
 
     /**
      * Get the innerErrors property: Inner errors.
-     *
+     * 
      * @return the innerErrors value.
      */
     public List<ErrorEntity> innerErrors() {
@@ -130,7 +134,7 @@ public final class ErrorEntity {
 
     /**
      * Set the innerErrors property: Inner errors.
-     *
+     * 
      * @param innerErrors the innerErrors value to set.
      * @return the ErrorEntity object itself.
      */
@@ -141,7 +145,7 @@ public final class ErrorEntity {
 
     /**
      * Get the details property: Error Details.
-     *
+     * 
      * @return the details value.
      */
     public List<ErrorEntity> details() {
@@ -150,7 +154,7 @@ public final class ErrorEntity {
 
     /**
      * Set the details property: Error Details.
-     *
+     * 
      * @param details the details value to set.
      * @return the ErrorEntity object itself.
      */
@@ -161,7 +165,7 @@ public final class ErrorEntity {
 
     /**
      * Get the target property: The error target.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -170,7 +174,7 @@ public final class ErrorEntity {
 
     /**
      * Set the target property: The error target.
-     *
+     * 
      * @param target the target value to set.
      * @return the ErrorEntity object itself.
      */
@@ -181,7 +185,7 @@ public final class ErrorEntity {
 
     /**
      * Get the code property: Basic error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -190,7 +194,7 @@ public final class ErrorEntity {
 
     /**
      * Set the code property: Basic error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the ErrorEntity object itself.
      */
@@ -201,7 +205,7 @@ public final class ErrorEntity {
 
     /**
      * Get the message property: Any details of the error.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -210,7 +214,7 @@ public final class ErrorEntity {
 
     /**
      * Set the message property: Any details of the error.
-     *
+     * 
      * @param message the message value to set.
      * @return the ErrorEntity object itself.
      */
@@ -221,7 +225,7 @@ public final class ErrorEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -231,5 +235,65 @@ public final class ErrorEntity {
         if (details() != null) {
             details().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("extendedCode", this.extendedCode);
+        jsonWriter.writeStringField("messageTemplate", this.messageTemplate);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("innerErrors", this.innerErrors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ErrorEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ErrorEntity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ErrorEntity.
+     */
+    public static ErrorEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ErrorEntity deserializedErrorEntity = new ErrorEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("extendedCode".equals(fieldName)) {
+                    deserializedErrorEntity.extendedCode = reader.getString();
+                } else if ("messageTemplate".equals(fieldName)) {
+                    deserializedErrorEntity.messageTemplate = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    List<String> parameters = reader.readArray(reader1 -> reader1.getString());
+                    deserializedErrorEntity.parameters = parameters;
+                } else if ("innerErrors".equals(fieldName)) {
+                    List<ErrorEntity> innerErrors = reader.readArray(reader1 -> ErrorEntity.fromJson(reader1));
+                    deserializedErrorEntity.innerErrors = innerErrors;
+                } else if ("details".equals(fieldName)) {
+                    List<ErrorEntity> details = reader.readArray(reader1 -> ErrorEntity.fromJson(reader1));
+                    deserializedErrorEntity.details = details;
+                } else if ("target".equals(fieldName)) {
+                    deserializedErrorEntity.target = reader.getString();
+                } else if ("code".equals(fieldName)) {
+                    deserializedErrorEntity.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedErrorEntity.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedErrorEntity;
+        });
     }
 }

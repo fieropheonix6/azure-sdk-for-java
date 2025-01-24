@@ -9,34 +9,24 @@ import com.azure.resourcemanager.machinelearning.models.FqdnEndpoint;
 import com.azure.resourcemanager.machinelearning.models.FqdnEndpointDetail;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class FqdnEndpointTests {
-    @Test
-    public void testDeserialize() {
-        FqdnEndpoint model =
-            BinaryData
-                .fromString(
-                    "{\"domainName\":\"ievseotgqrllt\",\"endpointDetails\":[{\"port\":883294723},{\"port\":1914003848},{\"port\":779410918},{\"port\":1035303462}]}")
-                .toObject(FqdnEndpoint.class);
-        Assertions.assertEquals("ievseotgqrllt", model.domainName());
-        Assertions.assertEquals(883294723, model.endpointDetails().get(0).port());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        FqdnEndpoint model = BinaryData
+            .fromString("{\"domainName\":\"irels\",\"endpointDetails\":[{\"port\":730394428},{\"port\":1632471353}]}")
+            .toObject(FqdnEndpoint.class);
+        Assertions.assertEquals("irels", model.domainName());
+        Assertions.assertEquals(730394428, model.endpointDetails().get(0).port());
     }
 
-    @Test
-    public void testSerialize() {
-        FqdnEndpoint model =
-            new FqdnEndpoint()
-                .withDomainName("ievseotgqrllt")
-                .withEndpointDetails(
-                    Arrays
-                        .asList(
-                            new FqdnEndpointDetail().withPort(883294723),
-                            new FqdnEndpointDetail().withPort(1914003848),
-                            new FqdnEndpointDetail().withPort(779410918),
-                            new FqdnEndpointDetail().withPort(1035303462)));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        FqdnEndpoint model = new FqdnEndpoint().withDomainName("irels")
+            .withEndpointDetails(Arrays.asList(new FqdnEndpointDetail().withPort(730394428),
+                new FqdnEndpointDetail().withPort(1632471353)));
         model = BinaryData.fromObject(model).toObject(FqdnEndpoint.class);
-        Assertions.assertEquals("ievseotgqrllt", model.domainName());
-        Assertions.assertEquals(883294723, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("irels", model.domainName());
+        Assertions.assertEquals(730394428, model.endpointDetails().get(0).port());
     }
 }

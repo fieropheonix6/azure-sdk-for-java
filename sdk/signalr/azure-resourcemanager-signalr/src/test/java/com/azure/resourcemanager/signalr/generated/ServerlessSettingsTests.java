@@ -7,20 +7,19 @@ package com.azure.resourcemanager.signalr.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.models.ServerlessSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ServerlessSettingsTests {
-    @Test
-    public void testDeserialize() {
-        ServerlessSettings model =
-            BinaryData.fromString("{\"connectionTimeoutInSeconds\":1596436522}").toObject(ServerlessSettings.class);
-        Assertions.assertEquals(1596436522, model.connectionTimeoutInSeconds());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ServerlessSettings model
+            = BinaryData.fromString("{\"connectionTimeoutInSeconds\":689960691}").toObject(ServerlessSettings.class);
+        Assertions.assertEquals(689960691, model.connectionTimeoutInSeconds());
     }
 
-    @Test
-    public void testSerialize() {
-        ServerlessSettings model = new ServerlessSettings().withConnectionTimeoutInSeconds(1596436522);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ServerlessSettings model = new ServerlessSettings().withConnectionTimeoutInSeconds(689960691);
         model = BinaryData.fromObject(model).toObject(ServerlessSettings.class);
-        Assertions.assertEquals(1596436522, model.connectionTimeoutInSeconds());
+        Assertions.assertEquals(689960691, model.connectionTimeoutInSeconds());
     }
 }

@@ -6,53 +6,72 @@ package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** Confluent Offer detail. */
+/**
+ * Confluent Offer detail.
+ */
 @Fluent
-public final class OfferDetail {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OfferDetail.class);
-
+public final class OfferDetail implements JsonSerializable<OfferDetail> {
     /*
      * Publisher Id
      */
-    @JsonProperty(value = "publisherId", required = true)
     private String publisherId;
 
     /*
      * Offer Id
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Offer Plan Id
      */
-    @JsonProperty(value = "planId", required = true)
     private String planId;
 
     /*
      * Offer Plan Name
      */
-    @JsonProperty(value = "planName", required = true)
     private String planName;
 
     /*
      * Offer Plan Term unit
      */
-    @JsonProperty(value = "termUnit", required = true)
     private String termUnit;
 
     /*
-     * SaaSOfferStatus SaaS Offer Status
+     * Offer Plan Term Id
      */
-    @JsonProperty(value = "status")
+    private String termId;
+
+    /*
+     * Private Offer Id
+     */
+    private String privateOfferId;
+
+    /*
+     * Array of Private Offer Ids
+     */
+    private List<String> privateOfferIds;
+
+    /*
+     * SaaS Offer Status
+     */
     private SaaSOfferStatus status;
 
     /**
+     * Creates an instance of OfferDetail class.
+     */
+    public OfferDetail() {
+    }
+
+    /**
      * Get the publisherId property: Publisher Id.
-     *
+     * 
      * @return the publisherId value.
      */
     public String publisherId() {
@@ -61,7 +80,7 @@ public final class OfferDetail {
 
     /**
      * Set the publisherId property: Publisher Id.
-     *
+     * 
      * @param publisherId the publisherId value to set.
      * @return the OfferDetail object itself.
      */
@@ -72,7 +91,7 @@ public final class OfferDetail {
 
     /**
      * Get the id property: Offer Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -81,7 +100,7 @@ public final class OfferDetail {
 
     /**
      * Set the id property: Offer Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the OfferDetail object itself.
      */
@@ -92,7 +111,7 @@ public final class OfferDetail {
 
     /**
      * Get the planId property: Offer Plan Id.
-     *
+     * 
      * @return the planId value.
      */
     public String planId() {
@@ -101,7 +120,7 @@ public final class OfferDetail {
 
     /**
      * Set the planId property: Offer Plan Id.
-     *
+     * 
      * @param planId the planId value to set.
      * @return the OfferDetail object itself.
      */
@@ -112,7 +131,7 @@ public final class OfferDetail {
 
     /**
      * Get the planName property: Offer Plan Name.
-     *
+     * 
      * @return the planName value.
      */
     public String planName() {
@@ -121,7 +140,7 @@ public final class OfferDetail {
 
     /**
      * Set the planName property: Offer Plan Name.
-     *
+     * 
      * @param planName the planName value to set.
      * @return the OfferDetail object itself.
      */
@@ -132,7 +151,7 @@ public final class OfferDetail {
 
     /**
      * Get the termUnit property: Offer Plan Term unit.
-     *
+     * 
      * @return the termUnit value.
      */
     public String termUnit() {
@@ -141,7 +160,7 @@ public final class OfferDetail {
 
     /**
      * Set the termUnit property: Offer Plan Term unit.
-     *
+     * 
      * @param termUnit the termUnit value to set.
      * @return the OfferDetail object itself.
      */
@@ -151,8 +170,68 @@ public final class OfferDetail {
     }
 
     /**
-     * Get the status property: SaaSOfferStatus SaaS Offer Status.
-     *
+     * Get the termId property: Offer Plan Term Id.
+     * 
+     * @return the termId value.
+     */
+    public String termId() {
+        return this.termId;
+    }
+
+    /**
+     * Set the termId property: Offer Plan Term Id.
+     * 
+     * @param termId the termId value to set.
+     * @return the OfferDetail object itself.
+     */
+    public OfferDetail withTermId(String termId) {
+        this.termId = termId;
+        return this;
+    }
+
+    /**
+     * Get the privateOfferId property: Private Offer Id.
+     * 
+     * @return the privateOfferId value.
+     */
+    public String privateOfferId() {
+        return this.privateOfferId;
+    }
+
+    /**
+     * Set the privateOfferId property: Private Offer Id.
+     * 
+     * @param privateOfferId the privateOfferId value to set.
+     * @return the OfferDetail object itself.
+     */
+    public OfferDetail withPrivateOfferId(String privateOfferId) {
+        this.privateOfferId = privateOfferId;
+        return this;
+    }
+
+    /**
+     * Get the privateOfferIds property: Array of Private Offer Ids.
+     * 
+     * @return the privateOfferIds value.
+     */
+    public List<String> privateOfferIds() {
+        return this.privateOfferIds;
+    }
+
+    /**
+     * Set the privateOfferIds property: Array of Private Offer Ids.
+     * 
+     * @param privateOfferIds the privateOfferIds value to set.
+     * @return the OfferDetail object itself.
+     */
+    public OfferDetail withPrivateOfferIds(List<String> privateOfferIds) {
+        this.privateOfferIds = privateOfferIds;
+        return this;
+    }
+
+    /**
+     * Get the status property: SaaS Offer Status.
+     * 
      * @return the status value.
      */
     public SaaSOfferStatus status() {
@@ -160,8 +239,8 @@ public final class OfferDetail {
     }
 
     /**
-     * Set the status property: SaaSOfferStatus SaaS Offer Status.
-     *
+     * Set the status property: SaaS Offer Status.
+     * 
      * @param status the status value to set.
      * @return the OfferDetail object itself.
      */
@@ -172,33 +251,94 @@ public final class OfferDetail {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (publisherId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property publisherId in model OfferDetail"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property publisherId in model OfferDetail"));
         }
         if (id() == null) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException("Missing required property id in model OfferDetail"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model OfferDetail"));
         }
         if (planId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property planId in model OfferDetail"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property planId in model OfferDetail"));
         }
         if (planName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property planName in model OfferDetail"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property planName in model OfferDetail"));
         }
         if (termUnit() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property termUnit in model OfferDetail"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property termUnit in model OfferDetail"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OfferDetail.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publisherId", this.publisherId);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("planId", this.planId);
+        jsonWriter.writeStringField("planName", this.planName);
+        jsonWriter.writeStringField("termUnit", this.termUnit);
+        jsonWriter.writeStringField("termId", this.termId);
+        jsonWriter.writeStringField("privateOfferId", this.privateOfferId);
+        jsonWriter.writeArrayField("privateOfferIds", this.privateOfferIds,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OfferDetail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OfferDetail if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OfferDetail.
+     */
+    public static OfferDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OfferDetail deserializedOfferDetail = new OfferDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publisherId".equals(fieldName)) {
+                    deserializedOfferDetail.publisherId = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedOfferDetail.id = reader.getString();
+                } else if ("planId".equals(fieldName)) {
+                    deserializedOfferDetail.planId = reader.getString();
+                } else if ("planName".equals(fieldName)) {
+                    deserializedOfferDetail.planName = reader.getString();
+                } else if ("termUnit".equals(fieldName)) {
+                    deserializedOfferDetail.termUnit = reader.getString();
+                } else if ("termId".equals(fieldName)) {
+                    deserializedOfferDetail.termId = reader.getString();
+                } else if ("privateOfferId".equals(fieldName)) {
+                    deserializedOfferDetail.privateOfferId = reader.getString();
+                } else if ("privateOfferIds".equals(fieldName)) {
+                    List<String> privateOfferIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedOfferDetail.privateOfferIds = privateOfferIds;
+                } else if ("status".equals(fieldName)) {
+                    deserializedOfferDetail.status = SaaSOfferStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOfferDetail;
+        });
     }
 }

@@ -5,12 +5,16 @@ package com.azure.storage.common.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.Utility;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
@@ -45,8 +49,7 @@ public class UploadUtils {
 
         PayloadSizeGate gate = new PayloadSizeGate(parallelTransferOptions.getMaxSingleUploadSizeLong());
 
-        return data
-            .filter(ByteBuffer::hasRemaining)
+        return data.filter(ByteBuffer::hasRemaining)
             // The gate buffers data until threshold is breached.
             .concatMap(gate::write, 0)
             // First buffer is emitted after threshold is breached or there's no more data.
@@ -89,25 +92,22 @@ public class UploadUtils {
     public static Flux<ByteBuffer> chunkSource(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
         if (parallelTransferOptions.getBlockSizeLong() <= Integer.MAX_VALUE) {
             int chunkSize = parallelTransferOptions.getBlockSizeLong().intValue();
-            return data
-                .flatMapSequential(buffer -> {
-                    if (buffer.remaining() <= chunkSize) {
-                        return Flux.just(buffer);
-                    }
-                    int numSplits = (int) Math.ceil(buffer.remaining() / (double) chunkSize);
-                    return Flux.range(0, numSplits)
-                        .map(i -> {
-                            ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
-                            duplicate.position(i * chunkSize);
-                            duplicate.limit(Math.min(duplicate.limit(), (i + 1) * chunkSize));
-                            return duplicate;
-                        });
-                }, 1, 1);
+            return data.flatMapSequential(buffer -> {
+                if (buffer.remaining() <= chunkSize) {
+                    return Flux.just(buffer);
+                }
+                int numSplits = (int) Math.ceil(buffer.remaining() / (double) chunkSize);
+                return Flux.range(0, numSplits).map(i -> {
+                    ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
+                    duplicate.position(i * chunkSize);
+                    duplicate.limit(Math.min(duplicate.limit(), (i + 1) * chunkSize));
+                    return duplicate;
+                });
+            }, 1, 1);
         } else {
             return data;
         }
     }
-
 
     public static boolean shouldUploadInChunks(String filePath, Long maxSingleUploadSize, ClientLogger logger) {
         AsynchronousFileChannel channel = uploadFileResourceSupplier(filePath, logger);
@@ -190,5 +190,30 @@ public class UploadUtils {
         public byte[] getMd5() {
             return CoreUtils.clone(md5);
         }
+    }
+
+    /**
+     * Extracts the byte buffer for upload operations.
+     *
+     * @param data the {@link Flux} of {@link ByteBuffer}, if specified.
+     * @param optionalLength length of data.
+     * @param blockSize the block size (chunk size) to transfer at a time.
+     * @param dataStream the {@link InputStream}, if specified.
+     * @return the updated {@link Flux} of {@link ByteBuffer}.
+     */
+    public static Flux<ByteBuffer> extractByteBuffer(Flux<ByteBuffer> data, Long optionalLength, Long blockSize,
+        InputStream dataStream) {
+        // no specified length: use azure.core's converter
+        if (data == null && optionalLength == null) {
+            // We can only buffer up to max int due to restrictions in ByteBuffer.
+            int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH, blockSize);
+            data = FluxUtil.toFluxByteBuffer(dataStream, chunkSize).subscribeOn(Schedulers.boundedElastic());
+            // specified length (legacy requirement): use custom converter. no marking because we buffer anyway.
+        } else if (data == null) {
+            // We can only buffer up to max int due to restrictions in ByteBuffer.
+            int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH, blockSize);
+            data = Utility.convertStreamToByteBuffer(dataStream, optionalLength, chunkSize, false);
+        }
+        return data;
     }
 }

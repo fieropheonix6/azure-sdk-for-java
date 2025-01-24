@@ -5,38 +5,46 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Trigger based on request execution time. */
+/**
+ * Trigger based on request execution time.
+ */
 @Fluent
-public final class SlowRequestsBasedTrigger {
+public final class SlowRequestsBasedTrigger implements JsonSerializable<SlowRequestsBasedTrigger> {
     /*
      * Time taken.
      */
-    @JsonProperty(value = "timeTaken")
     private String timeTaken;
 
     /*
      * Request Path.
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * Request Count.
      */
-    @JsonProperty(value = "count")
     private Integer count;
 
     /*
      * Time interval.
      */
-    @JsonProperty(value = "timeInterval")
     private String timeInterval;
 
     /**
+     * Creates an instance of SlowRequestsBasedTrigger class.
+     */
+    public SlowRequestsBasedTrigger() {
+    }
+
+    /**
      * Get the timeTaken property: Time taken.
-     *
+     * 
      * @return the timeTaken value.
      */
     public String timeTaken() {
@@ -45,7 +53,7 @@ public final class SlowRequestsBasedTrigger {
 
     /**
      * Set the timeTaken property: Time taken.
-     *
+     * 
      * @param timeTaken the timeTaken value to set.
      * @return the SlowRequestsBasedTrigger object itself.
      */
@@ -56,7 +64,7 @@ public final class SlowRequestsBasedTrigger {
 
     /**
      * Get the path property: Request Path.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -65,7 +73,7 @@ public final class SlowRequestsBasedTrigger {
 
     /**
      * Set the path property: Request Path.
-     *
+     * 
      * @param path the path value to set.
      * @return the SlowRequestsBasedTrigger object itself.
      */
@@ -76,7 +84,7 @@ public final class SlowRequestsBasedTrigger {
 
     /**
      * Get the count property: Request Count.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -85,7 +93,7 @@ public final class SlowRequestsBasedTrigger {
 
     /**
      * Set the count property: Request Count.
-     *
+     * 
      * @param count the count value to set.
      * @return the SlowRequestsBasedTrigger object itself.
      */
@@ -96,7 +104,7 @@ public final class SlowRequestsBasedTrigger {
 
     /**
      * Get the timeInterval property: Time interval.
-     *
+     * 
      * @return the timeInterval value.
      */
     public String timeInterval() {
@@ -105,7 +113,7 @@ public final class SlowRequestsBasedTrigger {
 
     /**
      * Set the timeInterval property: Time interval.
-     *
+     * 
      * @param timeInterval the timeInterval value to set.
      * @return the SlowRequestsBasedTrigger object itself.
      */
@@ -116,9 +124,54 @@ public final class SlowRequestsBasedTrigger {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timeTaken", this.timeTaken);
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("timeInterval", this.timeInterval);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SlowRequestsBasedTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SlowRequestsBasedTrigger if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SlowRequestsBasedTrigger.
+     */
+    public static SlowRequestsBasedTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SlowRequestsBasedTrigger deserializedSlowRequestsBasedTrigger = new SlowRequestsBasedTrigger();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeTaken".equals(fieldName)) {
+                    deserializedSlowRequestsBasedTrigger.timeTaken = reader.getString();
+                } else if ("path".equals(fieldName)) {
+                    deserializedSlowRequestsBasedTrigger.path = reader.getString();
+                } else if ("count".equals(fieldName)) {
+                    deserializedSlowRequestsBasedTrigger.count = reader.getNullable(JsonReader::getInt);
+                } else if ("timeInterval".equals(fieldName)) {
+                    deserializedSlowRequestsBasedTrigger.timeInterval = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSlowRequestsBasedTrigger;
+        });
     }
 }

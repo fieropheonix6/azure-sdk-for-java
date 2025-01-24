@@ -4,25 +4,29 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
- * Specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None**
- * &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite** &lt;br&gt;&lt;br&gt; Default: **None for
- * Standard storage. ReadOnly for Premium storage**.
+ * Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The default values
+ * are: **None for Standard storage. ReadOnly for Premium storage**.
  */
 public enum CachingTypes {
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None"),
 
-    /** Enum value ReadOnly. */
+    /**
+     * Enum value ReadOnly.
+     */
     READ_ONLY("ReadOnly"),
 
-    /** Enum value ReadWrite. */
+    /**
+     * Enum value ReadWrite.
+     */
     READ_WRITE("ReadWrite");
 
-    /** The actual serialized value for a CachingTypes instance. */
+    /**
+     * The actual serialized value for a CachingTypes instance.
+     */
     private final String value;
 
     CachingTypes(String value) {
@@ -31,11 +35,10 @@ public enum CachingTypes {
 
     /**
      * Parses a serialized value to a CachingTypes instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed CachingTypes object, or null if unable to parse.
      */
-    @JsonCreator
     public static CachingTypes fromString(String value) {
         if (value == null) {
             return null;
@@ -49,8 +52,9 @@ public enum CachingTypes {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

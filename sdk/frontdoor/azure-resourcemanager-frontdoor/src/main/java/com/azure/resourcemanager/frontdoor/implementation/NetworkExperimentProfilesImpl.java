@@ -13,17 +13,15 @@ import com.azure.resourcemanager.frontdoor.fluent.NetworkExperimentProfilesClien
 import com.azure.resourcemanager.frontdoor.fluent.models.ProfileInner;
 import com.azure.resourcemanager.frontdoor.models.NetworkExperimentProfiles;
 import com.azure.resourcemanager.frontdoor.models.Profile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class NetworkExperimentProfilesImpl implements NetworkExperimentProfiles {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkExperimentProfilesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkExperimentProfilesImpl.class);
 
     private final NetworkExperimentProfilesClient innerClient;
 
     private final com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager;
 
-    public NetworkExperimentProfilesImpl(
-        NetworkExperimentProfilesClient innerClient,
+    public NetworkExperimentProfilesImpl(NetworkExperimentProfilesClient innerClient,
         com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,43 +29,40 @@ public final class NetworkExperimentProfilesImpl implements NetworkExperimentPro
 
     public PagedIterable<Profile> list() {
         PagedIterable<ProfileInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProfileImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Profile> list(Context context) {
         PagedIterable<ProfileInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProfileImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Profile> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ProfileInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProfileImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Profile> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ProfileInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProfileImpl(inner1, this.manager()));
+    }
+
+    public Response<Profile> getByResourceGroupWithResponse(String resourceGroupName, String profileName,
+        Context context) {
+        Response<ProfileInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, profileName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ProfileImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Profile getByResourceGroup(String resourceGroupName, String profileName) {
         ProfileInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, profileName);
         if (inner != null) {
             return new ProfileImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<Profile> getByResourceGroupWithResponse(
-        String resourceGroupName, String profileName, Context context) {
-        Response<ProfileInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, profileName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ProfileImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -82,89 +77,57 @@ public final class NetworkExperimentProfilesImpl implements NetworkExperimentPro
     }
 
     public Profile getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String profileName = Utils.getValueFromIdByName(id, "NetworkExperimentProfiles");
+        String profileName = ResourceManagerUtils.getValueFromIdByName(id, "NetworkExperimentProfiles");
         if (profileName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'NetworkExperimentProfiles'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'NetworkExperimentProfiles'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, profileName, Context.NONE).getValue();
     }
 
     public Response<Profile> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String profileName = Utils.getValueFromIdByName(id, "NetworkExperimentProfiles");
+        String profileName = ResourceManagerUtils.getValueFromIdByName(id, "NetworkExperimentProfiles");
         if (profileName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'NetworkExperimentProfiles'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'NetworkExperimentProfiles'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, profileName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String profileName = Utils.getValueFromIdByName(id, "NetworkExperimentProfiles");
+        String profileName = ResourceManagerUtils.getValueFromIdByName(id, "NetworkExperimentProfiles");
         if (profileName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'NetworkExperimentProfiles'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'NetworkExperimentProfiles'.", id)));
         }
         this.delete(resourceGroupName, profileName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String profileName = Utils.getValueFromIdByName(id, "NetworkExperimentProfiles");
+        String profileName = ResourceManagerUtils.getValueFromIdByName(id, "NetworkExperimentProfiles");
         if (profileName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'NetworkExperimentProfiles'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'NetworkExperimentProfiles'.", id)));
         }
         this.delete(resourceGroupName, profileName, context);
     }

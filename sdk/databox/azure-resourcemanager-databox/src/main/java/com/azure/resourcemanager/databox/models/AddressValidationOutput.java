@@ -5,34 +5,21 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.resourcemanager.databox.fluent.models.AddressValidationOutputInner;
-import java.util.List;
 
-/** An immutable client-side representation of AddressValidationOutput. */
+/**
+ * An immutable client-side representation of AddressValidationOutput.
+ */
 public interface AddressValidationOutput {
     /**
-     * Gets the error property: Error code and message of validation response.
-     *
-     * @return the error value.
+     * Gets the properties property: The address validation properties.
+     * 
+     * @return the properties value.
      */
-    CloudError error();
-
-    /**
-     * Gets the validationStatus property: The address validation status.
-     *
-     * @return the validationStatus value.
-     */
-    AddressValidationStatus validationStatus();
-
-    /**
-     * Gets the alternateAddresses property: List of alternate addresses.
-     *
-     * @return the alternateAddresses value.
-     */
-    List<ShippingAddress> alternateAddresses();
+    AddressValidationProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.databox.fluent.models.AddressValidationOutputInner object.
-     *
+     * 
      * @return the inner object.
      */
     AddressValidationOutputInner innerModel();

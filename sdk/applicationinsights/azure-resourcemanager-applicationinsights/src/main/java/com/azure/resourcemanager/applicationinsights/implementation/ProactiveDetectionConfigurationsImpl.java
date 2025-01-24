@@ -23,86 +23,58 @@ public final class ProactiveDetectionConfigurationsImpl implements ProactiveDete
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    public ProactiveDetectionConfigurationsImpl(
-        ProactiveDetectionConfigurationsClient innerClient,
+    public ProactiveDetectionConfigurationsImpl(ProactiveDetectionConfigurationsClient innerClient,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public List<ApplicationInsightsComponentProactiveDetectionConfiguration> list(
-        String resourceGroupName, String resourceName) {
-        List<ApplicationInsightsComponentProactiveDetectionConfigurationInner> inner =
-            this.serviceClient().list(resourceGroupName, resourceName);
+    public Response<List<ApplicationInsightsComponentProactiveDetectionConfiguration>>
+        listWithResponse(String resourceGroupName, String resourceName, Context context) {
+        Response<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(
-                            inner1 ->
-                                new ApplicationInsightsComponentProactiveDetectionConfigurationImpl(
-                                    inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public Response<List<ApplicationInsightsComponentProactiveDetectionConfiguration>> listWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, resourceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
                     .stream()
-                    .map(
-                        inner1 ->
-                            new ApplicationInsightsComponentProactiveDetectionConfigurationImpl(inner1, this.manager()))
+                    .map(inner1 -> new ApplicationInsightsComponentProactiveDetectionConfigurationImpl(inner1,
+                        this.manager()))
                     .collect(Collectors.toList()));
         } else {
             return null;
         }
     }
 
-    public ApplicationInsightsComponentProactiveDetectionConfiguration get(
-        String resourceGroupName, String resourceName, String configurationId) {
-        ApplicationInsightsComponentProactiveDetectionConfigurationInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName, configurationId);
+    public List<ApplicationInsightsComponentProactiveDetectionConfiguration> list(String resourceGroupName,
+        String resourceName) {
+        List<ApplicationInsightsComponentProactiveDetectionConfigurationInner> inner
+            = this.serviceClient().list(resourceGroupName, resourceName);
         if (inner != null) {
-            return new ApplicationInsightsComponentProactiveDetectionConfigurationImpl(inner, this.manager());
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ApplicationInsightsComponentProactiveDetectionConfigurationImpl(inner1,
+                    this.manager()))
+                .collect(Collectors.toList()));
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 
-    public Response<ApplicationInsightsComponentProactiveDetectionConfiguration> getWithResponse(
-        String resourceGroupName, String resourceName, String configurationId, Context context) {
-        Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, resourceName, configurationId, context);
+    public Response<ApplicationInsightsComponentProactiveDetectionConfiguration>
+        getWithResponse(String resourceGroupName, String resourceName, String configurationId, Context context) {
+        Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, configurationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationInsightsComponentProactiveDetectionConfigurationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ApplicationInsightsComponentProactiveDetectionConfiguration update(
-        String resourceGroupName,
-        String resourceName,
-        String configurationId,
-        ApplicationInsightsComponentProactiveDetectionConfigurationInner proactiveDetectionProperties) {
-        ApplicationInsightsComponentProactiveDetectionConfigurationInner inner =
-            this.serviceClient().update(resourceGroupName, resourceName, configurationId, proactiveDetectionProperties);
+    public ApplicationInsightsComponentProactiveDetectionConfiguration get(String resourceGroupName,
+        String resourceName, String configurationId) {
+        ApplicationInsightsComponentProactiveDetectionConfigurationInner inner
+            = this.serviceClient().get(resourceGroupName, resourceName, configurationId);
         if (inner != null) {
             return new ApplicationInsightsComponentProactiveDetectionConfigurationImpl(inner, this.manager());
         } else {
@@ -111,22 +83,27 @@ public final class ProactiveDetectionConfigurationsImpl implements ProactiveDete
     }
 
     public Response<ApplicationInsightsComponentProactiveDetectionConfiguration> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String configurationId,
+        String resourceGroupName, String resourceName, String configurationId,
         ApplicationInsightsComponentProactiveDetectionConfigurationInner proactiveDetectionProperties,
         Context context) {
-        Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner> inner =
-            this
-                .serviceClient()
-                .updateWithResponse(
-                    resourceGroupName, resourceName, configurationId, proactiveDetectionProperties, context);
+        Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner> inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, resourceName, configurationId, proactiveDetectionProperties,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationInsightsComponentProactiveDetectionConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplicationInsightsComponentProactiveDetectionConfiguration update(String resourceGroupName,
+        String resourceName, String configurationId,
+        ApplicationInsightsComponentProactiveDetectionConfigurationInner proactiveDetectionProperties) {
+        ApplicationInsightsComponentProactiveDetectionConfigurationInner inner = this.serviceClient()
+            .update(resourceGroupName, resourceName, configurationId, proactiveDetectionProperties);
+        if (inner != null) {
+            return new ApplicationInsightsComponentProactiveDetectionConfigurationImpl(inner, this.manager());
         } else {
             return null;
         }

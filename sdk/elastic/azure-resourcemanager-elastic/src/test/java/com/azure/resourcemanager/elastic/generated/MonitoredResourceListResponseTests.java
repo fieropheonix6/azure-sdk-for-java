@@ -10,42 +10,29 @@ import com.azure.resourcemanager.elastic.models.MonitoredResourceListResponse;
 import com.azure.resourcemanager.elastic.models.SendingLogs;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MonitoredResourceListResponseTests {
-    @Test
-    public void testDeserialize() {
-        MonitoredResourceListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"hjtckwhd\",\"sendingLogs\":\"False\",\"reasonForLogsStatus\":\"iy\"},{\"id\":\"jxsqwpgrjbz\",\"sendingLogs\":\"False\",\"reasonForLogsStatus\":\"jxvsnbyxqabn\"}],\"nextLink\":\"cpc\"}")
-                .toObject(MonitoredResourceListResponse.class);
-        Assertions.assertEquals("hjtckwhd", model.value().get(0).id());
-        Assertions.assertEquals(SendingLogs.FALSE, model.value().get(0).sendingLogs());
-        Assertions.assertEquals("iy", model.value().get(0).reasonForLogsStatus());
-        Assertions.assertEquals("cpc", model.nextLink());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        MonitoredResourceListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"xmqci\",\"sendingLogs\":\"True\",\"reasonForLogsStatus\":\"khixuigdtopbo\"}],\"nextLink\":\"og\"}")
+            .toObject(MonitoredResourceListResponse.class);
+        Assertions.assertEquals("xmqci", model.value().get(0).id());
+        Assertions.assertEquals(SendingLogs.TRUE, model.value().get(0).sendingLogs());
+        Assertions.assertEquals("khixuigdtopbo", model.value().get(0).reasonForLogsStatus());
+        Assertions.assertEquals("og", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
-        MonitoredResourceListResponse model =
-            new MonitoredResourceListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new MonitoredResourceInner()
-                                .withId("hjtckwhd")
-                                .withSendingLogs(SendingLogs.FALSE)
-                                .withReasonForLogsStatus("iy"),
-                            new MonitoredResourceInner()
-                                .withId("jxsqwpgrjbz")
-                                .withSendingLogs(SendingLogs.FALSE)
-                                .withReasonForLogsStatus("jxvsnbyxqabn")))
-                .withNextLink("cpc");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        MonitoredResourceListResponse model
+            = new MonitoredResourceListResponse().withValue(Arrays.asList(new MonitoredResourceInner().withId("xmqci")
+                .withSendingLogs(SendingLogs.TRUE)
+                .withReasonForLogsStatus("khixuigdtopbo"))).withNextLink("og");
         model = BinaryData.fromObject(model).toObject(MonitoredResourceListResponse.class);
-        Assertions.assertEquals("hjtckwhd", model.value().get(0).id());
-        Assertions.assertEquals(SendingLogs.FALSE, model.value().get(0).sendingLogs());
-        Assertions.assertEquals("iy", model.value().get(0).reasonForLogsStatus());
-        Assertions.assertEquals("cpc", model.nextLink());
+        Assertions.assertEquals("xmqci", model.value().get(0).id());
+        Assertions.assertEquals(SendingLogs.TRUE, model.value().get(0).sendingLogs());
+        Assertions.assertEquals("khixuigdtopbo", model.value().get(0).reasonForLogsStatus());
+        Assertions.assertEquals("og", model.nextLink());
     }
 }

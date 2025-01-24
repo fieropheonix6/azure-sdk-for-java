@@ -11,40 +11,36 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DeploymentPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        DeploymentProperties model =
-            BinaryData
-                .fromString(
-                    "{\"manifestType\":\"helm\",\"kubeManifestLocations\":[\"pcyshu\"],\"helmChartPath\":\"afbljjgpbtoqcjmk\",\"helmValues\":\"a\",\"overrides\":{\"pku\":\"idtqajzyu\",\"gqexzlocxs\":\"jkrlkhbzhfepg\",\"bcsglumma\":\"paierh\"}}")
-                .toObject(DeploymentProperties.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DeploymentProperties model = BinaryData.fromString(
+            "{\"manifestType\":\"helm\",\"kubeManifestLocations\":[\"kirsoodqxhc\",\"mnoh\",\"t\",\"kwh\"],\"helmChartPath\":\"oifiyipjxsqwpgr\",\"helmValues\":\"znorcj\",\"overrides\":{\"xqabnmocpcysh\":\"nb\"}}")
+            .toObject(DeploymentProperties.class);
         Assertions.assertEquals(ManifestType.HELM, model.manifestType());
-        Assertions.assertEquals("pcyshu", model.kubeManifestLocations().get(0));
-        Assertions.assertEquals("afbljjgpbtoqcjmk", model.helmChartPath());
-        Assertions.assertEquals("a", model.helmValues());
-        Assertions.assertEquals("idtqajzyu", model.overrides().get("pku"));
+        Assertions.assertEquals("kirsoodqxhc", model.kubeManifestLocations().get(0));
+        Assertions.assertEquals("oifiyipjxsqwpgr", model.helmChartPath());
+        Assertions.assertEquals("znorcj", model.helmValues());
+        Assertions.assertEquals("nb", model.overrides().get("xqabnmocpcysh"));
     }
 
-    @Test
-    public void testSerialize() {
-        DeploymentProperties model =
-            new DeploymentProperties()
-                .withManifestType(ManifestType.HELM)
-                .withKubeManifestLocations(Arrays.asList("pcyshu"))
-                .withHelmChartPath("afbljjgpbtoqcjmk")
-                .withHelmValues("a")
-                .withOverrides(mapOf("pku", "idtqajzyu", "gqexzlocxs", "jkrlkhbzhfepg", "bcsglumma", "paierh"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DeploymentProperties model = new DeploymentProperties().withManifestType(ManifestType.HELM)
+            .withKubeManifestLocations(Arrays.asList("kirsoodqxhc", "mnoh", "t", "kwh"))
+            .withHelmChartPath("oifiyipjxsqwpgr")
+            .withHelmValues("znorcj")
+            .withOverrides(mapOf("xqabnmocpcysh", "nb"));
         model = BinaryData.fromObject(model).toObject(DeploymentProperties.class);
         Assertions.assertEquals(ManifestType.HELM, model.manifestType());
-        Assertions.assertEquals("pcyshu", model.kubeManifestLocations().get(0));
-        Assertions.assertEquals("afbljjgpbtoqcjmk", model.helmChartPath());
-        Assertions.assertEquals("a", model.helmValues());
-        Assertions.assertEquals("idtqajzyu", model.overrides().get("pku"));
+        Assertions.assertEquals("kirsoodqxhc", model.kubeManifestLocations().get(0));
+        Assertions.assertEquals("oifiyipjxsqwpgr", model.helmChartPath());
+        Assertions.assertEquals("znorcj", model.helmValues());
+        Assertions.assertEquals("nb", model.overrides().get("xqabnmocpcysh"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

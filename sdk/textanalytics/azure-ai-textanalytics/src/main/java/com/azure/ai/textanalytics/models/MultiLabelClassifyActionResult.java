@@ -8,15 +8,21 @@ import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link MultiLabelClassifyActionResult} is the result for multi-label classification action analysis.
+ * The {@code MultiLabelClassifyActionResult} is the result for multi-label classification action analysis.
  */
 @Immutable
 public final class MultiLabelClassifyActionResult extends TextAnalyticsActionResult {
     private ClassifyDocumentResultCollection documentsResults;
 
     static {
-        MultiLabelClassifyActionResultPropertiesHelper.setAccessor(
-            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+        MultiLabelClassifyActionResultPropertiesHelper
+            .setAccessor((actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+    }
+
+    /**
+     * Constructs a {@code MultiLabelClassifyActionResult} model.
+     */
+    public MultiLabelClassifyActionResult() {
     }
 
     /**

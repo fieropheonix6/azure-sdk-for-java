@@ -4,18 +4,24 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ProductState. */
+/**
+ * whether product is published or not. Published products are discoverable by users of developer portal. Non published
+ * products are visible only to administrators. Default state of Product is notPublished.
+ */
 public enum ProductState {
-    /** Enum value notPublished. */
+    /**
+     * Enum value notPublished.
+     */
     NOT_PUBLISHED("notPublished"),
 
-    /** Enum value published. */
+    /**
+     * Enum value published.
+     */
     PUBLISHED("published");
 
-    /** The actual serialized value for a ProductState instance. */
+    /**
+     * The actual serialized value for a ProductState instance.
+     */
     private final String value;
 
     ProductState(String value) {
@@ -24,12 +30,14 @@ public enum ProductState {
 
     /**
      * Parses a serialized value to a ProductState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ProductState object, or null if unable to parse.
      */
-    @JsonCreator
     public static ProductState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ProductState[] items = ProductState.values();
         for (ProductState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +47,9 @@ public enum ProductState {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

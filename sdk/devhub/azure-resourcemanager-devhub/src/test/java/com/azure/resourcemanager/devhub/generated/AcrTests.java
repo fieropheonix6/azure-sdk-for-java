@@ -7,34 +7,29 @@ package com.azure.resourcemanager.devhub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devhub.models.Acr;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AcrTests {
-    @Test
-    public void testDeserialize() {
-        Acr model =
-            BinaryData
-                .fromString(
-                    "{\"acrSubscriptionId\":\"j\",\"acrResourceGroup\":\"dxob\",\"acrRegistryName\":\"dxkqpx\",\"acrRepositoryName\":\"ajionpimexgstxg\"}")
-                .toObject(Acr.class);
-        Assertions.assertEquals("j", model.acrSubscriptionId());
-        Assertions.assertEquals("dxob", model.acrResourceGroup());
-        Assertions.assertEquals("dxkqpx", model.acrRegistryName());
-        Assertions.assertEquals("ajionpimexgstxg", model.acrRepositoryName());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        Acr model = BinaryData.fromString(
+            "{\"acrSubscriptionId\":\"zafb\",\"acrResourceGroup\":\"j\",\"acrRegistryName\":\"btoqcjmkljavbqid\",\"acrRepositoryName\":\"ajzyul\"}")
+            .toObject(Acr.class);
+        Assertions.assertEquals("zafb", model.acrSubscriptionId());
+        Assertions.assertEquals("j", model.acrResourceGroup());
+        Assertions.assertEquals("btoqcjmkljavbqid", model.acrRegistryName());
+        Assertions.assertEquals("ajzyul", model.acrRepositoryName());
     }
 
-    @Test
-    public void testSerialize() {
-        Acr model =
-            new Acr()
-                .withAcrSubscriptionId("j")
-                .withAcrResourceGroup("dxob")
-                .withAcrRegistryName("dxkqpx")
-                .withAcrRepositoryName("ajionpimexgstxg");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        Acr model = new Acr().withAcrSubscriptionId("zafb")
+            .withAcrResourceGroup("j")
+            .withAcrRegistryName("btoqcjmkljavbqid")
+            .withAcrRepositoryName("ajzyul");
         model = BinaryData.fromObject(model).toObject(Acr.class);
-        Assertions.assertEquals("j", model.acrSubscriptionId());
-        Assertions.assertEquals("dxob", model.acrResourceGroup());
-        Assertions.assertEquals("dxkqpx", model.acrRegistryName());
-        Assertions.assertEquals("ajionpimexgstxg", model.acrRepositoryName());
+        Assertions.assertEquals("zafb", model.acrSubscriptionId());
+        Assertions.assertEquals("j", model.acrResourceGroup());
+        Assertions.assertEquals("btoqcjmkljavbqid", model.acrRegistryName());
+        Assertions.assertEquals("ajzyul", model.acrRepositoryName());
     }
 }

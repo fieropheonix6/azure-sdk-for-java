@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
 import java.time.OffsetDateTime;
 
 /**
- * The {@link ClassifyDocumentOperationDetail} model.
+ * The {@code ClassifyDocumentOperationDetail} model.
  */
 @Immutable
 public final class ClassifyDocumentOperationDetail {
@@ -20,11 +20,10 @@ public final class ClassifyDocumentOperationDetail {
     private OffsetDateTime lastModifiedAt;
 
     static {
-        ClassifyDocumentOperationDetailPropertiesHelper.setAccessor(
-            new ClassifyDocumentOperationDetailPropertiesHelper.ClassifyDocumentOperationDetailAccessor() {
+        ClassifyDocumentOperationDetailPropertiesHelper
+            .setAccessor(new ClassifyDocumentOperationDetailPropertiesHelper.ClassifyDocumentOperationDetailAccessor() {
                 @Override
-                public void setOperationId(ClassifyDocumentOperationDetail operationResult,
-                    String operationId) {
+                public void setOperationId(ClassifyDocumentOperationDetail operationResult, String operationId) {
                     operationResult.setOperationId(operationId);
                 }
 
@@ -34,14 +33,12 @@ public final class ClassifyDocumentOperationDetail {
                 }
 
                 @Override
-                public void setExpiresAt(ClassifyDocumentOperationDetail operationDetail,
-                    OffsetDateTime expiresAt) {
+                public void setExpiresAt(ClassifyDocumentOperationDetail operationDetail, OffsetDateTime expiresAt) {
                     operationDetail.setExpiresAt(expiresAt);
                 }
 
                 @Override
-                public void setCreatedAt(ClassifyDocumentOperationDetail operationDetail,
-                    OffsetDateTime createdAt) {
+                public void setCreatedAt(ClassifyDocumentOperationDetail operationDetail, OffsetDateTime createdAt) {
                     operationDetail.setCreatedAt(createdAt);
                 }
 
@@ -50,23 +47,28 @@ public final class ClassifyDocumentOperationDetail {
                     OffsetDateTime lastModifiedAt) {
                     operationDetail.setLastModifiedAt(lastModifiedAt);
                 }
-            }
-        );
+            });
     }
 
     /**
-     * Gets the operationId property of the {@link ClassifyDocumentOperationDetail}.
+     * Constructs a {@code ClassifyDocumentOperationDetail} model.
+     */
+    public ClassifyDocumentOperationDetail() {
+    }
+
+    /**
+     * Gets the operationId property of the {@code ClassifyDocumentOperationDetail}.
      *
-     * @return The operationId property of the {@link ClassifyDocumentOperationDetail}.
+     * @return The operationId property of the {@code ClassifyDocumentOperationDetail}.
      */
     public String getOperationId() {
         return operationId;
     }
 
     /**
-     * Gets the displayName property of the {@link ClassifyDocumentOperationDetail}.
+     * Gets the displayName property of the {@code ClassifyDocumentOperationDetail}.
      *
-     * @return The displayName property of the {@link ClassifyDocumentOperationDetail}.
+     * @return The displayName property of the {@code ClassifyDocumentOperationDetail}.
      */
     public String getDisplayName() {
         return displayName;

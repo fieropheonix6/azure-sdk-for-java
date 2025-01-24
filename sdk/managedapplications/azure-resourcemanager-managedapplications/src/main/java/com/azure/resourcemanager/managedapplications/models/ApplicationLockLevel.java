@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.managedapplications.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ApplicationLockLevel. */
+/**
+ * The managed application lock level.
+ */
 public enum ApplicationLockLevel {
-    /** Enum value CanNotDelete. */
+    /**
+     * Enum value CanNotDelete.
+     */
     CAN_NOT_DELETE("CanNotDelete"),
 
-    /** Enum value ReadOnly. */
+    /**
+     * Enum value ReadOnly.
+     */
     READ_ONLY("ReadOnly"),
 
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None");
 
-    /** The actual serialized value for a ApplicationLockLevel instance. */
+    /**
+     * The actual serialized value for a ApplicationLockLevel instance.
+     */
     private final String value;
 
     ApplicationLockLevel(String value) {
@@ -27,12 +34,14 @@ public enum ApplicationLockLevel {
 
     /**
      * Parses a serialized value to a ApplicationLockLevel instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ApplicationLockLevel object, or null if unable to parse.
      */
-    @JsonCreator
     public static ApplicationLockLevel fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ApplicationLockLevel[] items = ApplicationLockLevel.values();
         for (ApplicationLockLevel item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +51,9 @@ public enum ApplicationLockLevel {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

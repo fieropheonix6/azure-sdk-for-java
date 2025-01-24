@@ -12,8 +12,10 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- * Defines a position of an {@link EventData} in the Event Hub partition. The position can be an offset, sequence
- * number, or enqueued time.
+ * Defines a position of an {@link EventData} in the Event Hub partition stream. The position can be an offset,
+ * sequence number, or enqueued time in UTC.
+ *
+ * @see <a href="https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-features#event-consumers">Event consumers</a>
  */
 @Immutable
 public final class EventPosition {
@@ -30,7 +32,7 @@ public final class EventPosition {
     private static final String END_OF_STREAM = "@latest";
 
     private static final EventPosition EARLIEST = fromOffset(START_OF_STREAM, false);
-    private static final EventPosition LATEST =  new EventPosition(false, END_OF_STREAM, null, null);
+    private static final EventPosition LATEST = new EventPosition(false, END_OF_STREAM, null, null);
 
     private final boolean isInclusive;
     private final String offset;
@@ -38,12 +40,12 @@ public final class EventPosition {
     private final Instant enqueuedDateTime;
 
     private EventPosition(final boolean isInclusive, final Long offset, final Long sequenceNumber,
-                          final Instant enqueuedDateTime) {
+        final Instant enqueuedDateTime) {
         this(isInclusive, String.valueOf(offset), sequenceNumber, enqueuedDateTime);
     }
 
     private EventPosition(final boolean isInclusive, final String offset, final Long sequenceNumber,
-                          final Instant enqueuedDateTime) {
+        final Instant enqueuedDateTime) {
         this.offset = offset;
         this.sequenceNumber = sequenceNumber;
         this.enqueuedDateTime = enqueuedDateTime;
@@ -178,10 +180,8 @@ public final class EventPosition {
 
     @Override
     public String toString() {
-        return String.format(Locale.US, "offset[%s], sequenceNumber[%s], enqueuedTime[%s], isInclusive[%s]",
-            offset, sequenceNumber,
-            enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli() : "null",
-            isInclusive);
+        return String.format(Locale.US, "offset[%s], sequenceNumber[%s], enqueuedTime[%s], isInclusive[%s]", offset,
+            sequenceNumber, enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli() : "null", isInclusive);
     }
 
     @Override

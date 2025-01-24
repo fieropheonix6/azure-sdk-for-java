@@ -6,39 +6,45 @@ package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.IpConfiguration;
+import com.azure.resourcemanager.hdinsight.models.PrivateIpAllocationMethod;
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkConfiguration;
+import com.azure.resourcemanager.hdinsight.models.ResourceId;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkConfigurationTests {
-    @Test
-    public void testDeserialize() {
-        PrivateLinkConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"tymw\",\"name\":\"sdkf\",\"type\":\"wxmnteiwao\",\"properties\":{\"groupId\":\"vkmijcmmxdcuf\",\"provisioningState\":\"Succeeded\",\"ipConfigurations\":[{\"id\":\"ymzidn\",\"name\":\"ezcxtbzsgfyccsne\",\"type\":\"dwzjeiach\"},{\"id\":\"sflnrosfqp\",\"name\":\"eeh\",\"type\":\"vypyqrimzinpv\"},{\"id\":\"dkirsoodqxhcr\",\"name\":\"nohjt\",\"type\":\"whdsoifiyip\"}]}}")
-                .toObject(PrivateLinkConfiguration.class);
-        Assertions.assertEquals("sdkf", model.name());
-        Assertions.assertEquals("vkmijcmmxdcuf", model.groupId());
-        Assertions.assertEquals("ezcxtbzsgfyccsne", model.ipConfigurations().get(0).name());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateLinkConfiguration model = BinaryData.fromString(
+            "{\"id\":\"rxwburv\",\"name\":\"xxjnspydptk\",\"type\":\"nkoukn\",\"properties\":{\"groupId\":\"udwtiukbl\",\"provisioningState\":\"Succeeded\",\"ipConfigurations\":[{\"id\":\"ocipazyxoeg\",\"name\":\"kgjn\",\"type\":\"ucgygevqz\",\"properties\":{\"provisioningState\":\"Succeeded\",\"primary\":false,\"privateIPAddress\":\"p\",\"privateIPAllocationMethod\":\"dynamic\",\"subnet\":{\"id\":\"qjsdpydnfyhxdeo\"}}}]}}")
+            .toObject(PrivateLinkConfiguration.class);
+        Assertions.assertEquals("xxjnspydptk", model.name());
+        Assertions.assertEquals("udwtiukbl", model.groupId());
+        Assertions.assertEquals("kgjn", model.ipConfigurations().get(0).name());
+        Assertions.assertEquals(false, model.ipConfigurations().get(0).primary());
+        Assertions.assertEquals("p", model.ipConfigurations().get(0).privateIpAddress());
+        Assertions.assertEquals(PrivateIpAllocationMethod.DYNAMIC,
+            model.ipConfigurations().get(0).privateIpAllocationMethod());
+        Assertions.assertEquals("qjsdpydnfyhxdeo", model.ipConfigurations().get(0).subnet().id());
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateLinkConfiguration model =
-            new PrivateLinkConfiguration()
-                .withName("sdkf")
-                .withGroupId("vkmijcmmxdcuf")
-                .withIpConfigurations(
-                    Arrays
-                        .asList(
-                            new IpConfiguration().withName("ezcxtbzsgfyccsne"),
-                            new IpConfiguration().withName("eeh"),
-                            new IpConfiguration().withName("nohjt")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateLinkConfiguration model = new PrivateLinkConfiguration().withName("xxjnspydptk")
+            .withGroupId("udwtiukbl")
+            .withIpConfigurations(Arrays.asList(new IpConfiguration().withName("kgjn")
+                .withPrimary(false)
+                .withPrivateIpAddress("p")
+                .withPrivateIpAllocationMethod(PrivateIpAllocationMethod.DYNAMIC)
+                .withSubnet(new ResourceId().withId("qjsdpydnfyhxdeo"))));
         model = BinaryData.fromObject(model).toObject(PrivateLinkConfiguration.class);
-        Assertions.assertEquals("sdkf", model.name());
-        Assertions.assertEquals("vkmijcmmxdcuf", model.groupId());
-        Assertions.assertEquals("ezcxtbzsgfyccsne", model.ipConfigurations().get(0).name());
+        Assertions.assertEquals("xxjnspydptk", model.name());
+        Assertions.assertEquals("udwtiukbl", model.groupId());
+        Assertions.assertEquals("kgjn", model.ipConfigurations().get(0).name());
+        Assertions.assertEquals(false, model.ipConfigurations().get(0).primary());
+        Assertions.assertEquals("p", model.ipConfigurations().get(0).privateIpAddress());
+        Assertions.assertEquals(PrivateIpAllocationMethod.DYNAMIC,
+            model.ipConfigurations().get(0).privateIpAllocationMethod());
+        Assertions.assertEquals("qjsdpydnfyhxdeo", model.ipConfigurations().get(0).subnet().id());
     }
 }

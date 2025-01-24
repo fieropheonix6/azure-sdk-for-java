@@ -19,13 +19,67 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SyncMembersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SyncMembersClient.
+ */
 public interface SyncMembersClient {
     /**
-     * Gets a sync member.
-     *
+     * Lists sync members in the given sync group.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Azure SQL Database sync members as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<SyncMemberInner> listBySyncGroupAsync(String resourceGroupName, String serverName, String databaseName,
+        String syncGroupName);
+
+    /**
+     * Lists sync members in the given sync group.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Azure SQL Database sync members as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SyncMemberInner> listBySyncGroup(String resourceGroupName, String serverName, String databaseName,
+        String syncGroupName);
+
+    /**
+     * Lists sync members in the given sync group.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Azure SQL Database sync members as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SyncMemberInner> listBySyncGroup(String resourceGroupName, String serverName, String databaseName,
+        String syncGroupName, Context context);
+
+    /**
+     * Gets a sync member.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -36,14 +90,14 @@ public interface SyncMembersClient {
      * @return a sync member along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SyncMemberInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName);
+    Mono<Response<SyncMemberInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName);
 
     /**
      * Gets a sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -54,32 +108,14 @@ public interface SyncMembersClient {
      * @return a sync member on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SyncMemberInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName);
+    Mono<SyncMemberInner> getAsync(String resourceGroupName, String serverName, String databaseName,
+        String syncGroupName, String syncMemberName);
 
     /**
      * Gets a sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group on which the sync member is hosted.
-     * @param syncMemberName The name of the sync member.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sync member.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncMemberInner get(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName);
-
-    /**
-     * Gets a sync member.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -91,19 +127,32 @@ public interface SyncMembersClient {
      * @return a sync member along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SyncMemberInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
-        Context context);
+    Response<SyncMemberInner> getWithResponse(String resourceGroupName, String serverName, String databaseName,
+        String syncGroupName, String syncMemberName, Context context);
+
+    /**
+     * Gets a sync member.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group on which the sync member is hosted.
+     * @param syncMemberName The name of the sync member.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a sync member.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncMemberInner get(String resourceGroupName, String serverName, String databaseName, String syncGroupName,
+        String syncMemberName);
 
     /**
      * Creates or updates a sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -115,19 +164,14 @@ public interface SyncMembersClient {
      * @return an Azure SQL Database sync member along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
-        SyncMemberInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName, SyncMemberInner parameters);
 
     /**
      * Creates or updates a sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -139,19 +183,15 @@ public interface SyncMembersClient {
      * @return the {@link PollerFlux} for polling of an Azure SQL Database sync member.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<SyncMemberInner>, SyncMemberInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
+    PollerFlux<PollResult<SyncMemberInner>, SyncMemberInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String serverName, String databaseName, String syncGroupName, String syncMemberName,
         SyncMemberInner parameters);
 
     /**
      * Creates or updates a sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -163,19 +203,15 @@ public interface SyncMembersClient {
      * @return the {@link SyncPoller} for polling of an Azure SQL Database sync member.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SyncMemberInner>, SyncMemberInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
+    SyncPoller<PollResult<SyncMemberInner>, SyncMemberInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String databaseName, String syncGroupName, String syncMemberName,
         SyncMemberInner parameters);
 
     /**
      * Creates or updates a sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -188,20 +224,15 @@ public interface SyncMembersClient {
      * @return the {@link SyncPoller} for polling of an Azure SQL Database sync member.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SyncMemberInner>, SyncMemberInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
-        SyncMemberInner parameters,
+    SyncPoller<PollResult<SyncMemberInner>, SyncMemberInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String databaseName, String syncGroupName, String syncMemberName, SyncMemberInner parameters,
         Context context);
 
     /**
      * Creates or updates a sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -213,19 +244,14 @@ public interface SyncMembersClient {
      * @return an Azure SQL Database sync member on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SyncMemberInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
-        SyncMemberInner parameters);
+    Mono<SyncMemberInner> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName,
+        String syncGroupName, String syncMemberName, SyncMemberInner parameters);
 
     /**
      * Creates or updates a sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -237,19 +263,14 @@ public interface SyncMembersClient {
      * @return an Azure SQL Database sync member.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncMemberInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
-        SyncMemberInner parameters);
+    SyncMemberInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        String syncGroupName, String syncMemberName, SyncMemberInner parameters);
 
     /**
      * Creates or updates a sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -262,20 +283,14 @@ public interface SyncMembersClient {
      * @return an Azure SQL Database sync member.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncMemberInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
-        SyncMemberInner parameters,
-        Context context);
+    SyncMemberInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        String syncGroupName, String syncMemberName, SyncMemberInner parameters, Context context);
 
     /**
      * Deletes a sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -286,14 +301,14 @@ public interface SyncMembersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName);
 
     /**
      * Deletes a sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -304,14 +319,14 @@ public interface SyncMembersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName);
 
     /**
      * Deletes a sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -322,14 +337,14 @@ public interface SyncMembersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String databaseName,
+        String syncGroupName, String syncMemberName);
 
     /**
      * Deletes a sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -341,19 +356,14 @@ public interface SyncMembersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String databaseName,
+        String syncGroupName, String syncMemberName, Context context);
 
     /**
      * Deletes a sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -364,14 +374,14 @@ public interface SyncMembersClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName);
+    Mono<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName, String syncGroupName,
+        String syncMemberName);
 
     /**
      * Deletes a sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -381,14 +391,14 @@ public interface SyncMembersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName);
+    void delete(String resourceGroupName, String serverName, String databaseName, String syncGroupName,
+        String syncMemberName);
 
     /**
      * Deletes a sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -399,19 +409,14 @@ public interface SyncMembersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
-        Context context);
+    void delete(String resourceGroupName, String serverName, String databaseName, String syncGroupName,
+        String syncMemberName, Context context);
 
     /**
      * Updates an existing sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -423,19 +428,14 @@ public interface SyncMembersClient {
      * @return an Azure SQL Database sync member along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
-        SyncMemberInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName, SyncMemberInner parameters);
 
     /**
      * Updates an existing sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -447,19 +447,15 @@ public interface SyncMembersClient {
      * @return the {@link PollerFlux} for polling of an Azure SQL Database sync member.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<SyncMemberInner>, SyncMemberInner> beginUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
+    PollerFlux<PollResult<SyncMemberInner>, SyncMemberInner> beginUpdateAsync(String resourceGroupName,
+        String serverName, String databaseName, String syncGroupName, String syncMemberName,
         SyncMemberInner parameters);
 
     /**
      * Updates an existing sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -471,19 +467,14 @@ public interface SyncMembersClient {
      * @return the {@link SyncPoller} for polling of an Azure SQL Database sync member.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SyncMemberInner>, SyncMemberInner> beginUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
-        SyncMemberInner parameters);
+    SyncPoller<PollResult<SyncMemberInner>, SyncMemberInner> beginUpdate(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName, SyncMemberInner parameters);
 
     /**
      * Updates an existing sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -496,20 +487,14 @@ public interface SyncMembersClient {
      * @return the {@link SyncPoller} for polling of an Azure SQL Database sync member.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SyncMemberInner>, SyncMemberInner> beginUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
-        SyncMemberInner parameters,
-        Context context);
+    SyncPoller<PollResult<SyncMemberInner>, SyncMemberInner> beginUpdate(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName, SyncMemberInner parameters, Context context);
 
     /**
      * Updates an existing sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -521,19 +506,14 @@ public interface SyncMembersClient {
      * @return an Azure SQL Database sync member on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SyncMemberInner> updateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
-        SyncMemberInner parameters);
+    Mono<SyncMemberInner> updateAsync(String resourceGroupName, String serverName, String databaseName,
+        String syncGroupName, String syncMemberName, SyncMemberInner parameters);
 
     /**
      * Updates an existing sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -545,19 +525,14 @@ public interface SyncMembersClient {
      * @return an Azure SQL Database sync member.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncMemberInner update(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
-        SyncMemberInner parameters);
+    SyncMemberInner update(String resourceGroupName, String serverName, String databaseName, String syncGroupName,
+        String syncMemberName, SyncMemberInner parameters);
 
     /**
      * Updates an existing sync member.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -570,72 +545,140 @@ public interface SyncMembersClient {
      * @return an Azure SQL Database sync member.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncMemberInner update(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
-        SyncMemberInner parameters,
-        Context context);
+    SyncMemberInner update(String resourceGroupName, String serverName, String databaseName, String syncGroupName,
+        String syncMemberName, SyncMemberInner parameters, Context context);
 
     /**
-     * Lists sync members in the given sync group.
-     *
+     * Refreshes a sync member database schema.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
+     * @param syncGroupName The name of the sync group on which the sync member is hosted.
+     * @param syncMemberName The name of the sync member.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure SQL Database sync members as paginated response with {@link PagedFlux}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SyncMemberInner> listBySyncGroupAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> refreshMemberSchemaWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName);
 
     /**
-     * Lists sync members in the given sync group.
-     *
+     * Refreshes a sync member database schema.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
+     * @param syncGroupName The name of the sync group on which the sync member is hosted.
+     * @param syncMemberName The name of the sync member.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure SQL Database sync members as paginated response with {@link PagedIterable}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SyncMemberInner> listBySyncGroup(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginRefreshMemberSchemaAsync(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName);
 
     /**
-     * Lists sync members in the given sync group.
-     *
+     * Refreshes a sync member database schema.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group.
+     * @param syncGroupName The name of the sync group on which the sync member is hosted.
+     * @param syncMemberName The name of the sync member.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRefreshMemberSchema(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName);
+
+    /**
+     * Refreshes a sync member database schema.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group on which the sync member is hosted.
+     * @param syncMemberName The name of the sync member.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure SQL Database sync members as paginated response with {@link PagedIterable}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SyncMemberInner> listBySyncGroup(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRefreshMemberSchema(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName, Context context);
+
+    /**
+     * Refreshes a sync member database schema.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group on which the sync member is hosted.
+     * @param syncMemberName The name of the sync member.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> refreshMemberSchemaAsync(String resourceGroupName, String serverName, String databaseName,
+        String syncGroupName, String syncMemberName);
+
+    /**
+     * Refreshes a sync member database schema.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group on which the sync member is hosted.
+     * @param syncMemberName The name of the sync member.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void refreshMemberSchema(String resourceGroupName, String serverName, String databaseName, String syncGroupName,
+        String syncMemberName);
+
+    /**
+     * Refreshes a sync member database schema.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database on which the sync group is hosted.
+     * @param syncGroupName The name of the sync group on which the sync member is hosted.
+     * @param syncMemberName The name of the sync member.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void refreshMemberSchema(String resourceGroupName, String serverName, String databaseName, String syncGroupName,
+        String syncMemberName, Context context);
 
     /**
      * Gets a sync member database schema.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -646,14 +689,14 @@ public interface SyncMembersClient {
      * @return a sync member database schema as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SyncFullSchemaPropertiesInner> listMemberSchemasAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName);
+    PagedFlux<SyncFullSchemaPropertiesInner> listMemberSchemasAsync(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName);
 
     /**
      * Gets a sync member database schema.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -664,14 +707,14 @@ public interface SyncMembersClient {
      * @return a sync member database schema as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SyncFullSchemaPropertiesInner> listMemberSchemas(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName);
+    PagedIterable<SyncFullSchemaPropertiesInner> listMemberSchemas(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName);
 
     /**
      * Gets a sync member database schema.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database on which the sync group is hosted.
      * @param syncGroupName The name of the sync group on which the sync member is hosted.
@@ -683,147 +726,6 @@ public interface SyncMembersClient {
      * @return a sync member database schema as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SyncFullSchemaPropertiesInner> listMemberSchemas(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
-        Context context);
-
-    /**
-     * Refreshes a sync member database schema.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group on which the sync member is hosted.
-     * @param syncMemberName The name of the sync member.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> refreshMemberSchemaWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName);
-
-    /**
-     * Refreshes a sync member database schema.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group on which the sync member is hosted.
-     * @param syncMemberName The name of the sync member.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginRefreshMemberSchemaAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName);
-
-    /**
-     * Refreshes a sync member database schema.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group on which the sync member is hosted.
-     * @param syncMemberName The name of the sync member.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRefreshMemberSchema(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName);
-
-    /**
-     * Refreshes a sync member database schema.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group on which the sync member is hosted.
-     * @param syncMemberName The name of the sync member.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRefreshMemberSchema(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
-        Context context);
-
-    /**
-     * Refreshes a sync member database schema.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group on which the sync member is hosted.
-     * @param syncMemberName The name of the sync member.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> refreshMemberSchemaAsync(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName);
-
-    /**
-     * Refreshes a sync member database schema.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group on which the sync member is hosted.
-     * @param syncMemberName The name of the sync member.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void refreshMemberSchema(
-        String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName);
-
-    /**
-     * Refreshes a sync member database schema.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database on which the sync group is hosted.
-     * @param syncGroupName The name of the sync group on which the sync member is hosted.
-     * @param syncMemberName The name of the sync member.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void refreshMemberSchema(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String syncGroupName,
-        String syncMemberName,
-        Context context);
+    PagedIterable<SyncFullSchemaPropertiesInner> listMemberSchemas(String resourceGroupName, String serverName,
+        String databaseName, String syncGroupName, String syncMemberName, Context context);
 }

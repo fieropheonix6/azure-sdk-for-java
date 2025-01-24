@@ -6,42 +6,46 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Custom script action to run on HDI ondemand cluster once it's up. */
+/**
+ * Custom script action to run on HDI ondemand cluster once it's up.
+ */
 @Fluent
-public final class ScriptAction {
+public final class ScriptAction implements JsonSerializable<ScriptAction> {
     /*
      * The user provided name of the script action.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The URI for the script action.
      */
-    @JsonProperty(value = "uri", required = true)
     private String uri;
 
     /*
      * The node types on which the script action should be executed.
      */
-    @JsonProperty(value = "roles", required = true)
     private Object roles;
 
     /*
      * The parameters for the script action.
      */
-    @JsonProperty(value = "parameters")
     private String parameters;
 
-    /** Creates an instance of ScriptAction class. */
+    /**
+     * Creates an instance of ScriptAction class.
+     */
     public ScriptAction() {
     }
 
     /**
      * Get the name property: The user provided name of the script action.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +54,7 @@ public final class ScriptAction {
 
     /**
      * Set the name property: The user provided name of the script action.
-     *
+     * 
      * @param name the name value to set.
      * @return the ScriptAction object itself.
      */
@@ -61,7 +65,7 @@ public final class ScriptAction {
 
     /**
      * Get the uri property: The URI for the script action.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -70,7 +74,7 @@ public final class ScriptAction {
 
     /**
      * Set the uri property: The URI for the script action.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the ScriptAction object itself.
      */
@@ -81,7 +85,7 @@ public final class ScriptAction {
 
     /**
      * Get the roles property: The node types on which the script action should be executed.
-     *
+     * 
      * @return the roles value.
      */
     public Object roles() {
@@ -90,7 +94,7 @@ public final class ScriptAction {
 
     /**
      * Set the roles property: The node types on which the script action should be executed.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the ScriptAction object itself.
      */
@@ -101,7 +105,7 @@ public final class ScriptAction {
 
     /**
      * Get the parameters property: The parameters for the script action.
-     *
+     * 
      * @return the parameters value.
      */
     public String parameters() {
@@ -110,7 +114,7 @@ public final class ScriptAction {
 
     /**
      * Set the parameters property: The parameters for the script action.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the ScriptAction object itself.
      */
@@ -121,26 +125,69 @@ public final class ScriptAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ScriptAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ScriptAction"));
         }
         if (uri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property uri in model ScriptAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property uri in model ScriptAction"));
         }
         if (roles() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property roles in model ScriptAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property roles in model ScriptAction"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScriptAction.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeUntypedField("roles", this.roles);
+        jsonWriter.writeStringField("parameters", this.parameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptAction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScriptAction.
+     */
+    public static ScriptAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptAction deserializedScriptAction = new ScriptAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedScriptAction.name = reader.getString();
+                } else if ("uri".equals(fieldName)) {
+                    deserializedScriptAction.uri = reader.getString();
+                } else if ("roles".equals(fieldName)) {
+                    deserializedScriptAction.roles = reader.readUntyped();
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedScriptAction.parameters = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScriptAction;
+        });
+    }
 }

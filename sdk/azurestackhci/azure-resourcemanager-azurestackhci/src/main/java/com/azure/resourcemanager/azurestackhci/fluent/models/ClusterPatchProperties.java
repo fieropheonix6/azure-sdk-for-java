@@ -5,39 +5,47 @@
 package com.azure.resourcemanager.azurestackhci.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azurestackhci.models.ClusterDesiredProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Cluster properties. */
+/**
+ * Cluster properties.
+ */
 @Fluent
-public final class ClusterPatchProperties {
+public final class ClusterPatchProperties implements JsonSerializable<ClusterPatchProperties> {
     /*
      * Endpoint configured for management from the Azure portal
      */
-    @JsonProperty(value = "cloudManagementEndpoint")
     private String cloudManagementEndpoint;
 
     /*
      * App id of cluster AAD identity.
      */
-    @JsonProperty(value = "aadClientId")
     private String aadClientId;
 
     /*
      * Tenant id of cluster AAD identity.
      */
-    @JsonProperty(value = "aadTenantId")
     private String aadTenantId;
 
     /*
      * Desired properties of the cluster.
      */
-    @JsonProperty(value = "desiredProperties")
     private ClusterDesiredProperties desiredProperties;
 
     /**
+     * Creates an instance of ClusterPatchProperties class.
+     */
+    public ClusterPatchProperties() {
+    }
+
+    /**
      * Get the cloudManagementEndpoint property: Endpoint configured for management from the Azure portal.
-     *
+     * 
      * @return the cloudManagementEndpoint value.
      */
     public String cloudManagementEndpoint() {
@@ -46,7 +54,7 @@ public final class ClusterPatchProperties {
 
     /**
      * Set the cloudManagementEndpoint property: Endpoint configured for management from the Azure portal.
-     *
+     * 
      * @param cloudManagementEndpoint the cloudManagementEndpoint value to set.
      * @return the ClusterPatchProperties object itself.
      */
@@ -57,7 +65,7 @@ public final class ClusterPatchProperties {
 
     /**
      * Get the aadClientId property: App id of cluster AAD identity.
-     *
+     * 
      * @return the aadClientId value.
      */
     public String aadClientId() {
@@ -66,7 +74,7 @@ public final class ClusterPatchProperties {
 
     /**
      * Set the aadClientId property: App id of cluster AAD identity.
-     *
+     * 
      * @param aadClientId the aadClientId value to set.
      * @return the ClusterPatchProperties object itself.
      */
@@ -77,7 +85,7 @@ public final class ClusterPatchProperties {
 
     /**
      * Get the aadTenantId property: Tenant id of cluster AAD identity.
-     *
+     * 
      * @return the aadTenantId value.
      */
     public String aadTenantId() {
@@ -86,7 +94,7 @@ public final class ClusterPatchProperties {
 
     /**
      * Set the aadTenantId property: Tenant id of cluster AAD identity.
-     *
+     * 
      * @param aadTenantId the aadTenantId value to set.
      * @return the ClusterPatchProperties object itself.
      */
@@ -97,7 +105,7 @@ public final class ClusterPatchProperties {
 
     /**
      * Get the desiredProperties property: Desired properties of the cluster.
-     *
+     * 
      * @return the desiredProperties value.
      */
     public ClusterDesiredProperties desiredProperties() {
@@ -106,7 +114,7 @@ public final class ClusterPatchProperties {
 
     /**
      * Set the desiredProperties property: Desired properties of the cluster.
-     *
+     * 
      * @param desiredProperties the desiredProperties value to set.
      * @return the ClusterPatchProperties object itself.
      */
@@ -117,12 +125,57 @@ public final class ClusterPatchProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (desiredProperties() != null) {
             desiredProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cloudManagementEndpoint", this.cloudManagementEndpoint);
+        jsonWriter.writeStringField("aadClientId", this.aadClientId);
+        jsonWriter.writeStringField("aadTenantId", this.aadTenantId);
+        jsonWriter.writeJsonField("desiredProperties", this.desiredProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterPatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterPatchProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterPatchProperties.
+     */
+    public static ClusterPatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterPatchProperties deserializedClusterPatchProperties = new ClusterPatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cloudManagementEndpoint".equals(fieldName)) {
+                    deserializedClusterPatchProperties.cloudManagementEndpoint = reader.getString();
+                } else if ("aadClientId".equals(fieldName)) {
+                    deserializedClusterPatchProperties.aadClientId = reader.getString();
+                } else if ("aadTenantId".equals(fieldName)) {
+                    deserializedClusterPatchProperties.aadTenantId = reader.getString();
+                } else if ("desiredProperties".equals(fieldName)) {
+                    deserializedClusterPatchProperties.desiredProperties = ClusterDesiredProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterPatchProperties;
+        });
     }
 }

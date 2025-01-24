@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ContainerApps ListSecrets. */
+/**
+ * Samples for ContainerApps ListSecrets.
+ */
 public final class ContainerAppsListSecretsSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ContainerApps_ListSecrets.json
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ContainerApps_ListSecrets.
+     * json
      */
     /**
      * Sample code: List Container Apps Secrets.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
-    public static void listContainerAppsSecrets(
-        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.containerApps().listSecretsWithResponse("rg", "testcontainerApp0", Context.NONE);
+    public static void
+        listContainerAppsSecrets(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+        manager.containerApps().listSecretsWithResponse("rg", "testcontainerApp0", com.azure.core.util.Context.NONE);
     }
 }

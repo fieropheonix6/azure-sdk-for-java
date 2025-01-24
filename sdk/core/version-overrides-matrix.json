@@ -1,20 +1,37 @@
 {
   "matrix": {
     "Agent": {
-      "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
     },
-    "JavaTestVersion": "1.17",
-    "AZURE_TEST_HTTP_CLIENTS": "netty",
-    "TestGoals": "surefire:test",
-    "VersionOverrides": [
+    "TestConfig": {
+      "version_override": {
+        "TestVersionSupport": true,
+        "VERSION_OVERRIDE_TESTS": true,
+        "TestGoals": "surefire:test",
+        // This has to be stringified json
+        "ArtifactsJson": "{
+          \"name\": \"azure-core-version-tests\",
+          \"groupId\": \"com.azure\",
+          \"safeName\": \"azurecoreversiontests\"
+        }",
+        // blank this out so we don't pick up the defaults from ci.yml
+        "AdditionalModulesJson": ""
+      }
+    },
+    "VersionOverride": [
         "jackson_2.10",
         "jackson_2.11",
         "jackson_2.12",
+        "jackson_2.13",
         "jackson_2.14",
+        "jackson_2.15",
+        "jackson_2.16",
+        "jackson_2.17",
+        "jackson_2.18",
         "reactor_2020",
-        "reactor_2022"
-    ],
-    "AZURE_VERSION_OVERRIDE_TESTS": true,
-    "TestVersionSupport": true
+        "reactor_2022",
+        "reactor_2023",
+        "reactor_2024"
+    ]
   }
 }

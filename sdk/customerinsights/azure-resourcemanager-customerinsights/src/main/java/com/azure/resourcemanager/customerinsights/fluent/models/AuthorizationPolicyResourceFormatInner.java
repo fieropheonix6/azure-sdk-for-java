@@ -5,118 +5,215 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.PermissionTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The authorization policy resource format. */
-@JsonFlatten
+/**
+ * The authorization policy resource format.
+ */
 @Fluent
-public class AuthorizationPolicyResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthorizationPolicyResourceFormatInner.class);
+public final class AuthorizationPolicyResourceFormatInner extends ProxyResource {
+    /*
+     * The authorization policy.
+     */
+    private AuthorizationPolicyInner innerProperties;
 
     /*
-     * Name of the policy.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.policyName", access = JsonProperty.Access.WRITE_ONLY)
-    private String policyName;
+    private String type;
 
     /*
-     * The permissions associated with the policy.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.permissions")
-    private List<PermissionTypes> permissions;
+    private String name;
 
     /*
-     * Primary key associated with the policy.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.primaryKey")
-    private String primaryKey;
+    private String id;
 
-    /*
-     * Secondary key associated with the policy.
+    /**
+     * Creates an instance of AuthorizationPolicyResourceFormatInner class.
      */
-    @JsonProperty(value = "properties.secondaryKey")
-    private String secondaryKey;
+    public AuthorizationPolicyResourceFormatInner() {
+    }
+
+    /**
+     * Get the innerProperties property: The authorization policy.
+     * 
+     * @return the innerProperties value.
+     */
+    private AuthorizationPolicyInner innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the policyName property: Name of the policy.
-     *
+     * 
      * @return the policyName value.
      */
     public String policyName() {
-        return this.policyName;
+        return this.innerProperties() == null ? null : this.innerProperties().policyName();
     }
 
     /**
      * Get the permissions property: The permissions associated with the policy.
-     *
+     * 
      * @return the permissions value.
      */
     public List<PermissionTypes> permissions() {
-        return this.permissions;
+        return this.innerProperties() == null ? null : this.innerProperties().permissions();
     }
 
     /**
      * Set the permissions property: The permissions associated with the policy.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the AuthorizationPolicyResourceFormatInner object itself.
      */
     public AuthorizationPolicyResourceFormatInner withPermissions(List<PermissionTypes> permissions) {
-        this.permissions = permissions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationPolicyInner();
+        }
+        this.innerProperties().withPermissions(permissions);
         return this;
     }
 
     /**
      * Get the primaryKey property: Primary key associated with the policy.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
-        return this.primaryKey;
+        return this.innerProperties() == null ? null : this.innerProperties().primaryKey();
     }
 
     /**
      * Set the primaryKey property: Primary key associated with the policy.
-     *
+     * 
      * @param primaryKey the primaryKey value to set.
      * @return the AuthorizationPolicyResourceFormatInner object itself.
      */
     public AuthorizationPolicyResourceFormatInner withPrimaryKey(String primaryKey) {
-        this.primaryKey = primaryKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationPolicyInner();
+        }
+        this.innerProperties().withPrimaryKey(primaryKey);
         return this;
     }
 
     /**
      * Get the secondaryKey property: Secondary key associated with the policy.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
-        return this.secondaryKey;
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryKey();
     }
 
     /**
      * Set the secondaryKey property: Secondary key associated with the policy.
-     *
+     * 
      * @param secondaryKey the secondaryKey value to set.
      * @return the AuthorizationPolicyResourceFormatInner object itself.
      */
     public AuthorizationPolicyResourceFormatInner withSecondaryKey(String secondaryKey) {
-        this.secondaryKey = secondaryKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationPolicyInner();
+        }
+        this.innerProperties().withSecondaryKey(secondaryKey);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthorizationPolicyResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthorizationPolicyResourceFormatInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AuthorizationPolicyResourceFormatInner.
+     */
+    public static AuthorizationPolicyResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthorizationPolicyResourceFormatInner deserializedAuthorizationPolicyResourceFormatInner
+                = new AuthorizationPolicyResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAuthorizationPolicyResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAuthorizationPolicyResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAuthorizationPolicyResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAuthorizationPolicyResourceFormatInner.innerProperties
+                        = AuthorizationPolicyInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthorizationPolicyResourceFormatInner;
+        });
     }
 }

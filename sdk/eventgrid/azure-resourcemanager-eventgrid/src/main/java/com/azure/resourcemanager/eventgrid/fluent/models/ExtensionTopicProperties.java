@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of the Extension Topic. */
+/**
+ * Properties of the Extension Topic.
+ */
 @Fluent
-public final class ExtensionTopicProperties {
+public final class ExtensionTopicProperties implements JsonSerializable<ExtensionTopicProperties> {
     /*
      * Description of the extension topic.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * System topic resource id which is mapped to the source.
      */
-    @JsonProperty(value = "systemTopic")
     private String systemTopic;
 
     /**
+     * Creates an instance of ExtensionTopicProperties class.
+     */
+    public ExtensionTopicProperties() {
+    }
+
+    /**
      * Get the description property: Description of the extension topic.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -33,7 +43,7 @@ public final class ExtensionTopicProperties {
 
     /**
      * Set the description property: Description of the extension topic.
-     *
+     * 
      * @param description the description value to set.
      * @return the ExtensionTopicProperties object itself.
      */
@@ -44,7 +54,7 @@ public final class ExtensionTopicProperties {
 
     /**
      * Get the systemTopic property: System topic resource id which is mapped to the source.
-     *
+     * 
      * @return the systemTopic value.
      */
     public String systemTopic() {
@@ -53,7 +63,7 @@ public final class ExtensionTopicProperties {
 
     /**
      * Set the systemTopic property: System topic resource id which is mapped to the source.
-     *
+     * 
      * @param systemTopic the systemTopic value to set.
      * @return the ExtensionTopicProperties object itself.
      */
@@ -64,9 +74,48 @@ public final class ExtensionTopicProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("systemTopic", this.systemTopic);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExtensionTopicProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExtensionTopicProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExtensionTopicProperties.
+     */
+    public static ExtensionTopicProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExtensionTopicProperties deserializedExtensionTopicProperties = new ExtensionTopicProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedExtensionTopicProperties.description = reader.getString();
+                } else if ("systemTopic".equals(fieldName)) {
+                    deserializedExtensionTopicProperties.systemTopic = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExtensionTopicProperties;
+        });
     }
 }

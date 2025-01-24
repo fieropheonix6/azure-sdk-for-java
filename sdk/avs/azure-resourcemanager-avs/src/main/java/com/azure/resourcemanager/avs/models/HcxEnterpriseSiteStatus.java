@@ -5,37 +5,54 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of the HCX Enterprise Site. */
+/**
+ * HCX Enterprise Site status.
+ */
 public final class HcxEnterpriseSiteStatus extends ExpandableStringEnum<HcxEnterpriseSiteStatus> {
-    /** Static value Available for HcxEnterpriseSiteStatus. */
+    /**
+     * Static value Available for HcxEnterpriseSiteStatus.
+     */
     public static final HcxEnterpriseSiteStatus AVAILABLE = fromString("Available");
 
-    /** Static value Consumed for HcxEnterpriseSiteStatus. */
+    /**
+     * Static value Consumed for HcxEnterpriseSiteStatus.
+     */
     public static final HcxEnterpriseSiteStatus CONSUMED = fromString("Consumed");
 
-    /** Static value Deactivated for HcxEnterpriseSiteStatus. */
+    /**
+     * Static value Deactivated for HcxEnterpriseSiteStatus.
+     */
     public static final HcxEnterpriseSiteStatus DEACTIVATED = fromString("Deactivated");
 
-    /** Static value Deleted for HcxEnterpriseSiteStatus. */
+    /**
+     * Static value Deleted for HcxEnterpriseSiteStatus.
+     */
     public static final HcxEnterpriseSiteStatus DELETED = fromString("Deleted");
 
     /**
+     * Creates a new instance of HcxEnterpriseSiteStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HcxEnterpriseSiteStatus() {
+    }
+
+    /**
      * Creates or finds a HcxEnterpriseSiteStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HcxEnterpriseSiteStatus.
      */
-    @JsonCreator
     public static HcxEnterpriseSiteStatus fromString(String name) {
         return fromString(name, HcxEnterpriseSiteStatus.class);
     }
 
     /**
      * Gets known HcxEnterpriseSiteStatus values.
-     *
+     * 
      * @return known HcxEnterpriseSiteStatus values.
      */
     public static Collection<HcxEnterpriseSiteStatus> values() {

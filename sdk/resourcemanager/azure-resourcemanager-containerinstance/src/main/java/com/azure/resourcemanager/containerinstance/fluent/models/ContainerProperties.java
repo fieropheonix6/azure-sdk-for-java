@@ -6,75 +6,84 @@ package com.azure.resourcemanager.containerinstance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerinstance.models.ContainerPort;
 import com.azure.resourcemanager.containerinstance.models.ContainerProbe;
 import com.azure.resourcemanager.containerinstance.models.ContainerPropertiesInstanceView;
 import com.azure.resourcemanager.containerinstance.models.EnvironmentVariable;
 import com.azure.resourcemanager.containerinstance.models.ResourceRequirements;
+import com.azure.resourcemanager.containerinstance.models.SecurityContextDefinition;
 import com.azure.resourcemanager.containerinstance.models.VolumeMount;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The container instance properties. */
+/**
+ * The container instance properties.
+ */
 @Fluent
-public final class ContainerProperties {
+public final class ContainerProperties implements JsonSerializable<ContainerProperties> {
     /*
      * The name of the image used to create the container instance.
      */
-    @JsonProperty(value = "image", required = true)
     private String image;
 
     /*
      * The commands to execute within the container instance in exec form.
      */
-    @JsonProperty(value = "command")
     private List<String> command;
 
     /*
      * The exposed ports on the container instance.
      */
-    @JsonProperty(value = "ports")
     private List<ContainerPort> ports;
 
     /*
      * The environment variables to set in the container instance.
      */
-    @JsonProperty(value = "environmentVariables")
     private List<EnvironmentVariable> environmentVariables;
 
     /*
      * The instance view of the container instance. Only valid in response.
      */
-    @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private ContainerPropertiesInstanceView instanceView;
 
     /*
      * The resource requirements of the container instance.
      */
-    @JsonProperty(value = "resources", required = true)
     private ResourceRequirements resources;
 
     /*
      * The volume mounts available to the container instance.
      */
-    @JsonProperty(value = "volumeMounts")
     private List<VolumeMount> volumeMounts;
 
     /*
      * The liveness probe.
      */
-    @JsonProperty(value = "livenessProbe")
     private ContainerProbe livenessProbe;
 
     /*
      * The readiness probe.
      */
-    @JsonProperty(value = "readinessProbe")
     private ContainerProbe readinessProbe;
+
+    /*
+     * The container security properties.
+     */
+    private SecurityContextDefinition securityContext;
+
+    /**
+     * Creates an instance of ContainerProperties class.
+     */
+    public ContainerProperties() {
+    }
 
     /**
      * Get the image property: The name of the image used to create the container instance.
-     *
+     * 
      * @return the image value.
      */
     public String image() {
@@ -83,7 +92,7 @@ public final class ContainerProperties {
 
     /**
      * Set the image property: The name of the image used to create the container instance.
-     *
+     * 
      * @param image the image value to set.
      * @return the ContainerProperties object itself.
      */
@@ -94,7 +103,7 @@ public final class ContainerProperties {
 
     /**
      * Get the command property: The commands to execute within the container instance in exec form.
-     *
+     * 
      * @return the command value.
      */
     public List<String> command() {
@@ -103,7 +112,7 @@ public final class ContainerProperties {
 
     /**
      * Set the command property: The commands to execute within the container instance in exec form.
-     *
+     * 
      * @param command the command value to set.
      * @return the ContainerProperties object itself.
      */
@@ -114,7 +123,7 @@ public final class ContainerProperties {
 
     /**
      * Get the ports property: The exposed ports on the container instance.
-     *
+     * 
      * @return the ports value.
      */
     public List<ContainerPort> ports() {
@@ -123,7 +132,7 @@ public final class ContainerProperties {
 
     /**
      * Set the ports property: The exposed ports on the container instance.
-     *
+     * 
      * @param ports the ports value to set.
      * @return the ContainerProperties object itself.
      */
@@ -134,7 +143,7 @@ public final class ContainerProperties {
 
     /**
      * Get the environmentVariables property: The environment variables to set in the container instance.
-     *
+     * 
      * @return the environmentVariables value.
      */
     public List<EnvironmentVariable> environmentVariables() {
@@ -143,7 +152,7 @@ public final class ContainerProperties {
 
     /**
      * Set the environmentVariables property: The environment variables to set in the container instance.
-     *
+     * 
      * @param environmentVariables the environmentVariables value to set.
      * @return the ContainerProperties object itself.
      */
@@ -154,7 +163,7 @@ public final class ContainerProperties {
 
     /**
      * Get the instanceView property: The instance view of the container instance. Only valid in response.
-     *
+     * 
      * @return the instanceView value.
      */
     public ContainerPropertiesInstanceView instanceView() {
@@ -163,7 +172,7 @@ public final class ContainerProperties {
 
     /**
      * Get the resources property: The resource requirements of the container instance.
-     *
+     * 
      * @return the resources value.
      */
     public ResourceRequirements resources() {
@@ -172,7 +181,7 @@ public final class ContainerProperties {
 
     /**
      * Set the resources property: The resource requirements of the container instance.
-     *
+     * 
      * @param resources the resources value to set.
      * @return the ContainerProperties object itself.
      */
@@ -183,7 +192,7 @@ public final class ContainerProperties {
 
     /**
      * Get the volumeMounts property: The volume mounts available to the container instance.
-     *
+     * 
      * @return the volumeMounts value.
      */
     public List<VolumeMount> volumeMounts() {
@@ -192,7 +201,7 @@ public final class ContainerProperties {
 
     /**
      * Set the volumeMounts property: The volume mounts available to the container instance.
-     *
+     * 
      * @param volumeMounts the volumeMounts value to set.
      * @return the ContainerProperties object itself.
      */
@@ -203,7 +212,7 @@ public final class ContainerProperties {
 
     /**
      * Get the livenessProbe property: The liveness probe.
-     *
+     * 
      * @return the livenessProbe value.
      */
     public ContainerProbe livenessProbe() {
@@ -212,7 +221,7 @@ public final class ContainerProperties {
 
     /**
      * Set the livenessProbe property: The liveness probe.
-     *
+     * 
      * @param livenessProbe the livenessProbe value to set.
      * @return the ContainerProperties object itself.
      */
@@ -223,7 +232,7 @@ public final class ContainerProperties {
 
     /**
      * Get the readinessProbe property: The readiness probe.
-     *
+     * 
      * @return the readinessProbe value.
      */
     public ContainerProbe readinessProbe() {
@@ -232,7 +241,7 @@ public final class ContainerProperties {
 
     /**
      * Set the readinessProbe property: The readiness probe.
-     *
+     * 
      * @param readinessProbe the readinessProbe value to set.
      * @return the ContainerProperties object itself.
      */
@@ -242,15 +251,34 @@ public final class ContainerProperties {
     }
 
     /**
+     * Get the securityContext property: The container security properties.
+     * 
+     * @return the securityContext value.
+     */
+    public SecurityContextDefinition securityContext() {
+        return this.securityContext;
+    }
+
+    /**
+     * Set the securityContext property: The container security properties.
+     * 
+     * @param securityContext the securityContext value to set.
+     * @return the ContainerProperties object itself.
+     */
+    public ContainerProperties withSecurityContext(SecurityContextDefinition securityContext) {
+        this.securityContext = securityContext;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (image() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property image in model ContainerProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property image in model ContainerProperties"));
         }
         if (ports() != null) {
             ports().forEach(e -> e.validate());
@@ -262,9 +290,8 @@ public final class ContainerProperties {
             instanceView().validate();
         }
         if (resources() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property resources in model ContainerProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property resources in model ContainerProperties"));
         } else {
             resources().validate();
         }
@@ -277,7 +304,79 @@ public final class ContainerProperties {
         if (readinessProbe() != null) {
             readinessProbe().validate();
         }
+        if (securityContext() != null) {
+            securityContext().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContainerProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("image", this.image);
+        jsonWriter.writeJsonField("resources", this.resources);
+        jsonWriter.writeArrayField("command", this.command, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("ports", this.ports, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("environmentVariables", this.environmentVariables,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("volumeMounts", this.volumeMounts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("livenessProbe", this.livenessProbe);
+        jsonWriter.writeJsonField("readinessProbe", this.readinessProbe);
+        jsonWriter.writeJsonField("securityContext", this.securityContext);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContainerProperties.
+     */
+    public static ContainerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerProperties deserializedContainerProperties = new ContainerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("image".equals(fieldName)) {
+                    deserializedContainerProperties.image = reader.getString();
+                } else if ("resources".equals(fieldName)) {
+                    deserializedContainerProperties.resources = ResourceRequirements.fromJson(reader);
+                } else if ("command".equals(fieldName)) {
+                    List<String> command = reader.readArray(reader1 -> reader1.getString());
+                    deserializedContainerProperties.command = command;
+                } else if ("ports".equals(fieldName)) {
+                    List<ContainerPort> ports = reader.readArray(reader1 -> ContainerPort.fromJson(reader1));
+                    deserializedContainerProperties.ports = ports;
+                } else if ("environmentVariables".equals(fieldName)) {
+                    List<EnvironmentVariable> environmentVariables
+                        = reader.readArray(reader1 -> EnvironmentVariable.fromJson(reader1));
+                    deserializedContainerProperties.environmentVariables = environmentVariables;
+                } else if ("instanceView".equals(fieldName)) {
+                    deserializedContainerProperties.instanceView = ContainerPropertiesInstanceView.fromJson(reader);
+                } else if ("volumeMounts".equals(fieldName)) {
+                    List<VolumeMount> volumeMounts = reader.readArray(reader1 -> VolumeMount.fromJson(reader1));
+                    deserializedContainerProperties.volumeMounts = volumeMounts;
+                } else if ("livenessProbe".equals(fieldName)) {
+                    deserializedContainerProperties.livenessProbe = ContainerProbe.fromJson(reader);
+                } else if ("readinessProbe".equals(fieldName)) {
+                    deserializedContainerProperties.readinessProbe = ContainerProbe.fromJson(reader);
+                } else if ("securityContext".equals(fieldName)) {
+                    deserializedContainerProperties.securityContext = SecurityContextDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerProperties;
+        });
+    }
 }

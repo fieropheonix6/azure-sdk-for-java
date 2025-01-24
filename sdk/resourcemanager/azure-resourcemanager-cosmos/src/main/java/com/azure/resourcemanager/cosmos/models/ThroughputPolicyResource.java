@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Cosmos DB resource throughput policy. */
+/**
+ * Cosmos DB resource throughput policy.
+ */
 @Fluent
-public final class ThroughputPolicyResource {
+public final class ThroughputPolicyResource implements JsonSerializable<ThroughputPolicyResource> {
     /*
      * Determines whether the ThroughputPolicy is active or not
      */
-    @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
     /*
      * Represents the percentage by which throughput can increase every time throughput policy kicks in.
      */
-    @JsonProperty(value = "incrementPercent")
     private Integer incrementPercent;
 
     /**
+     * Creates an instance of ThroughputPolicyResource class.
+     */
+    public ThroughputPolicyResource() {
+    }
+
+    /**
      * Get the isEnabled property: Determines whether the ThroughputPolicy is active or not.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -33,7 +43,7 @@ public final class ThroughputPolicyResource {
 
     /**
      * Set the isEnabled property: Determines whether the ThroughputPolicy is active or not.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the ThroughputPolicyResource object itself.
      */
@@ -45,7 +55,7 @@ public final class ThroughputPolicyResource {
     /**
      * Get the incrementPercent property: Represents the percentage by which throughput can increase every time
      * throughput policy kicks in.
-     *
+     * 
      * @return the incrementPercent value.
      */
     public Integer incrementPercent() {
@@ -55,7 +65,7 @@ public final class ThroughputPolicyResource {
     /**
      * Set the incrementPercent property: Represents the percentage by which throughput can increase every time
      * throughput policy kicks in.
-     *
+     * 
      * @param incrementPercent the incrementPercent value to set.
      * @return the ThroughputPolicyResource object itself.
      */
@@ -66,9 +76,48 @@ public final class ThroughputPolicyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeNumberField("incrementPercent", this.incrementPercent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThroughputPolicyResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThroughputPolicyResource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ThroughputPolicyResource.
+     */
+    public static ThroughputPolicyResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThroughputPolicyResource deserializedThroughputPolicyResource = new ThroughputPolicyResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedThroughputPolicyResource.isEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("incrementPercent".equals(fieldName)) {
+                    deserializedThroughputPolicyResource.incrementPercent = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThroughputPolicyResource;
+        });
     }
 }

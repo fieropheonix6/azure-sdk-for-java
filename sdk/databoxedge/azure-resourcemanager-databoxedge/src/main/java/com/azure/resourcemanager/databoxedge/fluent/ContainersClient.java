@@ -13,26 +13,29 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.databoxedge.fluent.models.ContainerInner;
 
-/** An instance of this class provides access to all the operations defined in ContainersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ContainersClient.
+ */
 public interface ContainersClient {
     /**
      * Lists all the containers of a storage Account in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The storage Account name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the containers on the Data Box Edge/Gateway device.
+     * @return collection of all the containers on the Data Box Edge/Gateway device as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ContainerInner> listByStorageAccount(
-        String deviceName, String storageAccountName, String resourceGroupName);
+    PagedIterable<ContainerInner> listByStorageAccount(String deviceName, String storageAccountName,
+        String resourceGroupName);
 
     /**
      * Lists all the containers of a storage Account in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The storage Account name.
      * @param resourceGroupName The resource group name.
@@ -40,15 +43,33 @@ public interface ContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all the containers on the Data Box Edge/Gateway device.
+     * @return collection of all the containers on the Data Box Edge/Gateway device as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ContainerInner> listByStorageAccount(
-        String deviceName, String storageAccountName, String resourceGroupName, Context context);
+    PagedIterable<ContainerInner> listByStorageAccount(String deviceName, String storageAccountName,
+        String resourceGroupName, Context context);
 
     /**
      * Gets a container by name.
-     *
+     * 
+     * @param deviceName The device name.
+     * @param storageAccountName The Storage Account Name.
+     * @param containerName The container Name.
+     * @param resourceGroupName The resource group name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container by name along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ContainerInner> getWithResponse(String deviceName, String storageAccountName, String containerName,
+        String resourceGroupName, Context context);
+
+    /**
+     * Gets a container by name.
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container Name.
@@ -62,25 +83,8 @@ public interface ContainersClient {
     ContainerInner get(String deviceName, String storageAccountName, String containerName, String resourceGroupName);
 
     /**
-     * Gets a container by name.
-     *
-     * @param deviceName The device name.
-     * @param storageAccountName The Storage Account Name.
-     * @param containerName The container Name.
-     * @param resourceGroupName The resource group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container by name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ContainerInner> getWithResponse(
-        String deviceName, String storageAccountName, String containerName, String resourceGroupName, Context context);
-
-    /**
      * Creates a new container or updates an existing container on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container name.
@@ -89,19 +93,15 @@ public interface ContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a container on the Data Box Edge/Gateway device.
+     * @return the {@link SyncPoller} for polling of represents a container on the Data Box Edge/Gateway device.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ContainerInner>, ContainerInner> beginCreateOrUpdate(
-        String deviceName,
-        String storageAccountName,
-        String containerName,
-        String resourceGroupName,
-        ContainerInner container);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ContainerInner>, ContainerInner> beginCreateOrUpdate(String deviceName,
+        String storageAccountName, String containerName, String resourceGroupName, ContainerInner container);
 
     /**
      * Creates a new container or updates an existing container on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container name.
@@ -111,20 +111,16 @@ public interface ContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a container on the Data Box Edge/Gateway device.
+     * @return the {@link SyncPoller} for polling of represents a container on the Data Box Edge/Gateway device.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ContainerInner>, ContainerInner> beginCreateOrUpdate(
-        String deviceName,
-        String storageAccountName,
-        String containerName,
-        String resourceGroupName,
-        ContainerInner container,
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ContainerInner>, ContainerInner> beginCreateOrUpdate(String deviceName,
+        String storageAccountName, String containerName, String resourceGroupName, ContainerInner container,
         Context context);
 
     /**
      * Creates a new container or updates an existing container on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container name.
@@ -136,16 +132,12 @@ public interface ContainersClient {
      * @return represents a container on the Data Box Edge/Gateway device.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContainerInner createOrUpdate(
-        String deviceName,
-        String storageAccountName,
-        String containerName,
-        String resourceGroupName,
-        ContainerInner container);
+    ContainerInner createOrUpdate(String deviceName, String storageAccountName, String containerName,
+        String resourceGroupName, ContainerInner container);
 
     /**
      * Creates a new container or updates an existing container on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container name.
@@ -158,17 +150,12 @@ public interface ContainersClient {
      * @return represents a container on the Data Box Edge/Gateway device.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContainerInner createOrUpdate(
-        String deviceName,
-        String storageAccountName,
-        String containerName,
-        String resourceGroupName,
-        ContainerInner container,
-        Context context);
+    ContainerInner createOrUpdate(String deviceName, String storageAccountName, String containerName,
+        String resourceGroupName, ContainerInner container, Context context);
 
     /**
      * Deletes the container on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container name.
@@ -176,15 +163,15 @@ public interface ContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String deviceName, String storageAccountName, String containerName, String resourceGroupName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String storageAccountName, String containerName,
+        String resourceGroupName);
 
     /**
      * Deletes the container on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container name.
@@ -193,15 +180,15 @@ public interface ContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String deviceName, String storageAccountName, String containerName, String resourceGroupName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String storageAccountName, String containerName,
+        String resourceGroupName, Context context);
 
     /**
      * Deletes the container on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container name.
@@ -215,7 +202,7 @@ public interface ContainersClient {
 
     /**
      * Deletes the container on the Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container name.
@@ -226,12 +213,12 @@ public interface ContainersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String deviceName, String storageAccountName, String containerName, String resourceGroupName, Context context);
+    void delete(String deviceName, String storageAccountName, String containerName, String resourceGroupName,
+        Context context);
 
     /**
      * Refreshes the container metadata with the data from the cloud.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container name.
@@ -239,15 +226,15 @@ public interface ContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginRefresh(
-        String deviceName, String storageAccountName, String containerName, String resourceGroupName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRefresh(String deviceName, String storageAccountName, String containerName,
+        String resourceGroupName);
 
     /**
      * Refreshes the container metadata with the data from the cloud.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container name.
@@ -256,15 +243,15 @@ public interface ContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginRefresh(
-        String deviceName, String storageAccountName, String containerName, String resourceGroupName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRefresh(String deviceName, String storageAccountName, String containerName,
+        String resourceGroupName, Context context);
 
     /**
      * Refreshes the container metadata with the data from the cloud.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container name.
@@ -278,7 +265,7 @@ public interface ContainersClient {
 
     /**
      * Refreshes the container metadata with the data from the cloud.
-     *
+     * 
      * @param deviceName The device name.
      * @param storageAccountName The Storage Account Name.
      * @param containerName The container name.
@@ -289,6 +276,6 @@ public interface ContainersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void refresh(
-        String deviceName, String storageAccountName, String containerName, String resourceGroupName, Context context);
+    void refresh(String deviceName, String storageAccountName, String containerName, String resourceGroupName,
+        Context context);
 }

@@ -11,11 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolSchemaInner;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolSchemasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolSchemasClient.
+ */
 public interface SqlPoolSchemasClient {
     /**
+     * Gets schemas of a given SQL pool
+     * 
      * Gets schemas of a given SQL pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -28,8 +32,10 @@ public interface SqlPoolSchemasClient {
     PagedIterable<SqlPoolSchemaInner> list(String resourceGroupName, String workspaceName, String sqlPoolName);
 
     /**
+     * Gets schemas of a given SQL pool
+     * 
      * Gets schemas of a given SQL pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -41,27 +47,12 @@ public interface SqlPoolSchemasClient {
      * @return schemas of a given SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlPoolSchemaInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String filter, Context context);
+    PagedIterable<SqlPoolSchemaInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String filter, Context context);
 
     /**
      * Get Sql Pool schema.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param schemaName The name of the schema.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool schema.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlPoolSchemaInner get(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName);
-
-    /**
-     * Get Sql Pool schema.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -73,6 +64,21 @@ public interface SqlPoolSchemasClient {
      * @return sql Pool schema along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlPoolSchemaInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, Context context);
+    Response<SqlPoolSchemaInner> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, Context context);
+
+    /**
+     * Get Sql Pool schema.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param schemaName The name of the schema.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sql Pool schema.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SqlPoolSchemaInner get(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName);
 }

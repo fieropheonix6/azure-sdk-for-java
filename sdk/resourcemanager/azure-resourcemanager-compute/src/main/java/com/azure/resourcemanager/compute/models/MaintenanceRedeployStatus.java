@@ -5,61 +5,64 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Maintenance Operation Status. */
+/**
+ * Maintenance Operation Status.
+ */
 @Fluent
-public final class MaintenanceRedeployStatus {
+public final class MaintenanceRedeployStatus implements JsonSerializable<MaintenanceRedeployStatus> {
     /*
      * True, if customer is allowed to perform Maintenance.
      */
-    @JsonProperty(value = "isCustomerInitiatedMaintenanceAllowed")
     private Boolean isCustomerInitiatedMaintenanceAllowed;
 
     /*
      * Start Time for the Pre Maintenance Window.
      */
-    @JsonProperty(value = "preMaintenanceWindowStartTime")
     private OffsetDateTime preMaintenanceWindowStartTime;
 
     /*
      * End Time for the Pre Maintenance Window.
      */
-    @JsonProperty(value = "preMaintenanceWindowEndTime")
     private OffsetDateTime preMaintenanceWindowEndTime;
 
     /*
      * Start Time for the Maintenance Window.
      */
-    @JsonProperty(value = "maintenanceWindowStartTime")
     private OffsetDateTime maintenanceWindowStartTime;
 
     /*
      * End Time for the Maintenance Window.
      */
-    @JsonProperty(value = "maintenanceWindowEndTime")
     private OffsetDateTime maintenanceWindowEndTime;
 
     /*
      * The Last Maintenance Operation Result Code.
      */
-    @JsonProperty(value = "lastOperationResultCode")
     private MaintenanceOperationResultCodeTypes lastOperationResultCode;
 
     /*
      * Message returned for the last Maintenance Operation.
      */
-    @JsonProperty(value = "lastOperationMessage")
     private String lastOperationMessage;
 
-    /** Creates an instance of MaintenanceRedeployStatus class. */
+    /**
+     * Creates an instance of MaintenanceRedeployStatus class.
+     */
     public MaintenanceRedeployStatus() {
     }
 
     /**
      * Get the isCustomerInitiatedMaintenanceAllowed property: True, if customer is allowed to perform Maintenance.
-     *
+     * 
      * @return the isCustomerInitiatedMaintenanceAllowed value.
      */
     public Boolean isCustomerInitiatedMaintenanceAllowed() {
@@ -68,19 +71,19 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Set the isCustomerInitiatedMaintenanceAllowed property: True, if customer is allowed to perform Maintenance.
-     *
+     * 
      * @param isCustomerInitiatedMaintenanceAllowed the isCustomerInitiatedMaintenanceAllowed value to set.
      * @return the MaintenanceRedeployStatus object itself.
      */
-    public MaintenanceRedeployStatus withIsCustomerInitiatedMaintenanceAllowed(
-        Boolean isCustomerInitiatedMaintenanceAllowed) {
+    public MaintenanceRedeployStatus
+        withIsCustomerInitiatedMaintenanceAllowed(Boolean isCustomerInitiatedMaintenanceAllowed) {
         this.isCustomerInitiatedMaintenanceAllowed = isCustomerInitiatedMaintenanceAllowed;
         return this;
     }
 
     /**
      * Get the preMaintenanceWindowStartTime property: Start Time for the Pre Maintenance Window.
-     *
+     * 
      * @return the preMaintenanceWindowStartTime value.
      */
     public OffsetDateTime preMaintenanceWindowStartTime() {
@@ -89,7 +92,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Set the preMaintenanceWindowStartTime property: Start Time for the Pre Maintenance Window.
-     *
+     * 
      * @param preMaintenanceWindowStartTime the preMaintenanceWindowStartTime value to set.
      * @return the MaintenanceRedeployStatus object itself.
      */
@@ -100,7 +103,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Get the preMaintenanceWindowEndTime property: End Time for the Pre Maintenance Window.
-     *
+     * 
      * @return the preMaintenanceWindowEndTime value.
      */
     public OffsetDateTime preMaintenanceWindowEndTime() {
@@ -109,7 +112,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Set the preMaintenanceWindowEndTime property: End Time for the Pre Maintenance Window.
-     *
+     * 
      * @param preMaintenanceWindowEndTime the preMaintenanceWindowEndTime value to set.
      * @return the MaintenanceRedeployStatus object itself.
      */
@@ -120,7 +123,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Get the maintenanceWindowStartTime property: Start Time for the Maintenance Window.
-     *
+     * 
      * @return the maintenanceWindowStartTime value.
      */
     public OffsetDateTime maintenanceWindowStartTime() {
@@ -129,7 +132,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Set the maintenanceWindowStartTime property: Start Time for the Maintenance Window.
-     *
+     * 
      * @param maintenanceWindowStartTime the maintenanceWindowStartTime value to set.
      * @return the MaintenanceRedeployStatus object itself.
      */
@@ -140,7 +143,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Get the maintenanceWindowEndTime property: End Time for the Maintenance Window.
-     *
+     * 
      * @return the maintenanceWindowEndTime value.
      */
     public OffsetDateTime maintenanceWindowEndTime() {
@@ -149,7 +152,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Set the maintenanceWindowEndTime property: End Time for the Maintenance Window.
-     *
+     * 
      * @param maintenanceWindowEndTime the maintenanceWindowEndTime value to set.
      * @return the MaintenanceRedeployStatus object itself.
      */
@@ -160,7 +163,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Get the lastOperationResultCode property: The Last Maintenance Operation Result Code.
-     *
+     * 
      * @return the lastOperationResultCode value.
      */
     public MaintenanceOperationResultCodeTypes lastOperationResultCode() {
@@ -169,19 +172,19 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Set the lastOperationResultCode property: The Last Maintenance Operation Result Code.
-     *
+     * 
      * @param lastOperationResultCode the lastOperationResultCode value to set.
      * @return the MaintenanceRedeployStatus object itself.
      */
-    public MaintenanceRedeployStatus withLastOperationResultCode(
-        MaintenanceOperationResultCodeTypes lastOperationResultCode) {
+    public MaintenanceRedeployStatus
+        withLastOperationResultCode(MaintenanceOperationResultCodeTypes lastOperationResultCode) {
         this.lastOperationResultCode = lastOperationResultCode;
         return this;
     }
 
     /**
      * Get the lastOperationMessage property: Message returned for the last Maintenance Operation.
-     *
+     * 
      * @return the lastOperationMessage value.
      */
     public String lastOperationMessage() {
@@ -190,7 +193,7 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Set the lastOperationMessage property: Message returned for the last Maintenance Operation.
-     *
+     * 
      * @param lastOperationMessage the lastOperationMessage value to set.
      * @return the MaintenanceRedeployStatus object itself.
      */
@@ -201,9 +204,83 @@ public final class MaintenanceRedeployStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isCustomerInitiatedMaintenanceAllowed",
+            this.isCustomerInitiatedMaintenanceAllowed);
+        jsonWriter.writeStringField("preMaintenanceWindowStartTime",
+            this.preMaintenanceWindowStartTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.preMaintenanceWindowStartTime));
+        jsonWriter.writeStringField("preMaintenanceWindowEndTime",
+            this.preMaintenanceWindowEndTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.preMaintenanceWindowEndTime));
+        jsonWriter.writeStringField("maintenanceWindowStartTime",
+            this.maintenanceWindowStartTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.maintenanceWindowStartTime));
+        jsonWriter.writeStringField("maintenanceWindowEndTime",
+            this.maintenanceWindowEndTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.maintenanceWindowEndTime));
+        jsonWriter.writeStringField("lastOperationResultCode",
+            this.lastOperationResultCode == null ? null : this.lastOperationResultCode.toString());
+        jsonWriter.writeStringField("lastOperationMessage", this.lastOperationMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaintenanceRedeployStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaintenanceRedeployStatus if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MaintenanceRedeployStatus.
+     */
+    public static MaintenanceRedeployStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MaintenanceRedeployStatus deserializedMaintenanceRedeployStatus = new MaintenanceRedeployStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isCustomerInitiatedMaintenanceAllowed".equals(fieldName)) {
+                    deserializedMaintenanceRedeployStatus.isCustomerInitiatedMaintenanceAllowed
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("preMaintenanceWindowStartTime".equals(fieldName)) {
+                    deserializedMaintenanceRedeployStatus.preMaintenanceWindowStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("preMaintenanceWindowEndTime".equals(fieldName)) {
+                    deserializedMaintenanceRedeployStatus.preMaintenanceWindowEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("maintenanceWindowStartTime".equals(fieldName)) {
+                    deserializedMaintenanceRedeployStatus.maintenanceWindowStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("maintenanceWindowEndTime".equals(fieldName)) {
+                    deserializedMaintenanceRedeployStatus.maintenanceWindowEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastOperationResultCode".equals(fieldName)) {
+                    deserializedMaintenanceRedeployStatus.lastOperationResultCode
+                        = MaintenanceOperationResultCodeTypes.fromString(reader.getString());
+                } else if ("lastOperationMessage".equals(fieldName)) {
+                    deserializedMaintenanceRedeployStatus.lastOperationMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMaintenanceRedeployStatus;
+        });
     }
 }

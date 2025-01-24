@@ -5,260 +5,332 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.AccountType;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.AsymmetricEncryptedSecret;
 import com.azure.resourcemanager.databoxedge.models.SslStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The storage account credential. */
-@JsonFlatten
+/**
+ * The storage account credential.
+ */
 @Fluent
-public class StorageAccountCredentialInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountCredentialInner.class);
+public final class StorageAccountCredentialInner extends ArmBaseModel {
+    /*
+     * The storage account credential properties.
+     */
+    private StorageAccountCredentialProperties innerProperties = new StorageAccountCredentialProperties();
 
     /*
-     * Alias for the storage account.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.alias", required = true)
-    private String alias;
+    private String type;
 
     /*
-     * Username for the storage account.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.userName")
-    private String username;
+    private String name;
 
     /*
-     * Encrypted storage key.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.accountKey")
-    private AsymmetricEncryptedSecret accountKey;
+    private String id;
 
-    /*
-     * Connection string for the storage account. Use this string if username
-     * and account key are not specified.
+    /**
+     * Creates an instance of StorageAccountCredentialInner class.
      */
-    @JsonProperty(value = "properties.connectionString")
-    private String connectionString;
+    public StorageAccountCredentialInner() {
+    }
 
-    /*
-     * Signifies whether SSL needs to be enabled or not.
+    /**
+     * Get the innerProperties property: The storage account credential properties.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.sslStatus", required = true)
-    private SslStatus sslStatus;
+    private StorageAccountCredentialProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Blob end point for private clouds.
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.blobDomainName")
-    private String blobDomainName;
+    @Override
+    public String type() {
+        return this.type;
+    }
 
-    /*
-     * Type of storage accessed on the storage account.
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    @JsonProperty(value = "properties.accountType", required = true)
-    private AccountType accountType;
+    @Override
+    public String name() {
+        return this.name;
+    }
 
-    /*
-     * Id of the storage account.
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    @JsonProperty(value = "properties.storageAccountId")
-    private String storageAccountId;
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the alias property: Alias for the storage account.
-     *
+     * 
      * @return the alias value.
      */
     public String alias() {
-        return this.alias;
+        return this.innerProperties() == null ? null : this.innerProperties().alias();
     }
 
     /**
      * Set the alias property: Alias for the storage account.
-     *
+     * 
      * @param alias the alias value to set.
      * @return the StorageAccountCredentialInner object itself.
      */
     public StorageAccountCredentialInner withAlias(String alias) {
-        this.alias = alias;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountCredentialProperties();
+        }
+        this.innerProperties().withAlias(alias);
         return this;
     }
 
     /**
      * Get the username property: Username for the storage account.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
-        return this.username;
+        return this.innerProperties() == null ? null : this.innerProperties().username();
     }
 
     /**
      * Set the username property: Username for the storage account.
-     *
+     * 
      * @param username the username value to set.
      * @return the StorageAccountCredentialInner object itself.
      */
     public StorageAccountCredentialInner withUsername(String username) {
-        this.username = username;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountCredentialProperties();
+        }
+        this.innerProperties().withUsername(username);
         return this;
     }
 
     /**
      * Get the accountKey property: Encrypted storage key.
-     *
+     * 
      * @return the accountKey value.
      */
     public AsymmetricEncryptedSecret accountKey() {
-        return this.accountKey;
+        return this.innerProperties() == null ? null : this.innerProperties().accountKey();
     }
 
     /**
      * Set the accountKey property: Encrypted storage key.
-     *
+     * 
      * @param accountKey the accountKey value to set.
      * @return the StorageAccountCredentialInner object itself.
      */
     public StorageAccountCredentialInner withAccountKey(AsymmetricEncryptedSecret accountKey) {
-        this.accountKey = accountKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountCredentialProperties();
+        }
+        this.innerProperties().withAccountKey(accountKey);
         return this;
     }
 
     /**
      * Get the connectionString property: Connection string for the storage account. Use this string if username and
      * account key are not specified.
-     *
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
-        return this.connectionString;
+        return this.innerProperties() == null ? null : this.innerProperties().connectionString();
     }
 
     /**
      * Set the connectionString property: Connection string for the storage account. Use this string if username and
      * account key are not specified.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the StorageAccountCredentialInner object itself.
      */
     public StorageAccountCredentialInner withConnectionString(String connectionString) {
-        this.connectionString = connectionString;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountCredentialProperties();
+        }
+        this.innerProperties().withConnectionString(connectionString);
         return this;
     }
 
     /**
      * Get the sslStatus property: Signifies whether SSL needs to be enabled or not.
-     *
+     * 
      * @return the sslStatus value.
      */
     public SslStatus sslStatus() {
-        return this.sslStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().sslStatus();
     }
 
     /**
      * Set the sslStatus property: Signifies whether SSL needs to be enabled or not.
-     *
+     * 
      * @param sslStatus the sslStatus value to set.
      * @return the StorageAccountCredentialInner object itself.
      */
     public StorageAccountCredentialInner withSslStatus(SslStatus sslStatus) {
-        this.sslStatus = sslStatus;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountCredentialProperties();
+        }
+        this.innerProperties().withSslStatus(sslStatus);
         return this;
     }
 
     /**
      * Get the blobDomainName property: Blob end point for private clouds.
-     *
+     * 
      * @return the blobDomainName value.
      */
     public String blobDomainName() {
-        return this.blobDomainName;
+        return this.innerProperties() == null ? null : this.innerProperties().blobDomainName();
     }
 
     /**
      * Set the blobDomainName property: Blob end point for private clouds.
-     *
+     * 
      * @param blobDomainName the blobDomainName value to set.
      * @return the StorageAccountCredentialInner object itself.
      */
     public StorageAccountCredentialInner withBlobDomainName(String blobDomainName) {
-        this.blobDomainName = blobDomainName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountCredentialProperties();
+        }
+        this.innerProperties().withBlobDomainName(blobDomainName);
         return this;
     }
 
     /**
      * Get the accountType property: Type of storage accessed on the storage account.
-     *
+     * 
      * @return the accountType value.
      */
     public AccountType accountType() {
-        return this.accountType;
+        return this.innerProperties() == null ? null : this.innerProperties().accountType();
     }
 
     /**
      * Set the accountType property: Type of storage accessed on the storage account.
-     *
+     * 
      * @param accountType the accountType value to set.
      * @return the StorageAccountCredentialInner object itself.
      */
     public StorageAccountCredentialInner withAccountType(AccountType accountType) {
-        this.accountType = accountType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountCredentialProperties();
+        }
+        this.innerProperties().withAccountType(accountType);
         return this;
     }
 
     /**
      * Get the storageAccountId property: Id of the storage account.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
-        return this.storageAccountId;
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountId();
     }
 
     /**
      * Set the storageAccountId property: Id of the storage account.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the StorageAccountCredentialInner object itself.
      */
     public StorageAccountCredentialInner withStorageAccountId(String storageAccountId) {
-        this.storageAccountId = storageAccountId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountCredentialProperties();
+        }
+        this.innerProperties().withStorageAccountId(storageAccountId);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
-        if (alias() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property alias in model StorageAccountCredentialInner"));
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model StorageAccountCredentialInner"));
+        } else {
+            innerProperties().validate();
         }
-        if (accountKey() != null) {
-            accountKey().validate();
-        }
-        if (sslStatus() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sslStatus in model StorageAccountCredentialInner"));
-        }
-        if (accountType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property accountType in model StorageAccountCredentialInner"));
-        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StorageAccountCredentialInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountCredentialInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountCredentialInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageAccountCredentialInner.
+     */
+    public static StorageAccountCredentialInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountCredentialInner deserializedStorageAccountCredentialInner
+                = new StorageAccountCredentialInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStorageAccountCredentialInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStorageAccountCredentialInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStorageAccountCredentialInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStorageAccountCredentialInner.innerProperties
+                        = StorageAccountCredentialProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountCredentialInner;
+        });
     }
 }

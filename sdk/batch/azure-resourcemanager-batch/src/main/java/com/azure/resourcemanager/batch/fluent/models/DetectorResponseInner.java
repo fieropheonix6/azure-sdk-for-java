@@ -5,31 +5,52 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.batch.models.AzureProxyResource;
+import java.io.IOException;
+import java.util.Map;
 
-/** Contains the information for a detector. */
+/**
+ * Contains the information for a detector.
+ */
 @Fluent
-public final class DetectorResponseInner extends ProxyResource {
+public final class DetectorResponseInner extends AzureProxyResource {
     /*
      * The properties associated with the detector.
      */
-    @JsonProperty(value = "properties")
     private DetectorResponseProperties innerProperties;
 
     /*
      * The ETag of the resource, used for concurrency statements.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of DetectorResponseInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DetectorResponseInner class.
+     */
     public DetectorResponseInner() {
     }
 
     /**
      * Get the innerProperties property: The properties associated with the detector.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DetectorResponseProperties innerProperties() {
@@ -38,16 +59,56 @@ public final class DetectorResponseInner extends ProxyResource {
 
     /**
      * Get the etag property: The ETag of the resource, used for concurrency statements.
-     *
+     * 
      * @return the etag value.
      */
+    @Override
     public String etag() {
         return this.etag;
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DetectorResponseInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Get the value property: A base64 encoded string that represents the content of a detector.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -56,7 +117,7 @@ public final class DetectorResponseInner extends ProxyResource {
 
     /**
      * Set the value property: A base64 encoded string that represents the content of a detector.
-     *
+     * 
      * @param value the value value to set.
      * @return the DetectorResponseInner object itself.
      */
@@ -70,12 +131,62 @@ public final class DetectorResponseInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DetectorResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DetectorResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DetectorResponseInner.
+     */
+    public static DetectorResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DetectorResponseInner deserializedDetectorResponseInner = new DetectorResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDetectorResponseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDetectorResponseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDetectorResponseInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedDetectorResponseInner.etag = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDetectorResponseInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDetectorResponseInner.innerProperties = DetectorResponseProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDetectorResponseInner;
+        });
     }
 }

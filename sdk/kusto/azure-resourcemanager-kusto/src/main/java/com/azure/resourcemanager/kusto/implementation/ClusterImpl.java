@@ -8,12 +8,17 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.kusto.fluent.models.CalloutPolicyInner;
 import com.azure.resourcemanager.kusto.fluent.models.ClusterInner;
 import com.azure.resourcemanager.kusto.fluent.models.FollowerDatabaseDefinitionInner;
 import com.azure.resourcemanager.kusto.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.kusto.models.AcceptedAudiences;
 import com.azure.resourcemanager.kusto.models.AzureSku;
+import com.azure.resourcemanager.kusto.models.CalloutPoliciesList;
+import com.azure.resourcemanager.kusto.models.CalloutPolicy;
+import com.azure.resourcemanager.kusto.models.CalloutPolicyToRemove;
 import com.azure.resourcemanager.kusto.models.Cluster;
+import com.azure.resourcemanager.kusto.models.ClusterMigrateRequest;
 import com.azure.resourcemanager.kusto.models.ClusterNetworkAccessFlag;
 import com.azure.resourcemanager.kusto.models.ClusterUpdate;
 import com.azure.resourcemanager.kusto.models.DiagnoseVirtualNetworkResult;
@@ -23,6 +28,7 @@ import com.azure.resourcemanager.kusto.models.Identity;
 import com.azure.resourcemanager.kusto.models.KeyVaultProperties;
 import com.azure.resourcemanager.kusto.models.LanguageExtension;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionsList;
+import com.azure.resourcemanager.kusto.models.MigrationClusterProperties;
 import com.azure.resourcemanager.kusto.models.OptimizedAutoscale;
 import com.azure.resourcemanager.kusto.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
@@ -31,6 +37,7 @@ import com.azure.resourcemanager.kusto.models.PublicNetworkAccess;
 import com.azure.resourcemanager.kusto.models.State;
 import com.azure.resourcemanager.kusto.models.TrustedExternalTenant;
 import com.azure.resourcemanager.kusto.models.VirtualNetworkConfiguration;
+import com.azure.resourcemanager.kusto.models.ZoneStatus;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -195,6 +202,17 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public List<CalloutPolicy> calloutPolicies() {
+        List<CalloutPolicyInner> inner = this.innerModel().calloutPolicies();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new CalloutPolicyImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public PublicIpType publicIpType() {
         return this.innerModel().publicIpType();
     }
@@ -206,15 +224,20 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public MigrationClusterProperties migrationCluster() {
+        return this.innerModel().migrationCluster();
+    }
+
+    public ZoneStatus zoneStatus() {
+        return this.innerModel().zoneStatus();
     }
 
     public Region region() {
@@ -255,22 +278,18 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public Cluster create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, this.innerModel(), createIfMatch, createIfNoneMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getClusters()
+            .createOrUpdate(resourceGroupName, clusterName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                Context.NONE);
         return this;
     }
 
     public Cluster create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, this.innerModel(), createIfMatch, createIfNoneMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getClusters()
+            .createOrUpdate(resourceGroupName, clusterName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                context);
         return this;
     }
 
@@ -289,47 +308,39 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public Cluster apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .update(resourceGroupName, clusterName, updateParameters, updateIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getClusters()
+            .update(resourceGroupName, clusterName, updateParameters, updateIfMatch, Context.NONE);
         return this;
     }
 
     public Cluster apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .update(resourceGroupName, clusterName, updateParameters, updateIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getClusters()
+            .update(resourceGroupName, clusterName, updateParameters, updateIfMatch, context);
         return this;
     }
 
     ClusterImpl(ClusterInner innerObject, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
     }
 
     public Cluster refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getClusters()
+            .getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Cluster refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getClusters()
-                .getByResourceGroupWithResponse(resourceGroupName, clusterName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getClusters()
+            .getByResourceGroupWithResponse(resourceGroupName, clusterName, context)
+            .getValue();
         return this;
     }
 
@@ -349,6 +360,14 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         serviceManager.clusters().start(resourceGroupName, clusterName, context);
     }
 
+    public void migrate(ClusterMigrateRequest clusterMigrateRequest) {
+        serviceManager.clusters().migrate(resourceGroupName, clusterName, clusterMigrateRequest);
+    }
+
+    public void migrate(ClusterMigrateRequest clusterMigrateRequest, Context context) {
+        serviceManager.clusters().migrate(resourceGroupName, clusterName, clusterMigrateRequest, context);
+    }
+
     public PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases() {
         return serviceManager.clusters().listFollowerDatabases(resourceGroupName, clusterName);
     }
@@ -362,8 +381,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public void detachFollowerDatabases(FollowerDatabaseDefinitionInner followerDatabaseToRemove, Context context) {
-        serviceManager
-            .clusters()
+        serviceManager.clusters()
             .detachFollowerDatabases(resourceGroupName, clusterName, followerDatabaseToRemove, context);
     }
 
@@ -373,6 +391,30 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public DiagnoseVirtualNetworkResult diagnoseVirtualNetwork(Context context) {
         return serviceManager.clusters().diagnoseVirtualNetwork(resourceGroupName, clusterName, context);
+    }
+
+    public void addCalloutPolicies(CalloutPoliciesList calloutPolicies) {
+        serviceManager.clusters().addCalloutPolicies(resourceGroupName, clusterName, calloutPolicies);
+    }
+
+    public void addCalloutPolicies(CalloutPoliciesList calloutPolicies, Context context) {
+        serviceManager.clusters().addCalloutPolicies(resourceGroupName, clusterName, calloutPolicies, context);
+    }
+
+    public void removeCalloutPolicy(CalloutPolicyToRemove calloutPolicy) {
+        serviceManager.clusters().removeCalloutPolicy(resourceGroupName, clusterName, calloutPolicy);
+    }
+
+    public void removeCalloutPolicy(CalloutPolicyToRemove calloutPolicy, Context context) {
+        serviceManager.clusters().removeCalloutPolicy(resourceGroupName, clusterName, calloutPolicy, context);
+    }
+
+    public PagedIterable<CalloutPolicy> listCalloutPolicies() {
+        return serviceManager.clusters().listCalloutPolicies(resourceGroupName, clusterName);
+    }
+
+    public PagedIterable<CalloutPolicy> listCalloutPolicies(Context context) {
+        return serviceManager.clusters().listCalloutPolicies(resourceGroupName, clusterName, context);
     }
 
     public PagedIterable<LanguageExtension> listLanguageExtensions() {
@@ -388,8 +430,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public void addLanguageExtensions(LanguageExtensionsList languageExtensionsToAdd, Context context) {
-        serviceManager
-            .clusters()
+        serviceManager.clusters()
             .addLanguageExtensions(resourceGroupName, clusterName, languageExtensionsToAdd, context);
     }
 
@@ -398,8 +439,7 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public void removeLanguageExtensions(LanguageExtensionsList languageExtensionsToRemove, Context context) {
-        serviceManager
-            .clusters()
+        serviceManager.clusters()
             .removeLanguageExtensions(resourceGroupName, clusterName, languageExtensionsToRemove, context);
     }
 
@@ -434,8 +474,13 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public ClusterImpl withZones(List<String> zones) {
-        this.innerModel().withZones(zones);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withZones(zones);
+            return this;
+        } else {
+            this.updateParameters.withZones(zones);
+            return this;
+        }
     }
 
     public ClusterImpl withIdentity(Identity identity) {
@@ -518,6 +563,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public ClusterImpl withLanguageExtensions(LanguageExtensionsList languageExtensions) {
+        if (isInCreateMode()) {
+            this.innerModel().withLanguageExtensions(languageExtensions);
+            return this;
+        } else {
+            this.updateParameters.withLanguageExtensions(languageExtensions);
+            return this;
+        }
+    }
+
     public ClusterImpl withEnableDoubleEncryption(Boolean enableDoubleEncryption) {
         if (isInCreateMode()) {
             this.innerModel().withEnableDoubleEncryption(enableDoubleEncryption);
@@ -594,6 +649,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
             return this;
         } else {
             this.updateParameters.withAllowedFqdnList(allowedFqdnList);
+            return this;
+        }
+    }
+
+    public ClusterImpl withCalloutPolicies(List<CalloutPolicyInner> calloutPolicies) {
+        if (isInCreateMode()) {
+            this.innerModel().withCalloutPolicies(calloutPolicies);
+            return this;
+        } else {
+            this.updateParameters.withCalloutPolicies(calloutPolicies);
             return this;
         }
     }

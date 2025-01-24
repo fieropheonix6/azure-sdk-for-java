@@ -5,45 +5,52 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The settings for the CORS configuration of the service instance. */
+/**
+ * The settings for the CORS configuration of the service instance.
+ */
 @Fluent
-public final class ServiceCorsConfigurationInfo {
+public final class ServiceCorsConfigurationInfo implements JsonSerializable<ServiceCorsConfigurationInfo> {
     /*
      * The origins to be allowed via CORS.
      */
-    @JsonProperty(value = "origins")
     private List<String> origins;
 
     /*
      * The headers to be allowed via CORS.
      */
-    @JsonProperty(value = "headers")
     private List<String> headers;
 
     /*
      * The methods to be allowed via CORS.
      */
-    @JsonProperty(value = "methods")
     private List<String> methods;
 
     /*
      * The max age to be allowed via CORS.
      */
-    @JsonProperty(value = "maxAge")
     private Integer maxAge;
 
     /*
      * If credentials are allowed via CORS.
      */
-    @JsonProperty(value = "allowCredentials")
     private Boolean allowCredentials;
 
     /**
+     * Creates an instance of ServiceCorsConfigurationInfo class.
+     */
+    public ServiceCorsConfigurationInfo() {
+    }
+
+    /**
      * Get the origins property: The origins to be allowed via CORS.
-     *
+     * 
      * @return the origins value.
      */
     public List<String> origins() {
@@ -52,7 +59,7 @@ public final class ServiceCorsConfigurationInfo {
 
     /**
      * Set the origins property: The origins to be allowed via CORS.
-     *
+     * 
      * @param origins the origins value to set.
      * @return the ServiceCorsConfigurationInfo object itself.
      */
@@ -63,7 +70,7 @@ public final class ServiceCorsConfigurationInfo {
 
     /**
      * Get the headers property: The headers to be allowed via CORS.
-     *
+     * 
      * @return the headers value.
      */
     public List<String> headers() {
@@ -72,7 +79,7 @@ public final class ServiceCorsConfigurationInfo {
 
     /**
      * Set the headers property: The headers to be allowed via CORS.
-     *
+     * 
      * @param headers the headers value to set.
      * @return the ServiceCorsConfigurationInfo object itself.
      */
@@ -83,7 +90,7 @@ public final class ServiceCorsConfigurationInfo {
 
     /**
      * Get the methods property: The methods to be allowed via CORS.
-     *
+     * 
      * @return the methods value.
      */
     public List<String> methods() {
@@ -92,7 +99,7 @@ public final class ServiceCorsConfigurationInfo {
 
     /**
      * Set the methods property: The methods to be allowed via CORS.
-     *
+     * 
      * @param methods the methods value to set.
      * @return the ServiceCorsConfigurationInfo object itself.
      */
@@ -103,7 +110,7 @@ public final class ServiceCorsConfigurationInfo {
 
     /**
      * Get the maxAge property: The max age to be allowed via CORS.
-     *
+     * 
      * @return the maxAge value.
      */
     public Integer maxAge() {
@@ -112,7 +119,7 @@ public final class ServiceCorsConfigurationInfo {
 
     /**
      * Set the maxAge property: The max age to be allowed via CORS.
-     *
+     * 
      * @param maxAge the maxAge value to set.
      * @return the ServiceCorsConfigurationInfo object itself.
      */
@@ -123,7 +130,7 @@ public final class ServiceCorsConfigurationInfo {
 
     /**
      * Get the allowCredentials property: If credentials are allowed via CORS.
-     *
+     * 
      * @return the allowCredentials value.
      */
     public Boolean allowCredentials() {
@@ -132,7 +139,7 @@ public final class ServiceCorsConfigurationInfo {
 
     /**
      * Set the allowCredentials property: If credentials are allowed via CORS.
-     *
+     * 
      * @param allowCredentials the allowCredentials value to set.
      * @return the ServiceCorsConfigurationInfo object itself.
      */
@@ -143,9 +150,61 @@ public final class ServiceCorsConfigurationInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("origins", this.origins, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("headers", this.headers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("methods", this.methods, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("maxAge", this.maxAge);
+        jsonWriter.writeBooleanField("allowCredentials", this.allowCredentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceCorsConfigurationInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceCorsConfigurationInfo if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceCorsConfigurationInfo.
+     */
+    public static ServiceCorsConfigurationInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceCorsConfigurationInfo deserializedServiceCorsConfigurationInfo = new ServiceCorsConfigurationInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("origins".equals(fieldName)) {
+                    List<String> origins = reader.readArray(reader1 -> reader1.getString());
+                    deserializedServiceCorsConfigurationInfo.origins = origins;
+                } else if ("headers".equals(fieldName)) {
+                    List<String> headers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedServiceCorsConfigurationInfo.headers = headers;
+                } else if ("methods".equals(fieldName)) {
+                    List<String> methods = reader.readArray(reader1 -> reader1.getString());
+                    deserializedServiceCorsConfigurationInfo.methods = methods;
+                } else if ("maxAge".equals(fieldName)) {
+                    deserializedServiceCorsConfigurationInfo.maxAge = reader.getNullable(JsonReader::getInt);
+                } else if ("allowCredentials".equals(fieldName)) {
+                    deserializedServiceCorsConfigurationInfo.allowCredentials
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceCorsConfigurationInfo;
+        });
     }
 }

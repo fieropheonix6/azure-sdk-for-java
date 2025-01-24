@@ -8,39 +8,34 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.fluent.models.SignalRUsageInner;
 import com.azure.resourcemanager.signalr.models.SignalRUsageName;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SignalRUsageInnerTests {
-    @Test
-    public void testDeserialize() {
-        SignalRUsageInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"qktapspwgcuert\",\"currentValue\":7020809285560485144,\"limit\":6338655194328976084,\"name\":{\"value\":\"hbmdgbbjfdd\",\"localizedValue\":\"bmbexppbhtqqro\"},\"unit\":\"p\"}")
-                .toObject(SignalRUsageInner.class);
-        Assertions.assertEquals("qktapspwgcuert", model.id());
-        Assertions.assertEquals(7020809285560485144L, model.currentValue());
-        Assertions.assertEquals(6338655194328976084L, model.limit());
-        Assertions.assertEquals("hbmdgbbjfdd", model.name().value());
-        Assertions.assertEquals("bmbexppbhtqqro", model.name().localizedValue());
-        Assertions.assertEquals("p", model.unit());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SignalRUsageInner model = BinaryData.fromString(
+            "{\"id\":\"vyvdcs\",\"currentValue\":6235593202680912824,\"limit\":7516654710743281273,\"name\":{\"value\":\"ectehf\",\"localizedValue\":\"scjeypv\"},\"unit\":\"zrkgqhcjrefovg\"}")
+            .toObject(SignalRUsageInner.class);
+        Assertions.assertEquals("vyvdcs", model.id());
+        Assertions.assertEquals(6235593202680912824L, model.currentValue());
+        Assertions.assertEquals(7516654710743281273L, model.limit());
+        Assertions.assertEquals("ectehf", model.name().value());
+        Assertions.assertEquals("scjeypv", model.name().localizedValue());
+        Assertions.assertEquals("zrkgqhcjrefovg", model.unit());
     }
 
-    @Test
-    public void testSerialize() {
-        SignalRUsageInner model =
-            new SignalRUsageInner()
-                .withId("qktapspwgcuert")
-                .withCurrentValue(7020809285560485144L)
-                .withLimit(6338655194328976084L)
-                .withName(new SignalRUsageName().withValue("hbmdgbbjfdd").withLocalizedValue("bmbexppbhtqqro"))
-                .withUnit("p");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SignalRUsageInner model = new SignalRUsageInner().withId("vyvdcs")
+            .withCurrentValue(6235593202680912824L)
+            .withLimit(7516654710743281273L)
+            .withName(new SignalRUsageName().withValue("ectehf").withLocalizedValue("scjeypv"))
+            .withUnit("zrkgqhcjrefovg");
         model = BinaryData.fromObject(model).toObject(SignalRUsageInner.class);
-        Assertions.assertEquals("qktapspwgcuert", model.id());
-        Assertions.assertEquals(7020809285560485144L, model.currentValue());
-        Assertions.assertEquals(6338655194328976084L, model.limit());
-        Assertions.assertEquals("hbmdgbbjfdd", model.name().value());
-        Assertions.assertEquals("bmbexppbhtqqro", model.name().localizedValue());
-        Assertions.assertEquals("p", model.unit());
+        Assertions.assertEquals("vyvdcs", model.id());
+        Assertions.assertEquals(6235593202680912824L, model.currentValue());
+        Assertions.assertEquals(7516654710743281273L, model.limit());
+        Assertions.assertEquals("ectehf", model.name().value());
+        Assertions.assertEquals("scjeypv", model.name().localizedValue());
+        Assertions.assertEquals("zrkgqhcjrefovg", model.unit());
     }
 }

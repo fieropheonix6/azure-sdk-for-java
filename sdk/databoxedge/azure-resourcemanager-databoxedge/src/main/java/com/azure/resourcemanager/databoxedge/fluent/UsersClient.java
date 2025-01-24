@@ -13,24 +13,27 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.databoxedge.fluent.models.UserInner;
 
-/** An instance of this class provides access to all the operations defined in UsersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UsersClient.
+ */
 public interface UsersClient {
     /**
      * Gets all the users registered on a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the users registered on a Data Box Edge/Data Box Gateway device.
+     * @return all the users registered on a Data Box Edge/Data Box Gateway device as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<UserInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName);
 
     /**
      * Gets all the users registered on a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param filter Specify $filter='UserType eq &lt;type&gt;' to filter on user type property.
@@ -38,15 +41,31 @@ public interface UsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the users registered on a Data Box Edge/Data Box Gateway device.
+     * @return all the users registered on a Data Box Edge/Data Box Gateway device as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UserInner> listByDataBoxEdgeDevice(
-        String deviceName, String resourceGroupName, String filter, Context context);
+    PagedIterable<UserInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName, String filter,
+        Context context);
 
     /**
      * Gets the properties of the specified user.
-     *
+     * 
+     * @param deviceName The device name.
+     * @param name The user name.
+     * @param resourceGroupName The resource group name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified user along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<UserInner> getWithResponse(String deviceName, String name, String resourceGroupName, Context context);
+
+    /**
+     * Gets the properties of the specified user.
+     * 
      * @param deviceName The device name.
      * @param name The user name.
      * @param resourceGroupName The resource group name.
@@ -59,23 +78,8 @@ public interface UsersClient {
     UserInner get(String deviceName, String name, String resourceGroupName);
 
     /**
-     * Gets the properties of the specified user.
-     *
-     * @param deviceName The device name.
-     * @param name The user name.
-     * @param resourceGroupName The resource group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified user.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UserInner> getWithResponse(String deviceName, String name, String resourceGroupName, Context context);
-
-    /**
      * Creates a new user or updates an existing user's information on a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The user name.
      * @param resourceGroupName The resource group name.
@@ -83,15 +87,16 @@ public interface UsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a user who has access to one or more shares on the Data Box Edge/Gateway device.
+     * @return the {@link SyncPoller} for polling of represents a user who has access to one or more shares on the Data
+     * Box Edge/Gateway device.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(
-        String deviceName, String name, String resourceGroupName, UserInner user);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(String deviceName, String name,
+        String resourceGroupName, UserInner user);
 
     /**
      * Creates a new user or updates an existing user's information on a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The user name.
      * @param resourceGroupName The resource group name.
@@ -100,15 +105,16 @@ public interface UsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a user who has access to one or more shares on the Data Box Edge/Gateway device.
+     * @return the {@link SyncPoller} for polling of represents a user who has access to one or more shares on the Data
+     * Box Edge/Gateway device.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(
-        String deviceName, String name, String resourceGroupName, UserInner user, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(String deviceName, String name,
+        String resourceGroupName, UserInner user, Context context);
 
     /**
      * Creates a new user or updates an existing user's information on a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The user name.
      * @param resourceGroupName The resource group name.
@@ -123,7 +129,7 @@ public interface UsersClient {
 
     /**
      * Creates a new user or updates an existing user's information on a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The user name.
      * @param resourceGroupName The resource group name.
@@ -139,21 +145,21 @@ public interface UsersClient {
 
     /**
      * Deletes the user on a databox edge/gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The user name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String name, String resourceGroupName);
 
     /**
      * Deletes the user on a databox edge/gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The user name.
      * @param resourceGroupName The resource group name.
@@ -161,15 +167,15 @@ public interface UsersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String deviceName, String name, String resourceGroupName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String name, String resourceGroupName,
+        Context context);
 
     /**
      * Deletes the user on a databox edge/gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The user name.
      * @param resourceGroupName The resource group name.
@@ -182,7 +188,7 @@ public interface UsersClient {
 
     /**
      * Deletes the user on a databox edge/gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The user name.
      * @param resourceGroupName The resource group name.

@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Tag Delete. */
+/**
+ * Samples for Tag Delete.
+ */
 public final class TagDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteTag.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementDeleteTag.json
      */
     /**
      * Sample code: ApiManagementDeleteTag.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementDeleteTag(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.tags().deleteWithResponse("rg1", "apimService1", "tagId1", "*", Context.NONE);
+        manager.tags().deleteWithResponse("rg1", "apimService1", "tagId1", "*", com.azure.core.util.Context.NONE);
     }
 }

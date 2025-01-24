@@ -5,53 +5,38 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
-import com.azure.core.util.Configuration;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mockito;
+import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
-import reactor.test.StepVerifier;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.Closeable;
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.URI;
-import java.net.URLEncoder;
 import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.util.Base64;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
-import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Test base for running integration tests.
@@ -60,59 +45,70 @@ public abstract class IntegrationTestBase extends TestBase {
     // The number of partitions we create in test-resources.json.
     // Partitions 0 and 1 are used for consume-only operations. 2, 3, and 4 are used to publish or consume events.
     protected static final int NUMBER_OF_PARTITIONS = 5;
-    protected static final List<String> EXPECTED_PARTITION_IDS = IntStream.range(0, NUMBER_OF_PARTITIONS)
-        .mapToObj(String::valueOf)
-        .collect(Collectors.toList());
+    protected static final List<String> EXPECTED_PARTITION_IDS
+        = IntStream.range(0, NUMBER_OF_PARTITIONS).mapToObj(String::valueOf).collect(Collectors.toList());
     protected static final Duration TIMEOUT = Duration.ofMinutes(1);
-    protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
+
+    // Tests use timeouts of 20-60 seconds to verify something has happened
+    // We need a short try timeout so that if transient issue happens we have a chance to retry it before overall test timeout.
+    // This is a good idea to do in any production application as well - no point in waiting too long
+    protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(3))
+        .setDelay(Duration.ofSeconds(1))
+        .setMaxDelay(Duration.ofSeconds(5))
+        .setMaxRetries(10);
 
     protected final ClientLogger logger;
 
-    private static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
-    private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
+    protected String testName;
 
-    private static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
-    private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
-    private static final Object LOCK = new Object();
-    private static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
+    private static final ClientOptions OPTIONS_WITH_TRACING
+        = new ClientOptions().setTracingOptions(new LoggingTracerProvider.LoggingTracingOptions());
 
-    private static Scheduler scheduler;
+    private Scheduler scheduler;
     private static Map<String, IntegrationTestEventData> testEventData;
+    private List<AutoCloseable> toClose = new ArrayList<>();
 
-    private String testName;
+    private final AtomicReference<TokenCredential> credentialCached = new AtomicReference<>();
 
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;
     }
 
-    @BeforeAll
-    public static void beforeAll() {
-        scheduler = Schedulers.newParallel("eh-integration");
-        StepVerifier.setDefaultTimeout(TIMEOUT);
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-        scheduler.dispose();
-    }
-
     @BeforeEach
-    public void setupTest(TestInfo testInfo) {
-        System.out.printf("----- [%s]: Performing integration test set-up. -----%n", testInfo.getDisplayName());
+    @Override
+    public void setupTest(TestContextManager testContextManager) {
+        logger.info("----- {}: Performing integration test set-up. -----",
+            testContextManager.getTestPlaybackRecordingName());
 
-        testName = testInfo.getDisplayName();
+        testName = testContextManager.getTrackerTestName();
         skipIfNotRecordMode();
+        toClose = new ArrayList<>();
 
+        scheduler = Schedulers.newParallel("eh-integration");
         beforeTest();
     }
 
+    protected <T extends AutoCloseable> T toClose(T closeable) {
+        toClose.add(closeable);
+        return closeable;
+    }
+
+    protected Disposable toClose(Disposable closeable) {
+        toClose.add(() -> closeable.dispose());
+        return closeable;
+    }
+
     // These are overridden because we don't use the Interceptor Manager.
-    @Override
     @AfterEach
-    public void teardownTest(TestInfo testInfo) {
-        System.out.printf("----- [%s]: Performing test clean-up. -----%n", testInfo.getDisplayName());
+    @Override
+    public void teardownTest() {
+        logger.info("----- {}: Performing test clean-up. -----", testName);
         afterTest();
+        if (scheduler != null) {
+            scheduler.dispose();
+        }
+        logger.info("Disposing of subscriptions, consumers and clients.");
+        dispose();
 
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
@@ -120,118 +116,10 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     /**
-     * Gets the test mode for this API test. If AZURE_TEST_MODE equals {@link TestMode#RECORD} and Event Hubs connection
-     * string is set, then we return {@link TestMode#RECORD}. Otherwise, {@link TestMode#PLAYBACK} is returned.
-     */
-    @Override
-    public TestMode getTestMode() {
-        if (super.getTestMode() == TestMode.PLAYBACK) {
-            return TestMode.PLAYBACK;
-        }
-
-        return CoreUtils.isNullOrEmpty(getConnectionString()) ? TestMode.PLAYBACK : TestMode.RECORD;
-    }
-
-    static String getConnectionString() {
-        return getConnectionString(false);
-    }
-
-    static String getConnectionString(boolean withSas) {
-        String connectionString = GLOBAL_CONFIGURATION.get(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
-        if (withSas) {
-            String shareAccessSignatureFormat = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
-            String connectionStringWithSasAndEntityFormat = "Endpoint=%s;SharedAccessSignature=%s;EntityPath=%s";
-            String connectionStringWithSasFormat = "Endpoint=%s;SharedAccessSignature=%s";
-
-            ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
-            URI endpoint = properties.getEndpoint();
-            String entityPath = properties.getEntityPath();
-            String resourceUrl = entityPath == null || entityPath.trim().length() == 0
-                ? endpoint.toString() : endpoint.toString() +  entityPath;
-
-            String utf8Encoding = UTF_8.name();
-            OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofHours(2L));
-            String expiresOnEpochSeconds = Long.toString(expiresOn.toEpochSecond());
-
-            try {
-                String audienceUri = URLEncoder.encode(resourceUrl, utf8Encoding);
-                String secretToSign = audienceUri + "\n" + expiresOnEpochSeconds;
-                byte[] sasKeyBytes = properties.getSharedAccessKey().getBytes(utf8Encoding);
-
-                Mac hmacsha256 = Mac.getInstance("HMACSHA256");
-                hmacsha256.init(new SecretKeySpec(sasKeyBytes, "HMACSHA256"));
-
-                byte[] signatureBytes = hmacsha256.doFinal(secretToSign.getBytes(utf8Encoding));
-                String signature = Base64.getEncoder().encodeToString(signatureBytes);
-
-                String signatureValue = String.format(Locale.US, shareAccessSignatureFormat,
-                    audienceUri,
-                    URLEncoder.encode(signature, utf8Encoding),
-                    URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
-                    URLEncoder.encode(properties.getSharedAccessKeyName(), utf8Encoding));
-
-                if (entityPath == null) {
-                    return String.format(connectionStringWithSasFormat, endpoint, signatureValue);
-                }
-                return String.format(connectionStringWithSasAndEntityFormat, endpoint, signatureValue, entityPath);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return connectionString;
-    }
-
-    /**
-     * Gets the configured ProxyConfiguration from environment variables.
-     */
-    protected ProxyOptions getProxyConfiguration() {
-        final String address = GLOBAL_CONFIGURATION.get(Configuration.PROPERTY_HTTP_PROXY);
-
-        if (address == null) {
-            return null;
-        }
-
-        final String[] host = address.split(":");
-        if (host.length < 2) {
-            logger.warning("Environment variable '{}' cannot be parsed into a proxy. Value: {}",
-                Configuration.PROPERTY_HTTP_PROXY, address);
-            return null;
-        }
-
-        final String hostname = host[0];
-        final int port = Integer.parseInt(host[1]);
-        final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(hostname, port));
-
-        final String username = GLOBAL_CONFIGURATION.get(PROXY_USERNAME);
-
-        if (username == null) {
-            logger.info("Environment variable '{}' is not set. No authentication used.");
-            return new ProxyOptions(ProxyAuthenticationType.NONE, proxy, null, null);
-        }
-
-        final String password = GLOBAL_CONFIGURATION.get(PROXY_PASSWORD);
-        final String authentication = GLOBAL_CONFIGURATION.get(PROXY_AUTHENTICATION_TYPE);
-
-        final ProxyAuthenticationType authenticationType = CoreUtils.isNullOrEmpty(authentication)
-            ? ProxyAuthenticationType.NONE
-            : ProxyAuthenticationType.valueOf(authentication);
-
-        return new ProxyOptions(authenticationType, proxy, username, password);
-    }
-
-    protected static String getFullyQualifiedDomainName() {
-        return GLOBAL_CONFIGURATION.get(AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME);
-    }
-
-    protected static String getEventHubName() {
-        return GLOBAL_CONFIGURATION.get(AZURE_EVENTHUBS_EVENT_HUB_NAME);
-    }
-
-    /**
      * Creates a new instance of {@link EventHubClientBuilder} with the default integration test settings and uses a
      * connection string to authenticate.
      */
-    protected static EventHubClientBuilder createBuilder() {
+    protected EventHubClientBuilder createBuilder() {
         return createBuilder(false);
     }
 
@@ -240,39 +128,50 @@ public abstract class IntegrationTestBase extends TestBase {
      * connection string to authenticate if {@code useCredentials} is false. Otherwise, uses a service principal through
      * {@link com.azure.identity.ClientSecretCredential}.
      */
-    protected static EventHubClientBuilder createBuilder(boolean useCredentials) {
-        final EventHubClientBuilder builder = new EventHubClientBuilder()
-            .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
-            .retry(RETRY_OPTIONS)
+    protected EventHubClientBuilder createBuilder(boolean shareConnection) {
+        final EventHubClientBuilder builder = new EventHubClientBuilder().proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
+            .retryOptions(RETRY_OPTIONS)
+            .clientOptions(OPTIONS_WITH_TRACING)
             .transportType(AmqpTransportType.AMQP)
-            .scheduler(scheduler);
+            .scheduler(scheduler)
+            .configuration(new ConfigurationBuilder().putProperty("com.azure.messaging.eventhubs.v2", "true").build());
 
-        if (useCredentials) {
-            final ConnectionStringProperties properties = getConnectionStringProperties();
-            final String fqdn = properties.getEndpoint().getHost();
-            final String eventHubName = properties.getEntityPath();
+        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
+        final String eventHubName = TestUtils.getEventHubName();
 
-            Assumptions.assumeTrue(fqdn != null && !fqdn.isEmpty(), AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME + " variable needs to be set when using credentials.");
-            Assumptions.assumeTrue(eventHubName != null && !eventHubName.isEmpty(), AZURE_EVENTHUBS_EVENT_HUB_NAME + " variable needs to be set when using credentials.");
-
-            final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-                .clientId(GLOBAL_CONFIGURATION.get("AZURE_CLIENT_ID"))
-                .clientSecret(GLOBAL_CONFIGURATION.get("AZURE_CLIENT_SECRET"))
-                .tenantId(GLOBAL_CONFIGURATION.get("AZURE_TENANT_ID"))
-                .build();
-
-            return builder.credential(fqdn, eventHubName, clientSecretCredential);
-        } else {
-            return builder.connectionString(getConnectionString());
+        if (shareConnection) {
+            builder.shareConnection();
         }
-    }
 
-    protected static ConnectionStringProperties getConnectionStringProperties() {
-        return new ConnectionStringProperties(getConnectionString(false));
-    }
+        switch (getTestMode()) {
+            case PLAYBACK:
+                Assumptions.assumeTrue(false, "Integration tests are not enabled in playback mode.");
+                return null;
 
-    protected static ConnectionStringProperties getConnectionStringProperties(boolean withSas) {
-        return new ConnectionStringProperties(getConnectionString(withSas));
+            case LIVE:
+                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName),
+                    "FullyQualifiedDomainName is not set.");
+                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "EventHubName is not set.");
+
+                final TokenCredential credential = TestUtils.getPipelineCredential(credentialCached);
+                return builder.credential(fullyQualifiedDomainName, eventHubName, credential);
+
+            case RECORD:
+                final String connectionString = TestUtils.getConnectionString(false);
+
+                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(eventHubName), "EventHubName is not set.");
+                Assumptions.assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName),
+                    "FullyQualifiedDomainName is not set.");
+
+                if (CoreUtils.isNullOrEmpty(connectionString)) {
+                    final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+                    return builder.credential(fullyQualifiedDomainName, eventHubName, tokenCredential);
+                } else {
+                    return builder.connectionString(connectionString).eventHubName(eventHubName);
+                }
+            default:
+                return null;
+        }
     }
 
     /**
@@ -283,15 +182,13 @@ public abstract class IntegrationTestBase extends TestBase {
             return testEventData;
         }
 
-        System.out.println("--> Adding events to Event Hubs.");
+        logger.info("--> Adding events to Event Hubs.");
         final Map<String, IntegrationTestEventData> integrationData = new HashMap<>();
 
-        try (EventHubProducerClient producer = new EventHubClientBuilder()
-            .connectionString(getConnectionString())
-            .buildProducerClient()) {
+        try (EventHubProducerClient producer = createBuilder().buildProducerClient()) {
 
             producer.getPartitionIds().forEach(partitionId -> {
-                System.out.printf("--> Adding events to partition: %s%n", partitionId);
+                logger.info("--> Adding events to partition: " + partitionId);
                 final PartitionProperties partitionProperties = producer.getPartitionProperties(partitionId);
                 final String messageId = UUID.randomUUID().toString();
                 final int numberOfEvents = 15;
@@ -305,7 +202,7 @@ public abstract class IntegrationTestBase extends TestBase {
             });
 
             if (integrationData.size() != NUMBER_OF_PARTITIONS) {
-                System.out.printf("--> WARNING: Number of partitions is different. Expected: %s. Actual %s%n",
+                logger.warning("--> WARNING: Number of partitions is different. Expected: {}. Actual {}",
                     NUMBER_OF_PARTITIONS, integrationData.size());
             }
 
@@ -322,25 +219,36 @@ public abstract class IntegrationTestBase extends TestBase {
      *
      * @param closeables The closeables to dispose of. If a closeable is {@code null}, it is skipped.
      */
-    protected void dispose(Closeable... closeables) {
-        if (closeables == null || closeables.length == 0) {
+    protected void dispose(AutoCloseable... closeables) {
+        if (closeables == null) {
             return;
         }
 
-        for (final Closeable closeable : closeables) {
+        for (final AutoCloseable closeable : closeables) {
             if (closeable == null) {
                 continue;
             }
 
             try {
                 closeable.close();
-            } catch (IOException error) {
+            } catch (Exception error) {
                 logger.error("[{}]: {} didn't close properly.", testName, closeable.getClass().getSimpleName(), error);
             }
         }
     }
 
-    private void skipIfNotRecordMode() {
-        Assumptions.assumeTrue(getTestMode() != TestMode.PLAYBACK);
+    /**
+     * Disposes of registered with {@code toClose} method resources.
+     */
+    protected void dispose() {
+        // best effort to close resources in a reverse order
+        Collections.reverse(toClose);
+        dispose(toClose.toArray(new AutoCloseable[0]));
+        toClose.clear();
     }
+
+    private void skipIfNotRecordMode() {
+        Assumptions.assumeTrue(getTestMode() != TestMode.PLAYBACK, "Is not in RECORD/LIVE mode.");
+    }
+
 }

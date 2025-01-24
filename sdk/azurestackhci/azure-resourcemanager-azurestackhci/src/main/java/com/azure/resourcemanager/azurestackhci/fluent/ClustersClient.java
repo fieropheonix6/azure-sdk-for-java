@@ -14,13 +14,18 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterIdentityResponseInner;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterInner;
 import com.azure.resourcemanager.azurestackhci.models.ClusterPatch;
+import com.azure.resourcemanager.azurestackhci.models.LogCollectionRequest;
+import com.azure.resourcemanager.azurestackhci.models.RemoteSupportRequest;
+import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceChangeRequest;
 import com.azure.resourcemanager.azurestackhci.models.UploadCertificateRequest;
 
-/** An instance of this class provides access to all the operations defined in ClustersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ClustersClient.
+ */
 public interface ClustersClient {
     /**
      * List all HCI clusters in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of clusters as paginated response with {@link PagedIterable}.
@@ -30,7 +35,7 @@ public interface ClustersClient {
 
     /**
      * List all HCI clusters in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,7 +47,7 @@ public interface ClustersClient {
 
     /**
      * List all HCI clusters in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,7 +59,7 @@ public interface ClustersClient {
 
     /**
      * List all HCI clusters in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -67,7 +72,22 @@ public interface ClustersClient {
 
     /**
      * Get HCI cluster.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hCI cluster along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
+        Context context);
+
+    /**
+     * Get HCI cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -79,23 +99,24 @@ public interface ClustersClient {
     ClusterInner getByResourceGroup(String resourceGroupName, String clusterName);
 
     /**
-     * Get HCI cluster.
-     *
+     * Create an HCI cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
+     * @param cluster Details of the HCI cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hCI cluster along with {@link Response}.
+     * @return cluster details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterName, Context context);
+    Response<ClusterInner> createWithResponse(String resourceGroupName, String clusterName, ClusterInner cluster,
+        Context context);
 
     /**
      * Create an HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param cluster Details of the HCI cluster.
@@ -108,8 +129,8 @@ public interface ClustersClient {
     ClusterInner create(String resourceGroupName, String clusterName, ClusterInner cluster);
 
     /**
-     * Create an HCI cluster.
-     *
+     * Update an HCI cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param cluster Details of the HCI cluster.
@@ -120,12 +141,12 @@ public interface ClustersClient {
      * @return cluster details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> createWithResponse(
-        String resourceGroupName, String clusterName, ClusterInner cluster, Context context);
+    Response<ClusterInner> updateWithResponse(String resourceGroupName, String clusterName, ClusterPatch cluster,
+        Context context);
 
     /**
      * Update an HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param cluster Details of the HCI cluster.
@@ -138,24 +159,8 @@ public interface ClustersClient {
     ClusterInner update(String resourceGroupName, String clusterName, ClusterPatch cluster);
 
     /**
-     * Update an HCI cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param cluster Details of the HCI cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> updateWithResponse(
-        String resourceGroupName, String clusterName, ClusterPatch cluster, Context context);
-
-    /**
      * Delete an HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -168,7 +173,7 @@ public interface ClustersClient {
 
     /**
      * Delete an HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -182,7 +187,7 @@ public interface ClustersClient {
 
     /**
      * Delete an HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -194,7 +199,7 @@ public interface ClustersClient {
 
     /**
      * Delete an HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -207,7 +212,7 @@ public interface ClustersClient {
 
     /**
      * Upload certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param uploadCertificateRequest Upload certificate request.
@@ -217,12 +222,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUploadCertificate(
-        String resourceGroupName, String clusterName, UploadCertificateRequest uploadCertificateRequest);
+    SyncPoller<PollResult<Void>, Void> beginUploadCertificate(String resourceGroupName, String clusterName,
+        UploadCertificateRequest uploadCertificateRequest);
 
     /**
      * Upload certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param uploadCertificateRequest Upload certificate request.
@@ -233,15 +238,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUploadCertificate(
-        String resourceGroupName,
-        String clusterName,
-        UploadCertificateRequest uploadCertificateRequest,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginUploadCertificate(String resourceGroupName, String clusterName,
+        UploadCertificateRequest uploadCertificateRequest, Context context);
 
     /**
      * Upload certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param uploadCertificateRequest Upload certificate request.
@@ -250,12 +252,12 @@ public interface ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void uploadCertificate(
-        String resourceGroupName, String clusterName, UploadCertificateRequest uploadCertificateRequest);
+    void uploadCertificate(String resourceGroupName, String clusterName,
+        UploadCertificateRequest uploadCertificateRequest);
 
     /**
      * Upload certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param uploadCertificateRequest Upload certificate request.
@@ -265,15 +267,12 @@ public interface ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void uploadCertificate(
-        String resourceGroupName,
-        String clusterName,
-        UploadCertificateRequest uploadCertificateRequest,
-        Context context);
+    void uploadCertificate(String resourceGroupName, String clusterName,
+        UploadCertificateRequest uploadCertificateRequest, Context context);
 
     /**
      * Create cluster identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -282,12 +281,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of cluster Identity details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterIdentityResponseInner>, ClusterIdentityResponseInner> beginCreateIdentity(
-        String resourceGroupName, String clusterName);
+    SyncPoller<PollResult<ClusterIdentityResponseInner>, ClusterIdentityResponseInner>
+        beginCreateIdentity(String resourceGroupName, String clusterName);
 
     /**
      * Create cluster identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -297,12 +296,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of cluster Identity details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterIdentityResponseInner>, ClusterIdentityResponseInner> beginCreateIdentity(
-        String resourceGroupName, String clusterName, Context context);
+    SyncPoller<PollResult<ClusterIdentityResponseInner>, ClusterIdentityResponseInner>
+        beginCreateIdentity(String resourceGroupName, String clusterName, Context context);
 
     /**
      * Create cluster identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,7 +314,7 @@ public interface ClustersClient {
 
     /**
      * Create cluster identity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -326,4 +325,190 @@ public interface ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ClusterIdentityResponseInner createIdentity(String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Extends Software Assurance Benefit to a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param softwareAssuranceChangeRequest Software Assurance Change Request Payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of cluster details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginExtendSoftwareAssuranceBenefit(String resourceGroupName,
+        String clusterName, SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest);
+
+    /**
+     * Extends Software Assurance Benefit to a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param softwareAssuranceChangeRequest Software Assurance Change Request Payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of cluster details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginExtendSoftwareAssuranceBenefit(String resourceGroupName,
+        String clusterName, SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest, Context context);
+
+    /**
+     * Extends Software Assurance Benefit to a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param softwareAssuranceChangeRequest Software Assurance Change Request Payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterInner extendSoftwareAssuranceBenefit(String resourceGroupName, String clusterName,
+        SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest);
+
+    /**
+     * Extends Software Assurance Benefit to a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param softwareAssuranceChangeRequest Software Assurance Change Request Payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterInner extendSoftwareAssuranceBenefit(String resourceGroupName, String clusterName,
+        SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest, Context context);
+
+    /**
+     * Trigger Log Collection on a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param logCollectionRequest Trigger Log Collection Request Payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of cluster details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginTriggerLogCollection(String resourceGroupName,
+        String clusterName, LogCollectionRequest logCollectionRequest);
+
+    /**
+     * Trigger Log Collection on a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param logCollectionRequest Trigger Log Collection Request Payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of cluster details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginTriggerLogCollection(String resourceGroupName,
+        String clusterName, LogCollectionRequest logCollectionRequest, Context context);
+
+    /**
+     * Trigger Log Collection on a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param logCollectionRequest Trigger Log Collection Request Payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterInner triggerLogCollection(String resourceGroupName, String clusterName,
+        LogCollectionRequest logCollectionRequest);
+
+    /**
+     * Trigger Log Collection on a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param logCollectionRequest Trigger Log Collection Request Payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterInner triggerLogCollection(String resourceGroupName, String clusterName,
+        LogCollectionRequest logCollectionRequest, Context context);
+
+    /**
+     * Configure RemoteSupport on a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param remoteSupportRequest Configure Remote Support Request Payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of cluster details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginConfigureRemoteSupport(String resourceGroupName,
+        String clusterName, RemoteSupportRequest remoteSupportRequest);
+
+    /**
+     * Configure RemoteSupport on a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param remoteSupportRequest Configure Remote Support Request Payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of cluster details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginConfigureRemoteSupport(String resourceGroupName,
+        String clusterName, RemoteSupportRequest remoteSupportRequest, Context context);
+
+    /**
+     * Configure RemoteSupport on a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param remoteSupportRequest Configure Remote Support Request Payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterInner configureRemoteSupport(String resourceGroupName, String clusterName,
+        RemoteSupportRequest remoteSupportRequest);
+
+    /**
+     * Configure RemoteSupport on a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param remoteSupportRequest Configure Remote Support Request Payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterInner configureRemoteSupport(String resourceGroupName, String clusterName,
+        RemoteSupportRequest remoteSupportRequest, Context context);
 }

@@ -6,25 +6,32 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of exposure control features. */
+/**
+ * A list of exposure control features.
+ */
 @Fluent
-public final class ExposureControlBatchRequest {
+public final class ExposureControlBatchRequest implements JsonSerializable<ExposureControlBatchRequest> {
     /*
      * List of exposure control features.
      */
-    @JsonProperty(value = "exposureControlRequests", required = true)
     private List<ExposureControlRequest> exposureControlRequests;
 
-    /** Creates an instance of ExposureControlBatchRequest class. */
+    /**
+     * Creates an instance of ExposureControlBatchRequest class.
+     */
     public ExposureControlBatchRequest() {
     }
 
     /**
      * Get the exposureControlRequests property: List of exposure control features.
-     *
+     * 
      * @return the exposureControlRequests value.
      */
     public List<ExposureControlRequest> exposureControlRequests() {
@@ -33,31 +40,70 @@ public final class ExposureControlBatchRequest {
 
     /**
      * Set the exposureControlRequests property: List of exposure control features.
-     *
+     * 
      * @param exposureControlRequests the exposureControlRequests value to set.
      * @return the ExposureControlBatchRequest object itself.
      */
-    public ExposureControlBatchRequest withExposureControlRequests(
-        List<ExposureControlRequest> exposureControlRequests) {
+    public ExposureControlBatchRequest
+        withExposureControlRequests(List<ExposureControlRequest> exposureControlRequests) {
         this.exposureControlRequests = exposureControlRequests;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (exposureControlRequests() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property exposureControlRequests in model ExposureControlBatchRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property exposureControlRequests in model ExposureControlBatchRequest"));
         } else {
             exposureControlRequests().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExposureControlBatchRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("exposureControlRequests", this.exposureControlRequests,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExposureControlBatchRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExposureControlBatchRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExposureControlBatchRequest.
+     */
+    public static ExposureControlBatchRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExposureControlBatchRequest deserializedExposureControlBatchRequest = new ExposureControlBatchRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("exposureControlRequests".equals(fieldName)) {
+                    List<ExposureControlRequest> exposureControlRequests
+                        = reader.readArray(reader1 -> ExposureControlRequest.fromJson(reader1));
+                    deserializedExposureControlBatchRequest.exposureControlRequests = exposureControlRequests;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExposureControlBatchRequest;
+        });
+    }
 }

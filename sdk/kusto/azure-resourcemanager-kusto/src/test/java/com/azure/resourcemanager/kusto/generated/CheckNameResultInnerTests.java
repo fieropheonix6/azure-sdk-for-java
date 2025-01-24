@@ -8,34 +8,29 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.kusto.models.Reason;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CheckNameResultInnerTests {
-    @Test
-    public void testDeserialize() {
-        CheckNameResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"nameAvailable\":true,\"name\":\"mohctb\",\"message\":\"udwxdndnvowguj\",\"reason\":\"AlreadyExists\"}")
-                .toObject(CheckNameResultInner.class);
-        Assertions.assertEquals(true, model.nameAvailable());
-        Assertions.assertEquals("mohctb", model.name());
-        Assertions.assertEquals("udwxdndnvowguj", model.message());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CheckNameResultInner model = BinaryData
+            .fromString("{\"nameAvailable\":false,\"name\":\"y\",\"message\":\"hr\",\"reason\":\"AlreadyExists\"}")
+            .toObject(CheckNameResultInner.class);
+        Assertions.assertEquals(false, model.nameAvailable());
+        Assertions.assertEquals("y", model.name());
+        Assertions.assertEquals("hr", model.message());
         Assertions.assertEquals(Reason.ALREADY_EXISTS, model.reason());
     }
 
-    @Test
-    public void testSerialize() {
-        CheckNameResultInner model =
-            new CheckNameResultInner()
-                .withNameAvailable(true)
-                .withName("mohctb")
-                .withMessage("udwxdndnvowguj")
-                .withReason(Reason.ALREADY_EXISTS);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CheckNameResultInner model = new CheckNameResultInner().withNameAvailable(false)
+            .withName("y")
+            .withMessage("hr")
+            .withReason(Reason.ALREADY_EXISTS);
         model = BinaryData.fromObject(model).toObject(CheckNameResultInner.class);
-        Assertions.assertEquals(true, model.nameAvailable());
-        Assertions.assertEquals("mohctb", model.name());
-        Assertions.assertEquals("udwxdndnvowguj", model.message());
+        Assertions.assertEquals(false, model.nameAvailable());
+        Assertions.assertEquals("y", model.name());
+        Assertions.assertEquals("hr", model.message());
         Assertions.assertEquals(Reason.ALREADY_EXISTS, model.reason());
     }
 }

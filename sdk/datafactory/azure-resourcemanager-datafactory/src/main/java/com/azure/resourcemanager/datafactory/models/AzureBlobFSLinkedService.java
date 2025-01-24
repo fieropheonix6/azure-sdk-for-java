@@ -6,59 +6,94 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureBlobFSLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Azure Data Lake Storage Gen2 linked service. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureBlobFS")
+/**
+ * Azure Data Lake Storage Gen2 linked service.
+ */
 @Fluent
 public final class AzureBlobFSLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "AzureBlobFS";
+
+    /*
      * Azure Data Lake Storage Gen2 linked service properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private AzureBlobFSLinkedServiceTypeProperties innerTypeProperties = new AzureBlobFSLinkedServiceTypeProperties();
 
-    /** Creates an instance of AzureBlobFSLinkedService class. */
+    /**
+     * Creates an instance of AzureBlobFSLinkedService class.
+     */
     public AzureBlobFSLinkedService() {
     }
 
     /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Azure Data Lake Storage Gen2 linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private AzureBlobFSLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureBlobFSLinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -68,7 +103,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
     /**
      * Get the url property: Endpoint for the Azure Data Lake Storage Gen2 service. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the url value.
      */
     public Object url() {
@@ -78,7 +113,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
     /**
      * Set the url property: Endpoint for the Azure Data Lake Storage Gen2 service. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param url the url value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
@@ -93,7 +128,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
     /**
      * Get the accountKey property: Account key for the Azure Data Lake Storage Gen2 service. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the accountKey value.
      */
     public Object accountKey() {
@@ -103,7 +138,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
     /**
      * Set the accountKey property: Account key for the Azure Data Lake Storage Gen2 service. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param accountKey the accountKey value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
@@ -118,7 +153,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
     /**
      * Get the servicePrincipalId property: The ID of the application used to authenticate against the Azure Data Lake
      * Storage Gen2 account. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object servicePrincipalId() {
@@ -128,7 +163,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
     /**
      * Set the servicePrincipalId property: The ID of the application used to authenticate against the Azure Data Lake
      * Storage Gen2 account. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
@@ -143,7 +178,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
     /**
      * Get the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data Lake
      * Storage Gen2 account.
-     *
+     * 
      * @return the servicePrincipalKey value.
      */
     public SecretBase servicePrincipalKey() {
@@ -153,7 +188,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
     /**
      * Set the servicePrincipalKey property: The Key of the application used to authenticate against the Azure Data Lake
      * Storage Gen2 account.
-     *
+     * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
@@ -168,7 +203,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
     /**
      * Get the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the tenant value.
      */
     public Object tenant() {
@@ -178,7 +213,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
     /**
      * Set the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param tenant the tenant value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
@@ -194,7 +229,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
      * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
      * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the azureCloudType value.
      */
     public Object azureCloudType() {
@@ -205,7 +240,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
      * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
      * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param azureCloudType the azureCloudType value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
@@ -219,22 +254,22 @@ public final class AzureBlobFSLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
-    public AzureBlobFSLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AzureBlobFSLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AzureBlobFSLinkedServiceTypeProperties();
         }
@@ -244,7 +279,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
 
     /**
      * Get the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @return the credential value.
      */
     public CredentialReference credential() {
@@ -253,7 +288,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
 
     /**
      * Set the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
@@ -269,7 +304,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
      * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
      * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalCredentialType value.
      */
     public Object servicePrincipalCredentialType() {
@@ -280,7 +315,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
      * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
      * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
@@ -297,7 +332,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
      * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
      * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
      * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the servicePrincipalCredential value.
      */
     public SecretBase servicePrincipalCredential() {
@@ -309,7 +344,7 @@ public final class AzureBlobFSLinkedService extends LinkedService {
      * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
      * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
      * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
-     *
+     * 
      * @param servicePrincipalCredential the servicePrincipalCredential value to set.
      * @return the AzureBlobFSLinkedService object itself.
      */
@@ -322,22 +357,148 @@ public final class AzureBlobFSLinkedService extends LinkedService {
     }
 
     /**
+     * Get the sasUri property: SAS URI of the Azure Data Lake Storage Gen2 service. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     * 
+     * @return the sasUri value.
+     */
+    public Object sasUri() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sasUri();
+    }
+
+    /**
+     * Set the sasUri property: SAS URI of the Azure Data Lake Storage Gen2 service. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     * 
+     * @param sasUri the sasUri value to set.
+     * @return the AzureBlobFSLinkedService object itself.
+     */
+    public AzureBlobFSLinkedService withSasUri(Object sasUri) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobFSLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSasUri(sasUri);
+        return this;
+    }
+
+    /**
+     * Get the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
+     * 
+     * @return the sasToken value.
+     */
+    public SecretBase sasToken() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sasToken();
+    }
+
+    /**
+     * Set the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
+     * 
+     * @param sasToken the sasToken value to set.
+     * @return the AzureBlobFSLinkedService object itself.
+     */
+    public AzureBlobFSLinkedService withSasToken(SecretBase sasToken) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureBlobFSLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSasToken(sasToken);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model AzureBlobFSLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model AzureBlobFSLinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureBlobFSLinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBlobFSLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBlobFSLinkedService if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureBlobFSLinkedService.
+     */
+    public static AzureBlobFSLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBlobFSLinkedService deserializedAzureBlobFSLinkedService = new AzureBlobFSLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedAzureBlobFSLinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedAzureBlobFSLinkedService.withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedAzureBlobFSLinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedAzureBlobFSLinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedAzureBlobFSLinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedAzureBlobFSLinkedService.innerTypeProperties
+                        = AzureBlobFSLinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureBlobFSLinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureBlobFSLinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedAzureBlobFSLinkedService;
+        });
+    }
 }

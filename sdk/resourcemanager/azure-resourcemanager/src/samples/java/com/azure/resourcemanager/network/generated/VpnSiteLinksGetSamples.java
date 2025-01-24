@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VpnSiteLinks Get. */
+/**
+ * Samples for VpnSiteLinks Get.
+ */
 public final class VpnSiteLinksGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VpnSiteLinkGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VpnSiteLinkGet.json
      */
     /**
      * Sample code: VpnSiteGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void vpnSiteGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getVpnSiteLinks()
-            .getWithResponse("rg1", "vpnSite1", "vpnSiteLink1", Context.NONE);
+            .getWithResponse("rg1", "vpnSite1", "vpnSiteLink1", com.azure.core.util.Context.NONE);
     }
 }

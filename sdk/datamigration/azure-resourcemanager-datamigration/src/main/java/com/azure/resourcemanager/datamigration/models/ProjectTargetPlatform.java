@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProjectTargetPlatform. */
+/**
+ * Target platform of the project.
+ */
 public final class ProjectTargetPlatform extends ExpandableStringEnum<ProjectTargetPlatform> {
-    /** Static value SQLDB for ProjectTargetPlatform. */
+    /**
+     * Static value SQLDB for ProjectTargetPlatform.
+     */
     public static final ProjectTargetPlatform SQLDB = fromString("SQLDB");
 
-    /** Static value Unknown for ProjectTargetPlatform. */
+    /**
+     * Static value Unknown for ProjectTargetPlatform.
+     */
     public static final ProjectTargetPlatform UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of ProjectTargetPlatform value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProjectTargetPlatform() {
+    }
+
+    /**
      * Creates or finds a ProjectTargetPlatform from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProjectTargetPlatform.
      */
-    @JsonCreator
     public static ProjectTargetPlatform fromString(String name) {
         return fromString(name, ProjectTargetPlatform.class);
     }
 
-    /** @return known ProjectTargetPlatform values. */
+    /**
+     * Gets known ProjectTargetPlatform values.
+     * 
+     * @return known ProjectTargetPlatform values.
+     */
     public static Collection<ProjectTargetPlatform> values() {
         return values(ProjectTargetPlatform.class);
     }

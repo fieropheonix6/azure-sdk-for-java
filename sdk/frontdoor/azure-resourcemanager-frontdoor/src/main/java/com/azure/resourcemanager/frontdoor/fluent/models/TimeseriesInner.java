@@ -5,216 +5,99 @@
 package com.azure.resourcemanager.frontdoor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.models.AggregationInterval;
 import com.azure.resourcemanager.frontdoor.models.TimeseriesDataPoint;
 import com.azure.resourcemanager.frontdoor.models.TimeseriesType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Defines the Timeseries. */
-@JsonFlatten
+/**
+ * Defines the Timeseries.
+ */
 @Fluent
-public class TimeseriesInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeseriesInner.class);
+public final class TimeseriesInner extends Resource {
+    /*
+     * The properties of a Timeseries
+     */
+    private TimeseriesProperties innerProperties;
 
     /*
-     * The endpoint associated with the Timeseries data point
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.endpoint")
-    private String endpoint;
+    private String type;
 
     /*
-     * The start DateTime of the Timeseries in UTC
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.startDateTimeUTC")
-    private String startDateTimeUtc;
+    private String name;
 
     /*
-     * The end DateTime of the Timeseries in UTC
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.endDateTimeUTC")
-    private String endDateTimeUtc;
-
-    /*
-     * The aggregation interval of the Timeseries
-     */
-    @JsonProperty(value = "properties.aggregationInterval")
-    private AggregationInterval aggregationInterval;
-
-    /*
-     * The type of Timeseries
-     */
-    @JsonProperty(value = "properties.timeseriesType")
-    private TimeseriesType timeseriesType;
-
-    /*
-     * The country associated with the Timeseries. Values are country ISO codes
-     * as specified here- https://www.iso.org/iso-3166-country-codes.html
-     */
-    @JsonProperty(value = "properties.country")
-    private String country;
-
-    /*
-     * The set of data points for the timeseries
-     */
-    @JsonProperty(value = "properties.timeseriesData")
-    private List<TimeseriesDataPoint> timeseriesData;
+    private String id;
 
     /**
-     * Get the endpoint property: The endpoint associated with the Timeseries data point.
-     *
-     * @return the endpoint value.
+     * Creates an instance of TimeseriesInner class.
      */
-    public String endpoint() {
-        return this.endpoint;
+    public TimeseriesInner() {
     }
 
     /**
-     * Set the endpoint property: The endpoint associated with the Timeseries data point.
-     *
-     * @param endpoint the endpoint value to set.
-     * @return the TimeseriesInner object itself.
+     * Get the innerProperties property: The properties of a Timeseries.
+     * 
+     * @return the innerProperties value.
      */
-    public TimeseriesInner withEndpoint(String endpoint) {
-        this.endpoint = endpoint;
-        return this;
+    private TimeseriesProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the startDateTimeUtc property: The start DateTime of the Timeseries in UTC.
-     *
-     * @return the startDateTimeUtc value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public String startDateTimeUtc() {
-        return this.startDateTimeUtc;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Set the startDateTimeUtc property: The start DateTime of the Timeseries in UTC.
-     *
-     * @param startDateTimeUtc the startDateTimeUtc value to set.
-     * @return the TimeseriesInner object itself.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public TimeseriesInner withStartDateTimeUtc(String startDateTimeUtc) {
-        this.startDateTimeUtc = startDateTimeUtc;
-        return this;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the endDateTimeUtc property: The end DateTime of the Timeseries in UTC.
-     *
-     * @return the endDateTimeUtc value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public String endDateTimeUtc() {
-        return this.endDateTimeUtc;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Set the endDateTimeUtc property: The end DateTime of the Timeseries in UTC.
-     *
-     * @param endDateTimeUtc the endDateTimeUtc value to set.
-     * @return the TimeseriesInner object itself.
+     * {@inheritDoc}
      */
-    public TimeseriesInner withEndDateTimeUtc(String endDateTimeUtc) {
-        this.endDateTimeUtc = endDateTimeUtc;
-        return this;
-    }
-
-    /**
-     * Get the aggregationInterval property: The aggregation interval of the Timeseries.
-     *
-     * @return the aggregationInterval value.
-     */
-    public AggregationInterval aggregationInterval() {
-        return this.aggregationInterval;
-    }
-
-    /**
-     * Set the aggregationInterval property: The aggregation interval of the Timeseries.
-     *
-     * @param aggregationInterval the aggregationInterval value to set.
-     * @return the TimeseriesInner object itself.
-     */
-    public TimeseriesInner withAggregationInterval(AggregationInterval aggregationInterval) {
-        this.aggregationInterval = aggregationInterval;
-        return this;
-    }
-
-    /**
-     * Get the timeseriesType property: The type of Timeseries.
-     *
-     * @return the timeseriesType value.
-     */
-    public TimeseriesType timeseriesType() {
-        return this.timeseriesType;
-    }
-
-    /**
-     * Set the timeseriesType property: The type of Timeseries.
-     *
-     * @param timeseriesType the timeseriesType value to set.
-     * @return the TimeseriesInner object itself.
-     */
-    public TimeseriesInner withTimeseriesType(TimeseriesType timeseriesType) {
-        this.timeseriesType = timeseriesType;
-        return this;
-    }
-
-    /**
-     * Get the country property: The country associated with the Timeseries. Values are country ISO codes as specified
-     * here- https://www.iso.org/iso-3166-country-codes.html.
-     *
-     * @return the country value.
-     */
-    public String country() {
-        return this.country;
-    }
-
-    /**
-     * Set the country property: The country associated with the Timeseries. Values are country ISO codes as specified
-     * here- https://www.iso.org/iso-3166-country-codes.html.
-     *
-     * @param country the country value to set.
-     * @return the TimeseriesInner object itself.
-     */
-    public TimeseriesInner withCountry(String country) {
-        this.country = country;
-        return this;
-    }
-
-    /**
-     * Get the timeseriesData property: The set of data points for the timeseries.
-     *
-     * @return the timeseriesData value.
-     */
-    public List<TimeseriesDataPoint> timeseriesData() {
-        return this.timeseriesData;
-    }
-
-    /**
-     * Set the timeseriesData property: The set of data points for the timeseries.
-     *
-     * @param timeseriesData the timeseriesData value to set.
-     * @return the TimeseriesInner object itself.
-     */
-    public TimeseriesInner withTimeseriesData(List<TimeseriesDataPoint> timeseriesData) {
-        this.timeseriesData = timeseriesData;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public TimeseriesInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TimeseriesInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -222,13 +105,226 @@ public class TimeseriesInner extends Resource {
     }
 
     /**
+     * Get the endpoint property: The endpoint associated with the Timeseries data point.
+     * 
+     * @return the endpoint value.
+     */
+    public String endpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpoint();
+    }
+
+    /**
+     * Set the endpoint property: The endpoint associated with the Timeseries data point.
+     * 
+     * @param endpoint the endpoint value to set.
+     * @return the TimeseriesInner object itself.
+     */
+    public TimeseriesInner withEndpoint(String endpoint) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TimeseriesProperties();
+        }
+        this.innerProperties().withEndpoint(endpoint);
+        return this;
+    }
+
+    /**
+     * Get the startDateTimeUtc property: The start DateTime of the Timeseries in UTC.
+     * 
+     * @return the startDateTimeUtc value.
+     */
+    public String startDateTimeUtc() {
+        return this.innerProperties() == null ? null : this.innerProperties().startDateTimeUtc();
+    }
+
+    /**
+     * Set the startDateTimeUtc property: The start DateTime of the Timeseries in UTC.
+     * 
+     * @param startDateTimeUtc the startDateTimeUtc value to set.
+     * @return the TimeseriesInner object itself.
+     */
+    public TimeseriesInner withStartDateTimeUtc(String startDateTimeUtc) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TimeseriesProperties();
+        }
+        this.innerProperties().withStartDateTimeUtc(startDateTimeUtc);
+        return this;
+    }
+
+    /**
+     * Get the endDateTimeUtc property: The end DateTime of the Timeseries in UTC.
+     * 
+     * @return the endDateTimeUtc value.
+     */
+    public String endDateTimeUtc() {
+        return this.innerProperties() == null ? null : this.innerProperties().endDateTimeUtc();
+    }
+
+    /**
+     * Set the endDateTimeUtc property: The end DateTime of the Timeseries in UTC.
+     * 
+     * @param endDateTimeUtc the endDateTimeUtc value to set.
+     * @return the TimeseriesInner object itself.
+     */
+    public TimeseriesInner withEndDateTimeUtc(String endDateTimeUtc) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TimeseriesProperties();
+        }
+        this.innerProperties().withEndDateTimeUtc(endDateTimeUtc);
+        return this;
+    }
+
+    /**
+     * Get the aggregationInterval property: The aggregation interval of the Timeseries.
+     * 
+     * @return the aggregationInterval value.
+     */
+    public AggregationInterval aggregationInterval() {
+        return this.innerProperties() == null ? null : this.innerProperties().aggregationInterval();
+    }
+
+    /**
+     * Set the aggregationInterval property: The aggregation interval of the Timeseries.
+     * 
+     * @param aggregationInterval the aggregationInterval value to set.
+     * @return the TimeseriesInner object itself.
+     */
+    public TimeseriesInner withAggregationInterval(AggregationInterval aggregationInterval) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TimeseriesProperties();
+        }
+        this.innerProperties().withAggregationInterval(aggregationInterval);
+        return this;
+    }
+
+    /**
+     * Get the timeseriesType property: The type of Timeseries.
+     * 
+     * @return the timeseriesType value.
+     */
+    public TimeseriesType timeseriesType() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeseriesType();
+    }
+
+    /**
+     * Set the timeseriesType property: The type of Timeseries.
+     * 
+     * @param timeseriesType the timeseriesType value to set.
+     * @return the TimeseriesInner object itself.
+     */
+    public TimeseriesInner withTimeseriesType(TimeseriesType timeseriesType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TimeseriesProperties();
+        }
+        this.innerProperties().withTimeseriesType(timeseriesType);
+        return this;
+    }
+
+    /**
+     * Get the country property: The country associated with the Timeseries. Values are country ISO codes as specified
+     * here- https://www.iso.org/iso-3166-country-codes.html.
+     * 
+     * @return the country value.
+     */
+    public String country() {
+        return this.innerProperties() == null ? null : this.innerProperties().country();
+    }
+
+    /**
+     * Set the country property: The country associated with the Timeseries. Values are country ISO codes as specified
+     * here- https://www.iso.org/iso-3166-country-codes.html.
+     * 
+     * @param country the country value to set.
+     * @return the TimeseriesInner object itself.
+     */
+    public TimeseriesInner withCountry(String country) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TimeseriesProperties();
+        }
+        this.innerProperties().withCountry(country);
+        return this;
+    }
+
+    /**
+     * Get the timeseriesData property: The set of data points for the timeseries.
+     * 
+     * @return the timeseriesData value.
+     */
+    public List<TimeseriesDataPoint> timeseriesData() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeseriesData();
+    }
+
+    /**
+     * Set the timeseriesData property: The set of data points for the timeseries.
+     * 
+     * @param timeseriesData the timeseriesData value to set.
+     * @return the TimeseriesInner object itself.
+     */
+    public TimeseriesInner withTimeseriesData(List<TimeseriesDataPoint> timeseriesData) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TimeseriesProperties();
+        }
+        this.innerProperties().withTimeseriesData(timeseriesData);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (timeseriesData() != null) {
-            timeseriesData().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TimeseriesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TimeseriesInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TimeseriesInner.
+     */
+    public static TimeseriesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TimeseriesInner deserializedTimeseriesInner = new TimeseriesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTimeseriesInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedTimeseriesInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTimeseriesInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedTimeseriesInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTimeseriesInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTimeseriesInner.innerProperties = TimeseriesProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTimeseriesInner;
+        });
     }
 }

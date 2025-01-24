@@ -17,20 +17,19 @@ public final class RegisteredIdentitiesImpl implements RegisteredIdentities {
 
     private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    public RegisteredIdentitiesImpl(
-        RegisteredIdentitiesClient innerClient,
+    public RegisteredIdentitiesImpl(RegisteredIdentitiesClient innerClient,
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String vaultName, String identityName) {
-        this.serviceClient().delete(resourceGroupName, vaultName, identityName);
+    public Response<Void> deleteWithResponse(String resourceGroupName, String vaultName, String identityName,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, vaultName, identityName, context);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String vaultName, String identityName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, vaultName, identityName, context);
+    public void delete(String resourceGroupName, String vaultName, String identityName) {
+        this.serviceClient().delete(resourceGroupName, vaultName, identityName);
     }
 
     private RegisteredIdentitiesClient serviceClient() {

@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ApiManagementService GetDomainOwnershipIdentifier. */
+/**
+ * Samples for ApiManagementService GetDomainOwnershipIdentifier.
+ */
 public final class ApiManagementServiceGetDomainOwnershipIdentifierSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementServiceGetDomainOwnershipIdentifier.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementServiceGetDomainOwnershipIdentifier.json
      */
     /**
      * Sample code: ApiManagementServiceGetDomainOwnershipIdentifier.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementServiceGetDomainOwnershipIdentifier(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.apiManagementServices().getDomainOwnershipIdentifierWithResponse(Context.NONE);
+        manager.apiManagementServices().getDomainOwnershipIdentifierWithResponse(com.azure.core.util.Context.NONE);
     }
 }

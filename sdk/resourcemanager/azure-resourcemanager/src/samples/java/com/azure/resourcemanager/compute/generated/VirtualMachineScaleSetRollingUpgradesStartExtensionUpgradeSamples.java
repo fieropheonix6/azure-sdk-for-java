@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualMachineScaleSetRollingUpgrades StartExtensionUpgrade. */
+/**
+ * Samples for VirtualMachineScaleSetRollingUpgrades StartExtensionUpgrade.
+ */
 public final class VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_RollingUpgrade.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_RollingUpgrade.json
      */
     /**
      * Sample code: Start an extension rolling upgrade.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void startAnExtensionRollingUpgrade(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetRollingUpgrades()
-            .startExtensionUpgrade("myResourceGroup", "{vmss-name}", Context.NONE);
+            .startExtensionUpgrade("myResourceGroup", "{vmss-name}", com.azure.core.util.Context.NONE);
     }
 }

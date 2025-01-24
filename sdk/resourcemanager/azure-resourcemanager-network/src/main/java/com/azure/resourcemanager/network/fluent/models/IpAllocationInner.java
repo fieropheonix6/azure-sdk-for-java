@@ -7,39 +7,53 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.IpAllocationType;
 import com.azure.resourcemanager.network.models.IpVersion;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** IpAllocation resource. */
+/**
+ * IpAllocation resource.
+ */
 @Fluent
 public final class IpAllocationInner extends Resource {
     /*
      * Properties of the IpAllocation.
      */
-    @JsonProperty(value = "properties")
     private IpAllocationPropertiesFormat innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of IpAllocationInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /**
+     * Creates an instance of IpAllocationInner class.
+     */
     public IpAllocationInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the IpAllocation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IpAllocationPropertiesFormat innerProperties() {
@@ -48,7 +62,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -57,7 +71,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -66,7 +80,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -75,14 +89,38 @@ public final class IpAllocationInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IpAllocationInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IpAllocationInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -91,7 +129,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the subnet property: The Subnet that using the prefix of this IpAllocation resource.
-     *
+     * 
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -100,7 +138,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the virtualNetwork property: The VirtualNetwork that using the prefix of this IpAllocation resource.
-     *
+     * 
      * @return the virtualNetwork value.
      */
     public SubResource virtualNetwork() {
@@ -109,7 +147,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the type property: The type for the IpAllocation.
-     *
+     * 
      * @return the type value.
      */
     public IpAllocationType typePropertiesType() {
@@ -118,7 +156,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the type property: The type for the IpAllocation.
-     *
+     * 
      * @param type the type value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -132,7 +170,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the prefix property: The address prefix for the IpAllocation.
-     *
+     * 
      * @return the prefix value.
      */
     public String prefix() {
@@ -141,7 +179,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the prefix property: The address prefix for the IpAllocation.
-     *
+     * 
      * @param prefix the prefix value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -155,7 +193,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the prefixLength property: The address prefix length for the IpAllocation.
-     *
+     * 
      * @return the prefixLength value.
      */
     public Integer prefixLength() {
@@ -164,7 +202,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the prefixLength property: The address prefix length for the IpAllocation.
-     *
+     * 
      * @param prefixLength the prefixLength value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -178,7 +216,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the prefixType property: The address prefix Type for the IpAllocation.
-     *
+     * 
      * @return the prefixType value.
      */
     public IpVersion prefixType() {
@@ -187,7 +225,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the prefixType property: The address prefix Type for the IpAllocation.
-     *
+     * 
      * @param prefixType the prefixType value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -201,7 +239,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the ipamAllocationId property: The IPAM allocation ID.
-     *
+     * 
      * @return the ipamAllocationId value.
      */
     public String ipamAllocationId() {
@@ -210,7 +248,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the ipamAllocationId property: The IPAM allocation ID.
-     *
+     * 
      * @param ipamAllocationId the ipamAllocationId value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -224,7 +262,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the allocationTags property: IpAllocation tags.
-     *
+     * 
      * @return the allocationTags value.
      */
     public Map<String, String> allocationTags() {
@@ -233,7 +271,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the allocationTags property: IpAllocation tags.
-     *
+     * 
      * @param allocationTags the allocationTags value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -247,12 +285,65 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpAllocationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpAllocationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IpAllocationInner.
+     */
+    public static IpAllocationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpAllocationInner deserializedIpAllocationInner = new IpAllocationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedIpAllocationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIpAllocationInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedIpAllocationInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIpAllocationInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIpAllocationInner.innerProperties = IpAllocationPropertiesFormat.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedIpAllocationInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedIpAllocationInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpAllocationInner;
+        });
     }
 }

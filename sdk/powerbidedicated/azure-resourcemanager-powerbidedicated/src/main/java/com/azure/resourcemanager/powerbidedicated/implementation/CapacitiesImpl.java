@@ -20,42 +20,37 @@ import com.azure.resourcemanager.powerbidedicated.models.CheckCapacityNameAvaila
 import com.azure.resourcemanager.powerbidedicated.models.DedicatedCapacity;
 import com.azure.resourcemanager.powerbidedicated.models.SkuEnumerationForExistingResourceResult;
 import com.azure.resourcemanager.powerbidedicated.models.SkuEnumerationForNewResourceResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CapacitiesImpl implements Capacities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacitiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CapacitiesImpl.class);
 
     private final CapacitiesClient innerClient;
 
     private final com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager serviceManager;
 
-    public CapacitiesImpl(
-        CapacitiesClient innerClient,
+    public CapacitiesImpl(CapacitiesClient innerClient,
         com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public DedicatedCapacity getByResourceGroup(String resourceGroupName, String dedicatedCapacityName) {
-        DedicatedCapacityInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, dedicatedCapacityName);
+    public Response<DedicatedCapacity> getByResourceGroupWithResponse(String resourceGroupName,
+        String dedicatedCapacityName, Context context) {
+        Response<DedicatedCapacityInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, dedicatedCapacityName, context);
         if (inner != null) {
-            return new DedicatedCapacityImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DedicatedCapacityImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<DedicatedCapacity> getByResourceGroupWithResponse(
-        String resourceGroupName, String dedicatedCapacityName, Context context) {
-        Response<DedicatedCapacityInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, dedicatedCapacityName, context);
+    public DedicatedCapacity getByResourceGroup(String resourceGroupName, String dedicatedCapacityName) {
+        DedicatedCapacityInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, dedicatedCapacityName);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new DedicatedCapacityImpl(inner.getValue(), this.manager()));
+            return new DedicatedCapacityImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -87,23 +82,33 @@ public final class CapacitiesImpl implements Capacities {
 
     public PagedIterable<DedicatedCapacity> listByResourceGroup(String resourceGroupName) {
         PagedIterable<DedicatedCapacityInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new DedicatedCapacityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedCapacityImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DedicatedCapacity> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<DedicatedCapacityInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new DedicatedCapacityImpl(inner1, this.manager()));
+        PagedIterable<DedicatedCapacityInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedCapacityImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DedicatedCapacity> list() {
         PagedIterable<DedicatedCapacityInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new DedicatedCapacityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedCapacityImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DedicatedCapacity> list(Context context) {
         PagedIterable<DedicatedCapacityInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new DedicatedCapacityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedCapacityImpl(inner1, this.manager()));
+    }
+
+    public Response<SkuEnumerationForNewResourceResult> listSkusWithResponse(Context context) {
+        Response<SkuEnumerationForNewResourceResultInner> inner = this.serviceClient().listSkusWithResponse(context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SkuEnumerationForNewResourceResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SkuEnumerationForNewResourceResult listSkus() {
@@ -115,23 +120,22 @@ public final class CapacitiesImpl implements Capacities {
         }
     }
 
-    public Response<SkuEnumerationForNewResourceResult> listSkusWithResponse(Context context) {
-        Response<SkuEnumerationForNewResourceResultInner> inner = this.serviceClient().listSkusWithResponse(context);
+    public Response<SkuEnumerationForExistingResourceResult> listSkusForCapacityWithResponse(String resourceGroupName,
+        String dedicatedCapacityName, Context context) {
+        Response<SkuEnumerationForExistingResourceResultInner> inner
+            = this.serviceClient().listSkusForCapacityWithResponse(resourceGroupName, dedicatedCapacityName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SkuEnumerationForNewResourceResultImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SkuEnumerationForExistingResourceResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public SkuEnumerationForExistingResourceResult listSkusForCapacity(
-        String resourceGroupName, String dedicatedCapacityName) {
-        SkuEnumerationForExistingResourceResultInner inner =
-            this.serviceClient().listSkusForCapacity(resourceGroupName, dedicatedCapacityName);
+    public SkuEnumerationForExistingResourceResult listSkusForCapacity(String resourceGroupName,
+        String dedicatedCapacityName) {
+        SkuEnumerationForExistingResourceResultInner inner
+            = this.serviceClient().listSkusForCapacity(resourceGroupName, dedicatedCapacityName);
         if (inner != null) {
             return new SkuEnumerationForExistingResourceResultImpl(inner, this.manager());
         } else {
@@ -139,25 +143,22 @@ public final class CapacitiesImpl implements Capacities {
         }
     }
 
-    public Response<SkuEnumerationForExistingResourceResult> listSkusForCapacityWithResponse(
-        String resourceGroupName, String dedicatedCapacityName, Context context) {
-        Response<SkuEnumerationForExistingResourceResultInner> inner =
-            this.serviceClient().listSkusForCapacityWithResponse(resourceGroupName, dedicatedCapacityName, context);
+    public Response<CheckCapacityNameAvailabilityResult> checkNameAvailabilityWithResponse(String location,
+        CheckCapacityNameAvailabilityParameters capacityParameters, Context context) {
+        Response<CheckCapacityNameAvailabilityResultInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(location, capacityParameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SkuEnumerationForExistingResourceResultImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CheckCapacityNameAvailabilityResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CheckCapacityNameAvailabilityResult checkNameAvailability(
-        String location, CheckCapacityNameAvailabilityParameters capacityParameters) {
-        CheckCapacityNameAvailabilityResultInner inner =
-            this.serviceClient().checkNameAvailability(location, capacityParameters);
+    public CheckCapacityNameAvailabilityResult checkNameAvailability(String location,
+        CheckCapacityNameAvailabilityParameters capacityParameters) {
+        CheckCapacityNameAvailabilityResultInner inner
+            = this.serviceClient().checkNameAvailability(location, capacityParameters);
         if (inner != null) {
             return new CheckCapacityNameAvailabilityResultImpl(inner, this.manager());
         } else {
@@ -165,93 +166,58 @@ public final class CapacitiesImpl implements Capacities {
         }
     }
 
-    public Response<CheckCapacityNameAvailabilityResult> checkNameAvailabilityWithResponse(
-        String location, CheckCapacityNameAvailabilityParameters capacityParameters, Context context) {
-        Response<CheckCapacityNameAvailabilityResultInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(location, capacityParameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CheckCapacityNameAvailabilityResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public DedicatedCapacity getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dedicatedCapacityName = Utils.getValueFromIdByName(id, "capacities");
+        String dedicatedCapacityName = ResourceManagerUtils.getValueFromIdByName(id, "capacities");
         if (dedicatedCapacityName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, dedicatedCapacityName, Context.NONE).getValue();
     }
 
     public Response<DedicatedCapacity> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dedicatedCapacityName = Utils.getValueFromIdByName(id, "capacities");
+        String dedicatedCapacityName = ResourceManagerUtils.getValueFromIdByName(id, "capacities");
         if (dedicatedCapacityName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, dedicatedCapacityName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dedicatedCapacityName = Utils.getValueFromIdByName(id, "capacities");
+        String dedicatedCapacityName = ResourceManagerUtils.getValueFromIdByName(id, "capacities");
         if (dedicatedCapacityName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
         }
         this.delete(resourceGroupName, dedicatedCapacityName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dedicatedCapacityName = Utils.getValueFromIdByName(id, "capacities");
+        String dedicatedCapacityName = ResourceManagerUtils.getValueFromIdByName(id, "capacities");
         if (dedicatedCapacityName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacities'.", id)));
         }
         this.delete(resourceGroupName, dedicatedCapacityName, context);
     }

@@ -11,27 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.fluent.models.StorageInsightInner;
 
-/** An instance of this class provides access to all the operations defined in StorageInsightConfigsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StorageInsightConfigsClient.
+ */
 public interface StorageInsightConfigsClient {
     /**
      * Create or update a storage insight.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param storageInsightName Name of the storageInsightsConfigs resource.
-     * @param parameters The parameters required to create or update a storage insight.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level storage insight resource container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageInsightInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String storageInsightName, StorageInsightInner parameters);
-
-    /**
-     * Create or update a storage insight.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -43,16 +29,44 @@ public interface StorageInsightConfigsClient {
      * @return the top level storage insight resource container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StorageInsightInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String storageInsightName,
-        StorageInsightInner parameters,
-        Context context);
+    Response<StorageInsightInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String storageInsightName, StorageInsightInner parameters, Context context);
+
+    /**
+     * Create or update a storage insight.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param storageInsightName Name of the storageInsightsConfigs resource.
+     * @param parameters The parameters required to create or update a storage insight.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the top level storage insight resource container.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StorageInsightInner createOrUpdate(String resourceGroupName, String workspaceName, String storageInsightName,
+        StorageInsightInner parameters);
 
     /**
      * Gets a storage insight instance.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param storageInsightName Name of the storageInsightsConfigs resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a storage insight instance along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<StorageInsightInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String storageInsightName, Context context);
+
+    /**
+     * Gets a storage insight instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -65,8 +79,8 @@ public interface StorageInsightConfigsClient {
     StorageInsightInner get(String resourceGroupName, String workspaceName, String storageInsightName);
 
     /**
-     * Gets a storage insight instance.
-     *
+     * Deletes a storageInsightsConfigs resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -74,15 +88,15 @@ public interface StorageInsightConfigsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a storage insight instance along with {@link Response}.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StorageInsightInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String storageInsightName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String storageInsightName,
+        Context context);
 
     /**
      * Deletes a storageInsightsConfigs resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
@@ -94,24 +108,8 @@ public interface StorageInsightConfigsClient {
     void delete(String resourceGroupName, String workspaceName, String storageInsightName);
 
     /**
-     * Deletes a storageInsightsConfigs resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param storageInsightName Name of the storageInsightsConfigs resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String storageInsightName, Context context);
-
-    /**
      * Lists the storage insight instances within a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -124,7 +122,7 @@ public interface StorageInsightConfigsClient {
 
     /**
      * Lists the storage insight instances within a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.

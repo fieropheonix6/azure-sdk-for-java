@@ -11,29 +11,28 @@ import com.azure.resourcemanager.peering.fluent.PeeringServiceCountriesClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServiceCountryInner;
 import com.azure.resourcemanager.peering.models.PeeringServiceCountries;
 import com.azure.resourcemanager.peering.models.PeeringServiceCountry;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PeeringServiceCountriesImpl implements PeeringServiceCountries {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringServiceCountriesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PeeringServiceCountriesImpl.class);
 
     private final PeeringServiceCountriesClient innerClient;
 
     private final com.azure.resourcemanager.peering.PeeringManager serviceManager;
 
-    public PeeringServiceCountriesImpl(
-        PeeringServiceCountriesClient innerClient, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    public PeeringServiceCountriesImpl(PeeringServiceCountriesClient innerClient,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<PeeringServiceCountry> list() {
         PagedIterable<PeeringServiceCountryInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new PeeringServiceCountryImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringServiceCountryImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PeeringServiceCountry> list(Context context) {
         PagedIterable<PeeringServiceCountryInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new PeeringServiceCountryImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringServiceCountryImpl(inner1, this.manager()));
     }
 
     private PeeringServiceCountriesClient serviceClient() {

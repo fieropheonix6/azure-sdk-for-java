@@ -79,11 +79,12 @@ class SparkE2EChangeFeedSplitITest
    hdfs.exists(new Path(latestOffsetFileLocation)) shouldEqual true
 
    hdfs.copyToLocalFile(true, new Path(latestOffsetFileLocation), new Path(startOffsetFileLocation))
+   hdfs.exists(new Path(latestOffsetFileLocation)) shouldEqual false
 
    val separateClient = new CosmosClientBuilder()
     .endpoint(cosmosEndpoint)
     .key(cosmosMasterKey)
-    .buildClient();
+    .buildClient()
 
    val initialThroughput = separateClient
     .getDatabase(cosmosDatabase)
@@ -92,7 +93,7 @@ class SparkE2EChangeFeedSplitITest
     .getProperties
     .getManualThroughput
 
-   val newThroughputToForceSplits = (Math.ceil(initialThroughput.toDouble / 6000) * 2 * 10000).toInt;
+   val newThroughputToForceSplits = (Math.ceil(initialThroughput.toDouble / 6000) * 2 * 10000).toInt
 
    val response = separateClient
     .getDatabase(cosmosDatabase)
@@ -109,7 +110,7 @@ class SparkE2EChangeFeedSplitITest
     var currentPartitionCount = separateClient
      .getDatabase(cosmosDatabase)
      .getContainer(cosmosContainer)
-     .getFeedRanges()
+     .getFeedRanges
      .size()
 
     while (currentPartitionCount < initialPartitionCount * 2) {
@@ -120,7 +121,7 @@ class SparkE2EChangeFeedSplitITest
      currentPartitionCount = separateClient
       .getDatabase(cosmosDatabase)
       .getContainer(cosmosContainer)
-      .getFeedRanges()
+      .getFeedRanges
       .size()
     }
 

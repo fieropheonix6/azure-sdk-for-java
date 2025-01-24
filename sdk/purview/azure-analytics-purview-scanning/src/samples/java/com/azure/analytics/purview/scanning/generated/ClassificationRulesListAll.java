@@ -13,12 +13,13 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ClassificationRulesListAll {
     public static void main(String[] args) {
-        ClassificationRulesClient client =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildClassificationRulesClient();
+        ClassificationRulesClient classificationRulesClient
+            = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildClassificationRulesClient();
+        // BEGIN:com.azure.analytics.purview.scanning.generated.classificationruleslistall.classificationruleslistall
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = client.listAll(requestOptions);
+        PagedIterable<BinaryData> response = classificationRulesClient.listAll(requestOptions);
+        // END:com.azure.analytics.purview.scanning.generated.classificationruleslistall.classificationruleslistall
     }
 }

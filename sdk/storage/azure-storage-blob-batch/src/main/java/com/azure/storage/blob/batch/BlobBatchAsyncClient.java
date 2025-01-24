@@ -34,8 +34,6 @@ import java.util.function.BiFunction;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * This class provides a client that contains all operations that apply to Azure Storage Blob batching.
@@ -56,12 +54,15 @@ public final class BlobBatchAsyncClient {
 
     BlobBatchAsyncClient(String clientUrl, HttpPipeline pipeline, BlobServiceVersion version, boolean containerScoped) {
         this.serviceVersion = version;
-        this.client = new AzureBlobStorageImplBuilder()
-            .url(clientUrl)
+        this.client = new AzureBlobStorageImplBuilder().url(clientUrl)
             .pipeline(pipeline)
             .version(version.getVersion())
             .buildClient();
         this.containerScoped = containerScoped;
+    }
+
+    AzureBlobStorageImpl getClient() {
+        return client;
     }
 
     /**
@@ -145,8 +146,7 @@ public final class BlobBatchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure) {
         try {
-            return withContext(context -> submitBatchWithResponse(batch, throwOnAnyFailure,
-                context));
+            return withContext(context -> submitBatchWithResponse(batch, throwOnAnyFailure, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -156,17 +156,18 @@ public final class BlobBatchAsyncClient {
         Context finalContext = context == null ? Context.NONE : context;
         return batch.prepareBlobBatchSubmission()
             .flatMap(batchOperationInfo -> containerScoped
-                ? client.getContainers().submitBatchWithResponseAsync(null,
-                batchOperationInfo.getContentLength(), batchOperationInfo.getContentType(),
-                Flux.fromIterable(batchOperationInfo.getBody()), null, null,
-                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-                .flatMap(response ->
-                    BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, LOGGER))
-                : client.getServices().submitBatchWithResponseAsync(batchOperationInfo.getContentLength(),
-                batchOperationInfo.getContentType(), Flux.fromIterable(batchOperationInfo.getBody()), null, null,
-                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-                .flatMap(response ->
-                    BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, LOGGER)));
+                ? client.getContainers()
+                    .submitBatchWithResponseAsync(null, batchOperationInfo.getContentLength(),
+                        batchOperationInfo.getContentType(), Flux.fromIterable(batchOperationInfo.getBody()), null,
+                        null, finalContext)
+                    .flatMap(response -> BlobBatchHelper.mapBatchResponse(batchOperationInfo, response,
+                        throwOnAnyFailure, LOGGER))
+                : client.getServices()
+                    .submitBatchWithResponseAsync(batchOperationInfo.getContentLength(),
+                        batchOperationInfo.getContentType(), Flux.fromIterable(batchOperationInfo.getBody()), null,
+                        null, finalContext)
+                    .flatMap(response -> BlobBatchHelper.mapBatchResponse(batchOperationInfo, response,
+                        throwOnAnyFailure, LOGGER)));
     }
 
     /**
@@ -206,8 +207,8 @@ public final class BlobBatchAsyncClient {
 
     PagedFlux<Response<Void>> deleteBlobsWithTimeout(List<String> blobUrls, DeleteSnapshotsOptionType deleteOptions,
         Duration timeout, Context context) {
-        return new PagedFlux<>(() ->
-            StorageImplUtils.applyOptionalTimeout(submitDeleteBlobsBatch(blobUrls, deleteOptions, context), timeout));
+        return new PagedFlux<>(() -> StorageImplUtils
+            .applyOptionalTimeout(submitDeleteBlobsBatch(blobUrls, deleteOptions, context), timeout));
     }
 
     private Mono<PagedResponse<Response<Void>>> submitDeleteBlobsBatch(List<String> blobUrls,
@@ -251,8 +252,8 @@ public final class BlobBatchAsyncClient {
 
     PagedFlux<Response<Void>> setBlobsAccessTierWithTimeout(List<String> blobUrls, AccessTier accessTier,
         Duration timeout, Context context) {
-        return new PagedFlux<>(() ->
-            StorageImplUtils.applyOptionalTimeout(submitSetTierBatch(blobUrls, accessTier, context), timeout));
+        return new PagedFlux<>(
+            () -> StorageImplUtils.applyOptionalTimeout(submitSetTierBatch(blobUrls, accessTier, context), timeout));
     }
 
     private Mono<PagedResponse<Response<Void>>> submitSetTierBatch(List<String> blobUrls, AccessTier accessTier,
@@ -273,8 +274,7 @@ public final class BlobBatchAsyncClient {
             responses.add(generator.apply(batch, blobUrl));
         }
 
-        return submitBatchWithResponse(batch, true, context)
-            .map(response -> initPagedResponse(responses, response));
+        return submitBatchWithResponse(batch, true, context).map(response -> initPagedResponse(responses, response));
     }
 
     private <T> PagedResponse<Response<T>> initPagedResponse(List<Response<T>> values, Response<?> response) {

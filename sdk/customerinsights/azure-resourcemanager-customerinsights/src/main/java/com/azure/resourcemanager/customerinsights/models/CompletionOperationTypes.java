@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.customerinsights.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for CompletionOperationTypes. */
+/**
+ * The type of completion operation.
+ */
 public enum CompletionOperationTypes {
-    /** Enum value DoNothing. */
+    /**
+     * Enum value DoNothing.
+     */
     DO_NOTHING("DoNothing"),
 
-    /** Enum value DeleteFile. */
+    /**
+     * Enum value DeleteFile.
+     */
     DELETE_FILE("DeleteFile"),
 
-    /** Enum value MoveFile. */
+    /**
+     * Enum value MoveFile.
+     */
     MOVE_FILE("MoveFile");
 
-    /** The actual serialized value for a CompletionOperationTypes instance. */
+    /**
+     * The actual serialized value for a CompletionOperationTypes instance.
+     */
     private final String value;
 
     CompletionOperationTypes(String value) {
@@ -27,12 +34,14 @@ public enum CompletionOperationTypes {
 
     /**
      * Parses a serialized value to a CompletionOperationTypes instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed CompletionOperationTypes object, or null if unable to parse.
      */
-    @JsonCreator
     public static CompletionOperationTypes fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CompletionOperationTypes[] items = CompletionOperationTypes.values();
         for (CompletionOperationTypes item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +51,9 @@ public enum CompletionOperationTypes {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

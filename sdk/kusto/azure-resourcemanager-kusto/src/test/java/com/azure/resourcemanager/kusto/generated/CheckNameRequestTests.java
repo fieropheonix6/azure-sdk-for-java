@@ -8,25 +8,24 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.CheckNameRequest;
 import com.azure.resourcemanager.kusto.models.Type;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CheckNameRequestTests {
-    @Test
-    public void testDeserialize() {
-        CheckNameRequest model =
-            BinaryData
-                .fromString("{\"name\":\"fcnj\",\"type\":\"Microsoft.Kusto/clusters/databases\"}")
-                .toObject(CheckNameRequest.class);
-        Assertions.assertEquals("fcnj", model.name());
-        Assertions.assertEquals(Type.MICROSOFT_KUSTO_CLUSTERS_DATABASES, model.type());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CheckNameRequest model = BinaryData
+            .fromString(
+                "{\"name\":\"pdggkzzlvm\",\"type\":\"Microsoft.Kusto/clusters/attachedDatabaseConfigurations\"}")
+            .toObject(CheckNameRequest.class);
+        Assertions.assertEquals("pdggkzzlvm", model.name());
+        Assertions.assertEquals(Type.MICROSOFT_KUSTO_CLUSTERS_ATTACHED_DATABASE_CONFIGURATIONS, model.type());
     }
 
-    @Test
-    public void testSerialize() {
-        CheckNameRequest model =
-            new CheckNameRequest().withName("fcnj").withType(Type.MICROSOFT_KUSTO_CLUSTERS_DATABASES);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CheckNameRequest model = new CheckNameRequest().withName("pdggkzzlvm")
+            .withType(Type.MICROSOFT_KUSTO_CLUSTERS_ATTACHED_DATABASE_CONFIGURATIONS);
         model = BinaryData.fromObject(model).toObject(CheckNameRequest.class);
-        Assertions.assertEquals("fcnj", model.name());
-        Assertions.assertEquals(Type.MICROSOFT_KUSTO_CLUSTERS_DATABASES, model.type());
+        Assertions.assertEquals("pdggkzzlvm", model.name());
+        Assertions.assertEquals(Type.MICROSOFT_KUSTO_CLUSTERS_ATTACHED_DATABASE_CONFIGURATIONS, model.type());
     }
 }

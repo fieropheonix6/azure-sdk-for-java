@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.orbital.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Direction. */
+/**
+ * Direction (Uplink or Downlink).
+ */
 public final class Direction extends ExpandableStringEnum<Direction> {
-    /** Static value uplink for Direction. */
-    public static final Direction UPLINK = fromString("uplink");
+    /**
+     * Static value Uplink for Direction.
+     */
+    public static final Direction UPLINK = fromString("Uplink");
 
-    /** Static value downlink for Direction. */
-    public static final Direction DOWNLINK = fromString("downlink");
+    /**
+     * Static value Downlink for Direction.
+     */
+    public static final Direction DOWNLINK = fromString("Downlink");
+
+    /**
+     * Creates a new instance of Direction value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Direction() {
+    }
 
     /**
      * Creates or finds a Direction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Direction.
      */
-    @JsonCreator
     public static Direction fromString(String name) {
         return fromString(name, Direction.class);
     }
 
     /**
      * Gets known Direction values.
-     *
+     * 
      * @return known Direction values.
      */
     public static Collection<Direction> values() {

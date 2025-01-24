@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies the disallowed configuration for a virtual machine image. */
+/**
+ * Specifies the disallowed configuration for a virtual machine image.
+ */
 @Fluent
-public final class DisallowedConfiguration {
+public final class DisallowedConfiguration implements JsonSerializable<DisallowedConfiguration> {
     /*
      * VM disk types which are disallowed.
      */
-    @JsonProperty(value = "vmDiskType")
     private VmDiskTypes vmDiskType;
 
-    /** Creates an instance of DisallowedConfiguration class. */
+    /**
+     * Creates an instance of DisallowedConfiguration class.
+     */
     public DisallowedConfiguration() {
     }
 
     /**
      * Get the vmDiskType property: VM disk types which are disallowed.
-     *
+     * 
      * @return the vmDiskType value.
      */
     public VmDiskTypes vmDiskType() {
@@ -31,7 +38,7 @@ public final class DisallowedConfiguration {
 
     /**
      * Set the vmDiskType property: VM disk types which are disallowed.
-     *
+     * 
      * @param vmDiskType the vmDiskType value to set.
      * @return the DisallowedConfiguration object itself.
      */
@@ -42,9 +49,45 @@ public final class DisallowedConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vmDiskType", this.vmDiskType == null ? null : this.vmDiskType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DisallowedConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DisallowedConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DisallowedConfiguration.
+     */
+    public static DisallowedConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DisallowedConfiguration deserializedDisallowedConfiguration = new DisallowedConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vmDiskType".equals(fieldName)) {
+                    deserializedDisallowedConfiguration.vmDiskType = VmDiskTypes.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDisallowedConfiguration;
+        });
     }
 }

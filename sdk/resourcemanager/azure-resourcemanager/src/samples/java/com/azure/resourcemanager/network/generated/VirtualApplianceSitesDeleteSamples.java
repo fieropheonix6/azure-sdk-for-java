@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualApplianceSites Delete. */
+/**
+ * Samples for VirtualApplianceSites Delete.
+ */
 public final class VirtualApplianceSitesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkVirtualApplianceSiteDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * NetworkVirtualApplianceSiteDelete.json
      */
     /**
      * Sample code: Delete Network Virtual Appliance Site.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteNetworkVirtualApplianceSite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getVirtualApplianceSites()
-            .delete("rg1", "nva", "site1", Context.NONE);
+            .delete("rg1", "nva", "site1", com.azure.core.util.Context.NONE);
     }
 }

@@ -3,24 +3,20 @@
 
 package com.azure.security.confidentialledger;
 
-import java.io.IOException;
-
-import org.junit.jupiter.api.Assertions;
-
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.models.JsonObject;
+import com.azure.json.models.JsonString;
 
 public class PostLedgerEntrySample {
     public static void main(String[] args) {
-        ConfidentialLedgerClient confidentialLedgerClient =
-                new ConfidentialLedgerClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
-                        .buildClient();
+        ConfidentialLedgerClient confidentialLedgerClient = new ConfidentialLedgerClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
+            .buildClient();
         BinaryData entry = BinaryData.fromString("{\"contents\":\"New ledger entry contents.\"}");
 
         // optionally, you can define a collection id (here, the collectionId is 2):
@@ -30,36 +26,22 @@ public class PostLedgerEntrySample {
 
         BinaryData parsedResponse = response.getValue();
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode responseBodyJson = null;
-
-        try {
-            
-            responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-            Assertions.assertTrue(false);
-        }
-
-        String collectionId = responseBodyJson.get("collectionId").asText();
+        JsonObject responseBodyJson = parsedResponse.toObject(JsonObject.class);
+        String collectionId = ((JsonString) responseBodyJson.getProperty("collectionId")).getValue();
 
         // you can use the transaction id to get the transaction status
-        String transactionId = response.getHeaders().get("x-ms-ccf-transaction-id").getValue();
+        String transactionId = response.getHeaders()
+            .get(HttpHeaderName.fromString("x-ms-ccf-transaction-id"))
+            .getValue();
 
         requestOptions = new RequestOptions();
         // the transactionId can be retrieved after posting to a ledger (see PostLedgerEntry.java)
-        Response<BinaryData> transactionResponse = confidentialLedgerClient.getTransactionStatusWithResponse(transactionId, requestOptions);
-    
-        JsonNode transactionResponseBodyJson = null;
+        Response<BinaryData> transactionResponse = confidentialLedgerClient.getTransactionStatusWithResponse(
+            transactionId, requestOptions);
 
-        try {
-            transactionResponseBodyJson = objectMapper.readTree(transactionResponse.getValue().toBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-            Assertions.assertTrue(false);
-        }
-
-        String responseTransactionId = transactionResponseBodyJson.get("transactionId").asText();
+        JsonObject transactionResponseBodyJson = transactionResponse.getValue().toObject(JsonObject.class);
+        String responseTransactionId = ((JsonString) transactionResponseBodyJson.getProperty("transactionId"))
+            .getValue();
         Integer statusCode = transactionResponse.getStatusCode();
     }
 }

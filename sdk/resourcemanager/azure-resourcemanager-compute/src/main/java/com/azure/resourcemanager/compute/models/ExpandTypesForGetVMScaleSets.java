@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpandTypesForGetVMScaleSets. */
+/**
+ * Defines values for ExpandTypesForGetVMScaleSets.
+ */
 public final class ExpandTypesForGetVMScaleSets extends ExpandableStringEnum<ExpandTypesForGetVMScaleSets> {
-    /** Static value userData for ExpandTypesForGetVMScaleSets. */
+    /**
+     * Static value userData for ExpandTypesForGetVMScaleSets.
+     */
     public static final ExpandTypesForGetVMScaleSets USER_DATA = fromString("userData");
 
     /**
+     * Creates a new instance of ExpandTypesForGetVMScaleSets value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpandTypesForGetVMScaleSets() {
+    }
+
+    /**
      * Creates or finds a ExpandTypesForGetVMScaleSets from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExpandTypesForGetVMScaleSets.
      */
-    @JsonCreator
     public static ExpandTypesForGetVMScaleSets fromString(String name) {
         return fromString(name, ExpandTypesForGetVMScaleSets.class);
     }
 
     /**
      * Gets known ExpandTypesForGetVMScaleSets values.
-     *
+     * 
      * @return known ExpandTypesForGetVMScaleSets values.
      */
     public static Collection<ExpandTypesForGetVMScaleSets> values() {

@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The type of identity used for the Batch Pool. */
+/**
+ * The type of identity used for the Batch Pool.
+ */
 public enum PoolIdentityType {
-    /** Enum value UserAssigned. */
+    /**
+     * Enum value UserAssigned.
+     */
     USER_ASSIGNED("UserAssigned"),
 
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None");
 
-    /** The actual serialized value for a PoolIdentityType instance. */
+    /**
+     * The actual serialized value for a PoolIdentityType instance.
+     */
     private final String value;
 
     PoolIdentityType(String value) {
@@ -24,11 +29,10 @@ public enum PoolIdentityType {
 
     /**
      * Parses a serialized value to a PoolIdentityType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed PoolIdentityType object, or null if unable to parse.
      */
-    @JsonCreator
     public static PoolIdentityType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum PoolIdentityType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

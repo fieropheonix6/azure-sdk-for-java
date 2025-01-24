@@ -9,16 +9,13 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.AzureIaaSvmJobTas
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureIaaSvmJobTaskDetailsTests {
-    @Test
-    public void testDeserialize() {
-        AzureIaaSvmJobTaskDetails model =
-            BinaryData
-                .fromString(
-                    "{\"taskId\":\"lyoupfgfbkju\",\"startTime\":\"2021-04-30T06:19:59Z\",\"endTime\":\"2021-05-02T14:41:51Z\",\"instanceId\":\"fminsgowzf\",\"duration\":\"PT64H45M57S\",\"status\":\"t\",\"progressPercentage\":21.873740552777832,\"taskExecutionDetails\":\"bqactxtgzukx\"}")
-                .toObject(AzureIaaSvmJobTaskDetails.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureIaaSvmJobTaskDetails model = BinaryData.fromString(
+            "{\"taskId\":\"lyoupfgfbkju\",\"startTime\":\"2021-04-30T06:19:59Z\",\"endTime\":\"2021-05-02T14:41:51Z\",\"instanceId\":\"fminsgowzf\",\"duration\":\"PT64H45M57S\",\"status\":\"t\",\"progressPercentage\":21.873740552777832,\"taskExecutionDetails\":\"bqactxtgzukx\"}")
+            .toObject(AzureIaaSvmJobTaskDetails.class);
         Assertions.assertEquals("lyoupfgfbkju", model.taskId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T06:19:59Z"), model.startTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-05-02T14:41:51Z"), model.endTime());
@@ -29,18 +26,16 @@ public final class AzureIaaSvmJobTaskDetailsTests {
         Assertions.assertEquals("bqactxtgzukx", model.taskExecutionDetails());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureIaaSvmJobTaskDetails model =
-            new AzureIaaSvmJobTaskDetails()
-                .withTaskId("lyoupfgfbkju")
-                .withStartTime(OffsetDateTime.parse("2021-04-30T06:19:59Z"))
-                .withEndTime(OffsetDateTime.parse("2021-05-02T14:41:51Z"))
-                .withInstanceId("fminsgowzf")
-                .withDuration(Duration.parse("PT64H45M57S"))
-                .withStatus("t")
-                .withProgressPercentage(21.873740552777832D)
-                .withTaskExecutionDetails("bqactxtgzukx");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureIaaSvmJobTaskDetails model = new AzureIaaSvmJobTaskDetails().withTaskId("lyoupfgfbkju")
+            .withStartTime(OffsetDateTime.parse("2021-04-30T06:19:59Z"))
+            .withEndTime(OffsetDateTime.parse("2021-05-02T14:41:51Z"))
+            .withInstanceId("fminsgowzf")
+            .withDuration(Duration.parse("PT64H45M57S"))
+            .withStatus("t")
+            .withProgressPercentage(21.873740552777832D)
+            .withTaskExecutionDetails("bqactxtgzukx");
         model = BinaryData.fromObject(model).toObject(AzureIaaSvmJobTaskDetails.class);
         Assertions.assertEquals("lyoupfgfbkju", model.taskId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T06:19:59Z"), model.startTime());

@@ -5,30 +5,87 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.MSDeployProvisioningState;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** MSDeploy ARM response. */
+/**
+ * MSDeploy ARM response.
+ */
 @Fluent
 public final class MSDeployStatusInner extends ProxyOnlyResource {
     /*
      * MSDeployStatus resource specific properties
      */
-    @JsonProperty(value = "properties")
     private MSDeployStatusProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MSDeployStatusInner class.
+     */
+    public MSDeployStatusInner() {
+    }
 
     /**
      * Get the innerProperties property: MSDeployStatus resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MSDeployStatusProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MSDeployStatusInner withKind(String kind) {
         super.withKind(kind);
@@ -37,7 +94,7 @@ public final class MSDeployStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the deployer property: Username of deployer.
-     *
+     * 
      * @return the deployer value.
      */
     public String deployer() {
@@ -46,7 +103,7 @@ public final class MSDeployStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public MSDeployProvisioningState provisioningState() {
@@ -55,7 +112,7 @@ public final class MSDeployStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the startTime property: Start time of deploy operation.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -64,7 +121,7 @@ public final class MSDeployStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the endTime property: End time of deploy operation.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -73,7 +130,7 @@ public final class MSDeployStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the complete property: Whether the deployment operation has completed.
-     *
+     * 
      * @return the complete value.
      */
     public Boolean complete() {
@@ -82,14 +139,59 @@ public final class MSDeployStatusInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MSDeployStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MSDeployStatusInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MSDeployStatusInner.
+     */
+    public static MSDeployStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MSDeployStatusInner deserializedMSDeployStatusInner = new MSDeployStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMSDeployStatusInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMSDeployStatusInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMSDeployStatusInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedMSDeployStatusInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMSDeployStatusInner.innerProperties = MSDeployStatusProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMSDeployStatusInner;
+        });
     }
 }

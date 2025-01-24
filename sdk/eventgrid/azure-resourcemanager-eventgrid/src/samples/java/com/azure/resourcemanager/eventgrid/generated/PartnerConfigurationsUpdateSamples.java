@@ -4,32 +4,33 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.models.PartnerConfigurationUpdateParameters;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for PartnerConfigurations Update. */
+/**
+ * Samples for PartnerConfigurations Update.
+ */
 public final class PartnerConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerConfigurations_Update.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * PartnerConfigurations_Update.json
      */
     /**
      * Sample code: PartnerConfigurations_Update.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void partnerConfigurationsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .partnerConfigurations()
-            .update(
-                "examplerg",
-                new PartnerConfigurationUpdateParameters()
-                    .withTags(mapOf("tag1", "value11", "tag2", "value22"))
+        manager.partnerConfigurations()
+            .update("examplerg",
+                new PartnerConfigurationUpdateParameters().withTags(mapOf("tag1", "value11", "tag2", "value22"))
                     .withDefaultMaximumExpirationTimeInDays(100),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -9,33 +9,27 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.DiskExclusionProp
 import com.azure.resourcemanager.recoveryservicesbackup.models.ExtendedProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ExtendedPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        ExtendedProperties model =
-            BinaryData
-                .fromString(
-                    "{\"diskExclusionProperties\":{\"diskLunList\":[1393141923,901267810,1041320877],\"isInclusionList\":false},\"linuxVmApplicationName\":\"jfutacoebj\"}")
-                .toObject(ExtendedProperties.class);
-        Assertions.assertEquals(1393141923, model.diskExclusionProperties().diskLunList().get(0));
-        Assertions.assertEquals(false, model.diskExclusionProperties().isInclusionList());
-        Assertions.assertEquals("jfutacoebj", model.linuxVmApplicationName());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ExtendedProperties model = BinaryData.fromString(
+            "{\"diskExclusionProperties\":{\"diskLunList\":[930110171,785261284,567909298,1272205160],\"isInclusionList\":true},\"linuxVmApplicationName\":\"wpklvxw\"}")
+            .toObject(ExtendedProperties.class);
+        Assertions.assertEquals(930110171, model.diskExclusionProperties().diskLunList().get(0));
+        Assertions.assertEquals(true, model.diskExclusionProperties().isInclusionList());
+        Assertions.assertEquals("wpklvxw", model.linuxVmApplicationName());
     }
 
-    @Test
-    public void testSerialize() {
-        ExtendedProperties model =
-            new ExtendedProperties()
-                .withDiskExclusionProperties(
-                    new DiskExclusionProperties()
-                        .withDiskLunList(Arrays.asList(1393141923, 901267810, 1041320877))
-                        .withIsInclusionList(false))
-                .withLinuxVmApplicationName("jfutacoebj");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ExtendedProperties model = new ExtendedProperties().withDiskExclusionProperties(
+            new DiskExclusionProperties().withDiskLunList(Arrays.asList(930110171, 785261284, 567909298, 1272205160))
+                .withIsInclusionList(true))
+            .withLinuxVmApplicationName("wpklvxw");
         model = BinaryData.fromObject(model).toObject(ExtendedProperties.class);
-        Assertions.assertEquals(1393141923, model.diskExclusionProperties().diskLunList().get(0));
-        Assertions.assertEquals(false, model.diskExclusionProperties().isInclusionList());
-        Assertions.assertEquals("jfutacoebj", model.linuxVmApplicationName());
+        Assertions.assertEquals(930110171, model.diskExclusionProperties().diskLunList().get(0));
+        Assertions.assertEquals(true, model.diskExclusionProperties().isInclusionList());
+        Assertions.assertEquals("wpklvxw", model.linuxVmApplicationName());
     }
 }

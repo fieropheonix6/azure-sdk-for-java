@@ -5,29 +5,49 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StorageLimitExceededBehavior. */
+/**
+ * The behavior the Time Series Insights service should take when the environment's capacity has been exceeded. If
+ * "PauseIngress" is specified, new events will not be read from the event source. If "PurgeOldData" is specified, new
+ * events will continue to be read and old events will be deleted from the environment. The default behavior is
+ * PurgeOldData.
+ */
 public final class StorageLimitExceededBehavior extends ExpandableStringEnum<StorageLimitExceededBehavior> {
-    /** Static value PurgeOldData for StorageLimitExceededBehavior. */
+    /**
+     * Static value PurgeOldData for StorageLimitExceededBehavior.
+     */
     public static final StorageLimitExceededBehavior PURGE_OLD_DATA = fromString("PurgeOldData");
 
-    /** Static value PauseIngress for StorageLimitExceededBehavior. */
+    /**
+     * Static value PauseIngress for StorageLimitExceededBehavior.
+     */
     public static final StorageLimitExceededBehavior PAUSE_INGRESS = fromString("PauseIngress");
 
     /**
+     * Creates a new instance of StorageLimitExceededBehavior value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageLimitExceededBehavior() {
+    }
+
+    /**
      * Creates or finds a StorageLimitExceededBehavior from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageLimitExceededBehavior.
      */
-    @JsonCreator
     public static StorageLimitExceededBehavior fromString(String name) {
         return fromString(name, StorageLimitExceededBehavior.class);
     }
 
-    /** @return known StorageLimitExceededBehavior values. */
+    /**
+     * Gets known StorageLimitExceededBehavior values.
+     * 
+     * @return known StorageLimitExceededBehavior values.
+     */
     public static Collection<StorageLimitExceededBehavior> values() {
         return values(StorageLimitExceededBehavior.class);
     }

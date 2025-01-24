@@ -5,46 +5,71 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
+import com.azure.resourcemanager.datafactory.models.AzureSqlDWAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.datafactory.models.SqlServerBaseLinkedServiceTypeProperties;
+import java.io.IOException;
 
-/** Azure SQL Data Warehouse linked service properties. */
+/**
+ * Azure SQL Data Warehouse linked service properties.
+ */
 @Fluent
-public final class AzureSqlDWLinkedServiceTypeProperties {
+public final class AzureSqlDWLinkedServiceTypeProperties extends SqlServerBaseLinkedServiceTypeProperties {
     /*
      * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
+
+    /*
+     * The type used for authentication. Type: string.
+     */
+    private AzureSqlDWAuthenticationType authenticationType;
+
+    /*
+     * The user name to be used when connecting to server. Type: string (or Expression with resultType string).
+     */
+    private Object username;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
-    @JsonProperty(value = "password")
     private AzureKeyVaultSecretReference password;
 
     /*
      * The ID of the service principal used to authenticate against Azure SQL Data Warehouse. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The key of the service principal used to authenticate against Azure SQL Data Warehouse.
      */
-    @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
+
+    /*
+     * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
+     * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
+     */
+    private Object servicePrincipalCredentialType;
+
+    /*
+     * The credential of the service principal object in Azure Active Directory. If servicePrincipalCredentialType is
+     * 'ServicePrincipalKey', servicePrincipalCredential can be SecureString or AzureKeyVaultSecretReference. If
+     * servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be
+     * AzureKeyVaultSecretReference.
+     */
+    private SecretBase servicePrincipalCredential;
 
     /*
      * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
@@ -52,30 +77,29 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
      * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "azureCloudType")
     private Object azureCloudType;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
      */
-    @JsonProperty(value = "credential")
     private CredentialReference credential;
 
-    /** Creates an instance of AzureSqlDWLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of AzureSqlDWLinkedServiceTypeProperties class.
+     */
     public AzureSqlDWLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -85,7 +109,7 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
     /**
      * Set the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the AzureSqlDWLinkedServiceTypeProperties object itself.
      */
@@ -95,8 +119,51 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
     }
 
     /**
+     * Get the authenticationType property: The type used for authentication. Type: string.
+     * 
+     * @return the authenticationType value.
+     */
+    public AzureSqlDWAuthenticationType authenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: The type used for authentication. Type: string.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the AzureSqlDWLinkedServiceTypeProperties object itself.
+     */
+    public AzureSqlDWLinkedServiceTypeProperties
+        withAuthenticationType(AzureSqlDWAuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
+        return this;
+    }
+
+    /**
+     * Get the username property: The user name to be used when connecting to server. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @return the username value.
+     */
+    public Object username() {
+        return this.username;
+    }
+
+    /**
+     * Set the username property: The user name to be used when connecting to server. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @param username the username value to set.
+     * @return the AzureSqlDWLinkedServiceTypeProperties object itself.
+     */
+    public AzureSqlDWLinkedServiceTypeProperties withUsername(Object username) {
+        this.username = username;
+        return this;
+    }
+
+    /**
      * Get the password property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @return the password value.
      */
     public AzureKeyVaultSecretReference password() {
@@ -105,7 +172,7 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
 
     /**
      * Set the password property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @param password the password value to set.
      * @return the AzureSqlDWLinkedServiceTypeProperties object itself.
      */
@@ -117,7 +184,7 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
     /**
      * Get the servicePrincipalId property: The ID of the service principal used to authenticate against Azure SQL Data
      * Warehouse. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object servicePrincipalId() {
@@ -127,7 +194,7 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
     /**
      * Set the servicePrincipalId property: The ID of the service principal used to authenticate against Azure SQL Data
      * Warehouse. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the AzureSqlDWLinkedServiceTypeProperties object itself.
      */
@@ -139,7 +206,7 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
     /**
      * Get the servicePrincipalKey property: The key of the service principal used to authenticate against Azure SQL
      * Data Warehouse.
-     *
+     * 
      * @return the servicePrincipalKey value.
      */
     public SecretBase servicePrincipalKey() {
@@ -149,7 +216,7 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
     /**
      * Set the servicePrincipalKey property: The key of the service principal used to authenticate against Azure SQL
      * Data Warehouse.
-     *
+     * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureSqlDWLinkedServiceTypeProperties object itself.
      */
@@ -159,9 +226,60 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
     }
 
     /**
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @return the servicePrincipalCredentialType value.
+     */
+    public Object servicePrincipalCredentialType() {
+        return this.servicePrincipalCredentialType;
+    }
+
+    /**
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
+     * @return the AzureSqlDWLinkedServiceTypeProperties object itself.
+     */
+    public AzureSqlDWLinkedServiceTypeProperties
+        withServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
+        this.servicePrincipalCredentialType = servicePrincipalCredentialType;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalCredential property: The credential of the service principal object in Azure Active
+     * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
+     * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
+     * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
+     * 
+     * @return the servicePrincipalCredential value.
+     */
+    public SecretBase servicePrincipalCredential() {
+        return this.servicePrincipalCredential;
+    }
+
+    /**
+     * Set the servicePrincipalCredential property: The credential of the service principal object in Azure Active
+     * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
+     * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
+     * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
+     * 
+     * @param servicePrincipalCredential the servicePrincipalCredential value to set.
+     * @return the AzureSqlDWLinkedServiceTypeProperties object itself.
+     */
+    public AzureSqlDWLinkedServiceTypeProperties withServicePrincipalCredential(SecretBase servicePrincipalCredential) {
+        this.servicePrincipalCredential = servicePrincipalCredential;
+        return this;
+    }
+
+    /**
      * Get the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the tenant value.
      */
     public Object tenant() {
@@ -171,7 +289,7 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
     /**
      * Set the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param tenant the tenant value to set.
      * @return the AzureSqlDWLinkedServiceTypeProperties object itself.
      */
@@ -184,7 +302,7 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
      * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
      * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the azureCloudType value.
      */
     public Object azureCloudType() {
@@ -195,7 +313,7 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
      * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
      * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param azureCloudType the azureCloudType value to set.
      * @return the AzureSqlDWLinkedServiceTypeProperties object itself.
      */
@@ -206,29 +324,29 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureSqlDWLinkedServiceTypeProperties object itself.
      */
-    public AzureSqlDWLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public AzureSqlDWLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Get the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @return the credential value.
      */
     public CredentialReference credential() {
@@ -237,7 +355,7 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
 
     /**
      * Set the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the AzureSqlDWLinkedServiceTypeProperties object itself.
      */
@@ -247,27 +365,327 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withServer(Object server) {
+        super.withServer(server);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withDatabase(Object database) {
+        super.withDatabase(database);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withEncrypt(Object encrypt) {
+        super.withEncrypt(encrypt);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withTrustServerCertificate(Object trustServerCertificate) {
+        super.withTrustServerCertificate(trustServerCertificate);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withHostnameInCertificate(Object hostnameInCertificate) {
+        super.withHostnameInCertificate(hostnameInCertificate);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withApplicationIntent(Object applicationIntent) {
+        super.withApplicationIntent(applicationIntent);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withConnectTimeout(Object connectTimeout) {
+        super.withConnectTimeout(connectTimeout);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withConnectRetryCount(Object connectRetryCount) {
+        super.withConnectRetryCount(connectRetryCount);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withConnectRetryInterval(Object connectRetryInterval) {
+        super.withConnectRetryInterval(connectRetryInterval);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withLoadBalanceTimeout(Object loadBalanceTimeout) {
+        super.withLoadBalanceTimeout(loadBalanceTimeout);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withCommandTimeout(Object commandTimeout) {
+        super.withCommandTimeout(commandTimeout);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withIntegratedSecurity(Object integratedSecurity) {
+        super.withIntegratedSecurity(integratedSecurity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withFailoverPartner(Object failoverPartner) {
+        super.withFailoverPartner(failoverPartner);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withMaxPoolSize(Object maxPoolSize) {
+        super.withMaxPoolSize(maxPoolSize);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withMinPoolSize(Object minPoolSize) {
+        super.withMinPoolSize(minPoolSize);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withMultipleActiveResultSets(Object multipleActiveResultSets) {
+        super.withMultipleActiveResultSets(multipleActiveResultSets);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withMultiSubnetFailover(Object multiSubnetFailover) {
+        super.withMultiSubnetFailover(multiSubnetFailover);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withPacketSize(Object packetSize) {
+        super.withPacketSize(packetSize);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureSqlDWLinkedServiceTypeProperties withPooling(Object pooling) {
+        super.withPooling(pooling);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (connectionString() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property connectionString in model AzureSqlDWLinkedServiceTypeProperties"));
-        }
         if (password() != null) {
             password().validate();
         }
         if (servicePrincipalKey() != null) {
             servicePrincipalKey().validate();
         }
+        if (servicePrincipalCredential() != null) {
+            servicePrincipalCredential().validate();
+        }
         if (credential() != null) {
             credential().validate();
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(AzureSqlDWLinkedServiceTypeProperties.class);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("server", server());
+        jsonWriter.writeUntypedField("database", database());
+        jsonWriter.writeUntypedField("encrypt", encrypt());
+        jsonWriter.writeUntypedField("trustServerCertificate", trustServerCertificate());
+        jsonWriter.writeUntypedField("hostNameInCertificate", hostnameInCertificate());
+        jsonWriter.writeUntypedField("applicationIntent", applicationIntent());
+        jsonWriter.writeUntypedField("connectTimeout", connectTimeout());
+        jsonWriter.writeUntypedField("connectRetryCount", connectRetryCount());
+        jsonWriter.writeUntypedField("connectRetryInterval", connectRetryInterval());
+        jsonWriter.writeUntypedField("loadBalanceTimeout", loadBalanceTimeout());
+        jsonWriter.writeUntypedField("commandTimeout", commandTimeout());
+        jsonWriter.writeUntypedField("integratedSecurity", integratedSecurity());
+        jsonWriter.writeUntypedField("failoverPartner", failoverPartner());
+        jsonWriter.writeUntypedField("maxPoolSize", maxPoolSize());
+        jsonWriter.writeUntypedField("minPoolSize", minPoolSize());
+        jsonWriter.writeUntypedField("multipleActiveResultSets", multipleActiveResultSets());
+        jsonWriter.writeUntypedField("multiSubnetFailover", multiSubnetFailover());
+        jsonWriter.writeUntypedField("packetSize", packetSize());
+        jsonWriter.writeUntypedField("pooling", pooling());
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeUntypedField("userName", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
+        jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
+        jsonWriter.writeUntypedField("tenant", this.tenant);
+        jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeJsonField("credential", this.credential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSqlDWLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSqlDWLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureSqlDWLinkedServiceTypeProperties.
+     */
+    public static AzureSqlDWLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSqlDWLinkedServiceTypeProperties deserializedAzureSqlDWLinkedServiceTypeProperties
+                = new AzureSqlDWLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.withServer(reader.readUntyped());
+                } else if ("database".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.withDatabase(reader.readUntyped());
+                } else if ("encrypt".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.withEncrypt(reader.readUntyped());
+                } else if ("trustServerCertificate".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.withTrustServerCertificate(reader.readUntyped());
+                } else if ("hostNameInCertificate".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.withHostnameInCertificate(reader.readUntyped());
+                } else if ("applicationIntent".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.withApplicationIntent(reader.readUntyped());
+                } else if ("connectTimeout".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.withConnectTimeout(reader.readUntyped());
+                } else if ("connectRetryCount".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.withConnectRetryCount(reader.readUntyped());
+                } else if ("connectRetryInterval".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.withConnectRetryInterval(reader.readUntyped());
+                } else if ("loadBalanceTimeout".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.withLoadBalanceTimeout(reader.readUntyped());
+                } else if ("commandTimeout".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.withCommandTimeout(reader.readUntyped());
+                } else if ("integratedSecurity".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.withIntegratedSecurity(reader.readUntyped());
+                } else if ("failoverPartner".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.withFailoverPartner(reader.readUntyped());
+                } else if ("maxPoolSize".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.withMaxPoolSize(reader.readUntyped());
+                } else if ("minPoolSize".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.withMinPoolSize(reader.readUntyped());
+                } else if ("multipleActiveResultSets".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties
+                        .withMultipleActiveResultSets(reader.readUntyped());
+                } else if ("multiSubnetFailover".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.withMultiSubnetFailover(reader.readUntyped());
+                } else if ("packetSize".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.withPacketSize(reader.readUntyped());
+                } else if ("pooling".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.withPooling(reader.readUntyped());
+                } else if ("connectionString".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.authenticationType
+                        = AzureSqlDWAuthenticationType.fromString(reader.getString());
+                } else if ("userName".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.password
+                        = AzureKeyVaultSecretReference.fromJson(reader);
+                } else if ("servicePrincipalId".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.servicePrincipalId = reader.readUntyped();
+                } else if ("servicePrincipalKey".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.servicePrincipalKey = SecretBase.fromJson(reader);
+                } else if ("servicePrincipalCredentialType".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.servicePrincipalCredentialType
+                        = reader.readUntyped();
+                } else if ("servicePrincipalCredential".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.servicePrincipalCredential
+                        = SecretBase.fromJson(reader);
+                } else if ("tenant".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.tenant = reader.readUntyped();
+                } else if ("azureCloudType".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.azureCloudType = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("credential".equals(fieldName)) {
+                    deserializedAzureSqlDWLinkedServiceTypeProperties.credential = CredentialReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureSqlDWLinkedServiceTypeProperties;
+        });
+    }
 }

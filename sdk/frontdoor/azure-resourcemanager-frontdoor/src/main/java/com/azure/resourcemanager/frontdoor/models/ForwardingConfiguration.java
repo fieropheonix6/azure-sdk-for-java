@@ -5,51 +5,62 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes Forwarding Route. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
-@JsonTypeName("#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration")
-@JsonFlatten
+/**
+ * Describes Forwarding Route.
+ */
 @Fluent
-public class ForwardingConfiguration extends RouteConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ForwardingConfiguration.class);
+public final class ForwardingConfiguration extends RouteConfiguration {
+    /*
+     * The @odata.type property.
+     */
+    private String odataType = "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration";
 
     /*
-     * A custom path used to rewrite resource paths matched by this rule. Leave
-     * empty to use incoming path.
+     * A custom path used to rewrite resource paths matched by this rule. Leave empty to use incoming path.
      */
-    @JsonProperty(value = "customForwardingPath")
     private String customForwardingPath;
 
     /*
      * Protocol this rule will use when forwarding traffic to backends.
      */
-    @JsonProperty(value = "forwardingProtocol")
     private FrontDoorForwardingProtocol forwardingProtocol;
 
     /*
      * The caching configuration associated with this rule.
      */
-    @JsonProperty(value = "cacheConfiguration")
     private CacheConfiguration cacheConfiguration;
 
     /*
      * A reference to the BackendPool which this rule routes to.
      */
-    @JsonProperty(value = "backendPool")
     private SubResource backendPool;
+
+    /**
+     * Creates an instance of ForwardingConfiguration class.
+     */
+    public ForwardingConfiguration() {
+    }
+
+    /**
+     * Get the odataType property: The &#064;odata.type property.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
 
     /**
      * Get the customForwardingPath property: A custom path used to rewrite resource paths matched by this rule. Leave
      * empty to use incoming path.
-     *
+     * 
      * @return the customForwardingPath value.
      */
     public String customForwardingPath() {
@@ -59,7 +70,7 @@ public class ForwardingConfiguration extends RouteConfiguration {
     /**
      * Set the customForwardingPath property: A custom path used to rewrite resource paths matched by this rule. Leave
      * empty to use incoming path.
-     *
+     * 
      * @param customForwardingPath the customForwardingPath value to set.
      * @return the ForwardingConfiguration object itself.
      */
@@ -70,7 +81,7 @@ public class ForwardingConfiguration extends RouteConfiguration {
 
     /**
      * Get the forwardingProtocol property: Protocol this rule will use when forwarding traffic to backends.
-     *
+     * 
      * @return the forwardingProtocol value.
      */
     public FrontDoorForwardingProtocol forwardingProtocol() {
@@ -79,7 +90,7 @@ public class ForwardingConfiguration extends RouteConfiguration {
 
     /**
      * Set the forwardingProtocol property: Protocol this rule will use when forwarding traffic to backends.
-     *
+     * 
      * @param forwardingProtocol the forwardingProtocol value to set.
      * @return the ForwardingConfiguration object itself.
      */
@@ -90,7 +101,7 @@ public class ForwardingConfiguration extends RouteConfiguration {
 
     /**
      * Get the cacheConfiguration property: The caching configuration associated with this rule.
-     *
+     * 
      * @return the cacheConfiguration value.
      */
     public CacheConfiguration cacheConfiguration() {
@@ -99,7 +110,7 @@ public class ForwardingConfiguration extends RouteConfiguration {
 
     /**
      * Set the cacheConfiguration property: The caching configuration associated with this rule.
-     *
+     * 
      * @param cacheConfiguration the cacheConfiguration value to set.
      * @return the ForwardingConfiguration object itself.
      */
@@ -110,7 +121,7 @@ public class ForwardingConfiguration extends RouteConfiguration {
 
     /**
      * Get the backendPool property: A reference to the BackendPool which this rule routes to.
-     *
+     * 
      * @return the backendPool value.
      */
     public SubResource backendPool() {
@@ -119,7 +130,7 @@ public class ForwardingConfiguration extends RouteConfiguration {
 
     /**
      * Set the backendPool property: A reference to the BackendPool which this rule routes to.
-     *
+     * 
      * @param backendPool the backendPool value to set.
      * @return the ForwardingConfiguration object itself.
      */
@@ -130,14 +141,63 @@ public class ForwardingConfiguration extends RouteConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (cacheConfiguration() != null) {
             cacheConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("customForwardingPath", this.customForwardingPath);
+        jsonWriter.writeStringField("forwardingProtocol",
+            this.forwardingProtocol == null ? null : this.forwardingProtocol.toString());
+        jsonWriter.writeJsonField("cacheConfiguration", this.cacheConfiguration);
+        jsonWriter.writeJsonField("backendPool", this.backendPool);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ForwardingConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ForwardingConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ForwardingConfiguration.
+     */
+    public static ForwardingConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ForwardingConfiguration deserializedForwardingConfiguration = new ForwardingConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.type".equals(fieldName)) {
+                    deserializedForwardingConfiguration.odataType = reader.getString();
+                } else if ("customForwardingPath".equals(fieldName)) {
+                    deserializedForwardingConfiguration.customForwardingPath = reader.getString();
+                } else if ("forwardingProtocol".equals(fieldName)) {
+                    deserializedForwardingConfiguration.forwardingProtocol
+                        = FrontDoorForwardingProtocol.fromString(reader.getString());
+                } else if ("cacheConfiguration".equals(fieldName)) {
+                    deserializedForwardingConfiguration.cacheConfiguration = CacheConfiguration.fromJson(reader);
+                } else if ("backendPool".equals(fieldName)) {
+                    deserializedForwardingConfiguration.backendPool = SubResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedForwardingConfiguration;
+        });
     }
 }

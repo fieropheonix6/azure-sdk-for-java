@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IpFilterTag. */
+/**
+ * Defines what this IP filter will be used for. This is to support IP filtering on proxies.
+ */
 public final class IpFilterTag extends ExpandableStringEnum<IpFilterTag> {
-    /** Static value Default for IpFilterTag. */
+    /**
+     * Static value Default for IpFilterTag.
+     */
     public static final IpFilterTag DEFAULT = fromString("Default");
 
-    /** Static value XffProxy for IpFilterTag. */
+    /**
+     * Static value XffProxy for IpFilterTag.
+     */
     public static final IpFilterTag XFF_PROXY = fromString("XffProxy");
 
-    /** Static value ServiceTag for IpFilterTag. */
+    /**
+     * Static value ServiceTag for IpFilterTag.
+     */
     public static final IpFilterTag SERVICE_TAG = fromString("ServiceTag");
 
     /**
+     * Creates a new instance of IpFilterTag value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IpFilterTag() {
+    }
+
+    /**
      * Creates or finds a IpFilterTag from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IpFilterTag.
      */
-    @JsonCreator
     public static IpFilterTag fromString(String name) {
         return fromString(name, IpFilterTag.class);
     }
 
     /**
      * Gets known IpFilterTag values.
-     *
+     * 
      * @return known IpFilterTag values.
      */
     public static Collection<IpFilterTag> values() {

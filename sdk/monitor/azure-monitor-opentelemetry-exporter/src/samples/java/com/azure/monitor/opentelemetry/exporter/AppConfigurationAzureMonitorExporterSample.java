@@ -5,12 +5,12 @@ package com.azure.monitor.opentelemetry.exporter;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
-import io.opentelemetry.sdk.trace.SdkTracerProvider;
-import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 /**
@@ -37,19 +37,13 @@ public class AppConfigurationAzureMonitorExporterSample {
      * @return The OpenTelemetry {@link Tracer} instance.
      */
     private static Tracer configureAzureMonitorExporter() {
-        SpanExporter exporter = new AzureMonitorExporterBuilder()
-            .connectionString("{connection-string}")
-            .buildTraceExporter();
+        AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-            .addSpanProcessor(SimpleSpanProcessor.create(exporter))
-            .build();
+        AzureMonitorExporter.customize(sdkBuilder, "{connection-string}");
 
-        OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdk.builder()
-            .setTracerProvider(tracerProvider)
-            .buildAndRegisterGlobal();
+        OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 
-        return openTelemetrySdk.getTracer("Sample");
+        return openTelemetry.getTracer("Sample");
     }
 
     /**

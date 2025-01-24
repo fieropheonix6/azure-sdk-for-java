@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BlobEventTypes. */
+/**
+ * Defines values for BlobEventTypes.
+ */
 public final class BlobEventTypes extends ExpandableStringEnum<BlobEventTypes> {
-    /** Static value Microsoft.Storage.BlobCreated for BlobEventTypes. */
+    /**
+     * Static value Microsoft.Storage.BlobCreated for BlobEventTypes.
+     */
     public static final BlobEventTypes MICROSOFT_STORAGE_BLOB_CREATED = fromString("Microsoft.Storage.BlobCreated");
 
-    /** Static value Microsoft.Storage.BlobDeleted for BlobEventTypes. */
+    /**
+     * Static value Microsoft.Storage.BlobDeleted for BlobEventTypes.
+     */
     public static final BlobEventTypes MICROSOFT_STORAGE_BLOB_DELETED = fromString("Microsoft.Storage.BlobDeleted");
 
     /**
+     * Creates a new instance of BlobEventTypes value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobEventTypes() {
+    }
+
+    /**
      * Creates or finds a BlobEventTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BlobEventTypes.
      */
-    @JsonCreator
     public static BlobEventTypes fromString(String name) {
         return fromString(name, BlobEventTypes.class);
     }
 
     /**
      * Gets known BlobEventTypes values.
-     *
+     * 
      * @return known BlobEventTypes values.
      */
     public static Collection<BlobEventTypes> values() {

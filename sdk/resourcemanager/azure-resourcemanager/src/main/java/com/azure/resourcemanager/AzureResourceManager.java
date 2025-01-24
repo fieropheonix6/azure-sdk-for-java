@@ -55,6 +55,7 @@ import com.azure.resourcemanager.eventhubs.models.EventHubDisasterRecoveryPairin
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;
 import com.azure.resourcemanager.eventhubs.models.EventHubs;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
+import com.azure.resourcemanager.keyvault.models.ManagedHsms;
 import com.azure.resourcemanager.keyvault.models.Vaults;
 import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.ActionGroups;
@@ -125,7 +126,23 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfiles;
 
 import java.util.Objects;
 
-/** The entry point for accessing resource management APIs in Azure. */
+/**
+ * The entry point for accessing resource management APIs in Azure.
+ *
+ * <p><strong>Instantiating an Azure Client</strong></p>
+ *
+ * <!-- src_embed com.azure.resourcemanager.azureResourceManager.authenticate#credential-profile -->
+ * <pre>
+ * AzureProfile profile = new AzureProfile&#40;tenantId, subscriptionId, AzureEnvironment.AZURE&#41;;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .authorityHost&#40;profile.getEnvironment&#40;&#41;.getActiveDirectoryEndpoint&#40;&#41;&#41;
+ *     .build&#40;&#41;;
+ * AzureResourceManager azure = AzureResourceManager
+ *     .authenticate&#40;credential, profile&#41;
+ *     .withDefaultSubscription&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.resourcemanager.azureResourceManager.authenticate#credential-profile -->
+ */
 public final class AzureResourceManager {
     private final ResourceManager resourceManager;
     private final StorageManager storageManager;
@@ -156,6 +173,20 @@ public final class AzureResourceManager {
     /**
      * Authenticate to Azure using an Azure credential object.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.resourcemanager.azureResourceManager.authenticate#credential-profile -->
+     * <pre>
+     * AzureProfile profile = new AzureProfile&#40;tenantId, subscriptionId, AzureEnvironment.AZURE&#41;;
+     * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;
+     *     .authorityHost&#40;profile.getEnvironment&#40;&#41;.getActiveDirectoryEndpoint&#40;&#41;&#41;
+     *     .build&#40;&#41;;
+     * AzureResourceManager azure = AzureResourceManager
+     *     .authenticate&#40;credential, profile&#41;
+     *     .withDefaultSubscription&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.resourcemanager.azureResourceManager.authenticate#credential-profile -->
+     *
      * @param credential the credential object
      * @param profile the profile to use
      * @return the authenticated Azure client
@@ -179,7 +210,25 @@ public final class AzureResourceManager {
         return new AuthenticatedImpl(httpPipeline, profile);
     }
 
-    /** @return an interface allow configurations on the client. */
+    /**
+     * Configures the Azure client.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.resourcemanager.azureResourceManager.configure -->
+     * <pre>
+     * AzureResourceManager azure = AzureResourceManager
+     *     .configure&#40;&#41;
+     *     .withLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;
+     *     .withPolicy&#40;customPolicy&#41;
+     *     .withRetryPolicy&#40;customRetryPolicy&#41;
+     *     .withHttpClient&#40;httpClient&#41;
+     *     &#47;&#47;...
+     * </pre>
+     * <!-- end com.azure.resourcemanager.azureResourceManager.configure -->
+     *
+     * @return an interface allow configurations on the client.
+     */
     public static Configurable configure() {
         return new ConfigurableImpl();
     }
@@ -212,7 +261,11 @@ public final class AzureResourceManager {
      * previously specified authentication file).
      */
     public interface Authenticated extends AccessManagement {
-        /** @return the currently selected tenant ID this client is authenticated to work with */
+        /**
+         * Gets the currently selected tenant ID this client is authenticated to work with.
+         *
+         * @return the currently selected tenant ID this client is authenticated to work with
+         */
         String tenantId();
 
         /**
@@ -329,15 +382,15 @@ public final class AzureResourceManager {
         public Authenticated withTenantId(String tenantId) {
             Objects.requireNonNull(tenantId);
             this.tenantId = tenantId;
-            this.authorizationManager = AuthorizationManager.authenticate(
-                this.httpPipeline, new AzureProfile(tenantId, subscriptionId, environment));
+            this.authorizationManager = AuthorizationManager.authenticate(this.httpPipeline,
+                new AzureProfile(tenantId, subscriptionId, environment));
             return this;
         }
 
         @Override
         public AzureResourceManager withSubscription(String subscriptionId) {
-            return new AzureResourceManager(
-                httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
+            return new AzureResourceManager(httpPipeline, new AzureProfile(tenantId, subscriptionId, environment),
+                this);
         }
 
         @Override
@@ -345,8 +398,8 @@ public final class AzureResourceManager {
             if (subscriptionId == null) {
                 subscriptionId = ResourceManagerUtils.getDefaultSubscription(this.subscriptions().list());
             }
-            return new AzureResourceManager(
-                httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
+            return new AzureResourceManager(httpPipeline, new AzureProfile(tenantId, subscriptionId, environment),
+                this);
         }
     }
 
@@ -382,217 +435,436 @@ public final class AzureResourceManager {
         this.tenantId = profile.getTenantId();
     }
 
-    /** @return the currently selected subscription ID this client is authenticated to work with */
+    /**
+     * Gets the currently selected subscription ID this client is authenticated to work with.
+     *
+     * @return the currently selected subscription ID this client is authenticated to work with
+     */
     public String subscriptionId() {
         return this.subscriptionId;
     }
 
-    /** @return the currently selected tenant ID this client is authenticated to work with */
+    /**
+     * Gets the currently selected tenant ID this client is authenticated to work with.
+     *
+     * @return the currently selected tenant ID this client is authenticated to work with
+     */
     public String tenantId() {
         return this.tenantId;
     }
 
-    /** @return the currently selected subscription this client is authenticated to work with */
+    /**
+     * Gets the currently selected subscription this client is authenticated to work with.
+     *
+     * @return the currently selected subscription this client is authenticated to work with
+     */
     public Subscription getCurrentSubscription() {
         return this.subscriptions().getById(this.subscriptionId());
     }
 
-    /** @return entry point to managing subscriptions */
+    /**
+     * Gets entry point to managing subscriptions.
+     *
+     * @return entry point to managing subscriptions
+     */
     public Subscriptions subscriptions() {
         return this.resourceManager.subscriptions();
     }
 
-    /** @return entry point to managing tenants */
+    /**
+     * Gets entry point to managing tenants.
+     *
+     * @return entry point to managing tenants
+     */
     public Tenants tenants() {
         return this.resourceManager.tenants();
     }
 
-    /** @return entry point to managing resource groups */
+    /**
+     * Gets entry point to managing resource groups.
+     *
+     * @return entry point to managing resource groups
+     */
     public ResourceGroups resourceGroups() {
         return this.resourceManager.resourceGroups();
     }
 
-    /** @return entry point to managing deployments */
+    /**
+     * Gets entry point to managing deployments.
+     *
+     * @return entry point to managing deployments
+     */
     public Deployments deployments() {
         return this.resourceManager.deployments();
     }
 
-    /** @return entry point to managing generic resources */
+    /**
+     * Gets entry point to managing generic resources.
+     *
+     * @return entry point to managing generic resources
+     */
     public GenericResources genericResources() {
         return resourceManager.genericResources();
     }
 
-    /** @return entry point to managing features */
+    /**
+     * Gets entry point to managing features.
+     *
+     * @return entry point to managing features
+     */
     public Features features() {
         return resourceManager.features();
     }
 
-    /** @return entry point to managing resource providers */
+    /**
+     * Gets entry point to managing resource providers.
+     *
+     * @return entry point to managing resource providers
+     */
     public Providers providers() {
         return resourceManager.providers();
     }
 
-    /** @return entry point to managing policy definitions. */
+    /**
+     * Gets entry point to managing policy definitions.
+     *
+     * @return entry point to managing policy definitions.
+     */
     public PolicyDefinitions policyDefinitions() {
         return resourceManager.policyDefinitions();
     }
 
-    /** @return entry point to managing policy assignments. */
+    /**
+     * Gets entry point to managing policy assignments.
+     *
+     * @return entry point to managing policy assignments.
+     */
     public PolicyAssignments policyAssignments() {
         return resourceManager.policyAssignments();
     }
 
-    /** @return entry point to managing locks. */
+    /**
+     * Gets entry point to managing locks.
+     *
+     * @return entry point to managing locks.
+     */
     public ManagementLocks managementLocks() {
         return resourceManager.managementLocks();
     }
 
-    /** @return entry point to managing storage accounts */
+    /**
+     * Entry point to managing storage accounts
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create an Azure Storage Account</p>
+     * <!-- src_embed com.azure.resourcemanager.azureResourceManager.storageAccounts.createStorageAccount -->
+     * <pre>
+     * azure.storageAccounts&#40;&#41;.define&#40;&quot;&lt;storage-account-name&gt;&quot;&#41;
+     *     .withRegion&#40;Region.US_EAST&#41;
+     *     .withNewResourceGroup&#40;resourceGroupName&#41;
+     *     .withSku&#40;StorageAccountSkuType.STANDARD_LRS&#41;
+     *     .withGeneralPurposeAccountKindV2&#40;&#41;
+     *     .withOnlyHttpsTraffic&#40;&#41;
+     *     &#47;&#47;...
+     *     .create&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.resourcemanager.azureResourceManager.storageAccounts.createStorageAccount -->
+     *
+     * @return entry point to managing storage accounts
+     */
     public StorageAccounts storageAccounts() {
         return storageManager.storageAccounts();
     }
 
-    /** @return entry point to managing storage account usages */
+    /**
+     * Gets entry point to managing storage account usages.
+     *
+     * @return entry point to managing storage account usages
+     */
     public Usages storageUsages() {
         return storageManager.usages();
     }
 
-    /** @return entry point to managing storage service SKUs */
+    /**
+     * Gets entry point to managing storage service SKUs.
+     *
+     * @return entry point to managing storage service SKUs
+     */
     public StorageSkus storageSkus() {
         return storageManager.storageSkus();
     }
 
-    /** @return entry point to managing availability sets */
+    /**
+     * Gets entry point to managing availability sets.
+     *
+     * @return entry point to managing availability sets
+     */
     public AvailabilitySets availabilitySets() {
         return computeManager.availabilitySets();
     }
 
-    /** @return entry point to managing virtual networks */
+    /**
+     * Gets entry point to managing virtual networks.
+     *
+     * @return entry point to managing virtual networks
+     */
     public Networks networks() {
         return networkManager.networks();
     }
 
-    /** @return entry point to managing route tables */
+    /**
+     * Gets entry point to managing route tables.
+     *
+     * @return entry point to managing route tables
+     */
     public RouteTables routeTables() {
         return networkManager.routeTables();
     }
 
-    /** @return entry point to managing load balancers */
+    /**
+     * Gets entry point to managing load balancers.
+     *
+     * @return entry point to managing load balancers
+     */
     public LoadBalancers loadBalancers() {
         return networkManager.loadBalancers();
     }
 
-    /** @return entry point to managing application gateways */
+    /**
+     * Gets entry point to managing application gateways.
+     *
+     * @return entry point to managing application gateways
+     */
     public ApplicationGateways applicationGateways() {
         return networkManager.applicationGateways();
     }
 
-    /** @return entry point to managing network security groups */
+    /**
+     * Gets entry point to managing network security groups.
+     *
+     * @return entry point to managing network security groups
+     */
     public NetworkSecurityGroups networkSecurityGroups() {
         return networkManager.networkSecurityGroups();
     }
 
-    /** @return entry point to managing network resource usages */
+    /**
+     * Gets entry point to managing network resource usages.
+     *
+     * @return entry point to managing network resource usages
+     */
     public NetworkUsages networkUsages() {
         return networkManager.usages();
     }
 
-    /** @return entry point to managing network watchers */
+    /**
+     * Gets entry point to managing network watchers.
+     *
+     * @return entry point to managing network watchers
+     */
     public NetworkWatchers networkWatchers() {
         return networkManager.networkWatchers();
     }
 
-    /** @return entry point to managing virtual network gateways */
+    /**
+     * Gets entry point to managing virtual network gateways.
+     *
+     * @return entry point to managing virtual network gateways
+     */
     public VirtualNetworkGateways virtualNetworkGateways() {
         return networkManager.virtualNetworkGateways();
     }
 
-    /** @return entry point to managing local network gateways */
+    /**
+     * Gets entry point to managing local network gateways.
+     *
+     * @return entry point to managing local network gateways
+     */
     public LocalNetworkGateways localNetworkGateways() {
         return networkManager.localNetworkGateways();
     }
 
-    /** @return entry point to managing express route circuits */
+    /**
+     * Gets entry point to managing express route circuits.
+     *
+     * @return entry point to managing express route circuits
+     */
     public ExpressRouteCircuits expressRouteCircuits() {
         return networkManager.expressRouteCircuits();
     }
 
-    /** @return entry point to managing express route cross connections */
+    /**
+     * Gets entry point to managing express route cross connections.
+     *
+     * @return entry point to managing express route cross connections
+     */
     public ExpressRouteCrossConnections expressRouteCrossConnections() {
         return networkManager.expressRouteCrossConnections();
     }
 
-    /** @return entry point to managing express route circuits */
+    /**
+     * Gets entry point to managing express route circuits.
+     *
+     * @return entry point to managing express route circuits
+     */
     public ApplicationSecurityGroups applicationSecurityGroups() {
         return networkManager.applicationSecurityGroups();
     }
 
-    /** @return entry point to managing route filters */
+    /**
+     * Gets entry point to managing route filters.
+     *
+     * @return entry point to managing route filters
+     */
     public RouteFilters routeFilters() {
         return networkManager.routeFilters();
     }
 
-    /** @return entry point to managing DDoS protection plans */
+    /**
+     * Gets entry point to managing DDoS protection plans.
+     *
+     * @return entry point to managing DDoS protection plans
+     */
     public DdosProtectionPlans ddosProtectionPlans() {
         return networkManager.ddosProtectionPlans();
     }
 
-    /** @return entry point to managing virtual machines */
+    /**
+     * Entry point to managing virtual machines.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create a Virtual Machine instance.</p>
+     * <!-- src_embed com.azure.resourcemanager.azureResourceManager.virtualMachines.createVirtualMachine -->
+     * <pre>
+     * VirtualMachine linuxVM = azure.virtualMachines&#40;&#41;
+     *     .define&#40;linuxVMName&#41;
+     *     .withRegion&#40;region&#41;
+     *     .withNewResourceGroup&#40;resourceGroupName&#41;
+     *     .withNewPrimaryNetwork&#40;&quot;10.0.0.0&#47;28&quot;&#41;
+     *     .withPrimaryPrivateIPAddressDynamic&#40;&#41;
+     *     .withoutPrimaryPublicIPAddress&#40;&#41;
+     *     .withPopularLinuxImage&#40;KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS_GEN2&#41;
+     *     .withRootUsername&#40;userName&#41;
+     *     .withSsh&#40;sshPublicKey&#41;
+     *     .withNewDataDisk&#40;10&#41;
+     *     .withExistingDataDisk&#40;dataDisk&#41;
+     *     .withSize&#40;VirtualMachineSizeTypes.STANDARD_DS1_V2&#41;
+     *     .create&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.resourcemanager.azureResourceManager.virtualMachines.createVirtualMachine -->
+     *
+     * <p>Restart Virtual Machine instance.</p>
+     * <!-- src_embed com.azure.resourcemanager.azureResourceManager.virtualMachines.restartVirtualMachineAsync -->
+     * <pre>
+     * azure.virtualMachines&#40;&#41;.listByResourceGroupAsync&#40;resourceGroupName&#41;
+     *     .flatMap&#40;VirtualMachine::restartAsync&#41;
+     *     &#47;&#47;...
+     * </pre>
+     * <!-- end com.azure.resourcemanager.azureResourceManager.virtualMachines.restartVirtualMachineAsync -->
+     *
+     * @return entry point to managing virtual machines
+     */
     public VirtualMachines virtualMachines() {
         return computeManager.virtualMachines();
     }
 
-    /** @return entry point to managing virtual machine scale sets. */
+    /**
+     * Gets entry point to managing virtual machine scale sets.
+     *
+     * @return entry point to managing virtual machine scale sets.
+     */
     public VirtualMachineScaleSets virtualMachineScaleSets() {
         return computeManager.virtualMachineScaleSets();
     }
 
-    /** @return entry point to managing virtual machine images */
+    /**
+     * Gets entry point to managing virtual machine images.
+     *
+     * @return entry point to managing virtual machine images
+     */
     public VirtualMachineImages virtualMachineImages() {
         return computeManager.virtualMachineImages();
     }
 
-    /** @return entry point to managing virtual machine custom images */
+    /**
+     * Gets entry point to managing virtual machine custom images.
+     *
+     * @return entry point to managing virtual machine custom images
+     */
     public VirtualMachineCustomImages virtualMachineCustomImages() {
         return computeManager.virtualMachineCustomImages();
     }
 
-    /** @return entry point to managing managed disks */
+    /**
+     * Gets entry point to managing managed disks.
+     *
+     * @return entry point to managing managed disks
+     */
     public Disks disks() {
         return computeManager.disks();
     }
 
-    /** @return entry point to managing managed snapshots */
+    /**
+     * Gets entry point to managing managed snapshots.
+     *
+     * @return entry point to managing managed snapshots
+     */
     public Snapshots snapshots() {
         return computeManager.snapshots();
     }
 
-    /** @return the compute service SKU management API entry point */
+    /**
+     * Gets the compute service SKU management API entry point.
+     *
+     * @return the compute service SKU management API entry point
+     */
     public ComputeSkus computeSkus() {
         return computeManager.computeSkus();
     }
 
-    /** @return entry point to managing public IP addresses */
+    /**
+     * Gets entry point to managing public IP addresses.
+     *
+     * @return entry point to managing public IP addresses
+     */
     public PublicIpAddresses publicIpAddresses() {
         return this.networkManager.publicIpAddresses();
     }
 
-    /** @return entry point to managing public IP prefixes */
+    /**
+     * Gets entry point to managing public IP prefixes.
+     *
+     * @return entry point to managing public IP prefixes
+     */
     public PublicIpPrefixes publicIpPrefixes() {
         return this.networkManager.publicIpPrefixes();
     }
 
-    /** @return entry point to managing network interfaces */
+    /**
+     * Gets entry point to managing network interfaces.
+     *
+     * @return entry point to managing network interfaces
+     */
     public NetworkInterfaces networkInterfaces() {
         return this.networkManager.networkInterfaces();
     }
 
-    /** @return entry point to managing compute resource usages */
+    /**
+     * Gets entry point to managing compute resource usages.
+     *
+     * @return entry point to managing compute resource usages
+     */
     public ComputeUsages computeUsages() {
         return computeManager.usages();
     }
 
-    /** @return entry point to managing key vaults */
+    /**
+     * Gets entry point to managing key vaults.
+     *
+     * @return entry point to managing key vaults
+     */
     public Vaults vaults() {
         return this.keyVaultManager.vaults();
     }
@@ -605,65 +877,137 @@ public final class AzureResourceManager {
     //    }
 
     /**
+     * Gets entry point to managing traffic manager profiles.
+     *
      * @return entry point to managing traffic manager profiles.
      */
     public TrafficManagerProfiles trafficManagerProfiles() {
         return trafficManager.profiles();
     }
 
-    /** @return entry point to managing Redis Caches. */
+    /**
+     * Gets entry point to managing Redis Caches.
+     *
+     * @return entry point to managing Redis Caches.
+     */
     public RedisCaches redisCaches() {
         return redisManager.redisCaches();
     }
 
     /**
+     * Gets entry point to managing cdn manager profiles.
+     *
      * @return entry point to managing cdn manager profiles.
      */
     public CdnProfiles cdnProfiles() {
         return cdnManager.profiles();
     }
 
-    /** @return entry point to managing DNS zones. */
+    /**
+     * Gets entry point to managing DNS zones.
+     *
+     * @return entry point to managing DNS zones.
+     */
     public DnsZones dnsZones() {
         return dnsZoneManager.zones();
     }
 
-    /** @return entry point to managing web apps. */
+    /**
+     * Gets entry point to managing web apps.
+     *
+     * @return entry point to managing web apps.
+     */
     public WebApps webApps() {
         return appServiceManager.webApps();
     }
 
-    /** @return entry point to managing function apps. */
+    /**
+     * Entry point to managing function apps.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create an Azure Function App</p>
+     *
+     * <!-- src_embed com.azure.resourcemanager.azureResourceManager.functionApps.createFunctionApp -->
+     * <pre>
+     * Creatable&lt;StorageAccount&gt; creatableStorageAccount = azure.storageAccounts&#40;&#41;
+     *     .define&#40;&quot;&lt;storage-account-name&gt;&quot;&#41;
+     *     .withRegion&#40;Region.US_EAST&#41;
+     *     .withExistingResourceGroup&#40;resourceGroupName&#41;
+     *     .withGeneralPurposeAccountKindV2&#40;&#41;
+     *     .withSku&#40;StorageAccountSkuType.STANDARD_LRS&#41;;
+     * Creatable&lt;AppServicePlan&gt; creatableAppServicePlan = azure.appServicePlans&#40;&#41;
+     *     .define&#40;&quot;&lt;app-service-plan-name&gt;&quot;&#41;
+     *     .withRegion&#40;Region.US_EAST&#41;
+     *     .withExistingResourceGroup&#40;resourceGroupName&#41;
+     *     .withPricingTier&#40;PricingTier.STANDARD_S1&#41;
+     *     .withOperatingSystem&#40;OperatingSystem.LINUX&#41;;
+     * FunctionApp linuxFunctionApp = azure.functionApps&#40;&#41;.define&#40;&quot;&lt;function-app-name&gt;&quot;&#41;
+     *     .withRegion&#40;Region.US_EAST&#41;
+     *     .withExistingResourceGroup&#40;resourceGroupName&#41;
+     *     .withNewLinuxAppServicePlan&#40;creatableAppServicePlan&#41;
+     *     .withBuiltInImage&#40;FunctionRuntimeStack.JAVA_8&#41;
+     *     .withNewStorageAccount&#40;creatableStorageAccount&#41;
+     *     .withHttpsOnly&#40;true&#41;
+     *     .withAppSetting&#40;&quot;WEBSITE_RUN_FROM_PACKAGE&quot;, &quot;&lt;function-app-package-url&gt;&quot;&#41;
+     *     .create&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.resourcemanager.azureResourceManager.functionApps.createFunctionApp -->
+     *
+     * @return entry point to managing function apps.
+     */
     public FunctionApps functionApps() {
         return appServiceManager.functionApps();
     }
 
-    /** @return entry point to managing app service plans. */
+    /**
+     * Gets entry point to managing app service plans.
+     *
+     * @return entry point to managing app service plans.
+     */
     public AppServicePlans appServicePlans() {
         return appServiceManager.appServicePlans();
     }
 
-    /** @return entry point to managing domains. */
+    /**
+     * Gets entry point to managing domains.
+     *
+     * @return entry point to managing domains.
+     */
     public AppServiceDomains appServiceDomains() {
         return appServiceManager.domains();
     }
 
-    /** @return entry point to managing certificates. */
+    /**
+     * Gets entry point to managing certificates.
+     *
+     * @return entry point to managing certificates.
+     */
     public AppServiceCertificates appServiceCertificates() {
         return appServiceManager.certificates();
     }
 
-    /** @return entry point to managing certificates orders. */
+    /**
+     * Gets entry point to managing certificates orders.
+     *
+     * @return entry point to managing certificates orders.
+     */
     public AppServiceCertificateOrders appServiceCertificateOrders() {
         return appServiceManager.certificateOrders();
     }
 
-    /** @return entry point to managing Sql server. */
+    /**
+     * Gets entry point to managing Sql server.
+     *
+     * @return entry point to managing Sql server.
+     */
     public SqlServers sqlServers() {
         return sqlServerManager.sqlServers();
     }
 
     /**
+     * Gets entry point to managing Service Bus.
+     *
      * @return entry point to managing Service Bus.
      */
     public ServiceBusNamespaces serviceBusNamespaces() {
@@ -677,84 +1021,144 @@ public final class AzureResourceManager {
     //    return serviceBusManager.operations();
     // }
 
-    /** @return entry point to managing Kubernetes clusters. */
+    /**
+     * Gets entry point to managing Kubernetes clusters.
+     *
+     * @return entry point to managing Kubernetes clusters.
+     */
     public KubernetesClusters kubernetesClusters() {
         return containerServiceManager.kubernetesClusters();
     }
 
-    /** @return entry point to managing Azure Container Instances. */
+    /**
+     * Gets entry point to managing Azure Container Instances.
+     *
+     * @return entry point to managing Azure Container Instances.
+     */
     public ContainerGroups containerGroups() {
         return containerInstanceManager.containerGroups();
     }
 
-    /** @return entry point to managing Container Registries. */
+    /**
+     * Gets entry point to managing Container Registries.
+     *
+     * @return entry point to managing Container Registries.
+     */
     public Registries containerRegistries() {
         return containerRegistryManager.containerRegistries();
     }
 
-    /** @return entry point to managing Container Registry RegistryTasks. */
+    /**
+     * Gets entry point to managing Container Registry RegistryTasks.
+     *
+     * @return entry point to managing Container Registry RegistryTasks.
+     */
     public RegistryTasks containerRegistryTasks() {
         return containerRegistryManager.containerRegistryTasks();
     }
 
-    /** @return entry point to managing Container Registry RegistryTask Runs. */
+    /**
+     * Gets entry point to managing Container Registry RegistryTask Runs.
+     *
+     * @return entry point to managing Container Registry RegistryTask Runs.
+     */
     public RegistryTaskRuns containerRegistryTaskRuns() {
         return containerRegistryManager.registryTaskRuns();
     }
 
-    /** @return entry point to managing Container Regsitries. */
+    /**
+     * Gets entry point to managing Container Regsitries.
+     *
+     * @return entry point to managing Container Regsitries.
+     */
     public CosmosDBAccounts cosmosDBAccounts() {
         return cosmosManager.databaseAccounts();
     }
 
     /**
+     * Gets entry point to managing Search services.
+     *
      * @return entry point to managing Search services.
      */
     public SearchServices searchServices() {
         return searchServiceManager.searchServices();
     }
 
-    /** @return entry point to managing Managed Service Identity (MSI) identities. */
+    /**
+     * Gets entry point to managing Managed Service Identity (MSI) identities.
+     *
+     * @return entry point to managing Managed Service Identity (MSI) identities.
+     */
     public Identities identities() {
         return msiManager.identities();
     }
 
-    /** @return entry point to authentication and authorization management in Azure */
+    /**
+     * Gets entry point to authentication and authorization management in Azure.
+     *
+     * @return entry point to authentication and authorization management in Azure
+     */
     public AccessManagement accessManagement() {
         return this.authenticated;
     }
 
-    /** @return entry point to listing activity log events in Azure */
+    /**
+     * Gets entry point to listing activity log events in Azure.
+     *
+     * @return entry point to listing activity log events in Azure
+     */
     public ActivityLogs activityLogs() {
         return this.monitorManager.activityLogs();
     }
 
-    /** @return entry point to listing metric definitions in Azure */
+    /**
+     * Gets entry point to listing metric definitions in Azure.
+     *
+     * @return entry point to listing metric definitions in Azure
+     */
     public MetricDefinitions metricDefinitions() {
         return this.monitorManager.metricDefinitions();
     }
 
-    /** @return entry point to listing diagnostic settings in Azure */
+    /**
+     * Gets entry point to listing diagnostic settings in Azure.
+     *
+     * @return entry point to listing diagnostic settings in Azure
+     */
     public DiagnosticSettings diagnosticSettings() {
         return this.monitorManager.diagnosticSettings();
     }
 
-    /** @return entry point to managing action groups in Azure */
+    /**
+     * Gets entry point to managing action groups in Azure.
+     *
+     * @return entry point to managing action groups in Azure
+     */
     public ActionGroups actionGroups() {
         return this.monitorManager.actionGroups();
     }
 
-    /** @return entry point to managing alertRules in Azure */
+    /**
+     * Gets entry point to managing alertRules in Azure.
+     *
+     * @return entry point to managing alertRules in Azure
+     */
     public AlertRules alertRules() {
         return this.monitorManager.alertRules();
     }
 
-    /** @return entry point to managing Autoscale Settings in Azure */
+    /**
+     * Gets entry point to managing Autoscale Settings in Azure.
+     *
+     * @return entry point to managing Autoscale Settings in Azure
+     */
     public AutoscaleSettings autoscaleSettings() {
         return this.monitorManager.autoscaleSettings();
     }
 
     /**
+     * Gets entry point to managing event hub namespaces.
+     *
      * @return entry point to managing event hub namespaces.
      */
     public EventHubNamespaces eventHubNamespaces() {
@@ -762,6 +1166,8 @@ public final class AzureResourceManager {
     }
 
     /**
+     * Gets entry point to managing event hubs.
+     *
      * @return entry point to managing event hubs.
      */
     public EventHubs eventHubs() {
@@ -769,69 +1175,143 @@ public final class AzureResourceManager {
     }
 
     /**
+     * Gets entry point to managing event hub namespace geo disaster recovery.
+     *
      * @return entry point to managing event hub namespace geo disaster recovery.
      */
     public EventHubDisasterRecoveryPairings eventHubDisasterRecoveryPairings() {
         return this.eventHubsManager.eventHubDisasterRecoveryPairings();
     }
 
-    /** @return entry point to manage compute galleries. */
+    /**
+     * Gets entry point to managing compute galleries.
+     *
+     * @return entry point to managing compute galleries.
+     */
     public Galleries galleries() {
         return this.computeManager.galleries();
     }
 
-    /** @return entry point to manage compute gallery images. */
+    /**
+     * Gets entry point to managing compute gallery images.
+     *
+     * @return entry point to managing compute gallery images.
+     */
     public GalleryImages galleryImages() {
         return this.computeManager.galleryImages();
     }
 
-    /** @return entry point to manage compute gallery image versions. */
+    /**
+     * Gets entry point to managing compute gallery image versions.
+     *
+     * @return entry point to managing compute gallery image versions.
+     */
     public GalleryImageVersions galleryImageVersions() {
         return this.computeManager.galleryImageVersions();
     }
 
-    /** @return the blob container management API entry point */
+    /**
+     * Entry point to blob container management API.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create a Blob Container</p>
+     *
+     * <!-- src_embed com.azure.resourcemanager.azureResourceManager.storageBlobContainers.createBlobContainer -->
+     * <pre>
+     * azure.storageBlobContainers&#40;&#41;
+     *     .defineContainer&#40;&quot;container&quot;&#41;
+     *     .withExistingStorageAccount&#40;storageAccount&#41;
+     *     .withPublicAccess&#40;PublicAccess.NONE&#41;
+     *     &#47;&#47;...
+     *     .create&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.resourcemanager.azureResourceManager.storageBlobContainers.createBlobContainer -->
+     *
+     * @return the blob container management API entry point
+     */
     public BlobContainers storageBlobContainers() {
         return this.storageManager.blobContainers();
     }
 
-    /** @return the blob service management API entry point */
+    /**
+     * Gets the blob service management API entry point.
+     *
+     * @return the blob service management API entry point
+     */
     public BlobServices storageBlobServices() {
         return this.storageManager.blobServices();
     }
 
-    /** @return the blob service management API entry point */
+    /**
+     * Gets the blob service management API entry point.
+     *
+     * @return the blob service management API entry point
+     */
     public ManagementPolicies storageManagementPolicies() {
         return this.storageManager.managementPolicies();
     }
 
-    /** @return the spring service management API entry point */
+    /**
+     * Gets the spring service management API entry point.
+     *
+     * @return the spring service management API entry point
+     */
     public SpringServices springServices() {
         return this.appPlatformManager.springServices();
     }
 
-    /** @return the private DNS zone management API entry point */
+    /**
+     * Gets the private DNS zone management API entry point.
+     *
+     * @return the private DNS zone management API entry point
+     */
     public PrivateDnsZones privateDnsZones() {
         return this.privateDnsZoneManager.privateZones();
     }
 
-    /** @return entry point to private endpoints management */
+    /**
+     * Gets entry point to private endpoints management.
+     *
+     * @return entry point to private endpoints management
+     */
     public PrivateEndpoints privateEndpoints() {
         return this.networkManager.privateEndpoints();
     }
 
-    /** @return entry point to tag management management */
+    /**
+     * Gets entry point to tag management.
+     *
+     * @return entry point to tag management
+     */
     public TagOperations tagOperations() {
         return this.resourceManager.tagOperations();
     }
 
-    /** @return entry point to network profiles management */
+    /**
+     * Gets entry point to network profiles management.
+     *
+     * @return entry point to network profiles management
+     */
     public NetworkProfiles networkProfiles() {
         return this.networkManager.networkProfiles();
     }
 
-    /** @return entry point to disk encryption sets management */
+    /**
+     * Gets entry point to disk encryption sets management.
+     *
+     * @return entry point to disk encryption sets management
+     */
     public DiskEncryptionSets diskEncryptionSets() {
         return this.computeManager.diskEncryptionSets();
+    }
+
+    /**
+     * Gets entry point to Managed Hardware Security Module management.
+     *
+     * @return entry point to Managed Hardware Security Module management
+     */
+    public ManagedHsms managedHsms() {
+        return this.keyVaultManager.managedHsms();
     }
 }

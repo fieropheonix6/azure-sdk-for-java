@@ -7,29 +7,53 @@ package com.azure.resourcemanager.netapp.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.ProvisioningState;
 import com.azure.resourcemanager.netapp.models.Type;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Quota Rule of a Volume. */
+/**
+ * Quota Rule of a Volume.
+ */
 @Fluent
 public final class VolumeQuotaRuleInner extends Resource {
     /*
      * Volume Quota Rule Properties
      */
-    @JsonProperty(value = "properties")
     private VolumeQuotaRulesProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of VolumeQuotaRuleInner class.
+     */
+    public VolumeQuotaRuleInner() {
+    }
 
     /**
      * Get the innerProperties property: Volume Quota Rule Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VolumeQuotaRulesProperties innerProperties() {
@@ -38,21 +62,55 @@ public final class VolumeQuotaRuleInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VolumeQuotaRuleInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VolumeQuotaRuleInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -61,7 +119,7 @@ public final class VolumeQuotaRuleInner extends Resource {
 
     /**
      * Get the provisioningState property: Gets the status of the VolumeQuotaRule at the time the operation was called.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -70,7 +128,7 @@ public final class VolumeQuotaRuleInner extends Resource {
 
     /**
      * Get the quotaSizeInKiBs property: Size of quota.
-     *
+     * 
      * @return the quotaSizeInKiBs value.
      */
     public Long quotaSizeInKiBs() {
@@ -79,7 +137,7 @@ public final class VolumeQuotaRuleInner extends Resource {
 
     /**
      * Set the quotaSizeInKiBs property: Size of quota.
-     *
+     * 
      * @param quotaSizeInKiBs the quotaSizeInKiBs value to set.
      * @return the VolumeQuotaRuleInner object itself.
      */
@@ -92,10 +150,8 @@ public final class VolumeQuotaRuleInner extends Resource {
     }
 
     /**
-     * Get the quotaType property: quotaType
-     *
-     * <p>Type of quota.
-     *
+     * Get the quotaType property: Type of quota.
+     * 
      * @return the quotaType value.
      */
     public Type quotaType() {
@@ -103,10 +159,8 @@ public final class VolumeQuotaRuleInner extends Resource {
     }
 
     /**
-     * Set the quotaType property: quotaType
-     *
-     * <p>Type of quota.
-     *
+     * Set the quotaType property: Type of quota.
+     * 
      * @param quotaType the quotaType value to set.
      * @return the VolumeQuotaRuleInner object itself.
      */
@@ -122,7 +176,7 @@ public final class VolumeQuotaRuleInner extends Resource {
      * Get the quotaTarget property: UserID/GroupID/SID based on the quota target type. UserID and groupID can be found
      * by running ‘id’ or ‘getent’ command for the user or group and SID can be found by running &lt;wmic useraccount
      * where name='user-name' get sid&gt;.
-     *
+     * 
      * @return the quotaTarget value.
      */
     public String quotaTarget() {
@@ -133,7 +187,7 @@ public final class VolumeQuotaRuleInner extends Resource {
      * Set the quotaTarget property: UserID/GroupID/SID based on the quota target type. UserID and groupID can be found
      * by running ‘id’ or ‘getent’ command for the user or group and SID can be found by running &lt;wmic useraccount
      * where name='user-name' get sid&gt;.
-     *
+     * 
      * @param quotaTarget the quotaTarget value to set.
      * @return the VolumeQuotaRuleInner object itself.
      */
@@ -147,12 +201,64 @@ public final class VolumeQuotaRuleInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeQuotaRuleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeQuotaRuleInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VolumeQuotaRuleInner.
+     */
+    public static VolumeQuotaRuleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeQuotaRuleInner deserializedVolumeQuotaRuleInner = new VolumeQuotaRuleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVolumeQuotaRuleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVolumeQuotaRuleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVolumeQuotaRuleInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVolumeQuotaRuleInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVolumeQuotaRuleInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVolumeQuotaRuleInner.innerProperties = VolumeQuotaRulesProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedVolumeQuotaRuleInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeQuotaRuleInner;
+        });
     }
 }

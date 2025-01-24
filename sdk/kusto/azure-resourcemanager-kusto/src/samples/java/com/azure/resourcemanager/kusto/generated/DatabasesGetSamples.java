@@ -4,19 +4,36 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Databases Get. */
+/**
+ * Samples for Databases Get.
+ */
 public final class DatabasesGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoDatabasesGet.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoSuspendedDatabasesGet.
+     * json
+     */
+    /**
+     * Sample code: KustoSuspendedDatabasesGet.
+     * 
+     * @param manager Entry point to KustoManager.
+     */
+    public static void kustoSuspendedDatabasesGet(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.databases()
+            .getWithResponse("kustorptest", "kustoCluster", "KustoDatabase9", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDatabasesGet.json
      */
     /**
      * Sample code: KustoDatabasesGet.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabasesGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager.databases().getWithResponse("kustorptest", "kustoCluster", "KustoDatabase8", Context.NONE);
+        manager.databases()
+            .getWithResponse("kustorptest", "kustoCluster", "KustoDatabase8", com.azure.core.util.Context.NONE);
     }
 }

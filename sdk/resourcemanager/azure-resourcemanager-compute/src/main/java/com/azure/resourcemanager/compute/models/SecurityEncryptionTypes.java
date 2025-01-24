@@ -5,35 +5,51 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Specifies the EncryptionType of the managed disk. &lt;br&gt; It is set to DiskWithVMGuestState for encryption of the
- * managed disk along with VMGuestState blob, and VMGuestStateOnly for encryption of just the VMGuestState blob.
- * &lt;br&gt;&lt;br&gt; NOTE: It can be set for only Confidential VMs.
+ * Specifies the EncryptionType of the managed disk. It is set to DiskWithVMGuestState for encryption of the managed
+ * disk along with VMGuestState blob, VMGuestStateOnly for encryption of just the VMGuestState blob, and NonPersistedTPM
+ * for not persisting firmware state in the VMGuestState blob.. **Note:** It can be set for only Confidential VMs.
  */
 public final class SecurityEncryptionTypes extends ExpandableStringEnum<SecurityEncryptionTypes> {
-    /** Static value VMGuestStateOnly for SecurityEncryptionTypes. */
+    /**
+     * Static value VMGuestStateOnly for SecurityEncryptionTypes.
+     */
     public static final SecurityEncryptionTypes VMGUEST_STATE_ONLY = fromString("VMGuestStateOnly");
 
-    /** Static value DiskWithVMGuestState for SecurityEncryptionTypes. */
+    /**
+     * Static value DiskWithVMGuestState for SecurityEncryptionTypes.
+     */
     public static final SecurityEncryptionTypes DISK_WITH_VMGUEST_STATE = fromString("DiskWithVMGuestState");
 
     /**
+     * Static value NonPersistedTPM for SecurityEncryptionTypes.
+     */
+    public static final SecurityEncryptionTypes NON_PERSISTED_TPM = fromString("NonPersistedTPM");
+
+    /**
+     * Creates a new instance of SecurityEncryptionTypes value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecurityEncryptionTypes() {
+    }
+
+    /**
      * Creates or finds a SecurityEncryptionTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SecurityEncryptionTypes.
      */
-    @JsonCreator
     public static SecurityEncryptionTypes fromString(String name) {
         return fromString(name, SecurityEncryptionTypes.class);
     }
 
     /**
      * Gets known SecurityEncryptionTypes values.
-     *
+     * 
      * @return known SecurityEncryptionTypes values.
      */
     public static Collection<SecurityEncryptionTypes> values() {

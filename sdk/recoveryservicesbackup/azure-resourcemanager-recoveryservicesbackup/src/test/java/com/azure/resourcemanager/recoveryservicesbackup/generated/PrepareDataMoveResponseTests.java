@@ -9,31 +9,27 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.PrepareDataMoveRe
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrepareDataMoveResponseTests {
-    @Test
-    public void testDeserialize() {
-        PrepareDataMoveResponse model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"PrepareDataMoveResponse\",\"correlationId\":\"ropions\",\"sourceVaultProperties\":{\"jinnix\":\"wpng\"}}")
-                .toObject(PrepareDataMoveResponse.class);
-        Assertions.assertEquals("ropions", model.correlationId());
-        Assertions.assertEquals("wpng", model.sourceVaultProperties().get("jinnix"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrepareDataMoveResponse model = BinaryData.fromString(
+            "{\"objectType\":\"PrepareDataMoveResponse\",\"correlationId\":\"lklmtkhlo\",\"sourceVaultProperties\":{\"syzfhotlhikcyych\":\"xpvbrdfjm\"}}")
+            .toObject(PrepareDataMoveResponse.class);
+        Assertions.assertEquals("lklmtkhlo", model.correlationId());
+        Assertions.assertEquals("xpvbrdfjm", model.sourceVaultProperties().get("syzfhotlhikcyych"));
     }
 
-    @Test
-    public void testSerialize() {
-        PrepareDataMoveResponse model =
-            new PrepareDataMoveResponse()
-                .withCorrelationId("ropions")
-                .withSourceVaultProperties(mapOf("jinnix", "wpng"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrepareDataMoveResponse model = new PrepareDataMoveResponse().withCorrelationId("lklmtkhlo")
+            .withSourceVaultProperties(mapOf("syzfhotlhikcyych", "xpvbrdfjm"));
         model = BinaryData.fromObject(model).toObject(PrepareDataMoveResponse.class);
-        Assertions.assertEquals("ropions", model.correlationId());
-        Assertions.assertEquals("wpng", model.sourceVaultProperties().get("jinnix"));
+        Assertions.assertEquals("lklmtkhlo", model.correlationId());
+        Assertions.assertEquals("xpvbrdfjm", model.sourceVaultProperties().get("syzfhotlhikcyych"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

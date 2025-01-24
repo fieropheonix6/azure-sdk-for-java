@@ -5,30 +5,41 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** SetVariable activity properties. */
+/**
+ * SetVariable activity properties.
+ */
 @Fluent
-public final class SetVariableActivityTypeProperties {
+public final class SetVariableActivityTypeProperties implements JsonSerializable<SetVariableActivityTypeProperties> {
     /*
      * Name of the variable whose value needs to be set.
      */
-    @JsonProperty(value = "variableName")
     private String variableName;
 
     /*
-     * Value to be set. Could be a static value or Expression
+     * Value to be set. Could be a static value or Expression.
      */
-    @JsonProperty(value = "value")
     private Object value;
 
-    /** Creates an instance of SetVariableActivityTypeProperties class. */
+    /*
+     * If set to true, it sets the pipeline run return value.
+     */
+    private Boolean setSystemVariable;
+
+    /**
+     * Creates an instance of SetVariableActivityTypeProperties class.
+     */
     public SetVariableActivityTypeProperties() {
     }
 
     /**
      * Get the variableName property: Name of the variable whose value needs to be set.
-     *
+     * 
      * @return the variableName value.
      */
     public String variableName() {
@@ -37,7 +48,7 @@ public final class SetVariableActivityTypeProperties {
 
     /**
      * Set the variableName property: Name of the variable whose value needs to be set.
-     *
+     * 
      * @param variableName the variableName value to set.
      * @return the SetVariableActivityTypeProperties object itself.
      */
@@ -48,7 +59,7 @@ public final class SetVariableActivityTypeProperties {
 
     /**
      * Get the value property: Value to be set. Could be a static value or Expression.
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -57,7 +68,7 @@ public final class SetVariableActivityTypeProperties {
 
     /**
      * Set the value property: Value to be set. Could be a static value or Expression.
-     *
+     * 
      * @param value the value value to set.
      * @return the SetVariableActivityTypeProperties object itself.
      */
@@ -67,10 +78,74 @@ public final class SetVariableActivityTypeProperties {
     }
 
     /**
+     * Get the setSystemVariable property: If set to true, it sets the pipeline run return value.
+     * 
+     * @return the setSystemVariable value.
+     */
+    public Boolean setSystemVariable() {
+        return this.setSystemVariable;
+    }
+
+    /**
+     * Set the setSystemVariable property: If set to true, it sets the pipeline run return value.
+     * 
+     * @param setSystemVariable the setSystemVariable value to set.
+     * @return the SetVariableActivityTypeProperties object itself.
+     */
+    public SetVariableActivityTypeProperties withSetSystemVariable(Boolean setSystemVariable) {
+        this.setSystemVariable = setSystemVariable;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("variableName", this.variableName);
+        jsonWriter.writeUntypedField("value", this.value);
+        jsonWriter.writeBooleanField("setSystemVariable", this.setSystemVariable);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SetVariableActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SetVariableActivityTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SetVariableActivityTypeProperties.
+     */
+    public static SetVariableActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SetVariableActivityTypeProperties deserializedSetVariableActivityTypeProperties
+                = new SetVariableActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("variableName".equals(fieldName)) {
+                    deserializedSetVariableActivityTypeProperties.variableName = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedSetVariableActivityTypeProperties.value = reader.readUntyped();
+                } else if ("setSystemVariable".equals(fieldName)) {
+                    deserializedSetVariableActivityTypeProperties.setSystemVariable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSetVariableActivityTypeProperties;
+        });
     }
 }

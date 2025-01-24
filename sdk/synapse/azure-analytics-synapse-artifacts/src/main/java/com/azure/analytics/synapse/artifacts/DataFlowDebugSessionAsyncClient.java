@@ -13,8 +13,8 @@ import com.azure.analytics.synapse.artifacts.models.DataFlowDebugCommandRequest;
 import com.azure.analytics.synapse.artifacts.models.DataFlowDebugCommandResponse;
 import com.azure.analytics.synapse.artifacts.models.DataFlowDebugPackage;
 import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionInfo;
-import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionsCreateDataFlowDebugSessionResponse;
-import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionsExecuteCommandResponse;
+import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionsCreateDataFlowDebugSessionHeaders;
+import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionsExecuteCommandHeaders;
 import com.azure.analytics.synapse.artifacts.models.DeleteDataFlowDebugSessionRequest;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -22,16 +22,20 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous ArtifactsClient type. */
+/**
+ * Initializes a new instance of the asynchronous ArtifactsClient type.
+ */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class DataFlowDebugSessionAsyncClient {
-    @Generated private final DataFlowDebugSessionsImpl serviceClient;
+    @Generated
+    private final DataFlowDebugSessionsImpl serviceClient;
 
     /**
      * Initializes an instance of DataFlowDebugSessionAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -41,23 +45,25 @@ public final class DataFlowDebugSessionAsyncClient {
 
     /**
      * Creates a data flow debug session.
-     *
+     * 
      * @param request Data flow debug session definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for creating data flow debug session on successful completion of {@link Mono}.
+     * @return response body structure for creating data flow debug session along with {@link ResponseBase} on
+     * successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataFlowDebugSessionsCreateDataFlowDebugSessionResponse> createDataFlowDebugSessionWithResponse(
-            CreateDataFlowDebugSessionRequest request) {
+    public
+        Mono<ResponseBase<DataFlowDebugSessionsCreateDataFlowDebugSessionHeaders, CreateDataFlowDebugSessionResponse>>
+        createDataFlowDebugSessionWithResponse(CreateDataFlowDebugSessionRequest request) {
         return this.serviceClient.createDataFlowDebugSessionWithResponseAsync(request);
     }
 
     /**
      * Creates a data flow debug session.
-     *
+     * 
      * @param request Data flow debug session definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -66,14 +72,31 @@ public final class DataFlowDebugSessionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateDataFlowDebugSessionResponse> createDataFlowDebugSession(
-            CreateDataFlowDebugSessionRequest request) {
+    public Mono<CreateDataFlowDebugSessionResponse>
+        createDataFlowDebugSession(CreateDataFlowDebugSessionRequest request) {
         return this.serviceClient.createDataFlowDebugSessionAsync(request);
     }
 
     /**
+     * Creates a data flow debug session.
+     * 
+     * @param request Data flow debug session definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure for creating data flow debug session along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CreateDataFlowDebugSessionResponse>>
+        createDataFlowDebugSessionNoCustomHeadersWithResponse(CreateDataFlowDebugSessionRequest request) {
+        return this.serviceClient.createDataFlowDebugSessionNoCustomHeadersWithResponseAsync(request);
+    }
+
+    /**
      * Query all active data flow debug sessions.
-     *
+     * 
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of active debug sessions as paginated response with {@link PagedFlux}.
@@ -86,13 +109,13 @@ public final class DataFlowDebugSessionAsyncClient {
 
     /**
      * Add a data flow into debug session.
-     *
+     * 
      * @param request Data flow debug session definition with debug content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body structure for starting data flow debug session along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -102,7 +125,7 @@ public final class DataFlowDebugSessionAsyncClient {
 
     /**
      * Add a data flow into debug session.
-     *
+     * 
      * @param request Data flow debug session definition with debug content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -117,7 +140,7 @@ public final class DataFlowDebugSessionAsyncClient {
 
     /**
      * Deletes a data flow debug session.
-     *
+     * 
      * @param request Data flow debug session definition for deletion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -132,7 +155,7 @@ public final class DataFlowDebugSessionAsyncClient {
 
     /**
      * Deletes a data flow debug session.
-     *
+     * 
      * @param request Data flow debug session definition for deletion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -147,34 +170,51 @@ public final class DataFlowDebugSessionAsyncClient {
 
     /**
      * Execute a data flow debug command.
-     *
+     * 
      * @param request Data flow debug command definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure of data flow result for data preview, statistics or expression preview on
-     *     successful completion of {@link Mono}.
+     * @return response body structure of data flow result for data preview, statistics or expression preview along with
+     * {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataFlowDebugSessionsExecuteCommandResponse> executeCommandWithResponse(
-            DataFlowDebugCommandRequest request) {
+    public Mono<ResponseBase<DataFlowDebugSessionsExecuteCommandHeaders, DataFlowDebugCommandResponse>>
+        executeCommandWithResponse(DataFlowDebugCommandRequest request) {
         return this.serviceClient.executeCommandWithResponseAsync(request);
     }
 
     /**
      * Execute a data flow debug command.
-     *
+     * 
      * @param request Data flow debug command definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body structure of data flow result for data preview, statistics or expression preview on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFlowDebugCommandResponse> executeCommand(DataFlowDebugCommandRequest request) {
         return this.serviceClient.executeCommandAsync(request);
+    }
+
+    /**
+     * Execute a data flow debug command.
+     * 
+     * @param request Data flow debug command definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body structure of data flow result for data preview, statistics or expression preview along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DataFlowDebugCommandResponse>>
+        executeCommandNoCustomHeadersWithResponse(DataFlowDebugCommandRequest request) {
+        return this.serviceClient.executeCommandNoCustomHeadersWithResponseAsync(request);
     }
 }

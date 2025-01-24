@@ -5,67 +5,40 @@
 package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.hdinsight.models.VersionSpec;
 import com.azure.resourcemanager.hdinsight.models.VersionsCapability;
+import com.azure.resourcemanager.hdinsight.models.VersionSpec;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VersionsCapabilityTests {
-    @Test
-    public void testDeserialize() {
-        VersionsCapability model =
-            BinaryData
-                .fromString(
-                    "{\"available\":[{\"friendlyName\":\"ntorzihleosjswsr\",\"displayName\":\"lyzrpzbchckqqzqi\",\"isDefault\":false,\"componentVersions\":{\"yatrwy\":\"uiizynke\",\"ibzyhwitsmyp\":\"q\",\"biknsorgjhxbld\":\"ynpcdpumnzgmwznm\",\"dmtnc\":\"lwwrl\"}},{\"friendlyName\":\"kotl\",\"displayName\":\"d\",\"isDefault\":false,\"componentVersions\":{\"tdtbnnhadooc\":\"ocogj\"}},{\"friendlyName\":\"vcikhnvpamqgx\",\"displayName\":\"u\",\"isDefault\":false,\"componentVersions\":{\"elwuipi\":\"wggxkallat\",\"rhyrnxxmueed\":\"cjzkzivgvvcna\"}}]}")
-                .toObject(VersionsCapability.class);
-        Assertions.assertEquals("ntorzihleosjswsr", model.available().get(0).friendlyName());
-        Assertions.assertEquals("lyzrpzbchckqqzqi", model.available().get(0).displayName());
-        Assertions.assertEquals(false, model.available().get(0).isDefault());
-        Assertions.assertEquals("uiizynke", model.available().get(0).componentVersions().get("yatrwy"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        VersionsCapability model = BinaryData.fromString(
+            "{\"available\":[{\"friendlyName\":\"jaltolmnc\",\"displayName\":\"obqwcsdbnwdcfh\",\"isDefault\":true,\"componentVersions\":{\"vxb\":\"fuvglsbjjca\",\"udutnco\":\"t\",\"xqtvcofu\":\"mr\"}}]}")
+            .toObject(VersionsCapability.class);
+        Assertions.assertEquals("jaltolmnc", model.available().get(0).friendlyName());
+        Assertions.assertEquals("obqwcsdbnwdcfh", model.available().get(0).displayName());
+        Assertions.assertEquals(true, model.available().get(0).isDefault());
+        Assertions.assertEquals("fuvglsbjjca", model.available().get(0).componentVersions().get("vxb"));
     }
 
-    @Test
-    public void testSerialize() {
-        VersionsCapability model =
-            new VersionsCapability()
-                .withAvailable(
-                    Arrays
-                        .asList(
-                            new VersionSpec()
-                                .withFriendlyName("ntorzihleosjswsr")
-                                .withDisplayName("lyzrpzbchckqqzqi")
-                                .withIsDefault(false)
-                                .withComponentVersions(
-                                    mapOf(
-                                        "yatrwy",
-                                        "uiizynke",
-                                        "ibzyhwitsmyp",
-                                        "q",
-                                        "biknsorgjhxbld",
-                                        "ynpcdpumnzgmwznm",
-                                        "dmtnc",
-                                        "lwwrl")),
-                            new VersionSpec()
-                                .withFriendlyName("kotl")
-                                .withDisplayName("d")
-                                .withIsDefault(false)
-                                .withComponentVersions(mapOf("tdtbnnhadooc", "ocogj")),
-                            new VersionSpec()
-                                .withFriendlyName("vcikhnvpamqgx")
-                                .withDisplayName("u")
-                                .withIsDefault(false)
-                                .withComponentVersions(
-                                    mapOf("elwuipi", "wggxkallat", "rhyrnxxmueed", "cjzkzivgvvcna"))));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VersionsCapability model
+            = new VersionsCapability().withAvailable(Arrays.asList(new VersionSpec().withFriendlyName("jaltolmnc")
+                .withDisplayName("obqwcsdbnwdcfh")
+                .withIsDefault(true)
+                .withComponentVersions(mapOf("vxb", "fuvglsbjjca", "udutnco", "t", "xqtvcofu", "mr"))));
         model = BinaryData.fromObject(model).toObject(VersionsCapability.class);
-        Assertions.assertEquals("ntorzihleosjswsr", model.available().get(0).friendlyName());
-        Assertions.assertEquals("lyzrpzbchckqqzqi", model.available().get(0).displayName());
-        Assertions.assertEquals(false, model.available().get(0).isDefault());
-        Assertions.assertEquals("uiizynke", model.available().get(0).componentVersions().get("yatrwy"));
+        Assertions.assertEquals("jaltolmnc", model.available().get(0).friendlyName());
+        Assertions.assertEquals("obqwcsdbnwdcfh", model.available().get(0).displayName());
+        Assertions.assertEquals(true, model.available().get(0).isDefault());
+        Assertions.assertEquals("fuvglsbjjca", model.available().get(0).componentVersions().get("vxb"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

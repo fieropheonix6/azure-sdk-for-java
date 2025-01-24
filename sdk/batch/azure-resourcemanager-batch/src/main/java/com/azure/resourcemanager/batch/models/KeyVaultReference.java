@@ -6,30 +6,36 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Identifies the Azure key vault associated with a Batch account. */
+/**
+ * Identifies the Azure key vault associated with a Batch account.
+ */
 @Fluent
-public final class KeyVaultReference {
+public final class KeyVaultReference implements JsonSerializable<KeyVaultReference> {
     /*
      * The resource ID of the Azure key vault associated with the Batch account.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * The URL of the Azure key vault associated with the Batch account.
      */
-    @JsonProperty(value = "url", required = true)
     private String url;
 
-    /** Creates an instance of KeyVaultReference class. */
+    /**
+     * Creates an instance of KeyVaultReference class.
+     */
     public KeyVaultReference() {
     }
 
     /**
      * Get the id property: The resource ID of the Azure key vault associated with the Batch account.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -38,7 +44,7 @@ public final class KeyVaultReference {
 
     /**
      * Set the id property: The resource ID of the Azure key vault associated with the Batch account.
-     *
+     * 
      * @param id the id value to set.
      * @return the KeyVaultReference object itself.
      */
@@ -49,7 +55,7 @@ public final class KeyVaultReference {
 
     /**
      * Get the url property: The URL of the Azure key vault associated with the Batch account.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -58,7 +64,7 @@ public final class KeyVaultReference {
 
     /**
      * Set the url property: The URL of the Azure key vault associated with the Batch account.
-     *
+     * 
      * @param url the url value to set.
      * @return the KeyVaultReference object itself.
      */
@@ -69,21 +75,59 @@ public final class KeyVaultReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model KeyVaultReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model KeyVaultReference"));
         }
         if (url() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property url in model KeyVaultReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property url in model KeyVaultReference"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("url", this.url);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KeyVaultReference.
+     */
+    public static KeyVaultReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultReference deserializedKeyVaultReference = new KeyVaultReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedKeyVaultReference.id = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedKeyVaultReference.url = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultReference;
+        });
+    }
 }

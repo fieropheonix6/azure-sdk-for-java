@@ -4,30 +4,44 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/** Details regarding custom document models. */
-@Fluent
-public final class CustomDocumentModelsDetails {
+/**
+ * Details regarding custom document models.
+ */
+@Immutable
+public final class CustomDocumentModelsDetails implements JsonSerializable<CustomDocumentModelsDetails> {
     /*
      * Number of custom document models in the current resource.
      */
-    @JsonProperty(value = "count", required = true)
-    private int count;
+    private final int count;
 
     /*
      * Maximum number of custom document models supported in the current resource.
      */
-    @JsonProperty(value = "limit", required = true)
-    private int limit;
+    private final int limit;
 
-    /** Creates an instance of CustomDocumentModelsDetails class. */
-    public CustomDocumentModelsDetails() {}
+    /**
+     * Creates an instance of CustomDocumentModelsDetails class.
+     * 
+     * @param count the count value to set.
+     * @param limit the limit value to set.
+     */
+    public CustomDocumentModelsDetails(int count, int limit) {
+        this.count = count;
+        this.limit = limit;
+    }
 
     /**
      * Get the count property: Number of custom document models in the current resource.
-     *
+     * 
      * @return the count value.
      */
     public int getCount() {
@@ -35,19 +49,8 @@ public final class CustomDocumentModelsDetails {
     }
 
     /**
-     * Set the count property: Number of custom document models in the current resource.
-     *
-     * @param count the count value to set.
-     * @return the CustomDocumentModelsDetails object itself.
-     */
-    public CustomDocumentModelsDetails setCount(int count) {
-        this.count = count;
-        return this;
-    }
-
-    /**
      * Get the limit property: Maximum number of custom document models supported in the current resource.
-     *
+     * 
      * @return the limit value.
      */
     public int getLimit() {
@@ -55,13 +58,58 @@ public final class CustomDocumentModelsDetails {
     }
 
     /**
-     * Set the limit property: Maximum number of custom document models supported in the current resource.
-     *
-     * @param limit the limit value to set.
-     * @return the CustomDocumentModelsDetails object itself.
+     * {@inheritDoc}
      */
-    public CustomDocumentModelsDetails setLimit(int limit) {
-        this.limit = limit;
-        return this;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("count", this.count);
+        jsonWriter.writeIntField("limit", this.limit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomDocumentModelsDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomDocumentModelsDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomDocumentModelsDetails.
+     */
+    public static CustomDocumentModelsDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean countFound = false;
+            int count = 0;
+            boolean limitFound = false;
+            int limit = 0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    count = reader.getInt();
+                    countFound = true;
+                } else if ("limit".equals(fieldName)) {
+                    limit = reader.getInt();
+                    limitFound = true;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (countFound && limitFound) {
+                return new CustomDocumentModelsDetails(count, limit);
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!countFound) {
+                missingProperties.add("count");
+            }
+            if (!limitFound) {
+                missingProperties.add("limit");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

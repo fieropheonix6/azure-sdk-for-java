@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for BackupVaults List. */
+/**
+ * Samples for BackupVaults List.
+ */
 public final class BackupVaultsListSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/VaultCRUD/GetBackupVaultsInSubscription.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/VaultCRUD/
+     * GetBackupVaultsInSubscription.json
      */
     /**
      * Sample code: Get BackupVaults in Subscription.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getBackupVaultsInSubscription(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.backupVaults().list(Context.NONE);
+    public static void
+        getBackupVaultsInSubscription(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupVaults().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -5,29 +5,51 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DocumentSource. */
+/**
+ * The source of the document. ENF for Brazil and DRS for rest of the world.
+ */
 public final class DocumentSource extends ExpandableStringEnum<DocumentSource> {
-    /** Static value DRS for DocumentSource. */
+    /**
+     * Static value Other for DocumentSource.
+     */
+    public static final DocumentSource OTHER = fromString("Other");
+
+    /**
+     * Static value DRS for DocumentSource.
+     */
     public static final DocumentSource DRS = fromString("DRS");
 
-    /** Static value ENF for DocumentSource. */
+    /**
+     * Static value ENF for DocumentSource.
+     */
     public static final DocumentSource ENF = fromString("ENF");
 
     /**
+     * Creates a new instance of DocumentSource value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DocumentSource() {
+    }
+
+    /**
      * Creates or finds a DocumentSource from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DocumentSource.
      */
-    @JsonCreator
     public static DocumentSource fromString(String name) {
         return fromString(name, DocumentSource.class);
     }
 
-    /** @return known DocumentSource values. */
+    /**
+     * Gets known DocumentSource values.
+     * 
+     * @return known DocumentSource values.
+     */
     public static Collection<DocumentSource> values() {
         return values(DocumentSource.class);
     }

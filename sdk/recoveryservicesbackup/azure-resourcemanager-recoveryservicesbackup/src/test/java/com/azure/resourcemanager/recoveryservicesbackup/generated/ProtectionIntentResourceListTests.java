@@ -14,16 +14,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProtectionIntentResourceListTests {
-    @Test
-    public void testDeserialize() {
-        ProtectionIntentResourceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"MAB\",\"sourceResourceId\":\"wixjsprozvcp\",\"itemId\":\"eg\",\"policyId\":\"wmfdatscmdvpjhul\",\"protectionState\":\"Protected\"},\"eTag\":\"mkjozkrwf\",\"location\":\"dio\",\"tags\":{\"yoqpsoaccta\":\"slwejdpvw\",\"lahbcryff\":\"akl\",\"xpaojakhmsbz\":\"fdosyg\"},\"id\":\"hcrzevd\",\"name\":\"hlxaolthqtr\",\"type\":\"qjbpfzfsin\"},{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureBackupServer\",\"sourceResourceId\":\"jrwzox\",\"itemId\":\"tfell\",\"policyId\":\"fziton\",\"protectionState\":\"ProtectionFailed\"},\"eTag\":\"pjkjlxofpdv\",\"location\":\"pfxxy\",\"tags\":{\"mayhuybbkpodepoo\":\"i\",\"rxzxtheo\":\"inuvamiheogn\",\"cciqihnhungbwjz\":\"usivye\"},\"id\":\"nfygxgispemvtz\",\"name\":\"kufubljo\",\"type\":\"xqeofjaeqjhqjba\"}],\"nextLink\":\"msmjqulngsntn\"}")
-                .toObject(ProtectionIntentResourceList.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ProtectionIntentResourceList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"MAB\",\"sourceResourceId\":\"wixjsprozvcp\",\"itemId\":\"eg\",\"policyId\":\"wmfdatscmdvpjhul\",\"protectionState\":\"Protected\"},\"eTag\":\"mkjozkrwf\",\"location\":\"dio\",\"tags\":{\"yoqpsoaccta\":\"slwejdpvw\",\"lahbcryff\":\"akl\",\"xpaojakhmsbz\":\"fdosyg\"},\"id\":\"hcrzevd\",\"name\":\"hlxaolthqtr\",\"type\":\"qjbpfzfsin\"},{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureBackupServer\",\"sourceResourceId\":\"jrwzox\",\"itemId\":\"tfell\",\"policyId\":\"fziton\",\"protectionState\":\"ProtectionFailed\"},\"eTag\":\"pjkjlxofpdv\",\"location\":\"pfxxy\",\"tags\":{\"mayhuybbkpodepoo\":\"i\",\"rxzxtheo\":\"inuvamiheogn\",\"cciqihnhungbwjz\":\"usivye\"},\"id\":\"nfygxgispemvtz\",\"name\":\"kufubljo\",\"type\":\"xqeofjaeqjhqjba\"}],\"nextLink\":\"msmjqulngsntn\"}")
+            .toObject(ProtectionIntentResourceList.class);
         Assertions.assertEquals("msmjqulngsntn", model.nextLink());
         Assertions.assertEquals("dio", model.value().get(0).location());
         Assertions.assertEquals("slwejdpvw", model.value().get(0).tags().get("yoqpsoaccta"));
@@ -35,44 +32,27 @@ public final class ProtectionIntentResourceListTests {
         Assertions.assertEquals("mkjozkrwf", model.value().get(0).etag());
     }
 
-    @Test
-    public void testSerialize() {
-        ProtectionIntentResourceList model =
-            new ProtectionIntentResourceList()
-                .withNextLink("msmjqulngsntn")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ProtectionIntentResourceInner()
-                                .withLocation("dio")
-                                .withTags(
-                                    mapOf("yoqpsoaccta", "slwejdpvw", "lahbcryff", "akl", "xpaojakhmsbz", "fdosyg"))
-                                .withProperties(
-                                    new ProtectionIntent()
-                                        .withBackupManagementType(BackupManagementType.MAB)
-                                        .withSourceResourceId("wixjsprozvcp")
-                                        .withItemId("eg")
-                                        .withPolicyId("wmfdatscmdvpjhul")
-                                        .withProtectionState(ProtectionStatus.PROTECTED))
-                                .withEtag("mkjozkrwf"),
-                            new ProtectionIntentResourceInner()
-                                .withLocation("pfxxy")
-                                .withTags(
-                                    mapOf(
-                                        "mayhuybbkpodepoo",
-                                        "i",
-                                        "rxzxtheo",
-                                        "inuvamiheogn",
-                                        "cciqihnhungbwjz",
-                                        "usivye"))
-                                .withProperties(
-                                    new ProtectionIntent()
-                                        .withBackupManagementType(BackupManagementType.AZURE_BACKUP_SERVER)
-                                        .withSourceResourceId("jrwzox")
-                                        .withItemId("tfell")
-                                        .withPolicyId("fziton")
-                                        .withProtectionState(ProtectionStatus.PROTECTION_FAILED))
-                                .withEtag("pjkjlxofpdv")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ProtectionIntentResourceList model = new ProtectionIntentResourceList().withNextLink("msmjqulngsntn")
+            .withValue(Arrays.asList(
+                new ProtectionIntentResourceInner().withLocation("dio")
+                    .withTags(mapOf("yoqpsoaccta", "slwejdpvw", "lahbcryff", "akl", "xpaojakhmsbz", "fdosyg"))
+                    .withProperties(new ProtectionIntent().withBackupManagementType(BackupManagementType.MAB)
+                        .withSourceResourceId("wixjsprozvcp")
+                        .withItemId("eg")
+                        .withPolicyId("wmfdatscmdvpjhul")
+                        .withProtectionState(ProtectionStatus.PROTECTED))
+                    .withEtag("mkjozkrwf"),
+                new ProtectionIntentResourceInner().withLocation("pfxxy")
+                    .withTags(mapOf("mayhuybbkpodepoo", "i", "rxzxtheo", "inuvamiheogn", "cciqihnhungbwjz", "usivye"))
+                    .withProperties(
+                        new ProtectionIntent().withBackupManagementType(BackupManagementType.AZURE_BACKUP_SERVER)
+                            .withSourceResourceId("jrwzox")
+                            .withItemId("tfell")
+                            .withPolicyId("fziton")
+                            .withProtectionState(ProtectionStatus.PROTECTION_FAILED))
+                    .withEtag("pjkjlxofpdv")));
         model = BinaryData.fromObject(model).toObject(ProtectionIntentResourceList.class);
         Assertions.assertEquals("msmjqulngsntn", model.nextLink());
         Assertions.assertEquals("dio", model.value().get(0).location());
@@ -85,6 +65,7 @@ public final class ProtectionIntentResourceListTests {
         Assertions.assertEquals("mkjozkrwf", model.value().get(0).etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

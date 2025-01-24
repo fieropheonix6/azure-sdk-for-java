@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UsagesTypes. */
+/**
+ * The quota or usages limit types.
+ */
 public final class UsagesTypes extends ExpandableStringEnum<UsagesTypes> {
-    /** Static value Individual for UsagesTypes. */
+    /**
+     * Static value Individual for UsagesTypes.
+     */
     public static final UsagesTypes INDIVIDUAL = fromString("Individual");
 
-    /** Static value Combined for UsagesTypes. */
+    /**
+     * Static value Combined for UsagesTypes.
+     */
     public static final UsagesTypes COMBINED = fromString("Combined");
 
     /**
+     * Creates a new instance of UsagesTypes value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UsagesTypes() {
+    }
+
+    /**
      * Creates or finds a UsagesTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UsagesTypes.
      */
-    @JsonCreator
     public static UsagesTypes fromString(String name) {
         return fromString(name, UsagesTypes.class);
     }
 
-    /** @return known UsagesTypes values. */
+    /**
+     * Gets known UsagesTypes values.
+     * 
+     * @return known UsagesTypes values.
+     */
     public static Collection<UsagesTypes> values() {
         return values(UsagesTypes.class);
     }

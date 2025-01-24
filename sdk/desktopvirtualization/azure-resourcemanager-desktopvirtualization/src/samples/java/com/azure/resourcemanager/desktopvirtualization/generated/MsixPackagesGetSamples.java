@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for MsixPackages Get. */
+/**
+ * Samples for MsixPackages Get.
+ */
 public final class MsixPackagesGetSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/MsixPackage_Get.json
+     * x-ms-original-file:
+     * specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/
+     * MsixPackage_Get.json
      */
     /**
      * Sample code: MSIXPackage_Get.
-     *
+     * 
      * @param manager Entry point to DesktopVirtualizationManager.
      */
-    public static void mSIXPackageGet(
-        com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
-        manager.msixPackages().getWithResponse("resourceGroup1", "hostpool1", "packagefullname", Context.NONE);
+    public static void
+        mSIXPackageGet(com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
+        manager.msixPackages()
+            .getWithResponse("resourceGroup1", "hostpool1", "packagefullname", com.azure.core.util.Context.NONE);
     }
 }

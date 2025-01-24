@@ -13,12 +13,13 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class KeyVaultConnectionsListAll {
     public static void main(String[] args) {
-        KeyVaultConnectionsClient client =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildKeyVaultConnectionsClient();
+        KeyVaultConnectionsClient keyVaultConnectionsClient
+            = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildKeyVaultConnectionsClient();
+        // BEGIN:com.azure.analytics.purview.scanning.generated.keyvaultconnectionslistall.keyvaultconnectionslistall
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = client.listAll(requestOptions);
+        PagedIterable<BinaryData> response = keyVaultConnectionsClient.listAll(requestOptions);
+        // END:com.azure.analytics.purview.scanning.generated.keyvaultconnectionslistall.keyvaultconnectionslistall
     }
 }

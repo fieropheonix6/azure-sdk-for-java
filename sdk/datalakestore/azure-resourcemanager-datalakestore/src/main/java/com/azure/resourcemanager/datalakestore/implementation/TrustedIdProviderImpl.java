@@ -20,16 +20,20 @@ public final class TrustedIdProviderImpl
         return this.innerModel().id();
     }
 
-    public String idProvider() {
-        return this.innerModel().idProvider();
-    }
-
     public String name() {
         return this.innerModel().name();
     }
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public String idProvider() {
+        return this.innerModel().idProvider();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public TrustedIdProviderInner innerModel() {
@@ -57,24 +61,20 @@ public final class TrustedIdProviderImpl
     }
 
     public TrustedIdProvider create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTrustedIdProviders()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, trustedIdProviderName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTrustedIdProviders()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, trustedIdProviderName, createParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public TrustedIdProvider create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTrustedIdProviders()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, trustedIdProviderName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTrustedIdProviders()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, trustedIdProviderName, createParameters,
+                context)
+            .getValue();
         return this;
     }
 
@@ -91,53 +91,43 @@ public final class TrustedIdProviderImpl
     }
 
     public TrustedIdProvider apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTrustedIdProviders()
-                .updateWithResponse(
-                    resourceGroupName, accountName, trustedIdProviderName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTrustedIdProviders()
+            .updateWithResponse(resourceGroupName, accountName, trustedIdProviderName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public TrustedIdProvider apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTrustedIdProviders()
-                .updateWithResponse(resourceGroupName, accountName, trustedIdProviderName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTrustedIdProviders()
+            .updateWithResponse(resourceGroupName, accountName, trustedIdProviderName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    TrustedIdProviderImpl(
-        TrustedIdProviderInner innerObject,
+    TrustedIdProviderImpl(TrustedIdProviderInner innerObject,
         com.azure.resourcemanager.datalakestore.DataLakeStoreManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.trustedIdProviderName = Utils.getValueFromIdByName(innerObject.id(), "trustedIdProviders");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
+        this.trustedIdProviderName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "trustedIdProviders");
     }
 
     public TrustedIdProvider refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTrustedIdProviders()
-                .getWithResponse(resourceGroupName, accountName, trustedIdProviderName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTrustedIdProviders()
+            .getWithResponse(resourceGroupName, accountName, trustedIdProviderName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public TrustedIdProvider refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTrustedIdProviders()
-                .getWithResponse(resourceGroupName, accountName, trustedIdProviderName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTrustedIdProviders()
+            .getWithResponse(resourceGroupName, accountName, trustedIdProviderName, context)
+            .getValue();
         return this;
     }
 

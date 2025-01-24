@@ -12,14 +12,18 @@ public final class GsonJsonSerializerBuilder {
     private Gson gson;
 
     /**
+     * Creates an instance of {@link GsonJsonSerializerBuilder}.
+     */
+    public GsonJsonSerializerBuilder() {
+    }
+
+    /**
      * Constructs a new instance of {@link GsonJsonSerializer} with the configurations set in this builder.
      *
      * @return A new instance of {@link GsonJsonSerializer}.
      */
     public GsonJsonSerializer build() {
-        return gson == null
-            ? new GsonJsonSerializer(new Gson())
-            : new GsonJsonSerializer(gson);
+        return gson == null ? new GsonJsonSerializer(new Gson()) : new GsonJsonSerializer(gson);
     }
 
     /**

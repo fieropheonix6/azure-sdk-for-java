@@ -5,29 +5,86 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Process Thread Information. */
+/**
+ * Process Thread Information.
+ */
 @Fluent
 public final class ProcessThreadInfoInner extends ProxyOnlyResource {
     /*
      * ProcessThreadInfo resource specific properties
      */
-    @JsonProperty(value = "properties")
     private ProcessThreadInfoProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ProcessThreadInfoInner class.
+     */
+    public ProcessThreadInfoInner() {
+    }
 
     /**
      * Get the innerProperties property: ProcessThreadInfo resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProcessThreadInfoProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProcessThreadInfoInner withKind(String kind) {
         super.withKind(kind);
@@ -36,7 +93,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the identifier property: Site extension ID.
-     *
+     * 
      * @return the identifier value.
      */
     public Integer identifier() {
@@ -45,7 +102,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the href property: HRef URI.
-     *
+     * 
      * @return the href value.
      */
     public String href() {
@@ -54,7 +111,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the href property: HRef URI.
-     *
+     * 
      * @param href the href value to set.
      * @return the ProcessThreadInfoInner object itself.
      */
@@ -68,7 +125,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the process property: Process URI.
-     *
+     * 
      * @return the process value.
      */
     public String process() {
@@ -77,7 +134,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the process property: Process URI.
-     *
+     * 
      * @param process the process value to set.
      * @return the ProcessThreadInfoInner object itself.
      */
@@ -91,7 +148,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the startAddress property: Start address.
-     *
+     * 
      * @return the startAddress value.
      */
     public String startAddress() {
@@ -100,7 +157,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the startAddress property: Start address.
-     *
+     * 
      * @param startAddress the startAddress value to set.
      * @return the ProcessThreadInfoInner object itself.
      */
@@ -114,7 +171,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the currentPriority property: Current thread priority.
-     *
+     * 
      * @return the currentPriority value.
      */
     public Integer currentPriority() {
@@ -123,7 +180,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the currentPriority property: Current thread priority.
-     *
+     * 
      * @param currentPriority the currentPriority value to set.
      * @return the ProcessThreadInfoInner object itself.
      */
@@ -137,7 +194,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the priorityLevel property: Thread priority level.
-     *
+     * 
      * @return the priorityLevel value.
      */
     public String priorityLevel() {
@@ -146,7 +203,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the priorityLevel property: Thread priority level.
-     *
+     * 
      * @param priorityLevel the priorityLevel value to set.
      * @return the ProcessThreadInfoInner object itself.
      */
@@ -160,7 +217,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the basePriority property: Base priority.
-     *
+     * 
      * @return the basePriority value.
      */
     public Integer basePriority() {
@@ -169,7 +226,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the basePriority property: Base priority.
-     *
+     * 
      * @param basePriority the basePriority value to set.
      * @return the ProcessThreadInfoInner object itself.
      */
@@ -183,7 +240,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the startTime property: Start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -192,7 +249,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the startTime property: Start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the ProcessThreadInfoInner object itself.
      */
@@ -206,7 +263,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the totalProcessorTime property: Total processor time.
-     *
+     * 
      * @return the totalProcessorTime value.
      */
     public String totalProcessorTime() {
@@ -215,7 +272,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the totalProcessorTime property: Total processor time.
-     *
+     * 
      * @param totalProcessorTime the totalProcessorTime value to set.
      * @return the ProcessThreadInfoInner object itself.
      */
@@ -229,7 +286,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the userProcessorTime property: User processor time.
-     *
+     * 
      * @return the userProcessorTime value.
      */
     public String userProcessorTime() {
@@ -238,7 +295,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the userProcessorTime property: User processor time.
-     *
+     * 
      * @param userProcessorTime the userProcessorTime value to set.
      * @return the ProcessThreadInfoInner object itself.
      */
@@ -252,7 +309,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the state property: Thread state.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -261,7 +318,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the state property: Thread state.
-     *
+     * 
      * @param state the state value to set.
      * @return the ProcessThreadInfoInner object itself.
      */
@@ -275,7 +332,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the waitReason property: Wait reason.
-     *
+     * 
      * @return the waitReason value.
      */
     public String waitReason() {
@@ -284,7 +341,7 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the waitReason property: Wait reason.
-     *
+     * 
      * @param waitReason the waitReason value to set.
      * @return the ProcessThreadInfoInner object itself.
      */
@@ -298,14 +355,59 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProcessThreadInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProcessThreadInfoInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProcessThreadInfoInner.
+     */
+    public static ProcessThreadInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProcessThreadInfoInner deserializedProcessThreadInfoInner = new ProcessThreadInfoInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedProcessThreadInfoInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedProcessThreadInfoInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedProcessThreadInfoInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedProcessThreadInfoInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedProcessThreadInfoInner.innerProperties = ProcessThreadInfoProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProcessThreadInfoInner;
+        });
     }
 }

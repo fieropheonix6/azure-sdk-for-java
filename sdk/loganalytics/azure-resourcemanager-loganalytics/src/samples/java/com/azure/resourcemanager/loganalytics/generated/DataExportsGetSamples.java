@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DataExports Get. */
+/**
+ * Samples for DataExports Get.
+ */
 public final class DataExportsGetSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/DataExportGet.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * DataExportGet.json
      */
     /**
      * Sample code: DataExportGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void dataExportGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.dataExports().getWithResponse("RgTest1", "DeWnTest1234", "export1", Context.NONE);
+        manager.dataExports().getWithResponse("RgTest1", "DeWnTest1234", "export1", com.azure.core.util.Context.NONE);
     }
 }

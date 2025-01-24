@@ -9,44 +9,80 @@ import com.azure.resourcemanager.cognitiveservices.fluent.models.CommitmentPlanI
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPeriod;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlanProperties;
 import com.azure.resourcemanager.cognitiveservices.models.HostingModel;
+import com.azure.resourcemanager.cognitiveservices.models.Sku;
+import com.azure.resourcemanager.cognitiveservices.models.SkuTier;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CommitmentPlanInnerTests {
-    @Test
-    public void testDeserialize() {
-        CommitmentPlanInner model =
-            BinaryData
-                .fromString(
-                    "{\"etag\":\"gbhcohfwdsj\",\"properties\":{\"hostingModel\":\"Web\",\"planType\":\"utiiswacf\",\"current\":{\"tier\":\"k\",\"count\":655957615,\"startDate\":\"fvhqc\",\"endDate\":\"ilvpnppfuflrwd\"},\"autoRenew\":false,\"next\":{\"tier\":\"yjrxsagafcnih\",\"count\":728963944,\"startDate\":\"nedgfbc\",\"endDate\":\"cvqvpkeqdcv\"},\"last\":{\"tier\":\"vo\",\"count\":1383619855,\"startDate\":\"bobzdopcjwvnhd\",\"endDate\":\"wmgxcxrsl\"}},\"id\":\"mutwuoe\",\"name\":\"rpkhjwn\",\"type\":\"yqsluic\"}")
-                .toObject(CommitmentPlanInner.class);
-        Assertions.assertEquals(HostingModel.WEB, model.properties().hostingModel());
-        Assertions.assertEquals("utiiswacf", model.properties().planType());
-        Assertions.assertEquals("k", model.properties().current().tier());
-        Assertions.assertEquals(655957615, model.properties().current().count());
-        Assertions.assertEquals(false, model.properties().autoRenew());
-        Assertions.assertEquals("yjrxsagafcnih", model.properties().next().tier());
-        Assertions.assertEquals(728963944, model.properties().next().count());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CommitmentPlanInner model = BinaryData.fromString(
+            "{\"etag\":\"ithtywu\",\"kind\":\"cbihwqk\",\"sku\":{\"name\":\"dntwjchrdgo\",\"tier\":\"Premium\",\"size\":\"mwctondzjluudfd\",\"family\":\"gg\",\"capacity\":407564287},\"tags\":{\"tgseinqfiufxqkn\":\"tov\",\"ttwqmsni\":\"irgne\",\"rxfrddhc\":\"fcdmqnrojlpijn\"},\"location\":\"tizzronasxif\",\"properties\":{\"provisioningState\":\"Creating\",\"commitmentPlanGuid\":\"zh\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"sgogczhonnxk\",\"current\":{\"tier\":\"nyhmossxkkgthr\",\"count\":486654365,\"quota\":{\"quantity\":1163156563773473643,\"unit\":\"qxvcxgfrpdsofb\"},\"startDate\":\"rnsvbuswd\",\"endDate\":\"yybyc\"},\"autoRenew\":true,\"next\":{\"tier\":\"srtkfa\",\"count\":1955812770,\"quota\":{\"quantity\":877559643182004257,\"unit\":\"yzirtxdyuxzejn\"},\"startDate\":\"sewgioilqukr\",\"endDate\":\"xtqmieoxor\"},\"last\":{\"tier\":\"f\",\"count\":1933548472,\"quota\":{\"quantity\":4267907797964395511,\"unit\":\"hhavgrvkffovjz\"},\"startDate\":\"jbibg\",\"endDate\":\"fxumv\"},\"provisioningIssues\":[\"uyovw\",\"nbkfezzxscy\",\"wzdgirujbzbo\",\"vzzbtdcq\"]},\"id\":\"pniyujviyl\",\"name\":\"dshf\",\"type\":\"snrbgyefrymsgao\"}")
+            .toObject(CommitmentPlanInner.class);
+        Assertions.assertEquals("cbihwqk", model.kind());
+        Assertions.assertEquals("dntwjchrdgo", model.sku().name());
+        Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
+        Assertions.assertEquals("mwctondzjluudfd", model.sku().size());
+        Assertions.assertEquals("gg", model.sku().family());
+        Assertions.assertEquals(407564287, model.sku().capacity());
+        Assertions.assertEquals("tov", model.tags().get("tgseinqfiufxqkn"));
+        Assertions.assertEquals("tizzronasxif", model.location());
+        Assertions.assertEquals("zh", model.properties().commitmentPlanGuid());
+        Assertions.assertEquals(HostingModel.DISCONNECTED_CONTAINER, model.properties().hostingModel());
+        Assertions.assertEquals("sgogczhonnxk", model.properties().planType());
+        Assertions.assertEquals("nyhmossxkkgthr", model.properties().current().tier());
+        Assertions.assertEquals(486654365, model.properties().current().count());
+        Assertions.assertEquals(true, model.properties().autoRenew());
+        Assertions.assertEquals("srtkfa", model.properties().next().tier());
+        Assertions.assertEquals(1955812770, model.properties().next().count());
     }
 
-    @Test
-    public void testSerialize() {
-        CommitmentPlanInner model =
-            new CommitmentPlanInner()
-                .withProperties(
-                    new CommitmentPlanProperties()
-                        .withHostingModel(HostingModel.WEB)
-                        .withPlanType("utiiswacf")
-                        .withCurrent(new CommitmentPeriod().withTier("k").withCount(655957615))
-                        .withAutoRenew(false)
-                        .withNext(new CommitmentPeriod().withTier("yjrxsagafcnih").withCount(728963944)));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CommitmentPlanInner model = new CommitmentPlanInner().withKind("cbihwqk")
+            .withSku(new Sku().withName("dntwjchrdgo")
+                .withTier(SkuTier.PREMIUM)
+                .withSize("mwctondzjluudfd")
+                .withFamily("gg")
+                .withCapacity(407564287))
+            .withTags(mapOf("tgseinqfiufxqkn", "tov", "ttwqmsni", "irgne", "rxfrddhc", "fcdmqnrojlpijn"))
+            .withLocation("tizzronasxif")
+            .withProperties(new CommitmentPlanProperties().withCommitmentPlanGuid("zh")
+                .withHostingModel(HostingModel.DISCONNECTED_CONTAINER)
+                .withPlanType("sgogczhonnxk")
+                .withCurrent(new CommitmentPeriod().withTier("nyhmossxkkgthr").withCount(486654365))
+                .withAutoRenew(true)
+                .withNext(new CommitmentPeriod().withTier("srtkfa").withCount(1955812770)));
         model = BinaryData.fromObject(model).toObject(CommitmentPlanInner.class);
-        Assertions.assertEquals(HostingModel.WEB, model.properties().hostingModel());
-        Assertions.assertEquals("utiiswacf", model.properties().planType());
-        Assertions.assertEquals("k", model.properties().current().tier());
-        Assertions.assertEquals(655957615, model.properties().current().count());
-        Assertions.assertEquals(false, model.properties().autoRenew());
-        Assertions.assertEquals("yjrxsagafcnih", model.properties().next().tier());
-        Assertions.assertEquals(728963944, model.properties().next().count());
+        Assertions.assertEquals("cbihwqk", model.kind());
+        Assertions.assertEquals("dntwjchrdgo", model.sku().name());
+        Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
+        Assertions.assertEquals("mwctondzjluudfd", model.sku().size());
+        Assertions.assertEquals("gg", model.sku().family());
+        Assertions.assertEquals(407564287, model.sku().capacity());
+        Assertions.assertEquals("tov", model.tags().get("tgseinqfiufxqkn"));
+        Assertions.assertEquals("tizzronasxif", model.location());
+        Assertions.assertEquals("zh", model.properties().commitmentPlanGuid());
+        Assertions.assertEquals(HostingModel.DISCONNECTED_CONTAINER, model.properties().hostingModel());
+        Assertions.assertEquals("sgogczhonnxk", model.properties().planType());
+        Assertions.assertEquals("nyhmossxkkgthr", model.properties().current().tier());
+        Assertions.assertEquals(486654365, model.properties().current().count());
+        Assertions.assertEquals(true, model.properties().autoRenew());
+        Assertions.assertEquals("srtkfa", model.properties().next().tier());
+        Assertions.assertEquals(1955812770, model.properties().next().count());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

@@ -7,25 +7,23 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IdentityInfo;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IdentityInfoTests {
-    @Test
-    public void testDeserialize() {
-        IdentityInfo model =
-            BinaryData
-                .fromString("{\"isSystemAssignedIdentity\":true,\"managedIdentityResourceId\":\"okffqyinljqepqwh\"}")
-                .toObject(IdentityInfo.class);
-        Assertions.assertEquals(true, model.isSystemAssignedIdentity());
-        Assertions.assertEquals("okffqyinljqepqwh", model.managedIdentityResourceId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        IdentityInfo model = BinaryData
+            .fromString("{\"isSystemAssignedIdentity\":false,\"managedIdentityResourceId\":\"rsnewmozqvbubqma\"}")
+            .toObject(IdentityInfo.class);
+        Assertions.assertEquals(false, model.isSystemAssignedIdentity());
+        Assertions.assertEquals("rsnewmozqvbubqma", model.managedIdentityResourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        IdentityInfo model =
-            new IdentityInfo().withIsSystemAssignedIdentity(true).withManagedIdentityResourceId("okffqyinljqepqwh");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        IdentityInfo model
+            = new IdentityInfo().withIsSystemAssignedIdentity(false).withManagedIdentityResourceId("rsnewmozqvbubqma");
         model = BinaryData.fromObject(model).toObject(IdentityInfo.class);
-        Assertions.assertEquals(true, model.isSystemAssignedIdentity());
-        Assertions.assertEquals("okffqyinljqepqwh", model.managedIdentityResourceId());
+        Assertions.assertEquals(false, model.isSystemAssignedIdentity());
+        Assertions.assertEquals("rsnewmozqvbubqma", model.managedIdentityResourceId());
     }
 }

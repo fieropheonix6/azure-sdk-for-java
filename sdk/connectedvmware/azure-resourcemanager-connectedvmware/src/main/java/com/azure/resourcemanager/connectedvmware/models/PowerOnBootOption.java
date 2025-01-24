@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PowerOnBootOption. */
+/**
+ * Defines the options for power on boot.
+ */
 public final class PowerOnBootOption extends ExpandableStringEnum<PowerOnBootOption> {
-    /** Static value enabled for PowerOnBootOption. */
+    /**
+     * Static value enabled for PowerOnBootOption.
+     */
     public static final PowerOnBootOption ENABLED = fromString("enabled");
 
-    /** Static value disabled for PowerOnBootOption. */
+    /**
+     * Static value disabled for PowerOnBootOption.
+     */
     public static final PowerOnBootOption DISABLED = fromString("disabled");
 
     /**
+     * Creates a new instance of PowerOnBootOption value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PowerOnBootOption() {
+    }
+
+    /**
      * Creates or finds a PowerOnBootOption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PowerOnBootOption.
      */
-    @JsonCreator
     public static PowerOnBootOption fromString(String name) {
         return fromString(name, PowerOnBootOption.class);
     }
 
     /**
      * Gets known PowerOnBootOption values.
-     *
+     * 
      * @return known PowerOnBootOption values.
      */
     public static Collection<PowerOnBootOption> values() {

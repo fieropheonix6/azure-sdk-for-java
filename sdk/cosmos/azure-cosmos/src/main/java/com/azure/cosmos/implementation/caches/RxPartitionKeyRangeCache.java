@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
@@ -11,6 +12,7 @@ import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -68,7 +70,10 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             .onErrorResume(err -> {
                 logger.debug("tryLookupAsync on collectionRid {} encountered failure", collectionRid, err);
                 CosmosException dce = Utils.as(err, CosmosException.class);
-                if (dce != null && Exceptions.isNotFound(dce)) {
+
+                // bubble up in case a 404:1002 is seen to force retries as a part of document retries
+                // todo: revert change when fault injection excludes 404:1002 for master resources
+                if (dce != null && Exceptions.isNotFound(dce) && !Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)) {
                     return Mono.just(new Utils.ValueHolder<>(null));
                 }
 
@@ -125,7 +130,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                 // maybe we should consider changing to ArrayList to avoid conversion
                 return new Utils.ValueHolder<>(new ArrayList<>(routingMapValueHolder.v.getOverlappingRanges(range)));
             } else {
-                logger.debug("Routing Map Null for collection: {} for range: {}, forceRefresh:{}", collectionRid, range, forceRefresh);
+                logger.warn("Routing Map Null for collection: {} for range: {}, forceRefresh:{}", collectionRid, range, forceRefresh);
                 return new Utils.ValueHolder<>(null);
             }
         });
@@ -177,7 +182,9 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                             partitionKeyRangeId,
                             err);
 
-                    if (dce != null && Exceptions.isNotFound(dce)) {
+                    // bubble up in case a 404:1002 is seen to force retries as a part of document retries
+                    // todo: revert change when fault injection excludes 404:1002 for master resources
+                    if (dce != null && Exceptions.isNotFound(dce) && !Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)) {
                         return Mono.just(new Utils.ValueHolder<>(null));
                     }
 
@@ -248,6 +255,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
         ); //this request doesn't actually go to server
 
         request.requestContext.resolvedCollectionRid = collectionRid;
+        request.setResourceId(collectionRid);
         Mono<DocumentCollection> collectionObs = collectionCache.resolveCollectionAsync(metaDataDiagnosticsContext, request)
             .map(collectionValueHolder -> collectionValueHolder.v);
 
@@ -258,6 +266,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                 ModelBridgeInternal.setQueryRequestOptionsProperties(cosmosQueryRequestOptions, properties);
             }
             Instant addressCallStartTime = Instant.now();
+
             return client.readPartitionKeyRanges(coll.getSelfLink(), cosmosQueryRequestOptions)
                 // maxConcurrent = 1 to makes it in the right getOrder
                 .flatMap(p -> {

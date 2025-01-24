@@ -6,49 +6,62 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Base class for output. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata.type",
-    defaultImpl = Format.class)
-@JsonTypeName("Format")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.Media.ImageFormat", value = ImageFormat.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.MultiBitrateFormat", value = MultiBitrateFormat.class)
-})
+/**
+ * Base class for output.
+ */
 @Fluent
-public class Format {
+public class Format implements JsonSerializable<Format> {
     /*
-     * The pattern of the file names for the generated output files. The following macros are supported in the file
+     * The discriminator for derived types.
+     */
+    private String odataType = "Format";
+
+    /*
+     * The file naming pattern used for the creation of output files. The following macros are supported in the file
      * name: {Basename} - An expansion macro that will use the name of the input video file. If the base name(the file
      * suffix is not included) of the input video file is less than 32 characters long, the base name of input video
      * files will be used. If the length of base name of the input video file exceeds 32 characters, the base name is
      * truncated to the first 32 characters in total length. {Extension} - The appropriate extension for this format.
      * {Label} - The label assigned to the codec/layer. {Index} - A unique index for thumbnails. Only applicable to
-     * thumbnails. {Bitrate} - The audio/video bitrate. Not applicable to thumbnails. {Codec} - The type of the
-     * audio/video codec. {Resolution} - The video resolution. Any unsubstituted macros will be collapsed and removed
-     * from the filename.
+     * thumbnails. {AudioStream} - string "Audio" plus audio stream number(start from 1). {Bitrate} - The audio/video
+     * bitrate in kbps. Not applicable to thumbnails. {Codec} - The type of the audio/video codec. {Resolution} - The
+     * video resolution. Any unsubstituted macros will be collapsed and removed from the filename.
      */
-    @JsonProperty(value = "filenamePattern", required = true)
     private String filenamePattern;
 
     /**
-     * Get the filenamePattern property: The pattern of the file names for the generated output files. The following
+     * Creates an instance of Format class.
+     */
+    public Format() {
+    }
+
+    /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
+     * Get the filenamePattern property: The file naming pattern used for the creation of output files. The following
      * macros are supported in the file name: {Basename} - An expansion macro that will use the name of the input video
      * file. If the base name(the file suffix is not included) of the input video file is less than 32 characters long,
      * the base name of input video files will be used. If the length of base name of the input video file exceeds 32
      * characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate
      * extension for this format. {Label} - The label assigned to the codec/layer. {Index} - A unique index for
-     * thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate. Not applicable to thumbnails.
-     * {Codec} - The type of the audio/video codec. {Resolution} - The video resolution. Any unsubstituted macros will
-     * be collapsed and removed from the filename.
-     *
+     * thumbnails. Only applicable to thumbnails. {AudioStream} - string "Audio" plus audio stream number(start from 1).
+     * {Bitrate} - The audio/video bitrate in kbps. Not applicable to thumbnails. {Codec} - The type of the audio/video
+     * codec. {Resolution} - The video resolution. Any unsubstituted macros will be collapsed and removed from the
+     * filename.
+     * 
      * @return the filenamePattern value.
      */
     public String filenamePattern() {
@@ -56,16 +69,17 @@ public class Format {
     }
 
     /**
-     * Set the filenamePattern property: The pattern of the file names for the generated output files. The following
+     * Set the filenamePattern property: The file naming pattern used for the creation of output files. The following
      * macros are supported in the file name: {Basename} - An expansion macro that will use the name of the input video
      * file. If the base name(the file suffix is not included) of the input video file is less than 32 characters long,
      * the base name of input video files will be used. If the length of base name of the input video file exceeds 32
      * characters, the base name is truncated to the first 32 characters in total length. {Extension} - The appropriate
      * extension for this format. {Label} - The label assigned to the codec/layer. {Index} - A unique index for
-     * thumbnails. Only applicable to thumbnails. {Bitrate} - The audio/video bitrate. Not applicable to thumbnails.
-     * {Codec} - The type of the audio/video codec. {Resolution} - The video resolution. Any unsubstituted macros will
-     * be collapsed and removed from the filename.
-     *
+     * thumbnails. Only applicable to thumbnails. {AudioStream} - string "Audio" plus audio stream number(start from 1).
+     * {Bitrate} - The audio/video bitrate in kbps. Not applicable to thumbnails. {Codec} - The type of the audio/video
+     * codec. {Resolution} - The video resolution. Any unsubstituted macros will be collapsed and removed from the
+     * filename.
+     * 
      * @param filenamePattern the filenamePattern value to set.
      * @return the Format object itself.
      */
@@ -76,16 +90,90 @@ public class Format {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (filenamePattern() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property filenamePattern in model Format"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property filenamePattern in model Format"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Format.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("filenamePattern", this.filenamePattern);
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Format from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Format if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Format.
+     */
+    public static Format fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("@odata.type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("#Microsoft.Media.ImageFormat".equals(discriminatorValue)) {
+                    return ImageFormat.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("#Microsoft.Media.JpgFormat".equals(discriminatorValue)) {
+                    return JpgFormat.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Media.PngFormat".equals(discriminatorValue)) {
+                    return PngFormat.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Media.MultiBitrateFormat".equals(discriminatorValue)) {
+                    return MultiBitrateFormat.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("#Microsoft.Media.Mp4Format".equals(discriminatorValue)) {
+                    return Mp4Format.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Media.TransportStreamFormat".equals(discriminatorValue)) {
+                    return TransportStreamFormat.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static Format fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Format deserializedFormat = new Format();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("filenamePattern".equals(fieldName)) {
+                    deserializedFormat.filenamePattern = reader.getString();
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedFormat.odataType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFormat;
+        });
+    }
 }

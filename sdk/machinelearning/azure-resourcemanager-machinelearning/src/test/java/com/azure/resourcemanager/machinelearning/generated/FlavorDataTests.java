@@ -9,28 +9,25 @@ import com.azure.resourcemanager.machinelearning.models.FlavorData;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class FlavorDataTests {
-    @Test
-    public void testDeserialize() {
-        FlavorData model =
-            BinaryData
-                .fromString(
-                    "{\"data\":{\"sdbccxjmonfdgnwn\":\"bdkelvidizo\",\"keifzzhmkdasv\":\"ypuuwwltvuqjctze\",\"cu\":\"lyhb\"}}")
-                .toObject(FlavorData.class);
-        Assertions.assertEquals("bdkelvidizo", model.data().get("sdbccxjmonfdgnwn"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        FlavorData model = BinaryData
+            .fromString("{\"data\":{\"nm\":\"ltxijjumfqwazln\",\"qdqx\":\"jng\",\"zsvtuikzhajqgl\":\"bjwgnyfus\"}}")
+            .toObject(FlavorData.class);
+        Assertions.assertEquals("ltxijjumfqwazln", model.data().get("nm"));
     }
 
-    @Test
-    public void testSerialize() {
-        FlavorData model =
-            new FlavorData()
-                .withData(mapOf("sdbccxjmonfdgnwn", "bdkelvidizo", "keifzzhmkdasv", "ypuuwwltvuqjctze", "cu", "lyhb"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        FlavorData model
+            = new FlavorData().withData(mapOf("nm", "ltxijjumfqwazln", "qdqx", "jng", "zsvtuikzhajqgl", "bjwgnyfus"));
         model = BinaryData.fromObject(model).toObject(FlavorData.class);
-        Assertions.assertEquals("bdkelvidizo", model.data().get("sdbccxjmonfdgnwn"));
+        Assertions.assertEquals("ltxijjumfqwazln", model.data().get("nm"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

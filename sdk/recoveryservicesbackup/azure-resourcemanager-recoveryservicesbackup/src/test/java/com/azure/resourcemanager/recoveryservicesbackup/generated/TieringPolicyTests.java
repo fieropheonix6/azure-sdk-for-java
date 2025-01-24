@@ -9,30 +9,26 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionDuration
 import com.azure.resourcemanager.recoveryservicesbackup.models.TieringMode;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TieringPolicy;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TieringPolicyTests {
-    @Test
-    public void testDeserialize() {
-        TieringPolicy model =
-            BinaryData
-                .fromString("{\"tieringMode\":\"DoNotTier\",\"duration\":551279051,\"durationType\":\"Weeks\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        TieringPolicy model
+            = BinaryData.fromString("{\"tieringMode\":\"Invalid\",\"duration\":55110922,\"durationType\":\"Invalid\"}")
                 .toObject(TieringPolicy.class);
-        Assertions.assertEquals(TieringMode.DO_NOT_TIER, model.tieringMode());
-        Assertions.assertEquals(551279051, model.duration());
-        Assertions.assertEquals(RetentionDurationType.WEEKS, model.durationType());
+        Assertions.assertEquals(TieringMode.INVALID, model.tieringMode());
+        Assertions.assertEquals(55110922, model.duration());
+        Assertions.assertEquals(RetentionDurationType.INVALID, model.durationType());
     }
 
-    @Test
-    public void testSerialize() {
-        TieringPolicy model =
-            new TieringPolicy()
-                .withTieringMode(TieringMode.DO_NOT_TIER)
-                .withDuration(551279051)
-                .withDurationType(RetentionDurationType.WEEKS);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        TieringPolicy model = new TieringPolicy().withTieringMode(TieringMode.INVALID)
+            .withDuration(55110922)
+            .withDurationType(RetentionDurationType.INVALID);
         model = BinaryData.fromObject(model).toObject(TieringPolicy.class);
-        Assertions.assertEquals(TieringMode.DO_NOT_TIER, model.tieringMode());
-        Assertions.assertEquals(551279051, model.duration());
-        Assertions.assertEquals(RetentionDurationType.WEEKS, model.durationType());
+        Assertions.assertEquals(TieringMode.INVALID, model.tieringMode());
+        Assertions.assertEquals(55110922, model.duration());
+        Assertions.assertEquals(RetentionDurationType.INVALID, model.durationType());
     }
 }

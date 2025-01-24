@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Identifies an object. */
+/**
+ * Identifies an object.
+ */
 @Fluent
-public final class NameIdentifierInner {
+public final class NameIdentifierInner implements JsonSerializable<NameIdentifierInner> {
     /*
      * Name of the object.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /**
+     * Creates an instance of NameIdentifierInner class.
+     */
+    public NameIdentifierInner() {
+    }
+
+    /**
      * Get the name property: Name of the object.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -27,7 +38,7 @@ public final class NameIdentifierInner {
 
     /**
      * Set the name property: Name of the object.
-     *
+     * 
      * @param name the name value to set.
      * @return the NameIdentifierInner object itself.
      */
@@ -38,9 +49,45 @@ public final class NameIdentifierInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NameIdentifierInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NameIdentifierInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NameIdentifierInner.
+     */
+    public static NameIdentifierInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NameIdentifierInner deserializedNameIdentifierInner = new NameIdentifierInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNameIdentifierInner.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNameIdentifierInner;
+        });
     }
 }

@@ -7,25 +7,15 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IntegrationRuntimeMonitoringDatas. */
+/**
+ * Resource collection API of IntegrationRuntimeMonitoringDatas.
+ */
 public interface IntegrationRuntimeMonitoringDatas {
     /**
+     * Get integration runtime monitoring data
+     * 
      * Get monitoring data for an integration runtime.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param integrationRuntimeName Integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return monitoring data for an integration runtime.
-     */
-    IntegrationRuntimeMonitoringData list(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
-
-    /**
-     * Get monitoring data for an integration runtime.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -35,6 +25,22 @@ public interface IntegrationRuntimeMonitoringDatas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return monitoring data for an integration runtime along with {@link Response}.
      */
-    Response<IntegrationRuntimeMonitoringData> listWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    Response<IntegrationRuntimeMonitoringData> listWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
+
+    /**
+     * Get integration runtime monitoring data
+     * 
+     * Get monitoring data for an integration runtime.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return monitoring data for an integration runtime.
+     */
+    IntegrationRuntimeMonitoringData list(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName);
 }

@@ -6,57 +6,60 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies the required information to reference a compute gallery application version. */
+/**
+ * Specifies the required information to reference a compute gallery application version.
+ */
 @Fluent
-public final class VMGalleryApplication {
+public final class VMGalleryApplication implements JsonSerializable<VMGalleryApplication> {
     /*
      * Optional, Specifies a passthrough value for more generic context.
      */
-    @JsonProperty(value = "tags")
     private String tags;
 
     /*
      * Optional, Specifies the order in which the packages have to be installed
      */
-    @JsonProperty(value = "order")
     private Integer order;
 
     /*
      * Specifies the GalleryApplicationVersion resource id on the form of
-     * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{application}/versions/{version}
+     * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/galleries/{
+     * galleryName}/applications/{application}/versions/{version}
      */
-    @JsonProperty(value = "packageReferenceId", required = true)
     private String packageReferenceId;
 
     /*
      * Optional, Specifies the uri to an azure blob that will replace the default configuration for the package if
      * provided
      */
-    @JsonProperty(value = "configurationReference")
     private String configurationReference;
 
     /*
      * Optional, If true, any failure for any operation in the VmApplication will fail the deployment
      */
-    @JsonProperty(value = "treatFailureAsDeploymentFailure")
     private Boolean treatFailureAsDeploymentFailure;
 
     /*
      * If set to true, when a new Gallery Application version is available in PIR/SIG, it will be automatically updated
      * for the VM/VMSS
      */
-    @JsonProperty(value = "enableAutomaticUpgrade")
     private Boolean enableAutomaticUpgrade;
 
-    /** Creates an instance of VMGalleryApplication class. */
+    /**
+     * Creates an instance of VMGalleryApplication class.
+     */
     public VMGalleryApplication() {
     }
 
     /**
      * Get the tags property: Optional, Specifies a passthrough value for more generic context.
-     *
+     * 
      * @return the tags value.
      */
     public String tags() {
@@ -65,7 +68,7 @@ public final class VMGalleryApplication {
 
     /**
      * Set the tags property: Optional, Specifies a passthrough value for more generic context.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the VMGalleryApplication object itself.
      */
@@ -76,7 +79,7 @@ public final class VMGalleryApplication {
 
     /**
      * Get the order property: Optional, Specifies the order in which the packages have to be installed.
-     *
+     * 
      * @return the order value.
      */
     public Integer order() {
@@ -85,7 +88,7 @@ public final class VMGalleryApplication {
 
     /**
      * Set the order property: Optional, Specifies the order in which the packages have to be installed.
-     *
+     * 
      * @param order the order value to set.
      * @return the VMGalleryApplication object itself.
      */
@@ -97,7 +100,7 @@ public final class VMGalleryApplication {
     /**
      * Get the packageReferenceId property: Specifies the GalleryApplicationVersion resource id on the form of
      * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{application}/versions/{version}.
-     *
+     * 
      * @return the packageReferenceId value.
      */
     public String packageReferenceId() {
@@ -107,7 +110,7 @@ public final class VMGalleryApplication {
     /**
      * Set the packageReferenceId property: Specifies the GalleryApplicationVersion resource id on the form of
      * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{application}/versions/{version}.
-     *
+     * 
      * @param packageReferenceId the packageReferenceId value to set.
      * @return the VMGalleryApplication object itself.
      */
@@ -119,7 +122,7 @@ public final class VMGalleryApplication {
     /**
      * Get the configurationReference property: Optional, Specifies the uri to an azure blob that will replace the
      * default configuration for the package if provided.
-     *
+     * 
      * @return the configurationReference value.
      */
     public String configurationReference() {
@@ -129,7 +132,7 @@ public final class VMGalleryApplication {
     /**
      * Set the configurationReference property: Optional, Specifies the uri to an azure blob that will replace the
      * default configuration for the package if provided.
-     *
+     * 
      * @param configurationReference the configurationReference value to set.
      * @return the VMGalleryApplication object itself.
      */
@@ -141,7 +144,7 @@ public final class VMGalleryApplication {
     /**
      * Get the treatFailureAsDeploymentFailure property: Optional, If true, any failure for any operation in the
      * VmApplication will fail the deployment.
-     *
+     * 
      * @return the treatFailureAsDeploymentFailure value.
      */
     public Boolean treatFailureAsDeploymentFailure() {
@@ -151,7 +154,7 @@ public final class VMGalleryApplication {
     /**
      * Set the treatFailureAsDeploymentFailure property: Optional, If true, any failure for any operation in the
      * VmApplication will fail the deployment.
-     *
+     * 
      * @param treatFailureAsDeploymentFailure the treatFailureAsDeploymentFailure value to set.
      * @return the VMGalleryApplication object itself.
      */
@@ -163,7 +166,7 @@ public final class VMGalleryApplication {
     /**
      * Get the enableAutomaticUpgrade property: If set to true, when a new Gallery Application version is available in
      * PIR/SIG, it will be automatically updated for the VM/VMSS.
-     *
+     * 
      * @return the enableAutomaticUpgrade value.
      */
     public Boolean enableAutomaticUpgrade() {
@@ -173,7 +176,7 @@ public final class VMGalleryApplication {
     /**
      * Set the enableAutomaticUpgrade property: If set to true, when a new Gallery Application version is available in
      * PIR/SIG, it will be automatically updated for the VM/VMSS.
-     *
+     * 
      * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
      * @return the VMGalleryApplication object itself.
      */
@@ -184,17 +187,70 @@ public final class VMGalleryApplication {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (packageReferenceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property packageReferenceId in model VMGalleryApplication"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property packageReferenceId in model VMGalleryApplication"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VMGalleryApplication.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("packageReferenceId", this.packageReferenceId);
+        jsonWriter.writeStringField("tags", this.tags);
+        jsonWriter.writeNumberField("order", this.order);
+        jsonWriter.writeStringField("configurationReference", this.configurationReference);
+        jsonWriter.writeBooleanField("treatFailureAsDeploymentFailure", this.treatFailureAsDeploymentFailure);
+        jsonWriter.writeBooleanField("enableAutomaticUpgrade", this.enableAutomaticUpgrade);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMGalleryApplication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMGalleryApplication if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VMGalleryApplication.
+     */
+    public static VMGalleryApplication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMGalleryApplication deserializedVMGalleryApplication = new VMGalleryApplication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("packageReferenceId".equals(fieldName)) {
+                    deserializedVMGalleryApplication.packageReferenceId = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    deserializedVMGalleryApplication.tags = reader.getString();
+                } else if ("order".equals(fieldName)) {
+                    deserializedVMGalleryApplication.order = reader.getNullable(JsonReader::getInt);
+                } else if ("configurationReference".equals(fieldName)) {
+                    deserializedVMGalleryApplication.configurationReference = reader.getString();
+                } else if ("treatFailureAsDeploymentFailure".equals(fieldName)) {
+                    deserializedVMGalleryApplication.treatFailureAsDeploymentFailure
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableAutomaticUpgrade".equals(fieldName)) {
+                    deserializedVMGalleryApplication.enableAutomaticUpgrade
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMGalleryApplication;
+        });
+    }
 }

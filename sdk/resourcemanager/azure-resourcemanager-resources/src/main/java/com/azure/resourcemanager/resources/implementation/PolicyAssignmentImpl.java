@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.models.EnforcementMode;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.ParameterValuesValue;
@@ -23,11 +24,8 @@ import java.util.TreeMap;
 /**
  * Implementation for {@link PolicyAssignment}.
  */
-final class PolicyAssignmentImpl extends
-        CreatableImpl<PolicyAssignment, PolicyAssignmentInner, PolicyAssignmentImpl>
-        implements
-        PolicyAssignment,
-        PolicyAssignment.Definition {
+final class PolicyAssignmentImpl extends CreatableImpl<PolicyAssignment, PolicyAssignmentInner, PolicyAssignmentImpl>
+    implements PolicyAssignment, PolicyAssignment.Definition {
     private final PolicyAssignmentsClient innerCollection;
 
     private String scope;
@@ -119,8 +117,8 @@ final class PolicyAssignmentImpl extends
 
     @Override
     public Mono<PolicyAssignment> createResourceAsync() {
-        return innerCollection.createAsync(this.scope, name(), innerModel())
-                .map(innerToFluentMap(this));
+        return innerCollection.createAsync(ResourceUtils.encodeResourceId(this.scope), name(), innerModel())
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -130,7 +128,7 @@ final class PolicyAssignmentImpl extends
 
     @Override
     protected Mono<PolicyAssignmentInner> getInnerAsync() {
-        return innerCollection.getAsync(innerModel().scope(), name());
+        return innerCollection.getAsync(ResourceUtils.encodeResourceId(innerModel().scope()), name());
     }
 
     @Override

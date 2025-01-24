@@ -8,20 +8,17 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.SupportedSkuInner;
 import com.azure.resourcemanager.batch.models.SupportedSkusResult;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
 
 public final class SupportedSkusResultTests {
-    @Test
-    public void testDeserialize() {
-        SupportedSkusResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"pmivkwlzu\",\"familyName\":\"c\",\"capabilities\":[]}],\"nextLink\":\"nbacfi\"}")
-                .toObject(SupportedSkusResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SupportedSkusResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"m\",\"familyName\":\"hrzayvvtpgvdf\",\"capabilities\":[{\"name\":\"kftutqxlngxlefg\",\"value\":\"nxkrx\"},{\"name\":\"mi\",\"value\":\"thz\"},{\"name\":\"qdrabhjybigehoqf\",\"value\":\"wska\"},{\"name\":\"ktzlcuiywg\",\"value\":\"wgndrvynhzgpp\"}],\"batchSupportEndOfLife\":\"2021-11-30T12:13:07Z\"}],\"nextLink\":\"yncocpecfvmmcoo\"}")
+            .toObject(SupportedSkusResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SupportedSkusResult model = new SupportedSkusResult().withValue(Arrays.asList(new SupportedSkuInner()));
         model = BinaryData.fromObject(model).toObject(SupportedSkusResult.class);
     }

@@ -5,29 +5,39 @@
 package com.azure.resourcemanager.communication.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.communication.fluent.models.EmailServiceResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Object that includes an array of EmailServices and a possible link for next set. */
+/**
+ * Object that includes an array of EmailServices and a possible link for next set.
+ */
 @Fluent
-public final class EmailServiceResourceList {
+public final class EmailServiceResourceList implements JsonSerializable<EmailServiceResourceList> {
     /*
      * List of EmailService
      */
-    @JsonProperty(value = "value")
     private List<EmailServiceResourceInner> value;
 
     /*
      * The URL the client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of EmailServiceResourceList class.
+     */
+    public EmailServiceResourceList() {
+    }
+
+    /**
      * Get the value property: List of EmailService.
-     *
+     * 
      * @return the value value.
      */
     public List<EmailServiceResourceInner> value() {
@@ -36,7 +46,7 @@ public final class EmailServiceResourceList {
 
     /**
      * Set the value property: List of EmailService.
-     *
+     * 
      * @param value the value value to set.
      * @return the EmailServiceResourceList object itself.
      */
@@ -46,9 +56,9 @@ public final class EmailServiceResourceList {
     }
 
     /**
-     * Get the nextLink property: The URL the client should use to fetch the next page (per server side paging). It's
-     * null for now, added for future use.
-     *
+     * Get the nextLink property: The URL the client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,9 +66,9 @@ public final class EmailServiceResourceList {
     }
 
     /**
-     * Set the nextLink property: The URL the client should use to fetch the next page (per server side paging). It's
-     * null for now, added for future use.
-     *
+     * Set the nextLink property: The URL the client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the EmailServiceResourceList object itself.
      */
@@ -69,12 +79,53 @@ public final class EmailServiceResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmailServiceResourceList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmailServiceResourceList if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EmailServiceResourceList.
+     */
+    public static EmailServiceResourceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EmailServiceResourceList deserializedEmailServiceResourceList = new EmailServiceResourceList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<EmailServiceResourceInner> value
+                        = reader.readArray(reader1 -> EmailServiceResourceInner.fromJson(reader1));
+                    deserializedEmailServiceResourceList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedEmailServiceResourceList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEmailServiceResourceList;
+        });
     }
 }

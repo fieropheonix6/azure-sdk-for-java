@@ -6,74 +6,103 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.sql.models.SecurityAlertPolicyEmailAccountAdmins;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
-import com.azure.resourcemanager.sql.models.SecurityAlertPolicyUseServerDefault;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.List;
 
-/** Contains information about a database Threat Detection policy. */
+/**
+ * A database security alert policy.
+ */
 @Fluent
 public final class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     /*
-     * The geo-location where the resource lives
+     * SystemData of SecurityAlertPolicyResource.
      */
-    @JsonProperty(value = "location")
-    private String location;
+    private SystemData systemData;
 
     /*
-     * Resource kind.
+     * Resource properties.
      */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
-    private String kind;
+    private SecurityAlertsPolicyProperties innerProperties;
 
     /*
-     * Properties of the security alert policy.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties")
-    private DatabaseSecurityAlertPolicyProperties innerProperties;
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
-     * Get the location property: The geo-location where the resource lives.
-     *
-     * @return the location value.
+     * Creates an instance of DatabaseSecurityAlertPolicyInner class.
      */
-    public String location() {
-        return this.location;
+    public DatabaseSecurityAlertPolicyInner() {
     }
 
     /**
-     * Set the location property: The geo-location where the resource lives.
-     *
-     * @param location the location value to set.
-     * @return the DatabaseSecurityAlertPolicyInner object itself.
+     * Get the systemData property: SystemData of SecurityAlertPolicyResource.
+     * 
+     * @return the systemData value.
      */
-    public DatabaseSecurityAlertPolicyInner withLocation(String location) {
-        this.location = location;
-        return this;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
-     * Get the kind property: Resource kind.
-     *
-     * @return the kind value.
-     */
-    public String kind() {
-        return this.kind;
-    }
-
-    /**
-     * Get the innerProperties property: Properties of the security alert policy.
-     *
+     * Get the innerProperties property: Resource properties.
+     * 
      * @return the innerProperties value.
      */
-    private DatabaseSecurityAlertPolicyProperties innerProperties() {
+    private SecurityAlertsPolicyProperties innerProperties() {
         return this.innerProperties;
     }
 
     /**
-     * Get the state property: Specifies the state of the policy. If state is Enabled, storageEndpoint and
-     * storageAccountAccessKey are required.
-     *
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the state property: Specifies the state of the policy, whether it is enabled or disabled or a policy has not
+     * been applied yet on the specific database.
+     * 
      * @return the state value.
      */
     public SecurityAlertPolicyState state() {
@@ -81,67 +110,63 @@ public final class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the state property: Specifies the state of the policy. If state is Enabled, storageEndpoint and
-     * storageAccountAccessKey are required.
-     *
+     * Set the state property: Specifies the state of the policy, whether it is enabled or disabled or a policy has not
+     * been applied yet on the specific database.
+     * 
      * @param state the state value to set.
      * @return the DatabaseSecurityAlertPolicyInner object itself.
      */
     public DatabaseSecurityAlertPolicyInner withState(SecurityAlertPolicyState state) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseSecurityAlertPolicyProperties();
+            this.innerProperties = new SecurityAlertsPolicyProperties();
         }
         this.innerProperties().withState(state);
         return this;
     }
 
     /**
-     * Get the disabledAlerts property: Specifies the semicolon-separated list of alerts that are disabled, or empty
-     * string to disable no alerts. Possible values: Sql_Injection; Sql_Injection_Vulnerability; Access_Anomaly;
-     * Data_Exfiltration; Unsafe_Action.
-     *
+     * Get the disabledAlerts property: Specifies an array of alerts that are disabled. Allowed values are:
+     * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action, Brute_Force.
+     * 
      * @return the disabledAlerts value.
      */
-    public String disabledAlerts() {
+    public List<String> disabledAlerts() {
         return this.innerProperties() == null ? null : this.innerProperties().disabledAlerts();
     }
 
     /**
-     * Set the disabledAlerts property: Specifies the semicolon-separated list of alerts that are disabled, or empty
-     * string to disable no alerts. Possible values: Sql_Injection; Sql_Injection_Vulnerability; Access_Anomaly;
-     * Data_Exfiltration; Unsafe_Action.
-     *
+     * Set the disabledAlerts property: Specifies an array of alerts that are disabled. Allowed values are:
+     * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action, Brute_Force.
+     * 
      * @param disabledAlerts the disabledAlerts value to set.
      * @return the DatabaseSecurityAlertPolicyInner object itself.
      */
-    public DatabaseSecurityAlertPolicyInner withDisabledAlerts(String disabledAlerts) {
+    public DatabaseSecurityAlertPolicyInner withDisabledAlerts(List<String> disabledAlerts) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseSecurityAlertPolicyProperties();
+            this.innerProperties = new SecurityAlertsPolicyProperties();
         }
         this.innerProperties().withDisabledAlerts(disabledAlerts);
         return this;
     }
 
     /**
-     * Get the emailAddresses property: Specifies the semicolon-separated list of e-mail addresses to which the alert is
-     * sent.
-     *
+     * Get the emailAddresses property: Specifies an array of e-mail addresses to which the alert is sent.
+     * 
      * @return the emailAddresses value.
      */
-    public String emailAddresses() {
+    public List<String> emailAddresses() {
         return this.innerProperties() == null ? null : this.innerProperties().emailAddresses();
     }
 
     /**
-     * Set the emailAddresses property: Specifies the semicolon-separated list of e-mail addresses to which the alert is
-     * sent.
-     *
+     * Set the emailAddresses property: Specifies an array of e-mail addresses to which the alert is sent.
+     * 
      * @param emailAddresses the emailAddresses value to set.
      * @return the DatabaseSecurityAlertPolicyInner object itself.
      */
-    public DatabaseSecurityAlertPolicyInner withEmailAddresses(String emailAddresses) {
+    public DatabaseSecurityAlertPolicyInner withEmailAddresses(List<String> emailAddresses) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseSecurityAlertPolicyProperties();
+            this.innerProperties = new SecurityAlertsPolicyProperties();
         }
         this.innerProperties().withEmailAddresses(emailAddresses);
         return this;
@@ -149,23 +174,22 @@ public final class DatabaseSecurityAlertPolicyInner extends ProxyResource {
 
     /**
      * Get the emailAccountAdmins property: Specifies that the alert is sent to the account administrators.
-     *
+     * 
      * @return the emailAccountAdmins value.
      */
-    public SecurityAlertPolicyEmailAccountAdmins emailAccountAdmins() {
+    public Boolean emailAccountAdmins() {
         return this.innerProperties() == null ? null : this.innerProperties().emailAccountAdmins();
     }
 
     /**
      * Set the emailAccountAdmins property: Specifies that the alert is sent to the account administrators.
-     *
+     * 
      * @param emailAccountAdmins the emailAccountAdmins value to set.
      * @return the DatabaseSecurityAlertPolicyInner object itself.
      */
-    public DatabaseSecurityAlertPolicyInner withEmailAccountAdmins(
-        SecurityAlertPolicyEmailAccountAdmins emailAccountAdmins) {
+    public DatabaseSecurityAlertPolicyInner withEmailAccountAdmins(Boolean emailAccountAdmins) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseSecurityAlertPolicyProperties();
+            this.innerProperties = new SecurityAlertsPolicyProperties();
         }
         this.innerProperties().withEmailAccountAdmins(emailAccountAdmins);
         return this;
@@ -173,9 +197,8 @@ public final class DatabaseSecurityAlertPolicyInner extends ProxyResource {
 
     /**
      * Get the storageEndpoint property: Specifies the blob storage endpoint (e.g.
-     * https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs. If state
-     * is Enabled, storageEndpoint is required.
-     *
+     * https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.
+     * 
      * @return the storageEndpoint value.
      */
     public String storageEndpoint() {
@@ -184,15 +207,14 @@ public final class DatabaseSecurityAlertPolicyInner extends ProxyResource {
 
     /**
      * Set the storageEndpoint property: Specifies the blob storage endpoint (e.g.
-     * https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs. If state
-     * is Enabled, storageEndpoint is required.
-     *
+     * https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.
+     * 
      * @param storageEndpoint the storageEndpoint value to set.
      * @return the DatabaseSecurityAlertPolicyInner object itself.
      */
     public DatabaseSecurityAlertPolicyInner withStorageEndpoint(String storageEndpoint) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseSecurityAlertPolicyProperties();
+            this.innerProperties = new SecurityAlertsPolicyProperties();
         }
         this.innerProperties().withStorageEndpoint(storageEndpoint);
         return this;
@@ -200,8 +222,8 @@ public final class DatabaseSecurityAlertPolicyInner extends ProxyResource {
 
     /**
      * Get the storageAccountAccessKey property: Specifies the identifier key of the Threat Detection audit storage
-     * account. If state is Enabled, storageAccountAccessKey is required.
-     *
+     * account.
+     * 
      * @return the storageAccountAccessKey value.
      */
     public String storageAccountAccessKey() {
@@ -210,14 +232,14 @@ public final class DatabaseSecurityAlertPolicyInner extends ProxyResource {
 
     /**
      * Set the storageAccountAccessKey property: Specifies the identifier key of the Threat Detection audit storage
-     * account. If state is Enabled, storageAccountAccessKey is required.
-     *
+     * account.
+     * 
      * @param storageAccountAccessKey the storageAccountAccessKey value to set.
      * @return the DatabaseSecurityAlertPolicyInner object itself.
      */
     public DatabaseSecurityAlertPolicyInner withStorageAccountAccessKey(String storageAccountAccessKey) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseSecurityAlertPolicyProperties();
+            this.innerProperties = new SecurityAlertsPolicyProperties();
         }
         this.innerProperties().withStorageAccountAccessKey(storageAccountAccessKey);
         return this;
@@ -225,7 +247,7 @@ public final class DatabaseSecurityAlertPolicyInner extends ProxyResource {
 
     /**
      * Get the retentionDays property: Specifies the number of days to keep in the Threat Detection audit logs.
-     *
+     * 
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
@@ -234,49 +256,82 @@ public final class DatabaseSecurityAlertPolicyInner extends ProxyResource {
 
     /**
      * Set the retentionDays property: Specifies the number of days to keep in the Threat Detection audit logs.
-     *
+     * 
      * @param retentionDays the retentionDays value to set.
      * @return the DatabaseSecurityAlertPolicyInner object itself.
      */
     public DatabaseSecurityAlertPolicyInner withRetentionDays(Integer retentionDays) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseSecurityAlertPolicyProperties();
+            this.innerProperties = new SecurityAlertsPolicyProperties();
         }
         this.innerProperties().withRetentionDays(retentionDays);
         return this;
     }
 
     /**
-     * Get the useServerDefault property: Specifies whether to use the default server policy.
-     *
-     * @return the useServerDefault value.
+     * Get the creationTime property: Specifies the UTC creation time of the policy.
+     * 
+     * @return the creationTime value.
      */
-    public SecurityAlertPolicyUseServerDefault useServerDefault() {
-        return this.innerProperties() == null ? null : this.innerProperties().useServerDefault();
-    }
-
-    /**
-     * Set the useServerDefault property: Specifies whether to use the default server policy.
-     *
-     * @param useServerDefault the useServerDefault value to set.
-     * @return the DatabaseSecurityAlertPolicyInner object itself.
-     */
-    public DatabaseSecurityAlertPolicyInner withUseServerDefault(SecurityAlertPolicyUseServerDefault useServerDefault) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseSecurityAlertPolicyProperties();
-        }
-        this.innerProperties().withUseServerDefault(useServerDefault);
-        return this;
+    public OffsetDateTime creationTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseSecurityAlertPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseSecurityAlertPolicyInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatabaseSecurityAlertPolicyInner.
+     */
+    public static DatabaseSecurityAlertPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseSecurityAlertPolicyInner deserializedDatabaseSecurityAlertPolicyInner
+                = new DatabaseSecurityAlertPolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDatabaseSecurityAlertPolicyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDatabaseSecurityAlertPolicyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDatabaseSecurityAlertPolicyInner.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDatabaseSecurityAlertPolicyInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDatabaseSecurityAlertPolicyInner.innerProperties
+                        = SecurityAlertsPolicyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseSecurityAlertPolicyInner;
+        });
     }
 }

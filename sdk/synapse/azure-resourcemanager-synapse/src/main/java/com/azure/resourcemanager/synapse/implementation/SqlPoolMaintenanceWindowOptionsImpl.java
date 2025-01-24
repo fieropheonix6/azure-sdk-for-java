@@ -20,40 +20,30 @@ public final class SqlPoolMaintenanceWindowOptionsImpl implements SqlPoolMainten
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public SqlPoolMaintenanceWindowOptionsImpl(
-        SqlPoolMaintenanceWindowOptionsClient innerClient,
+    public SqlPoolMaintenanceWindowOptionsImpl(SqlPoolMaintenanceWindowOptionsClient innerClient,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public MaintenanceWindowOptions get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowOptionsName) {
-        MaintenanceWindowOptionsInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowOptionsName);
+    public Response<MaintenanceWindowOptions> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String maintenanceWindowOptionsName, Context context) {
+        Response<MaintenanceWindowOptionsInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowOptionsName, context);
         if (inner != null) {
-            return new MaintenanceWindowOptionsImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MaintenanceWindowOptionsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<MaintenanceWindowOptions> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowOptionsName,
-        Context context) {
-        Response<MaintenanceWindowOptionsInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowOptionsName, context);
+    public MaintenanceWindowOptions get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowOptionsName) {
+        MaintenanceWindowOptionsInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowOptionsName);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new MaintenanceWindowOptionsImpl(inner.getValue(), this.manager()));
+            return new MaintenanceWindowOptionsImpl(inner, this.manager());
         } else {
             return null;
         }

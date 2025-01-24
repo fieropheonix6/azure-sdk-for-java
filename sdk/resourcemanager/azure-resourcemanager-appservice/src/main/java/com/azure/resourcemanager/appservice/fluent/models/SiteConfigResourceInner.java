@@ -5,12 +5,16 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ApiDefinitionInfo;
 import com.azure.resourcemanager.appservice.models.ApiManagementConfig;
 import com.azure.resourcemanager.appservice.models.AutoHealRules;
 import com.azure.resourcemanager.appservice.models.AzureStorageInfoValue;
 import com.azure.resourcemanager.appservice.models.ConnStringInfo;
 import com.azure.resourcemanager.appservice.models.CorsSettings;
+import com.azure.resourcemanager.appservice.models.DefaultAction;
 import com.azure.resourcemanager.appservice.models.Experiments;
 import com.azure.resourcemanager.appservice.models.FtpsState;
 import com.azure.resourcemanager.appservice.models.HandlerMapping;
@@ -23,31 +27,86 @@ import com.azure.resourcemanager.appservice.models.SiteLimits;
 import com.azure.resourcemanager.appservice.models.SiteLoadBalancing;
 import com.azure.resourcemanager.appservice.models.SiteMachineKey;
 import com.azure.resourcemanager.appservice.models.SupportedTlsVersions;
+import com.azure.resourcemanager.appservice.models.TlsCipherSuites;
 import com.azure.resourcemanager.appservice.models.VirtualApplication;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Web app configuration ARM resource. */
+/**
+ * Web app configuration ARM resource.
+ */
 @Fluent
 public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /*
      * Core resource properties
      */
-    @JsonProperty(value = "properties")
     private SiteConfigInner innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SiteConfigResourceInner class.
+     */
+    public SiteConfigResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: Core resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SiteConfigInner innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SiteConfigResourceInner withKind(String kind) {
         super.withKind(kind);
@@ -56,7 +115,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the numberOfWorkers property: Number of workers.
-     *
+     * 
      * @return the numberOfWorkers value.
      */
     public Integer numberOfWorkers() {
@@ -65,7 +124,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the numberOfWorkers property: Number of workers.
-     *
+     * 
      * @param numberOfWorkers the numberOfWorkers value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -79,7 +138,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the defaultDocuments property: Default documents.
-     *
+     * 
      * @return the defaultDocuments value.
      */
     public List<String> defaultDocuments() {
@@ -88,7 +147,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the defaultDocuments property: Default documents.
-     *
+     * 
      * @param defaultDocuments the defaultDocuments value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -102,7 +161,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the netFrameworkVersion property: .NET Framework version.
-     *
+     * 
      * @return the netFrameworkVersion value.
      */
     public String netFrameworkVersion() {
@@ -111,7 +170,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the netFrameworkVersion property: .NET Framework version.
-     *
+     * 
      * @param netFrameworkVersion the netFrameworkVersion value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -125,7 +184,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the phpVersion property: Version of PHP.
-     *
+     * 
      * @return the phpVersion value.
      */
     public String phpVersion() {
@@ -134,7 +193,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the phpVersion property: Version of PHP.
-     *
+     * 
      * @param phpVersion the phpVersion value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -148,7 +207,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the pythonVersion property: Version of Python.
-     *
+     * 
      * @return the pythonVersion value.
      */
     public String pythonVersion() {
@@ -157,7 +216,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the pythonVersion property: Version of Python.
-     *
+     * 
      * @param pythonVersion the pythonVersion value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -171,7 +230,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the nodeVersion property: Version of Node.js.
-     *
+     * 
      * @return the nodeVersion value.
      */
     public String nodeVersion() {
@@ -180,7 +239,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the nodeVersion property: Version of Node.js.
-     *
+     * 
      * @param nodeVersion the nodeVersion value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -194,7 +253,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the powerShellVersion property: Version of PowerShell.
-     *
+     * 
      * @return the powerShellVersion value.
      */
     public String powerShellVersion() {
@@ -203,7 +262,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the powerShellVersion property: Version of PowerShell.
-     *
+     * 
      * @param powerShellVersion the powerShellVersion value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -217,7 +276,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the linuxFxVersion property: Linux App Framework and version.
-     *
+     * 
      * @return the linuxFxVersion value.
      */
     public String linuxFxVersion() {
@@ -226,7 +285,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the linuxFxVersion property: Linux App Framework and version.
-     *
+     * 
      * @param linuxFxVersion the linuxFxVersion value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -240,7 +299,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the windowsFxVersion property: Xenon App Framework and version.
-     *
+     * 
      * @return the windowsFxVersion value.
      */
     public String windowsFxVersion() {
@@ -249,7 +308,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the windowsFxVersion property: Xenon App Framework and version.
-     *
+     * 
      * @param windowsFxVersion the windowsFxVersion value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -264,7 +323,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Get the requestTracingEnabled property: &lt;code&gt;true&lt;/code&gt; if request tracing is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the requestTracingEnabled value.
      */
     public Boolean requestTracingEnabled() {
@@ -274,7 +333,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Set the requestTracingEnabled property: &lt;code&gt;true&lt;/code&gt; if request tracing is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param requestTracingEnabled the requestTracingEnabled value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -288,7 +347,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the requestTracingExpirationTime property: Request tracing expiration time.
-     *
+     * 
      * @return the requestTracingExpirationTime value.
      */
     public OffsetDateTime requestTracingExpirationTime() {
@@ -297,7 +356,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the requestTracingExpirationTime property: Request tracing expiration time.
-     *
+     * 
      * @param requestTracingExpirationTime the requestTracingExpirationTime value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -312,7 +371,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Get the remoteDebuggingEnabled property: &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the remoteDebuggingEnabled value.
      */
     public Boolean remoteDebuggingEnabled() {
@@ -322,7 +381,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Set the remoteDebuggingEnabled property: &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param remoteDebuggingEnabled the remoteDebuggingEnabled value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -336,7 +395,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the remoteDebuggingVersion property: Remote debugging version.
-     *
+     * 
      * @return the remoteDebuggingVersion value.
      */
     public String remoteDebuggingVersion() {
@@ -345,7 +404,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the remoteDebuggingVersion property: Remote debugging version.
-     *
+     * 
      * @param remoteDebuggingVersion the remoteDebuggingVersion value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -360,7 +419,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Get the httpLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if HTTP logging is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the httpLoggingEnabled value.
      */
     public Boolean httpLoggingEnabled() {
@@ -370,7 +429,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Set the httpLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if HTTP logging is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param httpLoggingEnabled the httpLoggingEnabled value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -384,7 +443,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the acrUseManagedIdentityCreds property: Flag to use Managed Identity Creds for ACR pull.
-     *
+     * 
      * @return the acrUseManagedIdentityCreds value.
      */
     public Boolean acrUseManagedIdentityCreds() {
@@ -393,7 +452,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the acrUseManagedIdentityCreds property: Flag to use Managed Identity Creds for ACR pull.
-     *
+     * 
      * @param acrUseManagedIdentityCreds the acrUseManagedIdentityCreds value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -407,7 +466,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the acrUserManagedIdentityId property: If using user managed identity, the user managed identity ClientId.
-     *
+     * 
      * @return the acrUserManagedIdentityId value.
      */
     public String acrUserManagedIdentityId() {
@@ -416,7 +475,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the acrUserManagedIdentityId property: If using user managed identity, the user managed identity ClientId.
-     *
+     * 
      * @param acrUserManagedIdentityId the acrUserManagedIdentityId value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -430,7 +489,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the logsDirectorySizeLimit property: HTTP logs directory size limit.
-     *
+     * 
      * @return the logsDirectorySizeLimit value.
      */
     public Integer logsDirectorySizeLimit() {
@@ -439,7 +498,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the logsDirectorySizeLimit property: HTTP logs directory size limit.
-     *
+     * 
      * @param logsDirectorySizeLimit the logsDirectorySizeLimit value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -454,7 +513,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Get the detailedErrorLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if detailed error logging is enabled;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the detailedErrorLoggingEnabled value.
      */
     public Boolean detailedErrorLoggingEnabled() {
@@ -464,7 +523,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Set the detailedErrorLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if detailed error logging is enabled;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param detailedErrorLoggingEnabled the detailedErrorLoggingEnabled value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -478,7 +537,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the publishingUsername property: Publishing user name.
-     *
+     * 
      * @return the publishingUsername value.
      */
     public String publishingUsername() {
@@ -487,7 +546,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the publishingUsername property: Publishing user name.
-     *
+     * 
      * @param publishingUsername the publishingUsername value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -501,7 +560,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the appSettings property: Application settings.
-     *
+     * 
      * @return the appSettings value.
      */
     public List<NameValuePair> appSettings() {
@@ -510,7 +569,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the appSettings property: Application settings.
-     *
+     * 
      * @param appSettings the appSettings value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -523,8 +582,31 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the metadata property: Application metadata. This property cannot be retrieved, since it may contain secrets.
+     * 
+     * @return the metadata value.
+     */
+    public List<NameValuePair> metadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
+    }
+
+    /**
+     * Set the metadata property: Application metadata. This property cannot be retrieved, since it may contain secrets.
+     * 
+     * @param metadata the metadata value to set.
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withMetadata(List<NameValuePair> metadata) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withMetadata(metadata);
+        return this;
+    }
+
+    /**
      * Get the connectionStrings property: Connection strings.
-     *
+     * 
      * @return the connectionStrings value.
      */
     public List<ConnStringInfo> connectionStrings() {
@@ -533,7 +615,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the connectionStrings property: Connection strings.
-     *
+     * 
      * @param connectionStrings the connectionStrings value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -547,7 +629,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the machineKey property: Site MachineKey.
-     *
+     * 
      * @return the machineKey value.
      */
     public SiteMachineKey machineKey() {
@@ -556,7 +638,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the handlerMappings property: Handler mappings.
-     *
+     * 
      * @return the handlerMappings value.
      */
     public List<HandlerMapping> handlerMappings() {
@@ -565,7 +647,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the handlerMappings property: Handler mappings.
-     *
+     * 
      * @param handlerMappings the handlerMappings value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -579,7 +661,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the documentRoot property: Document root.
-     *
+     * 
      * @return the documentRoot value.
      */
     public String documentRoot() {
@@ -588,7 +670,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the documentRoot property: Document root.
-     *
+     * 
      * @param documentRoot the documentRoot value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -602,7 +684,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the scmType property: SCM type.
-     *
+     * 
      * @return the scmType value.
      */
     public ScmType scmType() {
@@ -611,7 +693,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the scmType property: SCM type.
-     *
+     * 
      * @param scmType the scmType value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -626,7 +708,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Get the use32BitWorkerProcess property: &lt;code&gt;true&lt;/code&gt; to use 32-bit worker process; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the use32BitWorkerProcess value.
      */
     public Boolean use32BitWorkerProcess() {
@@ -636,7 +718,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Set the use32BitWorkerProcess property: &lt;code&gt;true&lt;/code&gt; to use 32-bit worker process; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param use32BitWorkerProcess the use32BitWorkerProcess value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -651,7 +733,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Get the webSocketsEnabled property: &lt;code&gt;true&lt;/code&gt; if WebSocket is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the webSocketsEnabled value.
      */
     public Boolean webSocketsEnabled() {
@@ -661,7 +743,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Set the webSocketsEnabled property: &lt;code&gt;true&lt;/code&gt; if WebSocket is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param webSocketsEnabled the webSocketsEnabled value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -676,7 +758,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Get the alwaysOn property: &lt;code&gt;true&lt;/code&gt; if Always On is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the alwaysOn value.
      */
     public Boolean alwaysOn() {
@@ -686,7 +768,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Set the alwaysOn property: &lt;code&gt;true&lt;/code&gt; if Always On is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param alwaysOn the alwaysOn value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -700,7 +782,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the javaVersion property: Java version.
-     *
+     * 
      * @return the javaVersion value.
      */
     public String javaVersion() {
@@ -709,7 +791,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the javaVersion property: Java version.
-     *
+     * 
      * @param javaVersion the javaVersion value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -723,7 +805,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the javaContainer property: Java container.
-     *
+     * 
      * @return the javaContainer value.
      */
     public String javaContainer() {
@@ -732,7 +814,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the javaContainer property: Java container.
-     *
+     * 
      * @param javaContainer the javaContainer value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -746,7 +828,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the javaContainerVersion property: Java container version.
-     *
+     * 
      * @return the javaContainerVersion value.
      */
     public String javaContainerVersion() {
@@ -755,7 +837,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the javaContainerVersion property: Java container version.
-     *
+     * 
      * @param javaContainerVersion the javaContainerVersion value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -769,7 +851,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the appCommandLine property: App command line to launch.
-     *
+     * 
      * @return the appCommandLine value.
      */
     public String appCommandLine() {
@@ -778,7 +860,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the appCommandLine property: App command line to launch.
-     *
+     * 
      * @param appCommandLine the appCommandLine value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -792,7 +874,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the managedPipelineMode property: Managed pipeline mode.
-     *
+     * 
      * @return the managedPipelineMode value.
      */
     public ManagedPipelineMode managedPipelineMode() {
@@ -801,7 +883,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the managedPipelineMode property: Managed pipeline mode.
-     *
+     * 
      * @param managedPipelineMode the managedPipelineMode value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -815,7 +897,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the virtualApplications property: Virtual applications.
-     *
+     * 
      * @return the virtualApplications value.
      */
     public List<VirtualApplication> virtualApplications() {
@@ -824,7 +906,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the virtualApplications property: Virtual applications.
-     *
+     * 
      * @param virtualApplications the virtualApplications value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -838,7 +920,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the loadBalancing property: Site load balancing.
-     *
+     * 
      * @return the loadBalancing value.
      */
     public SiteLoadBalancing loadBalancing() {
@@ -847,7 +929,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the loadBalancing property: Site load balancing.
-     *
+     * 
      * @param loadBalancing the loadBalancing value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -861,7 +943,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the experiments property: This is work around for polymorphic types.
-     *
+     * 
      * @return the experiments value.
      */
     public Experiments experiments() {
@@ -870,7 +952,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the experiments property: This is work around for polymorphic types.
-     *
+     * 
      * @param experiments the experiments value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -884,7 +966,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the limits property: Site limits.
-     *
+     * 
      * @return the limits value.
      */
     public SiteLimits limits() {
@@ -893,7 +975,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the limits property: Site limits.
-     *
+     * 
      * @param limits the limits value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -908,7 +990,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Get the autoHealEnabled property: &lt;code&gt;true&lt;/code&gt; if Auto Heal is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the autoHealEnabled value.
      */
     public Boolean autoHealEnabled() {
@@ -918,7 +1000,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Set the autoHealEnabled property: &lt;code&gt;true&lt;/code&gt; if Auto Heal is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param autoHealEnabled the autoHealEnabled value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -932,7 +1014,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the autoHealRules property: Auto Heal rules.
-     *
+     * 
      * @return the autoHealRules value.
      */
     public AutoHealRules autoHealRules() {
@@ -941,7 +1023,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the autoHealRules property: Auto Heal rules.
-     *
+     * 
      * @param autoHealRules the autoHealRules value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -955,7 +1037,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the tracingOptions property: Tracing options.
-     *
+     * 
      * @return the tracingOptions value.
      */
     public String tracingOptions() {
@@ -964,7 +1046,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the tracingOptions property: Tracing options.
-     *
+     * 
      * @param tracingOptions the tracingOptions value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -978,7 +1060,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the vnetName property: Virtual Network name.
-     *
+     * 
      * @return the vnetName value.
      */
     public String vnetName() {
@@ -987,7 +1069,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the vnetName property: Virtual Network name.
-     *
+     * 
      * @param vnetName the vnetName value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1002,7 +1084,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
      * Virtual Network Security Groups and User Defined Routes applied.
-     *
+     * 
      * @return the vnetRouteAllEnabled value.
      */
     public Boolean vnetRouteAllEnabled() {
@@ -1012,7 +1094,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
      * Virtual Network Security Groups and User Defined Routes applied.
-     *
+     * 
      * @param vnetRouteAllEnabled the vnetRouteAllEnabled value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1027,7 +1109,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Get the vnetPrivatePortsCount property: The number of private ports assigned to this app. These will be assigned
      * dynamically on runtime.
-     *
+     * 
      * @return the vnetPrivatePortsCount value.
      */
     public Integer vnetPrivatePortsCount() {
@@ -1037,7 +1119,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Set the vnetPrivatePortsCount property: The number of private ports assigned to this app. These will be assigned
      * dynamically on runtime.
-     *
+     * 
      * @param vnetPrivatePortsCount the vnetPrivatePortsCount value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1051,7 +1133,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the cors property: Cross-Origin Resource Sharing (CORS) settings.
-     *
+     * 
      * @return the cors value.
      */
     public CorsSettings cors() {
@@ -1060,7 +1142,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the cors property: Cross-Origin Resource Sharing (CORS) settings.
-     *
+     * 
      * @param cors the cors value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1074,7 +1156,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the push property: Push endpoint settings.
-     *
+     * 
      * @return the push value.
      */
     public PushSettingsInner push() {
@@ -1083,7 +1165,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the push property: Push endpoint settings.
-     *
+     * 
      * @param push the push value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1097,7 +1179,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the apiDefinition property: Information about the formal API definition for the app.
-     *
+     * 
      * @return the apiDefinition value.
      */
     public ApiDefinitionInfo apiDefinition() {
@@ -1106,7 +1188,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the apiDefinition property: Information about the formal API definition for the app.
-     *
+     * 
      * @param apiDefinition the apiDefinition value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1120,7 +1202,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the apiManagementConfig property: Azure API management settings linked to the app.
-     *
+     * 
      * @return the apiManagementConfig value.
      */
     public ApiManagementConfig apiManagementConfig() {
@@ -1129,7 +1211,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the apiManagementConfig property: Azure API management settings linked to the app.
-     *
+     * 
      * @param apiManagementConfig the apiManagementConfig value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1143,7 +1225,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the autoSwapSlotName property: Auto-swap slot name.
-     *
+     * 
      * @return the autoSwapSlotName value.
      */
     public String autoSwapSlotName() {
@@ -1152,7 +1234,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the autoSwapSlotName property: Auto-swap slot name.
-     *
+     * 
      * @param autoSwapSlotName the autoSwapSlotName value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1167,7 +1249,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Get the localMySqlEnabled property: &lt;code&gt;true&lt;/code&gt; to enable local MySQL; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the localMySqlEnabled value.
      */
     public Boolean localMySqlEnabled() {
@@ -1177,7 +1259,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Set the localMySqlEnabled property: &lt;code&gt;true&lt;/code&gt; to enable local MySQL; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param localMySqlEnabled the localMySqlEnabled value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1191,7 +1273,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the managedServiceIdentityId property: Managed Service Identity Id.
-     *
+     * 
      * @return the managedServiceIdentityId value.
      */
     public Integer managedServiceIdentityId() {
@@ -1200,7 +1282,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the managedServiceIdentityId property: Managed Service Identity Id.
-     *
+     * 
      * @param managedServiceIdentityId the managedServiceIdentityId value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1214,7 +1296,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the xManagedServiceIdentityId property: Explicit Managed Service Identity Id.
-     *
+     * 
      * @return the xManagedServiceIdentityId value.
      */
     public Integer xManagedServiceIdentityId() {
@@ -1223,7 +1305,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the xManagedServiceIdentityId property: Explicit Managed Service Identity Id.
-     *
+     * 
      * @param xManagedServiceIdentityId the xManagedServiceIdentityId value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1237,7 +1319,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
-     *
+     * 
      * @return the keyVaultReferenceIdentity value.
      */
     public String keyVaultReferenceIdentity() {
@@ -1246,7 +1328,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
-     *
+     * 
      * @param keyVaultReferenceIdentity the keyVaultReferenceIdentity value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1260,7 +1342,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the ipSecurityRestrictions property: IP security restrictions for main.
-     *
+     * 
      * @return the ipSecurityRestrictions value.
      */
     public List<IpSecurityRestriction> ipSecurityRestrictions() {
@@ -1269,7 +1351,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the ipSecurityRestrictions property: IP security restrictions for main.
-     *
+     * 
      * @param ipSecurityRestrictions the ipSecurityRestrictions value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1282,8 +1364,34 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the ipSecurityRestrictionsDefaultAction property: Default action for main access restriction if no rules are
+     * matched.
+     * 
+     * @return the ipSecurityRestrictionsDefaultAction value.
+     */
+    public DefaultAction ipSecurityRestrictionsDefaultAction() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipSecurityRestrictionsDefaultAction();
+    }
+
+    /**
+     * Set the ipSecurityRestrictionsDefaultAction property: Default action for main access restriction if no rules are
+     * matched.
+     * 
+     * @param ipSecurityRestrictionsDefaultAction the ipSecurityRestrictionsDefaultAction value to set.
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner
+        withIpSecurityRestrictionsDefaultAction(DefaultAction ipSecurityRestrictionsDefaultAction) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withIpSecurityRestrictionsDefaultAction(ipSecurityRestrictionsDefaultAction);
+        return this;
+    }
+
+    /**
      * Get the scmIpSecurityRestrictions property: IP security restrictions for scm.
-     *
+     * 
      * @return the scmIpSecurityRestrictions value.
      */
     public List<IpSecurityRestriction> scmIpSecurityRestrictions() {
@@ -1292,12 +1400,12 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the scmIpSecurityRestrictions property: IP security restrictions for scm.
-     *
+     * 
      * @param scmIpSecurityRestrictions the scmIpSecurityRestrictions value to set.
      * @return the SiteConfigResourceInner object itself.
      */
-    public SiteConfigResourceInner withScmIpSecurityRestrictions(
-        List<IpSecurityRestriction> scmIpSecurityRestrictions) {
+    public SiteConfigResourceInner
+        withScmIpSecurityRestrictions(List<IpSecurityRestriction> scmIpSecurityRestrictions) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SiteConfigInner();
         }
@@ -1306,8 +1414,34 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the scmIpSecurityRestrictionsDefaultAction property: Default action for scm access restriction if no rules
+     * are matched.
+     * 
+     * @return the scmIpSecurityRestrictionsDefaultAction value.
+     */
+    public DefaultAction scmIpSecurityRestrictionsDefaultAction() {
+        return this.innerProperties() == null ? null : this.innerProperties().scmIpSecurityRestrictionsDefaultAction();
+    }
+
+    /**
+     * Set the scmIpSecurityRestrictionsDefaultAction property: Default action for scm access restriction if no rules
+     * are matched.
+     * 
+     * @param scmIpSecurityRestrictionsDefaultAction the scmIpSecurityRestrictionsDefaultAction value to set.
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner
+        withScmIpSecurityRestrictionsDefaultAction(DefaultAction scmIpSecurityRestrictionsDefaultAction) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withScmIpSecurityRestrictionsDefaultAction(scmIpSecurityRestrictionsDefaultAction);
+        return this;
+    }
+
+    /**
      * Get the scmIpSecurityRestrictionsUseMain property: IP security restrictions for scm to use main.
-     *
+     * 
      * @return the scmIpSecurityRestrictionsUseMain value.
      */
     public Boolean scmIpSecurityRestrictionsUseMain() {
@@ -1316,7 +1450,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the scmIpSecurityRestrictionsUseMain property: IP security restrictions for scm to use main.
-     *
+     * 
      * @param scmIpSecurityRestrictionsUseMain the scmIpSecurityRestrictionsUseMain value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1330,7 +1464,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the http20Enabled property: Http20Enabled: configures a web site to allow clients to connect over http2.0.
-     *
+     * 
      * @return the http20Enabled value.
      */
     public Boolean http20Enabled() {
@@ -1339,7 +1473,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the http20Enabled property: Http20Enabled: configures a web site to allow clients to connect over http2.0.
-     *
+     * 
      * @param http20Enabled the http20Enabled value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1353,7 +1487,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the minTlsVersion property: MinTlsVersion: configures the minimum version of TLS required for SSL requests.
-     *
+     * 
      * @return the minTlsVersion value.
      */
     public SupportedTlsVersions minTlsVersion() {
@@ -1362,7 +1496,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the minTlsVersion property: MinTlsVersion: configures the minimum version of TLS required for SSL requests.
-     *
+     * 
      * @param minTlsVersion the minTlsVersion value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1375,9 +1509,32 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the minTlsCipherSuite property: The minimum strength TLS cipher suite allowed for an application.
+     * 
+     * @return the minTlsCipherSuite value.
+     */
+    public TlsCipherSuites minTlsCipherSuite() {
+        return this.innerProperties() == null ? null : this.innerProperties().minTlsCipherSuite();
+    }
+
+    /**
+     * Set the minTlsCipherSuite property: The minimum strength TLS cipher suite allowed for an application.
+     * 
+     * @param minTlsCipherSuite the minTlsCipherSuite value to set.
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withMinTlsCipherSuite(TlsCipherSuites minTlsCipherSuite) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withMinTlsCipherSuite(minTlsCipherSuite);
+        return this;
+    }
+
+    /**
      * Get the scmMinTlsVersion property: ScmMinTlsVersion: configures the minimum version of TLS required for SSL
      * requests for SCM site.
-     *
+     * 
      * @return the scmMinTlsVersion value.
      */
     public SupportedTlsVersions scmMinTlsVersion() {
@@ -1387,7 +1544,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     /**
      * Set the scmMinTlsVersion property: ScmMinTlsVersion: configures the minimum version of TLS required for SSL
      * requests for SCM site.
-     *
+     * 
      * @param scmMinTlsVersion the scmMinTlsVersion value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1401,7 +1558,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the ftpsState property: State of FTP / FTPS service.
-     *
+     * 
      * @return the ftpsState value.
      */
     public FtpsState ftpsState() {
@@ -1410,7 +1567,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the ftpsState property: State of FTP / FTPS service.
-     *
+     * 
      * @param ftpsState the ftpsState value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1423,9 +1580,9 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the preWarmedInstanceCount property: Number of preWarmed instances. This setting only applies to the
-     * Consumption and Elastic Plans.
-     *
+     * Get the preWarmedInstanceCount property: Number of preWarmed instances.
+     * This setting only applies to the Consumption and Elastic Plans.
+     * 
      * @return the preWarmedInstanceCount value.
      */
     public Integer preWarmedInstanceCount() {
@@ -1433,9 +1590,9 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the preWarmedInstanceCount property: Number of preWarmed instances. This setting only applies to the
-     * Consumption and Elastic Plans.
-     *
+     * Set the preWarmedInstanceCount property: Number of preWarmed instances.
+     * This setting only applies to the Consumption and Elastic Plans.
+     * 
      * @param preWarmedInstanceCount the preWarmedInstanceCount value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1448,9 +1605,9 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the functionAppScaleLimit property: Maximum number of workers that a site can scale out to. This setting only
-     * applies to the Consumption and Elastic Premium Plans.
-     *
+     * Get the functionAppScaleLimit property: Maximum number of workers that a site can scale out to.
+     * This setting only applies to the Consumption and Elastic Premium Plans.
+     * 
      * @return the functionAppScaleLimit value.
      */
     public Integer functionAppScaleLimit() {
@@ -1458,9 +1615,9 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the functionAppScaleLimit property: Maximum number of workers that a site can scale out to. This setting only
-     * applies to the Consumption and Elastic Premium Plans.
-     *
+     * Set the functionAppScaleLimit property: Maximum number of workers that a site can scale out to.
+     * This setting only applies to the Consumption and Elastic Premium Plans.
+     * 
      * @param functionAppScaleLimit the functionAppScaleLimit value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1473,8 +1630,33 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the elasticWebAppScaleLimit property: Maximum number of workers that a site can scale out to.
+     * This setting only applies to apps in plans where ElasticScaleEnabled is &lt;code&gt;true&lt;/code&gt;.
+     * 
+     * @return the elasticWebAppScaleLimit value.
+     */
+    public Integer elasticWebAppScaleLimit() {
+        return this.innerProperties() == null ? null : this.innerProperties().elasticWebAppScaleLimit();
+    }
+
+    /**
+     * Set the elasticWebAppScaleLimit property: Maximum number of workers that a site can scale out to.
+     * This setting only applies to apps in plans where ElasticScaleEnabled is &lt;code&gt;true&lt;/code&gt;.
+     * 
+     * @param elasticWebAppScaleLimit the elasticWebAppScaleLimit value to set.
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withElasticWebAppScaleLimit(Integer elasticWebAppScaleLimit) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withElasticWebAppScaleLimit(elasticWebAppScaleLimit);
+        return this;
+    }
+
+    /**
      * Get the healthCheckPath property: Health check path.
-     *
+     * 
      * @return the healthCheckPath value.
      */
     public String healthCheckPath() {
@@ -1483,7 +1665,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the healthCheckPath property: Health check path.
-     *
+     * 
      * @param healthCheckPath the healthCheckPath value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1497,9 +1679,10 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the functionsRuntimeScaleMonitoringEnabled property: Gets or sets a value indicating whether functions
-     * runtime scale monitoring is enabled. When enabled, the ScaleController will not monitor event sources directly,
-     * but will instead call to the runtime to get scale status.
-     *
+     * runtime scale monitoring is enabled. When enabled,
+     * the ScaleController will not monitor event sources directly, but will instead call to the
+     * runtime to get scale status.
+     * 
      * @return the functionsRuntimeScaleMonitoringEnabled value.
      */
     public Boolean functionsRuntimeScaleMonitoringEnabled() {
@@ -1508,14 +1691,15 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the functionsRuntimeScaleMonitoringEnabled property: Gets or sets a value indicating whether functions
-     * runtime scale monitoring is enabled. When enabled, the ScaleController will not monitor event sources directly,
-     * but will instead call to the runtime to get scale status.
-     *
+     * runtime scale monitoring is enabled. When enabled,
+     * the ScaleController will not monitor event sources directly, but will instead call to the
+     * runtime to get scale status.
+     * 
      * @param functionsRuntimeScaleMonitoringEnabled the functionsRuntimeScaleMonitoringEnabled value to set.
      * @return the SiteConfigResourceInner object itself.
      */
-    public SiteConfigResourceInner withFunctionsRuntimeScaleMonitoringEnabled(
-        Boolean functionsRuntimeScaleMonitoringEnabled) {
+    public SiteConfigResourceInner
+        withFunctionsRuntimeScaleMonitoringEnabled(Boolean functionsRuntimeScaleMonitoringEnabled) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SiteConfigInner();
         }
@@ -1529,7 +1713,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
      * expects tz database values https://www.iana.org/time-zones (for a quick reference see
      * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed
      * under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
-     *
+     * 
      * @return the websiteTimeZone value.
      */
     public String websiteTimeZone() {
@@ -1542,7 +1726,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
      * expects tz database values https://www.iana.org/time-zones (for a quick reference see
      * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed
      * under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
-     *
+     * 
      * @param websiteTimeZone the websiteTimeZone value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1555,9 +1739,9 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the minimumElasticInstanceCount property: Number of minimum instance count for a site This setting only
-     * applies to the Elastic Plans.
-     *
+     * Get the minimumElasticInstanceCount property: Number of minimum instance count for a site
+     * This setting only applies to the Elastic Plans.
+     * 
      * @return the minimumElasticInstanceCount value.
      */
     public Integer minimumElasticInstanceCount() {
@@ -1565,9 +1749,9 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the minimumElasticInstanceCount property: Number of minimum instance count for a site This setting only
-     * applies to the Elastic Plans.
-     *
+     * Set the minimumElasticInstanceCount property: Number of minimum instance count for a site
+     * This setting only applies to the Elastic Plans.
+     * 
      * @param minimumElasticInstanceCount the minimumElasticInstanceCount value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1581,7 +1765,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the azureStorageAccounts property: List of Azure Storage Accounts.
-     *
+     * 
      * @return the azureStorageAccounts value.
      */
     public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
@@ -1590,7 +1774,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the azureStorageAccounts property: List of Azure Storage Accounts.
-     *
+     * 
      * @param azureStorageAccounts the azureStorageAccounts value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1604,7 +1788,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the publicNetworkAccess property: Property to allow or block all public traffic.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public String publicNetworkAccess() {
@@ -1613,7 +1797,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the publicNetworkAccess property: Property to allow or block all public traffic.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the SiteConfigResourceInner object itself.
      */
@@ -1627,14 +1811,59 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteConfigResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteConfigResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SiteConfigResourceInner.
+     */
+    public static SiteConfigResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteConfigResourceInner deserializedSiteConfigResourceInner = new SiteConfigResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSiteConfigResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSiteConfigResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSiteConfigResourceInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedSiteConfigResourceInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSiteConfigResourceInner.innerProperties = SiteConfigInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteConfigResourceInner;
+        });
     }
 }

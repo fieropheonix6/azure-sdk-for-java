@@ -5,21 +5,31 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The SentimentResponse model. */
+/**
+ * The SentimentResponse model.
+ */
 @Fluent
 public final class SentimentResponse extends PreBuiltResult {
     /*
      * Sentiment analysis per document.
      */
-    @JsonProperty(value = "documents", required = true)
     private List<SentimentResponseDocumentsItem> documents;
 
     /**
+     * Creates an instance of SentimentResponse class.
+     */
+    public SentimentResponse() {
+    }
+
+    /**
      * Get the documents property: Sentiment analysis per document.
-     *
+     * 
      * @return the documents value.
      */
     public List<SentimentResponseDocumentsItem> getDocuments() {
@@ -28,7 +38,7 @@ public final class SentimentResponse extends PreBuiltResult {
 
     /**
      * Set the documents property: Sentiment analysis per document.
-     *
+     * 
      * @param documents the documents value to set.
      * @return the SentimentResponse object itself.
      */
@@ -37,24 +47,79 @@ public final class SentimentResponse extends PreBuiltResult {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public SentimentResponse setErrors(List<InputError> errors) {
+    public SentimentResponse setErrors(List<DocumentError> errors) {
         super.setErrors(errors);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SentimentResponse setStatistics(RequestStatistics statistics) {
         super.setStatistics(statistics);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SentimentResponse setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("errors", getErrors(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("modelVersion", getModelVersion());
+        jsonWriter.writeJsonField("statistics", getStatistics());
+        jsonWriter.writeArrayField("documents", this.documents, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SentimentResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SentimentResponse if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SentimentResponse.
+     */
+    public static SentimentResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SentimentResponse deserializedSentimentResponse = new SentimentResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errors".equals(fieldName)) {
+                    List<DocumentError> errors = reader.readArray(reader1 -> DocumentError.fromJson(reader1));
+                    deserializedSentimentResponse.setErrors(errors);
+                } else if ("modelVersion".equals(fieldName)) {
+                    deserializedSentimentResponse.setModelVersion(reader.getString());
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedSentimentResponse.setStatistics(RequestStatistics.fromJson(reader));
+                } else if ("documents".equals(fieldName)) {
+                    List<SentimentResponseDocumentsItem> documents
+                        = reader.readArray(reader1 -> SentimentResponseDocumentsItem.fromJson(reader1));
+                    deserializedSentimentResponse.documents = documents;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSentimentResponse;
+        });
     }
 }

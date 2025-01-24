@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TaskStatus. */
+/**
+ * The current status of task.
+ */
 public final class TaskStatus extends ExpandableStringEnum<TaskStatus> {
-    /** Static value Disabled for TaskStatus. */
+    /**
+     * Static value Disabled for TaskStatus.
+     */
     public static final TaskStatus DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for TaskStatus. */
+    /**
+     * Static value Enabled for TaskStatus.
+     */
     public static final TaskStatus ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of TaskStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TaskStatus() {
+    }
+
+    /**
      * Creates or finds a TaskStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TaskStatus.
      */
-    @JsonCreator
     public static TaskStatus fromString(String name) {
         return fromString(name, TaskStatus.class);
     }
 
-    /** @return known TaskStatus values. */
+    /**
+     * Gets known TaskStatus values.
+     * 
+     * @return known TaskStatus values.
+     */
     public static Collection<TaskStatus> values() {
         return values(TaskStatus.class);
     }

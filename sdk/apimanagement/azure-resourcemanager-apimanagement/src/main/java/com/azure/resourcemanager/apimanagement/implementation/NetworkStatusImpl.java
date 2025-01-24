@@ -25,38 +25,19 @@ public final class NetworkStatusImpl implements NetworkStatus {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public NetworkStatusImpl(
-        NetworkStatusClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public NetworkStatusImpl(NetworkStatusClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public List<NetworkStatusContractByLocation> listByService(String resourceGroupName, String serviceName) {
-        List<NetworkStatusContractByLocationInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName);
+    public Response<List<NetworkStatusContractByLocation>> listByServiceWithResponse(String resourceGroupName,
+        String serviceName, Context context) {
+        Response<List<NetworkStatusContractByLocationInner>> inner
+            = this.serviceClient().listByServiceWithResponse(resourceGroupName, serviceName, context);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new NetworkStatusContractByLocationImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public Response<List<NetworkStatusContractByLocation>> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context) {
-        Response<List<NetworkStatusContractByLocationInner>> inner =
-            this.serviceClient().listByServiceWithResponse(resourceGroupName, serviceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
                     .stream()
                     .map(inner1 -> new NetworkStatusContractByLocationImpl(inner1, this.manager()))
                     .collect(Collectors.toList()));
@@ -65,26 +46,35 @@ public final class NetworkStatusImpl implements NetworkStatus {
         }
     }
 
-    public NetworkStatusContract listByLocation(String resourceGroupName, String serviceName, String locationName) {
-        NetworkStatusContractInner inner =
-            this.serviceClient().listByLocation(resourceGroupName, serviceName, locationName);
+    public List<NetworkStatusContractByLocation> listByService(String resourceGroupName, String serviceName) {
+        List<NetworkStatusContractByLocationInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName);
         if (inner != null) {
-            return new NetworkStatusContractImpl(inner, this.manager());
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new NetworkStatusContractByLocationImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public Response<NetworkStatusContract> listByLocationWithResponse(String resourceGroupName, String serviceName,
+        String locationName, Context context) {
+        Response<NetworkStatusContractInner> inner
+            = this.serviceClient().listByLocationWithResponse(resourceGroupName, serviceName, locationName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NetworkStatusContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<NetworkStatusContract> listByLocationWithResponse(
-        String resourceGroupName, String serviceName, String locationName, Context context) {
-        Response<NetworkStatusContractInner> inner =
-            this.serviceClient().listByLocationWithResponse(resourceGroupName, serviceName, locationName, context);
+    public NetworkStatusContract listByLocation(String resourceGroupName, String serviceName, String locationName) {
+        NetworkStatusContractInner inner
+            = this.serviceClient().listByLocation(resourceGroupName, serviceName, locationName);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new NetworkStatusContractImpl(inner.getValue(), this.manager()));
+            return new NetworkStatusContractImpl(inner, this.manager());
         } else {
             return null;
         }

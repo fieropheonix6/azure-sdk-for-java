@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'. */
+/**
+ * The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'.
+ */
 public final class SharedGalleryHostCaching extends ExpandableStringEnum<SharedGalleryHostCaching> {
-    /** Static value None for SharedGalleryHostCaching. */
+    /**
+     * Static value None for SharedGalleryHostCaching.
+     */
     public static final SharedGalleryHostCaching NONE = fromString("None");
 
-    /** Static value ReadOnly for SharedGalleryHostCaching. */
+    /**
+     * Static value ReadOnly for SharedGalleryHostCaching.
+     */
     public static final SharedGalleryHostCaching READ_ONLY = fromString("ReadOnly");
 
-    /** Static value ReadWrite for SharedGalleryHostCaching. */
+    /**
+     * Static value ReadWrite for SharedGalleryHostCaching.
+     */
     public static final SharedGalleryHostCaching READ_WRITE = fromString("ReadWrite");
 
     /**
+     * Creates a new instance of SharedGalleryHostCaching value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SharedGalleryHostCaching() {
+    }
+
+    /**
      * Creates or finds a SharedGalleryHostCaching from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SharedGalleryHostCaching.
      */
-    @JsonCreator
     public static SharedGalleryHostCaching fromString(String name) {
         return fromString(name, SharedGalleryHostCaching.class);
     }
 
     /**
      * Gets known SharedGalleryHostCaching values.
-     *
+     * 
      * @return known SharedGalleryHostCaching values.
      */
     public static Collection<SharedGalleryHostCaching> values() {

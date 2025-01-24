@@ -5,68 +5,67 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Product Entity Base Parameters. */
+/**
+ * Product Entity Base Parameters.
+ */
 @Fluent
-public class ProductEntityBaseParameters {
+public class ProductEntityBaseParameters implements JsonSerializable<ProductEntityBaseParameters> {
     /*
      * Product description. May include HTML formatting tags.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
-     * Product terms of use. Developers trying to subscribe to the product will
-     * be presented and required to accept these terms before they can complete
-     * the subscription process.
+     * Product terms of use. Developers trying to subscribe to the product will be presented and required to accept
+     * these terms before they can complete the subscription process.
      */
-    @JsonProperty(value = "terms")
     private String terms;
 
     /*
-     * Whether a product subscription is required for accessing APIs included
-     * in this product. If true, the product is referred to as "protected" and
-     * a valid subscription key is required for a request to an API included in
-     * the product to succeed. If false, the product is referred to as "open"
-     * and requests to an API included in the product can be made without a
-     * subscription key. If property is omitted when creating a new product
-     * it's value is assumed to be true.
+     * Whether a product subscription is required for accessing APIs included in this product. If true, the product is
+     * referred to as "protected" and a valid subscription key is required for a request to an API included in the
+     * product to succeed. If false, the product is referred to as "open" and requests to an API included in the product
+     * can be made without a subscription key. If property is omitted when creating a new product it's value is assumed
+     * to be true.
      */
-    @JsonProperty(value = "subscriptionRequired")
     private Boolean subscriptionRequired;
 
     /*
-     * whether subscription approval is required. If false, new subscriptions
-     * will be approved automatically enabling developers to call the product’s
-     * APIs immediately after subscribing. If true, administrators must
-     * manually approve the subscription before the developer can any of the
-     * product’s APIs. Can be present only if subscriptionRequired property is
-     * present and has a value of false.
+     * whether subscription approval is required. If false, new subscriptions will be approved automatically enabling
+     * developers to call the product’s APIs immediately after subscribing. If true, administrators must manually
+     * approve the subscription before the developer can any of the product’s APIs. Can be present only if
+     * subscriptionRequired property is present and has a value of false.
      */
-    @JsonProperty(value = "approvalRequired")
     private Boolean approvalRequired;
 
     /*
-     * Whether the number of subscriptions a user can have to this product at
-     * the same time. Set to null or omit to allow unlimited per user
-     * subscriptions. Can be present only if subscriptionRequired property is
-     * present and has a value of false.
+     * Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to
+     * allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a
+     * value of false.
      */
-    @JsonProperty(value = "subscriptionsLimit")
     private Integer subscriptionsLimit;
 
     /*
-     * whether product is published or not. Published products are discoverable
-     * by users of developer portal. Non published products are visible only to
-     * administrators. Default state of Product is notPublished.
+     * whether product is published or not. Published products are discoverable by users of developer portal. Non
+     * published products are visible only to administrators. Default state of Product is notPublished.
      */
-    @JsonProperty(value = "state")
     private ProductState state;
 
     /**
+     * Creates an instance of ProductEntityBaseParameters class.
+     */
+    public ProductEntityBaseParameters() {
+    }
+
+    /**
      * Get the description property: Product description. May include HTML formatting tags.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -75,7 +74,7 @@ public class ProductEntityBaseParameters {
 
     /**
      * Set the description property: Product description. May include HTML formatting tags.
-     *
+     * 
      * @param description the description value to set.
      * @return the ProductEntityBaseParameters object itself.
      */
@@ -87,7 +86,7 @@ public class ProductEntityBaseParameters {
     /**
      * Get the terms property: Product terms of use. Developers trying to subscribe to the product will be presented and
      * required to accept these terms before they can complete the subscription process.
-     *
+     * 
      * @return the terms value.
      */
     public String terms() {
@@ -97,7 +96,7 @@ public class ProductEntityBaseParameters {
     /**
      * Set the terms property: Product terms of use. Developers trying to subscribe to the product will be presented and
      * required to accept these terms before they can complete the subscription process.
-     *
+     * 
      * @param terms the terms value to set.
      * @return the ProductEntityBaseParameters object itself.
      */
@@ -112,7 +111,7 @@ public class ProductEntityBaseParameters {
      * request to an API included in the product to succeed. If false, the product is referred to as "open" and requests
      * to an API included in the product can be made without a subscription key. If property is omitted when creating a
      * new product it's value is assumed to be true.
-     *
+     * 
      * @return the subscriptionRequired value.
      */
     public Boolean subscriptionRequired() {
@@ -125,7 +124,7 @@ public class ProductEntityBaseParameters {
      * request to an API included in the product to succeed. If false, the product is referred to as "open" and requests
      * to an API included in the product can be made without a subscription key. If property is omitted when creating a
      * new product it's value is assumed to be true.
-     *
+     * 
      * @param subscriptionRequired the subscriptionRequired value to set.
      * @return the ProductEntityBaseParameters object itself.
      */
@@ -139,7 +138,7 @@ public class ProductEntityBaseParameters {
      * approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true,
      * administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be
      * present only if subscriptionRequired property is present and has a value of false.
-     *
+     * 
      * @return the approvalRequired value.
      */
     public Boolean approvalRequired() {
@@ -151,7 +150,7 @@ public class ProductEntityBaseParameters {
      * approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true,
      * administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be
      * present only if subscriptionRequired property is present and has a value of false.
-     *
+     * 
      * @param approvalRequired the approvalRequired value to set.
      * @return the ProductEntityBaseParameters object itself.
      */
@@ -164,7 +163,7 @@ public class ProductEntityBaseParameters {
      * Get the subscriptionsLimit property: Whether the number of subscriptions a user can have to this product at the
      * same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if
      * subscriptionRequired property is present and has a value of false.
-     *
+     * 
      * @return the subscriptionsLimit value.
      */
     public Integer subscriptionsLimit() {
@@ -175,7 +174,7 @@ public class ProductEntityBaseParameters {
      * Set the subscriptionsLimit property: Whether the number of subscriptions a user can have to this product at the
      * same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if
      * subscriptionRequired property is present and has a value of false.
-     *
+     * 
      * @param subscriptionsLimit the subscriptionsLimit value to set.
      * @return the ProductEntityBaseParameters object itself.
      */
@@ -188,7 +187,7 @@ public class ProductEntityBaseParameters {
      * Get the state property: whether product is published or not. Published products are discoverable by users of
      * developer portal. Non published products are visible only to administrators. Default state of Product is
      * notPublished.
-     *
+     * 
      * @return the state value.
      */
     public ProductState state() {
@@ -199,7 +198,7 @@ public class ProductEntityBaseParameters {
      * Set the state property: whether product is published or not. Published products are discoverable by users of
      * developer portal. Non published products are visible only to administrators. Default state of Product is
      * notPublished.
-     *
+     * 
      * @param state the state value to set.
      * @return the ProductEntityBaseParameters object itself.
      */
@@ -210,9 +209,62 @@ public class ProductEntityBaseParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("terms", this.terms);
+        jsonWriter.writeBooleanField("subscriptionRequired", this.subscriptionRequired);
+        jsonWriter.writeBooleanField("approvalRequired", this.approvalRequired);
+        jsonWriter.writeNumberField("subscriptionsLimit", this.subscriptionsLimit);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProductEntityBaseParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProductEntityBaseParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProductEntityBaseParameters.
+     */
+    public static ProductEntityBaseParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProductEntityBaseParameters deserializedProductEntityBaseParameters = new ProductEntityBaseParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedProductEntityBaseParameters.description = reader.getString();
+                } else if ("terms".equals(fieldName)) {
+                    deserializedProductEntityBaseParameters.terms = reader.getString();
+                } else if ("subscriptionRequired".equals(fieldName)) {
+                    deserializedProductEntityBaseParameters.subscriptionRequired
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("approvalRequired".equals(fieldName)) {
+                    deserializedProductEntityBaseParameters.approvalRequired
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("subscriptionsLimit".equals(fieldName)) {
+                    deserializedProductEntityBaseParameters.subscriptionsLimit = reader.getNullable(JsonReader::getInt);
+                } else if ("state".equals(fieldName)) {
+                    deserializedProductEntityBaseParameters.state = ProductState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProductEntityBaseParameters;
+        });
     }
 }

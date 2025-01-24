@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for SqlResources ListSqlContainers. */
+/**
+ * Samples for SqlResources ListSqlContainers.
+ */
 public final class SqlResourcesListSqlContainersSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBSqlContainerList.json
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/CosmosDBSqlContainerList
+     * .json
      */
     /**
      * Sample code: CosmosDBSqlContainerList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBSqlContainerList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
+        azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getSqlResources()
-            .listSqlContainers("rgName", "ddb1", "databaseName", Context.NONE);
+            .listSqlContainers("rgName", "ddb1", "databaseName", com.azure.core.util.Context.NONE);
     }
 }

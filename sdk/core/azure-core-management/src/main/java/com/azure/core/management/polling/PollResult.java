@@ -9,6 +9,7 @@ import java.util.Objects;
 
 /**
  * Type representing result (succeeded or failed result) of a long-running-poll operation.
+ * 
  * @param <T> the type of the value
  */
 public final class PollResult<T> {
@@ -78,6 +79,8 @@ public final class PollResult<T> {
         }
 
         /**
+         * Gets the error message.
+         *
          * @return the error message
          */
         public String getMessage() {
@@ -85,6 +88,8 @@ public final class PollResult<T> {
         }
 
         /**
+         * Gets the response status code associated with the error.
+         *
          * @return the response status code associated with the error
          */
         public int getResponseStatusCode() {
@@ -92,6 +97,8 @@ public final class PollResult<T> {
         }
 
         /**
+         * Gets the response body associated with the error.
+         *
          * @return the response body associated with the error
          */
         public String getResponseBody() {
@@ -99,6 +106,8 @@ public final class PollResult<T> {
         }
 
         /**
+         * Gets the response headers associated with the error.
+         *
          * @return the response headers associated with the error
          */
         public HttpHeaders getResponseHeaders() {

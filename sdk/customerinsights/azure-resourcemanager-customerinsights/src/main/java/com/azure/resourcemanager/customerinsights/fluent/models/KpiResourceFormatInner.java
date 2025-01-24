@@ -5,9 +5,10 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.CalculationWindowTypes;
 import com.azure.resourcemanager.customerinsights.models.EntityTypes;
 import com.azure.resourcemanager.customerinsights.models.KpiAlias;
@@ -17,476 +18,498 @@ import com.azure.resourcemanager.customerinsights.models.KpiGroupByMetadata;
 import com.azure.resourcemanager.customerinsights.models.KpiParticipantProfilesMetadata;
 import com.azure.resourcemanager.customerinsights.models.KpiThresholds;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The KPI resource format. */
-@JsonFlatten
+/**
+ * The KPI resource format.
+ */
 @Fluent
-public class KpiResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KpiResourceFormatInner.class);
+public final class KpiResourceFormatInner extends ProxyResource {
+    /*
+     * Defines the KPI Threshold limits.
+     */
+    private KpiDefinitionInner innerProperties;
 
     /*
-     * The mapping entity type.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.entityType")
-    private EntityTypes entityType;
+    private String type;
 
     /*
-     * The mapping entity name.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.entityTypeName")
-    private String entityTypeName;
+    private String name;
 
     /*
-     * The hub name.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
+    private String id;
 
-    /*
-     * The KPI name.
+    /**
+     * Creates an instance of KpiResourceFormatInner class.
      */
-    @JsonProperty(value = "properties.kpiName", access = JsonProperty.Access.WRITE_ONLY)
-    private String kpiName;
+    public KpiResourceFormatInner() {
+    }
 
-    /*
-     * Localized display name for the KPI.
+    /**
+     * Get the innerProperties property: Defines the KPI Threshold limits.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.displayName")
-    private Map<String, String> displayName;
+    private KpiDefinitionInner innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Localized description for the KPI.
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.description")
-    private Map<String, String> description;
+    @Override
+    public String type() {
+        return this.type;
+    }
 
-    /*
-     * The calculation window.
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    @JsonProperty(value = "properties.calculationWindow")
-    private CalculationWindowTypes calculationWindow;
+    @Override
+    public String name() {
+        return this.name;
+    }
 
-    /*
-     * Name of calculation window field.
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    @JsonProperty(value = "properties.calculationWindowFieldName")
-    private String calculationWindowFieldName;
-
-    /*
-     * The computation function for the KPI.
-     */
-    @JsonProperty(value = "properties.function")
-    private KpiFunctions function;
-
-    /*
-     * The computation expression for the KPI.
-     */
-    @JsonProperty(value = "properties.expression")
-    private String expression;
-
-    /*
-     * The unit of measurement for the KPI.
-     */
-    @JsonProperty(value = "properties.unit")
-    private String unit;
-
-    /*
-     * The filter expression for the KPI.
-     */
-    @JsonProperty(value = "properties.filter")
-    private String filter;
-
-    /*
-     * the group by properties for the KPI.
-     */
-    @JsonProperty(value = "properties.groupBy")
-    private List<String> groupBy;
-
-    /*
-     * The KPI GroupByMetadata.
-     */
-    @JsonProperty(value = "properties.groupByMetadata", access = JsonProperty.Access.WRITE_ONLY)
-    private List<KpiGroupByMetadata> groupByMetadata;
-
-    /*
-     * The participant profiles.
-     */
-    @JsonProperty(value = "properties.participantProfilesMetadata", access = JsonProperty.Access.WRITE_ONLY)
-    private List<KpiParticipantProfilesMetadata> participantProfilesMetadata;
-
-    /*
-     * Provisioning state.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningStates provisioningState;
-
-    /*
-     * The KPI thresholds.
-     */
-    @JsonProperty(value = "properties.thresHolds")
-    private KpiThresholds thresHolds;
-
-    /*
-     * The aliases.
-     */
-    @JsonProperty(value = "properties.aliases")
-    private List<KpiAlias> aliases;
-
-    /*
-     * The KPI extracts.
-     */
-    @JsonProperty(value = "properties.extracts")
-    private List<KpiExtract> extracts;
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the entityType property: The mapping entity type.
-     *
+     * 
      * @return the entityType value.
      */
     public EntityTypes entityType() {
-        return this.entityType;
+        return this.innerProperties() == null ? null : this.innerProperties().entityType();
     }
 
     /**
      * Set the entityType property: The mapping entity type.
-     *
+     * 
      * @param entityType the entityType value to set.
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withEntityType(EntityTypes entityType) {
-        this.entityType = entityType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withEntityType(entityType);
         return this;
     }
 
     /**
      * Get the entityTypeName property: The mapping entity name.
-     *
+     * 
      * @return the entityTypeName value.
      */
     public String entityTypeName() {
-        return this.entityTypeName;
+        return this.innerProperties() == null ? null : this.innerProperties().entityTypeName();
     }
 
     /**
      * Set the entityTypeName property: The mapping entity name.
-     *
+     * 
      * @param entityTypeName the entityTypeName value to set.
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withEntityTypeName(String entityTypeName) {
-        this.entityTypeName = entityTypeName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withEntityTypeName(entityTypeName);
         return this;
     }
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
      * Get the kpiName property: The KPI name.
-     *
+     * 
      * @return the kpiName value.
      */
     public String kpiName() {
-        return this.kpiName;
+        return this.innerProperties() == null ? null : this.innerProperties().kpiName();
     }
 
     /**
      * Get the displayName property: Localized display name for the KPI.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
      * Set the displayName property: Localized display name for the KPI.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withDisplayName(Map<String, String> displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
     /**
      * Get the description property: Localized description for the KPI.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
      * Set the description property: Localized description for the KPI.
-     *
+     * 
      * @param description the description value to set.
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withDescription(Map<String, String> description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
     /**
      * Get the calculationWindow property: The calculation window.
-     *
+     * 
      * @return the calculationWindow value.
      */
     public CalculationWindowTypes calculationWindow() {
-        return this.calculationWindow;
+        return this.innerProperties() == null ? null : this.innerProperties().calculationWindow();
     }
 
     /**
      * Set the calculationWindow property: The calculation window.
-     *
+     * 
      * @param calculationWindow the calculationWindow value to set.
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withCalculationWindow(CalculationWindowTypes calculationWindow) {
-        this.calculationWindow = calculationWindow;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withCalculationWindow(calculationWindow);
         return this;
     }
 
     /**
      * Get the calculationWindowFieldName property: Name of calculation window field.
-     *
+     * 
      * @return the calculationWindowFieldName value.
      */
     public String calculationWindowFieldName() {
-        return this.calculationWindowFieldName;
+        return this.innerProperties() == null ? null : this.innerProperties().calculationWindowFieldName();
     }
 
     /**
      * Set the calculationWindowFieldName property: Name of calculation window field.
-     *
+     * 
      * @param calculationWindowFieldName the calculationWindowFieldName value to set.
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withCalculationWindowFieldName(String calculationWindowFieldName) {
-        this.calculationWindowFieldName = calculationWindowFieldName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withCalculationWindowFieldName(calculationWindowFieldName);
         return this;
     }
 
     /**
      * Get the function property: The computation function for the KPI.
-     *
+     * 
      * @return the function value.
      */
     public KpiFunctions function() {
-        return this.function;
+        return this.innerProperties() == null ? null : this.innerProperties().function();
     }
 
     /**
      * Set the function property: The computation function for the KPI.
-     *
+     * 
      * @param function the function value to set.
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withFunction(KpiFunctions function) {
-        this.function = function;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withFunction(function);
         return this;
     }
 
     /**
      * Get the expression property: The computation expression for the KPI.
-     *
+     * 
      * @return the expression value.
      */
     public String expression() {
-        return this.expression;
+        return this.innerProperties() == null ? null : this.innerProperties().expression();
     }
 
     /**
      * Set the expression property: The computation expression for the KPI.
-     *
+     * 
      * @param expression the expression value to set.
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withExpression(String expression) {
-        this.expression = expression;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withExpression(expression);
         return this;
     }
 
     /**
      * Get the unit property: The unit of measurement for the KPI.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
-        return this.unit;
+        return this.innerProperties() == null ? null : this.innerProperties().unit();
     }
 
     /**
      * Set the unit property: The unit of measurement for the KPI.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withUnit(String unit) {
-        this.unit = unit;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withUnit(unit);
         return this;
     }
 
     /**
      * Get the filter property: The filter expression for the KPI.
-     *
+     * 
      * @return the filter value.
      */
     public String filter() {
-        return this.filter;
+        return this.innerProperties() == null ? null : this.innerProperties().filter();
     }
 
     /**
      * Set the filter property: The filter expression for the KPI.
-     *
+     * 
      * @param filter the filter value to set.
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withFilter(String filter) {
-        this.filter = filter;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withFilter(filter);
         return this;
     }
 
     /**
      * Get the groupBy property: the group by properties for the KPI.
-     *
+     * 
      * @return the groupBy value.
      */
     public List<String> groupBy() {
-        return this.groupBy;
+        return this.innerProperties() == null ? null : this.innerProperties().groupBy();
     }
 
     /**
      * Set the groupBy property: the group by properties for the KPI.
-     *
+     * 
      * @param groupBy the groupBy value to set.
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withGroupBy(List<String> groupBy) {
-        this.groupBy = groupBy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withGroupBy(groupBy);
         return this;
     }
 
     /**
      * Get the groupByMetadata property: The KPI GroupByMetadata.
-     *
+     * 
      * @return the groupByMetadata value.
      */
     public List<KpiGroupByMetadata> groupByMetadata() {
-        return this.groupByMetadata;
+        return this.innerProperties() == null ? null : this.innerProperties().groupByMetadata();
     }
 
     /**
      * Get the participantProfilesMetadata property: The participant profiles.
-     *
+     * 
      * @return the participantProfilesMetadata value.
      */
     public List<KpiParticipantProfilesMetadata> participantProfilesMetadata() {
-        return this.participantProfilesMetadata;
+        return this.innerProperties() == null ? null : this.innerProperties().participantProfilesMetadata();
     }
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
      * Get the thresHolds property: The KPI thresholds.
-     *
+     * 
      * @return the thresHolds value.
      */
     public KpiThresholds thresHolds() {
-        return this.thresHolds;
+        return this.innerProperties() == null ? null : this.innerProperties().thresHolds();
     }
 
     /**
      * Set the thresHolds property: The KPI thresholds.
-     *
+     * 
      * @param thresHolds the thresHolds value to set.
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withThresHolds(KpiThresholds thresHolds) {
-        this.thresHolds = thresHolds;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withThresHolds(thresHolds);
         return this;
     }
 
     /**
      * Get the aliases property: The aliases.
-     *
+     * 
      * @return the aliases value.
      */
     public List<KpiAlias> aliases() {
-        return this.aliases;
+        return this.innerProperties() == null ? null : this.innerProperties().aliases();
     }
 
     /**
      * Set the aliases property: The aliases.
-     *
+     * 
      * @param aliases the aliases value to set.
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withAliases(List<KpiAlias> aliases) {
-        this.aliases = aliases;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withAliases(aliases);
         return this;
     }
 
     /**
      * Get the extracts property: The KPI extracts.
-     *
+     * 
      * @return the extracts value.
      */
     public List<KpiExtract> extracts() {
-        return this.extracts;
+        return this.innerProperties() == null ? null : this.innerProperties().extracts();
     }
 
     /**
      * Set the extracts property: The KPI extracts.
-     *
+     * 
      * @param extracts the extracts value to set.
      * @return the KpiResourceFormatInner object itself.
      */
     public KpiResourceFormatInner withExtracts(List<KpiExtract> extracts) {
-        this.extracts = extracts;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KpiDefinitionInner();
+        }
+        this.innerProperties().withExtracts(extracts);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (groupByMetadata() != null) {
-            groupByMetadata().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
-        if (participantProfilesMetadata() != null) {
-            participantProfilesMetadata().forEach(e -> e.validate());
-        }
-        if (thresHolds() != null) {
-            thresHolds().validate();
-        }
-        if (aliases() != null) {
-            aliases().forEach(e -> e.validate());
-        }
-        if (extracts() != null) {
-            extracts().forEach(e -> e.validate());
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KpiResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KpiResourceFormatInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KpiResourceFormatInner.
+     */
+    public static KpiResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KpiResourceFormatInner deserializedKpiResourceFormatInner = new KpiResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedKpiResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedKpiResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedKpiResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedKpiResourceFormatInner.innerProperties = KpiDefinitionInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKpiResourceFormatInner;
+        });
     }
 }

@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Managed identity type properties. */
+/**
+ * Managed identity type properties.
+ */
 @Fluent
-public final class ManagedIdentityTypeProperties {
+public final class ManagedIdentityTypeProperties implements JsonSerializable<ManagedIdentityTypeProperties> {
     /*
      * The resource id of user assigned managed identity
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
-    /** Creates an instance of ManagedIdentityTypeProperties class. */
+    /**
+     * Creates an instance of ManagedIdentityTypeProperties class.
+     */
     public ManagedIdentityTypeProperties() {
     }
 
     /**
      * Get the resourceId property: The resource id of user assigned managed identity.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -31,7 +38,7 @@ public final class ManagedIdentityTypeProperties {
 
     /**
      * Set the resourceId property: The resource id of user assigned managed identity.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ManagedIdentityTypeProperties object itself.
      */
@@ -42,9 +49,46 @@ public final class ManagedIdentityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedIdentityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedIdentityTypeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedIdentityTypeProperties.
+     */
+    public static ManagedIdentityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedIdentityTypeProperties deserializedManagedIdentityTypeProperties
+                = new ManagedIdentityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedManagedIdentityTypeProperties.resourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedIdentityTypeProperties;
+        });
     }
 }

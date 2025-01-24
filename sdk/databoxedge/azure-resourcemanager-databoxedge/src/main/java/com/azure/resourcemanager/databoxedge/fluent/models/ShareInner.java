@@ -5,8 +5,10 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.AzureContainerInfo;
 import com.azure.resourcemanager.databoxedge.models.ClientAccessRight;
@@ -17,308 +19,356 @@ import com.azure.resourcemanager.databoxedge.models.RefreshDetails;
 import com.azure.resourcemanager.databoxedge.models.ShareAccessProtocol;
 import com.azure.resourcemanager.databoxedge.models.ShareStatus;
 import com.azure.resourcemanager.databoxedge.models.UserAccessRight;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents a share on the Data Box Edge/Gateway device. */
-@JsonFlatten
+/**
+ * Represents a share on the Data Box Edge/Gateway device.
+ */
 @Fluent
-public class ShareInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ShareInner.class);
+public final class ShareInner extends ArmBaseModel {
+    /*
+     * The share properties.
+     */
+    private ShareProperties innerProperties = new ShareProperties();
 
     /*
-     * Description for the share.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    private String type;
 
     /*
-     * Current status of the share.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.shareStatus", required = true)
-    private ShareStatus shareStatus;
+    private String name;
 
     /*
-     * Current monitoring status of the share.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.monitoringStatus", required = true)
-    private MonitoringStatus monitoringStatus;
+    private String id;
 
-    /*
-     * Azure container mapping for the share.
+    /**
+     * Creates an instance of ShareInner class.
      */
-    @JsonProperty(value = "properties.azureContainerInfo")
-    private AzureContainerInfo azureContainerInfo;
+    public ShareInner() {
+    }
 
-    /*
-     * Access protocol to be used by the share.
+    /**
+     * Get the innerProperties property: The share properties.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.accessProtocol", required = true)
-    private ShareAccessProtocol accessProtocol;
+    private ShareProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Mapping of users and corresponding access rights on the share (required
-     * for SMB protocol).
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.userAccessRights")
-    private List<UserAccessRight> userAccessRights;
+    @Override
+    public String type() {
+        return this.type;
+    }
 
-    /*
-     * List of IP addresses and corresponding access rights on the
-     * share(required for NFS protocol).
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    @JsonProperty(value = "properties.clientAccessRights")
-    private List<ClientAccessRight> clientAccessRights;
+    @Override
+    public String name() {
+        return this.name;
+    }
 
-    /*
-     * Details of the refresh job on this share.
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    @JsonProperty(value = "properties.refreshDetails")
-    private RefreshDetails refreshDetails;
-
-    /*
-     * Share mount point to the role.
-     */
-    @JsonProperty(value = "properties.shareMappings", access = JsonProperty.Access.WRITE_ONLY)
-    private List<MountPointMap> shareMappings;
-
-    /*
-     * Data policy of the share.
-     */
-    @JsonProperty(value = "properties.dataPolicy")
-    private DataPolicy dataPolicy;
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the description property: Description for the share.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
      * Set the description property: Description for the share.
-     *
+     * 
      * @param description the description value to set.
      * @return the ShareInner object itself.
      */
     public ShareInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ShareProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
     /**
      * Get the shareStatus property: Current status of the share.
-     *
+     * 
      * @return the shareStatus value.
      */
     public ShareStatus shareStatus() {
-        return this.shareStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().shareStatus();
     }
 
     /**
      * Set the shareStatus property: Current status of the share.
-     *
+     * 
      * @param shareStatus the shareStatus value to set.
      * @return the ShareInner object itself.
      */
     public ShareInner withShareStatus(ShareStatus shareStatus) {
-        this.shareStatus = shareStatus;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ShareProperties();
+        }
+        this.innerProperties().withShareStatus(shareStatus);
         return this;
     }
 
     /**
      * Get the monitoringStatus property: Current monitoring status of the share.
-     *
+     * 
      * @return the monitoringStatus value.
      */
     public MonitoringStatus monitoringStatus() {
-        return this.monitoringStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().monitoringStatus();
     }
 
     /**
      * Set the monitoringStatus property: Current monitoring status of the share.
-     *
+     * 
      * @param monitoringStatus the monitoringStatus value to set.
      * @return the ShareInner object itself.
      */
     public ShareInner withMonitoringStatus(MonitoringStatus monitoringStatus) {
-        this.monitoringStatus = monitoringStatus;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ShareProperties();
+        }
+        this.innerProperties().withMonitoringStatus(monitoringStatus);
         return this;
     }
 
     /**
      * Get the azureContainerInfo property: Azure container mapping for the share.
-     *
+     * 
      * @return the azureContainerInfo value.
      */
     public AzureContainerInfo azureContainerInfo() {
-        return this.azureContainerInfo;
+        return this.innerProperties() == null ? null : this.innerProperties().azureContainerInfo();
     }
 
     /**
      * Set the azureContainerInfo property: Azure container mapping for the share.
-     *
+     * 
      * @param azureContainerInfo the azureContainerInfo value to set.
      * @return the ShareInner object itself.
      */
     public ShareInner withAzureContainerInfo(AzureContainerInfo azureContainerInfo) {
-        this.azureContainerInfo = azureContainerInfo;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ShareProperties();
+        }
+        this.innerProperties().withAzureContainerInfo(azureContainerInfo);
         return this;
     }
 
     /**
      * Get the accessProtocol property: Access protocol to be used by the share.
-     *
+     * 
      * @return the accessProtocol value.
      */
     public ShareAccessProtocol accessProtocol() {
-        return this.accessProtocol;
+        return this.innerProperties() == null ? null : this.innerProperties().accessProtocol();
     }
 
     /**
      * Set the accessProtocol property: Access protocol to be used by the share.
-     *
+     * 
      * @param accessProtocol the accessProtocol value to set.
      * @return the ShareInner object itself.
      */
     public ShareInner withAccessProtocol(ShareAccessProtocol accessProtocol) {
-        this.accessProtocol = accessProtocol;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ShareProperties();
+        }
+        this.innerProperties().withAccessProtocol(accessProtocol);
         return this;
     }
 
     /**
      * Get the userAccessRights property: Mapping of users and corresponding access rights on the share (required for
      * SMB protocol).
-     *
+     * 
      * @return the userAccessRights value.
      */
     public List<UserAccessRight> userAccessRights() {
-        return this.userAccessRights;
+        return this.innerProperties() == null ? null : this.innerProperties().userAccessRights();
     }
 
     /**
      * Set the userAccessRights property: Mapping of users and corresponding access rights on the share (required for
      * SMB protocol).
-     *
+     * 
      * @param userAccessRights the userAccessRights value to set.
      * @return the ShareInner object itself.
      */
     public ShareInner withUserAccessRights(List<UserAccessRight> userAccessRights) {
-        this.userAccessRights = userAccessRights;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ShareProperties();
+        }
+        this.innerProperties().withUserAccessRights(userAccessRights);
         return this;
     }
 
     /**
      * Get the clientAccessRights property: List of IP addresses and corresponding access rights on the share(required
      * for NFS protocol).
-     *
+     * 
      * @return the clientAccessRights value.
      */
     public List<ClientAccessRight> clientAccessRights() {
-        return this.clientAccessRights;
+        return this.innerProperties() == null ? null : this.innerProperties().clientAccessRights();
     }
 
     /**
      * Set the clientAccessRights property: List of IP addresses and corresponding access rights on the share(required
      * for NFS protocol).
-     *
+     * 
      * @param clientAccessRights the clientAccessRights value to set.
      * @return the ShareInner object itself.
      */
     public ShareInner withClientAccessRights(List<ClientAccessRight> clientAccessRights) {
-        this.clientAccessRights = clientAccessRights;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ShareProperties();
+        }
+        this.innerProperties().withClientAccessRights(clientAccessRights);
         return this;
     }
 
     /**
      * Get the refreshDetails property: Details of the refresh job on this share.
-     *
+     * 
      * @return the refreshDetails value.
      */
     public RefreshDetails refreshDetails() {
-        return this.refreshDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().refreshDetails();
     }
 
     /**
      * Set the refreshDetails property: Details of the refresh job on this share.
-     *
+     * 
      * @param refreshDetails the refreshDetails value to set.
      * @return the ShareInner object itself.
      */
     public ShareInner withRefreshDetails(RefreshDetails refreshDetails) {
-        this.refreshDetails = refreshDetails;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ShareProperties();
+        }
+        this.innerProperties().withRefreshDetails(refreshDetails);
         return this;
     }
 
     /**
      * Get the shareMappings property: Share mount point to the role.
-     *
+     * 
      * @return the shareMappings value.
      */
     public List<MountPointMap> shareMappings() {
-        return this.shareMappings;
+        return this.innerProperties() == null ? null : this.innerProperties().shareMappings();
     }
 
     /**
      * Get the dataPolicy property: Data policy of the share.
-     *
+     * 
      * @return the dataPolicy value.
      */
     public DataPolicy dataPolicy() {
-        return this.dataPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().dataPolicy();
     }
 
     /**
      * Set the dataPolicy property: Data policy of the share.
-     *
+     * 
      * @param dataPolicy the dataPolicy value to set.
      * @return the ShareInner object itself.
      */
     public ShareInner withDataPolicy(DataPolicy dataPolicy) {
-        this.dataPolicy = dataPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ShareProperties();
+        }
+        this.innerProperties().withDataPolicy(dataPolicy);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
-        if (shareStatus() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property shareStatus in model ShareInner"));
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model ShareInner"));
+        } else {
+            innerProperties().validate();
         }
-        if (monitoringStatus() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property monitoringStatus in model ShareInner"));
-        }
-        if (azureContainerInfo() != null) {
-            azureContainerInfo().validate();
-        }
-        if (accessProtocol() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property accessProtocol in model ShareInner"));
-        }
-        if (userAccessRights() != null) {
-            userAccessRights().forEach(e -> e.validate());
-        }
-        if (clientAccessRights() != null) {
-            clientAccessRights().forEach(e -> e.validate());
-        }
-        if (refreshDetails() != null) {
-            refreshDetails().validate();
-        }
-        if (shareMappings() != null) {
-            shareMappings().forEach(e -> e.validate());
-        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ShareInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ShareInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ShareInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ShareInner.
+     */
+    public static ShareInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ShareInner deserializedShareInner = new ShareInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedShareInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedShareInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedShareInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedShareInner.innerProperties = ShareProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedShareInner;
+        });
     }
 }

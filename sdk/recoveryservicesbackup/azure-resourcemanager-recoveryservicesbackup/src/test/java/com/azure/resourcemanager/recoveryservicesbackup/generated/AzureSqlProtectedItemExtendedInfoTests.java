@@ -8,31 +8,27 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureSqlProtectedItemExtendedInfo;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureSqlProtectedItemExtendedInfoTests {
-    @Test
-    public void testDeserialize() {
-        AzureSqlProtectedItemExtendedInfo model =
-            BinaryData
-                .fromString(
-                    "{\"oldestRecoveryPoint\":\"2021-07-24T05:54:49Z\",\"recoveryPointCount\":309058376,\"policyState\":\"fhoqca\"}")
-                .toObject(AzureSqlProtectedItemExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-24T05:54:49Z"), model.oldestRecoveryPoint());
-        Assertions.assertEquals(309058376, model.recoveryPointCount());
-        Assertions.assertEquals("fhoqca", model.policyState());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureSqlProtectedItemExtendedInfo model = BinaryData.fromString(
+            "{\"oldestRecoveryPoint\":\"2021-06-10T22:10:44Z\",\"recoveryPointCount\":2048413099,\"policyState\":\"vlerchpqbmfpjba\"}")
+            .toObject(AzureSqlProtectedItemExtendedInfo.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T22:10:44Z"), model.oldestRecoveryPoint());
+        Assertions.assertEquals(2048413099, model.recoveryPointCount());
+        Assertions.assertEquals("vlerchpqbmfpjba", model.policyState());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureSqlProtectedItemExtendedInfo model =
-            new AzureSqlProtectedItemExtendedInfo()
-                .withOldestRecoveryPoint(OffsetDateTime.parse("2021-07-24T05:54:49Z"))
-                .withRecoveryPointCount(309058376)
-                .withPolicyState("fhoqca");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureSqlProtectedItemExtendedInfo model = new AzureSqlProtectedItemExtendedInfo()
+            .withOldestRecoveryPoint(OffsetDateTime.parse("2021-06-10T22:10:44Z"))
+            .withRecoveryPointCount(2048413099)
+            .withPolicyState("vlerchpqbmfpjba");
         model = BinaryData.fromObject(model).toObject(AzureSqlProtectedItemExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-24T05:54:49Z"), model.oldestRecoveryPoint());
-        Assertions.assertEquals(309058376, model.recoveryPointCount());
-        Assertions.assertEquals("fhoqca", model.policyState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T22:10:44Z"), model.oldestRecoveryPoint());
+        Assertions.assertEquals(2048413099, model.recoveryPointCount());
+        Assertions.assertEquals("vlerchpqbmfpjba", model.policyState());
     }
 }

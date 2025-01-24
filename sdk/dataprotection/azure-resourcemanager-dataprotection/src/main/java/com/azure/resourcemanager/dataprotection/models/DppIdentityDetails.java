@@ -5,39 +5,51 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Map;
 
-/** DppIdentityDetails Identity details. */
+/**
+ * DppIdentityDetails
+ * 
+ * Identity details.
+ */
 @Fluent
-public final class DppIdentityDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DppIdentityDetails.class);
-
+public final class DppIdentityDetails implements JsonSerializable<DppIdentityDetails> {
     /*
-     * The object ID of the service principal object for the managed identity
-     * that is used to grant role-based access to an Azure resource.
+     * The object ID of the service principal object for the managed identity that is used to grant role-based access to
+     * an Azure resource.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
-     * A Globally Unique Identifier (GUID) that represents the Azure AD tenant
-     * where the resource is now a member.
+     * A Globally Unique Identifier (GUID) that represents the Azure AD tenant where the resource is now a member.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
-     * The identityType which can be either SystemAssigned or None
+     * The identityType which can be either SystemAssigned, UserAssigned, 'SystemAssigned,UserAssigned' or None
      */
-    @JsonProperty(value = "type")
     private String type;
+
+    /*
+     * Gets or sets the user assigned identities.
+     */
+    private Map<String, UserAssignedIdentity> userAssignedIdentities;
+
+    /**
+     * Creates an instance of DppIdentityDetails class.
+     */
+    public DppIdentityDetails() {
+    }
 
     /**
      * Get the principalId property: The object ID of the service principal object for the managed identity that is used
      * to grant role-based access to an Azure resource.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -47,7 +59,7 @@ public final class DppIdentityDetails {
     /**
      * Get the tenantId property: A Globally Unique Identifier (GUID) that represents the Azure AD tenant where the
      * resource is now a member.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -55,8 +67,9 @@ public final class DppIdentityDetails {
     }
 
     /**
-     * Get the type property: The identityType which can be either SystemAssigned or None.
-     *
+     * Get the type property: The identityType which can be either SystemAssigned, UserAssigned,
+     * 'SystemAssigned,UserAssigned' or None.
+     * 
      * @return the type value.
      */
     public String type() {
@@ -64,8 +77,9 @@ public final class DppIdentityDetails {
     }
 
     /**
-     * Set the type property: The identityType which can be either SystemAssigned or None.
-     *
+     * Set the type property: The identityType which can be either SystemAssigned, UserAssigned,
+     * 'SystemAssigned,UserAssigned' or None.
+     * 
      * @param type the type value to set.
      * @return the DppIdentityDetails object itself.
      */
@@ -75,10 +89,83 @@ public final class DppIdentityDetails {
     }
 
     /**
+     * Get the userAssignedIdentities property: Gets or sets the user assigned identities.
+     * 
+     * @return the userAssignedIdentities value.
+     */
+    public Map<String, UserAssignedIdentity> userAssignedIdentities() {
+        return this.userAssignedIdentities;
+    }
+
+    /**
+     * Set the userAssignedIdentities property: Gets or sets the user assigned identities.
+     * 
+     * @param userAssignedIdentities the userAssignedIdentities value to set.
+     * @return the DppIdentityDetails object itself.
+     */
+    public DppIdentityDetails withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
+        this.userAssignedIdentities = userAssignedIdentities;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (userAssignedIdentities() != null) {
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DppIdentityDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DppIdentityDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DppIdentityDetails.
+     */
+    public static DppIdentityDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DppIdentityDetails deserializedDppIdentityDetails = new DppIdentityDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedDppIdentityDetails.principalId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedDppIdentityDetails.tenantId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDppIdentityDetails.type = reader.getString();
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, UserAssignedIdentity> userAssignedIdentities
+                        = reader.readMap(reader1 -> UserAssignedIdentity.fromJson(reader1));
+                    deserializedDppIdentityDetails.userAssignedIdentities = userAssignedIdentities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDppIdentityDetails;
+        });
     }
 }

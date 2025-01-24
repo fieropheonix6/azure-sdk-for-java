@@ -11,69 +11,59 @@ import com.azure.resourcemanager.batch.models.NetworkSecurityGroupRule;
 import com.azure.resourcemanager.batch.models.NetworkSecurityGroupRuleAccess;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class InboundNatPoolTests {
-    @Test
-    public void testDeserialize() {
-        InboundNatPool model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"bhjpglkfgohdne\",\"protocol\":\"TCP\",\"backendPort\":1635108212,\"frontendPortRangeStart\":2052379315,\"frontendPortRangeEnd\":1976701075,\"networkSecurityGroupRules\":[{\"priority\":2019789161,\"access\":\"Deny\",\"sourceAddressPrefix\":\"htozfikdow\",\"sourcePortRanges\":[\"uvxzxclvi\",\"hhqzonosgg\"]},{\"priority\":745673634,\"access\":\"Allow\",\"sourceAddressPrefix\":\"ohfwds\",\"sourcePortRanges\":[\"aljutiiswac\"]},{\"priority\":1975902978,\"access\":\"Allow\",\"sourceAddressPrefix\":\"dkzzewkfvhqcrail\",\"sourcePortRanges\":[\"ppfufl\"]},{\"priority\":888986239,\"access\":\"Deny\",\"sourceAddressPrefix\":\"mh\",\"sourcePortRanges\":[\"yjrxsagafcnih\",\"wqapnedgfbcvk\",\"vq\",\"pkeqdcvdrhvoo\"]}]}")
-                .toObject(InboundNatPool.class);
-        Assertions.assertEquals("bhjpglkfgohdne", model.name());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        InboundNatPool model = BinaryData.fromString(
+            "{\"name\":\"xagl\",\"protocol\":\"TCP\",\"backendPort\":1902797615,\"frontendPortRangeStart\":2121024844,\"frontendPortRangeEnd\":1837530813,\"networkSecurityGroupRules\":[{\"priority\":1951928736,\"access\":\"Allow\",\"sourceAddressPrefix\":\"tx\",\"sourcePortRanges\":[\"skfc\",\"tq\",\"miekkezzikhlyfjh\",\"gqggebdunygae\"]},{\"priority\":624778524,\"access\":\"Allow\",\"sourceAddressPrefix\":\"bqfatpxllrxcyjmo\",\"sourcePortRanges\":[\"uvarmywdmjsjq\"]},{\"priority\":1963231743,\"access\":\"Allow\",\"sourceAddressPrefix\":\"hyxxrwlycoduhpk\",\"sourcePortRanges\":[\"ymareqnajxqugj\",\"ky\"]},{\"priority\":1538408928,\"access\":\"Deny\",\"sourceAddressPrefix\":\"eddgssofw\",\"sourcePortRanges\":[\"qal\",\"rmnjijpx\",\"cqqudf\",\"byxbaaabjy\"]}]}")
+            .toObject(InboundNatPool.class);
+        Assertions.assertEquals("xagl", model.name());
         Assertions.assertEquals(InboundEndpointProtocol.TCP, model.protocol());
-        Assertions.assertEquals(1635108212, model.backendPort());
-        Assertions.assertEquals(2052379315, model.frontendPortRangeStart());
-        Assertions.assertEquals(1976701075, model.frontendPortRangeEnd());
-        Assertions.assertEquals(2019789161, model.networkSecurityGroupRules().get(0).priority());
-        Assertions.assertEquals(NetworkSecurityGroupRuleAccess.DENY, model.networkSecurityGroupRules().get(0).access());
-        Assertions.assertEquals("htozfikdow", model.networkSecurityGroupRules().get(0).sourceAddressPrefix());
-        Assertions.assertEquals("uvxzxclvi", model.networkSecurityGroupRules().get(0).sourcePortRanges().get(0));
+        Assertions.assertEquals(1902797615, model.backendPort());
+        Assertions.assertEquals(2121024844, model.frontendPortRangeStart());
+        Assertions.assertEquals(1837530813, model.frontendPortRangeEnd());
+        Assertions.assertEquals(1951928736, model.networkSecurityGroupRules().get(0).priority());
+        Assertions.assertEquals(NetworkSecurityGroupRuleAccess.ALLOW,
+            model.networkSecurityGroupRules().get(0).access());
+        Assertions.assertEquals("tx", model.networkSecurityGroupRules().get(0).sourceAddressPrefix());
+        Assertions.assertEquals("skfc", model.networkSecurityGroupRules().get(0).sourcePortRanges().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        InboundNatPool model =
-            new InboundNatPool()
-                .withName("bhjpglkfgohdne")
-                .withProtocol(InboundEndpointProtocol.TCP)
-                .withBackendPort(1635108212)
-                .withFrontendPortRangeStart(2052379315)
-                .withFrontendPortRangeEnd(1976701075)
-                .withNetworkSecurityGroupRules(
-                    Arrays
-                        .asList(
-                            new NetworkSecurityGroupRule()
-                                .withPriority(2019789161)
-                                .withAccess(NetworkSecurityGroupRuleAccess.DENY)
-                                .withSourceAddressPrefix("htozfikdow")
-                                .withSourcePortRanges(Arrays.asList("uvxzxclvi", "hhqzonosgg")),
-                            new NetworkSecurityGroupRule()
-                                .withPriority(745673634)
-                                .withAccess(NetworkSecurityGroupRuleAccess.ALLOW)
-                                .withSourceAddressPrefix("ohfwds")
-                                .withSourcePortRanges(Arrays.asList("aljutiiswac")),
-                            new NetworkSecurityGroupRule()
-                                .withPriority(1975902978)
-                                .withAccess(NetworkSecurityGroupRuleAccess.ALLOW)
-                                .withSourceAddressPrefix("dkzzewkfvhqcrail")
-                                .withSourcePortRanges(Arrays.asList("ppfufl")),
-                            new NetworkSecurityGroupRule()
-                                .withPriority(888986239)
-                                .withAccess(NetworkSecurityGroupRuleAccess.DENY)
-                                .withSourceAddressPrefix("mh")
-                                .withSourcePortRanges(
-                                    Arrays.asList("yjrxsagafcnih", "wqapnedgfbcvk", "vq", "pkeqdcvdrhvoo"))));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        InboundNatPool model = new InboundNatPool().withName("xagl")
+            .withProtocol(InboundEndpointProtocol.TCP)
+            .withBackendPort(1902797615)
+            .withFrontendPortRangeStart(2121024844)
+            .withFrontendPortRangeEnd(1837530813)
+            .withNetworkSecurityGroupRules(Arrays.asList(
+                new NetworkSecurityGroupRule().withPriority(1951928736)
+                    .withAccess(NetworkSecurityGroupRuleAccess.ALLOW)
+                    .withSourceAddressPrefix("tx")
+                    .withSourcePortRanges(Arrays.asList("skfc", "tq", "miekkezzikhlyfjh", "gqggebdunygae")),
+                new NetworkSecurityGroupRule().withPriority(624778524)
+                    .withAccess(NetworkSecurityGroupRuleAccess.ALLOW)
+                    .withSourceAddressPrefix("bqfatpxllrxcyjmo")
+                    .withSourcePortRanges(Arrays.asList("uvarmywdmjsjq")),
+                new NetworkSecurityGroupRule().withPriority(1963231743)
+                    .withAccess(NetworkSecurityGroupRuleAccess.ALLOW)
+                    .withSourceAddressPrefix("hyxxrwlycoduhpk")
+                    .withSourcePortRanges(Arrays.asList("ymareqnajxqugj", "ky")),
+                new NetworkSecurityGroupRule().withPriority(1538408928)
+                    .withAccess(NetworkSecurityGroupRuleAccess.DENY)
+                    .withSourceAddressPrefix("eddgssofw")
+                    .withSourcePortRanges(Arrays.asList("qal", "rmnjijpx", "cqqudf", "byxbaaabjy"))));
         model = BinaryData.fromObject(model).toObject(InboundNatPool.class);
-        Assertions.assertEquals("bhjpglkfgohdne", model.name());
+        Assertions.assertEquals("xagl", model.name());
         Assertions.assertEquals(InboundEndpointProtocol.TCP, model.protocol());
-        Assertions.assertEquals(1635108212, model.backendPort());
-        Assertions.assertEquals(2052379315, model.frontendPortRangeStart());
-        Assertions.assertEquals(1976701075, model.frontendPortRangeEnd());
-        Assertions.assertEquals(2019789161, model.networkSecurityGroupRules().get(0).priority());
-        Assertions.assertEquals(NetworkSecurityGroupRuleAccess.DENY, model.networkSecurityGroupRules().get(0).access());
-        Assertions.assertEquals("htozfikdow", model.networkSecurityGroupRules().get(0).sourceAddressPrefix());
-        Assertions.assertEquals("uvxzxclvi", model.networkSecurityGroupRules().get(0).sourcePortRanges().get(0));
+        Assertions.assertEquals(1902797615, model.backendPort());
+        Assertions.assertEquals(2121024844, model.frontendPortRangeStart());
+        Assertions.assertEquals(1837530813, model.frontendPortRangeEnd());
+        Assertions.assertEquals(1951928736, model.networkSecurityGroupRules().get(0).priority());
+        Assertions.assertEquals(NetworkSecurityGroupRuleAccess.ALLOW,
+            model.networkSecurityGroupRules().get(0).access());
+        Assertions.assertEquals("tx", model.networkSecurityGroupRules().get(0).sourceAddressPrefix());
+        Assertions.assertEquals("skfc", model.networkSecurityGroupRules().get(0).sourcePortRanges().get(0));
     }
 }

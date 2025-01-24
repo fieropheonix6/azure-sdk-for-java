@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -15,11 +14,9 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -28,7 +25,6 @@ import reactor.core.scheduler.Scheduler;
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -39,87 +35,151 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_KEY_KEY;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.GET_EVENT_HUB_PROPERTIES;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.GET_PARTITION_PROPERTIES;
 
 /**
- * An <b>asynchronous</b> producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped
- * together in batches. Depending on the {@link CreateBatchOptions options} specified when creating an {@link
- * EventDataBatch}, the events may be automatically routed to an available partition or specific to a partition.
+ * <p>An <b>asynchronous</b> producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped
+ * together in batches. Depending on the {@link CreateBatchOptions options} specified when creating an
+ * {@link EventDataBatch}, the events may be automatically routed to an available partition or specific to a partition.
+ * More information and specific recommendations for strategies to use when publishing events is in:
+ * <a href="https://learn.microsoft.com/azure/architecture/reference-architectures/event-hubs/partitioning-in-event-hubs-and-kafka#distribute-events-to-partitions">
+ *     Distribute events to partitions</a></p>
  *
- * <p>
- * Allowing automatic routing of partitions is recommended when:
+ * <p>Allowing automatic routing of partitions is recommended when:</p>
  * <ul>
- * <li>The sending of events needs to be highly available.</li>
- * <li>The event data should be evenly distributed among all available partitions.</li>
+ *   <li>The sending of events needs to be highly available.</li>
+ *   <li>The event data should be evenly distributed among all available partitions.</li>
  * </ul>
  *
- * <p>
- * If no partition id is specified, the following rules are used for automatically selecting one:
+ * <p>If no partition id is specified, the following rules are used for automatically selecting one:</p>
  * <ol>
- * <li>Distribute the events equally amongst all available partitions using a round-robin approach.</li>
- * <li>If a partition becomes unavailable, the Event Hubs service will automatically detect it and forward the
- * message to another available partition.</li>
+ *      <li>Distribute the events equally amongst all available partitions using a round-robin approach.</li>
+ *      <li>If a partition becomes unavailable, the Event Hubs service will automatically detect it and forward the
+ *      message to another available partition.</li>
  * </ol>
  *
- * <p><strong>Create a producer and publish events to any partition</strong></p>
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments. You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Construct a {@link EventHubProducerAsyncClient}</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the asynchronous client
+ * {@link EventHubProducerAsyncClient}.  The {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host name.
+ * It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace via Azure Portal.</p>
+ *
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerasyncclient.construct -->
+ * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+ * EventHubProducerAsyncClient producer = new EventHubClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+ *         credential&#41;
+ *     .buildAsyncProducerClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubproducerasyncclient.construct -->
+ *
+ * <p><strong>Sample: Create a producer and publish events to any partition</strong></p>
+ *
+ * <p>The following code sample demonstrates how to send a set of events to Event Hub.  Events are distributed via
+ * automatic routing because no options were set when creating the {@link EventDataBatch} via {@link #createBatch()}.
+ * Using {@link EventDataBatch} is recommended because multiple events can be sent across the underlying connection
+ * with a single message.</p>
+ *
+ * <p>{@link #createBatch()} and {@link #send(EventDataBatch)} are non-blocking calls.  After setting up the operation,
+ * its async representation is returned. The {@code Mono<Void>} must be subscribed to, like the sample below, to start
+ * publishing the event batch.</p>
+ *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch -->
  * <pre>
- * &#47;&#47; The required parameter is a way to authenticate with Event Hubs using credentials.
- * &#47;&#47; The connectionString provides a way to authenticate with Event Hub.
- * EventHubProducerAsyncClient producer = new EventHubClientBuilder&#40;&#41;
- *     .connectionString&#40;
- *         &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;,
- *         &quot;event-hub-name&quot;&#41;
- *     .buildAsyncProducerClient&#40;&#41;;
- *
  * &#47;&#47; Creating a batch without options set, will allow for automatic routing of events to any partition.
  * producer.createBatch&#40;&#41;.flatMap&#40;batch -&gt; &#123;
  *     batch.tryAdd&#40;new EventData&#40;&quot;test-event-1&quot;&#41;&#41;;
  *     batch.tryAdd&#40;new EventData&#40;&quot;test-event-2&quot;&#41;&#41;;
  *     return producer.send&#40;batch&#41;;
- * &#125;&#41;.subscribe&#40;unused -&gt; &#123; &#125;,
+ * &#125;&#41;.subscribe&#40;unused -&gt; &#123;
+ * &#125;,
  *     error -&gt; System.err.println&#40;&quot;Error occurred while sending batch:&quot; + error&#41;,
  *     &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch -->
  *
- * <p><strong>Publish events to partition "foo"</strong></p>
+ * <p><strong>Sample: Publish events to partition "1"</strong></p>
+ *
+ * <p>The following code sample demonstrates how to send a set of events to Event Hub to partition "1".
+ * {@link EventDataBatch} via {@link #createBatch(CreateBatchOptions)}.  Partition identifiers can be obtained using
+ * {@link #getPartitionIds()}.  Using {@link EventDataBatch} is recommended because multiple events can be sent across
+ * the underlying connection with a single message.</p>
+ *
+ * <p>{@link #createBatch(CreateBatchOptions)} and {@link #send(EventDataBatch)} are non-blocking calls.  After setting
+ * up the operation, its async representation is returned. The {@code Mono<Void>} must be subscribed to, like the
+ * sample below, to start publishing the event batch.</p>
+ *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionId -->
  * <pre>
- * &#47;&#47; Creating a batch with partitionId set will route all events in that batch to partition `foo`.
- * CreateBatchOptions options = new CreateBatchOptions&#40;&#41;.setPartitionId&#40;&quot;foo&quot;&#41;;
+ * CreateBatchOptions options = new CreateBatchOptions&#40;&#41;.setPartitionId&#40;&quot;1&quot;&#41;;
  * producer.createBatch&#40;options&#41;.flatMap&#40;batch -&gt; &#123;
  *     batch.tryAdd&#40;new EventData&#40;&quot;test-event-1&quot;&#41;&#41;;
  *     batch.tryAdd&#40;new EventData&#40;&quot;test-event-2&quot;&#41;&#41;;
  *     return producer.send&#40;batch&#41;;
- * &#125;&#41;.subscribe&#40;unused -&gt; &#123; &#125;,
- *     error -&gt; System.err.println&#40;&quot;Error occurred while sending batch:&quot; + error&#41;,
- *     &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
+ * &#125;&#41;.subscribe&#40;unused -&gt; &#123;
+ * &#125;,
+ *     error -&gt; System.err.println&#40;&quot;Error occurred while sending batch to partition 1:&quot; + error&#41;,
+ *     &#40;&#41; -&gt; System.out.println&#40;&quot;Send to partition 1 complete.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionId -->
  *
- * <p><strong>Publish events to the same partition, grouped together using partition key</strong></p>
+ * <p><strong>Sample: Publish events to the same partition, grouped together using partition key</strong></p>
+ *
+ * <p>In the code sample below, all events with the same partition key, "bread" are sent to the same partition. When
+ * {@link CreateBatchOptions#setPartitionId(String)} is specified, it tells the Event Hubs service that these events
+ * belong to the same group and should belong to the same partition.  Useful in the case where developers want events
+ * to end up in the same partition, but do not care which partition it ends up in.</p>
+ *
+ * <p>{@link #createBatch(CreateBatchOptions)} and {@link #send(EventDataBatch)} are non-blocking calls.  After setting
+ * up the operation, its async representation is returned. The {@code Mono<Void>} must be subscribed to, like the
+ * sample below, to start publishing the event batch.</p>
+ *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey -->
  * <pre>
- * &#47;&#47; Creating a batch with partitionKey set will tell the service to hash the partitionKey and decide which
- * &#47;&#47; partition to send the events to. Events with the same partitionKey are always routed to the same partition.
  * CreateBatchOptions options = new CreateBatchOptions&#40;&#41;.setPartitionKey&#40;&quot;bread&quot;&#41;;
+ *
  * producer.createBatch&#40;options&#41;.flatMap&#40;batch -&gt; &#123;
  *     batch.tryAdd&#40;new EventData&#40;&quot;sourdough&quot;&#41;&#41;;
  *     batch.tryAdd&#40;new EventData&#40;&quot;rye&quot;&#41;&#41;;
  *     return producer.send&#40;batch&#41;;
- * &#125;&#41;.subscribe&#40;unused -&gt; &#123; &#125;,
+ * &#125;&#41;.subscribe&#40;unused -&gt; &#123;
+ * &#125;,
  *     error -&gt; System.err.println&#40;&quot;Error occurred while sending batch:&quot; + error&#41;,
  *     &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey -->
  *
- * <p><strong>Publish events using a size-limited {@link EventDataBatch}</strong></p>
+ * <p><strong>Sample: Publish events using a size-limited {@link EventDataBatch}</strong></p>
+ *
+ * <p>In the code sample below, all batches are created with a max size of 256 bytes using
+ * {@link CreateBatchOptions#setMaximumSizeInBytes(int)} is specified.  Events inside the batch are automatically
+ * routed because no partition id or partition key are specified.</p>
+ *
+ * <p>{@link #createBatch(CreateBatchOptions)} and {@link #send(EventDataBatch)} are non-blocking calls.  After setting
+ * up the operation, its async representation is returned. The {@code Mono<Void>} must be subscribed to, like the
+ * sample below, to start publishing the event batch.</p>
+ *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-int -->
  * <pre>
  * Flux&lt;EventData&gt; telemetryEvents = Flux.just&#40;firstEvent, secondEvent&#41;;
@@ -131,37 +191,40 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  *     producer.createBatch&#40;options&#41;.block&#40;&#41;&#41;;
  *
  * &#47;&#47; The sample Flux contains two events, but it could be an infinite stream of telemetry events.
- * telemetryEvents.flatMap&#40;event -&gt; &#123;
- *     final EventDataBatch batch = currentBatch.get&#40;&#41;;
+ * Disposable publishingOperation = telemetryEvents.flatMap&#40;event -&gt; &#123;
+ *     EventDataBatch batch = currentBatch.get&#40;&#41;;
+ *
  *     if &#40;batch.tryAdd&#40;event&#41;&#41; &#123;
  *         return Mono.empty&#40;&#41;;
  *     &#125;
  *
- *     return Mono.when&#40;
- *         producer.send&#40;batch&#41;,
+ *     &#47;&#47; Send the current batch then create another size-limited EventDataBatch and try to fit the event into
+ *     &#47;&#47; this new batch.
+ *     return producer.send&#40;batch&#41;.then&#40;
  *         producer.createBatch&#40;options&#41;.map&#40;newBatch -&gt; &#123;
  *             currentBatch.set&#40;newBatch&#41;;
  *
  *             &#47;&#47; Add the event that did not fit in the previous batch.
  *             if &#40;!newBatch.tryAdd&#40;event&#41;&#41; &#123;
- *                 throw Exceptions.propagate&#40;new IllegalArgumentException&#40;
- *                     &quot;Event was too large to fit in an empty batch. Max size: &quot; + newBatch.getMaxSizeInBytes&#40;&#41;&#41;&#41;;
+ *                 return Mono.error&#40;new IllegalArgumentException&#40;
+ *                     &quot;Event was too large to fit in an empty batch. Max size: &quot;
+ *                         + newBatch.getMaxSizeInBytes&#40;&#41;&#41;&#41;;
  *             &#125;
  *
- *             return newBatch;
+ *             return Mono.empty&#40;&#41;;
  *         &#125;&#41;&#41;;
- * &#125;&#41;.then&#40;&#41;
- *     .doFinally&#40;signal -&gt; &#123;
- *         final EventDataBatch batch = currentBatch.getAndSet&#40;null&#41;;
- *         if &#40;batch != null &amp;&amp; batch.getCount&#40;&#41; &gt; 0&#41; &#123;
- *             producer.send&#40;batch&#41;.block&#40;&#41;;
- *         &#125;
- *     &#125;&#41;;
+ * &#125;&#41;.subscribe&#40;unused -&gt; &#123;
+ * &#125;, error -&gt; &#123;
+ *     System.out.println&#40;&quot;Error occurred publishing events: &quot; + error&#41;;
+ * &#125;, &#40;&#41; -&gt; &#123;
+ *     System.out.println&#40;&quot;Completed publishing operation.&quot;&#41;;
+ * &#125;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-int -->
  *
- * @see EventHubClientBuilder#buildAsyncProducerClient()
- * @see EventHubProducerClient To synchronously generate events to an Event Hub, see EventHubProducerClient.
+ * @see com.azure.messaging.eventhubs
+ * @see EventHubClientBuilder
+ * @see EventHubProducerClient To synchronously publish events to an Event Hub, see EventHubProducerClient.
  */
 @ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
 public class EventHubProducerAsyncClient implements Closeable {
@@ -175,7 +238,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
-    private final EventHubConnectionProcessor connectionProcessor;
+    private final ConnectionCacheWrapper connectionProcessor;
     private final AmqpRetryOptions retryOptions;
     private final EventHubsProducerInstrumentation instrumentation;
     private final MessageSerializer messageSerializer;
@@ -190,14 +253,13 @@ public class EventHubProducerAsyncClient implements Closeable {
      * load balance the messages amongst available partitions.
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
-        EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, MessageSerializer messageSerializer,
-        Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose,
-        String identifier, EventHubsProducerInstrumentation instrumentation) {
-        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
-            "'fullyQualifiedNamespace' cannot be null.");
+        ConnectionCacheWrapper connectionProcessor, AmqpRetryOptions retryOptions, MessageSerializer messageSerializer,
+        Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose, String identifier,
+        EventHubsProducerInstrumentation instrumentation) {
+        this.fullyQualifiedNamespace
+            = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
-        this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
-            "'connectionProcessor' cannot be null.");
+        this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
@@ -234,10 +296,9 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getEventHubProperties() {
-        return instrumentation.getTracer().traceMono(
-            connectionProcessor.flatMap(connection -> connection.getManagementNode())
-                .flatMap(EventHubManagementNode::getEventHubProperties),
-           "EventHubs.getEventHubProperties");
+        return instrumentation.instrumentMono(
+            connectionProcessor.getManagementNodeWithRetries().flatMap(EventHubManagementNode::getEventHubProperties),
+            GET_EVENT_HUB_PROPERTIES, null);
     }
 
     /**
@@ -260,10 +321,8 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
-        return instrumentation.getTracer().traceMono(
-            connectionProcessor.flatMap(connection -> connection.getManagementNode())
-                .flatMap(node -> node.getPartitionProperties(partitionId)),
-            "EventHubs.getPartitionProperties");
+        return instrumentation.instrumentMono(connectionProcessor.getManagementNodeWithRetries()
+            .flatMap(node -> node.getPartitionProperties(partitionId)), GET_PARTITION_PROPERTIES, partitionId);
     }
 
     /**
@@ -293,49 +352,50 @@ public class EventHubProducerAsyncClient implements Closeable {
         final String partitionId = options.getPartitionId();
         final int batchMaxSize = options.getMaximumSizeInBytes();
 
-        if (!CoreUtils.isNullOrEmpty(partitionKey)
-            && !CoreUtils.isNullOrEmpty(partitionId)) {
-            return monoError(LOGGER, new IllegalArgumentException(String.format(Locale.US,
-                "CreateBatchOptions.getPartitionKey() and CreateBatchOptions.getPartitionId() are both set. "
-                    + "Only one or the other can be used. partitionKey: '%s'. partitionId: '%s'",
-                partitionKey, partitionId)));
-        } else if (!CoreUtils.isNullOrEmpty(partitionKey)
-            && partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
-            return monoError(LOGGER, new IllegalArgumentException(String.format(Locale.US,
-                "Partition key '%s' exceeds the maximum allowed length: '%s'.", partitionKey,
-                MAX_PARTITION_KEY_LENGTH)));
+        if (!CoreUtils.isNullOrEmpty(partitionKey) && !CoreUtils.isNullOrEmpty(partitionId)) {
+            return monoError(LOGGER,
+                new IllegalArgumentException(String.format(Locale.US,
+                    "CreateBatchOptions.getPartitionKey() and CreateBatchOptions.getPartitionId() are both set. "
+                        + "Only one or the other can be used. partitionKey: '%s'. partitionId: '%s'",
+                    partitionKey, partitionId)));
+        } else if (!CoreUtils.isNullOrEmpty(partitionKey) && partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
+            return monoError(LOGGER,
+                new IllegalArgumentException(
+                    String.format(Locale.US, "Partition key '%s' exceeds the maximum allowed length: '%s'.",
+                        partitionKey, MAX_PARTITION_KEY_LENGTH)));
         }
 
-        return getSendLink(partitionId)
-            .flatMap(link -> link.getLinkSize()
-                .flatMap(size -> {
-                    final int maximumLinkSize = size > 0
-                        ? size
-                        : MAX_MESSAGE_LENGTH_BYTES;
+        final Mono<EventDataBatch> createBatch
+            = getSendLink(partitionId).flatMap(link -> link.getLinkSize().flatMap(size -> {
+                final int maximumLinkSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
 
-                    if (batchMaxSize > maximumLinkSize) {
-                        return monoError(LOGGER,
-                            new IllegalArgumentException(String.format(Locale.US,
-                                "BatchOptions.maximumSizeInBytes (%s bytes) is larger than the link size (%s bytes).",
-                                batchMaxSize, maximumLinkSize)));
-                    }
+                if (batchMaxSize > maximumLinkSize) {
+                    return monoError(LOGGER,
+                        new IllegalArgumentException(String.format(Locale.US,
+                            "BatchOptions.maximumSizeInBytes (%s bytes) is larger than the link size (%s bytes).",
+                            batchMaxSize, maximumLinkSize)));
+                }
 
-                    final int batchSize = batchMaxSize > 0
-                        ? batchMaxSize
-                        : maximumLinkSize;
+                final int batchSize = batchMaxSize > 0 ? batchMaxSize : maximumLinkSize;
 
-                    return Mono.just(new EventDataBatch(batchSize, partitionId, partitionKey, link::getErrorContext, instrumentation));
-                }));
+                return Mono.just(
+                    new EventDataBatch(batchSize, partitionId, partitionKey, link::getErrorContext, instrumentation));
+            }));
+
+        // Similar to the companion API 'send', the 'create-batch' can also make network calls, so retry in case
+        // of transient errors.
+        return withRetry(createBatch, retryOptions,
+            String.format("partitionId[%s]: Creating batch timed out.", partitionId)).publishOn(scheduler);
     }
 
     /**
-     * Sends a single event to the associated Event Hub. If the size of the single event exceeds the maximum size
-     * allowed, an exception will be triggered and the send will fail.
+     * <p>Sends a single event to the associated Event Hub.  If the size of the single event exceeds the maximum size
+     * allowed, an exception will be triggered and the send will fail.  For high throughput publishing scenarios, using
+     * {@link EventDataBatch} to publish events is recommended.  Batches are created using {@link #createBatch()} and
+     * {@link #createBatch(CreateBatchOptions)}.</p>
      *
-     * <p>
-     * For more information regarding the maximum event size allowed, see
-     * <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and
-     * Limits</a>.
+     * <p>For more information regarding the maximum event size allowed, see
+     * <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and Limits</a>.
      * </p>
      *
      * @param event Event to send to the service.
@@ -374,17 +434,18 @@ public class EventHubProducerAsyncClient implements Closeable {
     }
 
     /**
-     * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
+     * <p>Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
-     * size is the max amount allowed on the link.
+     * size is the max amount allowed on the link.</p>
      *
      * <!-- src_embed com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#Iterable -->
      * <pre>
      * List&lt;EventData&gt; events = Arrays.asList&#40;new EventData&#40;&quot;maple&quot;&#41;, new EventData&#40;&quot;aspen&quot;&#41;,
      *     new EventData&#40;&quot;oak&quot;&#41;&#41;;
-     * producer
-     *     .send&#40;events&#41;
-     *     .subscribe&#40;unused -&gt; &#123; &#125;,
+     *
+     * producer.send&#40;events&#41;
+     *     .subscribe&#40;unused -&gt; &#123;
+     *     &#125;,
      *         error -&gt; System.err.println&#40;&quot;Error occurred while sending events:&quot; + error&#41;,
      *         &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
      * </pre>
@@ -410,18 +471,19 @@ public class EventHubProducerAsyncClient implements Closeable {
     }
 
     /**
-     * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
+     * <p>Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
-     * size is the max amount allowed on the link.
+     * size is the max amount allowed on the link.</p>
      *
      * <!-- src_embed com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#Iterable-SendOptions -->
      * <pre>
      * List&lt;EventData&gt; events = Arrays.asList&#40;new EventData&#40;&quot;Melbourne&quot;&#41;, new EventData&#40;&quot;London&quot;&#41;,
      *     new EventData&#40;&quot;New York&quot;&#41;&#41;;
+     *
      * SendOptions sendOptions = new SendOptions&#40;&#41;.setPartitionKey&#40;&quot;cities&quot;&#41;;
-     * producer
-     *     .send&#40;events, sendOptions&#41;
-     *     .subscribe&#40;unused -&gt; &#123; &#125;,
+     * producer.send&#40;events, sendOptions&#41;
+     *     .subscribe&#40;unused -&gt; &#123;
+     *     &#125;,
      *         error -&gt; System.err.println&#40;&quot;Error occurred while sending events:&quot; + error&#41;,
      *         &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
      * </pre>
@@ -518,69 +580,44 @@ public class EventHubProducerAsyncClient implements Closeable {
                 .log("Sending batch to be distributed round-robin in service.");
         }
 
-        final String partitionKey = batch.getPartitionKey();
-        final List<Message> messages = new ArrayList<>();
-
-        for (int i = 0; i < batch.getEvents().size(); i++) {
-            final EventData event = batch.getEvents().get(i);
-            final Message message = messageSerializer.serialize(event);
-
-            if (!CoreUtils.isNullOrEmpty(partitionKey)) {
-                final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
-                    ? new MessageAnnotations(new HashMap<>())
-                    : message.getMessageAnnotations();
-                messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
-                message.setMessageAnnotations(messageAnnotations);
-            }
-            messages.add(message);
-        }
+        final List<Message> messages
+            = batch.getEvents().stream().map(messageSerializer::serialize).collect(Collectors.toList());
 
         final Mono<Void> sendMessage = getSendLink(batch.getPartitionId())
-            .flatMap(link -> messages.size() == 1
-                ? link.send(messages.get(0))
-                : link.send(messages));
+            .flatMap(link -> messages.size() == 1 ? link.send(messages.get(0)) : link.send(messages));
 
         final Mono<Void> send = withRetry(sendMessage, retryOptions,
-            String.format("partitionId[%s]: Sending messages timed out.", batch.getPartitionId()))
-            .publishOn(scheduler);
+            String.format("partitionId[%s]: Sending messages timed out.", batch.getPartitionId())).publishOn(scheduler);
 
         // important to end spans after metrics are reported so metrics get relevant context for exemplars.
-        return instrumentation.onSendBatch(send, batch, "EventHubs.send");
+        return instrumentation.sendBatch(send, batch);
     }
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
         final String partitionKey = options.getPartitionKey();
         final String partitionId = options.getPartitionId();
 
-        if (!CoreUtils.isNullOrEmpty(partitionKey)
-            && !CoreUtils.isNullOrEmpty(partitionId)) {
-            return monoError(LOGGER, new IllegalArgumentException(String.format(Locale.US,
-                "SendOptions.getPartitionKey() and SendOptions.getPartitionId() are both set. Only one or the"
-                    + " other can be used. partitionKey: '%s'. partitionId: '%s'",
-                partitionKey, partitionId)));
+        if (!CoreUtils.isNullOrEmpty(partitionKey) && !CoreUtils.isNullOrEmpty(partitionId)) {
+            return monoError(LOGGER,
+                new IllegalArgumentException(String.format(Locale.US,
+                    "SendOptions.getPartitionKey() and SendOptions.getPartitionId() are both set. Only one or the"
+                        + " other can be used. partitionKey: '%s'. partitionId: '%s'",
+                    partitionKey, partitionId)));
         }
 
-        return getSendLink(options.getPartitionId())
-            .flatMap(link -> link.getLinkSize()
-                .flatMap(size -> {
-                    final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
-                    final CreateBatchOptions batchOptions = new CreateBatchOptions()
-                        .setPartitionKey(options.getPartitionKey())
-                        .setPartitionId(options.getPartitionId())
-                        .setMaximumSizeInBytes(batchSize);
-                    return events.collect(new EventDataCollector(batchOptions, 1, link::getErrorContext,
-                        instrumentation));
-                })
-                .flatMap(list -> sendInternal(Flux.fromIterable(list))));
+        return getSendLink(options.getPartitionId()).flatMap(link -> link.getLinkSize().flatMap(size -> {
+            final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
+            final CreateBatchOptions batchOptions = new CreateBatchOptions().setPartitionKey(options.getPartitionKey())
+                .setPartitionId(options.getPartitionId())
+                .setMaximumSizeInBytes(batchSize);
+            return events.collect(new EventDataCollector(batchOptions, 1, link::getErrorContext, instrumentation));
+        }).flatMap(list -> sendInternal(Flux.fromIterable(list))));
     }
 
     private Mono<Void> sendInternal(Flux<EventDataBatch> eventBatches) {
-        return eventBatches
-            .flatMap(this::send)
-            .then()
-            .doOnError(error -> {
-                LOGGER.error(Messages.ERROR_SENDING_BATCH, error);
-            });
+        return eventBatches.flatMap(this::send).then().doOnError(error -> {
+            LOGGER.error(Messages.ERROR_SENDING_BATCH, error);
+        });
     }
 
     private String getEntityPath(String partitionId) {
@@ -593,7 +630,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         final String entityPath = getEntityPath(partitionId);
         final String linkName = entityPath;
 
-        return connectionProcessor
+        return connectionProcessor.getConnection()
             .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions, identifier));
     }
 
@@ -629,8 +666,8 @@ public class EventHubProducerAsyncClient implements Closeable {
      * maxNumberOfBatches}, then the collector throws a {@link AmqpException} with {@link
      * AmqpErrorCondition#LINK_PAYLOAD_SIZE_EXCEEDED}.
      */
-    private static class EventDataCollector implements Collector<EventData, List<EventDataBatch>,
-        List<EventDataBatch>> {
+    private static class EventDataCollector
+        implements Collector<EventData, List<EventDataBatch>, List<EventDataBatch>> {
         private final String partitionKey;
         private final String partitionId;
         private final int maxMessageSize;
@@ -642,16 +679,15 @@ public class EventHubProducerAsyncClient implements Closeable {
         EventDataCollector(CreateBatchOptions options, Integer maxNumberOfBatches, ErrorContextProvider contextProvider,
             EventHubsProducerInstrumentation instrumentation) {
             this.maxNumberOfBatches = maxNumberOfBatches;
-            this.maxMessageSize = options.getMaximumSizeInBytes() > 0
-                ? options.getMaximumSizeInBytes()
-                : MAX_MESSAGE_LENGTH_BYTES;
+            this.maxMessageSize
+                = options.getMaximumSizeInBytes() > 0 ? options.getMaximumSizeInBytes() : MAX_MESSAGE_LENGTH_BYTES;
             this.partitionKey = options.getPartitionKey();
             this.partitionId = options.getPartitionId();
             this.contextProvider = contextProvider;
             this.instrumentation = instrumentation;
 
-            currentBatch = new EventDataBatch(maxMessageSize, partitionId, partitionKey, contextProvider,
-                instrumentation);
+            currentBatch
+                = new EventDataBatch(maxMessageSize, partitionId, partitionKey, contextProvider, instrumentation);
         }
 
         @Override
@@ -668,14 +704,15 @@ public class EventHubProducerAsyncClient implements Closeable {
                 }
 
                 if (maxNumberOfBatches != null && list.size() == maxNumberOfBatches) {
-                    final String message = String.format(Locale.US,
-                        Messages.EVENT_DATA_DOES_NOT_FIT, maxNumberOfBatches);
+                    final String message
+                        = String.format(Locale.US, Messages.EVENT_DATA_DOES_NOT_FIT, maxNumberOfBatches);
 
                     throw new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message,
                         contextProvider.getErrorContext());
                 }
 
-                currentBatch = new EventDataBatch(maxMessageSize, partitionId, partitionKey, contextProvider, instrumentation);
+                currentBatch
+                    = new EventDataBatch(maxMessageSize, partitionId, partitionKey, contextProvider, instrumentation);
                 currentBatch.tryAdd(event);
                 list.add(batch);
             };

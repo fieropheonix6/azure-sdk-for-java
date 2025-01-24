@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ArcSettings. */
+/**
+ * Resource collection API of ArcSettings.
+ */
 public interface ArcSettings {
     /**
      * Get ArcSetting resources of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface ArcSettings {
 
     /**
      * Get ArcSetting resources of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -37,7 +39,22 @@ public interface ArcSettings {
 
     /**
      * Get ArcSetting resource details of HCI Cluster.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return arcSetting resource details of HCI Cluster along with {@link Response}.
+     */
+    Response<ArcSetting> getWithResponse(String resourceGroupName, String clusterName, String arcSettingName,
+        Context context);
+
+    /**
+     * Get ArcSetting resource details of HCI Cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -49,23 +66,8 @@ public interface ArcSettings {
     ArcSetting get(String resourceGroupName, String clusterName, String arcSettingName);
 
     /**
-     * Get ArcSetting resource details of HCI Cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return arcSetting resource details of HCI Cluster along with {@link Response}.
-     */
-    Response<ArcSetting> getWithResponse(
-        String resourceGroupName, String clusterName, String arcSettingName, Context context);
-
-    /**
      * Delete ArcSetting resource details of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -77,7 +79,7 @@ public interface ArcSettings {
 
     /**
      * Delete ArcSetting resource details of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -90,7 +92,22 @@ public interface ArcSettings {
 
     /**
      * Generate password for arc settings.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    Response<PasswordCredential> generatePasswordWithResponse(String resourceGroupName, String clusterName,
+        String arcSettingName, Context context);
+
+    /**
+     * Generate password for arc settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -102,23 +119,8 @@ public interface ArcSettings {
     PasswordCredential generatePassword(String resourceGroupName, String clusterName, String arcSettingName);
 
     /**
-     * Generate password for arc settings.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    Response<PasswordCredential> generatePasswordWithResponse(
-        String resourceGroupName, String clusterName, String arcSettingName, Context context);
-
-    /**
      * Create Aad identity for arc settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -131,7 +133,7 @@ public interface ArcSettings {
 
     /**
      * Create Aad identity for arc settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -141,12 +143,65 @@ public interface ArcSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return arcIdentity details.
      */
-    ArcIdentityResponse createIdentity(
-        String resourceGroupName, String clusterName, String arcSettingName, Context context);
+    ArcIdentityResponse createIdentity(String resourceGroupName, String clusterName, String arcSettingName,
+        Context context);
+
+    /**
+     * Add consent time for default extensions and initiate extensions installation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return arcSetting details along with {@link Response}.
+     */
+    Response<ArcSetting> consentAndInstallDefaultExtensionsWithResponse(String resourceGroupName, String clusterName,
+        String arcSettingName, Context context);
+
+    /**
+     * Add consent time for default extensions and initiate extensions installation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return arcSetting details.
+     */
+    ArcSetting consentAndInstallDefaultExtensions(String resourceGroupName, String clusterName, String arcSettingName);
+
+    /**
+     * Initializes ARC Disable process on the cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void initializeDisableProcess(String resourceGroupName, String clusterName, String arcSettingName);
+
+    /**
+     * Initializes ARC Disable process on the cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void initializeDisableProcess(String resourceGroupName, String clusterName, String arcSettingName, Context context);
 
     /**
      * Get ArcSetting resource details of HCI Cluster.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -157,7 +212,7 @@ public interface ArcSettings {
 
     /**
      * Get ArcSetting resource details of HCI Cluster.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,7 +224,7 @@ public interface ArcSettings {
 
     /**
      * Delete ArcSetting resource details of HCI Cluster.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -179,7 +234,7 @@ public interface ArcSettings {
 
     /**
      * Delete ArcSetting resource details of HCI Cluster.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -190,7 +245,7 @@ public interface ArcSettings {
 
     /**
      * Begins definition for a new ArcSetting resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ArcSetting definition.
      */

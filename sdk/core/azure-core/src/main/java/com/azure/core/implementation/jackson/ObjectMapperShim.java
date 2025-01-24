@@ -6,9 +6,14 @@ package com.azure.core.implementation.jackson;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.implementation.ReflectionSerializable;
 import com.azure.core.implementation.ReflectionUtils;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
+import com.azure.core.util.serializer.MemberNameConverter;
+import com.azure.json.JsonSerializable;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,8 +21,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.ParameterizedType;
@@ -28,6 +31,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -37,18 +41,17 @@ import java.util.function.Function;
  * mismatch issues that manifest with {@link LinkageError}.
  */
 public final class ObjectMapperShim {
-    private static final JacksonVersion JACKSON_VERSION = JacksonVersion.getInstance();
     private static final ClientLogger LOGGER = new ClientLogger(ObjectMapperShim.class);
 
     // don't add static fields that might cause Jackson classes to initialize
     private static final int CACHE_SIZE_LIMIT = 10000;
 
     private static final Map<Type, JavaType> TYPE_TO_JAVA_TYPE_CACHE = new ConcurrentHashMap<>();
-    private static final Map<Type, MethodHandle> TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE
+    private static final Map<Type, ReflectiveInvoker> TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE
         = new ConcurrentHashMap<>();
 
     // Dummy constant that indicates an HttpHeaders-based constructor wasn't found for the Type.
-    private static final MethodHandle NO_CONSTRUCTOR_HANDLE = MethodHandles.identity(ObjectMapperShim.class);
+    private static final ReflectiveInvoker NO_CONSTRUCTOR_REFLECTIVE_INVOKER = ReflectionUtils.createNoOpInvoker();
 
     /**
      * Creates and configures JSON {@code ObjectMapper} capable of serializing azure.core types, with flattening and
@@ -57,6 +60,7 @@ public final class ObjectMapperShim {
      * @param innerMapperShim inner mapper to use for non-azure specific serialization.
      * @param configure applies additional configuration to {@code ObjectMapper}.
      * @return Instance of shimmed {@code ObjectMapperShim}.
+     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public static ObjectMapperShim createJsonMapper(ObjectMapperShim innerMapperShim,
         BiConsumer<ObjectMapper, ObjectMapper> configure) {
@@ -65,7 +69,7 @@ public final class ObjectMapperShim {
             configure.accept(mapper, innerMapperShim.mapper);
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
         }
     }
 
@@ -73,13 +77,14 @@ public final class ObjectMapperShim {
      * Creates and configures XML {@code ObjectMapper} capable of serializing azure.core types.
      *
      * @return Instance of shimmed {@code ObjectMapperShim}.
+     * @throws LinkageError if Jackson version mismatch is detected or XML isn't available.
      */
     public static ObjectMapperShim createXmlMapper() {
         try {
             ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createXmlMapper();
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
         }
     }
 
@@ -87,13 +92,14 @@ public final class ObjectMapperShim {
      * Creates and configures JSON {@code ObjectMapper}.
      *
      * @return Instance of shimmed {@code ObjectMapperShim}.
+     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public static ObjectMapperShim createSimpleMapper() {
         try {
             ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createSimpleMapper();
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
         }
     }
 
@@ -101,13 +107,14 @@ public final class ObjectMapperShim {
      * Creates JSON {@code ObjectMapper} with default Jackson settings.
      *
      * @return Instance of shimmed {@code ObjectMapperShim}.
+     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public static ObjectMapperShim createDefaultMapper() {
         try {
             ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createDefaultMapper();
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
         }
     }
 
@@ -115,13 +122,14 @@ public final class ObjectMapperShim {
      * Creates JSON {@code ObjectMapper} with default Jackson settings, but capable of pretty-printing.
      *
      * @return Instance of shimmed {@code ObjectMapperShim}.
+     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public static ObjectMapperShim createPrettyPrintMapper() {
         try {
             ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createPrettyPrintMapper();
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
         }
     }
 
@@ -129,23 +137,27 @@ public final class ObjectMapperShim {
      * Creates and configures JSON {@code ObjectMapper} for headers serialization.
      *
      * @return Instance of shimmed {@code ObjectMapperShim}.
+     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public static ObjectMapperShim createHeaderMapper() {
         try {
             ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createHeaderMapper();
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
         }
     }
 
     private final ObjectMapper mapper;
-    private final MemberNameConverterImpl memberNameConverter;
+    private MemberNameConverterImpl memberNameConverter;
 
-
+    /**
+     * Creates instance of {@link ObjectMapperShim}.
+     *
+     * @param mapper {@link ObjectMapper} to wrap.
+     */
     public ObjectMapperShim(ObjectMapper mapper) {
         this.mapper = mapper;
-        this.memberNameConverter = new MemberNameConverterImpl(mapper);
     }
 
     /**
@@ -153,13 +165,14 @@ public final class ObjectMapperShim {
      *
      * @param value object to serialize.
      * @return Serialized string.
-     * @throws IOException
+     * @throws IOException if serialization fails.
+     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public String writeValueAsString(Object value) throws IOException {
         try {
             return mapper.writeValueAsString(value);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
         }
     }
 
@@ -168,13 +181,14 @@ public final class ObjectMapperShim {
      *
      * @param value object to serialize.
      * @return Serialized byte array.
-     * @throws IOException
+     * @throws IOException if serialization fails.
+     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public byte[] writeValueAsBytes(Object value) throws IOException {
         try {
             return mapper.writeValueAsBytes(value);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
         }
     }
 
@@ -183,64 +197,71 @@ public final class ObjectMapperShim {
      *
      * @param out stream to write serialized object to.
      * @param value object to serialize.
-     * @throws IOException
+     * @throws IOException if serialization fails.
+     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public void writeValue(OutputStream out, Object value) throws IOException {
         try {
             mapper.writeValue(out, value);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
         }
     }
 
     /**
      * Deserializes Java object from a string.
      *
+     * @param <T> type of the value.
      * @param content serialized object.
      * @param valueType type of the value.
      * @return Deserialized object.
-     * @throws IOException
+     * @throws IOException if deserialization fails.
+     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public <T> T readValue(String content, final Type valueType) throws IOException {
         try {
             final JavaType javaType = createJavaType(valueType);
             return mapper.readValue(content, javaType);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
         }
     }
 
     /**
      * Deserializes Java object from a byte array.
      *
+     * @param <T> type of the value.
      * @param src serialized object.
      * @param valueType type of the value.
      * @return Deserialized object.
-     * @throws IOException
+     * @throws IOException if deserialization fails.
+     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public <T> T readValue(byte[] src, final Type valueType) throws IOException {
         try {
             final JavaType javaType = createJavaType(valueType);
             return mapper.readValue(src, javaType);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
         }
     }
 
     /**
      * Reads and deserializes Java object from a stream.
      *
+     * @param <T> type of the value.
      * @param src serialized object.
      * @param valueType type of the value.
      * @return Deserialized object.
-     * @throws IOException
+     * @throws IOException if deserialization fails.
+     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public <T> T readValue(InputStream src, final Type valueType) throws IOException {
         try {
             final JavaType javaType = createJavaType(valueType);
             return mapper.readValue(src, javaType);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
         }
     }
 
@@ -249,13 +270,14 @@ public final class ObjectMapperShim {
      *
      * @param content serialized JSON tree.
      * @return {@code JsonNode} instance
-     * @throws IOException
+     * @throws IOException if deserialization fails.
+     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public JsonNode readTree(String content) throws IOException {
         try {
             return mapper.readTree(content);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
         }
     }
 
@@ -264,15 +286,18 @@ public final class ObjectMapperShim {
      *
      * @param content serialized JSON tree.
      * @return {@code JsonNode} instance
+     * @throws IOException if deserialization fails.
+     * @throws LinkageError if Jackson version mismatch is detected.
      */
     public JsonNode readTree(byte[] content) throws IOException {
         try {
             return mapper.readTree(content);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
         }
     }
 
+    @SuppressWarnings("unchecked")
     private JavaType createJavaType(Type type) {
         if (type == null) {
             return null;
@@ -289,10 +314,67 @@ public final class ObjectMapperShim {
             return getFromTypeCache(type, t -> mapper.getTypeFactory()
                 .constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments));
         } else {
-            return getFromTypeCache(type, t -> mapper.getTypeFactory().constructType(t));
+            return getFromTypeCache(type, t -> {
+                JavaType javaType = mapper.constructType(t);
+
+                // Non-container type, just need to check for the type being JsonSerializable.
+                if (!javaType.isContainerType()) {
+                    Class<?> clazz = javaType.getRawClass();
+                    if (ReflectionSerializable.supportsJsonSerializable(clazz)) {
+                        return javaType
+                            .withValueHandler(new JsonSerializableDeserializer((Class<JsonSerializable<?>>) clazz));
+                    }
+
+                    return javaType;
+                }
+
+                // Need additional handling here so that the JavaType returned has the correct value handler for
+                // JsonSerializable types.
+                // While JsonSerializableDeserializer is registered with the ObjectMapper, and it mutates the
+                // JsonSerializer used by Jackson to handle as a JsonSerializable type, there have been cases where
+                // collection types (List, Map, etc) have not been handled correctly. So, additional handling is done
+                // here to ensure that the JavaType returned has the correct value handler.
+                //
+                // These are container types and they need to be traversed until a non-container type is found.
+
+                JavaType initializeType = javaType;
+                Stack<JavaType> containerTypes = new Stack<>();
+                while (javaType.isContainerType()) {
+                    containerTypes.add(javaType);
+                    javaType = javaType.getContentType();
+                }
+
+                // At this point the javaType is a non-container type, check if it is a JsonSerializable type.
+                Class<?> clazz = javaType.getRawClass();
+                if (ReflectionSerializable.supportsJsonSerializable(clazz)) {
+                    // JsonSerializable type, so add the JsonSerializableDeserializer as the value handler.
+                    javaType = javaType
+                        .withValueHandler(new JsonSerializableDeserializer((Class<JsonSerializable<?>>) clazz));
+                } else {
+                    return initializeType;
+                }
+
+                // Now we need to unwind the stack of container types and update the content type of each container
+                // type. Jackson returns new instances upon each modification, so we need to track the new instance.
+                JavaType toReturn = javaType;
+                while (!containerTypes.isEmpty()) {
+                    toReturn = containerTypes.pop().withContentType(toReturn);
+                }
+
+                return toReturn;
+            });
         }
     }
 
+    /**
+     * Deserializes the given {@link HttpHeaders} into an instance of the given {@code deserializedHeadersType}.
+     *
+     * @param <T> The type of the deserialized headers.
+     * @param headers The {@link HttpHeaders} to deserialize.
+     * @param deserializedHeadersType The {@link Type} of the deserialized headers.
+     * @return An instance of the given {@code deserializedHeadersType} with the values from {@code headers}.
+     * @throws IOException If an error occurs while deserializing the headers.
+     */
     @SuppressWarnings("unchecked")
     public <T> T deserialize(HttpHeaders headers, Type deserializedHeadersType) throws IOException {
         if (deserializedHeadersType == null) {
@@ -300,22 +382,18 @@ public final class ObjectMapperShim {
         }
 
         try {
-            MethodHandle constructor = getFromHeadersConstructorCache(deserializedHeadersType);
+            ReflectiveInvoker constructor = getFromHeadersConstructorCache(deserializedHeadersType);
 
-            if (constructor != NO_CONSTRUCTOR_HANDLE) {
-                return (T) constructor.invokeWithArguments(headers);
+            if (constructor != NO_CONSTRUCTOR_REFLECTIVE_INVOKER) {
+                return (T) constructor.invokeStatic(headers);
             }
-        } catch (Throwable throwable) {
-            if (throwable instanceof Error) {
-                throw (Error) throwable;
-            }
-
+        } catch (Exception exception) {
             // invokeWithArguments will fail with a non-RuntimeException if the reflective call was invalid.
-            if (throwable instanceof RuntimeException) {
-                throw (RuntimeException) throwable;
+            if (exception instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) exception);
             }
 
-            LOGGER.verbose("Failed to find or use MethodHandle Constructor that accepts HttpHeaders for "
+            LOGGER.log(LogLevel.VERBOSE, () -> "Failed to find or use invoker Constructor that accepts HttpHeaders for "
                 + deserializedHeadersType + ".");
         }
 
@@ -396,19 +474,24 @@ public final class ObjectMapperShim {
         return deserializedHeaders;
     }
 
+    /**
+     * Gets the name of the given {@link Member} using the configured {@link MemberNameConverter}.
+     *
+     * @param member The {@link Member} to get the name of.
+     * @return The name of the given {@link Member}.
+     */
     public String convertMemberName(Member member) {
+        if (memberNameConverter == null) {
+            // Defer creating the member name converter until it needs to be used.
+            // This class isn't used often and performs a lot of reflection, so best it is deferred.
+            // Don't both making this volatile or synchronized as this is very, very cheap to create.
+            memberNameConverter = new MemberNameConverterImpl(mapper);
+        }
+
         try {
             return memberNameConverter.convertMemberName(member);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
-        }
-    }
-
-    public <T extends JsonNode> T valueToTree(Object fromValue) {
-        try {
-            return mapper.valueToTree(fromValue);
-        } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
         }
     }
 
@@ -423,7 +506,7 @@ public final class ObjectMapperShim {
         return TYPE_TO_JAVA_TYPE_CACHE.computeIfAbsent(key, compute);
     }
 
-    private static MethodHandle getFromHeadersConstructorCache(Type key) {
+    private static ReflectiveInvoker getFromHeadersConstructorCache(Type key) {
         if (TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE.size() >= CACHE_SIZE_LIMIT) {
             TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE.clear();
         }
@@ -431,11 +514,11 @@ public final class ObjectMapperShim {
         return TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE.computeIfAbsent(key, type -> {
             try {
                 Class<?> headersClass = TypeUtil.getRawClass(type);
-                MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(headersClass);
-                return lookup.unreflectConstructor(headersClass.getDeclaredConstructor(HttpHeaders.class));
+                return ReflectionUtils.getConstructorInvoker(headersClass,
+                    headersClass.getDeclaredConstructor(HttpHeaders.class));
             } catch (Throwable throwable) {
                 if (throwable instanceof Error) {
-                    throw (Error) throwable;
+                    throw LOGGER.logThrowableAsError((Error) throwable);
                 }
 
                 // In a previous implementation compute returned null here in an attempt to indicate that there is no
@@ -448,7 +531,7 @@ public final class ObjectMapperShim {
                 // new type is seen or the cache is cleared due to reaching capacity.
                 //
                 // With this change, benchmarking deserialize(HttpHeaders, Type) saw a 20% performance improvement.
-                return NO_CONSTRUCTOR_HANDLE;
+                return NO_CONSTRUCTOR_REFLECTIVE_INVOKER;
             }
         });
     }

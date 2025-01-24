@@ -5,233 +5,320 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Represents a Recommendation Action. */
-@JsonFlatten
+/**
+ * Represents a Recommendation Action.
+ */
 @Fluent
-public class RecommendationActionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendationActionInner.class);
+public final class RecommendationActionInner extends ProxyResource {
+    /*
+     * The properties of a recommendation action.
+     */
+    private RecommendationActionProperties innerProperties;
 
     /*
-     * Advisor name.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.advisorName")
-    private String advisorName;
+    private String type;
 
     /*
-     * Recommendation action session identifier.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.sessionId")
-    private String sessionId;
+    private String name;
 
     /*
-     * Recommendation action identifier.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.actionId")
-    private Integer actionId;
+    private String id;
 
-    /*
-     * Recommendation action creation time.
+    /**
+     * Creates an instance of RecommendationActionInner class.
      */
-    @JsonProperty(value = "properties.createdTime")
-    private OffsetDateTime createdTime;
+    public RecommendationActionInner() {
+    }
 
-    /*
-     * Recommendation action expiration time.
+    /**
+     * Get the innerProperties property: The properties of a recommendation action.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.expirationTime")
-    private OffsetDateTime expirationTime;
+    private RecommendationActionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Recommendation action reason.
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.reason")
-    private String reason;
+    @Override
+    public String type() {
+        return this.type;
+    }
 
-    /*
-     * Recommendation action type.
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    @JsonProperty(value = "properties.recommendationType")
-    private String recommendationType;
+    @Override
+    public String name() {
+        return this.name;
+    }
 
-    /*
-     * Recommendation action details.
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    @JsonProperty(value = "properties.details")
-    private Map<String, String> details;
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the advisorName property: Advisor name.
-     *
+     * 
      * @return the advisorName value.
      */
     public String advisorName() {
-        return this.advisorName;
+        return this.innerProperties() == null ? null : this.innerProperties().advisorName();
     }
 
     /**
      * Set the advisorName property: Advisor name.
-     *
+     * 
      * @param advisorName the advisorName value to set.
      * @return the RecommendationActionInner object itself.
      */
     public RecommendationActionInner withAdvisorName(String advisorName) {
-        this.advisorName = advisorName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationActionProperties();
+        }
+        this.innerProperties().withAdvisorName(advisorName);
         return this;
     }
 
     /**
      * Get the sessionId property: Recommendation action session identifier.
-     *
+     * 
      * @return the sessionId value.
      */
     public String sessionId() {
-        return this.sessionId;
+        return this.innerProperties() == null ? null : this.innerProperties().sessionId();
     }
 
     /**
      * Set the sessionId property: Recommendation action session identifier.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the RecommendationActionInner object itself.
      */
     public RecommendationActionInner withSessionId(String sessionId) {
-        this.sessionId = sessionId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationActionProperties();
+        }
+        this.innerProperties().withSessionId(sessionId);
         return this;
     }
 
     /**
      * Get the actionId property: Recommendation action identifier.
-     *
+     * 
      * @return the actionId value.
      */
     public Integer actionId() {
-        return this.actionId;
+        return this.innerProperties() == null ? null : this.innerProperties().actionId();
     }
 
     /**
      * Set the actionId property: Recommendation action identifier.
-     *
+     * 
      * @param actionId the actionId value to set.
      * @return the RecommendationActionInner object itself.
      */
     public RecommendationActionInner withActionId(Integer actionId) {
-        this.actionId = actionId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationActionProperties();
+        }
+        this.innerProperties().withActionId(actionId);
         return this;
     }
 
     /**
      * Get the createdTime property: Recommendation action creation time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
-        return this.createdTime;
+        return this.innerProperties() == null ? null : this.innerProperties().createdTime();
     }
 
     /**
      * Set the createdTime property: Recommendation action creation time.
-     *
+     * 
      * @param createdTime the createdTime value to set.
      * @return the RecommendationActionInner object itself.
      */
     public RecommendationActionInner withCreatedTime(OffsetDateTime createdTime) {
-        this.createdTime = createdTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationActionProperties();
+        }
+        this.innerProperties().withCreatedTime(createdTime);
         return this;
     }
 
     /**
      * Get the expirationTime property: Recommendation action expiration time.
-     *
+     * 
      * @return the expirationTime value.
      */
     public OffsetDateTime expirationTime() {
-        return this.expirationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().expirationTime();
     }
 
     /**
      * Set the expirationTime property: Recommendation action expiration time.
-     *
+     * 
      * @param expirationTime the expirationTime value to set.
      * @return the RecommendationActionInner object itself.
      */
     public RecommendationActionInner withExpirationTime(OffsetDateTime expirationTime) {
-        this.expirationTime = expirationTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationActionProperties();
+        }
+        this.innerProperties().withExpirationTime(expirationTime);
         return this;
     }
 
     /**
      * Get the reason property: Recommendation action reason.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
-        return this.reason;
+        return this.innerProperties() == null ? null : this.innerProperties().reason();
     }
 
     /**
      * Set the reason property: Recommendation action reason.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the RecommendationActionInner object itself.
      */
     public RecommendationActionInner withReason(String reason) {
-        this.reason = reason;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationActionProperties();
+        }
+        this.innerProperties().withReason(reason);
         return this;
     }
 
     /**
      * Get the recommendationType property: Recommendation action type.
-     *
+     * 
      * @return the recommendationType value.
      */
     public String recommendationType() {
-        return this.recommendationType;
+        return this.innerProperties() == null ? null : this.innerProperties().recommendationType();
     }
 
     /**
      * Set the recommendationType property: Recommendation action type.
-     *
+     * 
      * @param recommendationType the recommendationType value to set.
      * @return the RecommendationActionInner object itself.
      */
     public RecommendationActionInner withRecommendationType(String recommendationType) {
-        this.recommendationType = recommendationType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationActionProperties();
+        }
+        this.innerProperties().withRecommendationType(recommendationType);
         return this;
     }
 
     /**
      * Get the details property: Recommendation action details.
-     *
+     * 
      * @return the details value.
      */
     public Map<String, String> details() {
-        return this.details;
+        return this.innerProperties() == null ? null : this.innerProperties().details();
     }
 
     /**
      * Set the details property: Recommendation action details.
-     *
+     * 
      * @param details the details value to set.
      * @return the RecommendationActionInner object itself.
      */
     public RecommendationActionInner withDetails(Map<String, String> details) {
-        this.details = details;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationActionProperties();
+        }
+        this.innerProperties().withDetails(details);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecommendationActionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecommendationActionInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecommendationActionInner.
+     */
+    public static RecommendationActionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecommendationActionInner deserializedRecommendationActionInner = new RecommendationActionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRecommendationActionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRecommendationActionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRecommendationActionInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRecommendationActionInner.innerProperties
+                        = RecommendationActionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecommendationActionInner;
+        });
     }
 }

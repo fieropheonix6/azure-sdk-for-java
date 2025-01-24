@@ -5,40 +5,44 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Properties on upload watermark. Mostly timestamp for each upload data type. */
+/**
+ * Properties on upload watermark. Mostly timestamp for each upload data type.
+ */
 @Fluent
-public final class UploadWatermark {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UploadWatermark.class);
-
+public final class UploadWatermark implements JsonSerializable<UploadWatermark> {
     /*
-     * Last uploaded date for metrics from kubernetes cluster. Defaults to
-     * current date time
+     * Last uploaded date for metrics from kubernetes cluster. Defaults to current date time
      */
-    @JsonProperty(value = "metrics")
     private OffsetDateTime metrics;
 
     /*
-     * Last uploaded date for logs from kubernetes cluster. Defaults to current
-     * date time
+     * Last uploaded date for logs from kubernetes cluster. Defaults to current date time
      */
-    @JsonProperty(value = "logs")
     private OffsetDateTime logs;
 
     /*
-     * Last uploaded date for usages from kubernetes cluster. Defaults to
-     * current date time
+     * Last uploaded date for usages from kubernetes cluster. Defaults to current date time
      */
-    @JsonProperty(value = "usages")
     private OffsetDateTime usages;
 
     /**
+     * Creates an instance of UploadWatermark class.
+     */
+    public UploadWatermark() {
+    }
+
+    /**
      * Get the metrics property: Last uploaded date for metrics from kubernetes cluster. Defaults to current date time.
-     *
+     * 
      * @return the metrics value.
      */
     public OffsetDateTime metrics() {
@@ -47,7 +51,7 @@ public final class UploadWatermark {
 
     /**
      * Set the metrics property: Last uploaded date for metrics from kubernetes cluster. Defaults to current date time.
-     *
+     * 
      * @param metrics the metrics value to set.
      * @return the UploadWatermark object itself.
      */
@@ -58,7 +62,7 @@ public final class UploadWatermark {
 
     /**
      * Get the logs property: Last uploaded date for logs from kubernetes cluster. Defaults to current date time.
-     *
+     * 
      * @return the logs value.
      */
     public OffsetDateTime logs() {
@@ -67,7 +71,7 @@ public final class UploadWatermark {
 
     /**
      * Set the logs property: Last uploaded date for logs from kubernetes cluster. Defaults to current date time.
-     *
+     * 
      * @param logs the logs value to set.
      * @return the UploadWatermark object itself.
      */
@@ -78,7 +82,7 @@ public final class UploadWatermark {
 
     /**
      * Get the usages property: Last uploaded date for usages from kubernetes cluster. Defaults to current date time.
-     *
+     * 
      * @return the usages value.
      */
     public OffsetDateTime usages() {
@@ -87,7 +91,7 @@ public final class UploadWatermark {
 
     /**
      * Set the usages property: Last uploaded date for usages from kubernetes cluster. Defaults to current date time.
-     *
+     * 
      * @param usages the usages value to set.
      * @return the UploadWatermark object itself.
      */
@@ -98,9 +102,57 @@ public final class UploadWatermark {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("metrics",
+            this.metrics == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.metrics));
+        jsonWriter.writeStringField("logs",
+            this.logs == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.logs));
+        jsonWriter.writeStringField("usages",
+            this.usages == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.usages));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UploadWatermark from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UploadWatermark if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UploadWatermark.
+     */
+    public static UploadWatermark fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UploadWatermark deserializedUploadWatermark = new UploadWatermark();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metrics".equals(fieldName)) {
+                    deserializedUploadWatermark.metrics = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("logs".equals(fieldName)) {
+                    deserializedUploadWatermark.logs = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("usages".equals(fieldName)) {
+                    deserializedUploadWatermark.usages = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUploadWatermark;
+        });
     }
 }

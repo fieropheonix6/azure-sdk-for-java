@@ -5,35 +5,67 @@
 package com.azure.resourcemanager.dashboard.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The parameters for a PATCH request to a grafana resource. */
+/**
+ * The parameters for a PATCH request to a grafana resource.
+ */
 @Fluent
-public final class ManagedGrafanaUpdateParameters {
+public final class ManagedGrafanaUpdateParameters implements JsonSerializable<ManagedGrafanaUpdateParameters> {
+    /*
+     * The sku property.
+     */
+    private ResourceSku sku;
+
     /*
      * The managed identity of the grafana resource.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
      * The new tags of the grafana resource.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Properties specific to the managed grafana resource.
      */
-    @JsonProperty(value = "properties")
     private ManagedGrafanaPropertiesUpdateParameters properties;
 
     /**
+     * Creates an instance of ManagedGrafanaUpdateParameters class.
+     */
+    public ManagedGrafanaUpdateParameters() {
+    }
+
+    /**
+     * Get the sku property: The sku property.
+     * 
+     * @return the sku value.
+     */
+    public ResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The sku property.
+     * 
+     * @param sku the sku value to set.
+     * @return the ManagedGrafanaUpdateParameters object itself.
+     */
+    public ManagedGrafanaUpdateParameters withSku(ResourceSku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
      * Get the identity property: The managed identity of the grafana resource.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -42,7 +74,7 @@ public final class ManagedGrafanaUpdateParameters {
 
     /**
      * Set the identity property: The managed identity of the grafana resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ManagedGrafanaUpdateParameters object itself.
      */
@@ -53,7 +85,7 @@ public final class ManagedGrafanaUpdateParameters {
 
     /**
      * Get the tags property: The new tags of the grafana resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -62,7 +94,7 @@ public final class ManagedGrafanaUpdateParameters {
 
     /**
      * Set the tags property: The new tags of the grafana resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ManagedGrafanaUpdateParameters object itself.
      */
@@ -73,7 +105,7 @@ public final class ManagedGrafanaUpdateParameters {
 
     /**
      * Get the properties property: Properties specific to the managed grafana resource.
-     *
+     * 
      * @return the properties value.
      */
     public ManagedGrafanaPropertiesUpdateParameters properties() {
@@ -82,7 +114,7 @@ public final class ManagedGrafanaUpdateParameters {
 
     /**
      * Set the properties property: Properties specific to the managed grafana resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ManagedGrafanaUpdateParameters object itself.
      */
@@ -93,15 +125,66 @@ public final class ManagedGrafanaUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
         if (identity() != null) {
             identity().validate();
         }
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedGrafanaUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedGrafanaUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedGrafanaUpdateParameters.
+     */
+    public static ManagedGrafanaUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedGrafanaUpdateParameters deserializedManagedGrafanaUpdateParameters
+                = new ManagedGrafanaUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedManagedGrafanaUpdateParameters.sku = ResourceSku.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedManagedGrafanaUpdateParameters.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedManagedGrafanaUpdateParameters.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedManagedGrafanaUpdateParameters.properties
+                        = ManagedGrafanaPropertiesUpdateParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedGrafanaUpdateParameters;
+        });
     }
 }

@@ -4,21 +4,23 @@
 
 package com.azure.resourcemanager.synapse.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ResourceIdentityType. */
+/**
+ * The type of managed identity for the workspace.
+ */
 public enum ResourceIdentityType {
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None"),
 
-    /** Enum value SystemAssigned. */
-    SYSTEM_ASSIGNED("SystemAssigned"),
+    /**
+     * Enum value SystemAssigned.
+     */
+    SYSTEM_ASSIGNED("SystemAssigned");
 
-    /** Enum value SystemAssigned,UserAssigned. */
-    SYSTEM_ASSIGNED_USER_ASSIGNED("SystemAssigned,UserAssigned");
-
-    /** The actual serialized value for a ResourceIdentityType instance. */
+    /**
+     * The actual serialized value for a ResourceIdentityType instance.
+     */
     private final String value;
 
     ResourceIdentityType(String value) {
@@ -27,12 +29,14 @@ public enum ResourceIdentityType {
 
     /**
      * Parses a serialized value to a ResourceIdentityType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ResourceIdentityType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ResourceIdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ResourceIdentityType[] items = ResourceIdentityType.values();
         for (ResourceIdentityType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +46,9 @@ public enum ResourceIdentityType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

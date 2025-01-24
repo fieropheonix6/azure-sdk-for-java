@@ -6,20 +6,17 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.AmlComputeNodeInformation;
-import org.junit.jupiter.api.Test;
 
 public final class AmlComputeNodeInformationTests {
-    @Test
-    public void testDeserialize() {
-        AmlComputeNodeInformation model =
-            BinaryData
-                .fromString(
-                    "{\"nodeId\":\"hsmtxpsiebtfhvp\",\"privateIpAddress\":\"apskrdqm\",\"publicIpAddress\":\"jdhtldwkyzxu\",\"port\":379697539,\"nodeState\":\"unusable\",\"runId\":\"scwsv\"}")
-                .toObject(AmlComputeNodeInformation.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AmlComputeNodeInformation model = BinaryData.fromString(
+            "{\"nodeId\":\"nxipeil\",\"privateIpAddress\":\"zuaejxd\",\"publicIpAddress\":\"tskzbbtdzumveek\",\"port\":1792717087,\"nodeState\":\"preparing\",\"runId\":\"hkfpbs\"}")
+            .toObject(AmlComputeNodeInformation.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AmlComputeNodeInformation model = new AmlComputeNodeInformation();
         model = BinaryData.fromObject(model).toObject(AmlComputeNodeInformation.class);
     }

@@ -6,69 +6,75 @@ package com.azure.resourcemanager.webpubsub.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
 import com.azure.resourcemanager.webpubsub.models.Operation;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"name\":\"vv\",\"isDataAction\":false,\"display\":{\"provider\":\"hhqyi\",\"resource\":\"y\",\"operation\":\"uyav\",\"description\":\"wmn\"},\"origin\":\"ttijfybvpoekrs\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"uzqgnjdgkynsc\",\"displayName\":\"qhzvhxnkomt\",\"displayDescription\":\"bo\",\"unit\":\"pnvdxz\",\"aggregationType\":\"ihfrbbcevqa\",\"fillGapWithZero\":\"ltd\",\"category\":\"fkqojpy\",\"dimensions\":[{}]},{\"name\":\"rdcnifmzzsdy\",\"displayName\":\"rnysux\",\"displayDescription\":\"rafwgckhocxvdf\",\"unit\":\"wafqroud\",\"aggregationType\":\"pavehhr\",\"fillGapWithZero\":\"bunzozudh\",\"category\":\"gkmoyxcdyuibhmfd\",\"dimensions\":[{},{}]},{\"name\":\"dvfvfcjnaeoi\",\"displayName\":\"vhmgorffukis\",\"displayDescription\":\"w\",\"unit\":\"hwplefaxvx\",\"aggregationType\":\"cbtgnhnz\",\"fillGapWithZero\":\"qxtjjfzqlqhyca\",\"category\":\"dggxdbeesmi\",\"dimensions\":[{},{},{},{}]}],\"logSpecifications\":[{\"name\":\"riaa\",\"displayName\":\"uagydwqfbylyrf\"}]}}}]}";
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"pxodlqiyntorzih\",\"isDataAction\":false,\"display\":{\"provider\":\"swsrms\",\"resource\":\"zrpzb\",\"operation\":\"ckqqzqioxiysui\",\"description\":\"ynkedyatrwyhqmib\"},\"origin\":\"hwit\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[],\"logSpecifications\":[]}}}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        WebPubSubManager manager = WebPubSubManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        WebPubSubManager manager =
-            WebPubSubManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Operation> response = manager.operations().list(Context.NONE);
-
-        Assertions.assertEquals("pxodlqiyntorzih", response.iterator().next().name());
+        Assertions.assertEquals("vv", response.iterator().next().name());
         Assertions.assertEquals(false, response.iterator().next().isDataAction());
-        Assertions.assertEquals("swsrms", response.iterator().next().display().provider());
-        Assertions.assertEquals("zrpzb", response.iterator().next().display().resource());
-        Assertions.assertEquals("ckqqzqioxiysui", response.iterator().next().display().operation());
-        Assertions.assertEquals("ynkedyatrwyhqmib", response.iterator().next().display().description());
-        Assertions.assertEquals("hwit", response.iterator().next().origin());
+        Assertions.assertEquals("hhqyi", response.iterator().next().display().provider());
+        Assertions.assertEquals("y", response.iterator().next().display().resource());
+        Assertions.assertEquals("uyav", response.iterator().next().display().operation());
+        Assertions.assertEquals("wmn", response.iterator().next().display().description());
+        Assertions.assertEquals("ttijfybvpoekrs", response.iterator().next().origin());
+        Assertions.assertEquals("uzqgnjdgkynsc",
+            response.iterator().next().properties().serviceSpecification().metricSpecifications().get(0).name());
+        Assertions.assertEquals("qhzvhxnkomt",
+            response.iterator().next().properties().serviceSpecification().metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("bo",
+            response.iterator()
+                .next()
+                .properties()
+                .serviceSpecification()
+                .metricSpecifications()
+                .get(0)
+                .displayDescription());
+        Assertions.assertEquals("pnvdxz",
+            response.iterator().next().properties().serviceSpecification().metricSpecifications().get(0).unit());
+        Assertions.assertEquals("ihfrbbcevqa",
+            response.iterator()
+                .next()
+                .properties()
+                .serviceSpecification()
+                .metricSpecifications()
+                .get(0)
+                .aggregationType());
+        Assertions.assertEquals("ltd",
+            response.iterator()
+                .next()
+                .properties()
+                .serviceSpecification()
+                .metricSpecifications()
+                .get(0)
+                .fillGapWithZero());
+        Assertions.assertEquals("fkqojpy",
+            response.iterator().next().properties().serviceSpecification().metricSpecifications().get(0).category());
+        Assertions.assertEquals("riaa",
+            response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).name());
+        Assertions.assertEquals("uagydwqfbylyrf",
+            response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).displayName());
     }
 }

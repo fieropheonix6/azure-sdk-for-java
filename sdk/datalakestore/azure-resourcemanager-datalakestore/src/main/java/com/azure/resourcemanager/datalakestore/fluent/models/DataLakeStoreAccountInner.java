@@ -4,10 +4,11 @@
 
 package com.azure.resourcemanager.datalakestore.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakestore.models.DataLakeStoreAccountState;
 import com.azure.resourcemanager.datalakestore.models.DataLakeStoreAccountStatus;
 import com.azure.resourcemanager.datalakestore.models.EncryptionConfig;
@@ -18,144 +19,51 @@ import com.azure.resourcemanager.datalakestore.models.FirewallAllowAzureIpsState
 import com.azure.resourcemanager.datalakestore.models.FirewallState;
 import com.azure.resourcemanager.datalakestore.models.TierType;
 import com.azure.resourcemanager.datalakestore.models.TrustedIdProviderState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-/** Data Lake Store account information. */
-@JsonFlatten
-@Immutable
-public class DataLakeStoreAccountInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataLakeStoreAccountInner.class);
-
+/**
+ * Data Lake Store account information.
+ */
+@Fluent
+public final class DataLakeStoreAccountInner extends Resource {
     /*
      * The Key Vault encryption identity, if any.
      */
-    @JsonProperty(value = "identity", access = JsonProperty.Access.WRITE_ONLY)
     private EncryptionIdentity identity;
 
     /*
-     * The unique identifier associated with this Data Lake Store account.
+     * The Data Lake Store account properties.
      */
-    @JsonProperty(value = "properties.accountId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID accountId;
+    private DataLakeStoreAccountProperties innerProperties;
 
     /*
-     * The provisioning status of the Data Lake Store account.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private DataLakeStoreAccountStatus provisioningState;
+    private String type;
 
     /*
-     * The state of the Data Lake Store account.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private DataLakeStoreAccountState state;
+    private String name;
 
     /*
-     * The account creation time.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
+    private String id;
 
-    /*
-     * The account last modified time.
+    /**
+     * Creates an instance of DataLakeStoreAccountInner class.
      */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * The full CName endpoint for this account.
-     */
-    @JsonProperty(value = "properties.endpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String endpoint;
-
-    /*
-     * The default owner group for all new folders and files created in the
-     * Data Lake Store account.
-     */
-    @JsonProperty(value = "properties.defaultGroup", access = JsonProperty.Access.WRITE_ONLY)
-    private String defaultGroup;
-
-    /*
-     * The Key Vault encryption configuration.
-     */
-    @JsonProperty(value = "properties.encryptionConfig", access = JsonProperty.Access.WRITE_ONLY)
-    private EncryptionConfig encryptionConfig;
-
-    /*
-     * The current state of encryption for this Data Lake Store account.
-     */
-    @JsonProperty(value = "properties.encryptionState", access = JsonProperty.Access.WRITE_ONLY)
-    private EncryptionState encryptionState;
-
-    /*
-     * The current state of encryption provisioning for this Data Lake Store
-     * account.
-     */
-    @JsonProperty(value = "properties.encryptionProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private EncryptionProvisioningState encryptionProvisioningState;
-
-    /*
-     * The list of firewall rules associated with this Data Lake Store account.
-     */
-    @JsonProperty(value = "properties.firewallRules", access = JsonProperty.Access.WRITE_ONLY)
-    private List<FirewallRuleInner> firewallRules;
-
-    /*
-     * The list of virtual network rules associated with this Data Lake Store
-     * account.
-     */
-    @JsonProperty(value = "properties.virtualNetworkRules", access = JsonProperty.Access.WRITE_ONLY)
-    private List<VirtualNetworkRuleInner> virtualNetworkRules;
-
-    /*
-     * The current state of the IP address firewall for this Data Lake Store
-     * account.
-     */
-    @JsonProperty(value = "properties.firewallState", access = JsonProperty.Access.WRITE_ONLY)
-    private FirewallState firewallState;
-
-    /*
-     * The current state of allowing or disallowing IPs originating within
-     * Azure through the firewall. If the firewall is disabled, this is not
-     * enforced.
-     */
-    @JsonProperty(value = "properties.firewallAllowAzureIps", access = JsonProperty.Access.WRITE_ONLY)
-    private FirewallAllowAzureIpsState firewallAllowAzureIps;
-
-    /*
-     * The list of trusted identity providers associated with this Data Lake
-     * Store account.
-     */
-    @JsonProperty(value = "properties.trustedIdProviders", access = JsonProperty.Access.WRITE_ONLY)
-    private List<TrustedIdProviderInner> trustedIdProviders;
-
-    /*
-     * The current state of the trusted identity provider feature for this Data
-     * Lake Store account.
-     */
-    @JsonProperty(value = "properties.trustedIdProviderState", access = JsonProperty.Access.WRITE_ONLY)
-    private TrustedIdProviderState trustedIdProviderState;
-
-    /*
-     * The commitment tier to use for next month.
-     */
-    @JsonProperty(value = "properties.newTier", access = JsonProperty.Access.WRITE_ONLY)
-    private TierType newTier;
-
-    /*
-     * The commitment tier in use for the current month.
-     */
-    @JsonProperty(value = "properties.currentTier", access = JsonProperty.Access.WRITE_ONLY)
-    private TierType currentTier;
+    public DataLakeStoreAccountInner() {
+    }
 
     /**
      * Get the identity property: The Key Vault encryption identity, if any.
-     *
+     * 
      * @return the identity value.
      */
     public EncryptionIdentity identity() {
@@ -163,181 +71,56 @@ public class DataLakeStoreAccountInner extends Resource {
     }
 
     /**
-     * Get the accountId property: The unique identifier associated with this Data Lake Store account.
-     *
-     * @return the accountId value.
+     * Get the innerProperties property: The Data Lake Store account properties.
+     * 
+     * @return the innerProperties value.
      */
-    public UUID accountId() {
-        return this.accountId;
+    private DataLakeStoreAccountProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the provisioningState property: The provisioning status of the Data Lake Store account.
-     *
-     * @return the provisioningState value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public DataLakeStoreAccountStatus provisioningState() {
-        return this.provisioningState;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the state property: The state of the Data Lake Store account.
-     *
-     * @return the state value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public DataLakeStoreAccountState state() {
-        return this.state;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the creationTime property: The account creation time.
-     *
-     * @return the creationTime value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public OffsetDateTime creationTime() {
-        return this.creationTime;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the lastModifiedTime property: The account last modified time.
-     *
-     * @return the lastModifiedTime value.
+     * {@inheritDoc}
      */
-    public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
-    }
-
-    /**
-     * Get the endpoint property: The full CName endpoint for this account.
-     *
-     * @return the endpoint value.
-     */
-    public String endpoint() {
-        return this.endpoint;
-    }
-
-    /**
-     * Get the defaultGroup property: The default owner group for all new folders and files created in the Data Lake
-     * Store account.
-     *
-     * @return the defaultGroup value.
-     */
-    public String defaultGroup() {
-        return this.defaultGroup;
-    }
-
-    /**
-     * Get the encryptionConfig property: The Key Vault encryption configuration.
-     *
-     * @return the encryptionConfig value.
-     */
-    public EncryptionConfig encryptionConfig() {
-        return this.encryptionConfig;
-    }
-
-    /**
-     * Get the encryptionState property: The current state of encryption for this Data Lake Store account.
-     *
-     * @return the encryptionState value.
-     */
-    public EncryptionState encryptionState() {
-        return this.encryptionState;
-    }
-
-    /**
-     * Get the encryptionProvisioningState property: The current state of encryption provisioning for this Data Lake
-     * Store account.
-     *
-     * @return the encryptionProvisioningState value.
-     */
-    public EncryptionProvisioningState encryptionProvisioningState() {
-        return this.encryptionProvisioningState;
-    }
-
-    /**
-     * Get the firewallRules property: The list of firewall rules associated with this Data Lake Store account.
-     *
-     * @return the firewallRules value.
-     */
-    public List<FirewallRuleInner> firewallRules() {
-        return this.firewallRules;
-    }
-
-    /**
-     * Get the virtualNetworkRules property: The list of virtual network rules associated with this Data Lake Store
-     * account.
-     *
-     * @return the virtualNetworkRules value.
-     */
-    public List<VirtualNetworkRuleInner> virtualNetworkRules() {
-        return this.virtualNetworkRules;
-    }
-
-    /**
-     * Get the firewallState property: The current state of the IP address firewall for this Data Lake Store account.
-     *
-     * @return the firewallState value.
-     */
-    public FirewallState firewallState() {
-        return this.firewallState;
-    }
-
-    /**
-     * Get the firewallAllowAzureIps property: The current state of allowing or disallowing IPs originating within Azure
-     * through the firewall. If the firewall is disabled, this is not enforced.
-     *
-     * @return the firewallAllowAzureIps value.
-     */
-    public FirewallAllowAzureIpsState firewallAllowAzureIps() {
-        return this.firewallAllowAzureIps;
-    }
-
-    /**
-     * Get the trustedIdProviders property: The list of trusted identity providers associated with this Data Lake Store
-     * account.
-     *
-     * @return the trustedIdProviders value.
-     */
-    public List<TrustedIdProviderInner> trustedIdProviders() {
-        return this.trustedIdProviders;
-    }
-
-    /**
-     * Get the trustedIdProviderState property: The current state of the trusted identity provider feature for this Data
-     * Lake Store account.
-     *
-     * @return the trustedIdProviderState value.
-     */
-    public TrustedIdProviderState trustedIdProviderState() {
-        return this.trustedIdProviderState;
-    }
-
-    /**
-     * Get the newTier property: The commitment tier to use for next month.
-     *
-     * @return the newTier value.
-     */
-    public TierType newTier() {
-        return this.newTier;
-    }
-
-    /**
-     * Get the currentTier property: The commitment tier in use for the current month.
-     *
-     * @return the currentTier value.
-     */
-    public TierType currentTier() {
-        return this.currentTier;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public DataLakeStoreAccountInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataLakeStoreAccountInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -345,25 +128,236 @@ public class DataLakeStoreAccountInner extends Resource {
     }
 
     /**
+     * Get the defaultGroup property: The default owner group for all new folders and files created in the Data Lake
+     * Store account.
+     * 
+     * @return the defaultGroup value.
+     */
+    public String defaultGroup() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultGroup();
+    }
+
+    /**
+     * Get the encryptionConfig property: The Key Vault encryption configuration.
+     * 
+     * @return the encryptionConfig value.
+     */
+    public EncryptionConfig encryptionConfig() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionConfig();
+    }
+
+    /**
+     * Get the encryptionState property: The current state of encryption for this Data Lake Store account.
+     * 
+     * @return the encryptionState value.
+     */
+    public EncryptionState encryptionState() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionState();
+    }
+
+    /**
+     * Get the encryptionProvisioningState property: The current state of encryption provisioning for this Data Lake
+     * Store account.
+     * 
+     * @return the encryptionProvisioningState value.
+     */
+    public EncryptionProvisioningState encryptionProvisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionProvisioningState();
+    }
+
+    /**
+     * Get the firewallRules property: The list of firewall rules associated with this Data Lake Store account.
+     * 
+     * @return the firewallRules value.
+     */
+    public List<FirewallRuleInner> firewallRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().firewallRules();
+    }
+
+    /**
+     * Get the virtualNetworkRules property: The list of virtual network rules associated with this Data Lake Store
+     * account.
+     * 
+     * @return the virtualNetworkRules value.
+     */
+    public List<VirtualNetworkRuleInner> virtualNetworkRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkRules();
+    }
+
+    /**
+     * Get the firewallState property: The current state of the IP address firewall for this Data Lake Store account.
+     * 
+     * @return the firewallState value.
+     */
+    public FirewallState firewallState() {
+        return this.innerProperties() == null ? null : this.innerProperties().firewallState();
+    }
+
+    /**
+     * Get the firewallAllowAzureIps property: The current state of allowing or disallowing IPs originating within Azure
+     * through the firewall. If the firewall is disabled, this is not enforced.
+     * 
+     * @return the firewallAllowAzureIps value.
+     */
+    public FirewallAllowAzureIpsState firewallAllowAzureIps() {
+        return this.innerProperties() == null ? null : this.innerProperties().firewallAllowAzureIps();
+    }
+
+    /**
+     * Get the trustedIdProviders property: The list of trusted identity providers associated with this Data Lake Store
+     * account.
+     * 
+     * @return the trustedIdProviders value.
+     */
+    public List<TrustedIdProviderInner> trustedIdProviders() {
+        return this.innerProperties() == null ? null : this.innerProperties().trustedIdProviders();
+    }
+
+    /**
+     * Get the trustedIdProviderState property: The current state of the trusted identity provider feature for this Data
+     * Lake Store account.
+     * 
+     * @return the trustedIdProviderState value.
+     */
+    public TrustedIdProviderState trustedIdProviderState() {
+        return this.innerProperties() == null ? null : this.innerProperties().trustedIdProviderState();
+    }
+
+    /**
+     * Get the newTier property: The commitment tier to use for next month.
+     * 
+     * @return the newTier value.
+     */
+    public TierType newTier() {
+        return this.innerProperties() == null ? null : this.innerProperties().newTier();
+    }
+
+    /**
+     * Get the currentTier property: The commitment tier in use for the current month.
+     * 
+     * @return the currentTier value.
+     */
+    public TierType currentTier() {
+        return this.innerProperties() == null ? null : this.innerProperties().currentTier();
+    }
+
+    /**
+     * Get the accountId property: The unique identifier associated with this Data Lake Store account.
+     * 
+     * @return the accountId value.
+     */
+    public UUID accountId() {
+        return this.innerProperties() == null ? null : this.innerProperties().accountId();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning status of the Data Lake Store account.
+     * 
+     * @return the provisioningState value.
+     */
+    public DataLakeStoreAccountStatus provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the state property: The state of the Data Lake Store account.
+     * 
+     * @return the state value.
+     */
+    public DataLakeStoreAccountState state() {
+        return this.innerProperties() == null ? null : this.innerProperties().state();
+    }
+
+    /**
+     * Get the creationTime property: The account creation time.
+     * 
+     * @return the creationTime value.
+     */
+    public OffsetDateTime creationTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
+    }
+
+    /**
+     * Get the lastModifiedTime property: The account last modified time.
+     * 
+     * @return the lastModifiedTime value.
+     */
+    public OffsetDateTime lastModifiedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
+    }
+
+    /**
+     * Get the endpoint property: The full CName endpoint for this account.
+     * 
+     * @return the endpoint value.
+     */
+    public String endpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpoint();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (identity() != null) {
             identity().validate();
         }
-        if (encryptionConfig() != null) {
-            encryptionConfig().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
-        if (firewallRules() != null) {
-            firewallRules().forEach(e -> e.validate());
-        }
-        if (virtualNetworkRules() != null) {
-            virtualNetworkRules().forEach(e -> e.validate());
-        }
-        if (trustedIdProviders() != null) {
-            trustedIdProviders().forEach(e -> e.validate());
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataLakeStoreAccountInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataLakeStoreAccountInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataLakeStoreAccountInner.
+     */
+    public static DataLakeStoreAccountInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataLakeStoreAccountInner deserializedDataLakeStoreAccountInner = new DataLakeStoreAccountInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDataLakeStoreAccountInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDataLakeStoreAccountInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDataLakeStoreAccountInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDataLakeStoreAccountInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDataLakeStoreAccountInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedDataLakeStoreAccountInner.identity = EncryptionIdentity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDataLakeStoreAccountInner.innerProperties
+                        = DataLakeStoreAccountProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataLakeStoreAccountInner;
+        });
     }
 }

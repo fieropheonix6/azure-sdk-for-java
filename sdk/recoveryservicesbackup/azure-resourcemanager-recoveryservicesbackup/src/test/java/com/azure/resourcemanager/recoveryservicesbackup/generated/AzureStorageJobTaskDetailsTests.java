@@ -7,24 +7,21 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureStorageJobTaskDetails;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureStorageJobTaskDetailsTests {
-    @Test
-    public void testDeserialize() {
-        AzureStorageJobTaskDetails model =
-            BinaryData
-                .fromString("{\"taskId\":\"yfm\",\"status\":\"uxrkjp\"}")
-                .toObject(AzureStorageJobTaskDetails.class);
-        Assertions.assertEquals("yfm", model.taskId());
-        Assertions.assertEquals("uxrkjp", model.status());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureStorageJobTaskDetails model = BinaryData.fromString("{\"taskId\":\"lds\",\"status\":\"stjbkkdmfl\"}")
+            .toObject(AzureStorageJobTaskDetails.class);
+        Assertions.assertEquals("lds", model.taskId());
+        Assertions.assertEquals("stjbkkdmfl", model.status());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureStorageJobTaskDetails model = new AzureStorageJobTaskDetails().withTaskId("yfm").withStatus("uxrkjp");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureStorageJobTaskDetails model = new AzureStorageJobTaskDetails().withTaskId("lds").withStatus("stjbkkdmfl");
         model = BinaryData.fromObject(model).toObject(AzureStorageJobTaskDetails.class);
-        Assertions.assertEquals("yfm", model.taskId());
-        Assertions.assertEquals("uxrkjp", model.status());
+        Assertions.assertEquals("lds", model.taskId());
+        Assertions.assertEquals("stjbkkdmfl", model.status());
     }
 }

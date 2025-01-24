@@ -6,40 +6,46 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Databricks SparkPython activity properties. */
+/**
+ * Databricks SparkPython activity properties.
+ */
 @Fluent
-public final class DatabricksSparkPythonActivityTypeProperties {
+public final class DatabricksSparkPythonActivityTypeProperties
+    implements JsonSerializable<DatabricksSparkPythonActivityTypeProperties> {
     /*
      * The URI of the Python file to be executed. DBFS paths are supported. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "pythonFile", required = true)
     private Object pythonFile;
 
     /*
      * Command line parameters that will be passed to the Python file.
      */
-    @JsonProperty(value = "parameters")
     private List<Object> parameters;
 
     /*
      * A list of libraries to be installed on the cluster that will execute the job.
      */
-    @JsonProperty(value = "libraries")
     private List<Map<String, Object>> libraries;
 
-    /** Creates an instance of DatabricksSparkPythonActivityTypeProperties class. */
+    /**
+     * Creates an instance of DatabricksSparkPythonActivityTypeProperties class.
+     */
     public DatabricksSparkPythonActivityTypeProperties() {
     }
 
     /**
      * Get the pythonFile property: The URI of the Python file to be executed. DBFS paths are supported. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the pythonFile value.
      */
     public Object pythonFile() {
@@ -49,7 +55,7 @@ public final class DatabricksSparkPythonActivityTypeProperties {
     /**
      * Set the pythonFile property: The URI of the Python file to be executed. DBFS paths are supported. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param pythonFile the pythonFile value to set.
      * @return the DatabricksSparkPythonActivityTypeProperties object itself.
      */
@@ -60,7 +66,7 @@ public final class DatabricksSparkPythonActivityTypeProperties {
 
     /**
      * Get the parameters property: Command line parameters that will be passed to the Python file.
-     *
+     * 
      * @return the parameters value.
      */
     public List<Object> parameters() {
@@ -69,7 +75,7 @@ public final class DatabricksSparkPythonActivityTypeProperties {
 
     /**
      * Set the parameters property: Command line parameters that will be passed to the Python file.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DatabricksSparkPythonActivityTypeProperties object itself.
      */
@@ -80,7 +86,7 @@ public final class DatabricksSparkPythonActivityTypeProperties {
 
     /**
      * Get the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
+     * 
      * @return the libraries value.
      */
     public List<Map<String, Object>> libraries() {
@@ -89,7 +95,7 @@ public final class DatabricksSparkPythonActivityTypeProperties {
 
     /**
      * Set the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
+     * 
      * @param libraries the libraries value to set.
      * @return the DatabricksSparkPythonActivityTypeProperties object itself.
      */
@@ -100,17 +106,64 @@ public final class DatabricksSparkPythonActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (pythonFile() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property pythonFile in model DatabricksSparkPythonActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property pythonFile in model DatabricksSparkPythonActivityTypeProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DatabricksSparkPythonActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("pythonFile", this.pythonFile);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeArrayField("libraries", this.libraries,
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeUntyped(element1)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabricksSparkPythonActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabricksSparkPythonActivityTypeProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatabricksSparkPythonActivityTypeProperties.
+     */
+    public static DatabricksSparkPythonActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabricksSparkPythonActivityTypeProperties deserializedDatabricksSparkPythonActivityTypeProperties
+                = new DatabricksSparkPythonActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pythonFile".equals(fieldName)) {
+                    deserializedDatabricksSparkPythonActivityTypeProperties.pythonFile = reader.readUntyped();
+                } else if ("parameters".equals(fieldName)) {
+                    List<Object> parameters = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedDatabricksSparkPythonActivityTypeProperties.parameters = parameters;
+                } else if ("libraries".equals(fieldName)) {
+                    List<Map<String, Object>> libraries
+                        = reader.readArray(reader1 -> reader1.readMap(reader2 -> reader2.readUntyped()));
+                    deserializedDatabricksSparkPythonActivityTypeProperties.libraries = libraries;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabricksSparkPythonActivityTypeProperties;
+        });
+    }
 }

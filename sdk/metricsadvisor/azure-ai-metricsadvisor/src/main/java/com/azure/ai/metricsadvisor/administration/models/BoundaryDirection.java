@@ -11,18 +11,27 @@ import java.util.Collection;
  * Describes the direction of boundary used in anomaly boundary conditions.
  */
 public final class BoundaryDirection extends ExpandableStringEnum<BoundaryDirection> {
+
+    /**
+     * Constructs a BoundaryDirection object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BoundaryDirection() {
+    }
+
     /**
      * Defines the lower boundary in a boundary condition.
      */
-    public static final  BoundaryDirection LOWER = fromString("LOWER");
+    public static final BoundaryDirection LOWER = fromString("LOWER");
     /**
      * Defines the upper boundary in a boundary condition.
      */
-    public static final  BoundaryDirection UPPER = fromString("UPPER");
+    public static final BoundaryDirection UPPER = fromString("UPPER");
     /**
      * Defines both lower and upper boundary in a boundary condition.
      */
-    public static final  BoundaryDirection BOTH = fromString("BOTH");
+    public static final BoundaryDirection BOTH = fromString("BOTH");
 
     /**
      * Creates or finds a BoundaryDirection from its string representation.
@@ -36,6 +45,7 @@ public final class BoundaryDirection extends ExpandableStringEnum<BoundaryDirect
     }
 
     /**
+     * Returns the known BoundaryDirection values.
      * @return known BoundaryDirection values.
      */
     public static Collection<BoundaryDirection> values() {

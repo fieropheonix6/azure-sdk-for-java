@@ -15,8 +15,8 @@ public final class ApplyUpdateImpl implements ApplyUpdate {
 
     private final com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager;
 
-    ApplyUpdateImpl(
-        ApplyUpdateInner innerObject, com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
+    ApplyUpdateImpl(ApplyUpdateInner innerObject,
+        com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -33,6 +33,10 @@ public final class ApplyUpdateImpl implements ApplyUpdate {
         return this.innerModel().type();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public UpdateStatus status() {
         return this.innerModel().status();
     }
@@ -43,10 +47,6 @@ public final class ApplyUpdateImpl implements ApplyUpdate {
 
     public OffsetDateTime lastUpdateTime() {
         return this.innerModel().lastUpdateTime();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public ApplyUpdateInner innerModel() {

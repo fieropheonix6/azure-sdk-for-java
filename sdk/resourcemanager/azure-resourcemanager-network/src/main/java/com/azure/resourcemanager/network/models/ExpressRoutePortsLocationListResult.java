@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.ExpressRoutePortsLocationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * ExpressRoutePorts Location List Result
- *
- * <p>Response for ListExpressRoutePortsLocations API service call.
+ * 
+ * Response for ListExpressRoutePortsLocations API service call.
  */
 @Fluent
-public final class ExpressRoutePortsLocationListResult {
+public final class ExpressRoutePortsLocationListResult
+    implements JsonSerializable<ExpressRoutePortsLocationListResult> {
     /*
      * The list of all ExpressRoutePort peering locations.
      */
-    @JsonProperty(value = "value")
     private List<ExpressRoutePortsLocationInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ExpressRoutePortsLocationListResult class. */
+    /**
+     * Creates an instance of ExpressRoutePortsLocationListResult class.
+     */
     public ExpressRoutePortsLocationListResult() {
     }
 
     /**
      * Get the value property: The list of all ExpressRoutePort peering locations.
-     *
+     * 
      * @return the value value.
      */
     public List<ExpressRoutePortsLocationInner> value() {
@@ -43,7 +48,7 @@ public final class ExpressRoutePortsLocationListResult {
 
     /**
      * Set the value property: The list of all ExpressRoutePort peering locations.
-     *
+     * 
      * @param value the value value to set.
      * @return the ExpressRoutePortsLocationListResult object itself.
      */
@@ -54,7 +59,7 @@ public final class ExpressRoutePortsLocationListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +68,7 @@ public final class ExpressRoutePortsLocationListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ExpressRoutePortsLocationListResult object itself.
      */
@@ -74,12 +79,54 @@ public final class ExpressRoutePortsLocationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRoutePortsLocationListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRoutePortsLocationListResult if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRoutePortsLocationListResult.
+     */
+    public static ExpressRoutePortsLocationListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRoutePortsLocationListResult deserializedExpressRoutePortsLocationListResult
+                = new ExpressRoutePortsLocationListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ExpressRoutePortsLocationInner> value
+                        = reader.readArray(reader1 -> ExpressRoutePortsLocationInner.fromJson(reader1));
+                    deserializedExpressRoutePortsLocationListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedExpressRoutePortsLocationListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRoutePortsLocationListResult;
+        });
     }
 }

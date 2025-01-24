@@ -6,48 +6,61 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.PrivateLinkServicePropertiesAutoApproval;
 import com.azure.resourcemanager.network.models.PrivateLinkServicePropertiesVisibility;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Private link service resource. */
+/**
+ * Private link service resource.
+ */
 @Fluent
 public final class PrivateLinkServiceInner extends Resource {
     /*
      * The extended location of the load balancer.
      */
-    @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
     /*
      * Properties of the private link service.
      */
-    @JsonProperty(value = "properties")
     private PrivateLinkServiceProperties innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of PrivateLinkServiceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /**
+     * Creates an instance of PrivateLinkServiceInner class.
+     */
     public PrivateLinkServiceInner() {
     }
 
     /**
      * Get the extendedLocation property: The extended location of the load balancer.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -56,7 +69,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Set the extendedLocation property: The extended location of the load balancer.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the PrivateLinkServiceInner object itself.
      */
@@ -67,7 +80,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the private link service.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateLinkServiceProperties innerProperties() {
@@ -76,7 +89,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -85,7 +98,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -94,7 +107,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the PrivateLinkServiceInner object itself.
      */
@@ -103,14 +116,38 @@ public final class PrivateLinkServiceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PrivateLinkServiceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PrivateLinkServiceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -120,7 +157,7 @@ public final class PrivateLinkServiceInner extends Resource {
     /**
      * Get the loadBalancerFrontendIpConfigurations property: An array of references to the load balancer IP
      * configurations.
-     *
+     * 
      * @return the loadBalancerFrontendIpConfigurations value.
      */
     public List<FrontendIpConfigurationInner> loadBalancerFrontendIpConfigurations() {
@@ -130,7 +167,7 @@ public final class PrivateLinkServiceInner extends Resource {
     /**
      * Set the loadBalancerFrontendIpConfigurations property: An array of references to the load balancer IP
      * configurations.
-     *
+     * 
      * @param loadBalancerFrontendIpConfigurations the loadBalancerFrontendIpConfigurations value to set.
      * @return the PrivateLinkServiceInner object itself.
      */
@@ -145,7 +182,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Get the ipConfigurations property: An array of private link service IP configurations.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<PrivateLinkServiceIpConfigurationInner> ipConfigurations() {
@@ -154,7 +191,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Set the ipConfigurations property: An array of private link service IP configurations.
-     *
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the PrivateLinkServiceInner object itself.
      */
@@ -167,9 +204,32 @@ public final class PrivateLinkServiceInner extends Resource {
     }
 
     /**
+     * Get the destinationIpAddress property: The destination IP address of the private link service.
+     * 
+     * @return the destinationIpAddress value.
+     */
+    public String destinationIpAddress() {
+        return this.innerProperties() == null ? null : this.innerProperties().destinationIpAddress();
+    }
+
+    /**
+     * Set the destinationIpAddress property: The destination IP address of the private link service.
+     * 
+     * @param destinationIpAddress the destinationIpAddress value to set.
+     * @return the PrivateLinkServiceInner object itself.
+     */
+    public PrivateLinkServiceInner withDestinationIpAddress(String destinationIpAddress) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkServiceProperties();
+        }
+        this.innerProperties().withDestinationIpAddress(destinationIpAddress);
+        return this;
+    }
+
+    /**
      * Get the networkInterfaces property: An array of references to the network interfaces created for this private
      * link service.
-     *
+     * 
      * @return the networkInterfaces value.
      */
     public List<NetworkInterfaceInner> networkInterfaces() {
@@ -178,7 +238,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the private link service resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -187,7 +247,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Get the privateEndpointConnections property: An array of list about connections to the private endpoint.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -196,7 +256,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Get the visibility property: The visibility list of the private link service.
-     *
+     * 
      * @return the visibility value.
      */
     public PrivateLinkServicePropertiesVisibility visibility() {
@@ -205,7 +265,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Set the visibility property: The visibility list of the private link service.
-     *
+     * 
      * @param visibility the visibility value to set.
      * @return the PrivateLinkServiceInner object itself.
      */
@@ -219,7 +279,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Get the autoApproval property: The auto-approval list of the private link service.
-     *
+     * 
      * @return the autoApproval value.
      */
     public PrivateLinkServicePropertiesAutoApproval autoApproval() {
@@ -228,7 +288,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Set the autoApproval property: The auto-approval list of the private link service.
-     *
+     * 
      * @param autoApproval the autoApproval value to set.
      * @return the PrivateLinkServiceInner object itself.
      */
@@ -242,7 +302,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Get the fqdns property: The list of Fqdn.
-     *
+     * 
      * @return the fqdns value.
      */
     public List<String> fqdns() {
@@ -251,7 +311,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Set the fqdns property: The list of Fqdn.
-     *
+     * 
      * @param fqdns the fqdns value to set.
      * @return the PrivateLinkServiceInner object itself.
      */
@@ -265,7 +325,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Get the alias property: The alias of the private link service.
-     *
+     * 
      * @return the alias value.
      */
     public String alias() {
@@ -274,7 +334,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Get the enableProxyProtocol property: Whether the private link service is enabled for proxy protocol or not.
-     *
+     * 
      * @return the enableProxyProtocol value.
      */
     public Boolean enableProxyProtocol() {
@@ -283,7 +343,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Set the enableProxyProtocol property: Whether the private link service is enabled for proxy protocol or not.
-     *
+     * 
      * @param enableProxyProtocol the enableProxyProtocol value to set.
      * @return the PrivateLinkServiceInner object itself.
      */
@@ -297,7 +357,7 @@ public final class PrivateLinkServiceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -307,5 +367,61 @@ public final class PrivateLinkServiceInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkServiceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkServiceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrivateLinkServiceInner.
+     */
+    public static PrivateLinkServiceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkServiceInner deserializedPrivateLinkServiceInner = new PrivateLinkServiceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPrivateLinkServiceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrivateLinkServiceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedPrivateLinkServiceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPrivateLinkServiceInner.withTags(tags);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedPrivateLinkServiceInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPrivateLinkServiceInner.innerProperties = PrivateLinkServiceProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedPrivateLinkServiceInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedPrivateLinkServiceInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkServiceInner;
+        });
     }
 }

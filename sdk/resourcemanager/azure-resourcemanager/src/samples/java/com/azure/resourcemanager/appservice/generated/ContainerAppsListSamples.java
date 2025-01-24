@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ContainerApps List. */
+/**
+ * Samples for ContainerApps List.
+ */
 public final class ContainerAppsListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListContainerAppsBySubscription.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/ListContainerAppsBySubscription.json
      */
     /**
      * Sample code: List Container Apps by resource group.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listContainerAppsByResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getContainerApps().list(Context.NONE);
+        azure.webApps().manager().serviceClient().getContainerApps().list(com.azure.core.util.Context.NONE);
     }
 }

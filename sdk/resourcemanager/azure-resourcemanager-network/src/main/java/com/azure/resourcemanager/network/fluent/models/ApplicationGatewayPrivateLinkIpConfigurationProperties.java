@@ -6,50 +6,54 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of an application gateway private link IP configuration. */
+/**
+ * Properties of an application gateway private link IP configuration.
+ */
 @Fluent
-public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
+public final class ApplicationGatewayPrivateLinkIpConfigurationProperties
+    implements JsonSerializable<ApplicationGatewayPrivateLinkIpConfigurationProperties> {
     /*
      * The private IP address of the IP configuration.
      */
-    @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
 
     /*
      * The private IP address allocation method.
      */
-    @JsonProperty(value = "privateIPAllocationMethod")
     private IpAllocationMethod privateIpAllocationMethod;
 
     /*
      * Reference to the subnet resource.
      */
-    @JsonProperty(value = "subnet")
     private SubResource subnet;
 
     /*
      * Whether the ip configuration is primary or not.
      */
-    @JsonProperty(value = "primary")
     private Boolean primary;
 
     /*
      * The provisioning state of the application gateway private link IP configuration.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ApplicationGatewayPrivateLinkIpConfigurationProperties class. */
+    /**
+     * Creates an instance of ApplicationGatewayPrivateLinkIpConfigurationProperties class.
+     */
     public ApplicationGatewayPrivateLinkIpConfigurationProperties() {
     }
 
     /**
      * Get the privateIpAddress property: The private IP address of the IP configuration.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -58,7 +62,7 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
 
     /**
      * Set the privateIpAddress property: The private IP address of the IP configuration.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the ApplicationGatewayPrivateLinkIpConfigurationProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
 
     /**
      * Get the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
@@ -78,19 +82,19 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
 
     /**
      * Set the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the ApplicationGatewayPrivateLinkIpConfigurationProperties object itself.
      */
-    public ApplicationGatewayPrivateLinkIpConfigurationProperties withPrivateIpAllocationMethod(
-        IpAllocationMethod privateIpAllocationMethod) {
+    public ApplicationGatewayPrivateLinkIpConfigurationProperties
+        withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
     }
 
     /**
      * Get the subnet property: Reference to the subnet resource.
-     *
+     * 
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -99,7 +103,7 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
 
     /**
      * Set the subnet property: Reference to the subnet resource.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the ApplicationGatewayPrivateLinkIpConfigurationProperties object itself.
      */
@@ -110,7 +114,7 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
 
     /**
      * Get the primary property: Whether the ip configuration is primary or not.
-     *
+     * 
      * @return the primary value.
      */
     public Boolean primary() {
@@ -119,7 +123,7 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
 
     /**
      * Set the primary property: Whether the ip configuration is primary or not.
-     *
+     * 
      * @param primary the primary value to set.
      * @return the ApplicationGatewayPrivateLinkIpConfigurationProperties object itself.
      */
@@ -131,7 +135,7 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
     /**
      * Get the provisioningState property: The provisioning state of the application gateway private link IP
      * configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -140,9 +144,64 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("privateIPAddress", this.privateIpAddress);
+        jsonWriter.writeStringField("privateIPAllocationMethod",
+            this.privateIpAllocationMethod == null ? null : this.privateIpAllocationMethod.toString());
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeBooleanField("primary", this.primary);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayPrivateLinkIpConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayPrivateLinkIpConfigurationProperties if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayPrivateLinkIpConfigurationProperties.
+     */
+    public static ApplicationGatewayPrivateLinkIpConfigurationProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayPrivateLinkIpConfigurationProperties deserializedApplicationGatewayPrivateLinkIpConfigurationProperties
+                = new ApplicationGatewayPrivateLinkIpConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateIPAddress".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateLinkIpConfigurationProperties.privateIpAddress
+                        = reader.getString();
+                } else if ("privateIPAllocationMethod".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateLinkIpConfigurationProperties.privateIpAllocationMethod
+                        = IpAllocationMethod.fromString(reader.getString());
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateLinkIpConfigurationProperties.subnet
+                        = SubResource.fromJson(reader);
+                } else if ("primary".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateLinkIpConfigurationProperties.primary
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateLinkIpConfigurationProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayPrivateLinkIpConfigurationProperties;
+        });
     }
 }

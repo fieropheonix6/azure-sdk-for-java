@@ -6,40 +6,43 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** The compression method used on a dataset. */
+/**
+ * The compression method used on a dataset.
+ */
 @Fluent
-public final class DatasetCompression {
+public final class DatasetCompression implements JsonSerializable<DatasetCompression> {
     /*
      * Type of dataset compression. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "type", required = true)
     private Object type;
 
     /*
      * The dataset compression level. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "level")
     private Object level;
 
     /*
      * The compression method used on a dataset.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of DatasetCompression class. */
+    /**
+     * Creates an instance of DatasetCompression class.
+     */
     public DatasetCompression() {
     }
 
     /**
      * Get the type property: Type of dataset compression. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the type value.
      */
     public Object type() {
@@ -48,7 +51,7 @@ public final class DatasetCompression {
 
     /**
      * Set the type property: Type of dataset compression. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param type the type value to set.
      * @return the DatasetCompression object itself.
      */
@@ -59,7 +62,7 @@ public final class DatasetCompression {
 
     /**
      * Get the level property: The dataset compression level. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the level value.
      */
     public Object level() {
@@ -68,7 +71,7 @@ public final class DatasetCompression {
 
     /**
      * Set the level property: The dataset compression level. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param level the level value to set.
      * @return the DatasetCompression object itself.
      */
@@ -79,17 +82,16 @@ public final class DatasetCompression {
 
     /**
      * Get the additionalProperties property: The compression method used on a dataset.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: The compression method used on a dataset.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the DatasetCompression object itself.
      */
@@ -98,26 +100,68 @@ public final class DatasetCompression {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model DatasetCompression"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model DatasetCompression"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DatasetCompression.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("type", this.type);
+        jsonWriter.writeUntypedField("level", this.level);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatasetCompression from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatasetCompression if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatasetCompression.
+     */
+    public static DatasetCompression fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatasetCompression deserializedDatasetCompression = new DatasetCompression();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedDatasetCompression.type = reader.readUntyped();
+                } else if ("level".equals(fieldName)) {
+                    deserializedDatasetCompression.level = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDatasetCompression.additionalProperties = additionalProperties;
+
+            return deserializedDatasetCompression;
+        });
+    }
 }

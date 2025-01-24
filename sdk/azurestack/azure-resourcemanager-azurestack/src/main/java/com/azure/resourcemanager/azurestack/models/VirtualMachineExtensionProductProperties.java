@@ -5,63 +5,63 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.azurestack.fluent.models.Uri;
+import java.io.IOException;
 
-/** Product information. */
-@JsonFlatten
+/**
+ * Product information.
+ */
 @Immutable
-public class VirtualMachineExtensionProductProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineExtensionProductProperties.class);
-
+public class VirtualMachineExtensionProductProperties
+    implements JsonSerializable<VirtualMachineExtensionProductProperties> {
     /*
      * Specifies kind of compute role included in the package.
      */
-    @JsonProperty(value = "computeRole", access = JsonProperty.Access.WRITE_ONLY)
     private ComputeRole computeRole;
 
     /*
      * Specifies if product is a Virtual Machine Extension.
      */
-    @JsonProperty(value = "isSystemExtension", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isSystemExtension;
+
+    /*
+     * Specifies a download location where content can be downloaded from.
+     */
+    private Uri innerSourceBlob;
 
     /*
      * Indicates if specified product supports multiple extensions.
      */
-    @JsonProperty(value = "supportMultipleExtensions", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean supportMultipleExtensions;
 
     /*
      * Specifies product version.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * Specifies operating system used by the product.
      */
-    @JsonProperty(value = "vmOsType", access = JsonProperty.Access.WRITE_ONLY)
     private OperatingSystem vmOsType;
 
     /*
-     * Indicates if virtual machine Scale Set is enabled in the specified
-     * product.
+     * Indicates if virtual machine Scale Set is enabled in the specified product.
      */
-    @JsonProperty(value = "vmScaleSetEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean vmScaleSetEnabled;
 
-    /*
-     * The URI.
+    /**
+     * Creates an instance of VirtualMachineExtensionProductProperties class.
      */
-    @JsonProperty(value = "sourceBlob.uri", access = JsonProperty.Access.WRITE_ONLY)
-    private String uri;
+    public VirtualMachineExtensionProductProperties() {
+    }
 
     /**
      * Get the computeRole property: Specifies kind of compute role included in the package.
-     *
+     * 
      * @return the computeRole value.
      */
     public ComputeRole computeRole() {
@@ -69,8 +69,19 @@ public class VirtualMachineExtensionProductProperties {
     }
 
     /**
+     * Set the computeRole property: Specifies kind of compute role included in the package.
+     * 
+     * @param computeRole the computeRole value to set.
+     * @return the VirtualMachineExtensionProductProperties object itself.
+     */
+    VirtualMachineExtensionProductProperties withComputeRole(ComputeRole computeRole) {
+        this.computeRole = computeRole;
+        return this;
+    }
+
+    /**
      * Get the isSystemExtension property: Specifies if product is a Virtual Machine Extension.
-     *
+     * 
      * @return the isSystemExtension value.
      */
     public Boolean isSystemExtension() {
@@ -78,8 +89,39 @@ public class VirtualMachineExtensionProductProperties {
     }
 
     /**
+     * Set the isSystemExtension property: Specifies if product is a Virtual Machine Extension.
+     * 
+     * @param isSystemExtension the isSystemExtension value to set.
+     * @return the VirtualMachineExtensionProductProperties object itself.
+     */
+    VirtualMachineExtensionProductProperties withIsSystemExtension(Boolean isSystemExtension) {
+        this.isSystemExtension = isSystemExtension;
+        return this;
+    }
+
+    /**
+     * Get the innerSourceBlob property: Specifies a download location where content can be downloaded from.
+     * 
+     * @return the innerSourceBlob value.
+     */
+    private Uri innerSourceBlob() {
+        return this.innerSourceBlob;
+    }
+
+    /**
+     * Set the innerSourceBlob property: Specifies a download location where content can be downloaded from.
+     * 
+     * @param innerSourceBlob the innerSourceBlob value to set.
+     * @return the VirtualMachineExtensionProductProperties object itself.
+     */
+    VirtualMachineExtensionProductProperties withInnerSourceBlob(Uri innerSourceBlob) {
+        this.innerSourceBlob = innerSourceBlob;
+        return this;
+    }
+
+    /**
      * Get the supportMultipleExtensions property: Indicates if specified product supports multiple extensions.
-     *
+     * 
      * @return the supportMultipleExtensions value.
      */
     public Boolean supportMultipleExtensions() {
@@ -87,8 +129,19 @@ public class VirtualMachineExtensionProductProperties {
     }
 
     /**
+     * Set the supportMultipleExtensions property: Indicates if specified product supports multiple extensions.
+     * 
+     * @param supportMultipleExtensions the supportMultipleExtensions value to set.
+     * @return the VirtualMachineExtensionProductProperties object itself.
+     */
+    VirtualMachineExtensionProductProperties withSupportMultipleExtensions(Boolean supportMultipleExtensions) {
+        this.supportMultipleExtensions = supportMultipleExtensions;
+        return this;
+    }
+
+    /**
      * Get the version property: Specifies product version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -96,8 +149,19 @@ public class VirtualMachineExtensionProductProperties {
     }
 
     /**
+     * Set the version property: Specifies product version.
+     * 
+     * @param version the version value to set.
+     * @return the VirtualMachineExtensionProductProperties object itself.
+     */
+    VirtualMachineExtensionProductProperties withVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
      * Get the vmOsType property: Specifies operating system used by the product.
-     *
+     * 
      * @return the vmOsType value.
      */
     public OperatingSystem vmOsType() {
@@ -105,8 +169,19 @@ public class VirtualMachineExtensionProductProperties {
     }
 
     /**
+     * Set the vmOsType property: Specifies operating system used by the product.
+     * 
+     * @param vmOsType the vmOsType value to set.
+     * @return the VirtualMachineExtensionProductProperties object itself.
+     */
+    VirtualMachineExtensionProductProperties withVmOsType(OperatingSystem vmOsType) {
+        this.vmOsType = vmOsType;
+        return this;
+    }
+
+    /**
      * Get the vmScaleSetEnabled property: Indicates if virtual machine Scale Set is enabled in the specified product.
-     *
+     * 
      * @return the vmScaleSetEnabled value.
      */
     public Boolean vmScaleSetEnabled() {
@@ -114,19 +189,86 @@ public class VirtualMachineExtensionProductProperties {
     }
 
     /**
+     * Set the vmScaleSetEnabled property: Indicates if virtual machine Scale Set is enabled in the specified product.
+     * 
+     * @param vmScaleSetEnabled the vmScaleSetEnabled value to set.
+     * @return the VirtualMachineExtensionProductProperties object itself.
+     */
+    VirtualMachineExtensionProductProperties withVmScaleSetEnabled(Boolean vmScaleSetEnabled) {
+        this.vmScaleSetEnabled = vmScaleSetEnabled;
+        return this;
+    }
+
+    /**
      * Get the uri property: The URI.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
-        return this.uri;
+        return this.innerSourceBlob() == null ? null : this.innerSourceBlob().uri();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerSourceBlob() != null) {
+            innerSourceBlob().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineExtensionProductProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineExtensionProductProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineExtensionProductProperties.
+     */
+    public static VirtualMachineExtensionProductProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineExtensionProductProperties deserializedVirtualMachineExtensionProductProperties
+                = new VirtualMachineExtensionProductProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computeRole".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProductProperties.computeRole
+                        = ComputeRole.fromString(reader.getString());
+                } else if ("isSystemExtension".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProductProperties.isSystemExtension
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sourceBlob".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProductProperties.innerSourceBlob = Uri.fromJson(reader);
+                } else if ("supportMultipleExtensions".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProductProperties.supportMultipleExtensions
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("version".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProductProperties.version = reader.getString();
+                } else if ("vmOsType".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProductProperties.vmOsType
+                        = OperatingSystem.fromString(reader.getString());
+                } else if ("vmScaleSetEnabled".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionProductProperties.vmScaleSetEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineExtensionProductProperties;
+        });
     }
 }

@@ -6,53 +6,82 @@ package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.cognitiveservices.models.CallRateLimit;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentModel;
 import com.azure.resourcemanager.cognitiveservices.models.ModelDeprecationInfo;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.cognitiveservices.models.ModelLifecycleStatus;
+import com.azure.resourcemanager.cognitiveservices.models.ModelSku;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
-/** Cognitive Services account Model. */
+/**
+ * Cognitive Services account Model.
+ */
 @Fluent
 public final class AccountModelInner extends DeploymentModel {
     /*
-     * Base Model Identifier.
+     * Properties of Cognitive Services account deployment model.
      */
-    @JsonProperty(value = "baseModel")
     private DeploymentModel baseModel;
+
+    /*
+     * If the model is default version.
+     */
+    private Boolean isDefaultVersion;
+
+    /*
+     * The list of Model Sku.
+     */
+    private List<ModelSku> skus;
 
     /*
      * The max capacity.
      */
-    @JsonProperty(value = "maxCapacity")
     private Integer maxCapacity;
 
     /*
      * The capabilities.
      */
-    @JsonProperty(value = "capabilities")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> capabilities;
+
+    /*
+     * The capabilities for finetune models.
+     */
+    private Map<String, String> finetuneCapabilities;
 
     /*
      * Cognitive Services account ModelDeprecationInfo.
      */
-    @JsonProperty(value = "deprecation")
     private ModelDeprecationInfo deprecation;
+
+    /*
+     * Model lifecycle status.
+     */
+    private ModelLifecycleStatus lifecycleStatus;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of AccountModelInner class. */
+    /*
+     * The call rate limit Cognitive Services account.
+     */
+    private CallRateLimit callRateLimit;
+
+    /**
+     * Creates an instance of AccountModelInner class.
+     */
     public AccountModelInner() {
     }
 
     /**
-     * Get the baseModel property: Base Model Identifier.
-     *
+     * Get the baseModel property: Properties of Cognitive Services account deployment model.
+     * 
      * @return the baseModel value.
      */
     public DeploymentModel baseModel() {
@@ -60,8 +89,8 @@ public final class AccountModelInner extends DeploymentModel {
     }
 
     /**
-     * Set the baseModel property: Base Model Identifier.
-     *
+     * Set the baseModel property: Properties of Cognitive Services account deployment model.
+     * 
      * @param baseModel the baseModel value to set.
      * @return the AccountModelInner object itself.
      */
@@ -71,8 +100,48 @@ public final class AccountModelInner extends DeploymentModel {
     }
 
     /**
+     * Get the isDefaultVersion property: If the model is default version.
+     * 
+     * @return the isDefaultVersion value.
+     */
+    public Boolean isDefaultVersion() {
+        return this.isDefaultVersion;
+    }
+
+    /**
+     * Set the isDefaultVersion property: If the model is default version.
+     * 
+     * @param isDefaultVersion the isDefaultVersion value to set.
+     * @return the AccountModelInner object itself.
+     */
+    public AccountModelInner withIsDefaultVersion(Boolean isDefaultVersion) {
+        this.isDefaultVersion = isDefaultVersion;
+        return this;
+    }
+
+    /**
+     * Get the skus property: The list of Model Sku.
+     * 
+     * @return the skus value.
+     */
+    public List<ModelSku> skus() {
+        return this.skus;
+    }
+
+    /**
+     * Set the skus property: The list of Model Sku.
+     * 
+     * @param skus the skus value to set.
+     * @return the AccountModelInner object itself.
+     */
+    public AccountModelInner withSkus(List<ModelSku> skus) {
+        this.skus = skus;
+        return this;
+    }
+
+    /**
      * Get the maxCapacity property: The max capacity.
-     *
+     * 
      * @return the maxCapacity value.
      */
     public Integer maxCapacity() {
@@ -81,7 +150,7 @@ public final class AccountModelInner extends DeploymentModel {
 
     /**
      * Set the maxCapacity property: The max capacity.
-     *
+     * 
      * @param maxCapacity the maxCapacity value to set.
      * @return the AccountModelInner object itself.
      */
@@ -92,7 +161,7 @@ public final class AccountModelInner extends DeploymentModel {
 
     /**
      * Get the capabilities property: The capabilities.
-     *
+     * 
      * @return the capabilities value.
      */
     public Map<String, String> capabilities() {
@@ -101,7 +170,7 @@ public final class AccountModelInner extends DeploymentModel {
 
     /**
      * Set the capabilities property: The capabilities.
-     *
+     * 
      * @param capabilities the capabilities value to set.
      * @return the AccountModelInner object itself.
      */
@@ -111,8 +180,28 @@ public final class AccountModelInner extends DeploymentModel {
     }
 
     /**
+     * Get the finetuneCapabilities property: The capabilities for finetune models.
+     * 
+     * @return the finetuneCapabilities value.
+     */
+    public Map<String, String> finetuneCapabilities() {
+        return this.finetuneCapabilities;
+    }
+
+    /**
+     * Set the finetuneCapabilities property: The capabilities for finetune models.
+     * 
+     * @param finetuneCapabilities the finetuneCapabilities value to set.
+     * @return the AccountModelInner object itself.
+     */
+    public AccountModelInner withFinetuneCapabilities(Map<String, String> finetuneCapabilities) {
+        this.finetuneCapabilities = finetuneCapabilities;
+        return this;
+    }
+
+    /**
      * Get the deprecation property: Cognitive Services account ModelDeprecationInfo.
-     *
+     * 
      * @return the deprecation value.
      */
     public ModelDeprecationInfo deprecation() {
@@ -121,7 +210,7 @@ public final class AccountModelInner extends DeploymentModel {
 
     /**
      * Set the deprecation property: Cognitive Services account ModelDeprecationInfo.
-     *
+     * 
      * @param deprecation the deprecation value to set.
      * @return the AccountModelInner object itself.
      */
@@ -131,29 +220,74 @@ public final class AccountModelInner extends DeploymentModel {
     }
 
     /**
+     * Get the lifecycleStatus property: Model lifecycle status.
+     * 
+     * @return the lifecycleStatus value.
+     */
+    public ModelLifecycleStatus lifecycleStatus() {
+        return this.lifecycleStatus;
+    }
+
+    /**
+     * Set the lifecycleStatus property: Model lifecycle status.
+     * 
+     * @param lifecycleStatus the lifecycleStatus value to set.
+     * @return the AccountModelInner object itself.
+     */
+    public AccountModelInner withLifecycleStatus(ModelLifecycleStatus lifecycleStatus) {
+        this.lifecycleStatus = lifecycleStatus;
+        return this;
+    }
+
+    /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the callRateLimit property: The call rate limit Cognitive Services account.
+     * 
+     * @return the callRateLimit value.
+     */
+    @Override
+    public CallRateLimit callRateLimit() {
+        return this.callRateLimit;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AccountModelInner withPublisher(String publisher) {
+        super.withPublisher(publisher);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccountModelInner withFormat(String format) {
         super.withFormat(format);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccountModelInner withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccountModelInner withVersion(String version) {
         super.withVersion(version);
@@ -161,18 +295,125 @@ public final class AccountModelInner extends DeploymentModel {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AccountModelInner withSource(String source) {
+        super.withSource(source);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AccountModelInner withSourceAccount(String sourceAccount) {
+        super.withSourceAccount(sourceAccount);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (baseModel() != null) {
             baseModel().validate();
+        }
+        if (skus() != null) {
+            skus().forEach(e -> e.validate());
         }
         if (deprecation() != null) {
             deprecation().validate();
         }
+        if (callRateLimit() != null) {
+            callRateLimit().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publisher", publisher());
+        jsonWriter.writeStringField("format", format());
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeStringField("source", source());
+        jsonWriter.writeStringField("sourceAccount", sourceAccount());
+        jsonWriter.writeJsonField("baseModel", this.baseModel);
+        jsonWriter.writeBooleanField("isDefaultVersion", this.isDefaultVersion);
+        jsonWriter.writeArrayField("skus", this.skus, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("maxCapacity", this.maxCapacity);
+        jsonWriter.writeMapField("capabilities", this.capabilities, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("finetuneCapabilities", this.finetuneCapabilities,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("deprecation", this.deprecation);
+        jsonWriter.writeStringField("lifecycleStatus",
+            this.lifecycleStatus == null ? null : this.lifecycleStatus.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountModelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountModelInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountModelInner.
+     */
+    public static AccountModelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountModelInner deserializedAccountModelInner = new AccountModelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publisher".equals(fieldName)) {
+                    deserializedAccountModelInner.withPublisher(reader.getString());
+                } else if ("format".equals(fieldName)) {
+                    deserializedAccountModelInner.withFormat(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedAccountModelInner.withName(reader.getString());
+                } else if ("version".equals(fieldName)) {
+                    deserializedAccountModelInner.withVersion(reader.getString());
+                } else if ("source".equals(fieldName)) {
+                    deserializedAccountModelInner.withSource(reader.getString());
+                } else if ("sourceAccount".equals(fieldName)) {
+                    deserializedAccountModelInner.withSourceAccount(reader.getString());
+                } else if ("callRateLimit".equals(fieldName)) {
+                    deserializedAccountModelInner.callRateLimit = CallRateLimit.fromJson(reader);
+                } else if ("baseModel".equals(fieldName)) {
+                    deserializedAccountModelInner.baseModel = DeploymentModel.fromJson(reader);
+                } else if ("isDefaultVersion".equals(fieldName)) {
+                    deserializedAccountModelInner.isDefaultVersion = reader.getNullable(JsonReader::getBoolean);
+                } else if ("skus".equals(fieldName)) {
+                    List<ModelSku> skus = reader.readArray(reader1 -> ModelSku.fromJson(reader1));
+                    deserializedAccountModelInner.skus = skus;
+                } else if ("maxCapacity".equals(fieldName)) {
+                    deserializedAccountModelInner.maxCapacity = reader.getNullable(JsonReader::getInt);
+                } else if ("capabilities".equals(fieldName)) {
+                    Map<String, String> capabilities = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAccountModelInner.capabilities = capabilities;
+                } else if ("finetuneCapabilities".equals(fieldName)) {
+                    Map<String, String> finetuneCapabilities = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAccountModelInner.finetuneCapabilities = finetuneCapabilities;
+                } else if ("deprecation".equals(fieldName)) {
+                    deserializedAccountModelInner.deprecation = ModelDeprecationInfo.fromJson(reader);
+                } else if ("lifecycleStatus".equals(fieldName)) {
+                    deserializedAccountModelInner.lifecycleStatus = ModelLifecycleStatus.fromString(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAccountModelInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountModelInner;
+        });
     }
 }

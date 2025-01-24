@@ -5,129 +5,96 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.HubBillingInfoFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Hub resource. */
-@JsonFlatten
+/**
+ * Hub resource.
+ */
 @Fluent
-public class HubInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HubInner.class);
+public final class HubInner extends Resource {
+    /*
+     * Properties of hub.
+     */
+    private HubPropertiesFormat innerProperties;
 
     /*
-     * API endpoint URL of the hub.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.apiEndpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String apiEndpoint;
+    private String type;
 
     /*
-     * Web endpoint URL of the hub.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.webEndpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String webEndpoint;
+    private String name;
 
     /*
-     * Provisioning state of the hub.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The bit flags for enabled hub features. Bit 0 is set to 1 indicates
-     * graph is enabled, or disabled if set to 0. Bit 1 is set to 1 indicates
-     * the hub is disabled, or enabled if set to 0.
-     */
-    @JsonProperty(value = "properties.tenantFeatures")
-    private Integer tenantFeatures;
-
-    /*
-     * Billing settings of the hub.
-     */
-    @JsonProperty(value = "properties.hubBillingInfo")
-    private HubBillingInfoFormat hubBillingInfo;
+    private String id;
 
     /**
-     * Get the apiEndpoint property: API endpoint URL of the hub.
-     *
-     * @return the apiEndpoint value.
+     * Creates an instance of HubInner class.
      */
-    public String apiEndpoint() {
-        return this.apiEndpoint;
+    public HubInner() {
     }
 
     /**
-     * Get the webEndpoint property: Web endpoint URL of the hub.
-     *
-     * @return the webEndpoint value.
+     * Get the innerProperties property: Properties of hub.
+     * 
+     * @return the innerProperties value.
      */
-    public String webEndpoint() {
-        return this.webEndpoint;
+    private HubPropertiesFormat innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the hub.
-     *
-     * @return the provisioningState value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public String provisioningState() {
-        return this.provisioningState;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the tenantFeatures property: The bit flags for enabled hub features. Bit 0 is set to 1 indicates graph is
-     * enabled, or disabled if set to 0. Bit 1 is set to 1 indicates the hub is disabled, or enabled if set to 0.
-     *
-     * @return the tenantFeatures value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public Integer tenantFeatures() {
-        return this.tenantFeatures;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Set the tenantFeatures property: The bit flags for enabled hub features. Bit 0 is set to 1 indicates graph is
-     * enabled, or disabled if set to 0. Bit 1 is set to 1 indicates the hub is disabled, or enabled if set to 0.
-     *
-     * @param tenantFeatures the tenantFeatures value to set.
-     * @return the HubInner object itself.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public HubInner withTenantFeatures(Integer tenantFeatures) {
-        this.tenantFeatures = tenantFeatures;
-        return this;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the hubBillingInfo property: Billing settings of the hub.
-     *
-     * @return the hubBillingInfo value.
+     * {@inheritDoc}
      */
-    public HubBillingInfoFormat hubBillingInfo() {
-        return this.hubBillingInfo;
-    }
-
-    /**
-     * Set the hubBillingInfo property: Billing settings of the hub.
-     *
-     * @param hubBillingInfo the hubBillingInfo value to set.
-     * @return the HubInner object itself.
-     */
-    public HubInner withHubBillingInfo(HubBillingInfoFormat hubBillingInfo) {
-        this.hubBillingInfo = hubBillingInfo;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public HubInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HubInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -135,13 +102,138 @@ public class HubInner extends Resource {
     }
 
     /**
+     * Get the apiEndpoint property: API endpoint URL of the hub.
+     * 
+     * @return the apiEndpoint value.
+     */
+    public String apiEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().apiEndpoint();
+    }
+
+    /**
+     * Get the webEndpoint property: Web endpoint URL of the hub.
+     * 
+     * @return the webEndpoint value.
+     */
+    public String webEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().webEndpoint();
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the hub.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the tenantFeatures property: The bit flags for enabled hub features. Bit 0 is set to 1 indicates graph is
+     * enabled, or disabled if set to 0. Bit 1 is set to 1 indicates the hub is disabled, or enabled if set to 0.
+     * 
+     * @return the tenantFeatures value.
+     */
+    public Integer tenantFeatures() {
+        return this.innerProperties() == null ? null : this.innerProperties().tenantFeatures();
+    }
+
+    /**
+     * Set the tenantFeatures property: The bit flags for enabled hub features. Bit 0 is set to 1 indicates graph is
+     * enabled, or disabled if set to 0. Bit 1 is set to 1 indicates the hub is disabled, or enabled if set to 0.
+     * 
+     * @param tenantFeatures the tenantFeatures value to set.
+     * @return the HubInner object itself.
+     */
+    public HubInner withTenantFeatures(Integer tenantFeatures) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HubPropertiesFormat();
+        }
+        this.innerProperties().withTenantFeatures(tenantFeatures);
+        return this;
+    }
+
+    /**
+     * Get the hubBillingInfo property: Billing settings of the hub.
+     * 
+     * @return the hubBillingInfo value.
+     */
+    public HubBillingInfoFormat hubBillingInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().hubBillingInfo();
+    }
+
+    /**
+     * Set the hubBillingInfo property: Billing settings of the hub.
+     * 
+     * @param hubBillingInfo the hubBillingInfo value to set.
+     * @return the HubInner object itself.
+     */
+    public HubInner withHubBillingInfo(HubBillingInfoFormat hubBillingInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HubPropertiesFormat();
+        }
+        this.innerProperties().withHubBillingInfo(hubBillingInfo);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (hubBillingInfo() != null) {
-            hubBillingInfo().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HubInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HubInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HubInner.
+     */
+    public static HubInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HubInner deserializedHubInner = new HubInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedHubInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedHubInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedHubInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedHubInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedHubInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedHubInner.innerProperties = HubPropertiesFormat.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHubInner;
+        });
     }
 }

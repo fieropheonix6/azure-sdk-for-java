@@ -5,50 +5,61 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Azure Files or Blob Storage access information value for dictionary storage. */
+/**
+ * Azure Files or Blob Storage access information value for dictionary storage.
+ */
 @Fluent
-public final class AzureStorageInfoValue {
+public final class AzureStorageInfoValue implements JsonSerializable<AzureStorageInfoValue> {
     /*
      * Type of storage.
      */
-    @JsonProperty(value = "type")
     private AzureStorageType type;
 
     /*
      * Name of the storage account.
      */
-    @JsonProperty(value = "accountName")
     private String accountName;
 
     /*
      * Name of the file share (container name, for Blob storage).
      */
-    @JsonProperty(value = "shareName")
     private String shareName;
 
     /*
      * Access key for the storage account.
      */
-    @JsonProperty(value = "accessKey")
     private String accessKey;
 
     /*
      * Path to mount the storage within the site's runtime environment.
      */
-    @JsonProperty(value = "mountPath")
     private String mountPath;
 
     /*
      * State of the storage account.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private AzureStorageState state;
+
+    /*
+     * Mounting protocol to use for the storage account.
+     */
+    private AzureStorageProtocol protocol;
+
+    /**
+     * Creates an instance of AzureStorageInfoValue class.
+     */
+    public AzureStorageInfoValue() {
+    }
 
     /**
      * Get the type property: Type of storage.
-     *
+     * 
      * @return the type value.
      */
     public AzureStorageType type() {
@@ -57,7 +68,7 @@ public final class AzureStorageInfoValue {
 
     /**
      * Set the type property: Type of storage.
-     *
+     * 
      * @param type the type value to set.
      * @return the AzureStorageInfoValue object itself.
      */
@@ -68,7 +79,7 @@ public final class AzureStorageInfoValue {
 
     /**
      * Get the accountName property: Name of the storage account.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -77,7 +88,7 @@ public final class AzureStorageInfoValue {
 
     /**
      * Set the accountName property: Name of the storage account.
-     *
+     * 
      * @param accountName the accountName value to set.
      * @return the AzureStorageInfoValue object itself.
      */
@@ -88,7 +99,7 @@ public final class AzureStorageInfoValue {
 
     /**
      * Get the shareName property: Name of the file share (container name, for Blob storage).
-     *
+     * 
      * @return the shareName value.
      */
     public String shareName() {
@@ -97,7 +108,7 @@ public final class AzureStorageInfoValue {
 
     /**
      * Set the shareName property: Name of the file share (container name, for Blob storage).
-     *
+     * 
      * @param shareName the shareName value to set.
      * @return the AzureStorageInfoValue object itself.
      */
@@ -108,7 +119,7 @@ public final class AzureStorageInfoValue {
 
     /**
      * Get the accessKey property: Access key for the storage account.
-     *
+     * 
      * @return the accessKey value.
      */
     public String accessKey() {
@@ -117,7 +128,7 @@ public final class AzureStorageInfoValue {
 
     /**
      * Set the accessKey property: Access key for the storage account.
-     *
+     * 
      * @param accessKey the accessKey value to set.
      * @return the AzureStorageInfoValue object itself.
      */
@@ -128,7 +139,7 @@ public final class AzureStorageInfoValue {
 
     /**
      * Get the mountPath property: Path to mount the storage within the site's runtime environment.
-     *
+     * 
      * @return the mountPath value.
      */
     public String mountPath() {
@@ -137,7 +148,7 @@ public final class AzureStorageInfoValue {
 
     /**
      * Set the mountPath property: Path to mount the storage within the site's runtime environment.
-     *
+     * 
      * @param mountPath the mountPath value to set.
      * @return the AzureStorageInfoValue object itself.
      */
@@ -148,7 +159,7 @@ public final class AzureStorageInfoValue {
 
     /**
      * Get the state property: State of the storage account.
-     *
+     * 
      * @return the state value.
      */
     public AzureStorageState state() {
@@ -156,10 +167,83 @@ public final class AzureStorageInfoValue {
     }
 
     /**
+     * Get the protocol property: Mounting protocol to use for the storage account.
+     * 
+     * @return the protocol value.
+     */
+    public AzureStorageProtocol protocol() {
+        return this.protocol;
+    }
+
+    /**
+     * Set the protocol property: Mounting protocol to use for the storage account.
+     * 
+     * @param protocol the protocol value to set.
+     * @return the AzureStorageInfoValue object itself.
+     */
+    public AzureStorageInfoValue withProtocol(AzureStorageProtocol protocol) {
+        this.protocol = protocol;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("accountName", this.accountName);
+        jsonWriter.writeStringField("shareName", this.shareName);
+        jsonWriter.writeStringField("accessKey", this.accessKey);
+        jsonWriter.writeStringField("mountPath", this.mountPath);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureStorageInfoValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureStorageInfoValue if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureStorageInfoValue.
+     */
+    public static AzureStorageInfoValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureStorageInfoValue deserializedAzureStorageInfoValue = new AzureStorageInfoValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedAzureStorageInfoValue.type = AzureStorageType.fromString(reader.getString());
+                } else if ("accountName".equals(fieldName)) {
+                    deserializedAzureStorageInfoValue.accountName = reader.getString();
+                } else if ("shareName".equals(fieldName)) {
+                    deserializedAzureStorageInfoValue.shareName = reader.getString();
+                } else if ("accessKey".equals(fieldName)) {
+                    deserializedAzureStorageInfoValue.accessKey = reader.getString();
+                } else if ("mountPath".equals(fieldName)) {
+                    deserializedAzureStorageInfoValue.mountPath = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedAzureStorageInfoValue.state = AzureStorageState.fromString(reader.getString());
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedAzureStorageInfoValue.protocol = AzureStorageProtocol.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureStorageInfoValue;
+        });
     }
 }

@@ -10,40 +10,35 @@ import com.azure.resourcemanager.machinelearning.models.EnvironmentContainerProp
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EnvironmentContainerInnerTests {
-    @Test
-    public void testDeserialize() {
-        EnvironmentContainerInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"isArchived\":false,\"latestVersion\":\"ulfgslqu\",\"nextVersion\":\"wdlenrdsut\",\"description\":\"bazpjuohmi\",\"properties\":{\"wpklvxw\":\"lnorwmdu\",\"epn\":\"ygdxpgpqchis\",\"fozauorsuk\":\"bjcrxgibbdaxco\"},\"tags\":{\"vnuuepzl\":\"bqplh\",\"vmnnrw\":\"phwzsoldweyuqdu\"}},\"id\":\"i\",\"name\":\"rk\",\"type\":\"alywjhhgdn\"}")
-                .toObject(EnvironmentContainerInner.class);
-        Assertions.assertEquals("bazpjuohmi", model.properties().description());
-        Assertions.assertEquals("lnorwmdu", model.properties().properties().get("wpklvxw"));
-        Assertions.assertEquals("bqplh", model.properties().tags().get("vnuuepzl"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        EnvironmentContainerInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"isArchived\":false,\"latestVersion\":\"ieypef\",\"nextVersion\":\"yqdhcuplcplcw\",\"description\":\"ihih\",\"tags\":{\"gmvecactxmw\":\"dsqtzbsrgnowcjh\",\"ovekqvgqouwi\":\"teyowclu\",\"ikf\":\"zmpjwyiv\",\"uagrttikteusqc\":\"cvhrfsp\"},\"properties\":{\"qcuubgqibrta\":\"yklxubyjaffmmfbl\",\"lqxihhrmooiz\":\"metttwgd\"}},\"id\":\"eypxiutcxapzhyr\",\"name\":\"etoge\",\"type\":\"joxslhvnhla\"}")
+            .toObject(EnvironmentContainerInner.class);
+        Assertions.assertEquals("ihih", model.properties().description());
+        Assertions.assertEquals("dsqtzbsrgnowcjh", model.properties().tags().get("gmvecactxmw"));
+        Assertions.assertEquals("yklxubyjaffmmfbl", model.properties().properties().get("qcuubgqibrta"));
         Assertions.assertEquals(false, model.properties().isArchived());
     }
 
-    @Test
-    public void testSerialize() {
-        EnvironmentContainerInner model =
-            new EnvironmentContainerInner()
-                .withProperties(
-                    new EnvironmentContainerProperties()
-                        .withDescription("bazpjuohmi")
-                        .withProperties(
-                            mapOf("wpklvxw", "lnorwmdu", "epn", "ygdxpgpqchis", "fozauorsuk", "bjcrxgibbdaxco"))
-                        .withTags(mapOf("vnuuepzl", "bqplh", "vmnnrw", "phwzsoldweyuqdu"))
-                        .withIsArchived(false));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        EnvironmentContainerInner model = new EnvironmentContainerInner()
+            .withProperties(new EnvironmentContainerProperties().withDescription("ihih")
+                .withTags(mapOf("gmvecactxmw", "dsqtzbsrgnowcjh", "ovekqvgqouwi", "teyowclu", "ikf", "zmpjwyiv",
+                    "uagrttikteusqc", "cvhrfsp"))
+                .withProperties(mapOf("qcuubgqibrta", "yklxubyjaffmmfbl", "lqxihhrmooiz", "metttwgd"))
+                .withIsArchived(false));
         model = BinaryData.fromObject(model).toObject(EnvironmentContainerInner.class);
-        Assertions.assertEquals("bazpjuohmi", model.properties().description());
-        Assertions.assertEquals("lnorwmdu", model.properties().properties().get("wpklvxw"));
-        Assertions.assertEquals("bqplh", model.properties().tags().get("vnuuepzl"));
+        Assertions.assertEquals("ihih", model.properties().description());
+        Assertions.assertEquals("dsqtzbsrgnowcjh", model.properties().tags().get("gmvecactxmw"));
+        Assertions.assertEquals("yklxubyjaffmmfbl", model.properties().properties().get("qcuubgqibrta"));
         Assertions.assertEquals(false, model.properties().isArchived());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

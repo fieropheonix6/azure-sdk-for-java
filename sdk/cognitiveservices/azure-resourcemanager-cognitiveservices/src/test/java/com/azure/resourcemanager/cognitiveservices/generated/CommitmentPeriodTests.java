@@ -7,25 +7,22 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPeriod;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CommitmentPeriodTests {
-    @Test
-    public void testDeserialize() {
-        CommitmentPeriod model =
-            BinaryData
-                .fromString(
-                    "{\"tier\":\"oqac\",\"count\":1486476697,\"quota\":{\"quantity\":5359591244102758807,\"unit\":\"iwbwoenwashrtdtk\"},\"startDate\":\"qxwbpokulpiu\",\"endDate\":\"aasipqi\"}")
-                .toObject(CommitmentPeriod.class);
-        Assertions.assertEquals("oqac", model.tier());
-        Assertions.assertEquals(1486476697, model.count());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CommitmentPeriod model = BinaryData.fromString(
+            "{\"tier\":\"eqphchqnrnr\",\"count\":2099945195,\"quota\":{\"quantity\":8201387664447869413,\"unit\":\"k\"},\"startDate\":\"aifmvikl\",\"endDate\":\"dvk\"}")
+            .toObject(CommitmentPeriod.class);
+        Assertions.assertEquals("eqphchqnrnr", model.tier());
+        Assertions.assertEquals(2099945195, model.count());
     }
 
-    @Test
-    public void testSerialize() {
-        CommitmentPeriod model = new CommitmentPeriod().withTier("oqac").withCount(1486476697);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CommitmentPeriod model = new CommitmentPeriod().withTier("eqphchqnrnr").withCount(2099945195);
         model = BinaryData.fromObject(model).toObject(CommitmentPeriod.class);
-        Assertions.assertEquals("oqac", model.tier());
-        Assertions.assertEquals(1486476697, model.count());
+        Assertions.assertEquals("eqphchqnrnr", model.tier());
+        Assertions.assertEquals(2099945195, model.count());
     }
 }

@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * The options for the downloadTo operations.
  */
 @Fluent
-public class DownloadToFileOptions {
+public final class DownloadToFileOptions {
 
     /**
      * Parallel download options object.
@@ -20,6 +20,12 @@ public class DownloadToFileOptions {
      * Overwrite If file/stream exists
      */
     private boolean overwrite;
+
+    /**
+     * Creates an instance of {@link DownloadToFileOptions}.
+     */
+    public DownloadToFileOptions() {
+    }
 
     /**
      * Get the ParallelDownloadOptions

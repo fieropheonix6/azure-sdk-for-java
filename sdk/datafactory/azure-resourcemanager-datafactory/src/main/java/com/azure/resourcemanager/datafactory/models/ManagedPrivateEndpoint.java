@@ -5,65 +5,64 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Properties of a managed private endpoint. */
+/**
+ * Properties of a managed private endpoint.
+ */
 @Fluent
-public final class ManagedPrivateEndpoint {
+public final class ManagedPrivateEndpoint implements JsonSerializable<ManagedPrivateEndpoint> {
     /*
      * The managed private endpoint connection state
      */
-    @JsonProperty(value = "connectionState")
     private ConnectionStateProperties connectionState;
 
     /*
      * Fully qualified domain names
      */
-    @JsonProperty(value = "fqdns")
     private List<String> fqdns;
 
     /*
      * The groupId to which the managed private endpoint is created
      */
-    @JsonProperty(value = "groupId")
     private String groupId;
 
     /*
      * Denotes whether the managed private endpoint is reserved
      */
-    @JsonProperty(value = "isReserved", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isReserved;
 
     /*
      * The ARM resource ID of the resource to which the managed private endpoint is created
      */
-    @JsonProperty(value = "privateLinkResourceId")
     private String privateLinkResourceId;
 
     /*
      * The managed private endpoint provisioning state
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Properties of a managed private endpoint
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ManagedPrivateEndpoint class. */
+    /**
+     * Creates an instance of ManagedPrivateEndpoint class.
+     */
     public ManagedPrivateEndpoint() {
     }
 
     /**
      * Get the connectionState property: The managed private endpoint connection state.
-     *
+     * 
      * @return the connectionState value.
      */
     public ConnectionStateProperties connectionState() {
@@ -72,7 +71,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Set the connectionState property: The managed private endpoint connection state.
-     *
+     * 
      * @param connectionState the connectionState value to set.
      * @return the ManagedPrivateEndpoint object itself.
      */
@@ -83,7 +82,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Get the fqdns property: Fully qualified domain names.
-     *
+     * 
      * @return the fqdns value.
      */
     public List<String> fqdns() {
@@ -92,7 +91,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Set the fqdns property: Fully qualified domain names.
-     *
+     * 
      * @param fqdns the fqdns value to set.
      * @return the ManagedPrivateEndpoint object itself.
      */
@@ -103,7 +102,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Get the groupId property: The groupId to which the managed private endpoint is created.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -112,7 +111,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Set the groupId property: The groupId to which the managed private endpoint is created.
-     *
+     * 
      * @param groupId the groupId value to set.
      * @return the ManagedPrivateEndpoint object itself.
      */
@@ -123,7 +122,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Get the isReserved property: Denotes whether the managed private endpoint is reserved.
-     *
+     * 
      * @return the isReserved value.
      */
     public Boolean isReserved() {
@@ -133,7 +132,7 @@ public final class ManagedPrivateEndpoint {
     /**
      * Get the privateLinkResourceId property: The ARM resource ID of the resource to which the managed private endpoint
      * is created.
-     *
+     * 
      * @return the privateLinkResourceId value.
      */
     public String privateLinkResourceId() {
@@ -143,7 +142,7 @@ public final class ManagedPrivateEndpoint {
     /**
      * Set the privateLinkResourceId property: The ARM resource ID of the resource to which the managed private endpoint
      * is created.
-     *
+     * 
      * @param privateLinkResourceId the privateLinkResourceId value to set.
      * @return the ManagedPrivateEndpoint object itself.
      */
@@ -154,7 +153,7 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Get the provisioningState property: The managed private endpoint provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -163,17 +162,16 @@ public final class ManagedPrivateEndpoint {
 
     /**
      * Get the additionalProperties property: Properties of a managed private endpoint.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Properties of a managed private endpoint.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ManagedPrivateEndpoint object itself.
      */
@@ -182,22 +180,75 @@ public final class ManagedPrivateEndpoint {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connectionState() != null) {
             connectionState().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectionState", this.connectionState);
+        jsonWriter.writeArrayField("fqdns", this.fqdns, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("groupId", this.groupId);
+        jsonWriter.writeStringField("privateLinkResourceId", this.privateLinkResourceId);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedPrivateEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedPrivateEndpoint if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedPrivateEndpoint.
+     */
+    public static ManagedPrivateEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedPrivateEndpoint deserializedManagedPrivateEndpoint = new ManagedPrivateEndpoint();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionState".equals(fieldName)) {
+                    deserializedManagedPrivateEndpoint.connectionState = ConnectionStateProperties.fromJson(reader);
+                } else if ("fqdns".equals(fieldName)) {
+                    List<String> fqdns = reader.readArray(reader1 -> reader1.getString());
+                    deserializedManagedPrivateEndpoint.fqdns = fqdns;
+                } else if ("groupId".equals(fieldName)) {
+                    deserializedManagedPrivateEndpoint.groupId = reader.getString();
+                } else if ("isReserved".equals(fieldName)) {
+                    deserializedManagedPrivateEndpoint.isReserved = reader.getNullable(JsonReader::getBoolean);
+                } else if ("privateLinkResourceId".equals(fieldName)) {
+                    deserializedManagedPrivateEndpoint.privateLinkResourceId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedManagedPrivateEndpoint.provisioningState = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedManagedPrivateEndpoint.additionalProperties = additionalProperties;
+
+            return deserializedManagedPrivateEndpoint;
+        });
     }
 }

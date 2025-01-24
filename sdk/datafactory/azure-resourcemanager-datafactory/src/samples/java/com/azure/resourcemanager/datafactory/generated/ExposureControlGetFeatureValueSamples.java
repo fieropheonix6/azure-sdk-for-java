@@ -4,28 +4,27 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.models.ExposureControlRequest;
 
-/** Samples for ExposureControl GetFeatureValue. */
+/**
+ * Samples for ExposureControl GetFeatureValue.
+ */
 public final class ExposureControlGetFeatureValueSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ExposureControl_GetFeatureValue.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * ExposureControl_GetFeatureValue.json
      */
     /**
      * Sample code: ExposureControl_GetFeatureValue.
-     *
+     * 
      * @param manager Entry point to DataFactoryManager.
      */
-    public static void exposureControlGetFeatureValue(
-        com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager
-            .exposureControls()
-            .getFeatureValueWithResponse(
-                "WestEurope",
-                new ExposureControlRequest()
-                    .withFeatureName("ADFIntegrationRuntimeSharingRbac")
+    public static void
+        exposureControlGetFeatureValue(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager.exposureControls()
+            .getFeatureValueWithResponse("WestEurope",
+                new ExposureControlRequest().withFeatureName("ADFIntegrationRuntimeSharingRbac")
                     .withFeatureType("Feature"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

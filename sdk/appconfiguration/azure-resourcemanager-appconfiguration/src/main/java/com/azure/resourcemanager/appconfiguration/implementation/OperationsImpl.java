@@ -24,15 +24,26 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient,
+    public OperationsImpl(OperationsClient innerClient,
         com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public NameAvailabilityStatus checkNameAvailability(
-        CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
+    public Response<NameAvailabilityStatus> checkNameAvailabilityWithResponse(
+        CheckNameAvailabilityParameters checkNameAvailabilityParameters, Context context) {
+        Response<NameAvailabilityStatusInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(checkNameAvailabilityParameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NameAvailabilityStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NameAvailabilityStatus
+        checkNameAvailability(CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
         NameAvailabilityStatusInner inner = this.serviceClient().checkNameAvailability(checkNameAvailabilityParameters);
         if (inner != null) {
             return new NameAvailabilityStatusImpl(inner, this.manager());
@@ -41,54 +52,34 @@ public final class OperationsImpl implements Operations {
         }
     }
 
-    public Response<NameAvailabilityStatus> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityParameters checkNameAvailabilityParameters, Context context) {
-        Response<NameAvailabilityStatusInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(checkNameAvailabilityParameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new NameAvailabilityStatusImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<OperationDefinition> list() {
         PagedIterable<OperationDefinitionInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new OperationDefinitionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationDefinitionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OperationDefinition> list(String skipToken, Context context) {
         PagedIterable<OperationDefinitionInner> inner = this.serviceClient().list(skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new OperationDefinitionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationDefinitionImpl(inner1, this.manager()));
     }
 
-    public NameAvailabilityStatus regionalCheckNameAvailability(
-        String location, CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
-        NameAvailabilityStatusInner inner =
-            this.serviceClient().regionalCheckNameAvailability(location, checkNameAvailabilityParameters);
+    public Response<NameAvailabilityStatus> regionalCheckNameAvailabilityWithResponse(String location,
+        CheckNameAvailabilityParameters checkNameAvailabilityParameters, Context context) {
+        Response<NameAvailabilityStatusInner> inner = this.serviceClient()
+            .regionalCheckNameAvailabilityWithResponse(location, checkNameAvailabilityParameters, context);
         if (inner != null) {
-            return new NameAvailabilityStatusImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NameAvailabilityStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<NameAvailabilityStatus> regionalCheckNameAvailabilityWithResponse(
-        String location, CheckNameAvailabilityParameters checkNameAvailabilityParameters, Context context) {
-        Response<NameAvailabilityStatusInner> inner =
-            this
-                .serviceClient()
-                .regionalCheckNameAvailabilityWithResponse(location, checkNameAvailabilityParameters, context);
+    public NameAvailabilityStatus regionalCheckNameAvailability(String location,
+        CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
+        NameAvailabilityStatusInner inner
+            = this.serviceClient().regionalCheckNameAvailability(location, checkNameAvailabilityParameters);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new NameAvailabilityStatusImpl(inner.getValue(), this.manager()));
+            return new NameAvailabilityStatusImpl(inner, this.manager());
         } else {
             return null;
         }

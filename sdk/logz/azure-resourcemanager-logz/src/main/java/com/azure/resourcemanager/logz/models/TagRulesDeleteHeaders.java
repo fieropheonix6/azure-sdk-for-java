@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.logz.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 
-/** The TagRulesDeleteHeaders model. */
+/**
+ * The TagRulesDeleteHeaders model.
+ */
 @Fluent
 public final class TagRulesDeleteHeaders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagRulesDeleteHeaders.class);
-
     /*
      * The location property.
      */
-    @JsonProperty(value = "location")
     private String location;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of TagRulesDeleteHeaders class.
+     * 
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public TagRulesDeleteHeaders(HttpHeaders rawHeaders) {
+        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
+    }
 
     /**
      * Get the location property: The location property.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -31,7 +39,7 @@ public final class TagRulesDeleteHeaders {
 
     /**
      * Set the location property: The location property.
-     *
+     * 
      * @param location the location value to set.
      * @return the TagRulesDeleteHeaders object itself.
      */
@@ -42,7 +50,7 @@ public final class TagRulesDeleteHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

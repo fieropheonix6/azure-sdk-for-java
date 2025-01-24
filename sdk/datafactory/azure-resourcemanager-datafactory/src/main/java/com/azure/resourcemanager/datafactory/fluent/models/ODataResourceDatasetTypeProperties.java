@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** OData dataset properties. */
+/**
+ * OData dataset properties.
+ */
 @Fluent
-public final class ODataResourceDatasetTypeProperties {
+public final class ODataResourceDatasetTypeProperties implements JsonSerializable<ODataResourceDatasetTypeProperties> {
     /*
      * The OData resource path. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "path")
     private Object path;
 
-    /** Creates an instance of ODataResourceDatasetTypeProperties class. */
+    /**
+     * Creates an instance of ODataResourceDatasetTypeProperties class.
+     */
     public ODataResourceDatasetTypeProperties() {
     }
 
     /**
      * Get the path property: The OData resource path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the path value.
      */
     public Object path() {
@@ -31,7 +38,7 @@ public final class ODataResourceDatasetTypeProperties {
 
     /**
      * Set the path property: The OData resource path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param path the path value to set.
      * @return the ODataResourceDatasetTypeProperties object itself.
      */
@@ -42,9 +49,46 @@ public final class ODataResourceDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("path", this.path);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ODataResourceDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ODataResourceDatasetTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ODataResourceDatasetTypeProperties.
+     */
+    public static ODataResourceDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ODataResourceDatasetTypeProperties deserializedODataResourceDatasetTypeProperties
+                = new ODataResourceDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("path".equals(fieldName)) {
+                    deserializedODataResourceDatasetTypeProperties.path = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedODataResourceDatasetTypeProperties;
+        });
     }
 }

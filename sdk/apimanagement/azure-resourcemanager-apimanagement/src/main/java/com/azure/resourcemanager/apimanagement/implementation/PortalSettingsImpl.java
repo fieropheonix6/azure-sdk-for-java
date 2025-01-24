@@ -20,31 +20,28 @@ public final class PortalSettingsImpl implements PortalSettings {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public PortalSettingsImpl(
-        PortalSettingsClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public PortalSettingsImpl(PortalSettingsClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<PortalSettingsCollection> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        Context context) {
+        Response<PortalSettingsCollectionInner> inner
+            = this.serviceClient().listByServiceWithResponse(resourceGroupName, serviceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PortalSettingsCollectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PortalSettingsCollection listByService(String resourceGroupName, String serviceName) {
         PortalSettingsCollectionInner inner = this.serviceClient().listByService(resourceGroupName, serviceName);
         if (inner != null) {
             return new PortalSettingsCollectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<PortalSettingsCollection> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context) {
-        Response<PortalSettingsCollectionInner> inner =
-            this.serviceClient().listByServiceWithResponse(resourceGroupName, serviceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PortalSettingsCollectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

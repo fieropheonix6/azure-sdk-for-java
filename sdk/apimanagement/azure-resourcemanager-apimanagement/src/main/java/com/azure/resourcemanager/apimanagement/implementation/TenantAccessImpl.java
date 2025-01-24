@@ -27,32 +27,44 @@ public final class TenantAccessImpl implements TenantAccess {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public TenantAccessImpl(
-        TenantAccessClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public TenantAccessImpl(TenantAccessClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<AccessInformationContract> listByService(String resourceGroupName, String serviceName) {
-        PagedIterable<AccessInformationContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName);
-        return Utils.mapPage(inner, inner1 -> new AccessInformationContractImpl(inner1, this.manager()));
+        PagedIterable<AccessInformationContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccessInformationContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AccessInformationContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Context context) {
-        PagedIterable<AccessInformationContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new AccessInformationContractImpl(inner1, this.manager()));
+    public PagedIterable<AccessInformationContract> listByService(String resourceGroupName, String serviceName,
+        String filter, Context context) {
+        PagedIterable<AccessInformationContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccessInformationContractImpl(inner1, this.manager()));
+    }
+
+    public TenantAccessGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context) {
+        return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, accessName, context);
     }
 
     public void getEntityTag(String resourceGroupName, String serviceName, AccessIdName accessName) {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, accessName);
     }
 
-    public TenantAccessGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context) {
-        return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, accessName, context);
+    public Response<AccessInformationContract> getWithResponse(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context) {
+        TenantAccessGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, accessName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AccessInformationContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AccessInformationContract get(String resourceGroupName, String serviceName, AccessIdName accessName) {
@@ -64,47 +76,42 @@ public final class TenantAccessImpl implements TenantAccess {
         }
     }
 
-    public Response<AccessInformationContract> getWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context) {
-        TenantAccessGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, accessName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AccessInformationContractImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> regeneratePrimaryKeyWithResponse(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context) {
+        return this.serviceClient()
+            .regeneratePrimaryKeyWithResponse(resourceGroupName, serviceName, accessName, context);
     }
 
     public void regeneratePrimaryKey(String resourceGroupName, String serviceName, AccessIdName accessName) {
         this.serviceClient().regeneratePrimaryKey(resourceGroupName, serviceName, accessName);
     }
 
-    public Response<Void> regeneratePrimaryKeyWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context) {
-        return this
-            .serviceClient()
-            .regeneratePrimaryKeyWithResponse(resourceGroupName, serviceName, accessName, context);
+    public Response<Void> regenerateSecondaryKeyWithResponse(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context) {
+        return this.serviceClient()
+            .regenerateSecondaryKeyWithResponse(resourceGroupName, serviceName, accessName, context);
     }
 
     public void regenerateSecondaryKey(String resourceGroupName, String serviceName, AccessIdName accessName) {
         this.serviceClient().regenerateSecondaryKey(resourceGroupName, serviceName, accessName);
     }
 
-    public Response<Void> regenerateSecondaryKeyWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context) {
-        return this
-            .serviceClient()
-            .regenerateSecondaryKeyWithResponse(resourceGroupName, serviceName, accessName, context);
+    public Response<AccessInformationSecretsContract> listSecretsWithResponse(String resourceGroupName,
+        String serviceName, AccessIdName accessName, Context context) {
+        TenantAccessListSecretsResponse inner
+            = this.serviceClient().listSecretsWithResponse(resourceGroupName, serviceName, accessName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AccessInformationSecretsContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public AccessInformationSecretsContract listSecrets(
-        String resourceGroupName, String serviceName, AccessIdName accessName) {
-        AccessInformationSecretsContractInner inner =
-            this.serviceClient().listSecrets(resourceGroupName, serviceName, accessName);
+    public AccessInformationSecretsContract listSecrets(String resourceGroupName, String serviceName,
+        AccessIdName accessName) {
+        AccessInformationSecretsContractInner inner
+            = this.serviceClient().listSecrets(resourceGroupName, serviceName, accessName);
         if (inner != null) {
             return new AccessInformationSecretsContractImpl(inner, this.manager());
         } else {
@@ -112,70 +119,43 @@ public final class TenantAccessImpl implements TenantAccess {
         }
     }
 
-    public Response<AccessInformationSecretsContract> listSecretsWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context) {
-        TenantAccessListSecretsResponse inner =
-            this.serviceClient().listSecretsWithResponse(resourceGroupName, serviceName, accessName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AccessInformationSecretsContractImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public AccessInformationContract getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        AccessIdName accessName = AccessIdName.fromString(Utils.getValueFromIdByName(id, "tenant"));
-        if (accessName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'tenant'.", id)));
+        String accessNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "tenant");
+        if (accessNameLocal == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'tenant'.", id)));
         }
+        AccessIdName accessName = AccessIdName.fromString(accessNameLocal);
         return this.getWithResponse(resourceGroupName, serviceName, accessName, Context.NONE).getValue();
     }
 
     public Response<AccessInformationContract> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        AccessIdName accessName = AccessIdName.fromString(Utils.getValueFromIdByName(id, "tenant"));
-        if (accessName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'tenant'.", id)));
+        String accessNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "tenant");
+        if (accessNameLocal == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'tenant'.", id)));
         }
+        AccessIdName accessName = AccessIdName.fromString(accessNameLocal);
         return this.getWithResponse(resourceGroupName, serviceName, accessName, context);
     }
 

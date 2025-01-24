@@ -7,31 +7,27 @@ package com.azure.resourcemanager.webpubsub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.fluent.models.SharedPrivateLinkResourceProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SharedPrivateLinkResourcePropertiesTests {
-    @Test
-    public void testDeserialize() {
-        SharedPrivateLinkResourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"groupId\":\"lcuhxwtctyqiklb\",\"privateLinkResourceId\":\"ovplw\",\"provisioningState\":\"Updating\",\"requestMessage\":\"gy\",\"status\":\"Rejected\"}")
-                .toObject(SharedPrivateLinkResourceProperties.class);
-        Assertions.assertEquals("lcuhxwtctyqiklb", model.groupId());
-        Assertions.assertEquals("ovplw", model.privateLinkResourceId());
-        Assertions.assertEquals("gy", model.requestMessage());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SharedPrivateLinkResourceProperties model = BinaryData.fromString(
+            "{\"groupId\":\"doamciodhkha\",\"privateLinkResourceId\":\"xkhnzbonlwnto\",\"provisioningState\":\"Succeeded\",\"requestMessage\":\"dwbwhkszzcmrvexz\",\"status\":\"Disconnected\"}")
+            .toObject(SharedPrivateLinkResourceProperties.class);
+        Assertions.assertEquals("doamciodhkha", model.groupId());
+        Assertions.assertEquals("xkhnzbonlwnto", model.privateLinkResourceId());
+        Assertions.assertEquals("dwbwhkszzcmrvexz", model.requestMessage());
     }
 
-    @Test
-    public void testSerialize() {
-        SharedPrivateLinkResourceProperties model =
-            new SharedPrivateLinkResourceProperties()
-                .withGroupId("lcuhxwtctyqiklb")
-                .withPrivateLinkResourceId("ovplw")
-                .withRequestMessage("gy");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SharedPrivateLinkResourceProperties model
+            = new SharedPrivateLinkResourceProperties().withGroupId("doamciodhkha")
+                .withPrivateLinkResourceId("xkhnzbonlwnto")
+                .withRequestMessage("dwbwhkszzcmrvexz");
         model = BinaryData.fromObject(model).toObject(SharedPrivateLinkResourceProperties.class);
-        Assertions.assertEquals("lcuhxwtctyqiklb", model.groupId());
-        Assertions.assertEquals("ovplw", model.privateLinkResourceId());
-        Assertions.assertEquals("gy", model.requestMessage());
+        Assertions.assertEquals("doamciodhkha", model.groupId());
+        Assertions.assertEquals("xkhnzbonlwnto", model.privateLinkResourceId());
+        Assertions.assertEquals("dwbwhkszzcmrvexz", model.requestMessage());
     }
 }

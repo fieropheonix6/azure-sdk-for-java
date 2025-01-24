@@ -5,36 +5,42 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Contains ServiceProviderProperties in an ExpressRouteCircuit. */
+/**
+ * Contains ServiceProviderProperties in an ExpressRouteCircuit.
+ */
 @Fluent
-public final class ExpressRouteCircuitServiceProviderProperties {
+public final class ExpressRouteCircuitServiceProviderProperties
+    implements JsonSerializable<ExpressRouteCircuitServiceProviderProperties> {
     /*
      * The serviceProviderName.
      */
-    @JsonProperty(value = "serviceProviderName")
     private String serviceProviderName;
 
     /*
      * The peering location.
      */
-    @JsonProperty(value = "peeringLocation")
     private String peeringLocation;
 
     /*
      * The BandwidthInMbps.
      */
-    @JsonProperty(value = "bandwidthInMbps")
     private Integer bandwidthInMbps;
 
-    /** Creates an instance of ExpressRouteCircuitServiceProviderProperties class. */
+    /**
+     * Creates an instance of ExpressRouteCircuitServiceProviderProperties class.
+     */
     public ExpressRouteCircuitServiceProviderProperties() {
     }
 
     /**
      * Get the serviceProviderName property: The serviceProviderName.
-     *
+     * 
      * @return the serviceProviderName value.
      */
     public String serviceProviderName() {
@@ -43,7 +49,7 @@ public final class ExpressRouteCircuitServiceProviderProperties {
 
     /**
      * Set the serviceProviderName property: The serviceProviderName.
-     *
+     * 
      * @param serviceProviderName the serviceProviderName value to set.
      * @return the ExpressRouteCircuitServiceProviderProperties object itself.
      */
@@ -54,7 +60,7 @@ public final class ExpressRouteCircuitServiceProviderProperties {
 
     /**
      * Get the peeringLocation property: The peering location.
-     *
+     * 
      * @return the peeringLocation value.
      */
     public String peeringLocation() {
@@ -63,7 +69,7 @@ public final class ExpressRouteCircuitServiceProviderProperties {
 
     /**
      * Set the peeringLocation property: The peering location.
-     *
+     * 
      * @param peeringLocation the peeringLocation value to set.
      * @return the ExpressRouteCircuitServiceProviderProperties object itself.
      */
@@ -74,7 +80,7 @@ public final class ExpressRouteCircuitServiceProviderProperties {
 
     /**
      * Get the bandwidthInMbps property: The BandwidthInMbps.
-     *
+     * 
      * @return the bandwidthInMbps value.
      */
     public Integer bandwidthInMbps() {
@@ -83,7 +89,7 @@ public final class ExpressRouteCircuitServiceProviderProperties {
 
     /**
      * Set the bandwidthInMbps property: The BandwidthInMbps.
-     *
+     * 
      * @param bandwidthInMbps the bandwidthInMbps value to set.
      * @return the ExpressRouteCircuitServiceProviderProperties object itself.
      */
@@ -94,9 +100,53 @@ public final class ExpressRouteCircuitServiceProviderProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceProviderName", this.serviceProviderName);
+        jsonWriter.writeStringField("peeringLocation", this.peeringLocation);
+        jsonWriter.writeNumberField("bandwidthInMbps", this.bandwidthInMbps);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteCircuitServiceProviderProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteCircuitServiceProviderProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRouteCircuitServiceProviderProperties.
+     */
+    public static ExpressRouteCircuitServiceProviderProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteCircuitServiceProviderProperties deserializedExpressRouteCircuitServiceProviderProperties
+                = new ExpressRouteCircuitServiceProviderProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceProviderName".equals(fieldName)) {
+                    deserializedExpressRouteCircuitServiceProviderProperties.serviceProviderName = reader.getString();
+                } else if ("peeringLocation".equals(fieldName)) {
+                    deserializedExpressRouteCircuitServiceProviderProperties.peeringLocation = reader.getString();
+                } else if ("bandwidthInMbps".equals(fieldName)) {
+                    deserializedExpressRouteCircuitServiceProviderProperties.bandwidthInMbps
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteCircuitServiceProviderProperties;
+        });
     }
 }

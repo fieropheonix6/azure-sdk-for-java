@@ -5,44 +5,49 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The routes table associated with the ExpressRouteCircuit. */
+/**
+ * The routes table associated with the ExpressRouteCircuit.
+ */
 @Fluent
-public final class ExpressRouteCrossConnectionRoutesTableSummary {
+public final class ExpressRouteCrossConnectionRoutesTableSummary
+    implements JsonSerializable<ExpressRouteCrossConnectionRoutesTableSummary> {
     /*
      * IP address of Neighbor router.
      */
-    @JsonProperty(value = "neighbor")
     private String neighbor;
 
     /*
      * Autonomous system number.
      */
-    @JsonProperty(value = "asn")
     private Integer asn;
 
     /*
      * The length of time that the BGP session has been in the Established state, or the current status if not in the
      * Established state.
      */
-    @JsonProperty(value = "upDown")
     private String upDown;
 
     /*
      * Current state of the BGP session, and the number of prefixes that have been received from a neighbor or peer
      * group.
      */
-    @JsonProperty(value = "stateOrPrefixesReceived")
     private String stateOrPrefixesReceived;
 
-    /** Creates an instance of ExpressRouteCrossConnectionRoutesTableSummary class. */
+    /**
+     * Creates an instance of ExpressRouteCrossConnectionRoutesTableSummary class.
+     */
     public ExpressRouteCrossConnectionRoutesTableSummary() {
     }
 
     /**
      * Get the neighbor property: IP address of Neighbor router.
-     *
+     * 
      * @return the neighbor value.
      */
     public String neighbor() {
@@ -51,7 +56,7 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
 
     /**
      * Set the neighbor property: IP address of Neighbor router.
-     *
+     * 
      * @param neighbor the neighbor value to set.
      * @return the ExpressRouteCrossConnectionRoutesTableSummary object itself.
      */
@@ -62,7 +67,7 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
 
     /**
      * Get the asn property: Autonomous system number.
-     *
+     * 
      * @return the asn value.
      */
     public Integer asn() {
@@ -71,7 +76,7 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
 
     /**
      * Set the asn property: Autonomous system number.
-     *
+     * 
      * @param asn the asn value to set.
      * @return the ExpressRouteCrossConnectionRoutesTableSummary object itself.
      */
@@ -83,7 +88,7 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
     /**
      * Get the upDown property: The length of time that the BGP session has been in the Established state, or the
      * current status if not in the Established state.
-     *
+     * 
      * @return the upDown value.
      */
     public String upDown() {
@@ -93,7 +98,7 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
     /**
      * Set the upDown property: The length of time that the BGP session has been in the Established state, or the
      * current status if not in the Established state.
-     *
+     * 
      * @param upDown the upDown value to set.
      * @return the ExpressRouteCrossConnectionRoutesTableSummary object itself.
      */
@@ -105,7 +110,7 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
     /**
      * Get the stateOrPrefixesReceived property: Current state of the BGP session, and the number of prefixes that have
      * been received from a neighbor or peer group.
-     *
+     * 
      * @return the stateOrPrefixesReceived value.
      */
     public String stateOrPrefixesReceived() {
@@ -115,7 +120,7 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
     /**
      * Set the stateOrPrefixesReceived property: Current state of the BGP session, and the number of prefixes that have
      * been received from a neighbor or peer group.
-     *
+     * 
      * @param stateOrPrefixesReceived the stateOrPrefixesReceived value to set.
      * @return the ExpressRouteCrossConnectionRoutesTableSummary object itself.
      */
@@ -126,9 +131,57 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("neighbor", this.neighbor);
+        jsonWriter.writeNumberField("asn", this.asn);
+        jsonWriter.writeStringField("upDown", this.upDown);
+        jsonWriter.writeStringField("stateOrPrefixesReceived", this.stateOrPrefixesReceived);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteCrossConnectionRoutesTableSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteCrossConnectionRoutesTableSummary if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRouteCrossConnectionRoutesTableSummary.
+     */
+    public static ExpressRouteCrossConnectionRoutesTableSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteCrossConnectionRoutesTableSummary deserializedExpressRouteCrossConnectionRoutesTableSummary
+                = new ExpressRouteCrossConnectionRoutesTableSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("neighbor".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionRoutesTableSummary.neighbor = reader.getString();
+                } else if ("asn".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionRoutesTableSummary.asn
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("upDown".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionRoutesTableSummary.upDown = reader.getString();
+                } else if ("stateOrPrefixesReceived".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionRoutesTableSummary.stateOrPrefixesReceived
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteCrossConnectionRoutesTableSummary;
+        });
     }
 }

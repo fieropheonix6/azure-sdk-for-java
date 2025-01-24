@@ -6,20 +6,17 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeListResult;
-import org.junit.jupiter.api.Test;
 
 public final class ProjectEnvironmentTypeListResultTests {
-    @Test
-    public void testDeserialize() {
-        ProjectEnvironmentTypeListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"RolloutInProgress\",\"deploymentTargetId\":\"ewrmjmwvvjektc\",\"status\":\"Enabled\",\"userRoleAssignments\":{}},\"tags\":{\"ylihkaetckt\":\"rsffrzpwvlqdqgbi\"},\"identity\":{\"principalId\":\"c5356d2b-50a9-4bce-aa69-bd5136611e36\",\"tenantId\":\"81fe2a9f-4a52-4893-a099-bf77790a6267\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"nkymuctqhjfbebrj\",\"id\":\"erfuwuttt\",\"name\":\"fvjrbirphxepcy\",\"type\":\"ahfn\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"deploymentTargetId\":\"xjvuujqgidokg\",\"status\":\"Disabled\",\"userRoleAssignments\":{}},\"tags\":{\"jeszzhbijhtxfv\":\"vcltbgsncgh\"},\"identity\":{\"principalId\":\"617ea177-add2-4ead-8c99-52f164d43527\",\"tenantId\":\"06f279f7-934a-45bb-b1b8-228e412f0dd6\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"nehmpvecx\",\"id\":\"debfqkkrbmpukgri\",\"name\":\"flz\",\"type\":\"fbxzpuzycisp\"}],\"nextLink\":\"zahmgkbrpyydhibn\"}")
-                .toObject(ProjectEnvironmentTypeListResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ProjectEnvironmentTypeListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"StorageProvisioningFailed\",\"environmentCount\":581406254,\"deploymentTargetId\":\"auvjfdxxivet\",\"displayName\":\"cqaqtdoqmcbx\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{\"lqbhsf\":{}}},\"userRoleAssignments\":{\"bfovasrruvwbhsq\":{\"roles\":{\"tkblmpewww\":{},\"bkrvrnsvshqj\":{},\"hxcr\":{}}},\"otftpvjzbexilz\":{\"roles\":{\"bcgjbirxbp\":{},\"bsrfbj\":{},\"dtws\":{}}}}},\"tags\":{\"aruoujmkcjhwqyt\":\"qqnvwpmq\",\"bnw\":\"r\",\"enq\":\"ewgdrjervn\",\"ndoygmifthnzdnd\":\"eh\"},\"identity\":{\"principalId\":\"cf5b13a1-c0b5-42cc-ab80-1dfa16b6fdde\",\"tenantId\":\"839c5364-3503-4463-a751-116c6cd8ee94\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ynduha\":{\"principalId\":\"7bad815f-8cc3-4136-bb9e-24b32ffe73f2\",\"clientId\":\"30510258-b217-4fe8-a63f-42296890a2ec\"}}},\"location\":\"qlkth\",\"id\":\"aqolbgycduiertg\",\"name\":\"cym\",\"type\":\"aolps\"},{\"properties\":{\"provisioningState\":\"RolloutInProgress\",\"environmentCount\":718226275,\"deploymentTargetId\":\"dnbbglzps\",\"displayName\":\"ydmcwyhzdxssa\",\"status\":\"Disabled\",\"creatorRoleAssignment\":{\"roles\":{\"dfznudaodv\":{},\"zbn\":{},\"blylpstdbh\":{},\"xsrz\":{}}},\"userRoleAssignments\":{\"tmweriofzpyq\":{\"roles\":{\"rsc\":{},\"ntnev\":{},\"iwjmygtdssls\":{}}},\"dnkwwtppjflcxog\":{\"roles\":{\"wab\":{},\"ets\":{},\"hszhedplvwiwu\":{},\"mwmbes\":{}}},\"bdagxt\":{\"roles\":{\"onz\":{},\"nsikvmkqzeqqkdl\":{},\"fzxmhhvhgureodkw\":{}}},\"ripl\":{\"roles\":{\"dxbx\":{},\"akbogqxndlkzgxh\":{}}}}},\"tags\":{\"wlrbqtkoievseo\":\"dxunkbebxmubyyn\",\"wzizxbmpgcjefuzm\":\"gqrlltmuwla\"},\"identity\":{\"principalId\":\"5ce37899-930f-40f6-ae73-5d90b0678c9c\",\"tenantId\":\"608a21be-60de-417b-b80e-12a0383e0dd9\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"orppxebmnzbtb\":{\"principalId\":\"d88a12c8-3a0d-42b3-861d-c302a40df5f8\",\"clientId\":\"8a660f7f-9ef0-4989-a5ab-16a24d79fb68\"}}},\"location\":\"pglkf\",\"id\":\"hdneuelfph\",\"name\":\"dyhtozfikdowwquu\",\"type\":\"xzxcl\"}],\"nextLink\":\"thhqzonosggbh\"}")
+            .toObject(ProjectEnvironmentTypeListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProjectEnvironmentTypeListResult model = new ProjectEnvironmentTypeListResult();
         model = BinaryData.fromObject(model).toObject(ProjectEnvironmentTypeListResult.class);
     }

@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** VPN client Processor Architecture. */
+/**
+ * VPN client Processor Architecture.
+ */
 public final class ProcessorArchitecture extends ExpandableStringEnum<ProcessorArchitecture> {
-    /** Static value Amd64 for ProcessorArchitecture. */
+    /**
+     * Static value Amd64 for ProcessorArchitecture.
+     */
     public static final ProcessorArchitecture AMD64 = fromString("Amd64");
 
-    /** Static value X86 for ProcessorArchitecture. */
+    /**
+     * Static value X86 for ProcessorArchitecture.
+     */
     public static final ProcessorArchitecture X86 = fromString("X86");
 
     /**
+     * Creates a new instance of ProcessorArchitecture value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProcessorArchitecture() {
+    }
+
+    /**
      * Creates or finds a ProcessorArchitecture from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProcessorArchitecture.
      */
-    @JsonCreator
     public static ProcessorArchitecture fromString(String name) {
         return fromString(name, ProcessorArchitecture.class);
     }
 
     /**
      * Gets known ProcessorArchitecture values.
-     *
+     * 
      * @return known ProcessorArchitecture values.
      */
     public static Collection<ProcessorArchitecture> values() {

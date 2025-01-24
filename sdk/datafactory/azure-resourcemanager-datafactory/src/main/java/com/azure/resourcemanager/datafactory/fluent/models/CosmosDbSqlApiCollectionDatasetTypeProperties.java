@@ -6,25 +6,33 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** CosmosDB (SQL API) Collection dataset properties. */
+/**
+ * CosmosDB (SQL API) Collection dataset properties.
+ */
 @Fluent
-public final class CosmosDbSqlApiCollectionDatasetTypeProperties {
+public final class CosmosDbSqlApiCollectionDatasetTypeProperties
+    implements JsonSerializable<CosmosDbSqlApiCollectionDatasetTypeProperties> {
     /*
      * CosmosDB (SQL API) collection name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "collectionName", required = true)
     private Object collectionName;
 
-    /** Creates an instance of CosmosDbSqlApiCollectionDatasetTypeProperties class. */
+    /**
+     * Creates an instance of CosmosDbSqlApiCollectionDatasetTypeProperties class.
+     */
     public CosmosDbSqlApiCollectionDatasetTypeProperties() {
     }
 
     /**
      * Get the collectionName property: CosmosDB (SQL API) collection name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the collectionName value.
      */
     public Object collectionName() {
@@ -34,7 +42,7 @@ public final class CosmosDbSqlApiCollectionDatasetTypeProperties {
     /**
      * Set the collectionName property: CosmosDB (SQL API) collection name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param collectionName the collectionName value to set.
      * @return the CosmosDbSqlApiCollectionDatasetTypeProperties object itself.
      */
@@ -45,18 +53,54 @@ public final class CosmosDbSqlApiCollectionDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (collectionName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property collectionName in model"
-                            + " CosmosDbSqlApiCollectionDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property collectionName in model CosmosDbSqlApiCollectionDatasetTypeProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CosmosDbSqlApiCollectionDatasetTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("collectionName", this.collectionName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CosmosDbSqlApiCollectionDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CosmosDbSqlApiCollectionDatasetTypeProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CosmosDbSqlApiCollectionDatasetTypeProperties.
+     */
+    public static CosmosDbSqlApiCollectionDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CosmosDbSqlApiCollectionDatasetTypeProperties deserializedCosmosDbSqlApiCollectionDatasetTypeProperties
+                = new CosmosDbSqlApiCollectionDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("collectionName".equals(fieldName)) {
+                    deserializedCosmosDbSqlApiCollectionDatasetTypeProperties.collectionName = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCosmosDbSqlApiCollectionDatasetTypeProperties;
+        });
+    }
 }

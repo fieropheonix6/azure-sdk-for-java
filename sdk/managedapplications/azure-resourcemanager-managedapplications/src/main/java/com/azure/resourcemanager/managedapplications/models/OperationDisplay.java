@@ -4,38 +4,51 @@
 
 package com.azure.resourcemanager.managedapplications.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The object that represents the operation. */
-@Fluent
-public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
+/**
+ * Localized display information for this particular operation.
+ */
+@Immutable
+public final class OperationDisplay implements JsonSerializable<OperationDisplay> {
     /*
-     * Service provider: Microsoft.Solutions
+     * The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or
+     * "Microsoft Compute".
      */
-    @JsonProperty(value = "provider")
     private String provider;
 
     /*
-     * Resource on which the operation is performed: Application, JitRequest,
-     * etc.
+     * The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or
+     * "Job Schedule Collections".
      */
-    @JsonProperty(value = "resource")
     private String resource;
 
     /*
-     * Operation type: Read, write, delete, etc.
+     * The concise, localized friendly name for the operation; suitable for dropdowns. E.g.
+     * "Create or Update Virtual Machine", "Restart Virtual Machine".
      */
-    @JsonProperty(value = "operation")
     private String operation;
 
+    /*
+     * The short, localized friendly description of the operation; suitable for tool tips and detailed views.
+     */
+    private String description;
+
     /**
-     * Get the provider property: Service provider: Microsoft.Solutions.
-     *
+     * Creates an instance of OperationDisplay class.
+     */
+    public OperationDisplay() {
+    }
+
+    /**
+     * Get the provider property: The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring
+     * Insights" or "Microsoft Compute".
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -43,19 +56,9 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the provider property: Service provider: Microsoft.Solutions.
-     *
-     * @param provider the provider value to set.
-     * @return the OperationDisplay object itself.
-     */
-    public OperationDisplay withProvider(String provider) {
-        this.provider = provider;
-        return this;
-    }
-
-    /**
-     * Get the resource property: Resource on which the operation is performed: Application, JitRequest, etc.
-     *
+     * Get the resource property: The localized friendly name of the resource type related to this operation. E.g.
+     * "Virtual Machines" or "Job Schedule Collections".
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -63,19 +66,9 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the resource property: Resource on which the operation is performed: Application, JitRequest, etc.
-     *
-     * @param resource the resource value to set.
-     * @return the OperationDisplay object itself.
-     */
-    public OperationDisplay withResource(String resource) {
-        this.resource = resource;
-        return this;
-    }
-
-    /**
-     * Get the operation property: Operation type: Read, write, delete, etc.
-     *
+     * Get the operation property: The concise, localized friendly name for the operation; suitable for dropdowns. E.g.
+     * "Create or Update Virtual Machine", "Restart Virtual Machine".
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -83,21 +76,61 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the operation property: Operation type: Read, write, delete, etc.
-     *
-     * @param operation the operation value to set.
-     * @return the OperationDisplay object itself.
+     * Get the description property: The short, localized friendly description of the operation; suitable for tool tips
+     * and detailed views.
+     * 
+     * @return the description value.
      */
-    public OperationDisplay withOperation(String operation) {
-        this.operation = operation;
-        return this;
+    public String description() {
+        return this.description;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationDisplay from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationDisplay if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationDisplay.
+     */
+    public static OperationDisplay fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationDisplay deserializedOperationDisplay = new OperationDisplay();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedOperationDisplay.provider = reader.getString();
+                } else if ("resource".equals(fieldName)) {
+                    deserializedOperationDisplay.resource = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedOperationDisplay.operation = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedOperationDisplay.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationDisplay;
+        });
     }
 }

@@ -3,50 +3,41 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.implementation.CosmosBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
+import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 /**
  * Encapsulates options that can be specified for operations used in Bulk execution.
  * It can be passed while processing bulk operations.
  */
 public final class CosmosBulkExecutionOptions {
-    private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
-    private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
-    private double maxMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_RETRY_RATE;
-    private double minMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MIN_MICRO_BATCH_RETRY_RATE;
-    private Duration maxMicroBatchInterval = Duration.ofMillis(
-        BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS);
-    private final Object legacyBatchScopedContext;
-    private final CosmosBulkExecutionThresholdsState thresholds;
-    private Integer maxConcurrentCosmosPartitions = null;
-    private OperationContextAndListenerTuple operationContextAndListenerTuple;
-    private Map<String, String> customOptions;
-    private String throughputControlGroupName;
+    private final CosmosBulkExecutionOptionsImpl actualRequestOptions;
+    private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
+
+    CosmosBulkExecutionOptions(CosmosBulkExecutionOptions toBeCloned) {
+        this.actualRequestOptions = new CosmosBulkExecutionOptionsImpl(toBeCloned.actualRequestOptions);
+    }
 
     /**
      * Constructor
      * @param thresholdsState thresholds
      */
     CosmosBulkExecutionOptions(Object legacyBatchScopedContext, CosmosBulkExecutionThresholdsState thresholdsState, Map<String, String> customOptions) {
-        this.legacyBatchScopedContext = legacyBatchScopedContext;
-        if (thresholdsState == null) {
-            this.thresholds = new CosmosBulkExecutionThresholdsState();
-        } else {
-            this.thresholds = thresholdsState;
-        }
-        if (customOptions == null) {
-            this.customOptions = new HashMap<>();
-        } else {
-            this.customOptions = customOptions;
-        }
+       this.actualRequestOptions = new CosmosBulkExecutionOptionsImpl(legacyBatchScopedContext, thresholdsState, customOptions);
     }
 
     /**
@@ -65,49 +56,103 @@ public final class CosmosBulkExecutionOptions {
     }
 
     /**
-     * The maximum batching size for bulk operations. This value determines number of operations executed in one
-     * request. There is an upper limit on both number of operations and sum of size of operations. Any overflow is
-     * internally retried.
-     *
-     * Another instance is: Currently we support a max limit of 200KB, and user select batch size to be 100 and individual
-     * documents are of size 20KB, approximately 90 operations will always be retried. So it's better to choose a batch
-     * size of 10 here if user is aware of there workload. If sizes are totally unknown and user cannot put a number on it
-     * then retries are handled, so no issues as such.
-     *
-     * If the retry rate exceeds `getMaxMicroBatchInterval` the micro batch size gets dynamically reduced at runtime
-     * @return micro batch size
+     * Gets the initial size of micro batches that will be sent to the backend. The size of micro batches will
+     * be dynamically adjusted based on the throttling rate. The default value is 100 - so, it starts with relatively
+     * large micro batches and when the throttling rate is too high, it will reduce the batch size. When the
+     * short spikes of throttling before dynamically reducing the initial batch size results in side effects for other
+     * workloads the initial micro batch size can be reduced - for example set to 1 - at which point it would
+     * start with small micro batches and then increase the batch size over time.
+     * @return the initial micro batch size
      */
-    int getMaxMicroBatchSize() {
-        return maxMicroBatchSize;
+    public int getInitialMicroBatchSize() {
+        return actualRequestOptions.getInitialMicroBatchSize();
     }
 
     /**
-     * The maximum batching size for bulk operations. This value determines number of operations executed in one
-     * request. There is an upper limit on both number of operations and sum of size of operations. Any overflow is
-     * internally retried.
+     * Sets the initial size of micro batches that will be sent to the backend. The size of micro batches will
+     * be dynamically adjusted based on the throttling rate. The default value is 100 - so, it starts with relatively
+     * large micro batches and when the throttling rate is too high, it will reduce the batch size. When the
+     * short spikes of throttling before dynamically reducing the initial batch size results in side effects for other
+     * workloads the initial micro batch size can be reduced - for example set to 1 - at which point it would
+     * start with small micro batches and then increase the batch size over time.
+     * @param initialMicroBatchSize the initial micro batch size to be used. Must be a positive integer.
+     * @return the bulk execution options.
+     */
+    public CosmosBulkExecutionOptions setInitialMicroBatchSize(int initialMicroBatchSize) {
+        this.actualRequestOptions.setInitialMicroBatchSize(initialMicroBatchSize);
+        return this;
+    }
+
+    /**
+     * The maximum batching request payload size in bytes for bulk operations.
      *
-     * Another instance is: Currently we support a max limit of 200KB, and user select batch size to be 100 and individual
-     * documents are of size 20KB, approximately 90 operations will always be retried. So it's better to choose a batch
-     * size of 10 here if user is aware of there workload. If sizes are totally unknown and user cannot put a number on it
-     * then retries are handled, so no issues as such.
+     * @return maximum micro batch payload size in bytes
+     */
+    int getMaxMicroBatchPayloadSizeInBytes() {
+        return this.actualRequestOptions.getMaxMicroBatchPayloadSizeInBytes();
+    }
+
+    /**
+     * The maximum batching payload size in bytes for bulk operations. Once queued docs exceed this values the micro
+     * batch will be flushed to the wire.
      *
-     * If the retry rate exceeds `getMaxMicroBatchInterval` the micro batch size gets dynamically reduced at runtime
-     *
-     * @param maxMicroBatchSize batching size.
+     * @param maxMicroBatchPayloadSizeInBytes maximum payload size of a micro batch in bytes.
      *
      * @return the bulk processing options.
      */
-    CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
-        this.maxMicroBatchSize = maxMicroBatchSize;
+    CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(int maxMicroBatchPayloadSizeInBytes) {
+        this.actualRequestOptions.setMaxMicroBatchPayloadSizeInBytes(maxMicroBatchPayloadSizeInBytes);
+        return this;
+    }
+
+    /**
+     * The maximum batch size for bulk operations. Once queued docs exceed this value, the micro
+     * batch will be flushed to the wire.
+     *
+     * @return the max micro batch size.
+     */
+    public int getMaxMicroBatchSize() {
+        return this.actualRequestOptions.getMaxMicroBatchSize();
+    }
+
+    /**
+     * The maximum batch size for bulk operations. Once queued docs exceed this value, the micro
+     * batch will be flushed to the wire.
+     *
+     * @param maxMicroBatchSize maximum batching size.
+     * @return the bulk processing options.
+     */
+    public CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
+        this.actualRequestOptions.setMaxMicroBatchSize(maxMicroBatchSize);
+        return this;
+    }
+
+    /**
+     * Gets the custom item serializer defined for this instance of request options
+     * @return the custom item serializer
+     */
+    public CosmosItemSerializer getCustomItemSerializer() {
+        return this.actualRequestOptions.getCustomItemSerializer();
+    }
+
+    /**
+     * Allows specifying a custom item serializer to be used for this operation. If the serializer
+     * on the request options is null, the serializer on CosmosClientBuilder is used. If both serializers
+     * are null (the default), an internal Jackson ObjectMapper is ued for serialization/deserialization.
+     * @param customItemSerializer the custom item serializer for this operation
+     * @return  the CosmosItemRequestOptions.
+     */
+    public CosmosBulkExecutionOptions setCustomItemSerializer(CosmosItemSerializer customItemSerializer) {
+        this.actualRequestOptions.setCustomItemSerializer(customItemSerializer);
         return this;
     }
 
     Integer getMaxConcurrentCosmosPartitions() {
-        return this.maxConcurrentCosmosPartitions;
+        return this.actualRequestOptions.getMaxConcurrentCosmosPartitions();
     }
 
     CosmosBulkExecutionOptions setMaxConcurrentCosmosPartitions(int maxConcurrentCosmosPartitions) {
-        this.maxConcurrentCosmosPartitions = maxConcurrentCosmosPartitions;
+        this.actualRequestOptions.setMaxConcurrentCosmosPartitions(maxConcurrentCosmosPartitions);
         return this;
     }
 
@@ -118,7 +163,7 @@ public final class CosmosBulkExecutionOptions {
      * @return max micro batch concurrency
      */
     public int getMaxMicroBatchConcurrency() {
-        return maxMicroBatchConcurrency;
+        return this.actualRequestOptions.getMaxMicroBatchConcurrency();
     }
 
     /**
@@ -135,10 +180,7 @@ public final class CosmosBulkExecutionOptions {
      * @return the bulk processing options.
      */
     public CosmosBulkExecutionOptions setMaxMicroBatchConcurrency(int maxMicroBatchConcurrency) {
-        checkArgument(
-            maxMicroBatchConcurrency >= 1 && maxMicroBatchConcurrency <= 5,
-            "maxMicroBatchConcurrency should be between [1, 5]");
-        this.maxMicroBatchConcurrency = maxMicroBatchConcurrency;
+        this.actualRequestOptions.setMaxMicroBatchConcurrency(maxMicroBatchConcurrency);
         return this;
     }
 
@@ -148,7 +190,7 @@ public final class CosmosBulkExecutionOptions {
      * @return max micro batch interval
      */
     Duration getMaxMicroBatchInterval() {
-        return maxMicroBatchInterval;
+        return this.actualRequestOptions.getMaxMicroBatchInterval();
     }
 
     /**
@@ -159,7 +201,7 @@ public final class CosmosBulkExecutionOptions {
      * @return max targeted micro batch retry rate
      */
     double getMaxTargetedMicroBatchRetryRate() {
-        return this.maxMicroBatchRetryRate;
+        return this.actualRequestOptions.getMaxTargetedMicroBatchRetryRate();
     }
 
     /**
@@ -175,16 +217,7 @@ public final class CosmosBulkExecutionOptions {
      * @return the bulk processing options.
      */
     CosmosBulkExecutionOptions setTargetedMicroBatchRetryRate(double minRetryRate, double maxRetryRate) {
-        if (minRetryRate < 0) {
-            throw new IllegalArgumentException("The maxRetryRate must not be a negative value");
-        }
-
-        if (minRetryRate > maxRetryRate) {
-            throw new IllegalArgumentException("The minRetryRate must not exceed the maxRetryRate");
-        }
-
-        this.maxMicroBatchRetryRate = maxRetryRate;
-        this.minMicroBatchRetryRate = minRetryRate;
+        this.actualRequestOptions.setTargetedMicroBatchRetryRate(minRetryRate, maxRetryRate);
         return this;
     }
 
@@ -196,7 +229,7 @@ public final class CosmosBulkExecutionOptions {
      * @return min targeted micro batch retry rate
      */
     double getMinTargetedMicroBatchRetryRate() {
-        return this.minMicroBatchRetryRate;
+        return this.actualRequestOptions.getMinTargetedMicroBatchRetryRate();
     }
 
     /**
@@ -204,7 +237,7 @@ public final class CosmosBulkExecutionOptions {
      * @return batch context
      */
     Object getLegacyBatchScopedContext() {
-        return this.legacyBatchScopedContext;
+        return this.actualRequestOptions.getLegacyBatchScopedContext();
     }
 
     /**
@@ -212,15 +245,15 @@ public final class CosmosBulkExecutionOptions {
      * @return thresholds
      */
     public CosmosBulkExecutionThresholdsState getThresholdsState() {
-        return this.thresholds;
+        return this.actualRequestOptions.getThresholdsState();
     }
 
     OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
-        return this.operationContextAndListenerTuple;
+        return this.actualRequestOptions.getOperationContextAndListenerTuple();
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
-        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+        this.actualRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
     }
 
     /**
@@ -231,10 +264,7 @@ public final class CosmosBulkExecutionOptions {
      * @return the CosmosBulkExecutionOptions.
      */
     CosmosBulkExecutionOptions setHeader(String name, String value) {
-        if (this.customOptions == null) {
-            this.customOptions = new HashMap<>();
-        }
-        this.customOptions.put(name, value);
+        this.actualRequestOptions.setHeader(name, value);
         return this;
     }
 
@@ -244,7 +274,7 @@ public final class CosmosBulkExecutionOptions {
      * @return Map of custom request options
      */
     Map<String, String> getHeaders() {
-        return this.customOptions;
+        return this.actualRequestOptions.getHeaders();
     }
 
     /**
@@ -253,7 +283,7 @@ public final class CosmosBulkExecutionOptions {
      * @return the throughput control group name.
      */
     public String getThroughputControlGroupName() {
-        return this.throughputControlGroupName;
+        return this.actualRequestOptions.getThroughputControlGroupName();
     }
 
     /**
@@ -263,10 +293,83 @@ public final class CosmosBulkExecutionOptions {
      * @return the CosmosBulkExecutionOptions.
      */
     public CosmosBulkExecutionOptions setThroughputControlGroupName(String throughputControlGroupName) {
-        this.throughputControlGroupName = throughputControlGroupName;
+        this.actualRequestOptions.setThroughputControlGroupName(throughputControlGroupName);
+        return this;
+    }
+
+    /**
+     * List of regions to exclude for the request/retries. Example "East US" or "East US, West US"
+     * These regions will be excluded from the preferred regions list
+     *
+     * @param excludeRegions list of regions
+     * @return the {@link CosmosBulkExecutionOptions}
+     */
+    public CosmosBulkExecutionOptions setExcludedRegions(List<String> excludeRegions) {
+        this.actualRequestOptions.setExcludedRegions(excludeRegions);
+        return this;
+    }
+
+    /**
+     * Gets the list of regions to be excluded for the request/retries. These regions are excluded
+     * from the preferred region list.
+     *
+     * @return a list of excluded regions
+     * */
+    public List<String> getExcludedRegions() {
+        return this.actualRequestOptions.getExcludedRegions();
+    }
+
+    void setDiagnosticsTracker(BulkExecutorDiagnosticsTracker tracker) {
+        this.actualRequestOptions.setDiagnosticsTracker(tracker);
+    }
+
+    BulkExecutorDiagnosticsTracker getDiagnosticsTracker() {
+        return this.actualRequestOptions.getDiagnosticsTracker();
+    }
+
+    /**
+     * Sets the custom ids.
+     *
+     * @param keywordIdentifiers the custom ids.
+     * @return the current request options.
+     */
+    public CosmosBulkExecutionOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        if (keywordIdentifiers != null) {
+            this.actualRequestOptions.setKeywordIdentifiers(Collections.unmodifiableSet(keywordIdentifiers));
+        } else {
+            this.actualRequestOptions.setKeywordIdentifiers(EMPTY_KEYWORD_IDENTIFIERS);
+        }
+        return this;
+    }
+
+    /**
+     * Gets the custom ids.
+     *
+     * @return set of custom ids.
+     */
+    public Set<String> getKeywordIdentifiers() {
+        return this.actualRequestOptions.getKeywordIdentifiers();
+    }
+
+    CosmosBulkExecutionOptionsImpl getImpl() {
+        return this.actualRequestOptions;
+    }
+
+    CosmosBulkExecutionOptions setSchedulerOverride(Scheduler customScheduler) {
+        this.actualRequestOptions.setSchedulerOverride(customScheduler);
+        return this;
+    }
+
+    CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig() {
+        return this.actualRequestOptions.getCosmosEndToEndLatencyPolicyConfig();
+    }
+
+    CosmosBulkExecutionOptions setEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cfg) {
+        this.actualRequestOptions.setCosmosEndToEndLatencyPolicyConfig(cfg);
 
         return this;
     }
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
@@ -274,93 +377,14 @@ public final class CosmosBulkExecutionOptions {
     static void initialize() {
         ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.setCosmosBulkExecutionOptionsAccessor(
             new ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.CosmosBulkExecutionOptionsAccessor() {
-
-                @Override
-                public void setOperationContext(CosmosBulkExecutionOptions options,
-                                                OperationContextAndListenerTuple operationContextAndListenerTuple) {
-                    options.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
+                public CosmosBulkExecutionOptions clone(CosmosBulkExecutionOptions toBeCloned) {
+                    return new CosmosBulkExecutionOptions(toBeCloned);
                 }
 
                 @Override
-                public OperationContextAndListenerTuple getOperationContext(CosmosBulkExecutionOptions options) {
-                    return options.getOperationContextAndListenerTuple();
+                public CosmosBulkExecutionOptionsImpl getImpl(CosmosBulkExecutionOptions options) {
+                    return options.getImpl();
                 }
-
-                @Override
-                @SuppressWarnings({"unchecked"})
-                public <T> T getLegacyBatchScopedContext(CosmosBulkExecutionOptions options) {
-                    return (T)options.getLegacyBatchScopedContext();
-                }
-
-                @Override
-                public double getMinTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options) {
-                    return options.getMinTargetedMicroBatchRetryRate();
-                }
-
-                @Override
-                public double getMaxTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options) {
-                    return options.getMaxTargetedMicroBatchRetryRate();
-                }
-
-                @Override
-                public int getMaxMicroBatchSize(CosmosBulkExecutionOptions options) {
-                    return options.getMaxMicroBatchSize();
-                }
-
-                @Override
-                public CosmosBulkExecutionOptions setMaxMicroBatchSize(
-                    CosmosBulkExecutionOptions options,
-                    int maxMicroBatchSize) {
-
-                    return options.setMaxMicroBatchSize(maxMicroBatchSize);
-                }
-
-                @Override
-                public int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options) {
-                    return options.getMaxMicroBatchConcurrency();
-                }
-
-                @Override
-                public Integer getMaxConcurrentCosmosPartitions(CosmosBulkExecutionOptions options) {
-                    return options.getMaxConcurrentCosmosPartitions();
-                }
-
-                @Override
-                public CosmosBulkExecutionOptions setMaxConcurrentCosmosPartitions(
-                    CosmosBulkExecutionOptions options, int maxConcurrentCosmosPartitions) {
-                    return options.setMaxConcurrentCosmosPartitions(maxConcurrentCosmosPartitions);
-                }
-
-                @Override
-                public Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options) {
-                    return options.getMaxMicroBatchInterval();
-                }
-
-                @Override
-                public CosmosBulkExecutionOptions setTargetedMicroBatchRetryRate(
-                    CosmosBulkExecutionOptions options,
-                    double minRetryRate,
-                    double maxRetryRate) {
-
-                    return options.setTargetedMicroBatchRetryRate(minRetryRate, maxRetryRate);
-                }
-
-                @Override
-                public CosmosBulkExecutionOptions setHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions,
-                                                            String name, String value) {
-                    return cosmosBulkExecutionOptions.setHeader(name, value);
-                }
-
-                @Override
-                public Map<String, String> getHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
-                    return cosmosBulkExecutionOptions.getHeaders();
-                }
-
-                @Override
-                public Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
-                    return cosmosBulkExecutionOptions.customOptions;
-                }
-
             });
     }
 

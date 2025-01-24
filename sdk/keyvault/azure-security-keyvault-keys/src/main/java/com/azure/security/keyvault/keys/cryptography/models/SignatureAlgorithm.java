@@ -3,11 +3,9 @@
 
 package com.azure.security.keyvault.keys.cryptography.models;
 
-import java.util.Collection;
-
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
+import java.util.Collection;
 
 /**
  * Defines values for SignatureAlgorithm.
@@ -65,9 +63,16 @@ public final class SignatureAlgorithm extends ExpandableStringEnum<SignatureAlgo
     public static final SignatureAlgorithm ES256K = fromString("ES256K");
 
     /**
-     * Static value EdDSA for SignatureAlgorithm.
+     * Creates a new instance of {@link SignatureAlgorithm} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link SignatureAlgorithm} which doesn't
+     * have a String enum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static final SignatureAlgorithm EDDSA = fromString("EdDSA");
+    @Deprecated
+    public SignatureAlgorithm() {
+    }
 
     /**
      * Creates or finds a SignatureAlgorithm from its string representation.
@@ -75,12 +80,13 @@ public final class SignatureAlgorithm extends ExpandableStringEnum<SignatureAlgo
      * @param name a name to look for.
      * @return the corresponding SignatureAlgorithm.
      */
-    @JsonCreator
     public static SignatureAlgorithm fromString(String name) {
         return fromString(name, SignatureAlgorithm.class);
     }
 
     /**
+     * Gets the known SignatureAlgorithm values.
+     *
      * @return known SignatureAlgorithm values.
      */
     public static Collection<SignatureAlgorithm> values() {

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.batch.fluent.models.CertificateInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Values returned by the List operation. */
+/**
+ * Values returned by the List operation.
+ */
 @Fluent
-public final class ListCertificatesResult {
+public final class ListCertificatesResult implements JsonSerializable<ListCertificatesResult> {
     /*
      * The collection of returned certificates.
      */
-    @JsonProperty(value = "value")
     private List<CertificateInner> value;
 
     /*
      * The continuation token.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ListCertificatesResult class. */
+    /**
+     * Creates an instance of ListCertificatesResult class.
+     */
     public ListCertificatesResult() {
     }
 
     /**
      * Get the value property: The collection of returned certificates.
-     *
+     * 
      * @return the value value.
      */
     public List<CertificateInner> value() {
@@ -39,7 +45,7 @@ public final class ListCertificatesResult {
 
     /**
      * Set the value property: The collection of returned certificates.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListCertificatesResult object itself.
      */
@@ -50,7 +56,7 @@ public final class ListCertificatesResult {
 
     /**
      * Get the nextLink property: The continuation token.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ListCertificatesResult {
 
     /**
      * Set the nextLink property: The continuation token.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListCertificatesResult object itself.
      */
@@ -70,12 +76,52 @@ public final class ListCertificatesResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListCertificatesResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListCertificatesResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListCertificatesResult.
+     */
+    public static ListCertificatesResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListCertificatesResult deserializedListCertificatesResult = new ListCertificatesResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CertificateInner> value = reader.readArray(reader1 -> CertificateInner.fromJson(reader1));
+                    deserializedListCertificatesResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedListCertificatesResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListCertificatesResult;
+        });
     }
 }

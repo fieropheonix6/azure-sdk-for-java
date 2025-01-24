@@ -6,39 +6,55 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Class encapsulating restore target parameters. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("RestoreTargetInfo")
+/**
+ * Class encapsulating restore target parameters.
+ */
 @Fluent
 public final class RestoreTargetInfo extends RestoreTargetInfoBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestoreTargetInfo.class);
+    /*
+     * Type of Datasource object, used to initialize the right inherited type
+     */
+    private String objectType = "RestoreTargetInfo";
 
     /*
-     * Datasource Information of target DS
+     * Information of target DS
      */
-    @JsonProperty(value = "datasourceInfo", required = true)
     private Datasource datasourceInfo;
 
     /*
-     * DatasourceSet Information of target DS Set
+     * Information of target DS Set
      */
-    @JsonProperty(value = "datasourceSetInfo")
     private DatasourceSet datasourceSetInfo;
 
     /*
      * Credentials to use to authenticate with data source provider.
      */
-    @JsonProperty(value = "datasourceAuthCredentials")
     private AuthCredentials datasourceAuthCredentials;
 
     /**
-     * Get the datasourceInfo property: Datasource Information of target DS.
-     *
+     * Creates an instance of RestoreTargetInfo class.
+     */
+    public RestoreTargetInfo() {
+    }
+
+    /**
+     * Get the objectType property: Type of Datasource object, used to initialize the right inherited type.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
+     * Get the datasourceInfo property: Information of target DS.
+     * 
      * @return the datasourceInfo value.
      */
     public Datasource datasourceInfo() {
@@ -46,8 +62,8 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
     }
 
     /**
-     * Set the datasourceInfo property: Datasource Information of target DS.
-     *
+     * Set the datasourceInfo property: Information of target DS.
+     * 
      * @param datasourceInfo the datasourceInfo value to set.
      * @return the RestoreTargetInfo object itself.
      */
@@ -57,8 +73,8 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
     }
 
     /**
-     * Get the datasourceSetInfo property: DatasourceSet Information of target DS Set.
-     *
+     * Get the datasourceSetInfo property: Information of target DS Set.
+     * 
      * @return the datasourceSetInfo value.
      */
     public DatasourceSet datasourceSetInfo() {
@@ -66,8 +82,8 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
     }
 
     /**
-     * Set the datasourceSetInfo property: DatasourceSet Information of target DS Set.
-     *
+     * Set the datasourceSetInfo property: Information of target DS Set.
+     * 
      * @param datasourceSetInfo the datasourceSetInfo value to set.
      * @return the RestoreTargetInfo object itself.
      */
@@ -78,7 +94,7 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Get the datasourceAuthCredentials property: Credentials to use to authenticate with data source provider.
-     *
+     * 
      * @return the datasourceAuthCredentials value.
      */
     public AuthCredentials datasourceAuthCredentials() {
@@ -87,7 +103,7 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Set the datasourceAuthCredentials property: Credentials to use to authenticate with data source provider.
-     *
+     * 
      * @param datasourceAuthCredentials the datasourceAuthCredentials value to set.
      * @return the RestoreTargetInfo object itself.
      */
@@ -96,14 +112,18 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestoreTargetInfo withRecoveryOption(RecoveryOption recoveryOption) {
         super.withRecoveryOption(recoveryOption);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestoreTargetInfo withRestoreLocation(String restoreLocation) {
         super.withRestoreLocation(restoreLocation);
@@ -112,17 +132,16 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (datasourceInfo() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property datasourceInfo in model RestoreTargetInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property datasourceInfo in model RestoreTargetInfo"));
         } else {
             datasourceInfo().validate();
         }
@@ -132,5 +151,59 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
         if (datasourceAuthCredentials() != null) {
             datasourceAuthCredentials().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RestoreTargetInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recoveryOption", recoveryOption() == null ? null : recoveryOption().toString());
+        jsonWriter.writeStringField("restoreLocation", restoreLocation());
+        jsonWriter.writeJsonField("datasourceInfo", this.datasourceInfo);
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeJsonField("datasourceSetInfo", this.datasourceSetInfo);
+        jsonWriter.writeJsonField("datasourceAuthCredentials", this.datasourceAuthCredentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestoreTargetInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestoreTargetInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RestoreTargetInfo.
+     */
+    public static RestoreTargetInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestoreTargetInfo deserializedRestoreTargetInfo = new RestoreTargetInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryOption".equals(fieldName)) {
+                    deserializedRestoreTargetInfo.withRecoveryOption(RecoveryOption.fromString(reader.getString()));
+                } else if ("restoreLocation".equals(fieldName)) {
+                    deserializedRestoreTargetInfo.withRestoreLocation(reader.getString());
+                } else if ("datasourceInfo".equals(fieldName)) {
+                    deserializedRestoreTargetInfo.datasourceInfo = Datasource.fromJson(reader);
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedRestoreTargetInfo.objectType = reader.getString();
+                } else if ("datasourceSetInfo".equals(fieldName)) {
+                    deserializedRestoreTargetInfo.datasourceSetInfo = DatasourceSet.fromJson(reader);
+                } else if ("datasourceAuthCredentials".equals(fieldName)) {
+                    deserializedRestoreTargetInfo.datasourceAuthCredentials = AuthCredentials.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestoreTargetInfo;
+        });
     }
 }

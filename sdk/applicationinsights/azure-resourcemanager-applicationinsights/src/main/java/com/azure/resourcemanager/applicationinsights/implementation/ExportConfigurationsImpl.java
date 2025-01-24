@@ -24,39 +24,46 @@ public final class ExportConfigurationsImpl implements ExportConfigurations {
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    public ExportConfigurationsImpl(
-        ExportConfigurationsClient innerClient,
+    public ExportConfigurationsImpl(ExportConfigurationsClient innerClient,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
+    public Response<List<ApplicationInsightsComponentExportConfiguration>> listWithResponse(String resourceGroupName,
+        String resourceName, Context context) {
+        Response<List<ApplicationInsightsComponentExportConfigurationInner>> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, resourceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
+                    .stream()
+                    .map(inner1 -> new ApplicationInsightsComponentExportConfigurationImpl(inner1, this.manager()))
+                    .collect(Collectors.toList()));
+        } else {
+            return null;
+        }
+    }
+
     public List<ApplicationInsightsComponentExportConfiguration> list(String resourceGroupName, String resourceName) {
-        List<ApplicationInsightsComponentExportConfigurationInner> inner =
-            this.serviceClient().list(resourceGroupName, resourceName);
+        List<ApplicationInsightsComponentExportConfigurationInner> inner
+            = this.serviceClient().list(resourceGroupName, resourceName);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ApplicationInsightsComponentExportConfigurationImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ApplicationInsightsComponentExportConfigurationImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
     }
 
-    public Response<List<ApplicationInsightsComponentExportConfiguration>> listWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<List<ApplicationInsightsComponentExportConfigurationInner>> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, resourceName, context);
+    public Response<List<ApplicationInsightsComponentExportConfiguration>> createWithResponse(String resourceGroupName,
+        String resourceName, ApplicationInsightsComponentExportRequest exportProperties, Context context) {
+        Response<List<ApplicationInsightsComponentExportConfigurationInner>> inner
+            = this.serviceClient().createWithResponse(resourceGroupName, resourceName, exportProperties, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
                     .stream()
                     .map(inner1 -> new ApplicationInsightsComponentExportConfigurationImpl(inner1, this.manager()))
                     .collect(Collectors.toList()));
@@ -65,103 +72,35 @@ public final class ExportConfigurationsImpl implements ExportConfigurations {
         }
     }
 
-    public List<ApplicationInsightsComponentExportConfiguration> create(
-        String resourceGroupName, String resourceName, ApplicationInsightsComponentExportRequest exportProperties) {
-        List<ApplicationInsightsComponentExportConfigurationInner> inner =
-            this.serviceClient().create(resourceGroupName, resourceName, exportProperties);
-        if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ApplicationInsightsComponentExportConfigurationImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public Response<List<ApplicationInsightsComponentExportConfiguration>> createWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ApplicationInsightsComponentExportRequest exportProperties,
-        Context context) {
-        Response<List<ApplicationInsightsComponentExportConfigurationInner>> inner =
-            this.serviceClient().createWithResponse(resourceGroupName, resourceName, exportProperties, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
-                    .stream()
-                    .map(inner1 -> new ApplicationInsightsComponentExportConfigurationImpl(inner1, this.manager()))
-                    .collect(Collectors.toList()));
-        } else {
-            return null;
-        }
-    }
-
-    public ApplicationInsightsComponentExportConfiguration delete(
-        String resourceGroupName, String resourceName, String exportId) {
-        ApplicationInsightsComponentExportConfigurationInner inner =
-            this.serviceClient().delete(resourceGroupName, resourceName, exportId);
-        if (inner != null) {
-            return new ApplicationInsightsComponentExportConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ApplicationInsightsComponentExportConfiguration> deleteWithResponse(
-        String resourceGroupName, String resourceName, String exportId, Context context) {
-        Response<ApplicationInsightsComponentExportConfigurationInner> inner =
-            this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, exportId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ApplicationInsightsComponentExportConfigurationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public ApplicationInsightsComponentExportConfiguration get(
-        String resourceGroupName, String resourceName, String exportId) {
-        ApplicationInsightsComponentExportConfigurationInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName, exportId);
-        if (inner != null) {
-            return new ApplicationInsightsComponentExportConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ApplicationInsightsComponentExportConfiguration> getWithResponse(
-        String resourceGroupName, String resourceName, String exportId, Context context) {
-        Response<ApplicationInsightsComponentExportConfigurationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, resourceName, exportId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ApplicationInsightsComponentExportConfigurationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public ApplicationInsightsComponentExportConfiguration update(
-        String resourceGroupName,
-        String resourceName,
-        String exportId,
+    public List<ApplicationInsightsComponentExportConfiguration> create(String resourceGroupName, String resourceName,
         ApplicationInsightsComponentExportRequest exportProperties) {
-        ApplicationInsightsComponentExportConfigurationInner inner =
-            this.serviceClient().update(resourceGroupName, resourceName, exportId, exportProperties);
+        List<ApplicationInsightsComponentExportConfigurationInner> inner
+            = this.serviceClient().create(resourceGroupName, resourceName, exportProperties);
+        if (inner != null) {
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ApplicationInsightsComponentExportConfigurationImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public Response<ApplicationInsightsComponentExportConfiguration> deleteWithResponse(String resourceGroupName,
+        String resourceName, String exportId, Context context) {
+        Response<ApplicationInsightsComponentExportConfigurationInner> inner
+            = this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, exportId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ApplicationInsightsComponentExportConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplicationInsightsComponentExportConfiguration delete(String resourceGroupName, String resourceName,
+        String exportId) {
+        ApplicationInsightsComponentExportConfigurationInner inner
+            = this.serviceClient().delete(resourceGroupName, resourceName, exportId);
         if (inner != null) {
             return new ApplicationInsightsComponentExportConfigurationImpl(inner, this.manager());
         } else {
@@ -169,22 +108,48 @@ public final class ExportConfigurationsImpl implements ExportConfigurations {
         }
     }
 
-    public Response<ApplicationInsightsComponentExportConfiguration> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String exportId,
-        ApplicationInsightsComponentExportRequest exportProperties,
-        Context context) {
-        Response<ApplicationInsightsComponentExportConfigurationInner> inner =
-            this
-                .serviceClient()
-                .updateWithResponse(resourceGroupName, resourceName, exportId, exportProperties, context);
+    public Response<ApplicationInsightsComponentExportConfiguration> getWithResponse(String resourceGroupName,
+        String resourceName, String exportId, Context context) {
+        Response<ApplicationInsightsComponentExportConfigurationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, exportId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationInsightsComponentExportConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplicationInsightsComponentExportConfiguration get(String resourceGroupName, String resourceName,
+        String exportId) {
+        ApplicationInsightsComponentExportConfigurationInner inner
+            = this.serviceClient().get(resourceGroupName, resourceName, exportId);
+        if (inner != null) {
+            return new ApplicationInsightsComponentExportConfigurationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<ApplicationInsightsComponentExportConfiguration> updateWithResponse(String resourceGroupName,
+        String resourceName, String exportId, ApplicationInsightsComponentExportRequest exportProperties,
+        Context context) {
+        Response<ApplicationInsightsComponentExportConfigurationInner> inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, resourceName, exportId, exportProperties, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ApplicationInsightsComponentExportConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplicationInsightsComponentExportConfiguration update(String resourceGroupName, String resourceName,
+        String exportId, ApplicationInsightsComponentExportRequest exportProperties) {
+        ApplicationInsightsComponentExportConfigurationInner inner
+            = this.serviceClient().update(resourceGroupName, resourceName, exportId, exportProperties);
+        if (inner != null) {
+            return new ApplicationInsightsComponentExportConfigurationImpl(inner, this.manager());
         } else {
             return null;
         }

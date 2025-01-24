@@ -4,6 +4,7 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.annotation.QueryParam;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.implementation.http.rest.ErrorOptions;
 import com.azure.core.implementation.http.rest.UrlEscapers;
@@ -31,7 +32,9 @@ import java.util.function.Consumer;
  * definition.</a>
  * </p>
  *
- * <p><strong>Creating an instance of RequestOptions</strong></p>
+ * <p>
+ * <strong>Creating an instance of RequestOptions</strong>
+ * </p>
  * <!-- src_embed com.azure.core.http.rest.requestoptions.instantiation -->
  * <pre>
  * RequestOptions options = new RequestOptions&#40;&#41;
@@ -40,7 +43,9 @@ import java.util.function.Consumer;
  * </pre>
  * <!-- end com.azure.core.http.rest.requestoptions.instantiation -->
  *
- * <p><strong>Configuring the request with JSON body and making a HTTP POST request</strong></p>
+ * <p>
+ * <strong>Configuring the request with JSON body and making a HTTP POST request</strong>
+ * </p>
  * To <a href="https://petstore.swagger.io/#/pet/addPet">add a new pet to the pet store</a>, an HTTP POST call should be
  * made to the service with the details of the pet that is to be added. The details of the pet are included as the
  * request body in JSON format.
@@ -52,18 +57,18 @@ import java.util.function.Consumer;
  *   "category": {
  *     "id": 0,
  *     "name": "string"
- *   },
- *   "name": "doggie",
- *   "photoUrls": [
- *     "string"
- *   ],
- *   "tags": [
- *     {
- *       "id": 0,
- *       "name": "string"
- *     }
- *   ],
- *   "status": "available"
+ * },
+ * "name": "doggie",
+ * "photoUrls": [
+ * "string"
+ * ],
+ * "tags": [
+ * {
+ * "id": 0,
+ * "name": "string"
+ * }
+ * ],
+ * "status": "available"
  * }
  * }</pre>
  *
@@ -72,32 +77,29 @@ import java.util.function.Consumer;
  *
  * <!-- src_embed com.azure.core.http.rest.requestoptions.createjsonrequest -->
  * <pre>
- * JsonArray photoUrls = Json.createArrayBuilder&#40;&#41;
- *     .add&#40;&quot;https:&#47;&#47;imgur.com&#47;pet1&quot;&#41;
- *     .add&#40;&quot;https:&#47;&#47;imgur.com&#47;pet2&quot;&#41;
- *     .build&#40;&#41;;
+ * JsonArray photoUrls = new JsonArray&#40;&#41;
+ *     .addElement&#40;new JsonString&#40;&quot;https:&#47;&#47;imgur.com&#47;pet1&quot;&#41;&#41;
+ *     .addElement&#40;new JsonString&#40;&quot;https:&#47;&#47;imgur.com&#47;pet2&quot;&#41;&#41;;
  *
- * JsonArray tags = Json.createArrayBuilder&#40;&#41;
- *     .add&#40;Json.createObjectBuilder&#40;&#41;
- *         .add&#40;&quot;id&quot;, 0&#41;
- *         .add&#40;&quot;name&quot;, &quot;Labrador&quot;&#41;
- *         .build&#40;&#41;&#41;
- *     .add&#40;Json.createObjectBuilder&#40;&#41;
- *         .add&#40;&quot;id&quot;, 1&#41;
- *         .add&#40;&quot;name&quot;, &quot;2021&quot;&#41;
- *         .build&#40;&#41;&#41;
- *     .build&#40;&#41;;
+ * JsonArray tags = new JsonArray&#40;&#41;
+ *     .addElement&#40;new JsonObject&#40;&#41;
+ *         .setProperty&#40;&quot;id&quot;, new JsonNumber&#40;0&#41;&#41;
+ *         .setProperty&#40;&quot;name&quot;, new JsonString&#40;&quot;Labrador&quot;&#41;&#41;&#41;
+ *     .addElement&#40;new JsonObject&#40;&#41;
+ *         .setProperty&#40;&quot;id&quot;, new JsonNumber&#40;1&#41;&#41;
+ *         .setProperty&#40;&quot;name&quot;, new JsonString&#40;&quot;2021&quot;&#41;&#41;&#41;;
  *
- * JsonObject requestBody = Json.createObjectBuilder&#40;&#41;
- *     .add&#40;&quot;id&quot;, 0&#41;
- *     .add&#40;&quot;name&quot;, &quot;foo&quot;&#41;
- *     .add&#40;&quot;status&quot;, &quot;available&quot;&#41;
- *     .add&#40;&quot;category&quot;, Json.createObjectBuilder&#40;&#41;.add&#40;&quot;id&quot;, 0&#41;.add&#40;&quot;name&quot;, &quot;dog&quot;&#41;&#41;
- *     .add&#40;&quot;photoUrls&quot;, photoUrls&#41;
- *     .add&#40;&quot;tags&quot;, tags&#41;
- *     .build&#40;&#41;;
+ * JsonObject requestBody = new JsonObject&#40;&#41;
+ *     .setProperty&#40;&quot;id&quot;, new JsonNumber&#40;0&#41;&#41;
+ *     .setProperty&#40;&quot;name&quot;, new JsonString&#40;&quot;foo&quot;&#41;&#41;
+ *     .setProperty&#40;&quot;status&quot;, new JsonString&#40;&quot;available&quot;&#41;&#41;
+ *     .setProperty&#40;&quot;category&quot;, new JsonObject&#40;&#41;
+ *         .setProperty&#40;&quot;id&quot;, new JsonNumber&#40;0&#41;&#41;
+ *         .setProperty&#40;&quot;name&quot;, new JsonString&#40;&quot;dog&quot;&#41;&#41;&#41;
+ *     .setProperty&#40;&quot;photoUrls&quot;, photoUrls&#41;
+ *     .setProperty&#40;&quot;tags&quot;, tags&#41;;
  *
- * String requestBodyStr = requestBody.toString&#40;&#41;;
+ * BinaryData requestBodyData = BinaryData.fromObject&#40;requestBody&#41;;
  * </pre>
  * <!-- end com.azure.core.http.rest.requestoptions.createjsonrequest -->
  *
@@ -110,8 +112,8 @@ import java.util.function.Consumer;
  *         &#47;&#47; may already be set if request is created from a client
  *         .setUrl&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
  *         .setHttpMethod&#40;HttpMethod.POST&#41;
- *         .setBody&#40;requestBodyStr&#41;
- *         .setHeader&#40;&quot;Content-Type&quot;, &quot;application&#47;json&quot;&#41;&#41;;
+ *         .setBody&#40;requestBodyData&#41;
+ *         .setHeader&#40;HttpHeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.rest.requestoptions.postrequest -->
  */
@@ -170,8 +172,25 @@ public final class RequestOptions {
      * @param header the header key
      * @param value the header value
      * @return the modified RequestOptions object
+     * @deprecated Use {@link #addHeader(HttpHeaderName, String)} as it provides better performance.
      */
+    @Deprecated
     public RequestOptions addHeader(String header, String value) {
+        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header, value));
+        return this;
+    }
+
+    /**
+     * Adds a header to the HTTP request.
+     * <p>
+     * If a header with the given name exists the {@code value} is added to the existing header (comma-separated),
+     * otherwise a new header is created.
+     *
+     * @param header the header key
+     * @param value the header value
+     * @return the modified RequestOptions object
+     */
+    public RequestOptions addHeader(HttpHeaderName header, String value) {
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header, value));
         return this;
     }
@@ -184,8 +203,24 @@ public final class RequestOptions {
      * @param header the header key
      * @param value the header value
      * @return the modified RequestOptions object
+     * @deprecated Use {@link #setHeader(HttpHeaderName, String)} as it provides better performance.
      */
+    @Deprecated
     public RequestOptions setHeader(String header, String value) {
+        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
+        return this;
+    }
+
+    /**
+     * Sets a header on the HTTP request.
+     * <p>
+     * If a header with the given name exists it is overridden by the new {@code value}.
+     *
+     * @param header the header key
+     * @param value the header value
+     * @return the modified RequestOptions object
+     */
+    public RequestOptions setHeader(HttpHeaderName header, String value) {
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
         return this;
     }

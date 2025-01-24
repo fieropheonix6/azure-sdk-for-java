@@ -4,47 +4,53 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
 
-/** Defines values for ServerConnectionType. */
-public enum ServerConnectionType {
-    /** Enum value Default. */
-    DEFAULT("Default"),
+/**
+ * The server connection type.
+ */
+public final class ServerConnectionType extends ExpandableStringEnum<ServerConnectionType> {
+    /**
+     * Static value Default for ServerConnectionType.
+     */
+    public static final ServerConnectionType DEFAULT = fromString("Default");
 
-    /** Enum value Proxy. */
-    PROXY("Proxy"),
+    /**
+     * Static value Redirect for ServerConnectionType.
+     */
+    public static final ServerConnectionType REDIRECT = fromString("Redirect");
 
-    /** Enum value Redirect. */
-    REDIRECT("Redirect");
+    /**
+     * Static value Proxy for ServerConnectionType.
+     */
+    public static final ServerConnectionType PROXY = fromString("Proxy");
 
-    /** The actual serialized value for a ServerConnectionType instance. */
-    private final String value;
-
-    ServerConnectionType(String value) {
-        this.value = value;
+    /**
+     * Creates a new instance of ServerConnectionType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServerConnectionType() {
     }
 
     /**
-     * Parses a serialized value to a ServerConnectionType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed ServerConnectionType object, or null if unable to parse.
+     * Creates or finds a ServerConnectionType from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding ServerConnectionType.
      */
-    @JsonCreator
-    public static ServerConnectionType fromString(String value) {
-        ServerConnectionType[] items = ServerConnectionType.values();
-        for (ServerConnectionType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static ServerConnectionType fromString(String name) {
+        return fromString(name, ServerConnectionType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * Gets known ServerConnectionType values.
+     * 
+     * @return known ServerConnectionType values.
+     */
+    public static Collection<ServerConnectionType> values() {
+        return values(ServerConnectionType.class);
     }
 }

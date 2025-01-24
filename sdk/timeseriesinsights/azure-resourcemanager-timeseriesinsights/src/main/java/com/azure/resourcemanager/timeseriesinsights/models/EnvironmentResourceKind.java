@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EnvironmentResourceKind. */
+/**
+ * The kind of the environment.
+ */
 public final class EnvironmentResourceKind extends ExpandableStringEnum<EnvironmentResourceKind> {
-    /** Static value Gen1 for EnvironmentResourceKind. */
+    /**
+     * Static value Gen1 for EnvironmentResourceKind.
+     */
     public static final EnvironmentResourceKind GEN1 = fromString("Gen1");
 
-    /** Static value Gen2 for EnvironmentResourceKind. */
+    /**
+     * Static value Gen2 for EnvironmentResourceKind.
+     */
     public static final EnvironmentResourceKind GEN2 = fromString("Gen2");
 
     /**
+     * Creates a new instance of EnvironmentResourceKind value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EnvironmentResourceKind() {
+    }
+
+    /**
      * Creates or finds a EnvironmentResourceKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EnvironmentResourceKind.
      */
-    @JsonCreator
     public static EnvironmentResourceKind fromString(String name) {
         return fromString(name, EnvironmentResourceKind.class);
     }
 
-    /** @return known EnvironmentResourceKind values. */
+    /**
+     * Gets known EnvironmentResourceKind values.
+     * 
+     * @return known EnvironmentResourceKind values.
+     */
     public static Collection<EnvironmentResourceKind> values() {
         return values(EnvironmentResourceKind.class);
     }

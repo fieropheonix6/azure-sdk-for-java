@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.databox.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for KekType. */
+/**
+ * Type of encryption key used for key encryption.
+ */
 public enum KekType {
-    /** Enum value MicrosoftManaged. */
+    /**
+     * Enum value MicrosoftManaged.
+     */
     MICROSOFT_MANAGED("MicrosoftManaged"),
 
-    /** Enum value CustomerManaged. */
+    /**
+     * Enum value CustomerManaged.
+     */
     CUSTOMER_MANAGED("CustomerManaged");
 
-    /** The actual serialized value for a KekType instance. */
+    /**
+     * The actual serialized value for a KekType instance.
+     */
     private final String value;
 
     KekType(String value) {
@@ -24,12 +29,14 @@ public enum KekType {
 
     /**
      * Parses a serialized value to a KekType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed KekType object, or null if unable to parse.
      */
-    @JsonCreator
     public static KekType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         KekType[] items = KekType.values();
         for (KekType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum KekType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

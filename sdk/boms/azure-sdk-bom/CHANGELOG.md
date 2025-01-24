@@ -1,5 +1,160 @@
 # Release History
 
+## 1.2.30 (2024-12-04)
+
+### Dependency Updates
+
+- Added a new library entry to the BOM:
+  - [azure-ai-translation-document](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-document/README.md)
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.29 (2024-10-28)
+
+### Dependency Updates
+
+- Added new library entries to the BOM:
+  - `azure-ai-vision-imageanalysis`
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.28 (2024-09-30)
+
+### Dependency Updates
+
+- Added new library entries to the BOM:
+  - `azure-data-schemaregistry-jsonschema`
+  - `azure-health-deidentification`
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.27 (2024-08-27)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.26 (2024-07-30)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.25 (2024-07-02)
+
+### Dependency Updates
+
+- Added new library entries to the BOM:
+  - `azure-messaging-eventgrid-namespaces`
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.24 (2024-05-29)
+
+### Dependency Updates
+
+- Added new library entries to the BOM:
+  - `azure-ai-translation-text`
+  - `azure-developer-devcenter`
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.23 (2024-04-24)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.22 (2024-03-26)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.21 (2024-02-26)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.20 (2024-01-25)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.19 (2023-12-07)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.18 (2023-10-26)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.17 (2023-09-28)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.16 (2023-08-23)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.15 (2023-07-26)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.14 (2023-06-22)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.13 (2023-05-23)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.12 (2023-04-26)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.11 (2023-03-18)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.10 (2023-02-22)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.9 (2023-01-25)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.8 (2022-11-22)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
 ## 1.2.7 (2022-10-25)
 
 ### Dependency Updates

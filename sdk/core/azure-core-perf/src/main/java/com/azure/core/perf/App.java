@@ -8,16 +8,20 @@ import com.azure.perf.test.core.PerfStressProgram;
 /**
  * Runs the Storage performance test.
  *
- * <p>To run from command line. Package the project into a jar with dependencies via mvn clean package.
- * Then run the program via java -jar 'compiled-jar-with-dependencies-path' </p>
+ * <p>
+ * To run from command line. Package the project into a jar with dependencies via mvn clean package.
+ * Then run the program via java -jar 'compiled-jar-with-dependencies-path'
+ * </p>
  *
- * <p> To run from IDE, set all the required environment variables in IntelliJ via Run -&gt; EditConfigurations
+ * <p>
+ * To run from IDE, set all the required environment variables in IntelliJ via Run -&gt; EditConfigurations
  * section.
- * Then run the App's main method via IDE.</p>
+ * Then run the App's main method via IDE.
+ * </p>
  */
 public class App {
     public static void main(String[] args) {
-        PerfStressProgram.run(new Class<?>[]{
+        PerfStressProgram.run(new Class<?>[] {
             BinaryDataReceiveTest.class,
             BinaryDataSendTest.class,
             ByteBufferReceiveTest.class,
@@ -26,7 +30,7 @@ public class App {
             JsonSendTest.class,
             XmlReceiveTest.class,
             XmlSendTest.class,
-            PipelineSendTest.class
-        }, args);
+            PipelineSendTest.class,
+            TracingTest.class, }, args);
     }
 }

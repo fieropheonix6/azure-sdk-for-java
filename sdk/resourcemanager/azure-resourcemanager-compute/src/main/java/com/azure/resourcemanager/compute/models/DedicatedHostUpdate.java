@@ -5,35 +5,74 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.DedicatedHostProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Specifies information about the dedicated host. Only tags, autoReplaceOnFailure and licenseType may be updated. */
+/**
+ * Specifies information about the dedicated host. Only tags, autoReplaceOnFailure and licenseType may be updated.
+ */
 @Fluent
 public final class DedicatedHostUpdate extends UpdateResource {
     /*
      * Properties of the dedicated host.
      */
-    @JsonProperty(value = "properties")
     private DedicatedHostProperties innerProperties;
 
-    /** Creates an instance of DedicatedHostUpdate class. */
+    /*
+     * [List all available dedicated host sizes for resizing]
+     * (https://docs.microsoft.com/rest/api/compute/dedicated-hosts/listavailablesizes). Resizing can be only used to
+     * scale up DedicatedHost. Only name is required to be set.
+     */
+    private Sku sku;
+
+    /**
+     * Creates an instance of DedicatedHostUpdate class.
+     */
     public DedicatedHostUpdate() {
     }
 
     /**
      * Get the innerProperties property: Properties of the dedicated host.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DedicatedHostProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the sku property: [List all available dedicated host sizes for resizing]
+     * (https://docs.microsoft.com/rest/api/compute/dedicated-hosts/listavailablesizes). Resizing can be only used to
+     * scale up DedicatedHost. Only name is required to be set.
+     * 
+     * @return the sku value.
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: [List all available dedicated host sizes for resizing]
+     * (https://docs.microsoft.com/rest/api/compute/dedicated-hosts/listavailablesizes). Resizing can be only used to
+     * scale up DedicatedHost. Only name is required to be set.
+     * 
+     * @param sku the sku value to set.
+     * @return the DedicatedHostUpdate object itself.
+     */
+    public DedicatedHostUpdate withSku(Sku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DedicatedHostUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -42,7 +81,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
 
     /**
      * Get the platformFaultDomain property: Fault domain of the dedicated host within a dedicated host group.
-     *
+     * 
      * @return the platformFaultDomain value.
      */
     public Integer platformFaultDomain() {
@@ -51,7 +90,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
 
     /**
      * Set the platformFaultDomain property: Fault domain of the dedicated host within a dedicated host group.
-     *
+     * 
      * @param platformFaultDomain the platformFaultDomain value to set.
      * @return the DedicatedHostUpdate object itself.
      */
@@ -66,7 +105,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
     /**
      * Get the autoReplaceOnFailure property: Specifies whether the dedicated host should be replaced automatically in
      * case of a failure. The value is defaulted to 'true' when not provided.
-     *
+     * 
      * @return the autoReplaceOnFailure value.
      */
     public Boolean autoReplaceOnFailure() {
@@ -76,7 +115,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
     /**
      * Set the autoReplaceOnFailure property: Specifies whether the dedicated host should be replaced automatically in
      * case of a failure. The value is defaulted to 'true' when not provided.
-     *
+     * 
      * @param autoReplaceOnFailure the autoReplaceOnFailure value to set.
      * @return the DedicatedHostUpdate object itself.
      */
@@ -89,9 +128,9 @@ public final class DedicatedHostUpdate extends UpdateResource {
     }
 
     /**
-     * Get the hostId property: A unique id generated and assigned to the dedicated host by the platform.
-     * &lt;br&gt;&lt;br&gt; Does not change throughout the lifetime of the host.
-     *
+     * Get the hostId property: A unique id generated and assigned to the dedicated host by the platform. Does not
+     * change throughout the lifetime of the host.
+     * 
      * @return the hostId value.
      */
     public String hostId() {
@@ -100,7 +139,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
 
     /**
      * Get the virtualMachines property: A list of references to all virtual machines in the Dedicated Host.
-     *
+     * 
      * @return the virtualMachines value.
      */
     public List<SubResourceReadOnly> virtualMachines() {
@@ -109,10 +148,9 @@ public final class DedicatedHostUpdate extends UpdateResource {
 
     /**
      * Get the licenseType property: Specifies the software license type that will be applied to the VMs deployed on the
-     * dedicated host. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt;
-     * **Windows_Server_Hybrid** &lt;br&gt;&lt;br&gt; **Windows_Server_Perpetual** &lt;br&gt;&lt;br&gt; Default:
-     * **None**.
-     *
+     * dedicated host. Possible values are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The
+     * default value is: **None.**.
+     * 
      * @return the licenseType value.
      */
     public DedicatedHostLicenseTypes licenseType() {
@@ -121,10 +159,9 @@ public final class DedicatedHostUpdate extends UpdateResource {
 
     /**
      * Set the licenseType property: Specifies the software license type that will be applied to the VMs deployed on the
-     * dedicated host. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt;
-     * **Windows_Server_Hybrid** &lt;br&gt;&lt;br&gt; **Windows_Server_Perpetual** &lt;br&gt;&lt;br&gt; Default:
-     * **None**.
-     *
+     * dedicated host. Possible values are: **None,** **Windows_Server_Hybrid,** **Windows_Server_Perpetual.** The
+     * default value is: **None.**.
+     * 
      * @param licenseType the licenseType value to set.
      * @return the DedicatedHostUpdate object itself.
      */
@@ -138,7 +175,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
 
     /**
      * Get the provisioningTime property: The date when the host was first provisioned.
-     *
+     * 
      * @return the provisioningTime value.
      */
     public OffsetDateTime provisioningTime() {
@@ -147,7 +184,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
 
     /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -156,7 +193,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
 
     /**
      * Get the instanceView property: The dedicated host instance view.
-     *
+     * 
      * @return the instanceView value.
      */
     public DedicatedHostInstanceView instanceView() {
@@ -164,9 +201,9 @@ public final class DedicatedHostUpdate extends UpdateResource {
     }
 
     /**
-     * Get the timeCreated property: Specifies the time at which the Dedicated Host resource was
-     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
-     *
+     * Get the timeCreated property: Specifies the time at which the Dedicated Host resource was created. Minimum
+     * api-version: 2021-11-01.
+     * 
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
@@ -175,14 +212,59 @@ public final class DedicatedHostUpdate extends UpdateResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (sku() != null) {
+            sku().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedHostUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedHostUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DedicatedHostUpdate.
+     */
+    public static DedicatedHostUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedHostUpdate deserializedDedicatedHostUpdate = new DedicatedHostUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDedicatedHostUpdate.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDedicatedHostUpdate.innerProperties = DedicatedHostProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDedicatedHostUpdate.sku = Sku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedHostUpdate;
+        });
     }
 }

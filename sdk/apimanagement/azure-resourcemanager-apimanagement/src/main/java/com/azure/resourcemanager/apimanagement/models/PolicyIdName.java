@@ -5,26 +5,41 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PolicyIdName. */
+/**
+ * Defines values for PolicyIdName.
+ */
 public final class PolicyIdName extends ExpandableStringEnum<PolicyIdName> {
-    /** Static value policy for PolicyIdName. */
+    /**
+     * Static value policy for PolicyIdName.
+     */
     public static final PolicyIdName POLICY = fromString("policy");
 
     /**
+     * Creates a new instance of PolicyIdName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PolicyIdName() {
+    }
+
+    /**
      * Creates or finds a PolicyIdName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PolicyIdName.
      */
-    @JsonCreator
     public static PolicyIdName fromString(String name) {
         return fromString(name, PolicyIdName.class);
     }
 
-    /** @return known PolicyIdName values. */
+    /**
+     * Gets known PolicyIdName values.
+     * 
+     * @return known PolicyIdName values.
+     */
     public static Collection<PolicyIdName> values() {
         return values(PolicyIdName.class);
     }

@@ -8,28 +8,24 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ListRecoveryPointsRecommendedForMoveRequest;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ListRecoveryPointsRecommendedForMoveRequestTests {
-    @Test
-    public void testDeserialize() {
-        ListRecoveryPointsRecommendedForMoveRequest model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"kw\",\"excludedRPList\":[\"jejveg\",\"hbpnaixexccbd\",\"eaxhcexdrrvqahqk\"]}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ListRecoveryPointsRecommendedForMoveRequest model
+            = BinaryData.fromString("{\"objectType\":\"elvezrypq\",\"excludedRPList\":[\"eokerqwkyhkobopg\"]}")
                 .toObject(ListRecoveryPointsRecommendedForMoveRequest.class);
-        Assertions.assertEquals("kw", model.objectType());
-        Assertions.assertEquals("jejveg", model.excludedRPList().get(0));
+        Assertions.assertEquals("elvezrypq", model.objectType());
+        Assertions.assertEquals("eokerqwkyhkobopg", model.excludedRPList().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        ListRecoveryPointsRecommendedForMoveRequest model =
-            new ListRecoveryPointsRecommendedForMoveRequest()
-                .withObjectType("kw")
-                .withExcludedRPList(Arrays.asList("jejveg", "hbpnaixexccbd", "eaxhcexdrrvqahqk"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ListRecoveryPointsRecommendedForMoveRequest model
+            = new ListRecoveryPointsRecommendedForMoveRequest().withObjectType("elvezrypq")
+                .withExcludedRPList(Arrays.asList("eokerqwkyhkobopg"));
         model = BinaryData.fromObject(model).toObject(ListRecoveryPointsRecommendedForMoveRequest.class);
-        Assertions.assertEquals("kw", model.objectType());
-        Assertions.assertEquals("jejveg", model.excludedRPList().get(0));
+        Assertions.assertEquals("elvezrypq", model.objectType());
+        Assertions.assertEquals("eokerqwkyhkobopg", model.excludedRPList().get(0));
     }
 }

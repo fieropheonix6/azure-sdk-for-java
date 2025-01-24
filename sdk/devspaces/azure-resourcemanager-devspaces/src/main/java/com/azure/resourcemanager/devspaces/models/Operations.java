@@ -7,25 +7,31 @@ package com.azure.resourcemanager.devspaces.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Operations. */
+/**
+ * Resource collection API of Operations.
+ */
 public interface Operations {
     /**
+     * Lists operations for the resource provider.
+     * 
      * Lists all the supported operations by the Microsoft.DevSpaces resource provider along with their description.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     PagedIterable<ResourceProviderOperationDefinition> list();
 
     /**
+     * Lists operations for the resource provider.
+     * 
      * Lists all the supported operations by the Microsoft.DevSpaces resource provider along with their description.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     PagedIterable<ResourceProviderOperationDefinition> list(Context context);
 }

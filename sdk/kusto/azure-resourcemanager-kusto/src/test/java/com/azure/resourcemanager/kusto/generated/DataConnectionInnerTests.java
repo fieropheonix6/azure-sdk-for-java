@@ -7,23 +7,20 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.DataConnectionInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DataConnectionInnerTests {
-    @Test
-    public void testDeserialize() {
-        DataConnectionInner model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"DataConnection\",\"location\":\"cwsobqwcs\",\"id\":\"bnwdcfh\",\"name\":\"cqdpfuv\",\"type\":\"lsbjjcanvxbv\"}")
-                .toObject(DataConnectionInner.class);
-        Assertions.assertEquals("cwsobqwcs", model.location());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DataConnectionInner model = BinaryData.fromString(
+            "{\"kind\":\"DataConnection\",\"location\":\"sutujba\",\"id\":\"pjuohminyfl\",\"name\":\"orwmduvwpklv\",\"type\":\"w\"}")
+            .toObject(DataConnectionInner.class);
+        Assertions.assertEquals("sutujba", model.location());
     }
 
-    @Test
-    public void testSerialize() {
-        DataConnectionInner model = new DataConnectionInner().withLocation("cwsobqwcs");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DataConnectionInner model = new DataConnectionInner().withLocation("sutujba");
         model = BinaryData.fromObject(model).toObject(DataConnectionInner.class);
-        Assertions.assertEquals("cwsobqwcs", model.location());
+        Assertions.assertEquals("sutujba", model.location());
     }
 }

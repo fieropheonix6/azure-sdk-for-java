@@ -5,38 +5,46 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** MachineKey of an app. */
+/**
+ * MachineKey of an app.
+ */
 @Fluent
-public final class SiteMachineKey {
+public final class SiteMachineKey implements JsonSerializable<SiteMachineKey> {
     /*
      * MachineKey validation.
      */
-    @JsonProperty(value = "validation")
     private String validation;
 
     /*
      * Validation key.
      */
-    @JsonProperty(value = "validationKey")
     private String validationKey;
 
     /*
      * Algorithm used for decryption.
      */
-    @JsonProperty(value = "decryption")
     private String decryption;
 
     /*
      * Decryption key.
      */
-    @JsonProperty(value = "decryptionKey")
     private String decryptionKey;
 
     /**
+     * Creates an instance of SiteMachineKey class.
+     */
+    public SiteMachineKey() {
+    }
+
+    /**
      * Get the validation property: MachineKey validation.
-     *
+     * 
      * @return the validation value.
      */
     public String validation() {
@@ -45,7 +53,7 @@ public final class SiteMachineKey {
 
     /**
      * Set the validation property: MachineKey validation.
-     *
+     * 
      * @param validation the validation value to set.
      * @return the SiteMachineKey object itself.
      */
@@ -56,7 +64,7 @@ public final class SiteMachineKey {
 
     /**
      * Get the validationKey property: Validation key.
-     *
+     * 
      * @return the validationKey value.
      */
     public String validationKey() {
@@ -65,7 +73,7 @@ public final class SiteMachineKey {
 
     /**
      * Set the validationKey property: Validation key.
-     *
+     * 
      * @param validationKey the validationKey value to set.
      * @return the SiteMachineKey object itself.
      */
@@ -76,7 +84,7 @@ public final class SiteMachineKey {
 
     /**
      * Get the decryption property: Algorithm used for decryption.
-     *
+     * 
      * @return the decryption value.
      */
     public String decryption() {
@@ -85,7 +93,7 @@ public final class SiteMachineKey {
 
     /**
      * Set the decryption property: Algorithm used for decryption.
-     *
+     * 
      * @param decryption the decryption value to set.
      * @return the SiteMachineKey object itself.
      */
@@ -96,7 +104,7 @@ public final class SiteMachineKey {
 
     /**
      * Get the decryptionKey property: Decryption key.
-     *
+     * 
      * @return the decryptionKey value.
      */
     public String decryptionKey() {
@@ -105,7 +113,7 @@ public final class SiteMachineKey {
 
     /**
      * Set the decryptionKey property: Decryption key.
-     *
+     * 
      * @param decryptionKey the decryptionKey value to set.
      * @return the SiteMachineKey object itself.
      */
@@ -116,9 +124,54 @@ public final class SiteMachineKey {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("validation", this.validation);
+        jsonWriter.writeStringField("validationKey", this.validationKey);
+        jsonWriter.writeStringField("decryption", this.decryption);
+        jsonWriter.writeStringField("decryptionKey", this.decryptionKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteMachineKey from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteMachineKey if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SiteMachineKey.
+     */
+    public static SiteMachineKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteMachineKey deserializedSiteMachineKey = new SiteMachineKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("validation".equals(fieldName)) {
+                    deserializedSiteMachineKey.validation = reader.getString();
+                } else if ("validationKey".equals(fieldName)) {
+                    deserializedSiteMachineKey.validationKey = reader.getString();
+                } else if ("decryption".equals(fieldName)) {
+                    deserializedSiteMachineKey.decryption = reader.getString();
+                } else if ("decryptionKey".equals(fieldName)) {
+                    deserializedSiteMachineKey.decryptionKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteMachineKey;
+        });
     }
 }

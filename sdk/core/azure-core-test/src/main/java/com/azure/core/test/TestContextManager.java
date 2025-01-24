@@ -3,10 +3,10 @@
 package com.azure.core.test;
 
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 
 import java.lang.reflect.Method;
-
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import java.nio.file.Path;
 
 /**
  * This class handles managing context about a test, such as custom testing annotations and verifying whether the test
@@ -16,10 +16,14 @@ public class TestContextManager {
     private final String testName;
     private final String className;
     private final TestMode testMode;
+    private final boolean enableTestProxy;
     private final boolean doNotRecord;
     private final boolean testRan;
 
     private Integer testIteration;
+    private final boolean skipRecordingRequestBody;
+    private final Path testClassPath;
+    private final String trackerTestName;
 
     /**
      * Constructs a {@link TestContextManager} based on the test method.
@@ -28,9 +32,46 @@ public class TestContextManager {
      * @param testMode The {@link TestMode} the test is running in.
      */
     public TestContextManager(Method testMethod, TestMode testMode) {
+        this(testMethod, testMode, false, false, null);
+    }
+
+    /**
+     * Constructs a {@link TestContextManager} based on the test method.
+     *
+     * @param testMethod Test method being ran.
+     * @param testMode The {@link TestMode} the test is running in.
+     * @param enableTestProxy True if the external test proxy is in use.
+     * @param recordWithoutRequestBodyClassAnnotation flag indicating if {@code RecordWithoutRequestBody} annotation
+     * present on test class.
+     * @param testClassPath the test class path
+     */
+    public TestContextManager(Method testMethod, TestMode testMode, boolean enableTestProxy,
+        boolean recordWithoutRequestBodyClassAnnotation, Path testClassPath) {
+        this(testMethod, testMode, enableTestProxy, recordWithoutRequestBodyClassAnnotation, testClassPath,
+            testMethod.getName());
+    }
+
+    /**
+     * Constructs a {@link TestContextManager} based on the test method.
+     *
+     * @param testMethod Test method being ran.
+     * @param testMode The {@link TestMode} the test is running in.
+     * @param enableTestProxy True if the external test proxy is in use.
+     * @param recordWithoutRequestBodyClassAnnotation flag indicating if {@code RecordWithoutRequestBody} annotation
+     * present on test class.
+     * @param testClassPath the test class path
+     * @param trackerTestName The formatted test name used in logging and tracking its progress.
+     */
+    @SuppressWarnings("deprecation")
+    public TestContextManager(Method testMethod, TestMode testMode, boolean enableTestProxy,
+        boolean recordWithoutRequestBodyClassAnnotation, Path testClassPath, String trackerTestName) {
         this.testName = testMethod.getName();
         this.className = testMethod.getDeclaringClass().getSimpleName();
         this.testMode = testMode;
+        this.enableTestProxy = enableTestProxy;
+
+        RecordWithoutRequestBody recordWithoutRequestBody = testMethod.getAnnotation(RecordWithoutRequestBody.class);
+        this.skipRecordingRequestBody = recordWithoutRequestBody != null || recordWithoutRequestBodyClassAnnotation;
 
         DoNotRecord doNotRecordAnnotation = testMethod.getAnnotation(DoNotRecord.class);
         boolean skipInPlayback;
@@ -41,9 +82,9 @@ public class TestContextManager {
             this.doNotRecord = false;
             skipInPlayback = false;
         }
-
+        this.testClassPath = testClassPath;
         this.testRan = !(skipInPlayback && testMode == TestMode.PLAYBACK);
-        assumeTrue(testRan, "Test does not allow playback and was ran in 'TestMode.PLAYBACK'");
+        this.trackerTestName = trackerTestName;
     }
 
     /**
@@ -56,19 +97,24 @@ public class TestContextManager {
     }
 
     /**
+     * Returns the path of the class to which the test belongs.
+     *
+     * @return The file path of the test class.
+     */
+    Path getTestClassPath() {
+        return testClassPath;
+    }
+
+    /**
      * Returns the name of the playback record for the test being ran.
      *
      * @return The playback record name.
      */
     public String getTestPlaybackRecordingName() {
-        StringBuilder builder = new StringBuilder(className)
-            .append(".")
-            .append(testName);
+        StringBuilder builder = new StringBuilder(className).append(".").append(testName);
 
         if (testIteration != null) {
-            builder.append("[")
-                .append(testIteration)
-                .append("]");
+            builder.append("[").append(testIteration).append("]");
         }
 
         return builder.toString();
@@ -84,6 +130,15 @@ public class TestContextManager {
     }
 
     /**
+     * Returns if the test proxy is enabled
+     *
+     * @return True if the text proxy is enabled
+     */
+    public boolean isTestProxyEnabled() {
+        return enableTestProxy;
+    }
+
+    /**
      * Returns whether the test should have its network calls recorded during a {@link TestMode#RECORD record} test
      * run.
      *
@@ -91,6 +146,15 @@ public class TestContextManager {
      */
     public boolean doNotRecordTest() {
         return doNotRecord;
+    }
+
+    /**
+     * Returns whether the test is recording request body when run {@link TestMode#RECORD record} mode.
+     *
+     * @return Flag indicating whether test should record request bodies.
+     */
+    public boolean skipRecordingRequestBody() {
+        return skipRecordingRequestBody;
     }
 
     /**
@@ -107,7 +171,16 @@ public class TestContextManager {
      *
      * @param testIteration Test iteration.
      */
-    void setTestIteration(Integer testIteration) {
+    public void setTestIteration(Integer testIteration) {
         this.testIteration = testIteration;
+    }
+
+    /**
+     * Gets the formatted name of the test used to log and track its progress.
+     *
+     * @return The formatted test name.
+     */
+    public String getTrackerTestName() {
+        return trackerTestName;
     }
 }

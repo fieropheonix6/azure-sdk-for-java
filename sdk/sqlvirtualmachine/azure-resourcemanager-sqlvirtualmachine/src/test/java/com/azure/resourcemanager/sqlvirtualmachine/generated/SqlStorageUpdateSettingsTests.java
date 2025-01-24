@@ -8,31 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.DiskConfigurationType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlStorageUpdateSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SqlStorageUpdateSettingsTests {
-    @Test
-    public void testDeserialize() {
-        SqlStorageUpdateSettings model =
-            BinaryData
-                .fromString(
-                    "{\"diskCount\":684290279,\"startingDeviceId\":99482426,\"diskConfigurationType\":\"EXTEND\"}")
-                .toObject(SqlStorageUpdateSettings.class);
-        Assertions.assertEquals(684290279, model.diskCount());
-        Assertions.assertEquals(99482426, model.startingDeviceId());
-        Assertions.assertEquals(DiskConfigurationType.EXTEND, model.diskConfigurationType());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SqlStorageUpdateSettings model = BinaryData
+            .fromString("{\"diskCount\":1069395538,\"startingDeviceId\":1769493620,\"diskConfigurationType\":\"NEW\"}")
+            .toObject(SqlStorageUpdateSettings.class);
+        Assertions.assertEquals(1069395538, model.diskCount());
+        Assertions.assertEquals(1769493620, model.startingDeviceId());
+        Assertions.assertEquals(DiskConfigurationType.NEW, model.diskConfigurationType());
     }
 
-    @Test
-    public void testSerialize() {
-        SqlStorageUpdateSettings model =
-            new SqlStorageUpdateSettings()
-                .withDiskCount(684290279)
-                .withStartingDeviceId(99482426)
-                .withDiskConfigurationType(DiskConfigurationType.EXTEND);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SqlStorageUpdateSettings model = new SqlStorageUpdateSettings().withDiskCount(1069395538)
+            .withStartingDeviceId(1769493620)
+            .withDiskConfigurationType(DiskConfigurationType.NEW);
         model = BinaryData.fromObject(model).toObject(SqlStorageUpdateSettings.class);
-        Assertions.assertEquals(684290279, model.diskCount());
-        Assertions.assertEquals(99482426, model.startingDeviceId());
-        Assertions.assertEquals(DiskConfigurationType.EXTEND, model.diskConfigurationType());
+        Assertions.assertEquals(1069395538, model.diskCount());
+        Assertions.assertEquals(1769493620, model.startingDeviceId());
+        Assertions.assertEquals(DiskConfigurationType.NEW, model.diskConfigurationType());
     }
 }

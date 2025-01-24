@@ -24,25 +24,28 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkspaceGitRepoManagements. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkspaceGitRepoManagements.
+ */
 public final class WorkspaceGitRepoManagementsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkspaceGitRepoManagementsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ArtifactsClientImpl client;
 
     /**
      * Initializes an instance of WorkspaceGitRepoManagementsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkspaceGitRepoManagementsImpl(ArtifactsClientImpl client) {
-        this.service =
-                RestProxy.create(
-                        WorkspaceGitRepoManagementsService.class,
-                        client.getHttpPipeline(),
-                        client.getSerializerAdapter());
+        this.service = RestProxy.create(WorkspaceGitRepoManagementsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,20 +57,17 @@ public final class WorkspaceGitRepoManagementsImpl {
     @ServiceInterface(name = "ArtifactsClientWorks")
     public interface WorkspaceGitRepoManagementsService {
         @Post("/getGitHubAccessToken")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<GitHubAccessTokenResponse>> getGitHubAccessToken(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("x-ms-client-request-id") String clientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") GitHubAccessTokenRequest gitHubAccessTokenRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<GitHubAccessTokenResponse>> getGitHubAccessToken(@HostParam("endpoint") String endpoint,
+            @HeaderParam("x-ms-client-request-id") String clientRequestId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") GitHubAccessTokenRequest gitHubAccessTokenRequest,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get the GitHub access token.
-     *
+     * 
      * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
      * @param clientRequestId Can provide a guid, which is helpful for debugging and to provide better customer support.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,23 +77,14 @@ public final class WorkspaceGitRepoManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GitHubAccessTokenResponse>> getGitHubAccessTokenWithResponseAsync(
-            GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
+        GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId) {
         return FluxUtil.withContext(
-                context ->
-                        service.getGitHubAccessToken(
-                                this.client.getEndpoint(),
-                                clientRequestId,
-                                apiVersion,
-                                gitHubAccessTokenRequest,
-                                accept,
-                                context));
+            context -> getGitHubAccessTokenWithResponseAsync(gitHubAccessTokenRequest, clientRequestId, context));
     }
 
     /**
      * Get the GitHub access token.
-     *
+     * 
      * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
      * @param clientRequestId Can provide a guid, which is helpful for debugging and to provide better customer support.
      * @param context The context to associate with this operation.
@@ -104,16 +95,16 @@ public final class WorkspaceGitRepoManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GitHubAccessTokenResponse>> getGitHubAccessTokenWithResponseAsync(
-            GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId, Context context) {
+        GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId, Context context) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.getGitHubAccessToken(
-                this.client.getEndpoint(), clientRequestId, apiVersion, gitHubAccessTokenRequest, accept, context);
+        return service.getGitHubAccessToken(this.client.getEndpoint(), clientRequestId, apiVersion,
+            gitHubAccessTokenRequest, accept, context);
     }
 
     /**
      * Get the GitHub access token.
-     *
+     * 
      * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
      * @param clientRequestId Can provide a guid, which is helpful for debugging and to provide better customer support.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,15 +113,15 @@ public final class WorkspaceGitRepoManagementsImpl {
      * @return the GitHub access token on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GitHubAccessTokenResponse> getGitHubAccessTokenAsync(
-            GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId) {
+    public Mono<GitHubAccessTokenResponse> getGitHubAccessTokenAsync(GitHubAccessTokenRequest gitHubAccessTokenRequest,
+        String clientRequestId) {
         return getGitHubAccessTokenWithResponseAsync(gitHubAccessTokenRequest, clientRequestId)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the GitHub access token.
-     *
+     * 
      * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -138,16 +129,16 @@ public final class WorkspaceGitRepoManagementsImpl {
      * @return the GitHub access token on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GitHubAccessTokenResponse> getGitHubAccessTokenAsync(
-            GitHubAccessTokenRequest gitHubAccessTokenRequest) {
+    public Mono<GitHubAccessTokenResponse>
+        getGitHubAccessTokenAsync(GitHubAccessTokenRequest gitHubAccessTokenRequest) {
         final String clientRequestId = null;
         return getGitHubAccessTokenWithResponseAsync(gitHubAccessTokenRequest, clientRequestId)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the GitHub access token.
-     *
+     * 
      * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
      * @param clientRequestId Can provide a guid, which is helpful for debugging and to provide better customer support.
      * @param context The context to associate with this operation.
@@ -157,46 +148,15 @@ public final class WorkspaceGitRepoManagementsImpl {
      * @return the GitHub access token on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GitHubAccessTokenResponse> getGitHubAccessTokenAsync(
-            GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId, Context context) {
+    public Mono<GitHubAccessTokenResponse> getGitHubAccessTokenAsync(GitHubAccessTokenRequest gitHubAccessTokenRequest,
+        String clientRequestId, Context context) {
         return getGitHubAccessTokenWithResponseAsync(gitHubAccessTokenRequest, clientRequestId, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the GitHub access token.
-     *
-     * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
-     * @param clientRequestId Can provide a guid, which is helpful for debugging and to provide better customer support.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GitHub access token.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GitHubAccessTokenResponse getGitHubAccessToken(
-            GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId) {
-        return getGitHubAccessTokenAsync(gitHubAccessTokenRequest, clientRequestId).block();
-    }
-
-    /**
-     * Get the GitHub access token.
-     *
-     * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GitHub access token.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GitHubAccessTokenResponse getGitHubAccessToken(GitHubAccessTokenRequest gitHubAccessTokenRequest) {
-        final String clientRequestId = null;
-        return getGitHubAccessTokenAsync(gitHubAccessTokenRequest, clientRequestId).block();
-    }
-
-    /**
-     * Get the GitHub access token.
-     *
+     * 
      * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
      * @param clientRequestId Can provide a guid, which is helpful for debugging and to provide better customer support.
      * @param context The context to associate with this operation.
@@ -207,7 +167,38 @@ public final class WorkspaceGitRepoManagementsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GitHubAccessTokenResponse> getGitHubAccessTokenWithResponse(
-            GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId, Context context) {
+        GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId, Context context) {
         return getGitHubAccessTokenWithResponseAsync(gitHubAccessTokenRequest, clientRequestId, context).block();
+    }
+
+    /**
+     * Get the GitHub access token.
+     * 
+     * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
+     * @param clientRequestId Can provide a guid, which is helpful for debugging and to provide better customer support.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the GitHub access token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GitHubAccessTokenResponse getGitHubAccessToken(GitHubAccessTokenRequest gitHubAccessTokenRequest,
+        String clientRequestId) {
+        return getGitHubAccessTokenWithResponse(gitHubAccessTokenRequest, clientRequestId, Context.NONE).getValue();
+    }
+
+    /**
+     * Get the GitHub access token.
+     * 
+     * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the GitHub access token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GitHubAccessTokenResponse getGitHubAccessToken(GitHubAccessTokenRequest gitHubAccessTokenRequest) {
+        final String clientRequestId = null;
+        return getGitHubAccessTokenWithResponse(gitHubAccessTokenRequest, clientRequestId, Context.NONE).getValue();
     }
 }

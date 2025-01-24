@@ -5,35 +5,53 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** The location of Amazon S3 Compatible dataset. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AmazonS3CompatibleLocation")
+/**
+ * The location of Amazon S3 Compatible dataset.
+ */
 @Fluent
 public final class AmazonS3CompatibleLocation extends DatasetLocation {
     /*
+     * Type of dataset storage location.
+     */
+    private String type = "AmazonS3CompatibleLocation";
+
+    /*
      * Specify the bucketName of Amazon S3 Compatible. Type: string (or Expression with resultType string)
      */
-    @JsonProperty(value = "bucketName")
     private Object bucketName;
 
     /*
      * Specify the version of Amazon S3 Compatible. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "version")
     private Object version;
 
-    /** Creates an instance of AmazonS3CompatibleLocation class. */
+    /**
+     * Creates an instance of AmazonS3CompatibleLocation class.
+     */
     public AmazonS3CompatibleLocation() {
+    }
+
+    /**
+     * Get the type property: Type of dataset storage location.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
      * Get the bucketName property: Specify the bucketName of Amazon S3 Compatible. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the bucketName value.
      */
     public Object bucketName() {
@@ -43,7 +61,7 @@ public final class AmazonS3CompatibleLocation extends DatasetLocation {
     /**
      * Set the bucketName property: Specify the bucketName of Amazon S3 Compatible. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param bucketName the bucketName value to set.
      * @return the AmazonS3CompatibleLocation object itself.
      */
@@ -55,7 +73,7 @@ public final class AmazonS3CompatibleLocation extends DatasetLocation {
     /**
      * Get the version property: Specify the version of Amazon S3 Compatible. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the version value.
      */
     public Object version() {
@@ -65,7 +83,7 @@ public final class AmazonS3CompatibleLocation extends DatasetLocation {
     /**
      * Set the version property: Specify the version of Amazon S3 Compatible. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param version the version value to set.
      * @return the AmazonS3CompatibleLocation object itself.
      */
@@ -74,14 +92,18 @@ public final class AmazonS3CompatibleLocation extends DatasetLocation {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonS3CompatibleLocation withFolderPath(Object folderPath) {
         super.withFolderPath(folderPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonS3CompatibleLocation withFileName(Object fileName) {
         super.withFileName(fileName);
@@ -90,11 +112,69 @@ public final class AmazonS3CompatibleLocation extends DatasetLocation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("folderPath", folderPath());
+        jsonWriter.writeUntypedField("fileName", fileName());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("bucketName", this.bucketName);
+        jsonWriter.writeUntypedField("version", this.version);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmazonS3CompatibleLocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmazonS3CompatibleLocation if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmazonS3CompatibleLocation.
+     */
+    public static AmazonS3CompatibleLocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmazonS3CompatibleLocation deserializedAmazonS3CompatibleLocation = new AmazonS3CompatibleLocation();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("folderPath".equals(fieldName)) {
+                    deserializedAmazonS3CompatibleLocation.withFolderPath(reader.readUntyped());
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedAmazonS3CompatibleLocation.withFileName(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedAmazonS3CompatibleLocation.type = reader.getString();
+                } else if ("bucketName".equals(fieldName)) {
+                    deserializedAmazonS3CompatibleLocation.bucketName = reader.readUntyped();
+                } else if ("version".equals(fieldName)) {
+                    deserializedAmazonS3CompatibleLocation.version = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAmazonS3CompatibleLocation.withAdditionalProperties(additionalProperties);
+
+            return deserializedAmazonS3CompatibleLocation;
+        });
     }
 }

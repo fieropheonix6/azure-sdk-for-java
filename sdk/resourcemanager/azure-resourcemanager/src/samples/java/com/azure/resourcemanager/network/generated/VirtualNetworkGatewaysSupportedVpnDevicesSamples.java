@@ -4,25 +4,25 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualNetworkGateways SupportedVpnDevices. */
+/**
+ * Samples for VirtualNetworkGateways SupportedVpnDevices.
+ */
 public final class VirtualNetworkGatewaysSupportedVpnDevicesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualNetworkGatewaySupportedVpnDevice.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * VirtualNetworkGatewaySupportedVpnDevice.json
      */
     /**
      * Sample code: ListVirtualNetworkGatewaySupportedVPNDevices.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listVirtualNetworkGatewaySupportedVPNDevices(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+    public static void
+        listVirtualNetworkGatewaySupportedVPNDevices(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
             .manager()
             .serviceClient()
             .getVirtualNetworkGateways()
-            .supportedVpnDevicesWithResponse("rg1", "vpngw", Context.NONE);
+            .supportedVpnDevicesWithResponse("rg1", "vpngw", com.azure.core.util.Context.NONE);
     }
 }

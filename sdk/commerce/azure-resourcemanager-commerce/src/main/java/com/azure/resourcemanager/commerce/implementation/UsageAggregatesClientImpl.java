@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.commerce.fluent.UsageAggregatesClient;
 import com.azure.resourcemanager.commerce.fluent.models.UsageAggregationInner;
 import com.azure.resourcemanager.commerce.models.AggregationGranularity;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in UsageAggregatesClient. */
 public final class UsageAggregatesClientImpl implements UsageAggregatesClient {
-    private final ClientLogger logger = new ClientLogger(UsageAggregatesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final UsageAggregatesService service;
 
@@ -49,8 +46,8 @@ public final class UsageAggregatesClientImpl implements UsageAggregatesClient {
      * @param client the instance of the service client containing this operation class.
      */
     UsageAggregatesClientImpl(UsageManagementClientImpl client) {
-        this.service =
-            RestProxy.create(UsageAggregatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(UsageAggregatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,32 +57,26 @@ public final class UsageAggregatesClientImpl implements UsageAggregatesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "UsageManagementClien")
-    private interface UsageAggregatesService {
-        @Headers({"Content-Type: application/json"})
+    public interface UsageAggregatesService {
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Commerce/UsageAggregates")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UsageAggregationListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<UsageAggregationListResult>> list(@HostParam("$host") String endpoint,
             @QueryParam("reportedStartTime") OffsetDateTime reportedStartTime,
             @QueryParam("reportedEndTime") OffsetDateTime reportedEndTime,
             @QueryParam("showDetails") Boolean showDetails,
             @QueryParam("aggregationGranularity") AggregationGranularity aggregationGranularity,
-            @QueryParam("continuationToken") String continuationToken,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("continuationToken") String continuationToken, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<UsageAggregationListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -106,20 +97,16 @@ public final class UsageAggregatesClientImpl implements UsageAggregatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Get UsageAggregates operation response.
+     * @return the Get UsageAggregates operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UsageAggregationInner>> listSinglePageAsync(
-        OffsetDateTime reportedStartTime,
-        OffsetDateTime reportedEndTime,
-        Boolean showDetails,
-        AggregationGranularity aggregationGranularity,
+    private Mono<PagedResponse<UsageAggregationInner>> listSinglePageAsync(OffsetDateTime reportedStartTime,
+        OffsetDateTime reportedEndTime, Boolean showDetails, AggregationGranularity aggregationGranularity,
         String continuationToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reportedStartTime == null) {
             return Mono
@@ -130,36 +117,16 @@ public final class UsageAggregatesClientImpl implements UsageAggregatesClient {
                 .error(new IllegalArgumentException("Parameter reportedEndTime is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            reportedStartTime,
-                            reportedEndTime,
-                            showDetails,
-                            aggregationGranularity,
-                            continuationToken,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<UsageAggregationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), reportedStartTime, reportedEndTime,
+                showDetails, aggregationGranularity, continuationToken, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<UsageAggregationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -182,21 +149,16 @@ public final class UsageAggregatesClientImpl implements UsageAggregatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Get UsageAggregates operation response.
+     * @return the Get UsageAggregates operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UsageAggregationInner>> listSinglePageAsync(
-        OffsetDateTime reportedStartTime,
-        OffsetDateTime reportedEndTime,
-        Boolean showDetails,
-        AggregationGranularity aggregationGranularity,
-        String continuationToken,
-        Context context) {
+    private Mono<PagedResponse<UsageAggregationInner>> listSinglePageAsync(OffsetDateTime reportedStartTime,
+        OffsetDateTime reportedEndTime, Boolean showDetails, AggregationGranularity aggregationGranularity,
+        String continuationToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reportedStartTime == null) {
             return Mono
@@ -207,34 +169,16 @@ public final class UsageAggregatesClientImpl implements UsageAggregatesClient {
                 .error(new IllegalArgumentException("Parameter reportedEndTime is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                reportedStartTime,
-                reportedEndTime,
-                showDetails,
-                aggregationGranularity,
-                continuationToken,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), reportedStartTime, reportedEndTime, showDetails, aggregationGranularity,
+                continuationToken, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -255,20 +199,13 @@ public final class UsageAggregatesClientImpl implements UsageAggregatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Get UsageAggregates operation response.
+     * @return the Get UsageAggregates operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UsageAggregationInner> listAsync(
-        OffsetDateTime reportedStartTime,
-        OffsetDateTime reportedEndTime,
-        Boolean showDetails,
-        AggregationGranularity aggregationGranularity,
-        String continuationToken) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    reportedStartTime, reportedEndTime, showDetails, aggregationGranularity, continuationToken),
-            nextLink -> listNextSinglePageAsync(nextLink));
+    private PagedFlux<UsageAggregationInner> listAsync(OffsetDateTime reportedStartTime, OffsetDateTime reportedEndTime,
+        Boolean showDetails, AggregationGranularity aggregationGranularity, String continuationToken) {
+        return new PagedFlux<>(() -> listSinglePageAsync(reportedStartTime, reportedEndTime, showDetails,
+            aggregationGranularity, continuationToken), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -279,19 +216,16 @@ public final class UsageAggregatesClientImpl implements UsageAggregatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Get UsageAggregates operation response.
+     * @return the Get UsageAggregates operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UsageAggregationInner> listAsync(
-        OffsetDateTime reportedStartTime, OffsetDateTime reportedEndTime) {
+    private PagedFlux<UsageAggregationInner> listAsync(OffsetDateTime reportedStartTime,
+        OffsetDateTime reportedEndTime) {
         final Boolean showDetails = null;
         final AggregationGranularity aggregationGranularity = null;
         final String continuationToken = null;
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    reportedStartTime, reportedEndTime, showDetails, aggregationGranularity, continuationToken),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(reportedStartTime, reportedEndTime, showDetails,
+            aggregationGranularity, continuationToken), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -313,25 +247,13 @@ public final class UsageAggregatesClientImpl implements UsageAggregatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Get UsageAggregates operation response.
+     * @return the Get UsageAggregates operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UsageAggregationInner> listAsync(
-        OffsetDateTime reportedStartTime,
-        OffsetDateTime reportedEndTime,
-        Boolean showDetails,
-        AggregationGranularity aggregationGranularity,
-        String continuationToken,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    reportedStartTime,
-                    reportedEndTime,
-                    showDetails,
-                    aggregationGranularity,
-                    continuationToken,
-                    context),
+    private PagedFlux<UsageAggregationInner> listAsync(OffsetDateTime reportedStartTime, OffsetDateTime reportedEndTime,
+        Boolean showDetails, AggregationGranularity aggregationGranularity, String continuationToken, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(reportedStartTime, reportedEndTime, showDetails,
+            aggregationGranularity, continuationToken, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -343,7 +265,7 @@ public final class UsageAggregatesClientImpl implements UsageAggregatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Get UsageAggregates operation response.
+     * @return the Get UsageAggregates operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageAggregationInner> list(OffsetDateTime reportedStartTime, OffsetDateTime reportedEndTime) {
@@ -373,29 +295,25 @@ public final class UsageAggregatesClientImpl implements UsageAggregatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Get UsageAggregates operation response.
+     * @return the Get UsageAggregates operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UsageAggregationInner> list(
-        OffsetDateTime reportedStartTime,
-        OffsetDateTime reportedEndTime,
-        Boolean showDetails,
-        AggregationGranularity aggregationGranularity,
-        String continuationToken,
-        Context context) {
-        return new PagedIterable<>(
-            listAsync(
-                reportedStartTime, reportedEndTime, showDetails, aggregationGranularity, continuationToken, context));
+    public PagedIterable<UsageAggregationInner> list(OffsetDateTime reportedStartTime, OffsetDateTime reportedEndTime,
+        Boolean showDetails, AggregationGranularity aggregationGranularity, String continuationToken, Context context) {
+        return new PagedIterable<>(listAsync(reportedStartTime, reportedEndTime, showDetails, aggregationGranularity,
+            continuationToken, context));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Get UsageAggregates operation response.
+     * @return the Get UsageAggregates operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageAggregationInner>> listNextSinglePageAsync(String nextLink) {
@@ -403,35 +321,27 @@ public final class UsageAggregatesClientImpl implements UsageAggregatesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<UsageAggregationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<UsageAggregationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Get UsageAggregates operation response.
+     * @return the Get UsageAggregates operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageAggregationInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -439,23 +349,13 @@ public final class UsageAggregatesClientImpl implements UsageAggregatesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

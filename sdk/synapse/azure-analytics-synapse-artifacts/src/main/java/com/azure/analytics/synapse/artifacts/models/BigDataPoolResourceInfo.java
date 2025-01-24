@@ -5,139 +5,139 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Big Data pool
- *
- * <p>A Big Data pool.
+ * 
+ * A Big Data pool.
  */
-@JsonFlatten
 @Fluent
 public class BigDataPoolResourceInfo extends TrackedResource {
     /*
      * The state of the Big Data pool.
      */
-    @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /*
-     * Spark pool auto-scaling properties
-     *
      * Auto-scaling properties
      */
-    @JsonProperty(value = "properties.autoScale")
     private AutoScaleProperties autoScale;
 
     /*
      * The time when the Big Data pool was created.
      */
-    @JsonProperty(value = "properties.creationDate")
     private OffsetDateTime creationDate;
 
     /*
-     * Spark pool auto-pausing properties
-     *
      * Auto-pausing properties
      */
-    @JsonProperty(value = "properties.autoPause")
     private AutoPauseProperties autoPause;
 
     /*
      * Whether compute isolation is required or not.
      */
-    @JsonProperty(value = "properties.isComputeIsolationEnabled")
     private Boolean isComputeIsolationEnabled;
 
     /*
      * Whether session level packages enabled.
      */
-    @JsonProperty(value = "properties.sessionLevelPackagesEnabled")
     private Boolean sessionLevelPackagesEnabled;
 
     /*
      * The cache size
      */
-    @JsonProperty(value = "properties.cacheSize")
     private Integer cacheSize;
 
     /*
      * Dynamic Executor Allocation
      */
-    @JsonProperty(value = "properties.dynamicExecutorAllocation")
     private DynamicExecutorAllocation dynamicExecutorAllocation;
 
     /*
      * The Spark events folder
      */
-    @JsonProperty(value = "properties.sparkEventsFolder")
     private String sparkEventsFolder;
 
     /*
      * The number of nodes in the Big Data pool.
      */
-    @JsonProperty(value = "properties.nodeCount")
     private Integer nodeCount;
 
     /*
-     * Spark pool library version requirements
-     *
      * Library version requirements
      */
-    @JsonProperty(value = "properties.libraryRequirements")
     private LibraryRequirements libraryRequirements;
 
     /*
      * List of custom libraries/packages associated with the spark pool.
      */
-    @JsonProperty(value = "properties.customLibraries")
     private List<LibraryInfo> customLibraries;
 
     /*
-     * Spark pool library version requirements
-     *
      * Spark configuration file to specify additional properties
      */
-    @JsonProperty(value = "properties.sparkConfigProperties")
     private LibraryRequirements sparkConfigProperties;
 
     /*
      * The Apache Spark version.
      */
-    @JsonProperty(value = "properties.sparkVersion")
     private String sparkVersion;
 
     /*
      * The default folder where Spark logs will be written.
      */
-    @JsonProperty(value = "properties.defaultSparkLogFolder")
     private String defaultSparkLogFolder;
 
     /*
      * The level of compute power that each node in the Big Data pool has.
      */
-    @JsonProperty(value = "properties.nodeSize")
     private NodeSize nodeSize;
 
     /*
      * The kind of nodes that the Big Data pool provides.
      */
-    @JsonProperty(value = "properties.nodeSizeFamily")
     private NodeSizeFamily nodeSizeFamily;
 
     /*
      * The time when the Big Data pool was updated successfully.
      */
-    @JsonProperty(value = "properties.lastSucceededTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastSucceededTimestamp;
+
+    /*
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+     */
+    private String type;
+
+    /*
+     * The name of the resource
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
+     */
+    private String id;
+
+    /**
+     * Creates an instance of BigDataPoolResourceInfo class.
+     */
+    public BigDataPoolResourceInfo() {
+    }
 
     /**
      * Get the provisioningState property: The state of the Big Data pool.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String getProvisioningState() {
@@ -146,7 +146,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the provisioningState property: The state of the Big Data pool.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -156,10 +156,8 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Get the autoScale property: Spark pool auto-scaling properties
-     *
-     * <p>Auto-scaling properties.
-     *
+     * Get the autoScale property: Auto-scaling properties.
+     * 
      * @return the autoScale value.
      */
     public AutoScaleProperties getAutoScale() {
@@ -167,10 +165,8 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Set the autoScale property: Spark pool auto-scaling properties
-     *
-     * <p>Auto-scaling properties.
-     *
+     * Set the autoScale property: Auto-scaling properties.
+     * 
      * @param autoScale the autoScale value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -181,7 +177,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the creationDate property: The time when the Big Data pool was created.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime getCreationDate() {
@@ -190,7 +186,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the creationDate property: The time when the Big Data pool was created.
-     *
+     * 
      * @param creationDate the creationDate value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -200,10 +196,8 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Get the autoPause property: Spark pool auto-pausing properties
-     *
-     * <p>Auto-pausing properties.
-     *
+     * Get the autoPause property: Auto-pausing properties.
+     * 
      * @return the autoPause value.
      */
     public AutoPauseProperties getAutoPause() {
@@ -211,10 +205,8 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Set the autoPause property: Spark pool auto-pausing properties
-     *
-     * <p>Auto-pausing properties.
-     *
+     * Set the autoPause property: Auto-pausing properties.
+     * 
      * @param autoPause the autoPause value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -225,7 +217,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the isComputeIsolationEnabled property: Whether compute isolation is required or not.
-     *
+     * 
      * @return the isComputeIsolationEnabled value.
      */
     public Boolean isComputeIsolationEnabled() {
@@ -234,7 +226,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the isComputeIsolationEnabled property: Whether compute isolation is required or not.
-     *
+     * 
      * @param isComputeIsolationEnabled the isComputeIsolationEnabled value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -245,7 +237,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the sessionLevelPackagesEnabled property: Whether session level packages enabled.
-     *
+     * 
      * @return the sessionLevelPackagesEnabled value.
      */
     public Boolean isSessionLevelPackagesEnabled() {
@@ -254,7 +246,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the sessionLevelPackagesEnabled property: Whether session level packages enabled.
-     *
+     * 
      * @param sessionLevelPackagesEnabled the sessionLevelPackagesEnabled value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -265,7 +257,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the cacheSize property: The cache size.
-     *
+     * 
      * @return the cacheSize value.
      */
     public Integer getCacheSize() {
@@ -274,7 +266,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the cacheSize property: The cache size.
-     *
+     * 
      * @param cacheSize the cacheSize value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -285,7 +277,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the dynamicExecutorAllocation property: Dynamic Executor Allocation.
-     *
+     * 
      * @return the dynamicExecutorAllocation value.
      */
     public DynamicExecutorAllocation getDynamicExecutorAllocation() {
@@ -294,7 +286,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the dynamicExecutorAllocation property: Dynamic Executor Allocation.
-     *
+     * 
      * @param dynamicExecutorAllocation the dynamicExecutorAllocation value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -305,7 +297,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the sparkEventsFolder property: The Spark events folder.
-     *
+     * 
      * @return the sparkEventsFolder value.
      */
     public String getSparkEventsFolder() {
@@ -314,7 +306,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the sparkEventsFolder property: The Spark events folder.
-     *
+     * 
      * @param sparkEventsFolder the sparkEventsFolder value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -325,7 +317,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the nodeCount property: The number of nodes in the Big Data pool.
-     *
+     * 
      * @return the nodeCount value.
      */
     public Integer getNodeCount() {
@@ -334,7 +326,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the nodeCount property: The number of nodes in the Big Data pool.
-     *
+     * 
      * @param nodeCount the nodeCount value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -344,10 +336,8 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Get the libraryRequirements property: Spark pool library version requirements
-     *
-     * <p>Library version requirements.
-     *
+     * Get the libraryRequirements property: Library version requirements.
+     * 
      * @return the libraryRequirements value.
      */
     public LibraryRequirements getLibraryRequirements() {
@@ -355,10 +345,8 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Set the libraryRequirements property: Spark pool library version requirements
-     *
-     * <p>Library version requirements.
-     *
+     * Set the libraryRequirements property: Library version requirements.
+     * 
      * @param libraryRequirements the libraryRequirements value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -369,7 +357,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the customLibraries property: List of custom libraries/packages associated with the spark pool.
-     *
+     * 
      * @return the customLibraries value.
      */
     public List<LibraryInfo> getCustomLibraries() {
@@ -378,7 +366,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the customLibraries property: List of custom libraries/packages associated with the spark pool.
-     *
+     * 
      * @param customLibraries the customLibraries value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -388,10 +376,8 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Get the sparkConfigProperties property: Spark pool library version requirements
-     *
-     * <p>Spark configuration file to specify additional properties.
-     *
+     * Get the sparkConfigProperties property: Spark configuration file to specify additional properties.
+     * 
      * @return the sparkConfigProperties value.
      */
     public LibraryRequirements getSparkConfigProperties() {
@@ -399,10 +385,8 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     }
 
     /**
-     * Set the sparkConfigProperties property: Spark pool library version requirements
-     *
-     * <p>Spark configuration file to specify additional properties.
-     *
+     * Set the sparkConfigProperties property: Spark configuration file to specify additional properties.
+     * 
      * @param sparkConfigProperties the sparkConfigProperties value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -413,7 +397,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the sparkVersion property: The Apache Spark version.
-     *
+     * 
      * @return the sparkVersion value.
      */
     public String getSparkVersion() {
@@ -422,7 +406,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the sparkVersion property: The Apache Spark version.
-     *
+     * 
      * @param sparkVersion the sparkVersion value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -433,7 +417,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the defaultSparkLogFolder property: The default folder where Spark logs will be written.
-     *
+     * 
      * @return the defaultSparkLogFolder value.
      */
     public String getDefaultSparkLogFolder() {
@@ -442,7 +426,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the defaultSparkLogFolder property: The default folder where Spark logs will be written.
-     *
+     * 
      * @param defaultSparkLogFolder the defaultSparkLogFolder value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -453,7 +437,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the nodeSize property: The level of compute power that each node in the Big Data pool has.
-     *
+     * 
      * @return the nodeSize value.
      */
     public NodeSize getNodeSize() {
@@ -462,7 +446,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the nodeSize property: The level of compute power that each node in the Big Data pool has.
-     *
+     * 
      * @param nodeSize the nodeSize value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -473,7 +457,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the nodeSizeFamily property: The kind of nodes that the Big Data pool provides.
-     *
+     * 
      * @return the nodeSizeFamily value.
      */
     public NodeSizeFamily getNodeSizeFamily() {
@@ -482,7 +466,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the nodeSizeFamily property: The kind of nodes that the Big Data pool provides.
-     *
+     * 
      * @param nodeSizeFamily the nodeSizeFamily value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -493,24 +477,203 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the lastSucceededTimestamp property: The time when the Big Data pool was updated successfully.
-     *
+     * 
      * @return the lastSucceededTimestamp value.
      */
     public OffsetDateTime getLastSucceededTimestamp() {
         return this.lastSucceededTimestamp;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource ID for the resource. Ex -
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BigDataPoolResourceInfo setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BigDataPoolResourceInfo setLocation(String location) {
         super.setLocation(location);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", getLocation());
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
+        if (provisioningState != null
+            || autoScale != null
+            || creationDate != null
+            || autoPause != null
+            || isComputeIsolationEnabled != null
+            || sessionLevelPackagesEnabled != null
+            || cacheSize != null
+            || dynamicExecutorAllocation != null
+            || sparkEventsFolder != null
+            || nodeCount != null
+            || libraryRequirements != null
+            || customLibraries != null
+            || sparkConfigProperties != null
+            || sparkVersion != null
+            || defaultSparkLogFolder != null
+            || nodeSize != null
+            || nodeSizeFamily != null
+            || lastSucceededTimestamp != null) {
+            jsonWriter.writeStartObject("properties");
+            jsonWriter.writeStringField("provisioningState", this.provisioningState);
+            jsonWriter.writeJsonField("autoScale", this.autoScale);
+            jsonWriter.writeStringField("creationDate",
+                this.creationDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationDate));
+            jsonWriter.writeJsonField("autoPause", this.autoPause);
+            jsonWriter.writeBooleanField("isComputeIsolationEnabled", this.isComputeIsolationEnabled);
+            jsonWriter.writeBooleanField("sessionLevelPackagesEnabled", this.sessionLevelPackagesEnabled);
+            jsonWriter.writeNumberField("cacheSize", this.cacheSize);
+            jsonWriter.writeJsonField("dynamicExecutorAllocation", this.dynamicExecutorAllocation);
+            jsonWriter.writeStringField("sparkEventsFolder", this.sparkEventsFolder);
+            jsonWriter.writeNumberField("nodeCount", this.nodeCount);
+            jsonWriter.writeJsonField("libraryRequirements", this.libraryRequirements);
+            jsonWriter.writeArrayField("customLibraries", this.customLibraries,
+                (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeJsonField("sparkConfigProperties", this.sparkConfigProperties);
+            jsonWriter.writeStringField("sparkVersion", this.sparkVersion);
+            jsonWriter.writeStringField("defaultSparkLogFolder", this.defaultSparkLogFolder);
+            jsonWriter.writeStringField("nodeSize", this.nodeSize == null ? null : this.nodeSize.toString());
+            jsonWriter.writeStringField("nodeSizeFamily",
+                this.nodeSizeFamily == null ? null : this.nodeSizeFamily.toString());
+            jsonWriter.writeEndObject();
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BigDataPoolResourceInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BigDataPoolResourceInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BigDataPoolResourceInfo.
+     */
+    public static BigDataPoolResourceInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BigDataPoolResourceInfo deserializedBigDataPoolResourceInfo = new BigDataPoolResourceInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedBigDataPoolResourceInfo.setLocation(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    deserializedBigDataPoolResourceInfo.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBigDataPoolResourceInfo.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBigDataPoolResourceInfo.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBigDataPoolResourceInfo.setTags(tags);
+                } else if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("provisioningState".equals(fieldName)) {
+                            deserializedBigDataPoolResourceInfo.provisioningState = reader.getString();
+                        } else if ("autoScale".equals(fieldName)) {
+                            deserializedBigDataPoolResourceInfo.autoScale = AutoScaleProperties.fromJson(reader);
+                        } else if ("creationDate".equals(fieldName)) {
+                            deserializedBigDataPoolResourceInfo.creationDate = reader.getNullable(
+                                nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                        } else if ("autoPause".equals(fieldName)) {
+                            deserializedBigDataPoolResourceInfo.autoPause = AutoPauseProperties.fromJson(reader);
+                        } else if ("isComputeIsolationEnabled".equals(fieldName)) {
+                            deserializedBigDataPoolResourceInfo.isComputeIsolationEnabled
+                                = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("sessionLevelPackagesEnabled".equals(fieldName)) {
+                            deserializedBigDataPoolResourceInfo.sessionLevelPackagesEnabled
+                                = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("cacheSize".equals(fieldName)) {
+                            deserializedBigDataPoolResourceInfo.cacheSize = reader.getNullable(JsonReader::getInt);
+                        } else if ("dynamicExecutorAllocation".equals(fieldName)) {
+                            deserializedBigDataPoolResourceInfo.dynamicExecutorAllocation
+                                = DynamicExecutorAllocation.fromJson(reader);
+                        } else if ("sparkEventsFolder".equals(fieldName)) {
+                            deserializedBigDataPoolResourceInfo.sparkEventsFolder = reader.getString();
+                        } else if ("nodeCount".equals(fieldName)) {
+                            deserializedBigDataPoolResourceInfo.nodeCount = reader.getNullable(JsonReader::getInt);
+                        } else if ("libraryRequirements".equals(fieldName)) {
+                            deserializedBigDataPoolResourceInfo.libraryRequirements
+                                = LibraryRequirements.fromJson(reader);
+                        } else if ("customLibraries".equals(fieldName)) {
+                            List<LibraryInfo> customLibraries
+                                = reader.readArray(reader1 -> LibraryInfo.fromJson(reader1));
+                            deserializedBigDataPoolResourceInfo.customLibraries = customLibraries;
+                        } else if ("sparkConfigProperties".equals(fieldName)) {
+                            deserializedBigDataPoolResourceInfo.sparkConfigProperties
+                                = LibraryRequirements.fromJson(reader);
+                        } else if ("sparkVersion".equals(fieldName)) {
+                            deserializedBigDataPoolResourceInfo.sparkVersion = reader.getString();
+                        } else if ("defaultSparkLogFolder".equals(fieldName)) {
+                            deserializedBigDataPoolResourceInfo.defaultSparkLogFolder = reader.getString();
+                        } else if ("nodeSize".equals(fieldName)) {
+                            deserializedBigDataPoolResourceInfo.nodeSize = NodeSize.fromString(reader.getString());
+                        } else if ("nodeSizeFamily".equals(fieldName)) {
+                            deserializedBigDataPoolResourceInfo.nodeSizeFamily
+                                = NodeSizeFamily.fromString(reader.getString());
+                        } else if ("lastSucceededTimestamp".equals(fieldName)) {
+                            deserializedBigDataPoolResourceInfo.lastSucceededTimestamp = reader.getNullable(
+                                nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBigDataPoolResourceInfo;
+        });
     }
 }

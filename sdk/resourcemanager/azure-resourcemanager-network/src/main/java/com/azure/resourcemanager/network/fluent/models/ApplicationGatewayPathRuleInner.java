@@ -6,44 +6,47 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Path rule of URL path map of an application gateway. */
+/**
+ * Path rule of URL path map of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayPathRuleInner extends SubResource {
     /*
      * Properties of the application gateway path rule.
      */
-    @JsonProperty(value = "properties")
     private ApplicationGatewayPathRulePropertiesFormat innerProperties;
 
     /*
      * Name of the path rule that is unique within an Application Gateway.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ApplicationGatewayPathRuleInner class. */
+    /**
+     * Creates an instance of ApplicationGatewayPathRuleInner class.
+     */
     public ApplicationGatewayPathRuleInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway path rule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayPathRulePropertiesFormat innerProperties() {
@@ -52,7 +55,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the name property: Name of the path rule that is unique within an Application Gateway.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +64,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Set the name property: Name of the path rule that is unique within an Application Gateway.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
@@ -72,7 +75,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -81,14 +84,16 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayPathRuleInner withId(String id) {
         super.withId(id);
@@ -97,7 +102,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the paths property: Path rules of URL path map.
-     *
+     * 
      * @return the paths value.
      */
     public List<String> paths() {
@@ -106,7 +111,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Set the paths property: Path rules of URL path map.
-     *
+     * 
      * @param paths the paths value to set.
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
@@ -120,7 +125,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the backendAddressPool property: Backend address pool resource of URL path map path rule.
-     *
+     * 
      * @return the backendAddressPool value.
      */
     public SubResource backendAddressPool() {
@@ -129,7 +134,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Set the backendAddressPool property: Backend address pool resource of URL path map path rule.
-     *
+     * 
      * @param backendAddressPool the backendAddressPool value to set.
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
@@ -143,7 +148,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the backendHttpSettings property: Backend http settings resource of URL path map path rule.
-     *
+     * 
      * @return the backendHttpSettings value.
      */
     public SubResource backendHttpSettings() {
@@ -152,7 +157,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Set the backendHttpSettings property: Backend http settings resource of URL path map path rule.
-     *
+     * 
      * @param backendHttpSettings the backendHttpSettings value to set.
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
@@ -166,7 +171,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the redirectConfiguration property: Redirect configuration resource of URL path map path rule.
-     *
+     * 
      * @return the redirectConfiguration value.
      */
     public SubResource redirectConfiguration() {
@@ -175,7 +180,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Set the redirectConfiguration property: Redirect configuration resource of URL path map path rule.
-     *
+     * 
      * @param redirectConfiguration the redirectConfiguration value to set.
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
@@ -189,7 +194,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the rewriteRuleSet property: Rewrite rule set resource of URL path map path rule.
-     *
+     * 
      * @return the rewriteRuleSet value.
      */
     public SubResource rewriteRuleSet() {
@@ -198,7 +203,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Set the rewriteRuleSet property: Rewrite rule set resource of URL path map path rule.
-     *
+     * 
      * @param rewriteRuleSet the rewriteRuleSet value to set.
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
@@ -212,7 +217,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the loadDistributionPolicy property: Load Distribution Policy resource of URL path map path rule.
-     *
+     * 
      * @return the loadDistributionPolicy value.
      */
     public SubResource loadDistributionPolicy() {
@@ -221,7 +226,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Set the loadDistributionPolicy property: Load Distribution Policy resource of URL path map path rule.
-     *
+     * 
      * @param loadDistributionPolicy the loadDistributionPolicy value to set.
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
@@ -235,7 +240,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the path rule resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -244,7 +249,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the firewallPolicy property: Reference to the FirewallPolicy resource.
-     *
+     * 
      * @return the firewallPolicy value.
      */
     public SubResource firewallPolicy() {
@@ -253,7 +258,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Set the firewallPolicy property: Reference to the FirewallPolicy resource.
-     *
+     * 
      * @param firewallPolicy the firewallPolicy value to set.
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
@@ -267,12 +272,60 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayPathRuleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayPathRuleInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayPathRuleInner.
+     */
+    public static ApplicationGatewayPathRuleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayPathRuleInner deserializedApplicationGatewayPathRuleInner
+                = new ApplicationGatewayPathRuleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApplicationGatewayPathRuleInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationGatewayPathRuleInner.innerProperties
+                        = ApplicationGatewayPathRulePropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplicationGatewayPathRuleInner.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedApplicationGatewayPathRuleInner.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicationGatewayPathRuleInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayPathRuleInner;
+        });
     }
 }

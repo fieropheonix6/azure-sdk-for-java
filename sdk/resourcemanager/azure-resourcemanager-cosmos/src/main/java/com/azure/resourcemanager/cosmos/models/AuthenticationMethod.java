@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,26 +13,43 @@ import java.util.Collection;
  * 'Cassandra'.
  */
 public final class AuthenticationMethod extends ExpandableStringEnum<AuthenticationMethod> {
-    /** Static value None for AuthenticationMethod. */
+    /**
+     * Static value None for AuthenticationMethod.
+     */
     public static final AuthenticationMethod NONE = fromString("None");
 
-    /** Static value Cassandra for AuthenticationMethod. */
+    /**
+     * Static value Cassandra for AuthenticationMethod.
+     */
     public static final AuthenticationMethod CASSANDRA = fromString("Cassandra");
 
     /**
+     * Static value Ldap for AuthenticationMethod.
+     */
+    public static final AuthenticationMethod LDAP = fromString("Ldap");
+
+    /**
+     * Creates a new instance of AuthenticationMethod value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AuthenticationMethod() {
+    }
+
+    /**
      * Creates or finds a AuthenticationMethod from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AuthenticationMethod.
      */
-    @JsonCreator
     public static AuthenticationMethod fromString(String name) {
         return fromString(name, AuthenticationMethod.class);
     }
 
     /**
      * Gets known AuthenticationMethod values.
-     *
+     * 
      * @return known AuthenticationMethod values.
      */
     public static Collection<AuthenticationMethod> values() {

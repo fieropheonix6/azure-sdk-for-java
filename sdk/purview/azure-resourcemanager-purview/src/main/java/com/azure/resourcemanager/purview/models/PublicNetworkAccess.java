@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PublicNetworkAccess. */
+/**
+ * Gets or sets the public network access.
+ */
 public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetworkAccess> {
-    /** Static value NotSpecified for PublicNetworkAccess. */
+    /**
+     * Static value NotSpecified for PublicNetworkAccess.
+     */
     public static final PublicNetworkAccess NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Enabled for PublicNetworkAccess. */
+    /**
+     * Static value Enabled for PublicNetworkAccess.
+     */
     public static final PublicNetworkAccess ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for PublicNetworkAccess. */
+    /**
+     * Static value Disabled for PublicNetworkAccess.
+     */
     public static final PublicNetworkAccess DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of PublicNetworkAccess value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PublicNetworkAccess() {
+    }
+
+    /**
      * Creates or finds a PublicNetworkAccess from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PublicNetworkAccess.
      */
-    @JsonCreator
     public static PublicNetworkAccess fromString(String name) {
         return fromString(name, PublicNetworkAccess.class);
     }
 
-    /** @return known PublicNetworkAccess values. */
+    /**
+     * Gets known PublicNetworkAccess values.
+     * 
+     * @return known PublicNetworkAccess values.
+     */
     public static Collection<PublicNetworkAccess> values() {
         return values(PublicNetworkAccess.class);
     }

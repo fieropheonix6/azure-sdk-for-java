@@ -9,22 +9,22 @@ import com.azure.resourcemanager.devhub.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TagsObjectTests {
-    @Test
-    public void testDeserialize() {
-        TagsObject model = BinaryData.fromString("{\"tags\":{\"x\":\"ofmx\"}}").toObject(TagsObject.class);
-        Assertions.assertEquals("ofmx", model.tags().get("x"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        TagsObject model = BinaryData.fromString("{\"tags\":{\"jpgd\":\"mxaxc\"}}").toObject(TagsObject.class);
+        Assertions.assertEquals("mxaxc", model.tags().get("jpgd"));
     }
 
-    @Test
-    public void testSerialize() {
-        TagsObject model = new TagsObject().withTags(mapOf("x", "ofmx"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        TagsObject model = new TagsObject().withTags(mapOf("jpgd", "mxaxc"));
         model = BinaryData.fromObject(model).toObject(TagsObject.class);
-        Assertions.assertEquals("ofmx", model.tags().get("x"));
+        Assertions.assertEquals("mxaxc", model.tags().get("jpgd"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

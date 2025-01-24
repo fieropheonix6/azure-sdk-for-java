@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for CassandraClusters Status. */
+/**
+ * Samples for CassandraClusters Status.
+ */
 public final class CassandraClustersStatusSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBManagedCassandraStatus.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
+     * CosmosDBManagedCassandraStatus.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraStatus.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBManagedCassandraStatus(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
+        azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getCassandraClusters()
-            .statusWithResponse("cassandra-prod-rg", "cassandra-prod", Context.NONE);
+            .statusWithResponse("cassandra-prod-rg", "cassandra-prod", com.azure.core.util.Context.NONE);
     }
 }

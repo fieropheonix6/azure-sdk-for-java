@@ -24,19 +24,20 @@ import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DISPOSITION_STATUS_KEY;
 
 /**
- * Contains methods to report servicebus metrics.
+ * Contains methods to report Service Bus metrics.
  */
-public class ServiceBusMeter {
+public final class ServiceBusMeter {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusMeter.class);
     private static final String GENERIC_STATUS_KEY = "status";
-    private static final int DISPOSITION_STATUSES_COUNT  = DispositionStatus.values().length;
+    private static final int DISPOSITION_STATUSES_COUNT = DispositionStatus.values().length;
     private static final AutoCloseable NOOP_CLOSEABLE = () -> {
     };
-    private final Meter meter;
     private final boolean isEnabled;
+    private final AtomicReference<CompositeSubscription> lastSeqNoSubscription = new AtomicReference<>(null);
 
     private TelemetryAttributes sendAttributesSuccess;
     private TelemetryAttributes sendAttributesFailure;
+    private TelemetryAttributes sendAttributesCancelled;
     private TelemetryAttributes receiveAttributes;
 
     /**
@@ -47,23 +48,21 @@ public class ServiceBusMeter {
     private TelemetryAttributes[] settleSuccessAttributes;
     private TelemetryAttributes[] settleFailureAttributes;
 
-    private AtomicReference<CompositeSubscription> lastSeqNoSubscription = new AtomicReference<>(null);
     private LongCounter sentMessagesCounter;
     private DoubleHistogram consumerLag;
     private DoubleHistogram settleMessageDuration;
     private LongGauge settledSequenceNumber;
 
     public ServiceBusMeter(Meter meter, String namespace, String entityPath, String subscriptionName) {
-        this.meter = meter;
         this.isEnabled = meter != null && meter.isEnabled();
         if (this.isEnabled) {
             Map<String, Object> commonAttributesMap = new HashMap<>(3);
             commonAttributesMap.put(HOSTNAME_KEY, namespace);
             int entityNameEnd = entityPath.indexOf('/');
             if (entityNameEnd > 0) {
-                commonAttributesMap.put(ClientConstants.ENTITY_NAME_KEY,  entityPath.substring(0, entityNameEnd));
+                commonAttributesMap.put(ClientConstants.ENTITY_NAME_KEY, entityPath.substring(0, entityNameEnd));
             } else {
-                commonAttributesMap.put(ClientConstants.ENTITY_NAME_KEY,  entityPath);
+                commonAttributesMap.put(ClientConstants.ENTITY_NAME_KEY, entityPath);
             }
 
             if (subscriptionName != null) {
@@ -71,12 +70,15 @@ public class ServiceBusMeter {
             }
 
             Map<String, Object> successMap = new HashMap<>(commonAttributesMap);
-            successMap.put(GENERIC_STATUS_KEY, "ok");
             this.sendAttributesSuccess = meter.createAttributes(successMap);
 
             Map<String, Object> failureMap = new HashMap<>(commonAttributesMap);
             failureMap.put(GENERIC_STATUS_KEY, "error");
             this.sendAttributesFailure = meter.createAttributes(failureMap);
+
+            Map<String, Object> cancelMap = new HashMap<>(commonAttributesMap);
+            cancelMap.put(GENERIC_STATUS_KEY, "cancelled");
+            this.sendAttributesCancelled = meter.createAttributes(cancelMap);
 
             this.settleSuccessAttributes = new TelemetryAttributes[DISPOSITION_STATUSES_COUNT];
             this.settleFailureAttributes = new TelemetryAttributes[DISPOSITION_STATUSES_COUNT];
@@ -91,10 +93,15 @@ public class ServiceBusMeter {
             }
 
             this.receiveAttributes = meter.createAttributes(commonAttributesMap);
-            this.sentMessagesCounter = meter.createLongCounter("messaging.servicebus.messages.sent", "Number of sent messages", "messages");
-            this.settleMessageDuration = meter.createDoubleHistogram("messaging.servicebus.settlement.request.duration", "Duration of settlement call.", "ms");
-            this.consumerLag = meter.createDoubleHistogram("messaging.servicebus.receiver.lag", "Difference between local time when event was received and the local time it was enqueued on broker.", "sec");
-            this.settledSequenceNumber = this.meter.createLongGauge("messaging.servicebus.settlement.sequence_number", "Last settled message sequence number", "seqNo");
+            this.sentMessagesCounter
+                = meter.createLongCounter("messaging.servicebus.messages.sent", "Number of sent messages", "messages");
+            this.settleMessageDuration = meter.createDoubleHistogram("messaging.servicebus.settlement.request.duration",
+                "Duration of settlement call.", "ms");
+            this.consumerLag = meter.createDoubleHistogram("messaging.servicebus.receiver.lag",
+                "Difference between local time when event was received and the local time it was enqueued on broker.",
+                "sec");
+            this.settledSequenceNumber = meter.createLongGauge("messaging.servicebus.settlement.sequence_number",
+                "Last settled message sequence number", "seqNo");
         }
     }
 
@@ -108,9 +115,15 @@ public class ServiceBusMeter {
     /**
      * Reports sent messages count.
      */
-    public void reportBatchSend(int batchSize, Throwable throwable, Context context) {
+    void reportBatchSend(int batchSize, Throwable throwable, boolean cancelled, Context context) {
         if (isEnabled && sentMessagesCounter.isEnabled()) {
-            TelemetryAttributes attributes = throwable == null ? sendAttributesSuccess : sendAttributesFailure;
+            TelemetryAttributes attributes = sendAttributesSuccess;
+            if (throwable != null) {
+                attributes = sendAttributesFailure;
+            } else if (cancelled) {
+                attributes = sendAttributesCancelled;
+            }
+
             sentMessagesCounter.add(batchSize, attributes, context);
         }
     }
@@ -151,10 +164,12 @@ public class ServiceBusMeter {
      * if there is an active subscription for last sequence number reporting obtained
      * with {@link ServiceBusMeter#trackSettlementSequenceNumber()}.
      */
-    public void reportSettlement(long start, long seqNo, DispositionStatus status, Throwable throwable, Context context) {
+    public void reportSettlement(long start, long seqNo, DispositionStatus status, Throwable throwable,
+        boolean cancelled, Context context) {
         if (isEnabled) {
             if (settleMessageDuration.isEnabled()) {
-                TelemetryAttributes attributes = throwable == null ? settleSuccessAttributes[status.ordinal()]
+                TelemetryAttributes attributes = throwable == null
+                    ? settleSuccessAttributes[status.ordinal()]
                     : settleFailureAttributes[status.ordinal()];
 
                 settleMessageDuration.record(Instant.now().toEpochMilli() - start, attributes, context);
@@ -162,7 +177,7 @@ public class ServiceBusMeter {
 
             CompositeSubscription subs = lastSeqNoSubscription.get();
             if (settledSequenceNumber.isEnabled() && subs != null) {
-                subs.set(seqNo, status, throwable == null);
+                subs.set(seqNo, status, throwable == null && !cancelled);
             }
         }
     }
@@ -178,7 +193,8 @@ public class ServiceBusMeter {
 
         CompositeSubscription existingSubscription = lastSeqNoSubscription.get();
         if (existingSubscription == null) {
-            CompositeSubscription subs = new CompositeSubscription(settledSequenceNumber, settleSuccessAttributes, settleFailureAttributes);
+            CompositeSubscription subs
+                = new CompositeSubscription(settledSequenceNumber, settleSuccessAttributes, settleFailureAttributes);
             if (lastSeqNoSubscription.compareAndSet(null, subs)) {
                 return subs;
             }
@@ -195,14 +211,16 @@ public class ServiceBusMeter {
         private final AutoCloseable[] subscriptionsSuccess = new AutoCloseable[DISPOSITION_STATUSES_COUNT];
         private final AutoCloseable[] subscriptionsFailure = new AutoCloseable[DISPOSITION_STATUSES_COUNT];
 
-        CompositeSubscription(LongGauge settledSequenceNumber,
-            TelemetryAttributes[] settleSuccessAttributes, TelemetryAttributes[] settleFailureAttributes) {
+        CompositeSubscription(LongGauge settledSequenceNumber, TelemetryAttributes[] settleSuccessAttributes,
+            TelemetryAttributes[] settleFailureAttributes) {
             for (int i = 0; i < DISPOSITION_STATUSES_COUNT; i++) {
                 lastSeqNoSuccess[i] = new AtomicLong();
                 lastSeqNoFailure[i] = new AtomicLong();
                 final int fi = i;
-                subscriptionsSuccess[i] = settledSequenceNumber.registerCallback(() -> lastSeqNoSuccess[fi].get(), settleSuccessAttributes[i]);
-                subscriptionsFailure[i] = settledSequenceNumber.registerCallback(() -> lastSeqNoFailure[fi].get(), settleFailureAttributes[i]);
+                subscriptionsSuccess[i] = settledSequenceNumber.registerCallback(() -> lastSeqNoSuccess[fi].get(),
+                    settleSuccessAttributes[i]);
+                subscriptionsFailure[i] = settledSequenceNumber.registerCallback(() -> lastSeqNoFailure[fi].get(),
+                    settleFailureAttributes[i]);
             }
         }
 

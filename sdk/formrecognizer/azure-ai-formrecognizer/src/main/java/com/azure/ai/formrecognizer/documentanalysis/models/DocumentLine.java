@@ -5,7 +5,6 @@ package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentLineHelper;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +14,17 @@ import java.util.List;
  */
 @Immutable
 public final class DocumentLine {
-    // Ignore custom getters in the class to prevent serialization and deserialization issues
 
+    /**
+     * Constructs a DocumentLine object.
+     */
+    public DocumentLine() {
+        this.spans = new ArrayList<>();
+        this.boundingPolygon = new ArrayList<>();
+        this.pageWords = new ArrayList<>();
+    }
+
+    // Ignore custom getters in the class to prevent serialization and deserialization issues
     /*
      * Concatenated content of the contained elements in reading order.
      */
@@ -47,7 +55,6 @@ public final class DocumentLine {
      * Set the content property: Concatenated content of the contained elements in reading order.
      *
      * @param content the content value to set.
-     * @return the DocumentLine object itself.
      */
     private void setContent(String content) {
         this.content = content;
@@ -70,7 +77,6 @@ public final class DocumentLine {
      * relative to the element orientation.
      *
      * @param boundingPolygon the boundingPolygon value to set.
-     * @return the DocumentLine object itself.
      */
     private void setBoundingPolygon(List<Point> boundingPolygon) {
         this.boundingPolygon = boundingPolygon;
@@ -89,7 +95,6 @@ public final class DocumentLine {
      * Set the spans property: Location of the line in the reading order concatenated content.
      *
      * @param spans the spans value to set.
-     * @return the DocumentLine object itself.
      */
     private void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;
@@ -104,17 +109,15 @@ public final class DocumentLine {
      *
      * @return the list of {@link DocumentWord} in this DocumentLine
      */
-    @JsonIgnore
     public List<DocumentWord> getWords() {
         List<DocumentWord> containedWords = new ArrayList<>();
-        pageWords.forEach(documentWord ->
-            spans.forEach(documentSpan -> {
-                if ((documentWord.getSpan().getOffset() >= documentSpan.getOffset())
-                    && ((documentWord.getSpan().getOffset()
-                    + documentWord.getSpan().getLength()) <= (documentSpan.getOffset() + documentSpan.getLength()))) {
-                    containedWords.add(documentWord);
-                }
-            }));
+        pageWords.forEach(documentWord -> spans.forEach(documentSpan -> {
+            if ((documentWord.getSpan().getOffset() >= documentSpan.getOffset())
+                && ((documentWord.getSpan().getOffset() + documentWord.getSpan().getLength())
+                    <= (documentSpan.getOffset() + documentSpan.getLength()))) {
+                containedWords.add(documentWord);
+            }
+        }));
 
         return containedWords;
     }

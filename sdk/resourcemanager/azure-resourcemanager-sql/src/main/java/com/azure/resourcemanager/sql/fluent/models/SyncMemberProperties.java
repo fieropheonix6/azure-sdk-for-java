@@ -5,72 +5,91 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.SyncDirection;
 import com.azure.resourcemanager.sql.models.SyncMemberDbType;
 import com.azure.resourcemanager.sql.models.SyncMemberState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
-/** Properties of a sync member. */
+/**
+ * Properties of a sync member.
+ */
 @Fluent
-public final class SyncMemberProperties {
+public final class SyncMemberProperties implements JsonSerializable<SyncMemberProperties> {
     /*
      * Database type of the sync member.
      */
-    @JsonProperty(value = "databaseType")
     private SyncMemberDbType databaseType;
 
     /*
      * ARM resource id of the sync agent in the sync member.
      */
-    @JsonProperty(value = "syncAgentId")
     private String syncAgentId;
 
     /*
      * SQL Server database id of the sync member.
      */
-    @JsonProperty(value = "sqlServerDatabaseId")
     private UUID sqlServerDatabaseId;
+
+    /*
+     * ARM resource id of the sync member logical database, for sync members in Azure.
+     */
+    private String syncMemberAzureDatabaseResourceId;
+
+    /*
+     * Whether to use private link connection.
+     */
+    private Boolean usePrivateLinkConnection;
+
+    /*
+     * Private endpoint name of the sync member if use private link connection is enabled, for sync members in Azure.
+     */
+    private String privateEndpointName;
 
     /*
      * Server name of the member database in the sync member
      */
-    @JsonProperty(value = "serverName")
     private String serverName;
 
     /*
      * Database name of the member database in the sync member.
      */
-    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /*
      * User name of the member database in the sync member.
      */
-    @JsonProperty(value = "userName")
     private String username;
 
     /*
      * Password of the member database in the sync member.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * Sync direction of the sync member.
      */
-    @JsonProperty(value = "syncDirection")
     private SyncDirection syncDirection;
 
     /*
      * Sync state of the sync member.
      */
-    @JsonProperty(value = "syncState", access = JsonProperty.Access.WRITE_ONLY)
     private SyncMemberState syncState;
 
     /**
+     * Creates an instance of SyncMemberProperties class.
+     */
+    public SyncMemberProperties() {
+    }
+
+    /**
      * Get the databaseType property: Database type of the sync member.
-     *
+     * 
      * @return the databaseType value.
      */
     public SyncMemberDbType databaseType() {
@@ -79,7 +98,7 @@ public final class SyncMemberProperties {
 
     /**
      * Set the databaseType property: Database type of the sync member.
-     *
+     * 
      * @param databaseType the databaseType value to set.
      * @return the SyncMemberProperties object itself.
      */
@@ -90,7 +109,7 @@ public final class SyncMemberProperties {
 
     /**
      * Get the syncAgentId property: ARM resource id of the sync agent in the sync member.
-     *
+     * 
      * @return the syncAgentId value.
      */
     public String syncAgentId() {
@@ -99,7 +118,7 @@ public final class SyncMemberProperties {
 
     /**
      * Set the syncAgentId property: ARM resource id of the sync agent in the sync member.
-     *
+     * 
      * @param syncAgentId the syncAgentId value to set.
      * @return the SyncMemberProperties object itself.
      */
@@ -110,7 +129,7 @@ public final class SyncMemberProperties {
 
     /**
      * Get the sqlServerDatabaseId property: SQL Server database id of the sync member.
-     *
+     * 
      * @return the sqlServerDatabaseId value.
      */
     public UUID sqlServerDatabaseId() {
@@ -119,7 +138,7 @@ public final class SyncMemberProperties {
 
     /**
      * Set the sqlServerDatabaseId property: SQL Server database id of the sync member.
-     *
+     * 
      * @param sqlServerDatabaseId the sqlServerDatabaseId value to set.
      * @return the SyncMemberProperties object itself.
      */
@@ -129,8 +148,60 @@ public final class SyncMemberProperties {
     }
 
     /**
+     * Get the syncMemberAzureDatabaseResourceId property: ARM resource id of the sync member logical database, for sync
+     * members in Azure.
+     * 
+     * @return the syncMemberAzureDatabaseResourceId value.
+     */
+    public String syncMemberAzureDatabaseResourceId() {
+        return this.syncMemberAzureDatabaseResourceId;
+    }
+
+    /**
+     * Set the syncMemberAzureDatabaseResourceId property: ARM resource id of the sync member logical database, for sync
+     * members in Azure.
+     * 
+     * @param syncMemberAzureDatabaseResourceId the syncMemberAzureDatabaseResourceId value to set.
+     * @return the SyncMemberProperties object itself.
+     */
+    public SyncMemberProperties withSyncMemberAzureDatabaseResourceId(String syncMemberAzureDatabaseResourceId) {
+        this.syncMemberAzureDatabaseResourceId = syncMemberAzureDatabaseResourceId;
+        return this;
+    }
+
+    /**
+     * Get the usePrivateLinkConnection property: Whether to use private link connection.
+     * 
+     * @return the usePrivateLinkConnection value.
+     */
+    public Boolean usePrivateLinkConnection() {
+        return this.usePrivateLinkConnection;
+    }
+
+    /**
+     * Set the usePrivateLinkConnection property: Whether to use private link connection.
+     * 
+     * @param usePrivateLinkConnection the usePrivateLinkConnection value to set.
+     * @return the SyncMemberProperties object itself.
+     */
+    public SyncMemberProperties withUsePrivateLinkConnection(Boolean usePrivateLinkConnection) {
+        this.usePrivateLinkConnection = usePrivateLinkConnection;
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointName property: Private endpoint name of the sync member if use private link connection is
+     * enabled, for sync members in Azure.
+     * 
+     * @return the privateEndpointName value.
+     */
+    public String privateEndpointName() {
+        return this.privateEndpointName;
+    }
+
+    /**
      * Get the serverName property: Server name of the member database in the sync member.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -139,7 +210,7 @@ public final class SyncMemberProperties {
 
     /**
      * Set the serverName property: Server name of the member database in the sync member.
-     *
+     * 
      * @param serverName the serverName value to set.
      * @return the SyncMemberProperties object itself.
      */
@@ -150,7 +221,7 @@ public final class SyncMemberProperties {
 
     /**
      * Get the databaseName property: Database name of the member database in the sync member.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -159,7 +230,7 @@ public final class SyncMemberProperties {
 
     /**
      * Set the databaseName property: Database name of the member database in the sync member.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the SyncMemberProperties object itself.
      */
@@ -170,7 +241,7 @@ public final class SyncMemberProperties {
 
     /**
      * Get the username property: User name of the member database in the sync member.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -179,7 +250,7 @@ public final class SyncMemberProperties {
 
     /**
      * Set the username property: User name of the member database in the sync member.
-     *
+     * 
      * @param username the username value to set.
      * @return the SyncMemberProperties object itself.
      */
@@ -190,7 +261,7 @@ public final class SyncMemberProperties {
 
     /**
      * Get the password property: Password of the member database in the sync member.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -199,7 +270,7 @@ public final class SyncMemberProperties {
 
     /**
      * Set the password property: Password of the member database in the sync member.
-     *
+     * 
      * @param password the password value to set.
      * @return the SyncMemberProperties object itself.
      */
@@ -210,7 +281,7 @@ public final class SyncMemberProperties {
 
     /**
      * Get the syncDirection property: Sync direction of the sync member.
-     *
+     * 
      * @return the syncDirection value.
      */
     public SyncDirection syncDirection() {
@@ -219,7 +290,7 @@ public final class SyncMemberProperties {
 
     /**
      * Set the syncDirection property: Sync direction of the sync member.
-     *
+     * 
      * @param syncDirection the syncDirection value to set.
      * @return the SyncMemberProperties object itself.
      */
@@ -230,7 +301,7 @@ public final class SyncMemberProperties {
 
     /**
      * Get the syncState property: Sync state of the sync member.
-     *
+     * 
      * @return the syncState value.
      */
     public SyncMemberState syncState() {
@@ -239,9 +310,78 @@ public final class SyncMemberProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("databaseType", this.databaseType == null ? null : this.databaseType.toString());
+        jsonWriter.writeStringField("syncAgentId", this.syncAgentId);
+        jsonWriter.writeStringField("sqlServerDatabaseId", Objects.toString(this.sqlServerDatabaseId, null));
+        jsonWriter.writeStringField("syncMemberAzureDatabaseResourceId", this.syncMemberAzureDatabaseResourceId);
+        jsonWriter.writeBooleanField("usePrivateLinkConnection", this.usePrivateLinkConnection);
+        jsonWriter.writeStringField("serverName", this.serverName);
+        jsonWriter.writeStringField("databaseName", this.databaseName);
+        jsonWriter.writeStringField("userName", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("syncDirection", this.syncDirection == null ? null : this.syncDirection.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SyncMemberProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SyncMemberProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SyncMemberProperties.
+     */
+    public static SyncMemberProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SyncMemberProperties deserializedSyncMemberProperties = new SyncMemberProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("databaseType".equals(fieldName)) {
+                    deserializedSyncMemberProperties.databaseType = SyncMemberDbType.fromString(reader.getString());
+                } else if ("syncAgentId".equals(fieldName)) {
+                    deserializedSyncMemberProperties.syncAgentId = reader.getString();
+                } else if ("sqlServerDatabaseId".equals(fieldName)) {
+                    deserializedSyncMemberProperties.sqlServerDatabaseId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("syncMemberAzureDatabaseResourceId".equals(fieldName)) {
+                    deserializedSyncMemberProperties.syncMemberAzureDatabaseResourceId = reader.getString();
+                } else if ("usePrivateLinkConnection".equals(fieldName)) {
+                    deserializedSyncMemberProperties.usePrivateLinkConnection
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("privateEndpointName".equals(fieldName)) {
+                    deserializedSyncMemberProperties.privateEndpointName = reader.getString();
+                } else if ("serverName".equals(fieldName)) {
+                    deserializedSyncMemberProperties.serverName = reader.getString();
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedSyncMemberProperties.databaseName = reader.getString();
+                } else if ("userName".equals(fieldName)) {
+                    deserializedSyncMemberProperties.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedSyncMemberProperties.password = reader.getString();
+                } else if ("syncDirection".equals(fieldName)) {
+                    deserializedSyncMemberProperties.syncDirection = SyncDirection.fromString(reader.getString());
+                } else if ("syncState".equals(fieldName)) {
+                    deserializedSyncMemberProperties.syncState = SyncMemberState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSyncMemberProperties;
+        });
     }
 }

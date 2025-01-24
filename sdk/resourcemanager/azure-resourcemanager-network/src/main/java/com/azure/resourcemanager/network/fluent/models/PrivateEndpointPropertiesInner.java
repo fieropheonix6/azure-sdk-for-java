@@ -5,79 +5,78 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.CustomDnsConfigPropertiesFormat;
 import com.azure.resourcemanager.network.models.PrivateEndpointIpConfiguration;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnection;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of the private endpoint. */
+/**
+ * Properties of the private endpoint.
+ */
 @Fluent
-public final class PrivateEndpointPropertiesInner {
+public final class PrivateEndpointPropertiesInner implements JsonSerializable<PrivateEndpointPropertiesInner> {
     /*
      * The ID of the subnet from which the private IP will be allocated.
      */
-    @JsonProperty(value = "subnet")
     private SubnetInner subnet;
 
     /*
      * An array of references to the network interfaces created for this private endpoint.
      */
-    @JsonProperty(value = "networkInterfaces", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterfaceInner> networkInterfaces;
 
     /*
      * The provisioning state of the private endpoint resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * A grouping of information about the connection to the remote resource.
      */
-    @JsonProperty(value = "privateLinkServiceConnections")
     private List<PrivateLinkServiceConnection> privateLinkServiceConnections;
 
     /*
      * A grouping of information about the connection to the remote resource. Used when the network admin does not have
      * access to approve connections to the remote resource.
      */
-    @JsonProperty(value = "manualPrivateLinkServiceConnections")
     private List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections;
 
     /*
      * An array of custom dns configurations.
      */
-    @JsonProperty(value = "customDnsConfigs")
     private List<CustomDnsConfigPropertiesFormat> customDnsConfigs;
 
     /*
      * Application security groups in which the private endpoint IP configuration is included.
      */
-    @JsonProperty(value = "applicationSecurityGroups")
     private List<ApplicationSecurityGroupInner> applicationSecurityGroups;
 
     /*
      * A list of IP configurations of the private endpoint. This will be used to map to the First Party Service's
      * endpoints.
      */
-    @JsonProperty(value = "ipConfigurations")
     private List<PrivateEndpointIpConfiguration> ipConfigurations;
 
     /*
      * The custom name of the network interface attached to the private endpoint.
      */
-    @JsonProperty(value = "customNetworkInterfaceName")
     private String customNetworkInterfaceName;
 
-    /** Creates an instance of PrivateEndpointPropertiesInner class. */
+    /**
+     * Creates an instance of PrivateEndpointPropertiesInner class.
+     */
     public PrivateEndpointPropertiesInner() {
     }
 
     /**
      * Get the subnet property: The ID of the subnet from which the private IP will be allocated.
-     *
+     * 
      * @return the subnet value.
      */
     public SubnetInner subnet() {
@@ -86,7 +85,7 @@ public final class PrivateEndpointPropertiesInner {
 
     /**
      * Set the subnet property: The ID of the subnet from which the private IP will be allocated.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the PrivateEndpointPropertiesInner object itself.
      */
@@ -98,7 +97,7 @@ public final class PrivateEndpointPropertiesInner {
     /**
      * Get the networkInterfaces property: An array of references to the network interfaces created for this private
      * endpoint.
-     *
+     * 
      * @return the networkInterfaces value.
      */
     public List<NetworkInterfaceInner> networkInterfaces() {
@@ -107,7 +106,7 @@ public final class PrivateEndpointPropertiesInner {
 
     /**
      * Get the provisioningState property: The provisioning state of the private endpoint resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -117,7 +116,7 @@ public final class PrivateEndpointPropertiesInner {
     /**
      * Get the privateLinkServiceConnections property: A grouping of information about the connection to the remote
      * resource.
-     *
+     * 
      * @return the privateLinkServiceConnections value.
      */
     public List<PrivateLinkServiceConnection> privateLinkServiceConnections() {
@@ -127,12 +126,12 @@ public final class PrivateEndpointPropertiesInner {
     /**
      * Set the privateLinkServiceConnections property: A grouping of information about the connection to the remote
      * resource.
-     *
+     * 
      * @param privateLinkServiceConnections the privateLinkServiceConnections value to set.
      * @return the PrivateEndpointPropertiesInner object itself.
      */
-    public PrivateEndpointPropertiesInner withPrivateLinkServiceConnections(
-        List<PrivateLinkServiceConnection> privateLinkServiceConnections) {
+    public PrivateEndpointPropertiesInner
+        withPrivateLinkServiceConnections(List<PrivateLinkServiceConnection> privateLinkServiceConnections) {
         this.privateLinkServiceConnections = privateLinkServiceConnections;
         return this;
     }
@@ -140,7 +139,7 @@ public final class PrivateEndpointPropertiesInner {
     /**
      * Get the manualPrivateLinkServiceConnections property: A grouping of information about the connection to the
      * remote resource. Used when the network admin does not have access to approve connections to the remote resource.
-     *
+     * 
      * @return the manualPrivateLinkServiceConnections value.
      */
     public List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections() {
@@ -150,7 +149,7 @@ public final class PrivateEndpointPropertiesInner {
     /**
      * Set the manualPrivateLinkServiceConnections property: A grouping of information about the connection to the
      * remote resource. Used when the network admin does not have access to approve connections to the remote resource.
-     *
+     * 
      * @param manualPrivateLinkServiceConnections the manualPrivateLinkServiceConnections value to set.
      * @return the PrivateEndpointPropertiesInner object itself.
      */
@@ -162,7 +161,7 @@ public final class PrivateEndpointPropertiesInner {
 
     /**
      * Get the customDnsConfigs property: An array of custom dns configurations.
-     *
+     * 
      * @return the customDnsConfigs value.
      */
     public List<CustomDnsConfigPropertiesFormat> customDnsConfigs() {
@@ -171,7 +170,7 @@ public final class PrivateEndpointPropertiesInner {
 
     /**
      * Set the customDnsConfigs property: An array of custom dns configurations.
-     *
+     * 
      * @param customDnsConfigs the customDnsConfigs value to set.
      * @return the PrivateEndpointPropertiesInner object itself.
      */
@@ -183,7 +182,7 @@ public final class PrivateEndpointPropertiesInner {
     /**
      * Get the applicationSecurityGroups property: Application security groups in which the private endpoint IP
      * configuration is included.
-     *
+     * 
      * @return the applicationSecurityGroups value.
      */
     public List<ApplicationSecurityGroupInner> applicationSecurityGroups() {
@@ -193,12 +192,12 @@ public final class PrivateEndpointPropertiesInner {
     /**
      * Set the applicationSecurityGroups property: Application security groups in which the private endpoint IP
      * configuration is included.
-     *
+     * 
      * @param applicationSecurityGroups the applicationSecurityGroups value to set.
      * @return the PrivateEndpointPropertiesInner object itself.
      */
-    public PrivateEndpointPropertiesInner withApplicationSecurityGroups(
-        List<ApplicationSecurityGroupInner> applicationSecurityGroups) {
+    public PrivateEndpointPropertiesInner
+        withApplicationSecurityGroups(List<ApplicationSecurityGroupInner> applicationSecurityGroups) {
         this.applicationSecurityGroups = applicationSecurityGroups;
         return this;
     }
@@ -206,7 +205,7 @@ public final class PrivateEndpointPropertiesInner {
     /**
      * Get the ipConfigurations property: A list of IP configurations of the private endpoint. This will be used to map
      * to the First Party Service's endpoints.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<PrivateEndpointIpConfiguration> ipConfigurations() {
@@ -216,7 +215,7 @@ public final class PrivateEndpointPropertiesInner {
     /**
      * Set the ipConfigurations property: A list of IP configurations of the private endpoint. This will be used to map
      * to the First Party Service's endpoints.
-     *
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the PrivateEndpointPropertiesInner object itself.
      */
@@ -228,7 +227,7 @@ public final class PrivateEndpointPropertiesInner {
     /**
      * Get the customNetworkInterfaceName property: The custom name of the network interface attached to the private
      * endpoint.
-     *
+     * 
      * @return the customNetworkInterfaceName value.
      */
     public String customNetworkInterfaceName() {
@@ -238,7 +237,7 @@ public final class PrivateEndpointPropertiesInner {
     /**
      * Set the customNetworkInterfaceName property: The custom name of the network interface attached to the private
      * endpoint.
-     *
+     * 
      * @param customNetworkInterfaceName the customNetworkInterfaceName value to set.
      * @return the PrivateEndpointPropertiesInner object itself.
      */
@@ -249,7 +248,7 @@ public final class PrivateEndpointPropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -274,5 +273,84 @@ public final class PrivateEndpointPropertiesInner {
         if (ipConfigurations() != null) {
             ipConfigurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeArrayField("privateLinkServiceConnections", this.privateLinkServiceConnections,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("manualPrivateLinkServiceConnections", this.manualPrivateLinkServiceConnections,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("customDnsConfigs", this.customDnsConfigs,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("applicationSecurityGroups", this.applicationSecurityGroups,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ipConfigurations", this.ipConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("customNetworkInterfaceName", this.customNetworkInterfaceName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointPropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointPropertiesInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateEndpointPropertiesInner.
+     */
+    public static PrivateEndpointPropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointPropertiesInner deserializedPrivateEndpointPropertiesInner
+                = new PrivateEndpointPropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnet".equals(fieldName)) {
+                    deserializedPrivateEndpointPropertiesInner.subnet = SubnetInner.fromJson(reader);
+                } else if ("networkInterfaces".equals(fieldName)) {
+                    List<NetworkInterfaceInner> networkInterfaces
+                        = reader.readArray(reader1 -> NetworkInterfaceInner.fromJson(reader1));
+                    deserializedPrivateEndpointPropertiesInner.networkInterfaces = networkInterfaces;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPrivateEndpointPropertiesInner.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("privateLinkServiceConnections".equals(fieldName)) {
+                    List<PrivateLinkServiceConnection> privateLinkServiceConnections
+                        = reader.readArray(reader1 -> PrivateLinkServiceConnection.fromJson(reader1));
+                    deserializedPrivateEndpointPropertiesInner.privateLinkServiceConnections
+                        = privateLinkServiceConnections;
+                } else if ("manualPrivateLinkServiceConnections".equals(fieldName)) {
+                    List<PrivateLinkServiceConnection> manualPrivateLinkServiceConnections
+                        = reader.readArray(reader1 -> PrivateLinkServiceConnection.fromJson(reader1));
+                    deserializedPrivateEndpointPropertiesInner.manualPrivateLinkServiceConnections
+                        = manualPrivateLinkServiceConnections;
+                } else if ("customDnsConfigs".equals(fieldName)) {
+                    List<CustomDnsConfigPropertiesFormat> customDnsConfigs
+                        = reader.readArray(reader1 -> CustomDnsConfigPropertiesFormat.fromJson(reader1));
+                    deserializedPrivateEndpointPropertiesInner.customDnsConfigs = customDnsConfigs;
+                } else if ("applicationSecurityGroups".equals(fieldName)) {
+                    List<ApplicationSecurityGroupInner> applicationSecurityGroups
+                        = reader.readArray(reader1 -> ApplicationSecurityGroupInner.fromJson(reader1));
+                    deserializedPrivateEndpointPropertiesInner.applicationSecurityGroups = applicationSecurityGroups;
+                } else if ("ipConfigurations".equals(fieldName)) {
+                    List<PrivateEndpointIpConfiguration> ipConfigurations
+                        = reader.readArray(reader1 -> PrivateEndpointIpConfiguration.fromJson(reader1));
+                    deserializedPrivateEndpointPropertiesInner.ipConfigurations = ipConfigurations;
+                } else if ("customNetworkInterfaceName".equals(fieldName)) {
+                    deserializedPrivateEndpointPropertiesInner.customNetworkInterfaceName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointPropertiesInner;
+        });
     }
 }

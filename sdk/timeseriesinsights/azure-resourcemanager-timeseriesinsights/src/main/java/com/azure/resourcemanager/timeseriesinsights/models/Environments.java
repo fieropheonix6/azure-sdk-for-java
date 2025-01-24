@@ -7,11 +7,13 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Environments. */
+/**
+ * Resource collection API of Environments.
+ */
 public interface Environments {
     /**
      * Create or update an environment in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName Name of the environment.
      * @param parameters Parameters for creating an environment resource.
@@ -19,14 +21,14 @@ public interface Environments {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
-     *     Insights resource.
+     * Insights resource.
      */
-    EnvironmentResource createOrUpdate(
-        String resourceGroupName, String environmentName, EnvironmentCreateOrUpdateParameters parameters);
+    EnvironmentResource createOrUpdate(String resourceGroupName, String environmentName,
+        EnvironmentCreateOrUpdateParameters parameters);
 
     /**
      * Create or update an environment in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName Name of the environment.
      * @param parameters Parameters for creating an environment resource.
@@ -35,20 +37,35 @@ public interface Environments {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
-     *     Insights resource.
+     * Insights resource.
      */
-    EnvironmentResource createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentCreateOrUpdateParameters parameters,
-        Context context);
+    EnvironmentResource createOrUpdate(String resourceGroupName, String environmentName,
+        EnvironmentCreateOrUpdateParameters parameters, Context context);
 
     /**
      * Gets the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
+     * @param expand Setting $expand=status will include the status of the internal services of the environment in the
+     * Time Series Insights service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the environment with the specified name in the specified subscription and resource group along with
+     * {@link Response}.
+     */
+    Response<EnvironmentResource> getByResourceGroupWithResponse(String resourceGroupName, String environmentName,
+        String expand, Context context);
+
+    /**
+     * Gets the environment with the specified name in the specified subscription and resource group.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -57,64 +74,58 @@ public interface Environments {
     EnvironmentResource getByResourceGroup(String resourceGroupName, String environmentName);
 
     /**
-     * Gets the environment with the specified name in the specified subscription and resource group.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param expand Setting $expand=status will include the status of the internal services of the environment in the
-     *     Time Series Insights service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the environment with the specified name in the specified subscription and resource group.
-     */
-    Response<EnvironmentResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String environmentName, String expand, Context context);
-
-    /**
      * Updates the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param environmentUpdateParameters Request object that contains the updated information for the environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
-     *     Insights resource.
+     * Insights resource.
      */
-    EnvironmentResource update(
-        String resourceGroupName, String environmentName, EnvironmentUpdateParameters environmentUpdateParameters);
+    EnvironmentResource update(String resourceGroupName, String environmentName,
+        EnvironmentUpdateParameters environmentUpdateParameters);
 
     /**
      * Updates the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param environmentUpdateParameters Request object that contains the updated information for the environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
-     *     Insights resource.
+     * Insights resource.
      */
-    EnvironmentResource update(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentUpdateParameters environmentUpdateParameters,
-        Context context);
+    EnvironmentResource update(String resourceGroupName, String environmentName,
+        EnvironmentUpdateParameters environmentUpdateParameters, Context context);
 
     /**
      * Deletes the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String environmentName, Context context);
+
+    /**
+     * Deletes the environment with the specified name in the specified subscription and resource group.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -122,22 +133,20 @@ public interface Environments {
     void deleteByResourceGroup(String resourceGroupName, String environmentName);
 
     /**
-     * Deletes the environment with the specified name in the specified subscription and resource group.
-     *
+     * Lists all the available environments associated with the subscription and within the specified resource group.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of the List Environments operation along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, Context context);
+    Response<EnvironmentListResponse> listByResourceGroupWithResponse(String resourceGroupName, Context context);
 
     /**
      * Lists all the available environments associated with the subscription and within the specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -147,34 +156,22 @@ public interface Environments {
     EnvironmentListResponse listByResourceGroup(String resourceGroupName);
 
     /**
-     * Lists all the available environments associated with the subscription and within the specified resource group.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
+     * Lists all the available environments within a subscription, irrespective of the resource groups.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Environments operation.
+     * @return the response of the List Environments operation along with {@link Response}.
      */
-    Response<EnvironmentListResponse> listByResourceGroupWithResponse(String resourceGroupName, Context context);
+    Response<EnvironmentListResponse> listBySubscriptionWithResponse(Context context);
 
     /**
      * Lists all the available environments within a subscription, irrespective of the resource groups.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List Environments operation.
      */
     EnvironmentListResponse listBySubscription();
-
-    /**
-     * Lists all the available environments within a subscription, irrespective of the resource groups.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Environments operation.
-     */
-    Response<EnvironmentListResponse> listBySubscriptionWithResponse(Context context);
 }

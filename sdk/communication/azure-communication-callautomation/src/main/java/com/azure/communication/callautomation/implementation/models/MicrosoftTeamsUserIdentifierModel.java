@@ -5,32 +5,42 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The MicrosoftTeamsUserIdentifierModel model. */
+/**
+ * A Microsoft Teams user.
+ */
 @Fluent
-public final class MicrosoftTeamsUserIdentifierModel {
+public final class MicrosoftTeamsUserIdentifierModel implements JsonSerializable<MicrosoftTeamsUserIdentifierModel> {
     /*
-     * The userId property.
+     * The Id of the Microsoft Teams user. If not anonymous, this is the AAD object Id of the user.
      */
-    @JsonProperty(value = "userId", required = true)
     private String userId;
 
     /*
-     * The isAnonymous property.
+     * True if the Microsoft Teams user is anonymous. By default false if missing.
      */
-    @JsonProperty(value = "isAnonymous")
     private Boolean isAnonymous;
 
     /*
-     * The cloud property.
+     * The cloud that the Microsoft Teams user belongs to. By default 'public' if missing.
      */
-    @JsonProperty(value = "cloud")
     private CommunicationCloudEnvironmentModel cloud;
 
     /**
-     * Get the userId property: The userId property.
-     *
+     * Creates an instance of MicrosoftTeamsUserIdentifierModel class.
+     */
+    public MicrosoftTeamsUserIdentifierModel() {
+    }
+
+    /**
+     * Get the userId property: The Id of the Microsoft Teams user. If not anonymous, this is the AAD object Id of the
+     * user.
+     * 
      * @return the userId value.
      */
     public String getUserId() {
@@ -38,8 +48,9 @@ public final class MicrosoftTeamsUserIdentifierModel {
     }
 
     /**
-     * Set the userId property: The userId property.
-     *
+     * Set the userId property: The Id of the Microsoft Teams user. If not anonymous, this is the AAD object Id of the
+     * user.
+     * 
      * @param userId the userId value to set.
      * @return the MicrosoftTeamsUserIdentifierModel object itself.
      */
@@ -49,8 +60,8 @@ public final class MicrosoftTeamsUserIdentifierModel {
     }
 
     /**
-     * Get the isAnonymous property: The isAnonymous property.
-     *
+     * Get the isAnonymous property: True if the Microsoft Teams user is anonymous. By default false if missing.
+     * 
      * @return the isAnonymous value.
      */
     public Boolean isAnonymous() {
@@ -58,8 +69,8 @@ public final class MicrosoftTeamsUserIdentifierModel {
     }
 
     /**
-     * Set the isAnonymous property: The isAnonymous property.
-     *
+     * Set the isAnonymous property: True if the Microsoft Teams user is anonymous. By default false if missing.
+     * 
      * @param isAnonymous the isAnonymous value to set.
      * @return the MicrosoftTeamsUserIdentifierModel object itself.
      */
@@ -69,8 +80,8 @@ public final class MicrosoftTeamsUserIdentifierModel {
     }
 
     /**
-     * Get the cloud property: The cloud property.
-     *
+     * Get the cloud property: The cloud that the Microsoft Teams user belongs to. By default 'public' if missing.
+     * 
      * @return the cloud value.
      */
     public CommunicationCloudEnvironmentModel getCloud() {
@@ -78,13 +89,59 @@ public final class MicrosoftTeamsUserIdentifierModel {
     }
 
     /**
-     * Set the cloud property: The cloud property.
-     *
+     * Set the cloud property: The cloud that the Microsoft Teams user belongs to. By default 'public' if missing.
+     * 
      * @param cloud the cloud value to set.
      * @return the MicrosoftTeamsUserIdentifierModel object itself.
      */
     public MicrosoftTeamsUserIdentifierModel setCloud(CommunicationCloudEnvironmentModel cloud) {
         this.cloud = cloud;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userId", this.userId);
+        jsonWriter.writeBooleanField("isAnonymous", this.isAnonymous);
+        jsonWriter.writeStringField("cloud", this.cloud == null ? null : this.cloud.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftTeamsUserIdentifierModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftTeamsUserIdentifierModel if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MicrosoftTeamsUserIdentifierModel.
+     */
+    public static MicrosoftTeamsUserIdentifierModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftTeamsUserIdentifierModel deserializedMicrosoftTeamsUserIdentifierModel
+                = new MicrosoftTeamsUserIdentifierModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userId".equals(fieldName)) {
+                    deserializedMicrosoftTeamsUserIdentifierModel.userId = reader.getString();
+                } else if ("isAnonymous".equals(fieldName)) {
+                    deserializedMicrosoftTeamsUserIdentifierModel.isAnonymous
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("cloud".equals(fieldName)) {
+                    deserializedMicrosoftTeamsUserIdentifierModel.cloud
+                        = CommunicationCloudEnvironmentModel.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMicrosoftTeamsUserIdentifierModel;
+        });
     }
 }

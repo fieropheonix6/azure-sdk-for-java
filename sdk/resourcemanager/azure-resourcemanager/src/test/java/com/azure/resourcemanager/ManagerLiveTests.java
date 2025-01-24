@@ -33,7 +33,7 @@ import com.azure.resourcemanager.search.SearchServiceManager;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.storage.StorageManager;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.trafficmanager.TrafficManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -41,26 +41,15 @@ import org.junit.jupiter.api.Test;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class ManagerLiveTests extends ResourceManagerTestBase {
+public class ManagerLiveTests extends ResourceManagerTestProxyTestBase {
 
     private HttpPipeline httpPipeline;
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -78,7 +67,11 @@ public class ManagerLiveTests extends ResourceManagerTestBase {
     public void testAuthentication() {
         AppPlatformManager.authenticate(httpPipeline, profile()).springServices().list().stream().count();
         AppServiceManager.authenticate(httpPipeline, profile()).appServicePlans().list().stream().count();
-        AuthorizationManager.authenticate(httpPipeline, profile()).roleDefinitions().listByScope("/subscriptions/" + profile().getSubscriptionId()).stream().count();
+        AuthorizationManager.authenticate(httpPipeline, profile())
+            .roleDefinitions()
+            .listByScope("/subscriptions/" + profile().getSubscriptionId())
+            .stream()
+            .count();
         CdnManager.authenticate(httpPipeline, profile()).profiles().list().stream().count();
         ComputeManager.authenticate(httpPipeline, profile()).disks().list().stream().count();
         ContainerInstanceManager.authenticate(httpPipeline, profile()).containerGroups().list().stream().count();
@@ -94,14 +87,22 @@ public class ManagerLiveTests extends ResourceManagerTestBase {
         PrivateDnsZoneManager.authenticate(httpPipeline, profile()).privateZones().list().stream().count();
         RedisManager.authenticate(httpPipeline, profile()).redisCaches().list().stream().count();
         ResourceManager.authenticate(httpPipeline, profile()).subscriptions().list().stream().count();
-        ResourceManager.authenticate(httpPipeline, profile()).withDefaultSubscription().resourceGroups().list().stream().count();
+        ResourceManager.authenticate(httpPipeline, profile())
+            .withDefaultSubscription()
+            .resourceGroups()
+            .list()
+            .stream()
+            .count();
         SearchServiceManager.authenticate(httpPipeline, profile()).searchServices().list().stream().count();
         ServiceBusManager.authenticate(httpPipeline, profile()).namespaces().list().stream().count();
         SqlServerManager.authenticate(httpPipeline, profile()).sqlServers().list().stream().count();
         StorageManager.authenticate(httpPipeline, profile()).storageAccounts().list().stream().count();
         TrafficManager.authenticate(httpPipeline, profile()).profiles().list().stream().count();
 
-        Assertions.assertNotNull(AzureResourceManager.authenticate(httpPipeline, profile()).withDefaultSubscription()
-            .genericResources().manager().httpPipeline());
+        Assertions.assertNotNull(AzureResourceManager.authenticate(httpPipeline, profile())
+            .withDefaultSubscription()
+            .genericResources()
+            .manager()
+            .httpPipeline());
     }
 }

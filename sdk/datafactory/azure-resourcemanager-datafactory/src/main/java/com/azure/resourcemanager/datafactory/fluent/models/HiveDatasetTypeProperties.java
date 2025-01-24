@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Hive Properties. */
+/**
+ * Hive Properties.
+ */
 @Fluent
-public final class HiveDatasetTypeProperties {
+public final class HiveDatasetTypeProperties implements JsonSerializable<HiveDatasetTypeProperties> {
     /*
      * This property will be retired. Please consider using schema + table properties instead.
      */
-    @JsonProperty(value = "tableName")
     private Object tableName;
 
     /*
      * The table name of the Hive. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "table")
     private Object table;
 
     /*
      * The schema name of the Hive. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "schema")
     private Object schema;
 
-    /** Creates an instance of HiveDatasetTypeProperties class. */
+    /**
+     * Creates an instance of HiveDatasetTypeProperties class.
+     */
     public HiveDatasetTypeProperties() {
     }
 
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -45,7 +50,7 @@ public final class HiveDatasetTypeProperties {
     /**
      * Set the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the HiveDatasetTypeProperties object itself.
      */
@@ -56,7 +61,7 @@ public final class HiveDatasetTypeProperties {
 
     /**
      * Get the table property: The table name of the Hive. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object table() {
@@ -65,7 +70,7 @@ public final class HiveDatasetTypeProperties {
 
     /**
      * Set the table property: The table name of the Hive. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the HiveDatasetTypeProperties object itself.
      */
@@ -76,7 +81,7 @@ public final class HiveDatasetTypeProperties {
 
     /**
      * Get the schema property: The schema name of the Hive. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the schema value.
      */
     public Object schema() {
@@ -85,7 +90,7 @@ public final class HiveDatasetTypeProperties {
 
     /**
      * Set the schema property: The schema name of the Hive. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param schema the schema value to set.
      * @return the HiveDatasetTypeProperties object itself.
      */
@@ -96,9 +101,51 @@ public final class HiveDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("tableName", this.tableName);
+        jsonWriter.writeUntypedField("table", this.table);
+        jsonWriter.writeUntypedField("schema", this.schema);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HiveDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HiveDatasetTypeProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HiveDatasetTypeProperties.
+     */
+    public static HiveDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HiveDatasetTypeProperties deserializedHiveDatasetTypeProperties = new HiveDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tableName".equals(fieldName)) {
+                    deserializedHiveDatasetTypeProperties.tableName = reader.readUntyped();
+                } else if ("table".equals(fieldName)) {
+                    deserializedHiveDatasetTypeProperties.table = reader.readUntyped();
+                } else if ("schema".equals(fieldName)) {
+                    deserializedHiveDatasetTypeProperties.schema = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHiveDatasetTypeProperties;
+        });
     }
 }

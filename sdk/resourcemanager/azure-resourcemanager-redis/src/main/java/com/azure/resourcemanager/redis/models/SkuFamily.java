@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuFamily. */
+/**
+ * The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium).
+ */
 public final class SkuFamily extends ExpandableStringEnum<SkuFamily> {
-    /** Static value C for SkuFamily. */
+    /**
+     * Static value C for SkuFamily.
+     */
     public static final SkuFamily C = fromString("C");
 
-    /** Static value P for SkuFamily. */
+    /**
+     * Static value P for SkuFamily.
+     */
     public static final SkuFamily P = fromString("P");
 
     /**
+     * Creates a new instance of SkuFamily value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SkuFamily() {
+    }
+
+    /**
      * Creates or finds a SkuFamily from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SkuFamily.
      */
-    @JsonCreator
     public static SkuFamily fromString(String name) {
         return fromString(name, SkuFamily.class);
     }
 
-    /** @return known SkuFamily values. */
+    /**
+     * Gets known SkuFamily values.
+     * 
+     * @return known SkuFamily values.
+     */
     public static Collection<SkuFamily> values() {
         return values(SkuFamily.class);
     }

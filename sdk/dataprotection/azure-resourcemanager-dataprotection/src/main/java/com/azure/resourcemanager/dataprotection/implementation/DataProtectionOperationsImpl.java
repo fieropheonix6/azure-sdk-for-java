@@ -11,17 +11,15 @@ import com.azure.resourcemanager.dataprotection.fluent.DataProtectionOperationsC
 import com.azure.resourcemanager.dataprotection.fluent.models.ClientDiscoveryValueForSingleApiInner;
 import com.azure.resourcemanager.dataprotection.models.ClientDiscoveryValueForSingleApi;
 import com.azure.resourcemanager.dataprotection.models.DataProtectionOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DataProtectionOperationsImpl implements DataProtectionOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataProtectionOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataProtectionOperationsImpl.class);
 
     private final DataProtectionOperationsClient innerClient;
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public DataProtectionOperationsImpl(
-        DataProtectionOperationsClient innerClient,
+    public DataProtectionOperationsImpl(DataProtectionOperationsClient innerClient,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -29,12 +27,14 @@ public final class DataProtectionOperationsImpl implements DataProtectionOperati
 
     public PagedIterable<ClientDiscoveryValueForSingleApi> list() {
         PagedIterable<ClientDiscoveryValueForSingleApiInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ClientDiscoveryValueForSingleApiImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ClientDiscoveryValueForSingleApiImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ClientDiscoveryValueForSingleApi> list(Context context) {
         PagedIterable<ClientDiscoveryValueForSingleApiInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ClientDiscoveryValueForSingleApiImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ClientDiscoveryValueForSingleApiImpl(inner1, this.manager()));
     }
 
     private DataProtectionOperationsClient serviceClient() {

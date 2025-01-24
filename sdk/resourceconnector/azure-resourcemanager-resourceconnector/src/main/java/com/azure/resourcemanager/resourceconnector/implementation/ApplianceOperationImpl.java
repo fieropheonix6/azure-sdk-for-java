@@ -10,11 +10,10 @@ import com.azure.resourcemanager.resourceconnector.models.ApplianceOperation;
 public final class ApplianceOperationImpl implements ApplianceOperation {
     private ApplianceOperationInner innerObject;
 
-    private final com.azure.resourcemanager.resourceconnector.AppliancesManager serviceManager;
+    private final com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager;
 
-    ApplianceOperationImpl(
-        ApplianceOperationInner innerObject,
-        com.azure.resourcemanager.resourceconnector.AppliancesManager serviceManager) {
+    ApplianceOperationImpl(ApplianceOperationInner innerObject,
+        com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -51,7 +50,7 @@ public final class ApplianceOperationImpl implements ApplianceOperation {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.resourceconnector.AppliancesManager manager() {
+    private com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager() {
         return this.serviceManager;
     }
 }

@@ -7,14 +7,32 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NetAppResources. */
+/**
+ * Resource collection API of NetAppResources.
+ */
 public interface NetAppResources {
     /**
      * Check resource name availability
-     *
-     * <p>Check if a resource name is available.
-     *
-     * @param location The location.
+     * 
+     * Check if a resource name is available.
+     * 
+     * @param location The name of the Azure region.
+     * @param body Name availability request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information regarding availability of a resource along with {@link Response}.
+     */
+    Response<CheckAvailabilityResponse> checkNameAvailabilityWithResponse(String location,
+        ResourceNameAvailabilityRequest body, Context context);
+
+    /**
+     * Check resource name availability
+     * 
+     * Check if a resource name is available.
+     * 
+     * @param location The name of the Azure region.
      * @param body Name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -24,27 +42,27 @@ public interface NetAppResources {
     CheckAvailabilityResponse checkNameAvailability(String location, ResourceNameAvailabilityRequest body);
 
     /**
-     * Check resource name availability
-     *
-     * <p>Check if a resource name is available.
-     *
-     * @param location The location.
-     * @param body Name availability request.
+     * Check file path availability
+     * 
+     * Check if a file path is available.
+     * 
+     * @param location The name of the Azure region.
+     * @param body File path availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information regarding availability of a resource along with {@link Response}.
      */
-    Response<CheckAvailabilityResponse> checkNameAvailabilityWithResponse(
-        String location, ResourceNameAvailabilityRequest body, Context context);
+    Response<CheckAvailabilityResponse> checkFilePathAvailabilityWithResponse(String location,
+        FilePathAvailabilityRequest body, Context context);
 
     /**
      * Check file path availability
-     *
-     * <p>Check if a file path is available.
-     *
-     * @param location The location.
+     * 
+     * Check if a file path is available.
+     * 
+     * @param location The name of the Azure region.
      * @param body File path availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,27 +72,27 @@ public interface NetAppResources {
     CheckAvailabilityResponse checkFilePathAvailability(String location, FilePathAvailabilityRequest body);
 
     /**
-     * Check file path availability
-     *
-     * <p>Check if a file path is available.
-     *
-     * @param location The location.
-     * @param body File path availability request.
+     * Check quota availability
+     * 
+     * Check if a quota is available.
+     * 
+     * @param location The name of the Azure region.
+     * @param body Quota availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information regarding availability of a resource along with {@link Response}.
      */
-    Response<CheckAvailabilityResponse> checkFilePathAvailabilityWithResponse(
-        String location, FilePathAvailabilityRequest body, Context context);
+    Response<CheckAvailabilityResponse> checkQuotaAvailabilityWithResponse(String location,
+        QuotaAvailabilityRequest body, Context context);
 
     /**
      * Check quota availability
-     *
-     * <p>Check if a quota is available.
-     *
-     * @param location The location.
+     * 
+     * Check if a quota is available.
+     * 
+     * @param location The name of the Azure region.
      * @param body Quota availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -84,27 +102,25 @@ public interface NetAppResources {
     CheckAvailabilityResponse checkQuotaAvailability(String location, QuotaAvailabilityRequest body);
 
     /**
-     * Check quota availability
-     *
-     * <p>Check if a quota is available.
-     *
-     * @param location The location.
-     * @param body Quota availability request.
+     * Describes region specific information.
+     * 
+     * Provides storage to network proximity and logical zone mapping information.
+     * 
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource along with {@link Response}.
+     * @return provides region specific information along with {@link Response}.
      */
-    Response<CheckAvailabilityResponse> checkQuotaAvailabilityWithResponse(
-        String location, QuotaAvailabilityRequest body, Context context);
+    Response<RegionInfo> queryRegionInfoWithResponse(String location, Context context);
 
     /**
      * Describes region specific information.
-     *
-     * <p>Provides storage to network proximity and logical zone mapping information.
-     *
-     * @param location The location.
+     * 
+     * Provides storage to network proximity and logical zone mapping information.
+     * 
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -113,16 +129,61 @@ public interface NetAppResources {
     RegionInfo queryRegionInfo(String location);
 
     /**
-     * Describes region specific information.
-     *
-     * <p>Provides storage to network proximity and logical zone mapping information.
-     *
-     * @param location The location.
+     * Describe a network sibling set
+     * 
+     * Get details of the specified network sibling set.
+     * 
+     * @param location The name of the Azure region.
+     * @param body Network sibling set to query.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provides region specific information along with {@link Response}.
+     * @return details of the specified network sibling set along with {@link Response}.
      */
-    Response<RegionInfo> queryRegionInfoWithResponse(String location, Context context);
+    Response<NetworkSiblingSet> queryNetworkSiblingSetWithResponse(String location, QueryNetworkSiblingSetRequest body,
+        Context context);
+
+    /**
+     * Describe a network sibling set
+     * 
+     * Get details of the specified network sibling set.
+     * 
+     * @param location The name of the Azure region.
+     * @param body Network sibling set to query.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified network sibling set.
+     */
+    NetworkSiblingSet queryNetworkSiblingSet(String location, QueryNetworkSiblingSetRequest body);
+
+    /**
+     * Update the network features of a network sibling set
+     * 
+     * Update the network features of the specified network sibling set.
+     * 
+     * @param location The name of the Azure region.
+     * @param body Update for the specified network sibling set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network sibling set.
+     */
+    NetworkSiblingSet updateNetworkSiblingSet(String location, UpdateNetworkSiblingSetRequest body);
+
+    /**
+     * Update the network features of a network sibling set
+     * 
+     * Update the network features of the specified network sibling set.
+     * 
+     * @param location The name of the Azure region.
+     * @param body Update for the specified network sibling set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network sibling set.
+     */
+    NetworkSiblingSet updateNetworkSiblingSet(String location, UpdateNetworkSiblingSetRequest body, Context context);
 }

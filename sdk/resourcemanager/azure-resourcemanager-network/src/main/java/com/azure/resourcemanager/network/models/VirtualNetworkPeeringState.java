@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of the virtual network peering. */
+/**
+ * The status of the virtual network peering.
+ */
 public final class VirtualNetworkPeeringState extends ExpandableStringEnum<VirtualNetworkPeeringState> {
-    /** Static value Initiated for VirtualNetworkPeeringState. */
+    /**
+     * Static value Initiated for VirtualNetworkPeeringState.
+     */
     public static final VirtualNetworkPeeringState INITIATED = fromString("Initiated");
 
-    /** Static value Connected for VirtualNetworkPeeringState. */
+    /**
+     * Static value Connected for VirtualNetworkPeeringState.
+     */
     public static final VirtualNetworkPeeringState CONNECTED = fromString("Connected");
 
-    /** Static value Disconnected for VirtualNetworkPeeringState. */
+    /**
+     * Static value Disconnected for VirtualNetworkPeeringState.
+     */
     public static final VirtualNetworkPeeringState DISCONNECTED = fromString("Disconnected");
 
     /**
+     * Creates a new instance of VirtualNetworkPeeringState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualNetworkPeeringState() {
+    }
+
+    /**
      * Creates or finds a VirtualNetworkPeeringState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VirtualNetworkPeeringState.
      */
-    @JsonCreator
     public static VirtualNetworkPeeringState fromString(String name) {
         return fromString(name, VirtualNetworkPeeringState.class);
     }
 
     /**
      * Gets known VirtualNetworkPeeringState values.
-     *
+     * 
      * @return known VirtualNetworkPeeringState values.
      */
     public static Collection<VirtualNetworkPeeringState> values() {

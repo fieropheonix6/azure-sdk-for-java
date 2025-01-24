@@ -5,40 +5,56 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Factory's GitHub repo information. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("FactoryGitHubConfiguration")
+/**
+ * Factory's GitHub repo information.
+ */
 @Fluent
 public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
     /*
+     * Type of repo configuration.
+     */
+    private String type = "FactoryGitHubConfiguration";
+
+    /*
      * GitHub Enterprise host name. For example: `https://github.mydomain.com`
      */
-    @JsonProperty(value = "hostName")
     private String hostname;
 
     /*
      * GitHub bring your own app client id.
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
      * GitHub bring your own app client secret information.
      */
-    @JsonProperty(value = "clientSecret")
     private GitHubClientSecret clientSecret;
 
-    /** Creates an instance of FactoryGitHubConfiguration class. */
+    /**
+     * Creates an instance of FactoryGitHubConfiguration class.
+     */
     public FactoryGitHubConfiguration() {
     }
 
     /**
+     * Get the type property: Type of repo configuration.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the hostname property: GitHub Enterprise host name. For example: `https://github.mydomain.com`.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -47,7 +63,7 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
 
     /**
      * Set the hostname property: GitHub Enterprise host name. For example: `https://github.mydomain.com`.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the FactoryGitHubConfiguration object itself.
      */
@@ -58,7 +74,7 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
 
     /**
      * Get the clientId property: GitHub bring your own app client id.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -67,7 +83,7 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
 
     /**
      * Set the clientId property: GitHub bring your own app client id.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the FactoryGitHubConfiguration object itself.
      */
@@ -78,7 +94,7 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
 
     /**
      * Get the clientSecret property: GitHub bring your own app client secret information.
-     *
+     * 
      * @return the clientSecret value.
      */
     public GitHubClientSecret clientSecret() {
@@ -87,7 +103,7 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
 
     /**
      * Set the clientSecret property: GitHub bring your own app client secret information.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the FactoryGitHubConfiguration object itself.
      */
@@ -96,42 +112,54 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FactoryGitHubConfiguration withAccountName(String accountName) {
         super.withAccountName(accountName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FactoryGitHubConfiguration withRepositoryName(String repositoryName) {
         super.withRepositoryName(repositoryName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FactoryGitHubConfiguration withCollaborationBranch(String collaborationBranch) {
         super.withCollaborationBranch(collaborationBranch);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FactoryGitHubConfiguration withRootFolder(String rootFolder) {
         super.withRootFolder(rootFolder);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FactoryGitHubConfiguration withLastCommitId(String lastCommitId) {
         super.withLastCommitId(lastCommitId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FactoryGitHubConfiguration withDisablePublish(Boolean disablePublish) {
         super.withDisablePublish(disablePublish);
@@ -140,14 +168,100 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (clientSecret() != null) {
             clientSecret().validate();
         }
+        if (accountName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property accountName in model FactoryGitHubConfiguration"));
+        }
+        if (repositoryName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property repositoryName in model FactoryGitHubConfiguration"));
+        }
+        if (collaborationBranch() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property collaborationBranch in model FactoryGitHubConfiguration"));
+        }
+        if (rootFolder() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rootFolder in model FactoryGitHubConfiguration"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FactoryGitHubConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountName", accountName());
+        jsonWriter.writeStringField("repositoryName", repositoryName());
+        jsonWriter.writeStringField("collaborationBranch", collaborationBranch());
+        jsonWriter.writeStringField("rootFolder", rootFolder());
+        jsonWriter.writeStringField("lastCommitId", lastCommitId());
+        jsonWriter.writeBooleanField("disablePublish", disablePublish());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("hostName", this.hostname);
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeJsonField("clientSecret", this.clientSecret);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FactoryGitHubConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FactoryGitHubConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FactoryGitHubConfiguration.
+     */
+    public static FactoryGitHubConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FactoryGitHubConfiguration deserializedFactoryGitHubConfiguration = new FactoryGitHubConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountName".equals(fieldName)) {
+                    deserializedFactoryGitHubConfiguration.withAccountName(reader.getString());
+                } else if ("repositoryName".equals(fieldName)) {
+                    deserializedFactoryGitHubConfiguration.withRepositoryName(reader.getString());
+                } else if ("collaborationBranch".equals(fieldName)) {
+                    deserializedFactoryGitHubConfiguration.withCollaborationBranch(reader.getString());
+                } else if ("rootFolder".equals(fieldName)) {
+                    deserializedFactoryGitHubConfiguration.withRootFolder(reader.getString());
+                } else if ("lastCommitId".equals(fieldName)) {
+                    deserializedFactoryGitHubConfiguration.withLastCommitId(reader.getString());
+                } else if ("disablePublish".equals(fieldName)) {
+                    deserializedFactoryGitHubConfiguration
+                        .withDisablePublish(reader.getNullable(JsonReader::getBoolean));
+                } else if ("type".equals(fieldName)) {
+                    deserializedFactoryGitHubConfiguration.type = reader.getString();
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedFactoryGitHubConfiguration.hostname = reader.getString();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedFactoryGitHubConfiguration.clientId = reader.getString();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedFactoryGitHubConfiguration.clientSecret = GitHubClientSecret.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFactoryGitHubConfiguration;
+        });
     }
 }

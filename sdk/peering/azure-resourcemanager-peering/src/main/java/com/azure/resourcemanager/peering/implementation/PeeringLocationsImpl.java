@@ -13,30 +13,29 @@ import com.azure.resourcemanager.peering.models.PeeringLocation;
 import com.azure.resourcemanager.peering.models.PeeringLocations;
 import com.azure.resourcemanager.peering.models.PeeringLocationsDirectPeeringType;
 import com.azure.resourcemanager.peering.models.PeeringLocationsKind;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PeeringLocationsImpl implements PeeringLocations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringLocationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PeeringLocationsImpl.class);
 
     private final PeeringLocationsClient innerClient;
 
     private final com.azure.resourcemanager.peering.PeeringManager serviceManager;
 
-    public PeeringLocationsImpl(
-        PeeringLocationsClient innerClient, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    public PeeringLocationsImpl(PeeringLocationsClient innerClient,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<PeeringLocation> list(PeeringLocationsKind kind) {
         PagedIterable<PeeringLocationInner> inner = this.serviceClient().list(kind);
-        return Utils.mapPage(inner, inner1 -> new PeeringLocationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringLocationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PeeringLocation> list(
-        PeeringLocationsKind kind, PeeringLocationsDirectPeeringType directPeeringType, Context context) {
+    public PagedIterable<PeeringLocation> list(PeeringLocationsKind kind,
+        PeeringLocationsDirectPeeringType directPeeringType, Context context) {
         PagedIterable<PeeringLocationInner> inner = this.serviceClient().list(kind, directPeeringType, context);
-        return Utils.mapPage(inner, inner1 -> new PeeringLocationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringLocationImpl(inner1, this.manager()));
     }
 
     private PeeringLocationsClient serviceClient() {

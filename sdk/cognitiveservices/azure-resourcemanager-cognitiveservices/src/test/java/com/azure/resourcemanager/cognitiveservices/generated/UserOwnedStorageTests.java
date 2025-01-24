@@ -7,23 +7,21 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.UserOwnedStorage;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UserOwnedStorageTests {
-    @Test
-    public void testDeserialize() {
-        UserOwnedStorage model =
-            BinaryData
-                .fromString("{\"resourceId\":\"zitonpeqfpjkjl\",\"identityClientId\":\"fpdvhpfxxypi\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        UserOwnedStorage model
+            = BinaryData.fromString("{\"resourceId\":\"zitonpeqfpjkjl\",\"identityClientId\":\"fpdvhpfxxypi\"}")
                 .toObject(UserOwnedStorage.class);
         Assertions.assertEquals("zitonpeqfpjkjl", model.resourceId());
         Assertions.assertEquals("fpdvhpfxxypi", model.identityClientId());
     }
 
-    @Test
-    public void testSerialize() {
-        UserOwnedStorage model =
-            new UserOwnedStorage().withResourceId("zitonpeqfpjkjl").withIdentityClientId("fpdvhpfxxypi");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        UserOwnedStorage model
+            = new UserOwnedStorage().withResourceId("zitonpeqfpjkjl").withIdentityClientId("fpdvhpfxxypi");
         model = BinaryData.fromObject(model).toObject(UserOwnedStorage.class);
         Assertions.assertEquals("zitonpeqfpjkjl", model.resourceId());
         Assertions.assertEquals("fpdvhpfxxypi", model.identityClientId());

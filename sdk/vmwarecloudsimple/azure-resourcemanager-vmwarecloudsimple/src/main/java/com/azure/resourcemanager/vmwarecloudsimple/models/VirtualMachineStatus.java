@@ -4,30 +4,43 @@
 
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for VirtualMachineStatus. */
+/**
+ * The status of Virtual machine.
+ */
 public enum VirtualMachineStatus {
-    /** Enum value running. */
+    /**
+     * Enum value running.
+     */
     RUNNING("running"),
 
-    /** Enum value suspended. */
+    /**
+     * Enum value suspended.
+     */
     SUSPENDED("suspended"),
 
-    /** Enum value poweredoff. */
+    /**
+     * Enum value poweredoff.
+     */
     POWEREDOFF("poweredoff"),
 
-    /** Enum value updating. */
+    /**
+     * Enum value updating.
+     */
     UPDATING("updating"),
 
-    /** Enum value deallocating. */
+    /**
+     * Enum value deallocating.
+     */
     DEALLOCATING("deallocating"),
 
-    /** Enum value deleting. */
+    /**
+     * Enum value deleting.
+     */
     DELETING("deleting");
 
-    /** The actual serialized value for a VirtualMachineStatus instance. */
+    /**
+     * The actual serialized value for a VirtualMachineStatus instance.
+     */
     private final String value;
 
     VirtualMachineStatus(String value) {
@@ -36,12 +49,14 @@ public enum VirtualMachineStatus {
 
     /**
      * Parses a serialized value to a VirtualMachineStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed VirtualMachineStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static VirtualMachineStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         VirtualMachineStatus[] items = VirtualMachineStatus.values();
         for (VirtualMachineStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,7 +66,9 @@ public enum VirtualMachineStatus {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

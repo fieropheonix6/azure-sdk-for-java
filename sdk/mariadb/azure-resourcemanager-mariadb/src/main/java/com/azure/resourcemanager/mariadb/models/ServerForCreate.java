@@ -6,42 +6,47 @@ package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Represents a server to be created. */
+/**
+ * Represents a server to be created.
+ */
 @Fluent
-public final class ServerForCreate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerForCreate.class);
-
+public final class ServerForCreate implements JsonSerializable<ServerForCreate> {
     /*
      * The SKU (pricing tier) of the server.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Properties of the server.
      */
-    @JsonProperty(value = "properties", required = true)
     private ServerPropertiesForCreate properties;
 
     /*
      * The location the resource resides in.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * Application-specific metadata in the form of key-value pairs.
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**
+     * Creates an instance of ServerForCreate class.
+     */
+    public ServerForCreate() {
+    }
+
+    /**
      * Get the sku property: The SKU (pricing tier) of the server.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -50,7 +55,7 @@ public final class ServerForCreate {
 
     /**
      * Set the sku property: The SKU (pricing tier) of the server.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ServerForCreate object itself.
      */
@@ -61,7 +66,7 @@ public final class ServerForCreate {
 
     /**
      * Get the properties property: Properties of the server.
-     *
+     * 
      * @return the properties value.
      */
     public ServerPropertiesForCreate properties() {
@@ -70,7 +75,7 @@ public final class ServerForCreate {
 
     /**
      * Set the properties property: Properties of the server.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ServerForCreate object itself.
      */
@@ -81,7 +86,7 @@ public final class ServerForCreate {
 
     /**
      * Get the location property: The location the resource resides in.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -90,7 +95,7 @@ public final class ServerForCreate {
 
     /**
      * Set the location property: The location the resource resides in.
-     *
+     * 
      * @param location the location value to set.
      * @return the ServerForCreate object itself.
      */
@@ -101,7 +106,7 @@ public final class ServerForCreate {
 
     /**
      * Get the tags property: Application-specific metadata in the form of key-value pairs.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -110,7 +115,7 @@ public final class ServerForCreate {
 
     /**
      * Set the tags property: Application-specific metadata in the form of key-value pairs.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ServerForCreate object itself.
      */
@@ -121,7 +126,7 @@ public final class ServerForCreate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -129,16 +134,63 @@ public final class ServerForCreate {
             sku().validate();
         }
         if (properties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model ServerForCreate"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property properties in model ServerForCreate"));
         } else {
             properties().validate();
         }
         if (location() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model ServerForCreate"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model ServerForCreate"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServerForCreate.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerForCreate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerForCreate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerForCreate.
+     */
+    public static ServerForCreate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerForCreate deserializedServerForCreate = new ServerForCreate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedServerForCreate.properties = ServerPropertiesForCreate.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedServerForCreate.location = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedServerForCreate.sku = Sku.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedServerForCreate.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerForCreate;
+        });
     }
 }

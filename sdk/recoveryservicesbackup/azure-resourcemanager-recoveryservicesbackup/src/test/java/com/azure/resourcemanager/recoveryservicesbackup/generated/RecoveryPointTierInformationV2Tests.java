@@ -11,34 +11,32 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTier
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RecoveryPointTierInformationV2Tests {
-    @Test
-    public void testDeserialize() {
-        RecoveryPointTierInformationV2 model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ArchivedRP\",\"status\":\"Deleted\",\"extendedInfo\":{\"lkb\":\"jswtwkozzwc\"}}")
-                .toObject(RecoveryPointTierInformationV2.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        RecoveryPointTierInformationV2 model = BinaryData.fromString(
+            "{\"type\":\"ArchivedRP\",\"status\":\"Rehydrated\",\"extendedInfo\":{\"twly\":\"wahfbousnfepgfew\",\"limmbcxf\":\"gncxykxhdj\",\"pxtgqscjav\":\"bcporxvxcjzhqizx\"}}")
+            .toObject(RecoveryPointTierInformationV2.class);
         Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.type());
-        Assertions.assertEquals(RecoveryPointTierStatus.DELETED, model.status());
-        Assertions.assertEquals("jswtwkozzwc", model.extendedInfo().get("lkb"));
+        Assertions.assertEquals(RecoveryPointTierStatus.REHYDRATED, model.status());
+        Assertions.assertEquals("wahfbousnfepgfew", model.extendedInfo().get("twly"));
     }
 
-    @Test
-    public void testSerialize() {
-        RecoveryPointTierInformationV2 model =
-            new RecoveryPointTierInformationV2()
-                .withType(RecoveryPointTierType.ARCHIVED_RP)
-                .withStatus(RecoveryPointTierStatus.DELETED)
-                .withExtendedInfo(mapOf("lkb", "jswtwkozzwc"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        RecoveryPointTierInformationV2 model
+            = new RecoveryPointTierInformationV2().withType(RecoveryPointTierType.ARCHIVED_RP)
+                .withStatus(RecoveryPointTierStatus.REHYDRATED)
+                .withExtendedInfo(
+                    mapOf("twly", "wahfbousnfepgfew", "limmbcxf", "gncxykxhdj", "pxtgqscjav", "bcporxvxcjzhqizx"));
         model = BinaryData.fromObject(model).toObject(RecoveryPointTierInformationV2.class);
         Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.type());
-        Assertions.assertEquals(RecoveryPointTierStatus.DELETED, model.status());
-        Assertions.assertEquals("jswtwkozzwc", model.extendedInfo().get("lkb"));
+        Assertions.assertEquals(RecoveryPointTierStatus.REHYDRATED, model.status());
+        Assertions.assertEquals("wahfbousnfepgfew", model.extendedInfo().get("twly"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

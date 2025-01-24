@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Network plugin used for building the Kubernetes network. */
+/**
+ * Network plugin used for building the Kubernetes network.
+ */
 public final class NetworkPlugin extends ExpandableStringEnum<NetworkPlugin> {
-    /** Static value azure for NetworkPlugin. */
+    /**
+     * Static value azure for NetworkPlugin.
+     */
     public static final NetworkPlugin AZURE = fromString("azure");
 
-    /** Static value kubenet for NetworkPlugin. */
+    /**
+     * Static value kubenet for NetworkPlugin.
+     */
     public static final NetworkPlugin KUBENET = fromString("kubenet");
 
-    /** Static value none for NetworkPlugin. */
+    /**
+     * Static value none for NetworkPlugin.
+     */
     public static final NetworkPlugin NONE = fromString("none");
 
     /**
+     * Creates a new instance of NetworkPlugin value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetworkPlugin() {
+    }
+
+    /**
      * Creates or finds a NetworkPlugin from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkPlugin.
      */
-    @JsonCreator
     public static NetworkPlugin fromString(String name) {
         return fromString(name, NetworkPlugin.class);
     }
 
     /**
      * Gets known NetworkPlugin values.
-     *
+     * 
      * @return known NetworkPlugin values.
      */
     public static Collection<NetworkPlugin> values() {

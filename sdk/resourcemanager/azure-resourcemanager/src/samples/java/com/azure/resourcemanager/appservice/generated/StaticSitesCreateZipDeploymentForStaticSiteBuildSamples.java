@@ -4,30 +4,28 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.models.StaticSiteZipDeploymentArmResource;
 
-/** Samples for StaticSites CreateZipDeploymentForStaticSiteBuild. */
+/**
+ * Samples for StaticSites CreateZipDeploymentForStaticSiteBuild.
+ */
 public final class StaticSitesCreateZipDeploymentForStaticSiteBuildSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/StaticSiteBuildZipDeploy.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/StaticSiteBuildZipDeploy.json
      */
     /**
      * Sample code: Deploy a site from a zipped package to a particular static site build.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deployASiteFromAZippedPackageToAParticularStaticSiteBuild(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
+        azure.webApps()
             .manager()
             .serviceClient()
             .getStaticSites()
-            .createZipDeploymentForStaticSiteBuild(
-                "rg",
-                "testStaticSite0",
-                "12",
+            .createZipDeploymentForStaticSiteBuild("rg", "testStaticSite0", "12",
                 new StaticSiteZipDeploymentArmResource()
                     .withAppZipUrl(
                         "https://teststorageaccount.net/happy-sea-15afae3e-master-81828877/app-zipdeploy.zip")
@@ -36,6 +34,6 @@ public final class StaticSitesCreateZipDeploymentForStaticSiteBuildSamples {
                     .withDeploymentTitle("Update index.html")
                     .withProvider("testProvider")
                     .withFunctionLanguage("testFunctionLanguage"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

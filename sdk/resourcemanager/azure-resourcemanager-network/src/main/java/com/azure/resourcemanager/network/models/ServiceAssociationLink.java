@@ -6,44 +6,47 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.ServiceAssociationLinkPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** ServiceAssociationLink resource. */
+/**
+ * ServiceAssociationLink resource.
+ */
 @Fluent
 public final class ServiceAssociationLink extends SubResource {
     /*
      * Resource navigation link properties format.
      */
-    @JsonProperty(value = "properties")
     private ServiceAssociationLinkPropertiesFormat innerProperties;
 
     /*
      * Name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ServiceAssociationLink class. */
+    /**
+     * Creates an instance of ServiceAssociationLink class.
+     */
     public ServiceAssociationLink() {
     }
 
     /**
      * Get the innerProperties property: Resource navigation link properties format.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServiceAssociationLinkPropertiesFormat innerProperties() {
@@ -53,7 +56,7 @@ public final class ServiceAssociationLink extends SubResource {
     /**
      * Get the name property: Name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +66,7 @@ public final class ServiceAssociationLink extends SubResource {
     /**
      * Set the name property: Name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the ServiceAssociationLink object itself.
      */
@@ -74,7 +77,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -83,14 +86,16 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceAssociationLink withId(String id) {
         super.withId(id);
@@ -99,7 +104,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Get the linkedResourceType property: Resource type of the linked resource.
-     *
+     * 
      * @return the linkedResourceType value.
      */
     public String linkedResourceType() {
@@ -108,7 +113,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Set the linkedResourceType property: Resource type of the linked resource.
-     *
+     * 
      * @param linkedResourceType the linkedResourceType value to set.
      * @return the ServiceAssociationLink object itself.
      */
@@ -122,7 +127,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Get the link property: Link to the external resource.
-     *
+     * 
      * @return the link value.
      */
     public String link() {
@@ -131,7 +136,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Set the link property: Link to the external resource.
-     *
+     * 
      * @param link the link value to set.
      * @return the ServiceAssociationLink object itself.
      */
@@ -145,7 +150,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the service association link resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -154,7 +159,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Get the allowDelete property: If true, the resource can be deleted.
-     *
+     * 
      * @return the allowDelete value.
      */
     public Boolean allowDelete() {
@@ -163,7 +168,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Set the allowDelete property: If true, the resource can be deleted.
-     *
+     * 
      * @param allowDelete the allowDelete value to set.
      * @return the ServiceAssociationLink object itself.
      */
@@ -177,7 +182,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Get the locations property: A list of locations.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -186,7 +191,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Set the locations property: A list of locations.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the ServiceAssociationLink object itself.
      */
@@ -200,12 +205,59 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceAssociationLink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceAssociationLink if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceAssociationLink.
+     */
+    public static ServiceAssociationLink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceAssociationLink deserializedServiceAssociationLink = new ServiceAssociationLink();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedServiceAssociationLink.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServiceAssociationLink.innerProperties
+                        = ServiceAssociationLinkPropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedServiceAssociationLink.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedServiceAssociationLink.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServiceAssociationLink.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceAssociationLink;
+        });
     }
 }

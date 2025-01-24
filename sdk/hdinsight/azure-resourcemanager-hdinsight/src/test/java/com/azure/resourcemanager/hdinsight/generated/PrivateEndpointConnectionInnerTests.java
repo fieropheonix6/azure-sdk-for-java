@@ -9,37 +9,30 @@ import com.azure.resourcemanager.hdinsight.fluent.models.PrivateEndpointConnecti
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkServiceConnectionStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointConnectionInnerTests {
-    @Test
-    public void testDeserialize() {
-        PrivateEndpointConnectionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"privateEndpoint\":{\"id\":\"y\"},\"privateLinkServiceConnectionState\":{\"status\":\"Removed\",\"description\":\"v\",\"actionsRequired\":\"csonpclhoco\"},\"linkIdentifier\":\"lkevle\",\"provisioningState\":\"Failed\"},\"id\":\"buhfmvfaxkffeiit\",\"name\":\"lvmezyvshxmzsbbz\",\"type\":\"ggi\"}")
-                .toObject(PrivateEndpointConnectionInner.class);
-        Assertions
-            .assertEquals(
-                PrivateLinkServiceConnectionStatus.REMOVED, model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("v", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("csonpclhoco", model.privateLinkServiceConnectionState().actionsRequired());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateEndpointConnectionInner model = BinaryData.fromString(
+            "{\"properties\":{\"privateEndpoint\":{\"id\":\"ncblylpst\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"hxsrzdzucersc\",\"actionsRequired\":\"t\"},\"linkIdentifier\":\"vfiwjmygtdss\",\"provisioningState\":\"InProgress\"},\"id\":\"mweriofzpy\",\"name\":\"semwabnet\",\"type\":\"hhszh\"}")
+            .toObject(PrivateEndpointConnectionInner.class);
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.PENDING,
+            model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("hxsrzdzucersc", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("t", model.privateLinkServiceConnectionState().actionsRequired());
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateEndpointConnectionInner model =
-            new PrivateEndpointConnectionInner()
-                .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateLinkServiceConnectionStatus.REMOVED)
-                        .withDescription("v")
-                        .withActionsRequired("csonpclhoco"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateEndpointConnectionInner model
+            = new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateLinkServiceConnectionStatus.PENDING)
+                    .withDescription("hxsrzdzucersc")
+                    .withActionsRequired("t"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionInner.class);
-        Assertions
-            .assertEquals(
-                PrivateLinkServiceConnectionStatus.REMOVED, model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("v", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("csonpclhoco", model.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.PENDING,
+            model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("hxsrzdzucersc", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("t", model.privateLinkServiceConnectionState().actionsRequired());
     }
 }

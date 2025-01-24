@@ -4,24 +4,29 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Specifies the type of the custom action parameter. Possible values are: String, ConfigurationDataBlob or
  * LogOutputBlob.
  */
 public enum GalleryApplicationCustomActionParameterType {
-    /** Enum value String. */
+    /**
+     * Enum value String.
+     */
     STRING("String"),
 
-    /** Enum value ConfigurationDataBlob. */
+    /**
+     * Enum value ConfigurationDataBlob.
+     */
     CONFIGURATION_DATA_BLOB("ConfigurationDataBlob"),
 
-    /** Enum value LogOutputBlob. */
+    /**
+     * Enum value LogOutputBlob.
+     */
     LOG_OUTPUT_BLOB("LogOutputBlob");
 
-    /** The actual serialized value for a GalleryApplicationCustomActionParameterType instance. */
+    /**
+     * The actual serialized value for a GalleryApplicationCustomActionParameterType instance.
+     */
     private final String value;
 
     GalleryApplicationCustomActionParameterType(String value) {
@@ -30,11 +35,10 @@ public enum GalleryApplicationCustomActionParameterType {
 
     /**
      * Parses a serialized value to a GalleryApplicationCustomActionParameterType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed GalleryApplicationCustomActionParameterType object, or null if unable to parse.
      */
-    @JsonCreator
     public static GalleryApplicationCustomActionParameterType fromString(String value) {
         if (value == null) {
             return null;
@@ -48,8 +52,9 @@ public enum GalleryApplicationCustomActionParameterType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

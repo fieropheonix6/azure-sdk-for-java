@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,282 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2024-12-23)
+
+- Azure Resource Manager StorageCache client library for Java. This package contains Microsoft Azure SDK for StorageCache Management SDK. Azure Managed Lustre provides a fully managed Lustre® file system, integrated with Blob storage, for use on demand. These operations create and manage Azure Managed Lustre file systems. Package tag package-2024-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Other Changes
+
+- Release Azure Resource Manager StorageCache client library for Java.
+
+## 1.0.0-beta.12 (2024-12-04)
+
+- Azure Resource Manager StorageCache client library for Java. This package contains Microsoft Azure SDK for StorageCache Management SDK. Azure Managed Lustre provides a fully managed Lustre® file system, integrated with Blob storage, for use on demand. These operations create and manage Azure Managed Lustre file systems. Package tag package-2024-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+#### `models.StorageTargetResource` was modified
+
+* `type()` was added
+* `name()` was added
+* `id()` was added
+
+## 1.0.0-beta.11 (2024-05-20)
+
+- Azure Resource Manager StorageCache client library for Java. This package contains Microsoft Azure SDK for StorageCache Management SDK. Azure Managed Lustre provides a fully managed Lustre® file system, integrated with Blob storage, for use on demand. These operations create and manage Azure Managed Lustre file systems. Package tag package-2024-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.ErrorResponse` was removed
+
+#### `models.AscOperation` was modified
+
+* `models.ErrorResponse error()` -> `models.AscOperationErrorResponse error()`
+
+### Features Added
+
+* `models.ConflictResolutionMode` was added
+
+* `models.ImportJobs` was added
+
+* `models.ImportJob$Update` was added
+
+* `models.ImportJobUpdate` was added
+
+* `models.ImportJob$UpdateStages` was added
+
+* `models.ImportJob` was added
+
+* `models.ImportJobProvisioningStateType` was added
+
+* `models.ImportJobsListResult` was added
+
+* `models.ImportJob$Definition` was added
+
+* `models.AscOperationErrorResponse` was added
+
+* `models.ImportJob$DefinitionStages` was added
+
+* `models.ImportStatusType` was added
+
+#### `models.AmlFilesystemHsmSettings` was modified
+
+* `withImportPrefixesInitial(java.util.List)` was added
+* `importPrefixesInitial()` was added
+
+#### `StorageCacheManager` was modified
+
+* `importJobs()` was added
+
+## 1.0.0-beta.10 (2024-02-27)
+
+- Azure Resource Manager StorageCache client library for Java. This package contains Microsoft Azure SDK for StorageCache Management SDK. Azure Managed Lustre provides a fully managed Lustre® file system, integrated with Blob storage, for use on demand. These operations create and manage Azure Managed Lustre file systems. Package tag package-preview-2023-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.AmlFilesystemSquashMode` was added
+
+* `models.AmlFilesystemRootSquashSettings` was added
+
+#### `models.AmlFilesystem$Definition` was modified
+
+* `withRootSquashSettings(models.AmlFilesystemRootSquashSettings)` was added
+
+#### `models.AmlFilesystemUpdate` was modified
+
+* `rootSquashSettings()` was added
+* `withRootSquashSettings(models.AmlFilesystemRootSquashSettings)` was added
+
+#### `models.AmlFilesystem` was modified
+
+* `rootSquashSettings()` was added
+
+#### `models.AmlFilesystem$Update` was modified
+
+* `withRootSquashSettings(models.AmlFilesystemRootSquashSettings)` was added
+
+## 1.0.0-beta.9 (2023-06-20)
+
+- Azure Resource Manager StorageCache client library for Java. This package contains Microsoft Azure SDK for StorageCache Management SDK. Azure Managed Lustre provides a fully managed Lustre® file system, integrated with Blob storage, for use on demand. These operations create and manage Azure Managed Lustre file systems. Package tag package-2023-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Cache` was modified
+
+* `scalingFactor()` was removed
+
+#### `models.Cache$Definition` was modified
+
+* `withScalingFactor(java.lang.Double)` was removed
+
+#### `models.AmlFilesystem` was modified
+
+* `mgsAddress()` was removed
+* `lustreVersion()` was removed
+* `mountCommand()` was removed
+
+#### `models.Cache$Update` was modified
+
+* `withScalingFactor(java.lang.Double)` was removed
+
+### Features Added
+
+* `models.AmlFilesystemContainerStorageInterface` was added
+
+* `models.AmlFilesystemClientInfo` was added
+
+#### `models.AmlFilesystem` was modified
+
+* `clientInfo()` was added
+
+## 1.0.0-beta.8 (2023-03-13)
+
+- Azure Resource Manager StorageCache client library for Java. This package contains Microsoft Azure SDK for StorageCache Management SDK. A Storage Cache provides scalable caching service for NAS clients, serving data from either NFSv3 or Blob at-rest storage (referred to as "Storage Targets"). These operations allow you to manage Caches. Package tag package-preview-2023-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.AmlFilesystemIdentity` was added
+
+* `models.AmlFilesystemsListResult` was added
+
+* `models.FilesystemSubnetStatusType` was added
+
+* `models.AmlFilesystemIdentityType` was added
+
+* `models.AmlFilesystemEncryptionSettings` was added
+
+* `models.AmlFilesystemArchiveInfo` was added
+
+* `models.AmlFilesystem$Definition` was added
+
+* `models.AmlFilesystem$DefinitionStages` was added
+
+* `models.AmlFilesystemArchiveStatus` was added
+
+* `models.AmlFilesystemProvisioningStateType` was added
+
+* `models.RequiredAmlFilesystemSubnetsSize` was added
+
+* `models.ResourceProviders` was added
+
+* `models.AmlFilesystemUpdatePropertiesMaintenanceWindow` was added
+
+* `models.AmlFilesystems` was added
+
+* `models.MaintenanceDayOfWeekType` was added
+
+* `models.AmlFilesystemUpdate` was added
+
+* `models.AmlFilesystem$UpdateStages` was added
+
+* `models.ArchiveStatusType` was added
+
+* `models.AmlFilesystemCheckSubnetErrorFilesystemSubnet` was added
+
+* `models.AmlFilesystemArchive` was added
+
+* `models.AmlFilesystemHealth` was added
+
+* `models.RequiredAmlFilesystemSubnetsSizeInfo` was added
+
+* `models.AmlFilesystemHealthStateType` was added
+
+* `models.AmlFilesystemCheckSubnetError` was added
+
+* `models.AmlFilesystemCheckSubnetErrorException` was added
+
+* `models.SkuName` was added
+
+* `models.AmlFilesystem` was added
+
+* `models.AmlFilesystemSubnetInfo` was added
+
+* `models.AmlFilesystemHsmSettings` was added
+
+* `models.AmlFilesystemPropertiesHsm` was added
+
+* `models.AmlFilesystem$Update` was added
+
+* `models.AmlFilesystemPropertiesMaintenanceWindow` was added
+
+* `models.UserAssignedIdentitiesValueAutoGenerated` was added
+
+#### `models.Cache` was modified
+
+* `scalingFactor()` was added
+
+#### `models.Cache$Definition` was modified
+
+* `withScalingFactor(java.lang.Double)` was added
+
+#### `StorageCacheManager` was modified
+
+* `resourceProviders()` was added
+* `amlFilesystems()` was added
+
+#### `models.Cache$Update` was modified
+
+* `withScalingFactor(java.lang.Double)` was added
+
+## 1.0.0-beta.7 (2023-02-22)
+
+- Azure Resource Manager StorageCache client library for Java. This package contains Microsoft Azure SDK for StorageCache Management SDK. A Storage Cache provides scalable caching service for NAS clients, serving data from either NFSv3 or Blob at-rest storage (referred to as "Storage Targets"). These operations allow you to manage Caches. Package tag package-2023-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Caches` was modified
+
+* `startPrimingJob(java.lang.String,java.lang.String,models.PrimingJob)` was removed
+* `spaceAllocation(java.lang.String,java.lang.String,java.util.List)` was removed
+* `stopPrimingJob(java.lang.String,java.lang.String,models.PrimingJobIdParameter)` was removed
+* `pausePrimingJob(java.lang.String,java.lang.String,models.PrimingJobIdParameter)` was removed
+* `resumePrimingJob(java.lang.String,java.lang.String,models.PrimingJobIdParameter)` was removed
+
+#### `models.StorageTargets` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
+
+#### `models.Cache` was modified
+
+* `startPrimingJob(models.PrimingJob)` was removed
+* `stopPrimingJob(models.PrimingJobIdParameter)` was removed
+* `resumePrimingJob(models.PrimingJobIdParameter)` was removed
+* `pausePrimingJob(models.PrimingJobIdParameter)` was removed
+
+### Features Added
+
+#### `models.Nfs3Target` was modified
+
+* `withWriteBackTimer(java.lang.Integer)` was added
+* `withVerificationTimer(java.lang.Integer)` was added
+* `verificationTimer()` was added
+* `writeBackTimer()` was added
+
+#### `models.StorageTargets` was modified
+
+* `restoreDefaults(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `restoreDefaults(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.BlobNfsTarget` was modified
+
+* `writeBackTimer()` was added
+* `withWriteBackTimer(java.lang.Integer)` was added
+* `verificationTimer()` was added
+* `withVerificationTimer(java.lang.Integer)` was added
 
 ## 1.0.0-beta.6 (2022-07-08)
 

@@ -5,47 +5,51 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Specifies the storage settings for the virtual machine disks. */
+/**
+ * Specifies the storage settings for the virtual machine disks.
+ */
 @Fluent
-public final class StorageProfile {
+public final class StorageProfile implements JsonSerializable<StorageProfile> {
     /*
      * Specifies information about the image to use. You can specify information about platform images, marketplace
      * images, or virtual machine images. This element is required when you want to use a platform image, marketplace
      * image, or virtual machine image, but is not used in other creation operations.
      */
-    @JsonProperty(value = "imageReference")
     private ImageReference imageReference;
 
     /*
-     * Specifies information about the operating system disk used by the virtual machine. <br><br> For more information
-     * about disks, see [About disks and VHDs for Azure virtual
+     * Specifies information about the operating system disk used by the virtual machine. For more information about
+     * disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      */
-    @JsonProperty(value = "osDisk")
     private OSDisk osDisk;
 
     /*
-     * Specifies the parameters that are used to add a data disk to a virtual machine. <br><br> For more information
-     * about disks, see [About disks and VHDs for Azure virtual
+     * Specifies the parameters that are used to add a data disk to a virtual machine. For more information about disks,
+     * see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      */
-    @JsonProperty(value = "dataDisks")
     private List<DataDisk> dataDisks;
 
     /*
-     * Specifies the disk controller type configured for the VM. <br><br>NOTE: This property will be set to the default
-     * disk controller type if not specified provided virtual machine is being created as a hyperVGeneration: V2 based
-     * on the capabilities of the operating system disk and VM size from the the specified minimum api version. <br>You
-     * need to deallocate the VM before updating its disk controller type unless you are updating the VM size in the VM
-     * configuration which implicitly deallocates and reallocates the VM. <br><br> Minimum api-version: 2022-08-01
+     * Specifies the disk controller type configured for the VM. **Note:** This property will be set to the default disk
+     * controller type if not specified provided virtual machine is being created with 'hyperVGeneration' set to V2
+     * based on the capabilities of the operating system disk and VM size from the the specified minimum api version.
+     * You need to deallocate the VM before updating its disk controller type unless you are updating the VM size in the
+     * VM configuration which implicitly deallocates and reallocates the VM. Minimum api-version: 2022-08-01.
      */
-    @JsonProperty(value = "diskControllerType")
     private DiskControllerTypes diskControllerType;
 
-    /** Creates an instance of StorageProfile class. */
+    /**
+     * Creates an instance of StorageProfile class.
+     */
     public StorageProfile() {
     }
 
@@ -53,7 +57,7 @@ public final class StorageProfile {
      * Get the imageReference property: Specifies information about the image to use. You can specify information about
      * platform images, marketplace images, or virtual machine images. This element is required when you want to use a
      * platform image, marketplace image, or virtual machine image, but is not used in other creation operations.
-     *
+     * 
      * @return the imageReference value.
      */
     public ImageReference imageReference() {
@@ -64,7 +68,7 @@ public final class StorageProfile {
      * Set the imageReference property: Specifies information about the image to use. You can specify information about
      * platform images, marketplace images, or virtual machine images. This element is required when you want to use a
      * platform image, marketplace image, or virtual machine image, but is not used in other creation operations.
-     *
+     * 
      * @param imageReference the imageReference value to set.
      * @return the StorageProfile object itself.
      */
@@ -74,10 +78,10 @@ public final class StorageProfile {
     }
 
     /**
-     * Get the osDisk property: Specifies information about the operating system disk used by the virtual machine.
-     * &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual
+     * Get the osDisk property: Specifies information about the operating system disk used by the virtual machine. For
+     * more information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
-     *
+     * 
      * @return the osDisk value.
      */
     public OSDisk osDisk() {
@@ -85,10 +89,10 @@ public final class StorageProfile {
     }
 
     /**
-     * Set the osDisk property: Specifies information about the operating system disk used by the virtual machine.
-     * &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual
+     * Set the osDisk property: Specifies information about the operating system disk used by the virtual machine. For
+     * more information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
-     *
+     * 
      * @param osDisk the osDisk value to set.
      * @return the StorageProfile object itself.
      */
@@ -98,10 +102,10 @@ public final class StorageProfile {
     }
 
     /**
-     * Get the dataDisks property: Specifies the parameters that are used to add a data disk to a virtual machine.
-     * &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual
+     * Get the dataDisks property: Specifies the parameters that are used to add a data disk to a virtual machine. For
+     * more information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
-     *
+     * 
      * @return the dataDisks value.
      */
     public List<DataDisk> dataDisks() {
@@ -109,10 +113,10 @@ public final class StorageProfile {
     }
 
     /**
-     * Set the dataDisks property: Specifies the parameters that are used to add a data disk to a virtual machine.
-     * &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual
+     * Set the dataDisks property: Specifies the parameters that are used to add a data disk to a virtual machine. For
+     * more information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
-     *
+     * 
      * @param dataDisks the dataDisks value to set.
      * @return the StorageProfile object itself.
      */
@@ -122,13 +126,13 @@ public final class StorageProfile {
     }
 
     /**
-     * Get the diskControllerType property: Specifies the disk controller type configured for the VM.
-     * &lt;br&gt;&lt;br&gt;NOTE: This property will be set to the default disk controller type if not specified provided
-     * virtual machine is being created as a hyperVGeneration: V2 based on the capabilities of the operating system disk
-     * and VM size from the the specified minimum api version. &lt;br&gt;You need to deallocate the VM before updating
-     * its disk controller type unless you are updating the VM size in the VM configuration which implicitly deallocates
-     * and reallocates the VM. &lt;br&gt;&lt;br&gt; Minimum api-version: 2022-08-01.
-     *
+     * Get the diskControllerType property: Specifies the disk controller type configured for the VM. **Note:** This
+     * property will be set to the default disk controller type if not specified provided virtual machine is being
+     * created with 'hyperVGeneration' set to V2 based on the capabilities of the operating system disk and VM size from
+     * the the specified minimum api version. You need to deallocate the VM before updating its disk controller type
+     * unless you are updating the VM size in the VM configuration which implicitly deallocates and reallocates the VM.
+     * Minimum api-version: 2022-08-01.
+     * 
      * @return the diskControllerType value.
      */
     public DiskControllerTypes diskControllerType() {
@@ -136,13 +140,13 @@ public final class StorageProfile {
     }
 
     /**
-     * Set the diskControllerType property: Specifies the disk controller type configured for the VM.
-     * &lt;br&gt;&lt;br&gt;NOTE: This property will be set to the default disk controller type if not specified provided
-     * virtual machine is being created as a hyperVGeneration: V2 based on the capabilities of the operating system disk
-     * and VM size from the the specified minimum api version. &lt;br&gt;You need to deallocate the VM before updating
-     * its disk controller type unless you are updating the VM size in the VM configuration which implicitly deallocates
-     * and reallocates the VM. &lt;br&gt;&lt;br&gt; Minimum api-version: 2022-08-01.
-     *
+     * Set the diskControllerType property: Specifies the disk controller type configured for the VM. **Note:** This
+     * property will be set to the default disk controller type if not specified provided virtual machine is being
+     * created with 'hyperVGeneration' set to V2 based on the capabilities of the operating system disk and VM size from
+     * the the specified minimum api version. You need to deallocate the VM before updating its disk controller type
+     * unless you are updating the VM size in the VM configuration which implicitly deallocates and reallocates the VM.
+     * Minimum api-version: 2022-08-01.
+     * 
      * @param diskControllerType the diskControllerType value to set.
      * @return the StorageProfile object itself.
      */
@@ -153,7 +157,7 @@ public final class StorageProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -166,5 +170,52 @@ public final class StorageProfile {
         if (dataDisks() != null) {
             dataDisks().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("imageReference", this.imageReference);
+        jsonWriter.writeJsonField("osDisk", this.osDisk);
+        jsonWriter.writeArrayField("dataDisks", this.dataDisks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("diskControllerType",
+            this.diskControllerType == null ? null : this.diskControllerType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageProfile.
+     */
+    public static StorageProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageProfile deserializedStorageProfile = new StorageProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("imageReference".equals(fieldName)) {
+                    deserializedStorageProfile.imageReference = ImageReference.fromJson(reader);
+                } else if ("osDisk".equals(fieldName)) {
+                    deserializedStorageProfile.osDisk = OSDisk.fromJson(reader);
+                } else if ("dataDisks".equals(fieldName)) {
+                    List<DataDisk> dataDisks = reader.readArray(reader1 -> DataDisk.fromJson(reader1));
+                    deserializedStorageProfile.dataDisks = dataDisks;
+                } else if ("diskControllerType".equals(fieldName)) {
+                    deserializedStorageProfile.diskControllerType = DiskControllerTypes.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageProfile;
+        });
     }
 }

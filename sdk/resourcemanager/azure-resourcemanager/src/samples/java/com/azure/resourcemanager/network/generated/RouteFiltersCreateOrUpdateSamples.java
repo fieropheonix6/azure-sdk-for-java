@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.RouteFilterInner;
 import com.azure.resourcemanager.network.fluent.models.RouteFilterRuleInner;
 import com.azure.resourcemanager.network.models.Access;
@@ -13,39 +12,35 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for RouteFilters CreateOrUpdate. */
+/**
+ * Samples for RouteFilters CreateOrUpdate.
+ */
 public final class RouteFiltersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/RouteFilterCreate.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/RouteFilterCreate.json
      */
     /**
      * Sample code: RouteFilterCreate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routeFilterCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getRouteFilters()
-            .createOrUpdate(
-                "rg1",
-                "filterName",
-                new RouteFilterInner()
-                    .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
-                    .withRules(
-                        Arrays
-                            .asList(
-                                new RouteFilterRuleInner()
-                                    .withName("ruleName")
-                                    .withAccess(Access.ALLOW)
-                                    .withRouteFilterRuleType(RouteFilterRuleType.COMMUNITY)
-                                    .withCommunities(Arrays.asList("12076:5030", "12076:5040")))),
-                Context.NONE);
+            .createOrUpdate("rg1", "filterName",
+                new RouteFilterInner().withLocation("West US")
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                    .withRules(Arrays.asList(new RouteFilterRuleInner().withName("ruleName")
+                        .withAccess(Access.ALLOW)
+                        .withRouteFilterRuleType(RouteFilterRuleType.COMMUNITY)
+                        .withCommunities(Arrays.asList("12076:5030", "12076:5040")))),
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

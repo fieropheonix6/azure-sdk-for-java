@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of the AzureFirewallRCAction. */
+/**
+ * Properties of the AzureFirewallRCAction.
+ */
 @Fluent
-public final class AzureFirewallRCAction {
+public final class AzureFirewallRCAction implements JsonSerializable<AzureFirewallRCAction> {
     /*
      * The type of action.
      */
-    @JsonProperty(value = "type")
     private AzureFirewallRCActionType type;
 
-    /** Creates an instance of AzureFirewallRCAction class. */
+    /**
+     * Creates an instance of AzureFirewallRCAction class.
+     */
     public AzureFirewallRCAction() {
     }
 
     /**
      * Get the type property: The type of action.
-     *
+     * 
      * @return the type value.
      */
     public AzureFirewallRCActionType type() {
@@ -31,7 +38,7 @@ public final class AzureFirewallRCAction {
 
     /**
      * Set the type property: The type of action.
-     *
+     * 
      * @param type the type value to set.
      * @return the AzureFirewallRCAction object itself.
      */
@@ -42,9 +49,45 @@ public final class AzureFirewallRCAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFirewallRCAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFirewallRCAction if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFirewallRCAction.
+     */
+    public static AzureFirewallRCAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFirewallRCAction deserializedAzureFirewallRCAction = new AzureFirewallRCAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedAzureFirewallRCAction.type = AzureFirewallRCActionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFirewallRCAction;
+        });
     }
 }

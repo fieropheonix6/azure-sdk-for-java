@@ -17,8 +17,8 @@ public final class ConfigurationImpl implements Configuration {
 
     private final com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager;
 
-    ConfigurationImpl(
-        ConfigurationInner innerObject, com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
+    ConfigurationImpl(ConfigurationInner innerObject,
+        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

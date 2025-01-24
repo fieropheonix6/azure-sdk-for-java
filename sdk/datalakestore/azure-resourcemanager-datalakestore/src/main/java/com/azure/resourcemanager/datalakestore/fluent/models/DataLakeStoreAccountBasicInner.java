@@ -4,122 +4,100 @@
 
 package com.azure.resourcemanager.datalakestore.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakestore.models.DataLakeStoreAccountState;
 import com.azure.resourcemanager.datalakestore.models.DataLakeStoreAccountStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-/** Basic Data Lake Store account information, returned on list calls. */
-@JsonFlatten
-@Immutable
-public class DataLakeStoreAccountBasicInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataLakeStoreAccountBasicInner.class);
+/**
+ * Basic Data Lake Store account information, returned on list calls.
+ */
+@Fluent
+public final class DataLakeStoreAccountBasicInner extends Resource {
+    /*
+     * The basic Data Lake Store account properties.
+     */
+    private DataLakeStoreAccountPropertiesBasic innerProperties;
 
     /*
-     * The unique identifier associated with this Data Lake Store account.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.accountId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID accountId;
+    private String type;
 
     /*
-     * The provisioning status of the Data Lake Store account.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private DataLakeStoreAccountStatus provisioningState;
+    private String name;
 
     /*
-     * The state of the Data Lake Store account.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private DataLakeStoreAccountState state;
-
-    /*
-     * The account creation time.
-     */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
-
-    /*
-     * The account last modified time.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * The full CName endpoint for this account.
-     */
-    @JsonProperty(value = "properties.endpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String endpoint;
+    private String id;
 
     /**
-     * Get the accountId property: The unique identifier associated with this Data Lake Store account.
-     *
-     * @return the accountId value.
+     * Creates an instance of DataLakeStoreAccountBasicInner class.
      */
-    public UUID accountId() {
-        return this.accountId;
+    public DataLakeStoreAccountBasicInner() {
     }
 
     /**
-     * Get the provisioningState property: The provisioning status of the Data Lake Store account.
-     *
-     * @return the provisioningState value.
+     * Get the innerProperties property: The basic Data Lake Store account properties.
+     * 
+     * @return the innerProperties value.
      */
-    public DataLakeStoreAccountStatus provisioningState() {
-        return this.provisioningState;
+    private DataLakeStoreAccountPropertiesBasic innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the state property: The state of the Data Lake Store account.
-     *
-     * @return the state value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public DataLakeStoreAccountState state() {
-        return this.state;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the creationTime property: The account creation time.
-     *
-     * @return the creationTime value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public OffsetDateTime creationTime() {
-        return this.creationTime;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the lastModifiedTime property: The account last modified time.
-     *
-     * @return the lastModifiedTime value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the endpoint property: The full CName endpoint for this account.
-     *
-     * @return the endpoint value.
+     * {@inheritDoc}
      */
-    public String endpoint() {
-        return this.endpoint;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public DataLakeStoreAccountBasicInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataLakeStoreAccountBasicInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -127,10 +105,118 @@ public class DataLakeStoreAccountBasicInner extends Resource {
     }
 
     /**
+     * Get the accountId property: The unique identifier associated with this Data Lake Store account.
+     * 
+     * @return the accountId value.
+     */
+    public UUID accountId() {
+        return this.innerProperties() == null ? null : this.innerProperties().accountId();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning status of the Data Lake Store account.
+     * 
+     * @return the provisioningState value.
+     */
+    public DataLakeStoreAccountStatus provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the state property: The state of the Data Lake Store account.
+     * 
+     * @return the state value.
+     */
+    public DataLakeStoreAccountState state() {
+        return this.innerProperties() == null ? null : this.innerProperties().state();
+    }
+
+    /**
+     * Get the creationTime property: The account creation time.
+     * 
+     * @return the creationTime value.
+     */
+    public OffsetDateTime creationTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
+    }
+
+    /**
+     * Get the lastModifiedTime property: The account last modified time.
+     * 
+     * @return the lastModifiedTime value.
+     */
+    public OffsetDateTime lastModifiedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
+    }
+
+    /**
+     * Get the endpoint property: The full CName endpoint for this account.
+     * 
+     * @return the endpoint value.
+     */
+    public String endpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpoint();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataLakeStoreAccountBasicInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataLakeStoreAccountBasicInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataLakeStoreAccountBasicInner.
+     */
+    public static DataLakeStoreAccountBasicInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataLakeStoreAccountBasicInner deserializedDataLakeStoreAccountBasicInner
+                = new DataLakeStoreAccountBasicInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDataLakeStoreAccountBasicInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDataLakeStoreAccountBasicInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDataLakeStoreAccountBasicInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDataLakeStoreAccountBasicInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDataLakeStoreAccountBasicInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDataLakeStoreAccountBasicInner.innerProperties
+                        = DataLakeStoreAccountPropertiesBasic.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataLakeStoreAccountBasicInner;
+        });
     }
 }

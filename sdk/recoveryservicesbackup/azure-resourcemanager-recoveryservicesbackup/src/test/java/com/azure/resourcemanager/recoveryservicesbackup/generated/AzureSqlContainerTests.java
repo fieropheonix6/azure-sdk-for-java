@@ -8,37 +8,32 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureSqlContainer;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureSqlContainerTests {
-    @Test
-    public void testDeserialize() {
-        AzureSqlContainer model =
-            BinaryData
-                .fromString(
-                    "{\"containerType\":\"AzureSqlContainer\",\"friendlyName\":\"fdpyflubh\",\"backupManagementType\":\"AzureIaasVM\",\"registrationStatus\":\"r\",\"healthStatus\":\"uyzlw\",\"protectableObjectType\":\"memhooclutnpq\"}")
-                .toObject(AzureSqlContainer.class);
-        Assertions.assertEquals("fdpyflubh", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, model.backupManagementType());
-        Assertions.assertEquals("r", model.registrationStatus());
-        Assertions.assertEquals("uyzlw", model.healthStatus());
-        Assertions.assertEquals("memhooclutnpq", model.protectableObjectType());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureSqlContainer model = BinaryData.fromString(
+            "{\"containerType\":\"AzureSqlContainer\",\"friendlyName\":\"mcub\",\"backupManagementType\":\"AzureSql\",\"registrationStatus\":\"oxxkubvp\",\"healthStatus\":\"v\",\"protectableObjectType\":\"h\"}")
+            .toObject(AzureSqlContainer.class);
+        Assertions.assertEquals("mcub", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
+        Assertions.assertEquals("oxxkubvp", model.registrationStatus());
+        Assertions.assertEquals("v", model.healthStatus());
+        Assertions.assertEquals("h", model.protectableObjectType());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureSqlContainer model =
-            new AzureSqlContainer()
-                .withFriendlyName("fdpyflubh")
-                .withBackupManagementType(BackupManagementType.AZURE_IAAS_VM)
-                .withRegistrationStatus("r")
-                .withHealthStatus("uyzlw")
-                .withProtectableObjectType("memhooclutnpq");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureSqlContainer model = new AzureSqlContainer().withFriendlyName("mcub")
+            .withBackupManagementType(BackupManagementType.AZURE_SQL)
+            .withRegistrationStatus("oxxkubvp")
+            .withHealthStatus("v")
+            .withProtectableObjectType("h");
         model = BinaryData.fromObject(model).toObject(AzureSqlContainer.class);
-        Assertions.assertEquals("fdpyflubh", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, model.backupManagementType());
-        Assertions.assertEquals("r", model.registrationStatus());
-        Assertions.assertEquals("uyzlw", model.healthStatus());
-        Assertions.assertEquals("memhooclutnpq", model.protectableObjectType());
+        Assertions.assertEquals("mcub", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
+        Assertions.assertEquals("oxxkubvp", model.registrationStatus());
+        Assertions.assertEquals("v", model.healthStatus());
+        Assertions.assertEquals("h", model.protectableObjectType());
     }
 }

@@ -4,24 +4,26 @@
 
 package com.azure.resourcemanager.appconfiguration.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appconfiguration.models.RegenerateKeyParameters;
 
-/** Samples for ConfigurationStores RegenerateKey. */
+/**
+ * Samples for ConfigurationStores RegenerateKey.
+ */
 public final class ConfigurationStoresRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2022-05-01/examples/ConfigurationStoresRegenerateKey.json
+     * x-ms-original-file:
+     * specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/
+     * ConfigurationStoresRegenerateKey.json
      */
     /**
      * Sample code: ConfigurationStores_RegenerateKey.
-     *
+     * 
      * @param manager Entry point to AppConfigurationManager.
      */
-    public static void configurationStoresRegenerateKey(
-        com.azure.resourcemanager.appconfiguration.AppConfigurationManager manager) {
-        manager
-            .configurationStores()
-            .regenerateKeyWithResponse(
-                "myResourceGroup", "contoso", new RegenerateKeyParameters().withId("439AD01B4BE67DB1"), Context.NONE);
+    public static void
+        configurationStoresRegenerateKey(com.azure.resourcemanager.appconfiguration.AppConfigurationManager manager) {
+        manager.configurationStores()
+            .regenerateKeyWithResponse("myResourceGroup", "contoso",
+                new RegenerateKeyParameters().withId("439AD01B4BE67DB1"), com.azure.core.util.Context.NONE);
     }
 }

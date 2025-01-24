@@ -22,9 +22,22 @@ import java.util.Objects;
  * <p><strong>Create a rule to a Service Bus subscription</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusrulemanagerclient.createRule -->
  * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; 'fullyQualifiedNamespace' will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * ServiceBusRuleManagerClient ruleManager = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;fullyQualifiedNamespace, credential&#41;
+ *     .ruleManager&#40;&#41;
+ *     .topicName&#40;topicName&#41;
+ *     .subscriptionName&#40;subscriptionName&#41;
+ *     .buildClient&#40;&#41;;
+ *
  * RuleFilter trueRuleFilter = new TrueRuleFilter&#40;&#41;;
  * CreateRuleOptions options = new CreateRuleOptions&#40;trueRuleFilter&#41;;
  * ruleManager.createRule&#40;&quot;new-rule&quot;, options&#41;;
+ *
+ * &#47;&#47; Dispose of the ruleManager when finished using it.
+ * ruleManager.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusrulemanagerclient.createRule -->
  */
@@ -41,8 +54,7 @@ public class ServiceBusRuleManagerClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code asyncClient} or {@code operationTimeout} is null.
      */
-    ServiceBusRuleManagerClient(ServiceBusRuleManagerAsyncClient asyncClient,
-                                Duration operationTimeout) {
+    ServiceBusRuleManagerClient(ServiceBusRuleManagerAsyncClient asyncClient, Duration operationTimeout) {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
     }

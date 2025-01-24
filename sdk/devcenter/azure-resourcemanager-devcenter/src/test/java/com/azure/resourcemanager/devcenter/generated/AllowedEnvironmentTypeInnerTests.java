@@ -6,20 +6,17 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.AllowedEnvironmentTypeInner;
-import org.junit.jupiter.api.Test;
 
 public final class AllowedEnvironmentTypeInnerTests {
-    @Test
-    public void testDeserialize() {
-        AllowedEnvironmentTypeInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Canceled\"},\"id\":\"eun\",\"name\":\"mqhgyxzkonocuk\",\"type\":\"klyaxuconu\"}")
-                .toObject(AllowedEnvironmentTypeInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AllowedEnvironmentTypeInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"hzxct\"},\"id\":\"gbkdmoizpos\",\"name\":\"mgrcfbu\",\"type\":\"rmfqjhhkxbpvj\"}")
+            .toObject(AllowedEnvironmentTypeInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AllowedEnvironmentTypeInner model = new AllowedEnvironmentTypeInner();
         model = BinaryData.fromObject(model).toObject(AllowedEnvironmentTypeInner.class);
     }

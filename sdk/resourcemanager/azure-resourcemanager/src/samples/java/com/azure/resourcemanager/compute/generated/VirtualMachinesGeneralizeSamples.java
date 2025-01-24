@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualMachines Generalize. */
+/**
+ * Samples for VirtualMachines Generalize.
+ */
 public final class VirtualMachinesGeneralizeSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Generalize.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineExamples/VirtualMachine_Generalize.json
      */
     /**
      * Sample code: Generalize a Virtual Machine.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void generalizeAVirtualMachine(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .generalizeWithResponse("myResourceGroup", "myVMName", Context.NONE);
+            .generalizeWithResponse("myResourceGroup", "myVMName", com.azure.core.util.Context.NONE);
     }
 }

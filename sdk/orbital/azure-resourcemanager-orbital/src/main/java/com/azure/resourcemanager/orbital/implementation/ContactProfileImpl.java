@@ -8,9 +8,15 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.orbital.fluent.models.ContactProfileInner;
+import com.azure.resourcemanager.orbital.models.AutoTrackingConfiguration;
 import com.azure.resourcemanager.orbital.models.ContactProfile;
+import com.azure.resourcemanager.orbital.models.ContactProfileLink;
+import com.azure.resourcemanager.orbital.models.ContactProfileThirdPartyConfiguration;
+import com.azure.resourcemanager.orbital.models.ContactProfilesPropertiesNetworkConfiguration;
+import com.azure.resourcemanager.orbital.models.ContactProfilesPropertiesProvisioningState;
 import com.azure.resourcemanager.orbital.models.TagsObject;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public final class ContactProfileImpl implements ContactProfile, ContactProfile.Definition, ContactProfile.Update {
@@ -43,12 +49,50 @@ public final class ContactProfileImpl implements ContactProfile, ContactProfile.
         }
     }
 
-    public String etag() {
-        return this.innerModel().etag();
-    }
-
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public ContactProfilesPropertiesProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public String minimumViableContactDuration() {
+        return this.innerModel().minimumViableContactDuration();
+    }
+
+    public Float minimumElevationDegrees() {
+        return this.innerModel().minimumElevationDegrees();
+    }
+
+    public AutoTrackingConfiguration autoTrackingConfiguration() {
+        return this.innerModel().autoTrackingConfiguration();
+    }
+
+    public String eventHubUri() {
+        return this.innerModel().eventHubUri();
+    }
+
+    public ContactProfilesPropertiesNetworkConfiguration networkConfiguration() {
+        return this.innerModel().networkConfiguration();
+    }
+
+    public List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations() {
+        List<ContactProfileThirdPartyConfiguration> inner = this.innerModel().thirdPartyConfigurations();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<ContactProfileLink> links() {
+        List<ContactProfileLink> inner = this.innerModel().links();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Region region() {
@@ -83,20 +127,16 @@ public final class ContactProfileImpl implements ContactProfile, ContactProfile.
     }
 
     public ContactProfile create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContactProfiles()
-                .createOrUpdate(resourceGroupName, contactProfileName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getContactProfiles()
+            .createOrUpdate(resourceGroupName, contactProfileName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ContactProfile create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContactProfiles()
-                .createOrUpdate(resourceGroupName, contactProfileName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getContactProfiles()
+            .createOrUpdate(resourceGroupName, contactProfileName, this.innerModel(), context);
         return this;
     }
 
@@ -112,48 +152,40 @@ public final class ContactProfileImpl implements ContactProfile, ContactProfile.
     }
 
     public ContactProfile apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContactProfiles()
-                .updateTags(resourceGroupName, contactProfileName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getContactProfiles()
+            .updateTags(resourceGroupName, contactProfileName, updateParameters, Context.NONE);
         return this;
     }
 
     public ContactProfile apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContactProfiles()
-                .updateTags(resourceGroupName, contactProfileName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getContactProfiles()
+            .updateTags(resourceGroupName, contactProfileName, updateParameters, context);
         return this;
     }
 
-    ContactProfileImpl(
-        ContactProfileInner innerObject, com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
+    ContactProfileImpl(ContactProfileInner innerObject,
+        com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.contactProfileName = Utils.getValueFromIdByName(innerObject.id(), "contactProfiles");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.contactProfileName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "contactProfiles");
     }
 
     public ContactProfile refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContactProfiles()
-                .getByResourceGroupWithResponse(resourceGroupName, contactProfileName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContactProfiles()
+            .getByResourceGroupWithResponse(resourceGroupName, contactProfileName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ContactProfile refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContactProfiles()
-                .getByResourceGroupWithResponse(resourceGroupName, contactProfileName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContactProfiles()
+            .getByResourceGroupWithResponse(resourceGroupName, contactProfileName, context)
+            .getValue();
         return this;
     }
 
@@ -167,6 +199,17 @@ public final class ContactProfileImpl implements ContactProfile, ContactProfile.
         return this;
     }
 
+    public ContactProfileImpl
+        withNetworkConfiguration(ContactProfilesPropertiesNetworkConfiguration networkConfiguration) {
+        this.innerModel().withNetworkConfiguration(networkConfiguration);
+        return this;
+    }
+
+    public ContactProfileImpl withLinks(List<ContactProfileLink> links) {
+        this.innerModel().withLinks(links);
+        return this;
+    }
+
     public ContactProfileImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
             this.innerModel().withTags(tags);
@@ -175,6 +218,37 @@ public final class ContactProfileImpl implements ContactProfile, ContactProfile.
             this.updateParameters.withTags(tags);
             return this;
         }
+    }
+
+    public ContactProfileImpl withProvisioningState(ContactProfilesPropertiesProvisioningState provisioningState) {
+        this.innerModel().withProvisioningState(provisioningState);
+        return this;
+    }
+
+    public ContactProfileImpl withMinimumViableContactDuration(String minimumViableContactDuration) {
+        this.innerModel().withMinimumViableContactDuration(minimumViableContactDuration);
+        return this;
+    }
+
+    public ContactProfileImpl withMinimumElevationDegrees(Float minimumElevationDegrees) {
+        this.innerModel().withMinimumElevationDegrees(minimumElevationDegrees);
+        return this;
+    }
+
+    public ContactProfileImpl withAutoTrackingConfiguration(AutoTrackingConfiguration autoTrackingConfiguration) {
+        this.innerModel().withAutoTrackingConfiguration(autoTrackingConfiguration);
+        return this;
+    }
+
+    public ContactProfileImpl withEventHubUri(String eventHubUri) {
+        this.innerModel().withEventHubUri(eventHubUri);
+        return this;
+    }
+
+    public ContactProfileImpl
+        withThirdPartyConfigurations(List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations) {
+        this.innerModel().withThirdPartyConfigurations(thirdPartyConfigurations);
+        return this;
     }
 
     private boolean isInCreateMode() {

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,220 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.0 (2024-12-23)
+
+- Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK. Recovery Services Client. Package tag package-2024-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+#### `models.PatchTrackedResource` was modified
+
+* `type()` was added
+* `name()` was added
+* `id()` was added
+
+#### `models.PatchVault` was modified
+
+* `type()` was added
+* `name()` was added
+* `id()` was added
+
+## 1.3.0 (2024-05-20)
+
+- Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK. Recovery Services Client. Package tag package-2024-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Vaults` was modified
+
+* `com.azure.core.http.rest.Response deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.BcdrSecurityLevel` was added
+
+* `models.EnhancedSecurityState` was added
+
+#### `models.VaultPropertiesRedundancySettings` was modified
+
+* `withStandardTierStorageRedundancy(models.StandardTierStorageRedundancy)` was added
+* `withCrossRegionRestore(models.CrossRegionRestore)` was added
+
+#### `models.AzureMonitorAlertSettings` was modified
+
+* `alertsForAllReplicationIssues()` was added
+* `withAlertsForAllReplicationIssues(models.AlertsState)` was added
+* `alertsForAllFailoverIssues()` was added
+* `withAlertsForAllFailoverIssues(models.AlertsState)` was added
+
+#### `models.ClassicAlertSettings` was modified
+
+* `emailNotificationsForSiteRecovery()` was added
+* `withEmailNotificationsForSiteRecovery(models.AlertsState)` was added
+
+#### `models.ResourceCertificateDetails` was modified
+
+* `authType()` was added
+
+#### `models.SoftDeleteSettings` was modified
+
+* `withEnhancedSecurityState(models.EnhancedSecurityState)` was added
+* `enhancedSecurityState()` was added
+
+#### `models.Vault$Definition` was modified
+
+* `withXMsAuthorizationAuxiliary(java.lang.String)` was added
+
+#### `models.Vaults` was modified
+
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ResourceCertificateAndAadDetails` was modified
+
+* `authType()` was added
+
+#### `models.Vault$Update` was modified
+
+* `withXMsAuthorizationAuxiliary(java.lang.String)` was added
+
+#### `models.ResourceCertificateAndAcsDetails` was modified
+
+* `authType()` was added
+
+#### `models.VaultProperties` was modified
+
+* `bcdrSecurityLevel()` was added
+* `withResourceGuardOperationRequests(java.util.List)` was added
+* `resourceGuardOperationRequests()` was added
+
+## 1.2.0 (2023-08-22)
+
+- Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK. Recovery Services Client. Package tag package-2023-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.MultiUserAuthorization` was added
+
+* `models.SoftDeleteSettings` was added
+
+* `models.SecureScoreLevel` was added
+
+* `models.SoftDeleteState` was added
+
+#### `models.SecuritySettings` was modified
+
+* `multiUserAuthorization()` was added
+* `softDeleteSettings()` was added
+* `withSoftDeleteSettings(models.SoftDeleteSettings)` was added
+
+#### `models.VaultProperties` was modified
+
+* `secureScore()` was added
+
+## 1.1.0 (2023-05-17)
+
+- Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK. Recovery Services Client. Package tag package-2023-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.CrossSubscriptionRestoreSettings` was added
+
+* `models.RestoreSettings` was added
+
+* `models.CrossSubscriptionRestoreState` was added
+
+#### `models.VaultProperties` was modified
+
+* `withRestoreSettings(models.RestoreSettings)` was added
+* `restoreSettings()` was added
+
+## 1.0.0 (2023-02-27)
+
+- Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK. Recovery Services Client. Package tag package-2023-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+## 1.0.0-beta.5 (2023-02-14)
+
+- Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK. Recovery Services Client. Package tag package-2023-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+## 1.0.0-beta.4 (2022-12-20)
+
+- Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK. Recovery Services Client. Package tag package-2022-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Vaults` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.CapabilitiesProperties` was added
+
+* `models.ImmutabilityState` was added
+
+* `models.ResourceCapabilities` was added
+
+* `models.DnsZone` was added
+
+* `models.ResourceCapabilitiesBase` was added
+
+* `models.SecuritySettings` was added
+
+* `models.CapabilitiesResponse` was added
+
+* `models.VaultSubResourceType` was added
+
+* `models.PublicNetworkAccess` was added
+
+* `models.ImmutabilitySettings` was added
+
+* `models.DnsZoneResponse` was added
+
+* `models.CapabilitiesResponseProperties` was added
+
+#### `models.RecoveryServices` was modified
+
+* `capabilitiesWithResponse(java.lang.String,models.ResourceCapabilities,com.azure.core.util.Context)` was added
+* `capabilities(java.lang.String,models.ResourceCapabilities)` was added
+
+#### `models.Vault$Definition` was modified
+
+* `withEtag(java.lang.String)` was added
+
+#### `models.Vaults` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `groupIds()` was added
+* `withGroupIds(java.util.List)` was added
+
+#### `models.Vault` was modified
+
+* `etag()` was added
+
+#### `models.VaultProperties` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `publicNetworkAccess()` was added
+* `securitySettings()` was added
+* `withSecuritySettings(models.SecuritySettings)` was added
 
 ## 1.0.0-beta.3 (2022-07-25)
 

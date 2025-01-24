@@ -5,31 +5,46 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AuthenticationType. */
+/**
+ * Specifies the authentication type being used for connecting to the endpoint. Defaults to 'KeyBased'. If 'KeyBased' is
+ * selected, a connection string must be specified (at least the primary connection string). If 'IdentityBased' is
+ * select, the endpointUri and entityPath properties must be specified.
+ */
 public final class AuthenticationType extends ExpandableStringEnum<AuthenticationType> {
-    /** Static value KeyBased for AuthenticationType. */
+    /**
+     * Static value KeyBased for AuthenticationType.
+     */
     public static final AuthenticationType KEY_BASED = fromString("KeyBased");
 
-    /** Static value IdentityBased for AuthenticationType. */
+    /**
+     * Static value IdentityBased for AuthenticationType.
+     */
     public static final AuthenticationType IDENTITY_BASED = fromString("IdentityBased");
 
     /**
+     * Creates a new instance of AuthenticationType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AuthenticationType() {
+    }
+
+    /**
      * Creates or finds a AuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AuthenticationType.
      */
-    @JsonCreator
     public static AuthenticationType fromString(String name) {
         return fromString(name, AuthenticationType.class);
     }
 
     /**
      * Gets known AuthenticationType values.
-     *
+     * 
      * @return known AuthenticationType values.
      */
     public static Collection<AuthenticationType> values() {

@@ -15,11 +15,14 @@ public final class UsageListResultImpl implements UsageListResult {
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    UsageListResultImpl(
-        UsageListResultInner innerObject,
+    UsageListResultImpl(UsageListResultInner innerObject,
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+    }
+
+    public String nextLink() {
+        return this.innerModel().nextLink();
     }
 
     public List<Usage> value() {

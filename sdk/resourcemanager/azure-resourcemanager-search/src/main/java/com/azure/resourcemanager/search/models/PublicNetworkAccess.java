@@ -4,18 +4,25 @@
 
 package com.azure.resourcemanager.search.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for PublicNetworkAccess. */
+/**
+ * This value can be set to 'enabled' to avoid breaking changes on existing customer resources and templates. If set to
+ * 'disabled', traffic over public interface is not allowed, and private endpoint connections would be the exclusive
+ * access method.
+ */
 public enum PublicNetworkAccess {
-    /** Enum value enabled. */
+    /**
+     * Enum value enabled.
+     */
     ENABLED("enabled"),
 
-    /** Enum value disabled. */
+    /**
+     * Enum value disabled.
+     */
     DISABLED("disabled");
 
-    /** The actual serialized value for a PublicNetworkAccess instance. */
+    /**
+     * The actual serialized value for a PublicNetworkAccess instance.
+     */
     private final String value;
 
     PublicNetworkAccess(String value) {
@@ -24,12 +31,14 @@ public enum PublicNetworkAccess {
 
     /**
      * Parses a serialized value to a PublicNetworkAccess instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed PublicNetworkAccess object, or null if unable to parse.
      */
-    @JsonCreator
     public static PublicNetworkAccess fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         PublicNetworkAccess[] items = PublicNetworkAccess.values();
         for (PublicNetworkAccess item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +48,9 @@ public enum PublicNetworkAccess {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

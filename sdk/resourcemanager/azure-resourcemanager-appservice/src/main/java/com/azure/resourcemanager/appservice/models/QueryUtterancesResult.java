@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Result for utterances query. */
+/**
+ * Result for utterances query.
+ */
 @Fluent
-public final class QueryUtterancesResult {
+public final class QueryUtterancesResult implements JsonSerializable<QueryUtterancesResult> {
     /*
      * A sample utterance.
      */
-    @JsonProperty(value = "sampleUtterance")
     private SampleUtterance sampleUtterance;
 
     /*
      * Score of a sample utterance.
      */
-    @JsonProperty(value = "score")
     private Float score;
 
     /**
+     * Creates an instance of QueryUtterancesResult class.
+     */
+    public QueryUtterancesResult() {
+    }
+
+    /**
      * Get the sampleUtterance property: A sample utterance.
-     *
+     * 
      * @return the sampleUtterance value.
      */
     public SampleUtterance sampleUtterance() {
@@ -33,7 +43,7 @@ public final class QueryUtterancesResult {
 
     /**
      * Set the sampleUtterance property: A sample utterance.
-     *
+     * 
      * @param sampleUtterance the sampleUtterance value to set.
      * @return the QueryUtterancesResult object itself.
      */
@@ -44,7 +54,7 @@ public final class QueryUtterancesResult {
 
     /**
      * Get the score property: Score of a sample utterance.
-     *
+     * 
      * @return the score value.
      */
     public Float score() {
@@ -53,7 +63,7 @@ public final class QueryUtterancesResult {
 
     /**
      * Set the score property: Score of a sample utterance.
-     *
+     * 
      * @param score the score value to set.
      * @return the QueryUtterancesResult object itself.
      */
@@ -64,12 +74,51 @@ public final class QueryUtterancesResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sampleUtterance() != null) {
             sampleUtterance().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sampleUtterance", this.sampleUtterance);
+        jsonWriter.writeNumberField("score", this.score);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryUtterancesResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryUtterancesResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QueryUtterancesResult.
+     */
+    public static QueryUtterancesResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryUtterancesResult deserializedQueryUtterancesResult = new QueryUtterancesResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sampleUtterance".equals(fieldName)) {
+                    deserializedQueryUtterancesResult.sampleUtterance = SampleUtterance.fromJson(reader);
+                } else if ("score".equals(fieldName)) {
+                    deserializedQueryUtterancesResult.score = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryUtterancesResult;
+        });
     }
 }

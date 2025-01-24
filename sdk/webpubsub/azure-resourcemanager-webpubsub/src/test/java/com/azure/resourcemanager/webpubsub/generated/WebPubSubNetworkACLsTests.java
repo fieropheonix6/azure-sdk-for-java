@@ -6,79 +6,60 @@ package com.azure.resourcemanager.webpubsub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.AclAction;
+import com.azure.resourcemanager.webpubsub.models.IpRule;
 import com.azure.resourcemanager.webpubsub.models.NetworkAcl;
 import com.azure.resourcemanager.webpubsub.models.PrivateEndpointAcl;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubNetworkACLs;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubRequestType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WebPubSubNetworkACLsTests {
-    @Test
-    public void testDeserialize() {
-        WebPubSubNetworkACLs model =
-            BinaryData
-                .fromString(
-                    "{\"defaultAction\":\"Allow\",\"publicNetwork\":{\"allow\":[\"ClientConnection\",\"RESTAPI\"],\"deny\":[\"Trace\"]},\"privateEndpoints\":[{\"name\":\"azqugxywpmueefj\",\"allow\":[\"RESTAPI\",\"RESTAPI\"],\"deny\":[\"Trace\",\"ClientConnection\",\"RESTAPI\"]},{\"name\":\"suyonobglaocq\",\"allow\":[\"ServerConnection\"],\"deny\":[\"RESTAPI\"]},{\"name\":\"udxytlmoyrx\",\"allow\":[\"ClientConnection\",\"ClientConnection\"],\"deny\":[\"ServerConnection\"]},{\"name\":\"ntxhdzhlrqjbhck\",\"allow\":[\"ServerConnection\",\"ServerConnection\",\"RESTAPI\"],\"deny\":[\"ClientConnection\",\"Trace\"]}]}")
-                .toObject(WebPubSubNetworkACLs.class);
-        Assertions.assertEquals(AclAction.ALLOW, model.defaultAction());
-        Assertions.assertEquals(WebPubSubRequestType.CLIENT_CONNECTION, model.publicNetwork().allow().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        WebPubSubNetworkACLs model = BinaryData.fromString(
+            "{\"defaultAction\":\"Deny\",\"publicNetwork\":{\"allow\":[\"Trace\",\"RESTAPI\",\"ServerConnection\",\"ClientConnection\"],\"deny\":[\"Trace\",\"RESTAPI\",\"ServerConnection\",\"ServerConnection\"]},\"privateEndpoints\":[{\"name\":\"nswhcc\",\"allow\":[\"ServerConnection\"],\"deny\":[\"RESTAPI\",\"Trace\",\"Trace\",\"ServerConnection\"]},{\"name\":\"qscywu\",\"allow\":[\"RESTAPI\",\"ServerConnection\",\"RESTAPI\",\"ClientConnection\"],\"deny\":[\"RESTAPI\",\"ClientConnection\"]}],\"ipRules\":[{\"value\":\"ai\",\"action\":\"Allow\"},{\"value\":\"gzd\",\"action\":\"Allow\"},{\"value\":\"eypqwdxggicccn\",\"action\":\"Allow\"},{\"value\":\"exmk\",\"action\":\"Deny\"}]}")
+            .toObject(WebPubSubNetworkACLs.class);
+        Assertions.assertEquals(AclAction.DENY, model.defaultAction());
+        Assertions.assertEquals(WebPubSubRequestType.TRACE, model.publicNetwork().allow().get(0));
         Assertions.assertEquals(WebPubSubRequestType.TRACE, model.publicNetwork().deny().get(0));
-        Assertions.assertEquals(WebPubSubRequestType.RESTAPI, model.privateEndpoints().get(0).allow().get(0));
-        Assertions.assertEquals(WebPubSubRequestType.TRACE, model.privateEndpoints().get(0).deny().get(0));
-        Assertions.assertEquals("azqugxywpmueefj", model.privateEndpoints().get(0).name());
+        Assertions.assertEquals(WebPubSubRequestType.SERVER_CONNECTION, model.privateEndpoints().get(0).allow().get(0));
+        Assertions.assertEquals(WebPubSubRequestType.RESTAPI, model.privateEndpoints().get(0).deny().get(0));
+        Assertions.assertEquals("nswhcc", model.privateEndpoints().get(0).name());
+        Assertions.assertEquals("ai", model.ipRules().get(0).value());
+        Assertions.assertEquals(AclAction.ALLOW, model.ipRules().get(0).action());
     }
 
-    @Test
-    public void testSerialize() {
-        WebPubSubNetworkACLs model =
-            new WebPubSubNetworkACLs()
-                .withDefaultAction(AclAction.ALLOW)
-                .withPublicNetwork(
-                    new NetworkAcl()
-                        .withAllow(Arrays.asList(WebPubSubRequestType.CLIENT_CONNECTION, WebPubSubRequestType.RESTAPI))
-                        .withDeny(Arrays.asList(WebPubSubRequestType.TRACE)))
-                .withPrivateEndpoints(
-                    Arrays
-                        .asList(
-                            new PrivateEndpointAcl()
-                                .withAllow(Arrays.asList(WebPubSubRequestType.RESTAPI, WebPubSubRequestType.RESTAPI))
-                                .withDeny(
-                                    Arrays
-                                        .asList(
-                                            WebPubSubRequestType.TRACE,
-                                            WebPubSubRequestType.CLIENT_CONNECTION,
-                                            WebPubSubRequestType.RESTAPI))
-                                .withName("azqugxywpmueefj"),
-                            new PrivateEndpointAcl()
-                                .withAllow(Arrays.asList(WebPubSubRequestType.SERVER_CONNECTION))
-                                .withDeny(Arrays.asList(WebPubSubRequestType.RESTAPI))
-                                .withName("suyonobglaocq"),
-                            new PrivateEndpointAcl()
-                                .withAllow(
-                                    Arrays
-                                        .asList(
-                                            WebPubSubRequestType.CLIENT_CONNECTION,
-                                            WebPubSubRequestType.CLIENT_CONNECTION))
-                                .withDeny(Arrays.asList(WebPubSubRequestType.SERVER_CONNECTION))
-                                .withName("udxytlmoyrx"),
-                            new PrivateEndpointAcl()
-                                .withAllow(
-                                    Arrays
-                                        .asList(
-                                            WebPubSubRequestType.SERVER_CONNECTION,
-                                            WebPubSubRequestType.SERVER_CONNECTION,
-                                            WebPubSubRequestType.RESTAPI))
-                                .withDeny(
-                                    Arrays.asList(WebPubSubRequestType.CLIENT_CONNECTION, WebPubSubRequestType.TRACE))
-                                .withName("ntxhdzhlrqjbhck")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        WebPubSubNetworkACLs model = new WebPubSubNetworkACLs().withDefaultAction(AclAction.DENY)
+            .withPublicNetwork(new NetworkAcl()
+                .withAllow(Arrays.asList(WebPubSubRequestType.TRACE, WebPubSubRequestType.RESTAPI,
+                    WebPubSubRequestType.SERVER_CONNECTION, WebPubSubRequestType.CLIENT_CONNECTION))
+                .withDeny(Arrays.asList(WebPubSubRequestType.TRACE, WebPubSubRequestType.RESTAPI,
+                    WebPubSubRequestType.SERVER_CONNECTION, WebPubSubRequestType.SERVER_CONNECTION)))
+            .withPrivateEndpoints(Arrays.asList(
+                new PrivateEndpointAcl().withAllow(Arrays.asList(WebPubSubRequestType.SERVER_CONNECTION))
+                    .withDeny(Arrays.asList(WebPubSubRequestType.RESTAPI, WebPubSubRequestType.TRACE,
+                        WebPubSubRequestType.TRACE, WebPubSubRequestType.SERVER_CONNECTION))
+                    .withName("nswhcc"),
+                new PrivateEndpointAcl()
+                    .withAllow(Arrays.asList(WebPubSubRequestType.RESTAPI, WebPubSubRequestType.SERVER_CONNECTION,
+                        WebPubSubRequestType.RESTAPI, WebPubSubRequestType.CLIENT_CONNECTION))
+                    .withDeny(Arrays.asList(WebPubSubRequestType.RESTAPI, WebPubSubRequestType.CLIENT_CONNECTION))
+                    .withName("qscywu")))
+            .withIpRules(Arrays.asList(new IpRule().withValue("ai").withAction(AclAction.ALLOW),
+                new IpRule().withValue("gzd").withAction(AclAction.ALLOW),
+                new IpRule().withValue("eypqwdxggicccn").withAction(AclAction.ALLOW),
+                new IpRule().withValue("exmk").withAction(AclAction.DENY)));
         model = BinaryData.fromObject(model).toObject(WebPubSubNetworkACLs.class);
-        Assertions.assertEquals(AclAction.ALLOW, model.defaultAction());
-        Assertions.assertEquals(WebPubSubRequestType.CLIENT_CONNECTION, model.publicNetwork().allow().get(0));
+        Assertions.assertEquals(AclAction.DENY, model.defaultAction());
+        Assertions.assertEquals(WebPubSubRequestType.TRACE, model.publicNetwork().allow().get(0));
         Assertions.assertEquals(WebPubSubRequestType.TRACE, model.publicNetwork().deny().get(0));
-        Assertions.assertEquals(WebPubSubRequestType.RESTAPI, model.privateEndpoints().get(0).allow().get(0));
-        Assertions.assertEquals(WebPubSubRequestType.TRACE, model.privateEndpoints().get(0).deny().get(0));
-        Assertions.assertEquals("azqugxywpmueefj", model.privateEndpoints().get(0).name());
+        Assertions.assertEquals(WebPubSubRequestType.SERVER_CONNECTION, model.privateEndpoints().get(0).allow().get(0));
+        Assertions.assertEquals(WebPubSubRequestType.RESTAPI, model.privateEndpoints().get(0).deny().get(0));
+        Assertions.assertEquals("nswhcc", model.privateEndpoints().get(0).name());
+        Assertions.assertEquals("ai", model.ipRules().get(0).value());
+        Assertions.assertEquals(AclAction.ALLOW, model.ipRules().get(0).action());
     }
 }

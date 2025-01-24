@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Configuration of the protocol. */
+/**
+ * Configuration of the protocol.
+ */
 @Fluent
-public final class ProtocolConfiguration {
+public final class ProtocolConfiguration implements JsonSerializable<ProtocolConfiguration> {
     /*
      * HTTP configuration of the connectivity check.
      */
-    @JsonProperty(value = "HTTPConfiguration")
     private HttpConfiguration httpConfiguration;
 
-    /** Creates an instance of ProtocolConfiguration class. */
+    /**
+     * Creates an instance of ProtocolConfiguration class.
+     */
     public ProtocolConfiguration() {
     }
 
     /**
      * Get the httpConfiguration property: HTTP configuration of the connectivity check.
-     *
+     * 
      * @return the httpConfiguration value.
      */
     public HttpConfiguration httpConfiguration() {
@@ -31,7 +38,7 @@ public final class ProtocolConfiguration {
 
     /**
      * Set the httpConfiguration property: HTTP configuration of the connectivity check.
-     *
+     * 
      * @param httpConfiguration the httpConfiguration value to set.
      * @return the ProtocolConfiguration object itself.
      */
@@ -42,12 +49,48 @@ public final class ProtocolConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (httpConfiguration() != null) {
             httpConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("HTTPConfiguration", this.httpConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProtocolConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProtocolConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProtocolConfiguration.
+     */
+    public static ProtocolConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProtocolConfiguration deserializedProtocolConfiguration = new ProtocolConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("HTTPConfiguration".equals(fieldName)) {
+                    deserializedProtocolConfiguration.httpConfiguration = HttpConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProtocolConfiguration;
+        });
     }
 }

@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RestorePointExpandOptions. */
+/**
+ * Defines values for RestorePointExpandOptions.
+ */
 public final class RestorePointExpandOptions extends ExpandableStringEnum<RestorePointExpandOptions> {
-    /** Static value instanceView for RestorePointExpandOptions. */
+    /**
+     * Static value instanceView for RestorePointExpandOptions.
+     */
     public static final RestorePointExpandOptions INSTANCE_VIEW = fromString("instanceView");
 
     /**
+     * Creates a new instance of RestorePointExpandOptions value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RestorePointExpandOptions() {
+    }
+
+    /**
      * Creates or finds a RestorePointExpandOptions from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RestorePointExpandOptions.
      */
-    @JsonCreator
     public static RestorePointExpandOptions fromString(String name) {
         return fromString(name, RestorePointExpandOptions.class);
     }
 
     /**
      * Gets known RestorePointExpandOptions values.
-     *
+     * 
      * @return known RestorePointExpandOptions values.
      */
     public static Collection<RestorePointExpandOptions> values() {

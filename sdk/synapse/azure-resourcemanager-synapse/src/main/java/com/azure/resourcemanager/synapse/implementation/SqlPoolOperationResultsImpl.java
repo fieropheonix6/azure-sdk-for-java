@@ -17,22 +17,21 @@ public final class SqlPoolOperationResultsImpl implements SqlPoolOperationResult
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public SqlPoolOperationResultsImpl(
-        SqlPoolOperationResultsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    public SqlPoolOperationResultsImpl(SqlPoolOperationResultsClient innerClient,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Object getLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId) {
-        return this.serviceClient().getLocationHeaderResult(resourceGroupName, workspaceName, sqlPoolName, operationId);
+    public Response<Object> getLocationHeaderResultWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String operationId, Context context) {
+        return this.serviceClient()
+            .getLocationHeaderResultWithResponse(resourceGroupName, workspaceName, sqlPoolName, operationId, context);
     }
 
-    public Response<Object> getLocationHeaderResultWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId, Context context) {
-        return this
-            .serviceClient()
-            .getLocationHeaderResultWithResponse(resourceGroupName, workspaceName, sqlPoolName, operationId, context);
+    public Object getLocationHeaderResult(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String operationId) {
+        return this.serviceClient().getLocationHeaderResult(resourceGroupName, workspaceName, sqlPoolName, operationId);
     }
 
     private SqlPoolOperationResultsClient serviceClient() {

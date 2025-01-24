@@ -20,30 +20,26 @@ public final class OperationsStatusImpl implements OperationsStatus {
 
     private final com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager;
 
-    public OperationsStatusImpl(
-        OperationsStatusClient innerClient,
+    public OperationsStatusImpl(OperationsStatusClient innerClient,
         com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<OperationStatus> getWithResponse(String location, String operationId, Context context) {
+        Response<OperationStatusInner> inner = this.serviceClient().getWithResponse(location, operationId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OperationStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public OperationStatus get(String location, String operationId) {
         OperationStatusInner inner = this.serviceClient().get(location, operationId);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<OperationStatus> getWithResponse(String location, String operationId, Context context) {
-        Response<OperationStatusInner> inner = this.serviceClient().getWithResponse(location, operationId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

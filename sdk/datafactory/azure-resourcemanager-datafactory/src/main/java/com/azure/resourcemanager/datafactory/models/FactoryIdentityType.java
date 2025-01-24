@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The identity type. */
+/**
+ * The identity type.
+ */
 public final class FactoryIdentityType extends ExpandableStringEnum<FactoryIdentityType> {
-    /** Static value SystemAssigned for FactoryIdentityType. */
+    /**
+     * Static value SystemAssigned for FactoryIdentityType.
+     */
     public static final FactoryIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
-    /** Static value UserAssigned for FactoryIdentityType. */
+    /**
+     * Static value UserAssigned for FactoryIdentityType.
+     */
     public static final FactoryIdentityType USER_ASSIGNED = fromString("UserAssigned");
 
-    /** Static value SystemAssigned,UserAssigned for FactoryIdentityType. */
+    /**
+     * Static value SystemAssigned,UserAssigned for FactoryIdentityType.
+     */
     public static final FactoryIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED = fromString("SystemAssigned,UserAssigned");
 
     /**
+     * Creates a new instance of FactoryIdentityType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FactoryIdentityType() {
+    }
+
+    /**
      * Creates or finds a FactoryIdentityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FactoryIdentityType.
      */
-    @JsonCreator
     public static FactoryIdentityType fromString(String name) {
         return fromString(name, FactoryIdentityType.class);
     }
 
     /**
      * Gets known FactoryIdentityType values.
-     *
+     * 
      * @return known FactoryIdentityType values.
      */
     public static Collection<FactoryIdentityType> values() {

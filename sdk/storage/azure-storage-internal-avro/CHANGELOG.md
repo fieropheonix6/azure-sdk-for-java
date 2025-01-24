@@ -1,6 +1,6 @@
 # Release History
 
-## 12.6.0-beta.1 (Unreleased)
+## 12.15.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,227 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.14.0 (2024-11-13)
+
+### Features Added
+- Added support for service version 2025-01-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.52.0` to version `1.54.0`.
+- Upgraded `azure-storage-common` from `12.27.0` to version `12.28.0`.
+
+## 12.14.0-beta.1 (2024-10-17)
+
+### Features Added
+- Added support for service version 2025-01-05.
+
+## 12.13.0 (2024-09-17)
+
+### Features Added
+- Added support for service version 2024-11-04.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.50.0` to version `1.52.0`.
+- Upgraded `azure-storage-common` from `12.26.0` to version `12.27.0`.
+
+## 12.13.0-beta.1 (2024-08-06)
+
+### Features Added
+- Added support for service version 2024-11-04.
+
+## 12.12.0 (2024-07-18)
+
+### Features Added
+- Added support for service version 2024-08-04.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-storage-common` from `12.25.1` to version `12.26.0`.
+
+## 12.12.0-beta.1 (2024-06-11)
+
+### Features Added
+- Added support for service version 2024-08-04.
+
+## 12.11.1 (2024-06-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-storage-common` from `12.25.0` to version `12.25.1`.
+
+## 12.11.0 (2024-05-15)
+
+### Features Added
+- Added support for service versions 2024-02-04 and 2024-05-04.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-storage-common` from `12.24.4` to version `12.25.0`.
+
+
+## 12.10.4 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-storage-common` from `12.24.3` to version `12.24.4`.
+
+
+## 12.11.0-beta.1 (2024-04-15)
+
+### Features Added
+- Added support for service versions 2024-02-04 and 2024-05-04.
+
+## 12.10.3 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.24.2` to version `12.24.3`.
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+
+
+## 12.10.2 (2024-02-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.24.1` to version `12.24.2`.
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+
+
+## 12.10.1 (2023-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.24.0` to version `12.24.1`.
+- Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+
+## 12.10.0 (2023-11-08)
+
+### Features Added
+- Added support for service versions 2023-11-03.
+
+## 12.9.1 (2023-10-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.23.0` to version `12.23.1`.
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+
+## 12.10.0-beta.1 (2023-10-19)
+
+### Features Added
+- Added support for service versions 2023-11-03.
+
+## 12.9.0 (2023-09-12)
+
+### Features Added
+- Added support for service versions 2023-05-03 and 2023-08-03.
+
+## 12.8.1 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.22.0` to version `12.22.1`.
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+
+## 12.9.0-beta.1 (2023-08-08)
+
+### Features Added
+- Added support for service versions 2023-05-03 and 2023-08-03.
+
+## 12.8.0 (2023-07-11)
+
+### Features Added
+- Added support for the `2023-01-03` service version.
+
+## 12.7.2 (2023-06-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+- Upgraded `azure-storage-common` from `12.21.1` to version `12.21.2`.
+
+## 12.8.0-beta.1 (2023-05-30)
+
+### Features Added
+- Added support for 2023-01-03 service version.
+
+## 12.7.1 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-storage-common` from `12.21.0` to version `12.21.1`.
+
+## 12.7.0 (2023-04-13)
+
+### Features Added
+- Added support for 2022-11-02 service version.
+
+## 12.7.0-beta.1 (2023-03-28)
+
+### Features Added
+- Added support for 2022-11-02 service version.
+
+## 12.6.1 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-storage-common` from `12.20.0` to version `12.20.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 12.6.0 (2023-02-21)
+
+### Features Added
+- Added support for 2021-12-02 service version.
+
+## 12.6.0-beta.1 (2023-02-07)
+
+### Features Added
+- Added support for 2021-12-02 service version.
+
+## 12.5.2 (2023-01-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
+- Upgraded `azure-storage-common` from `12.19.1` to version `12.19.2`.
 
 ## 12.5.1 (2022-11-15)
 

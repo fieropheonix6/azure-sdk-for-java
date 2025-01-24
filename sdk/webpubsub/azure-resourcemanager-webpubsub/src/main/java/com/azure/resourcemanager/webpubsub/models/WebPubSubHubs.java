@@ -8,13 +8,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of WebPubSubHubs. */
+/**
+ * Resource collection API of WebPubSubHubs.
+ */
 public interface WebPubSubHubs {
     /**
      * List hub settings.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -25,9 +26,8 @@ public interface WebPubSubHubs {
 
     /**
      * List hub settings.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -39,10 +39,9 @@ public interface WebPubSubHubs {
 
     /**
      * Get a hub setting.
-     *
+     * 
      * @param hubName The hub name.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,15 +49,14 @@ public interface WebPubSubHubs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a hub setting along with {@link Response}.
      */
-    Response<WebPubSubHub> getWithResponse(
-        String hubName, String resourceGroupName, String resourceName, Context context);
+    Response<WebPubSubHub> getWithResponse(String hubName, String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get a hub setting.
-     *
+     * 
      * @param hubName The hub name.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,10 +67,9 @@ public interface WebPubSubHubs {
 
     /**
      * Delete a hub setting.
-     *
+     * 
      * @param hubName The hub name.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,10 +79,9 @@ public interface WebPubSubHubs {
 
     /**
      * Delete a hub setting.
-     *
+     * 
      * @param hubName The hub name.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,7 +92,7 @@ public interface WebPubSubHubs {
 
     /**
      * Get a hub setting.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,7 +103,7 @@ public interface WebPubSubHubs {
 
     /**
      * Get a hub setting.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -119,7 +115,7 @@ public interface WebPubSubHubs {
 
     /**
      * Delete a hub setting.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -129,7 +125,7 @@ public interface WebPubSubHubs {
 
     /**
      * Delete a hub setting.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,7 +136,7 @@ public interface WebPubSubHubs {
 
     /**
      * Begins definition for a new WebPubSubHub resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new WebPubSubHub definition.
      */

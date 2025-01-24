@@ -5,36 +5,38 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Defines a health policy used to evaluate the health of an application or one of its children entities. */
+/**
+ * Defines a health policy used to evaluate the health of an application or one of its children entities.
+ */
 @Fluent
-public final class ApplicationHealthPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationHealthPolicy.class);
-
+public final class ApplicationHealthPolicy implements JsonSerializable<ApplicationHealthPolicy> {
     /*
-     * The health policy used by default to evaluate the health of a service
-     * type.
+     * The health policy used by default to evaluate the health of a service type.
      */
-    @JsonProperty(value = "defaultServiceTypeHealthPolicy")
     private ServiceTypeHealthPolicy defaultServiceTypeHealthPolicy;
 
     /*
-     * The map with service type health policy per service type name. The map
-     * is empty by default.
+     * The map with service type health policy per service type name. The map is empty by default.
      */
-    @JsonProperty(value = "serviceTypeHealthPolicies")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ServiceTypeHealthPolicy> serviceTypeHealthPolicies;
+
+    /**
+     * Creates an instance of ApplicationHealthPolicy class.
+     */
+    public ApplicationHealthPolicy() {
+    }
 
     /**
      * Get the defaultServiceTypeHealthPolicy property: The health policy used by default to evaluate the health of a
      * service type.
-     *
+     * 
      * @return the defaultServiceTypeHealthPolicy value.
      */
     public ServiceTypeHealthPolicy defaultServiceTypeHealthPolicy() {
@@ -44,12 +46,12 @@ public final class ApplicationHealthPolicy {
     /**
      * Set the defaultServiceTypeHealthPolicy property: The health policy used by default to evaluate the health of a
      * service type.
-     *
+     * 
      * @param defaultServiceTypeHealthPolicy the defaultServiceTypeHealthPolicy value to set.
      * @return the ApplicationHealthPolicy object itself.
      */
-    public ApplicationHealthPolicy withDefaultServiceTypeHealthPolicy(
-        ServiceTypeHealthPolicy defaultServiceTypeHealthPolicy) {
+    public ApplicationHealthPolicy
+        withDefaultServiceTypeHealthPolicy(ServiceTypeHealthPolicy defaultServiceTypeHealthPolicy) {
         this.defaultServiceTypeHealthPolicy = defaultServiceTypeHealthPolicy;
         return this;
     }
@@ -57,7 +59,7 @@ public final class ApplicationHealthPolicy {
     /**
      * Get the serviceTypeHealthPolicies property: The map with service type health policy per service type name. The
      * map is empty by default.
-     *
+     * 
      * @return the serviceTypeHealthPolicies value.
      */
     public Map<String, ServiceTypeHealthPolicy> serviceTypeHealthPolicies() {
@@ -67,19 +69,19 @@ public final class ApplicationHealthPolicy {
     /**
      * Set the serviceTypeHealthPolicies property: The map with service type health policy per service type name. The
      * map is empty by default.
-     *
+     * 
      * @param serviceTypeHealthPolicies the serviceTypeHealthPolicies value to set.
      * @return the ApplicationHealthPolicy object itself.
      */
-    public ApplicationHealthPolicy withServiceTypeHealthPolicies(
-        Map<String, ServiceTypeHealthPolicy> serviceTypeHealthPolicies) {
+    public ApplicationHealthPolicy
+        withServiceTypeHealthPolicies(Map<String, ServiceTypeHealthPolicy> serviceTypeHealthPolicies) {
         this.serviceTypeHealthPolicies = serviceTypeHealthPolicies;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -87,14 +89,54 @@ public final class ApplicationHealthPolicy {
             defaultServiceTypeHealthPolicy().validate();
         }
         if (serviceTypeHealthPolicies() != null) {
-            serviceTypeHealthPolicies()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            serviceTypeHealthPolicies().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("defaultServiceTypeHealthPolicy", this.defaultServiceTypeHealthPolicy);
+        jsonWriter.writeMapField("serviceTypeHealthPolicies", this.serviceTypeHealthPolicies,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationHealthPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationHealthPolicy if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationHealthPolicy.
+     */
+    public static ApplicationHealthPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationHealthPolicy deserializedApplicationHealthPolicy = new ApplicationHealthPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("defaultServiceTypeHealthPolicy".equals(fieldName)) {
+                    deserializedApplicationHealthPolicy.defaultServiceTypeHealthPolicy
+                        = ServiceTypeHealthPolicy.fromJson(reader);
+                } else if ("serviceTypeHealthPolicies".equals(fieldName)) {
+                    Map<String, ServiceTypeHealthPolicy> serviceTypeHealthPolicies
+                        = reader.readMap(reader1 -> ServiceTypeHealthPolicy.fromJson(reader1));
+                    deserializedApplicationHealthPolicy.serviceTypeHealthPolicies = serviceTypeHealthPolicies;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationHealthPolicy;
+        });
     }
 }

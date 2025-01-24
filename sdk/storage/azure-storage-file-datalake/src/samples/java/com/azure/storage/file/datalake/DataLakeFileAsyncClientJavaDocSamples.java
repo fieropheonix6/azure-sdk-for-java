@@ -5,12 +5,15 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.util.BinaryData;
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
 import com.azure.storage.file.datalake.models.FileQueryError;
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
+import com.azure.storage.file.datalake.models.LeaseAction;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
+import com.azure.storage.file.datalake.options.DataLakeFileFlushOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
@@ -18,6 +21,7 @@ import com.azure.storage.file.datalake.models.FileQueryProgress;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
+import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayOutputStream;
@@ -127,13 +131,21 @@ public class DataLakeFileAsyncClientJavaDocSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeFileAsyncClient#readToFile(String)} and {@link DataLakeFileAsyncClient#readToFileWithResponse(String,
+     * Code snippets for {@link DataLakeFileAsyncClient#readToFile(String)}
+     * and {@link DataLakeFileAsyncClient#readToFile(ReadToFileOptions)}
+     * and {@link DataLakeFileAsyncClient#readToFileWithResponse(String,
      * FileRange, ParallelTransferOptions, DownloadRetryOptions, DataLakeRequestConditions, boolean, Set)}
+     * and {@link DataLakeFileAsyncClient#readToFileWithResponse(ReadToFileOptions)}
      */
     public void downloadToFileCodeSnippet() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.readToFile#String
         client.readToFile(file).subscribe(response -> System.out.println("Completed download to file"));
         // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.readToFile#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.readToFile#ReadToFileOptions
+        client.readToFile(new ReadToFileOptions(file))
+            .subscribe(response -> System.out.println("Completed download to file"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.readToFile#ReadToFileOptions
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.readToFile#String-boolean
         boolean overwrite = false; // Default value
@@ -149,6 +161,20 @@ public class DataLakeFileAsyncClientJavaDocSamples {
         client.readToFileWithResponse(file, fileRange, null, downloadRetryOptions, null, false, openOptions)
             .subscribe(response -> System.out.println("Completed download to file"));
         // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.readToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Set
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.readToFileWithResponse#ReadToFileOptions
+        ReadToFileOptions options = new ReadToFileOptions(file);
+        options.setRange(new FileRange(1024, 2048L));
+        options.setDownloadRetryOptions(new DownloadRetryOptions().setMaxRetryRequests(5));
+        options.setOpenOptions(new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+            StandardOpenOption.WRITE, StandardOpenOption.READ))); //Default options
+        options.setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(4L * Constants.MB));
+        options.setDataLakeRequestConditions(null);
+        options.setRangeGetContentMd5(false);
+
+        client.readToFileWithResponse(options)
+            .subscribe(response -> System.out.println("Completed download to file"));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.readToFileWithResponse#ReadToFileOptions
     }
 
     /**
@@ -454,6 +480,37 @@ public class DataLakeFileAsyncClientJavaDocSamples {
             requestConditions).subscribe(response ->
             System.out.printf("Flush data completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.flushWithResponse#long-boolean-boolean-PathHttpHeaders-DataLakeRequestConditions
+    }
+
+    /**
+     * Code snippet for {@link DataLakeFileAsyncClient#flushWithResponse(long, DataLakeFileFlushOptions)}
+     */
+    public void flushWithOptionsCodeSnippet() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.flushWithResponse#long-DataLakeFileFlushOptions
+        FileRange range = new FileRange(1024, 2048L);
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
+        byte[] contentMd5 = new byte[0]; // Replace with valid md5
+        boolean retainUncommittedData = false;
+        boolean close = false;
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+        Integer leaseDuration = 15;
+
+        DataLakeFileFlushOptions flushOptions = new DataLakeFileFlushOptions()
+            .setUncommittedDataRetained(retainUncommittedData)
+            .setClose(close)
+            .setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions)
+            .setLeaseAction(LeaseAction.ACQUIRE)
+            .setLeaseDuration(leaseDuration)
+            .setProposedLeaseId(leaseId);
+
+        client.flushWithResponse(position, flushOptions).subscribe(response ->
+            System.out.printf("Flush data completed with status %d%n", response.getStatusCode()));
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.flushWithResponse#long-DataLakeFileFlushOptions
     }
 
     /**

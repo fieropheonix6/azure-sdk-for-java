@@ -11,12 +11,11 @@ import com.azure.resourcemanager.mariadb.fluent.LocationBasedRecommendedActionSe
 import com.azure.resourcemanager.mariadb.fluent.models.RecommendationActionInner;
 import com.azure.resourcemanager.mariadb.models.LocationBasedRecommendedActionSessionsResults;
 import com.azure.resourcemanager.mariadb.models.RecommendationAction;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationBasedRecommendedActionSessionsResultsImpl
     implements LocationBasedRecommendedActionSessionsResults {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(LocationBasedRecommendedActionSessionsResultsImpl.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(LocationBasedRecommendedActionSessionsResultsImpl.class);
 
     private final LocationBasedRecommendedActionSessionsResultsClient innerClient;
 
@@ -31,12 +30,12 @@ public final class LocationBasedRecommendedActionSessionsResultsImpl
 
     public PagedIterable<RecommendationAction> list(String locationName, String operationId) {
         PagedIterable<RecommendationActionInner> inner = this.serviceClient().list(locationName, operationId);
-        return Utils.mapPage(inner, inner1 -> new RecommendationActionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecommendationActionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RecommendationAction> list(String locationName, String operationId, Context context) {
         PagedIterable<RecommendationActionInner> inner = this.serviceClient().list(locationName, operationId, context);
-        return Utils.mapPage(inner, inner1 -> new RecommendationActionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecommendationActionImpl(inner1, this.manager()));
     }
 
     private LocationBasedRecommendedActionSessionsResultsClient serviceClient() {

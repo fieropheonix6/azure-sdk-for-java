@@ -5,12 +5,15 @@ package com.azure.data.tables.implementation.models;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.data.tables.TableAsyncClient;
+import com.azure.data.tables.TableClient;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
 import reactor.core.publisher.Mono;
 
 public interface TransactionalBatchAction {
     Mono<HttpRequest> prepareRequest(TableAsyncClient preparer);
+
+    HttpRequest prepareRequest(TableClient preparer);
 
     class CreateEntity implements TransactionalBatchAction {
         private final TableEntity entity;
@@ -29,11 +32,14 @@ public interface TransactionalBatchAction {
         }
 
         @Override
+        public HttpRequest prepareRequest(TableClient client) {
+            return client.createEntityWithResponse(entity, null, null).getRequest();
+        }
+
+        @Override
         public String toString() {
-            return "CreateEntity{"
-                + "partitionKey='" + entity.getPartitionKey() + '\''
-                + ", rowKey='" + entity.getRowKey() + '\''
-                + '}';
+            return "CreateEntity{" + "partitionKey='" + entity.getPartitionKey() + '\'' + ", rowKey='"
+                + entity.getRowKey() + '\'' + '}';
         }
     }
 
@@ -60,12 +66,14 @@ public interface TransactionalBatchAction {
         }
 
         @Override
+        public HttpRequest prepareRequest(TableClient preparer) {
+            return preparer.upsertEntityWithResponse(entity, updateMode, null, null).getRequest();
+        }
+
+        @Override
         public String toString() {
-            return "UpsertEntity{"
-                + "partitionKey='" + entity.getPartitionKey() + '\''
-                + ", rowKey='" + entity.getRowKey() + '\''
-                + ", updateMode=" + updateMode
-                + '}';
+            return "UpsertEntity{" + "partitionKey='" + entity.getPartitionKey() + '\'' + ", rowKey='"
+                + entity.getRowKey() + '\'' + ", updateMode=" + updateMode + '}';
         }
     }
 
@@ -98,13 +106,14 @@ public interface TransactionalBatchAction {
         }
 
         @Override
+        public HttpRequest prepareRequest(TableClient preparer) {
+            return preparer.updateEntityWithResponse(entity, updateMode, ifUnchanged, null, null).getRequest();
+        }
+
+        @Override
         public String toString() {
-            return "UpdateEntity{"
-                + "partitionKey='" + entity.getPartitionKey() + '\''
-                + ", rowKey='" + entity.getRowKey() + '\''
-                + ", updateMode=" + updateMode
-                + ", ifUnchanged=" + ifUnchanged
-                + '}';
+            return "UpdateEntity{" + "partitionKey='" + entity.getPartitionKey() + '\'' + ", rowKey='"
+                + entity.getRowKey() + '\'' + ", updateMode=" + updateMode + ", ifUnchanged=" + ifUnchanged + '}';
         }
     }
 
@@ -131,12 +140,14 @@ public interface TransactionalBatchAction {
         }
 
         @Override
+        public HttpRequest prepareRequest(TableClient preparer) {
+            return preparer.deleteEntityWithResponse(entity, ifUnchanged, null, null).getRequest();
+        }
+
+        @Override
         public String toString() {
-            return "DeleteEntity{"
-                + "partitionKey='" + entity.getPartitionKey() + '\''
-                + ", rowKey='" + entity.getRowKey() + '\''
-                + ", eTag='" + entity.getETag() + '\''
-                + ", ifUnchanged=" + ifUnchanged
+            return "DeleteEntity{" + "partitionKey='" + entity.getPartitionKey() + '\'' + ", rowKey='"
+                + entity.getRowKey() + '\'' + ", eTag='" + entity.getETag() + '\'' + ", ifUnchanged=" + ifUnchanged
                 + '}';
         }
     }

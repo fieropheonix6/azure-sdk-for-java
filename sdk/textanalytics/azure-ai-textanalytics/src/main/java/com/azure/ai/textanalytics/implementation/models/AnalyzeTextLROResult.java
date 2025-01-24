@@ -5,47 +5,47 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The AnalyzeTextLROResult model. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = AnalyzeTextLROResult.class)
-@JsonTypeName("AnalyzeTextLROResult")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "EntityRecognitionLROResults", value = EntityRecognitionLROResult.class),
-    @JsonSubTypes.Type(name = "CustomEntityRecognitionLROResults", value = CustomEntityRecognitionLROResult.class),
-    @JsonSubTypes.Type(
-            name = "CustomSingleLabelClassificationLROResults",
-            value = CustomSingleLabelClassificationLROResult.class),
-    @JsonSubTypes.Type(
-            name = "CustomMultiLabelClassificationLROResults",
-            value = CustomMultiLabelClassificationLROResult.class),
-    @JsonSubTypes.Type(name = "EntityLinkingLROResults", value = EntityLinkingLROResult.class),
-    @JsonSubTypes.Type(name = "PiiEntityRecognitionLROResults", value = PiiEntityRecognitionLROResult.class),
-    @JsonSubTypes.Type(name = "ExtractiveSummarizationLROResults", value = ExtractiveSummarizationLROResult.class),
-    @JsonSubTypes.Type(name = "HealthcareLROResults", value = HealthcareLROResult.class),
-    @JsonSubTypes.Type(name = "SentimentAnalysisLROResults", value = SentimentLROResult.class),
-    @JsonSubTypes.Type(name = "KeyPhraseExtractionLROResults", value = KeyPhraseExtractionLROResult.class),
-    @JsonSubTypes.Type(name = "AbstractiveSummarizationLROResults", value = AbstractiveSummarizationLROResult.class)
-})
+/**
+ * The AnalyzeTextLROResult model.
+ */
 @Fluent
 public class AnalyzeTextLROResult extends TaskState {
     /*
+     * Enumeration of supported Text Analysis long-running operation task results.
+     */
+    private AnalyzeTextLROResultsKind kind = AnalyzeTextLROResultsKind.fromString("AnalyzeTextLROResult");
+
+    /*
      * The taskName property.
      */
-    @JsonProperty(value = "taskName")
     private String taskName;
 
     /**
+     * Creates an instance of AnalyzeTextLROResult class.
+     */
+    public AnalyzeTextLROResult() {
+    }
+
+    /**
+     * Get the kind property: Enumeration of supported Text Analysis long-running operation task results.
+     * 
+     * @return the kind value.
+     */
+    public AnalyzeTextLROResultsKind getKind() {
+        return this.kind;
+    }
+
+    /**
      * Get the taskName property: The taskName property.
-     *
+     * 
      * @return the taskName value.
      */
     public String getTaskName() {
@@ -54,7 +54,7 @@ public class AnalyzeTextLROResult extends TaskState {
 
     /**
      * Set the taskName property: The taskName property.
-     *
+     * 
      * @param taskName the taskName value to set.
      * @return the AnalyzeTextLROResult object itself.
      */
@@ -63,17 +63,116 @@ public class AnalyzeTextLROResult extends TaskState {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AnalyzeTextLROResult setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
         super.setLastUpdateDateTime(lastUpdateDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AnalyzeTextLROResult setStatus(State status) {
         super.setStatus(status);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("lastUpdateDateTime",
+            getLastUpdateDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastUpdateDateTime()));
+        jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("taskName", this.taskName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnalyzeTextLROResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnalyzeTextLROResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AnalyzeTextLROResult.
+     */
+    public static AnalyzeTextLROResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("EntityRecognitionLROResults".equals(discriminatorValue)) {
+                    return EntityRecognitionLROResult.fromJson(readerToUse.reset());
+                } else if ("CustomEntityRecognitionLROResults".equals(discriminatorValue)) {
+                    return CustomEntityRecognitionLROResult.fromJson(readerToUse.reset());
+                } else if ("CustomSingleLabelClassificationLROResults".equals(discriminatorValue)) {
+                    return CustomSingleLabelClassificationLROResult.fromJson(readerToUse.reset());
+                } else if ("CustomMultiLabelClassificationLROResults".equals(discriminatorValue)) {
+                    return CustomMultiLabelClassificationLROResult.fromJson(readerToUse.reset());
+                } else if ("EntityLinkingLROResults".equals(discriminatorValue)) {
+                    return EntityLinkingLROResult.fromJson(readerToUse.reset());
+                } else if ("PiiEntityRecognitionLROResults".equals(discriminatorValue)) {
+                    return PiiEntityRecognitionLROResult.fromJson(readerToUse.reset());
+                } else if ("ExtractiveSummarizationLROResults".equals(discriminatorValue)) {
+                    return ExtractiveSummarizationLROResult.fromJson(readerToUse.reset());
+                } else if ("HealthcareLROResults".equals(discriminatorValue)) {
+                    return HealthcareLROResult.fromJson(readerToUse.reset());
+                } else if ("SentimentAnalysisLROResults".equals(discriminatorValue)) {
+                    return SentimentLROResult.fromJson(readerToUse.reset());
+                } else if ("KeyPhraseExtractionLROResults".equals(discriminatorValue)) {
+                    return KeyPhraseExtractionLROResult.fromJson(readerToUse.reset());
+                } else if ("AbstractiveSummarizationLROResults".equals(discriminatorValue)) {
+                    return AbstractiveSummarizationLROResult.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AnalyzeTextLROResult fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AnalyzeTextLROResult deserializedAnalyzeTextLROResult = new AnalyzeTextLROResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lastUpdateDateTime".equals(fieldName)) {
+                    deserializedAnalyzeTextLROResult.setLastUpdateDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("status".equals(fieldName)) {
+                    deserializedAnalyzeTextLROResult.setStatus(State.fromString(reader.getString()));
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAnalyzeTextLROResult.kind = AnalyzeTextLROResultsKind.fromString(reader.getString());
+                } else if ("taskName".equals(fieldName)) {
+                    deserializedAnalyzeTextLROResult.taskName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAnalyzeTextLROResult;
+        });
     }
 }

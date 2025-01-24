@@ -6,38 +6,42 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Dynamics CRM linked service properties. */
+/**
+ * Dynamics CRM linked service properties.
+ */
 @Fluent
-public final class DynamicsCrmLinkedServiceTypeProperties {
+public final class DynamicsCrmLinkedServiceTypeProperties
+    implements JsonSerializable<DynamicsCrmLinkedServiceTypeProperties> {
     /*
      * The deployment type of the Dynamics CRM instance. 'Online' for Dynamics CRM Online and 'OnPremisesWithIfd' for
      * Dynamics CRM on-premises with Ifd. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "deploymentType", required = true)
     private Object deploymentType;
 
     /*
      * The host name of the on-premises Dynamics CRM server. The property is required for on-prem and not allowed for
      * online. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "hostName")
     private Object hostname;
 
     /*
      * The port of on-premises Dynamics CRM server. The property is required for on-prem and not allowed for online.
      * Default is 443. Type: integer (or Expression with resultType integer), minimum: 0.
      */
-    @JsonProperty(value = "port")
     private Object port;
 
     /*
      * The URL to the Microsoft Dynamics CRM server. The property is required for on-line and not allowed for on-prem.
      * Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "serviceUri")
     private Object serviceUri;
 
     /*
@@ -45,41 +49,41 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
      * when there are more than one Dynamics CRM instances associated with the user. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "organizationName")
     private Object organizationName;
 
     /*
-     * The authentication type to connect to Dynamics CRM server. 'Office365' for online scenario, 'Ifd' for
-     * on-premises with Ifd scenario, 'AADServicePrincipal' for Server-To-Server authentication in online scenario.
-     * Type: string (or Expression with resultType string).
+     * The authentication type to connect to Dynamics CRM server. 'Office365' for online scenario, 'Ifd' for on-premises
+     * with Ifd scenario, 'AADServicePrincipal' for Server-To-Server authentication in online scenario, 'Active
+     * Directory' for Dynamics on-premises with IFD. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "authenticationType", required = true)
     private Object authenticationType;
+
+    /*
+     * The Active Directory domain that will verify user credentials. Type: string (or Expression with resultType
+     * string).
+     */
+    private Object domain;
 
     /*
      * User name to access the Dynamics CRM instance. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "username")
     private Object username;
 
     /*
      * Password to access the Dynamics CRM instance.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
-     * The client ID of the application in Azure Active Directory used for Server-To-Server authentication. Type:
-     * string (or Expression with resultType string).
+     * The client ID of the application in Azure Active Directory used for Server-To-Server authentication. Type: string
+     * (or Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
      * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalCredentialType")
     private Object servicePrincipalCredentialType;
 
     /*
@@ -88,17 +92,22 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
      * servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be
      * AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "servicePrincipalCredential")
     private SecretBase servicePrincipalCredential;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * The credential reference containing authentication information.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private CredentialReference credential;
 
-    /** Creates an instance of DynamicsCrmLinkedServiceTypeProperties class. */
+    /*
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
+     */
+    private String encryptedCredential;
+
+    /**
+     * Creates an instance of DynamicsCrmLinkedServiceTypeProperties class.
+     */
     public DynamicsCrmLinkedServiceTypeProperties() {
     }
 
@@ -106,7 +115,7 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
      * Get the deploymentType property: The deployment type of the Dynamics CRM instance. 'Online' for Dynamics CRM
      * Online and 'OnPremisesWithIfd' for Dynamics CRM on-premises with Ifd. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the deploymentType value.
      */
     public Object deploymentType() {
@@ -117,7 +126,7 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
      * Set the deploymentType property: The deployment type of the Dynamics CRM instance. 'Online' for Dynamics CRM
      * Online and 'OnPremisesWithIfd' for Dynamics CRM on-premises with Ifd. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param deploymentType the deploymentType value to set.
      * @return the DynamicsCrmLinkedServiceTypeProperties object itself.
      */
@@ -129,7 +138,7 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
     /**
      * Get the hostname property: The host name of the on-premises Dynamics CRM server. The property is required for
      * on-prem and not allowed for online. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the hostname value.
      */
     public Object hostname() {
@@ -139,7 +148,7 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
     /**
      * Set the hostname property: The host name of the on-premises Dynamics CRM server. The property is required for
      * on-prem and not allowed for online. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the DynamicsCrmLinkedServiceTypeProperties object itself.
      */
@@ -151,7 +160,7 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
     /**
      * Get the port property: The port of on-premises Dynamics CRM server. The property is required for on-prem and not
      * allowed for online. Default is 443. Type: integer (or Expression with resultType integer), minimum: 0.
-     *
+     * 
      * @return the port value.
      */
     public Object port() {
@@ -161,7 +170,7 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
     /**
      * Set the port property: The port of on-premises Dynamics CRM server. The property is required for on-prem and not
      * allowed for online. Default is 443. Type: integer (or Expression with resultType integer), minimum: 0.
-     *
+     * 
      * @param port the port value to set.
      * @return the DynamicsCrmLinkedServiceTypeProperties object itself.
      */
@@ -173,7 +182,7 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
     /**
      * Get the serviceUri property: The URL to the Microsoft Dynamics CRM server. The property is required for on-line
      * and not allowed for on-prem. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the serviceUri value.
      */
     public Object serviceUri() {
@@ -183,7 +192,7 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
     /**
      * Set the serviceUri property: The URL to the Microsoft Dynamics CRM server. The property is required for on-line
      * and not allowed for on-prem. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param serviceUri the serviceUri value to set.
      * @return the DynamicsCrmLinkedServiceTypeProperties object itself.
      */
@@ -196,7 +205,7 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
      * Get the organizationName property: The organization name of the Dynamics CRM instance. The property is required
      * for on-prem and required for online when there are more than one Dynamics CRM instances associated with the user.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the organizationName value.
      */
     public Object organizationName() {
@@ -207,7 +216,7 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
      * Set the organizationName property: The organization name of the Dynamics CRM instance. The property is required
      * for on-prem and required for online when there are more than one Dynamics CRM instances associated with the user.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param organizationName the organizationName value to set.
      * @return the DynamicsCrmLinkedServiceTypeProperties object itself.
      */
@@ -219,8 +228,9 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
     /**
      * Get the authenticationType property: The authentication type to connect to Dynamics CRM server. 'Office365' for
      * online scenario, 'Ifd' for on-premises with Ifd scenario, 'AADServicePrincipal' for Server-To-Server
-     * authentication in online scenario. Type: string (or Expression with resultType string).
-     *
+     * authentication in online scenario, 'Active Directory' for Dynamics on-premises with IFD. Type: string (or
+     * Expression with resultType string).
+     * 
      * @return the authenticationType value.
      */
     public Object authenticationType() {
@@ -230,8 +240,9 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
     /**
      * Set the authenticationType property: The authentication type to connect to Dynamics CRM server. 'Office365' for
      * online scenario, 'Ifd' for on-premises with Ifd scenario, 'AADServicePrincipal' for Server-To-Server
-     * authentication in online scenario. Type: string (or Expression with resultType string).
-     *
+     * authentication in online scenario, 'Active Directory' for Dynamics on-premises with IFD. Type: string (or
+     * Expression with resultType string).
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the DynamicsCrmLinkedServiceTypeProperties object itself.
      */
@@ -241,9 +252,31 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
     }
 
     /**
+     * Get the domain property: The Active Directory domain that will verify user credentials. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @return the domain value.
+     */
+    public Object domain() {
+        return this.domain;
+    }
+
+    /**
+     * Set the domain property: The Active Directory domain that will verify user credentials. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @param domain the domain value to set.
+     * @return the DynamicsCrmLinkedServiceTypeProperties object itself.
+     */
+    public DynamicsCrmLinkedServiceTypeProperties withDomain(Object domain) {
+        this.domain = domain;
+        return this;
+    }
+
+    /**
      * Get the username property: User name to access the Dynamics CRM instance. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -253,7 +286,7 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
     /**
      * Set the username property: User name to access the Dynamics CRM instance. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param username the username value to set.
      * @return the DynamicsCrmLinkedServiceTypeProperties object itself.
      */
@@ -264,7 +297,7 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
 
     /**
      * Get the password property: Password to access the Dynamics CRM instance.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -273,7 +306,7 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
 
     /**
      * Set the password property: Password to access the Dynamics CRM instance.
-     *
+     * 
      * @param password the password value to set.
      * @return the DynamicsCrmLinkedServiceTypeProperties object itself.
      */
@@ -285,7 +318,7 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
     /**
      * Get the servicePrincipalId property: The client ID of the application in Azure Active Directory used for
      * Server-To-Server authentication. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object servicePrincipalId() {
@@ -295,7 +328,7 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
     /**
      * Set the servicePrincipalId property: The client ID of the application in Azure Active Directory used for
      * Server-To-Server authentication. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the DynamicsCrmLinkedServiceTypeProperties object itself.
      */
@@ -308,7 +341,7 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
      * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
      * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalCredentialType value.
      */
     public Object servicePrincipalCredentialType() {
@@ -319,12 +352,12 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
      * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
      * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the DynamicsCrmLinkedServiceTypeProperties object itself.
      */
-    public DynamicsCrmLinkedServiceTypeProperties withServicePrincipalCredentialType(
-        Object servicePrincipalCredentialType) {
+    public DynamicsCrmLinkedServiceTypeProperties
+        withServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
         this.servicePrincipalCredentialType = servicePrincipalCredentialType;
         return this;
     }
@@ -334,7 +367,7 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
      * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
      * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
      * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the servicePrincipalCredential value.
      */
     public SecretBase servicePrincipalCredential() {
@@ -346,56 +379,73 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
      * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
      * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
      * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
-     *
+     * 
      * @param servicePrincipalCredential the servicePrincipalCredential value to set.
      * @return the DynamicsCrmLinkedServiceTypeProperties object itself.
      */
-    public DynamicsCrmLinkedServiceTypeProperties withServicePrincipalCredential(
-        SecretBase servicePrincipalCredential) {
+    public DynamicsCrmLinkedServiceTypeProperties
+        withServicePrincipalCredential(SecretBase servicePrincipalCredential) {
         this.servicePrincipalCredential = servicePrincipalCredential;
         return this;
     }
 
     /**
+     * Get the credential property: The credential reference containing authentication information.
+     * 
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     * 
+     * @param credential the credential value to set.
+     * @return the DynamicsCrmLinkedServiceTypeProperties object itself.
+     */
+    public DynamicsCrmLinkedServiceTypeProperties withCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the DynamicsCrmLinkedServiceTypeProperties object itself.
      */
-    public DynamicsCrmLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public DynamicsCrmLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (deploymentType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deploymentType in model DynamicsCrmLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property deploymentType in model DynamicsCrmLinkedServiceTypeProperties"));
         }
         if (authenticationType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property authenticationType in model"
-                            + " DynamicsCrmLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authenticationType in model DynamicsCrmLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();
@@ -403,7 +453,90 @@ public final class DynamicsCrmLinkedServiceTypeProperties {
         if (servicePrincipalCredential() != null) {
             servicePrincipalCredential().validate();
         }
+        if (credential() != null) {
+            credential().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DynamicsCrmLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("deploymentType", this.deploymentType);
+        jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+        jsonWriter.writeUntypedField("hostName", this.hostname);
+        jsonWriter.writeUntypedField("port", this.port);
+        jsonWriter.writeUntypedField("serviceUri", this.serviceUri);
+        jsonWriter.writeUntypedField("organizationName", this.organizationName);
+        jsonWriter.writeUntypedField("domain", this.domain);
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
+        jsonWriter.writeJsonField("credential", this.credential);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DynamicsCrmLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DynamicsCrmLinkedServiceTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DynamicsCrmLinkedServiceTypeProperties.
+     */
+    public static DynamicsCrmLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DynamicsCrmLinkedServiceTypeProperties deserializedDynamicsCrmLinkedServiceTypeProperties
+                = new DynamicsCrmLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deploymentType".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedServiceTypeProperties.deploymentType = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedServiceTypeProperties.authenticationType = reader.readUntyped();
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedServiceTypeProperties.hostname = reader.readUntyped();
+                } else if ("port".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedServiceTypeProperties.port = reader.readUntyped();
+                } else if ("serviceUri".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedServiceTypeProperties.serviceUri = reader.readUntyped();
+                } else if ("organizationName".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedServiceTypeProperties.organizationName = reader.readUntyped();
+                } else if ("domain".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedServiceTypeProperties.domain = reader.readUntyped();
+                } else if ("username".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("servicePrincipalId".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedServiceTypeProperties.servicePrincipalId = reader.readUntyped();
+                } else if ("servicePrincipalCredentialType".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedServiceTypeProperties.servicePrincipalCredentialType
+                        = reader.readUntyped();
+                } else if ("servicePrincipalCredential".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedServiceTypeProperties.servicePrincipalCredential
+                        = SecretBase.fromJson(reader);
+                } else if ("credential".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedServiceTypeProperties.credential
+                        = CredentialReference.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDynamicsCrmLinkedServiceTypeProperties;
+        });
+    }
 }

@@ -5,558 +5,558 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.AssignmentPrincipal;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.ResourceSetDescription;
 import com.azure.resourcemanager.customerinsights.models.RoleTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The Role Assignment resource format. */
-@JsonFlatten
+/**
+ * The Role Assignment resource format.
+ */
 @Fluent
-public class RoleAssignmentResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleAssignmentResourceFormatInner.class);
+public final class RoleAssignmentResourceFormatInner extends ProxyResource {
+    /*
+     * The Role Assignment definition.
+     */
+    private RoleAssignment innerProperties;
 
     /*
-     * The hub name.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
+    private String type;
 
     /*
-     * The name of the metadata object.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.assignmentName", access = JsonProperty.Access.WRITE_ONLY)
-    private String assignmentName;
+    private String name;
 
     /*
-     * Localized display names for the metadata.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.displayName")
-    private Map<String, String> displayName;
+    private String id;
 
-    /*
-     * Localized description for the metadata.
+    /**
+     * Creates an instance of RoleAssignmentResourceFormatInner class.
      */
-    @JsonProperty(value = "properties.description")
-    private Map<String, String> description;
+    public RoleAssignmentResourceFormatInner() {
+    }
 
-    /*
-     * Provisioning state.
+    /**
+     * Get the innerProperties property: The Role Assignment definition.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningStates provisioningState;
+    private RoleAssignment innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Type of roles.
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.role")
-    private RoleTypes role;
+    @Override
+    public String type() {
+        return this.type;
+    }
 
-    /*
-     * The principals being assigned to.
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    @JsonProperty(value = "properties.principals")
-    private List<AssignmentPrincipal> principals;
+    @Override
+    public String name() {
+        return this.name;
+    }
 
-    /*
-     * Profiles set for the assignment.
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    @JsonProperty(value = "properties.profiles")
-    private ResourceSetDescription profiles;
-
-    /*
-     * Interactions set for the assignment.
-     */
-    @JsonProperty(value = "properties.interactions")
-    private ResourceSetDescription interactions;
-
-    /*
-     * Links set for the assignment.
-     */
-    @JsonProperty(value = "properties.links")
-    private ResourceSetDescription links;
-
-    /*
-     * Kpis set for the assignment.
-     */
-    @JsonProperty(value = "properties.kpis")
-    private ResourceSetDescription kpis;
-
-    /*
-     * Sas Policies set for the assignment.
-     */
-    @JsonProperty(value = "properties.sasPolicies")
-    private ResourceSetDescription sasPolicies;
-
-    /*
-     * Connectors set for the assignment.
-     */
-    @JsonProperty(value = "properties.connectors")
-    private ResourceSetDescription connectors;
-
-    /*
-     * Views set for the assignment.
-     */
-    @JsonProperty(value = "properties.views")
-    private ResourceSetDescription views;
-
-    /*
-     * The Role assignments set for the relationship links.
-     */
-    @JsonProperty(value = "properties.relationshipLinks")
-    private ResourceSetDescription relationshipLinks;
-
-    /*
-     * The Role assignments set for the relationships.
-     */
-    @JsonProperty(value = "properties.relationships")
-    private ResourceSetDescription relationships;
-
-    /*
-     * Widget types set for the assignment.
-     */
-    @JsonProperty(value = "properties.widgetTypes")
-    private ResourceSetDescription widgetTypes;
-
-    /*
-     * The Role assignments set for the assignment.
-     */
-    @JsonProperty(value = "properties.roleAssignments")
-    private ResourceSetDescription roleAssignments;
-
-    /*
-     * Widget types set for the assignment.
-     */
-    @JsonProperty(value = "properties.conflationPolicies")
-    private ResourceSetDescription conflationPolicies;
-
-    /*
-     * The Role assignments set for the assignment.
-     */
-    @JsonProperty(value = "properties.segments")
-    private ResourceSetDescription segments;
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
      * Get the assignmentName property: The name of the metadata object.
-     *
+     * 
      * @return the assignmentName value.
      */
     public String assignmentName() {
-        return this.assignmentName;
+        return this.innerProperties() == null ? null : this.innerProperties().assignmentName();
     }
 
     /**
      * Get the displayName property: Localized display names for the metadata.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
      * Set the displayName property: Localized display names for the metadata.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withDisplayName(Map<String, String> displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
     /**
      * Get the description property: Localized description for the metadata.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
      * Set the description property: Localized description for the metadata.
-     *
+     * 
      * @param description the description value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withDescription(Map<String, String> description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
      * Get the role property: Type of roles.
-     *
+     * 
      * @return the role value.
      */
     public RoleTypes role() {
-        return this.role;
+        return this.innerProperties() == null ? null : this.innerProperties().role();
     }
 
     /**
      * Set the role property: Type of roles.
-     *
+     * 
      * @param role the role value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withRole(RoleTypes role) {
-        this.role = role;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withRole(role);
         return this;
     }
 
     /**
      * Get the principals property: The principals being assigned to.
-     *
+     * 
      * @return the principals value.
      */
     public List<AssignmentPrincipal> principals() {
-        return this.principals;
+        return this.innerProperties() == null ? null : this.innerProperties().principals();
     }
 
     /**
      * Set the principals property: The principals being assigned to.
-     *
+     * 
      * @param principals the principals value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withPrincipals(List<AssignmentPrincipal> principals) {
-        this.principals = principals;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withPrincipals(principals);
         return this;
     }
 
     /**
      * Get the profiles property: Profiles set for the assignment.
-     *
+     * 
      * @return the profiles value.
      */
     public ResourceSetDescription profiles() {
-        return this.profiles;
+        return this.innerProperties() == null ? null : this.innerProperties().profiles();
     }
 
     /**
      * Set the profiles property: Profiles set for the assignment.
-     *
+     * 
      * @param profiles the profiles value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withProfiles(ResourceSetDescription profiles) {
-        this.profiles = profiles;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withProfiles(profiles);
         return this;
     }
 
     /**
      * Get the interactions property: Interactions set for the assignment.
-     *
+     * 
      * @return the interactions value.
      */
     public ResourceSetDescription interactions() {
-        return this.interactions;
+        return this.innerProperties() == null ? null : this.innerProperties().interactions();
     }
 
     /**
      * Set the interactions property: Interactions set for the assignment.
-     *
+     * 
      * @param interactions the interactions value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withInteractions(ResourceSetDescription interactions) {
-        this.interactions = interactions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withInteractions(interactions);
         return this;
     }
 
     /**
      * Get the links property: Links set for the assignment.
-     *
+     * 
      * @return the links value.
      */
     public ResourceSetDescription links() {
-        return this.links;
+        return this.innerProperties() == null ? null : this.innerProperties().links();
     }
 
     /**
      * Set the links property: Links set for the assignment.
-     *
+     * 
      * @param links the links value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withLinks(ResourceSetDescription links) {
-        this.links = links;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withLinks(links);
         return this;
     }
 
     /**
      * Get the kpis property: Kpis set for the assignment.
-     *
+     * 
      * @return the kpis value.
      */
     public ResourceSetDescription kpis() {
-        return this.kpis;
+        return this.innerProperties() == null ? null : this.innerProperties().kpis();
     }
 
     /**
      * Set the kpis property: Kpis set for the assignment.
-     *
+     * 
      * @param kpis the kpis value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withKpis(ResourceSetDescription kpis) {
-        this.kpis = kpis;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withKpis(kpis);
         return this;
     }
 
     /**
      * Get the sasPolicies property: Sas Policies set for the assignment.
-     *
+     * 
      * @return the sasPolicies value.
      */
     public ResourceSetDescription sasPolicies() {
-        return this.sasPolicies;
+        return this.innerProperties() == null ? null : this.innerProperties().sasPolicies();
     }
 
     /**
      * Set the sasPolicies property: Sas Policies set for the assignment.
-     *
+     * 
      * @param sasPolicies the sasPolicies value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withSasPolicies(ResourceSetDescription sasPolicies) {
-        this.sasPolicies = sasPolicies;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withSasPolicies(sasPolicies);
         return this;
     }
 
     /**
      * Get the connectors property: Connectors set for the assignment.
-     *
+     * 
      * @return the connectors value.
      */
     public ResourceSetDescription connectors() {
-        return this.connectors;
+        return this.innerProperties() == null ? null : this.innerProperties().connectors();
     }
 
     /**
      * Set the connectors property: Connectors set for the assignment.
-     *
+     * 
      * @param connectors the connectors value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withConnectors(ResourceSetDescription connectors) {
-        this.connectors = connectors;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withConnectors(connectors);
         return this;
     }
 
     /**
      * Get the views property: Views set for the assignment.
-     *
+     * 
      * @return the views value.
      */
     public ResourceSetDescription views() {
-        return this.views;
+        return this.innerProperties() == null ? null : this.innerProperties().views();
     }
 
     /**
      * Set the views property: Views set for the assignment.
-     *
+     * 
      * @param views the views value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withViews(ResourceSetDescription views) {
-        this.views = views;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withViews(views);
         return this;
     }
 
     /**
      * Get the relationshipLinks property: The Role assignments set for the relationship links.
-     *
+     * 
      * @return the relationshipLinks value.
      */
     public ResourceSetDescription relationshipLinks() {
-        return this.relationshipLinks;
+        return this.innerProperties() == null ? null : this.innerProperties().relationshipLinks();
     }
 
     /**
      * Set the relationshipLinks property: The Role assignments set for the relationship links.
-     *
+     * 
      * @param relationshipLinks the relationshipLinks value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withRelationshipLinks(ResourceSetDescription relationshipLinks) {
-        this.relationshipLinks = relationshipLinks;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withRelationshipLinks(relationshipLinks);
         return this;
     }
 
     /**
      * Get the relationships property: The Role assignments set for the relationships.
-     *
+     * 
      * @return the relationships value.
      */
     public ResourceSetDescription relationships() {
-        return this.relationships;
+        return this.innerProperties() == null ? null : this.innerProperties().relationships();
     }
 
     /**
      * Set the relationships property: The Role assignments set for the relationships.
-     *
+     * 
      * @param relationships the relationships value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withRelationships(ResourceSetDescription relationships) {
-        this.relationships = relationships;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withRelationships(relationships);
         return this;
     }
 
     /**
      * Get the widgetTypes property: Widget types set for the assignment.
-     *
+     * 
      * @return the widgetTypes value.
      */
     public ResourceSetDescription widgetTypes() {
-        return this.widgetTypes;
+        return this.innerProperties() == null ? null : this.innerProperties().widgetTypes();
     }
 
     /**
      * Set the widgetTypes property: Widget types set for the assignment.
-     *
+     * 
      * @param widgetTypes the widgetTypes value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withWidgetTypes(ResourceSetDescription widgetTypes) {
-        this.widgetTypes = widgetTypes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withWidgetTypes(widgetTypes);
         return this;
     }
 
     /**
      * Get the roleAssignments property: The Role assignments set for the assignment.
-     *
+     * 
      * @return the roleAssignments value.
      */
     public ResourceSetDescription roleAssignments() {
-        return this.roleAssignments;
+        return this.innerProperties() == null ? null : this.innerProperties().roleAssignments();
     }
 
     /**
      * Set the roleAssignments property: The Role assignments set for the assignment.
-     *
+     * 
      * @param roleAssignments the roleAssignments value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withRoleAssignments(ResourceSetDescription roleAssignments) {
-        this.roleAssignments = roleAssignments;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withRoleAssignments(roleAssignments);
         return this;
     }
 
     /**
      * Get the conflationPolicies property: Widget types set for the assignment.
-     *
+     * 
      * @return the conflationPolicies value.
      */
     public ResourceSetDescription conflationPolicies() {
-        return this.conflationPolicies;
+        return this.innerProperties() == null ? null : this.innerProperties().conflationPolicies();
     }
 
     /**
      * Set the conflationPolicies property: Widget types set for the assignment.
-     *
+     * 
      * @param conflationPolicies the conflationPolicies value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withConflationPolicies(ResourceSetDescription conflationPolicies) {
-        this.conflationPolicies = conflationPolicies;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withConflationPolicies(conflationPolicies);
         return this;
     }
 
     /**
      * Get the segments property: The Role assignments set for the assignment.
-     *
+     * 
      * @return the segments value.
      */
     public ResourceSetDescription segments() {
-        return this.segments;
+        return this.innerProperties() == null ? null : this.innerProperties().segments();
     }
 
     /**
      * Set the segments property: The Role assignments set for the assignment.
-     *
+     * 
      * @param segments the segments value to set.
      * @return the RoleAssignmentResourceFormatInner object itself.
      */
     public RoleAssignmentResourceFormatInner withSegments(ResourceSetDescription segments) {
-        this.segments = segments;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignment();
+        }
+        this.innerProperties().withSegments(segments);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (principals() != null) {
-            principals().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
-        if (profiles() != null) {
-            profiles().validate();
-        }
-        if (interactions() != null) {
-            interactions().validate();
-        }
-        if (links() != null) {
-            links().validate();
-        }
-        if (kpis() != null) {
-            kpis().validate();
-        }
-        if (sasPolicies() != null) {
-            sasPolicies().validate();
-        }
-        if (connectors() != null) {
-            connectors().validate();
-        }
-        if (views() != null) {
-            views().validate();
-        }
-        if (relationshipLinks() != null) {
-            relationshipLinks().validate();
-        }
-        if (relationships() != null) {
-            relationships().validate();
-        }
-        if (widgetTypes() != null) {
-            widgetTypes().validate();
-        }
-        if (roleAssignments() != null) {
-            roleAssignments().validate();
-        }
-        if (conflationPolicies() != null) {
-            conflationPolicies().validate();
-        }
-        if (segments() != null) {
-            segments().validate();
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleAssignmentResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleAssignmentResourceFormatInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RoleAssignmentResourceFormatInner.
+     */
+    public static RoleAssignmentResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleAssignmentResourceFormatInner deserializedRoleAssignmentResourceFormatInner
+                = new RoleAssignmentResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRoleAssignmentResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRoleAssignmentResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRoleAssignmentResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRoleAssignmentResourceFormatInner.innerProperties = RoleAssignment.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleAssignmentResourceFormatInner;
+        });
     }
 }

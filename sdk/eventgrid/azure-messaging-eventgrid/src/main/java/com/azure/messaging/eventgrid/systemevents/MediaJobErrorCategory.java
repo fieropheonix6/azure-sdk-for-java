@@ -4,30 +4,43 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for MediaJobErrorCategory. */
+/**
+ * Helps with categorization of errors.
+ */
 public enum MediaJobErrorCategory {
-    /** Enum value Service. */
+    /**
+     * The error is service related.
+     */
     SERVICE("Service"),
 
-    /** Enum value Download. */
+    /**
+     * The error is download related.
+     */
     DOWNLOAD("Download"),
 
-    /** Enum value Upload. */
+    /**
+     * The error is upload related.
+     */
     UPLOAD("Upload"),
 
-    /** Enum value Configuration. */
+    /**
+     * The error is configuration related.
+     */
     CONFIGURATION("Configuration"),
 
-    /** Enum value Content. */
+    /**
+     * The error is related to data in the input files.
+     */
     CONTENT("Content"),
 
-    /** Enum value Account. */
+    /**
+     * The error is related to account information.
+     */
     ACCOUNT("Account");
 
-    /** The actual serialized value for a MediaJobErrorCategory instance. */
+    /**
+     * The actual serialized value for a MediaJobErrorCategory instance.
+     */
     private final String value;
 
     MediaJobErrorCategory(String value) {
@@ -36,12 +49,14 @@ public enum MediaJobErrorCategory {
 
     /**
      * Parses a serialized value to a MediaJobErrorCategory instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed MediaJobErrorCategory object, or null if unable to parse.
      */
-    @JsonCreator
     public static MediaJobErrorCategory fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         MediaJobErrorCategory[] items = MediaJobErrorCategory.values();
         for (MediaJobErrorCategory item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,7 +66,9 @@ public enum MediaJobErrorCategory {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

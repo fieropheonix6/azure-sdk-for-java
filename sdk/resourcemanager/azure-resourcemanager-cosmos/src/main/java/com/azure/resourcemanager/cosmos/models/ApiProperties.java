@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ApiProperties model. */
+/**
+ * The ApiProperties model.
+ */
 @Fluent
-public final class ApiProperties {
+public final class ApiProperties implements JsonSerializable<ApiProperties> {
     /*
-     * Describes the ServerVersion of an a MongoDB account.
+     * Describes the version of the MongoDB account.
      */
-    @JsonProperty(value = "serverVersion")
     private ServerVersion serverVersion;
 
     /**
-     * Get the serverVersion property: Describes the ServerVersion of an a MongoDB account.
-     *
+     * Creates an instance of ApiProperties class.
+     */
+    public ApiProperties() {
+    }
+
+    /**
+     * Get the serverVersion property: Describes the version of the MongoDB account.
+     * 
      * @return the serverVersion value.
      */
     public ServerVersion serverVersion() {
@@ -26,8 +37,8 @@ public final class ApiProperties {
     }
 
     /**
-     * Set the serverVersion property: Describes the ServerVersion of an a MongoDB account.
-     *
+     * Set the serverVersion property: Describes the version of the MongoDB account.
+     * 
      * @param serverVersion the serverVersion value to set.
      * @return the ApiProperties object itself.
      */
@@ -38,9 +49,45 @@ public final class ApiProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serverVersion", this.serverVersion == null ? null : this.serverVersion.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiProperties.
+     */
+    public static ApiProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiProperties deserializedApiProperties = new ApiProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serverVersion".equals(fieldName)) {
+                    deserializedApiProperties.serverVersion = ServerVersion.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiProperties;
+        });
     }
 }

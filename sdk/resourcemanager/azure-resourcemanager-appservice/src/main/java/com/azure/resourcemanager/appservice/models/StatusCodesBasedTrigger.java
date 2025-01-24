@@ -5,50 +5,56 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Trigger based on status code. */
+/**
+ * Trigger based on status code.
+ */
 @Fluent
-public final class StatusCodesBasedTrigger {
+public final class StatusCodesBasedTrigger implements JsonSerializable<StatusCodesBasedTrigger> {
     /*
      * HTTP status code.
      */
-    @JsonProperty(value = "status")
     private Integer status;
 
     /*
      * Request Sub Status.
      */
-    @JsonProperty(value = "subStatus")
     private Integer subStatus;
 
     /*
      * Win32 error code.
      */
-    @JsonProperty(value = "win32Status")
     private Integer win32Status;
 
     /*
      * Request Count.
      */
-    @JsonProperty(value = "count")
     private Integer count;
 
     /*
      * Time interval.
      */
-    @JsonProperty(value = "timeInterval")
     private String timeInterval;
 
     /*
      * Request Path
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /**
+     * Creates an instance of StatusCodesBasedTrigger class.
+     */
+    public StatusCodesBasedTrigger() {
+    }
+
+    /**
      * Get the status property: HTTP status code.
-     *
+     * 
      * @return the status value.
      */
     public Integer status() {
@@ -57,7 +63,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Set the status property: HTTP status code.
-     *
+     * 
      * @param status the status value to set.
      * @return the StatusCodesBasedTrigger object itself.
      */
@@ -68,7 +74,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Get the subStatus property: Request Sub Status.
-     *
+     * 
      * @return the subStatus value.
      */
     public Integer subStatus() {
@@ -77,7 +83,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Set the subStatus property: Request Sub Status.
-     *
+     * 
      * @param subStatus the subStatus value to set.
      * @return the StatusCodesBasedTrigger object itself.
      */
@@ -88,7 +94,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Get the win32Status property: Win32 error code.
-     *
+     * 
      * @return the win32Status value.
      */
     public Integer win32Status() {
@@ -97,7 +103,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Set the win32Status property: Win32 error code.
-     *
+     * 
      * @param win32Status the win32Status value to set.
      * @return the StatusCodesBasedTrigger object itself.
      */
@@ -108,7 +114,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Get the count property: Request Count.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -117,7 +123,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Set the count property: Request Count.
-     *
+     * 
      * @param count the count value to set.
      * @return the StatusCodesBasedTrigger object itself.
      */
@@ -128,7 +134,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Get the timeInterval property: Time interval.
-     *
+     * 
      * @return the timeInterval value.
      */
     public String timeInterval() {
@@ -137,7 +143,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Set the timeInterval property: Time interval.
-     *
+     * 
      * @param timeInterval the timeInterval value to set.
      * @return the StatusCodesBasedTrigger object itself.
      */
@@ -148,7 +154,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Get the path property: Request Path.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -157,7 +163,7 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Set the path property: Request Path.
-     *
+     * 
      * @param path the path value to set.
      * @return the StatusCodesBasedTrigger object itself.
      */
@@ -168,9 +174,60 @@ public final class StatusCodesBasedTrigger {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("status", this.status);
+        jsonWriter.writeNumberField("subStatus", this.subStatus);
+        jsonWriter.writeNumberField("win32Status", this.win32Status);
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("timeInterval", this.timeInterval);
+        jsonWriter.writeStringField("path", this.path);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StatusCodesBasedTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StatusCodesBasedTrigger if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StatusCodesBasedTrigger.
+     */
+    public static StatusCodesBasedTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StatusCodesBasedTrigger deserializedStatusCodesBasedTrigger = new StatusCodesBasedTrigger();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedStatusCodesBasedTrigger.status = reader.getNullable(JsonReader::getInt);
+                } else if ("subStatus".equals(fieldName)) {
+                    deserializedStatusCodesBasedTrigger.subStatus = reader.getNullable(JsonReader::getInt);
+                } else if ("win32Status".equals(fieldName)) {
+                    deserializedStatusCodesBasedTrigger.win32Status = reader.getNullable(JsonReader::getInt);
+                } else if ("count".equals(fieldName)) {
+                    deserializedStatusCodesBasedTrigger.count = reader.getNullable(JsonReader::getInt);
+                } else if ("timeInterval".equals(fieldName)) {
+                    deserializedStatusCodesBasedTrigger.timeInterval = reader.getString();
+                } else if ("path".equals(fieldName)) {
+                    deserializedStatusCodesBasedTrigger.path = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStatusCodesBasedTrigger;
+        });
     }
 }

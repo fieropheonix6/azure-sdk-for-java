@@ -5,21 +5,32 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.BackendUpdateParameterProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Backend update parameters. */
+/**
+ * Backend update parameters.
+ */
 @Fluent
-public final class BackendUpdateParameters {
+public final class BackendUpdateParameters implements JsonSerializable<BackendUpdateParameters> {
     /*
      * Backend entity update contract properties.
      */
-    @JsonProperty(value = "properties")
     private BackendUpdateParameterProperties innerProperties;
 
     /**
+     * Creates an instance of BackendUpdateParameters class.
+     */
+    public BackendUpdateParameters() {
+    }
+
+    /**
      * Get the innerProperties property: Backend entity update contract properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BackendUpdateParameterProperties innerProperties() {
@@ -28,7 +39,7 @@ public final class BackendUpdateParameters {
 
     /**
      * Get the url property: Runtime Url of the Backend.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -37,7 +48,7 @@ public final class BackendUpdateParameters {
 
     /**
      * Set the url property: Runtime Url of the Backend.
-     *
+     * 
      * @param url the url value to set.
      * @return the BackendUpdateParameters object itself.
      */
@@ -51,7 +62,7 @@ public final class BackendUpdateParameters {
 
     /**
      * Get the protocol property: Backend communication protocol.
-     *
+     * 
      * @return the protocol value.
      */
     public BackendProtocol protocol() {
@@ -60,7 +71,7 @@ public final class BackendUpdateParameters {
 
     /**
      * Set the protocol property: Backend communication protocol.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the BackendUpdateParameters object itself.
      */
@@ -74,7 +85,7 @@ public final class BackendUpdateParameters {
 
     /**
      * Get the title property: Backend Title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -83,7 +94,7 @@ public final class BackendUpdateParameters {
 
     /**
      * Set the title property: Backend Title.
-     *
+     * 
      * @param title the title value to set.
      * @return the BackendUpdateParameters object itself.
      */
@@ -97,7 +108,7 @@ public final class BackendUpdateParameters {
 
     /**
      * Get the description property: Backend Description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -106,7 +117,7 @@ public final class BackendUpdateParameters {
 
     /**
      * Set the description property: Backend Description.
-     *
+     * 
      * @param description the description value to set.
      * @return the BackendUpdateParameters object itself.
      */
@@ -119,9 +130,9 @@ public final class BackendUpdateParameters {
     }
 
     /**
-     * Get the resourceId property: Management Uri of the Resource in External System. This url can be the Arm Resource
+     * Get the resourceId property: Management Uri of the Resource in External System. This URL can be the Arm Resource
      * Id of Logic Apps, Function Apps or API Apps.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -129,9 +140,9 @@ public final class BackendUpdateParameters {
     }
 
     /**
-     * Set the resourceId property: Management Uri of the Resource in External System. This url can be the Arm Resource
+     * Set the resourceId property: Management Uri of the Resource in External System. This URL can be the Arm Resource
      * Id of Logic Apps, Function Apps or API Apps.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the BackendUpdateParameters object itself.
      */
@@ -145,7 +156,7 @@ public final class BackendUpdateParameters {
 
     /**
      * Get the properties property: Backend Properties contract.
-     *
+     * 
      * @return the properties value.
      */
     public BackendProperties properties() {
@@ -154,7 +165,7 @@ public final class BackendUpdateParameters {
 
     /**
      * Set the properties property: Backend Properties contract.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the BackendUpdateParameters object itself.
      */
@@ -168,7 +179,7 @@ public final class BackendUpdateParameters {
 
     /**
      * Get the credentials property: Backend Credentials Contract Properties.
-     *
+     * 
      * @return the credentials value.
      */
     public BackendCredentialsContract credentials() {
@@ -177,7 +188,7 @@ public final class BackendUpdateParameters {
 
     /**
      * Set the credentials property: Backend Credentials Contract Properties.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the BackendUpdateParameters object itself.
      */
@@ -190,8 +201,8 @@ public final class BackendUpdateParameters {
     }
 
     /**
-     * Get the proxy property: Backend Proxy Contract Properties.
-     *
+     * Get the proxy property: Backend gateway Contract Properties.
+     * 
      * @return the proxy value.
      */
     public BackendProxyContract proxy() {
@@ -199,8 +210,8 @@ public final class BackendUpdateParameters {
     }
 
     /**
-     * Set the proxy property: Backend Proxy Contract Properties.
-     *
+     * Set the proxy property: Backend gateway Contract Properties.
+     * 
      * @param proxy the proxy value to set.
      * @return the BackendUpdateParameters object itself.
      */
@@ -214,7 +225,7 @@ public final class BackendUpdateParameters {
 
     /**
      * Get the tls property: Backend TLS Properties.
-     *
+     * 
      * @return the tls value.
      */
     public BackendTlsProperties tls() {
@@ -223,7 +234,7 @@ public final class BackendUpdateParameters {
 
     /**
      * Set the tls property: Backend TLS Properties.
-     *
+     * 
      * @param tls the tls value to set.
      * @return the BackendUpdateParameters object itself.
      */
@@ -237,12 +248,49 @@ public final class BackendUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackendUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackendUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackendUpdateParameters.
+     */
+    public static BackendUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackendUpdateParameters deserializedBackendUpdateParameters = new BackendUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedBackendUpdateParameters.innerProperties
+                        = BackendUpdateParameterProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackendUpdateParameters;
+        });
     }
 }

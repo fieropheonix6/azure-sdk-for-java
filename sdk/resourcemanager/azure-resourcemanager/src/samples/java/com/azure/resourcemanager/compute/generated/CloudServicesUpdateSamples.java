@@ -4,34 +4,34 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.CloudServiceUpdate;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for CloudServices Update. */
+/**
+ * Samples for CloudServices Update.
+ */
 public final class CloudServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudService_Update_ToIncludeTags.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2024-11-04/examples/
+     * CloudService_Update_ToIncludeTags.json
      */
     /**
      * Sample code: Update existing Cloud Service to add tags.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateExistingCloudServiceToAddTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getCloudServices()
-            .update(
-                "ConstosoRG",
-                "{cs-name}",
-                new CloudServiceUpdate().withTags(mapOf("Documentation", "RestAPI")),
-                Context.NONE);
+            .update("ConstosoRG", "{cs-name}", new CloudServiceUpdate().withTags(mapOf("Documentation", "RestAPI")),
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

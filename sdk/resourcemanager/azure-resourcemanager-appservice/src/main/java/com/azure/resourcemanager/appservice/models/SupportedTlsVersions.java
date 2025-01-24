@@ -5,34 +5,54 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SupportedTlsVersions. */
+/**
+ * MinTlsVersion: configures the minimum version of TLS required for SSL requests.
+ */
 public final class SupportedTlsVersions extends ExpandableStringEnum<SupportedTlsVersions> {
-    /** Static value 1.0 for SupportedTlsVersions. */
+    /**
+     * Static value 1.0 for SupportedTlsVersions.
+     */
     public static final SupportedTlsVersions ONE_ZERO = fromString("1.0");
 
-    /** Static value 1.1 for SupportedTlsVersions. */
+    /**
+     * Static value 1.1 for SupportedTlsVersions.
+     */
     public static final SupportedTlsVersions ONE_ONE = fromString("1.1");
 
-    /** Static value 1.2 for SupportedTlsVersions. */
+    /**
+     * Static value 1.2 for SupportedTlsVersions.
+     */
     public static final SupportedTlsVersions ONE_TWO = fromString("1.2");
 
     /**
+     * Static value 1.3 for SupportedTlsVersions.
+     */
+    public static final SupportedTlsVersions ONE_THREE = fromString("1.3");
+
+    /**
+     * Creates a new instance of SupportedTlsVersions value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SupportedTlsVersions() {
+    }
+
+    /**
      * Creates or finds a SupportedTlsVersions from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SupportedTlsVersions.
      */
-    @JsonCreator
     public static SupportedTlsVersions fromString(String name) {
         return fromString(name, SupportedTlsVersions.class);
     }
 
     /**
      * Gets known SupportedTlsVersions values.
-     *
+     * 
      * @return known SupportedTlsVersions values.
      */
     public static Collection<SupportedTlsVersions> values() {

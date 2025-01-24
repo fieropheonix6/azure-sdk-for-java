@@ -4,41 +4,43 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualMachineImages ListSkus. */
+/**
+ * Samples for VirtualMachineImages ListSkus.
+ */
 public final class VirtualMachineImagesListSkusSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineImageExamples/VirtualMachineImages_ListSkus_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineImageExamples/VirtualMachineImage_ListSkus_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineImages_ListSkus_MinimumSet_Gen.
-     *
+     * Sample code: VirtualMachineImage_ListSkus_MaximumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineImagesListSkusMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void virtualMachineImageListSkusMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineImages()
-            .listSkusWithResponse("aaaa", "aaaaaaaaaaaaa", "aaaaaaa", Context.NONE);
+            .listSkusWithResponse("aaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineImageExamples/VirtualMachineImages_ListSkus_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineImageExamples/VirtualMachineImage_ListSkus_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineImages_ListSkus_MaximumSet_Gen.
-     *
+     * Sample code: VirtualMachineImage_ListSkus_MinimumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineImagesListSkusMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void virtualMachineImageListSkusMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineImages()
-            .listSkusWithResponse("aaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaa", Context.NONE);
+            .listSkusWithResponse("aaaa", "aaaaaaaaaaaaa", "aaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

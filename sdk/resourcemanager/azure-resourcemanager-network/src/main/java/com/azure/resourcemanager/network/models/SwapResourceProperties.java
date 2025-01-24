@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Swap resource properties. */
+/**
+ * Swap resource properties.
+ */
 @Fluent
-public final class SwapResourceProperties {
+public final class SwapResourceProperties implements JsonSerializable<SwapResourceProperties> {
     /*
      * Specifies slot info on a cloud service
      */
-    @JsonProperty(value = "slotType")
     private SlotType slotType;
 
-    /** Creates an instance of SwapResourceProperties class. */
+    /**
+     * Creates an instance of SwapResourceProperties class.
+     */
     public SwapResourceProperties() {
     }
 
     /**
      * Get the slotType property: Specifies slot info on a cloud service.
-     *
+     * 
      * @return the slotType value.
      */
     public SlotType slotType() {
@@ -31,7 +38,7 @@ public final class SwapResourceProperties {
 
     /**
      * Set the slotType property: Specifies slot info on a cloud service.
-     *
+     * 
      * @param slotType the slotType value to set.
      * @return the SwapResourceProperties object itself.
      */
@@ -42,9 +49,45 @@ public final class SwapResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("slotType", this.slotType == null ? null : this.slotType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SwapResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SwapResourceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SwapResourceProperties.
+     */
+    public static SwapResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SwapResourceProperties deserializedSwapResourceProperties = new SwapResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("slotType".equals(fieldName)) {
+                    deserializedSwapResourceProperties.slotType = SlotType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSwapResourceProperties;
+        });
     }
 }

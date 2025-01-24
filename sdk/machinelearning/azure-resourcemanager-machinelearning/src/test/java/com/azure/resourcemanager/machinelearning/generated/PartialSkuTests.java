@@ -8,37 +8,32 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.PartialSku;
 import com.azure.resourcemanager.machinelearning.models.SkuTier;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PartialSkuTests {
-    @Test
-    public void testDeserialize() {
-        PartialSku model =
-            BinaryData
-                .fromString(
-                    "{\"capacity\":1425632159,\"family\":\"swvefloccsrmoz\",\"name\":\"m\",\"size\":\"g\",\"tier\":\"Free\"}")
-                .toObject(PartialSku.class);
-        Assertions.assertEquals(1425632159, model.capacity());
-        Assertions.assertEquals("swvefloccsrmoz", model.family());
-        Assertions.assertEquals("m", model.name());
-        Assertions.assertEquals("g", model.size());
-        Assertions.assertEquals(SkuTier.FREE, model.tier());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PartialSku model = BinaryData.fromString(
+            "{\"name\":\"ymx\",\"tier\":\"Standard\",\"size\":\"jkdtfoh\",\"family\":\"ogzvk\",\"capacity\":372734200}")
+            .toObject(PartialSku.class);
+        Assertions.assertEquals("ymx", model.name());
+        Assertions.assertEquals(SkuTier.STANDARD, model.tier());
+        Assertions.assertEquals("jkdtfoh", model.size());
+        Assertions.assertEquals("ogzvk", model.family());
+        Assertions.assertEquals(372734200, model.capacity());
     }
 
-    @Test
-    public void testSerialize() {
-        PartialSku model =
-            new PartialSku()
-                .withCapacity(1425632159)
-                .withFamily("swvefloccsrmoz")
-                .withName("m")
-                .withSize("g")
-                .withTier(SkuTier.FREE);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PartialSku model = new PartialSku().withName("ymx")
+            .withTier(SkuTier.STANDARD)
+            .withSize("jkdtfoh")
+            .withFamily("ogzvk")
+            .withCapacity(372734200);
         model = BinaryData.fromObject(model).toObject(PartialSku.class);
-        Assertions.assertEquals(1425632159, model.capacity());
-        Assertions.assertEquals("swvefloccsrmoz", model.family());
-        Assertions.assertEquals("m", model.name());
-        Assertions.assertEquals("g", model.size());
-        Assertions.assertEquals(SkuTier.FREE, model.tier());
+        Assertions.assertEquals("ymx", model.name());
+        Assertions.assertEquals(SkuTier.STANDARD, model.tier());
+        Assertions.assertEquals("jkdtfoh", model.size());
+        Assertions.assertEquals("ogzvk", model.family());
+        Assertions.assertEquals(372734200, model.capacity());
     }
 }

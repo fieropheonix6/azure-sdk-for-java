@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for PartnerNamespaces Delete. */
+/**
+ * Samples for PartnerNamespaces Delete.
+ */
 public final class PartnerNamespacesDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerNamespaces_Delete.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * PartnerNamespaces_Delete.json
      */
     /**
      * Sample code: PartnerNamespaces_Delete.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void partnerNamespacesDelete(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.partnerNamespaces().delete("examplerg", "examplePartnerNamespaceName1", Context.NONE);
+        manager.partnerNamespaces()
+            .delete("examplerg", "examplePartnerNamespaceName1", com.azure.core.util.Context.NONE);
     }
 }

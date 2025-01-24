@@ -8,31 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.CustomModelJobOutput;
 import com.azure.resourcemanager.machinelearning.models.OutputDeliveryMode;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CustomModelJobOutputTests {
-    @Test
-    public void testDeserialize() {
-        CustomModelJobOutput model =
-            BinaryData
-                .fromString(
-                    "{\"jobOutputType\":\"custom_model\",\"mode\":\"ReadWriteMount\",\"uri\":\"tjknsxfwushcdp\",\"description\":\"pn\"}")
-                .toObject(CustomModelJobOutput.class);
-        Assertions.assertEquals("pn", model.description());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CustomModelJobOutput model = BinaryData.fromString(
+            "{\"jobOutputType\":\"custom_model\",\"uri\":\"howgomvvhxo\",\"mode\":\"ReadWriteMount\",\"description\":\"apnpxraqawbmp\"}")
+            .toObject(CustomModelJobOutput.class);
+        Assertions.assertEquals("apnpxraqawbmp", model.description());
+        Assertions.assertEquals("howgomvvhxo", model.uri());
         Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
-        Assertions.assertEquals("tjknsxfwushcdp", model.uri());
     }
 
-    @Test
-    public void testSerialize() {
-        CustomModelJobOutput model =
-            new CustomModelJobOutput()
-                .withDescription("pn")
-                .withMode(OutputDeliveryMode.READ_WRITE_MOUNT)
-                .withUri("tjknsxfwushcdp");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CustomModelJobOutput model = new CustomModelJobOutput().withDescription("apnpxraqawbmp")
+            .withUri("howgomvvhxo")
+            .withMode(OutputDeliveryMode.READ_WRITE_MOUNT);
         model = BinaryData.fromObject(model).toObject(CustomModelJobOutput.class);
-        Assertions.assertEquals("pn", model.description());
+        Assertions.assertEquals("apnpxraqawbmp", model.description());
+        Assertions.assertEquals("howgomvvhxo", model.uri());
         Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
-        Assertions.assertEquals("tjknsxfwushcdp", model.uri());
     }
 }

@@ -6,20 +6,17 @@ package com.azure.resourcemanager.signalr.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.models.Sku;
-import org.junit.jupiter.api.Test;
 
 public final class SkuTests {
-    @Test
-    public void testDeserialize() {
-        Sku model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"bzyh\",\"sku\":{\"name\":\"tsmypyynpcdp\",\"tier\":\"Standard\",\"size\":\"g\",\"family\":\"z\",\"capacity\":1417683929},\"capacity\":{\"minimum\":859745448,\"maximum\":1095888431,\"default\":1347586165,\"allowedValues\":[1287311603,1807799282],\"scaleType\":\"Automatic\"}}")
-                .toObject(Sku.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        Sku model = BinaryData.fromString(
+            "{\"resourceType\":\"qvldspastjbkkd\",\"sku\":{\"name\":\"lves\",\"tier\":\"Free\",\"size\":\"xrrilozapee\",\"family\":\"hpxlktwkuziycs\",\"capacity\":491130908},\"capacity\":{\"minimum\":1092377559,\"maximum\":1863886155,\"default\":1342484784,\"allowedValues\":[68898852,1077847462,717163299],\"scaleType\":\"None\"}}")
+            .toObject(Sku.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Sku model = new Sku();
         model = BinaryData.fromObject(model).toObject(Sku.class);
     }

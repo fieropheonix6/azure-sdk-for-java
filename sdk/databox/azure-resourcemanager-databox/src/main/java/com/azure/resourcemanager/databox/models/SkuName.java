@@ -4,21 +4,33 @@
 
 package com.azure.resourcemanager.databox.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for SkuName. */
+/**
+ * Defines values for SkuName.
+ */
 public enum SkuName {
-    /** Enum value DataBox. */
+    /**
+     * Enum value DataBox.
+     */
     DATA_BOX("DataBox"),
 
-    /** Enum value DataBoxDisk. */
+    /**
+     * Enum value DataBoxDisk.
+     */
     DATA_BOX_DISK("DataBoxDisk"),
 
-    /** Enum value DataBoxHeavy. */
-    DATA_BOX_HEAVY("DataBoxHeavy");
+    /**
+     * Enum value DataBoxHeavy.
+     */
+    DATA_BOX_HEAVY("DataBoxHeavy"),
 
-    /** The actual serialized value for a SkuName instance. */
+    /**
+     * Enum value DataBoxCustomerDisk.
+     */
+    DATA_BOX_CUSTOMER_DISK("DataBoxCustomerDisk");
+
+    /**
+     * The actual serialized value for a SkuName instance.
+     */
     private final String value;
 
     SkuName(String value) {
@@ -27,12 +39,14 @@ public enum SkuName {
 
     /**
      * Parses a serialized value to a SkuName instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SkuName object, or null if unable to parse.
      */
-    @JsonCreator
     public static SkuName fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SkuName[] items = SkuName.values();
         for (SkuName item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +56,9 @@ public enum SkuName {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

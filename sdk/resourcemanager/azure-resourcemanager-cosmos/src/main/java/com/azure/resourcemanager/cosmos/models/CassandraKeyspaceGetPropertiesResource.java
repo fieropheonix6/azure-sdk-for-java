@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The CassandraKeyspaceGetPropertiesResource model. */
+/**
+ * The CassandraKeyspaceGetPropertiesResource model.
+ */
 @Fluent
 public final class CassandraKeyspaceGetPropertiesResource extends CassandraKeyspaceResource {
     /*
      * A system generated property. A unique identifier.
      */
-    @JsonProperty(value = "_rid", access = JsonProperty.Access.WRITE_ONLY)
     private String rid;
 
     /*
      * A system generated property that denotes the last updated timestamp of the resource.
      */
-    @JsonProperty(value = "_ts", access = JsonProperty.Access.WRITE_ONLY)
     private Float ts;
 
     /*
      * A system generated property representing the resource etag required for optimistic concurrency control.
      */
-    @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
+     * Creates an instance of CassandraKeyspaceGetPropertiesResource class.
+     */
+    public CassandraKeyspaceGetPropertiesResource() {
+    }
+
+    /**
      * Get the rid property: A system generated property. A unique identifier.
-     *
+     * 
      * @return the rid value.
      */
     public String rid() {
@@ -39,7 +48,7 @@ public final class CassandraKeyspaceGetPropertiesResource extends CassandraKeysp
 
     /**
      * Get the ts property: A system generated property that denotes the last updated timestamp of the resource.
-     *
+     * 
      * @return the ts value.
      */
     public Float ts() {
@@ -49,14 +58,16 @@ public final class CassandraKeyspaceGetPropertiesResource extends CassandraKeysp
     /**
      * Get the etag property: A system generated property representing the resource etag required for optimistic
      * concurrency control.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraKeyspaceGetPropertiesResource withId(String id) {
         super.withId(id);
@@ -65,11 +76,61 @@ public final class CassandraKeyspaceGetPropertiesResource extends CassandraKeysp
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (id() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property id in model CassandraKeyspaceGetPropertiesResource"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CassandraKeyspaceGetPropertiesResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CassandraKeyspaceGetPropertiesResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CassandraKeyspaceGetPropertiesResource if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CassandraKeyspaceGetPropertiesResource.
+     */
+    public static CassandraKeyspaceGetPropertiesResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CassandraKeyspaceGetPropertiesResource deserializedCassandraKeyspaceGetPropertiesResource
+                = new CassandraKeyspaceGetPropertiesResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCassandraKeyspaceGetPropertiesResource.withId(reader.getString());
+                } else if ("_rid".equals(fieldName)) {
+                    deserializedCassandraKeyspaceGetPropertiesResource.rid = reader.getString();
+                } else if ("_ts".equals(fieldName)) {
+                    deserializedCassandraKeyspaceGetPropertiesResource.ts = reader.getNullable(JsonReader::getFloat);
+                } else if ("_etag".equals(fieldName)) {
+                    deserializedCassandraKeyspaceGetPropertiesResource.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCassandraKeyspaceGetPropertiesResource;
+        });
     }
 }

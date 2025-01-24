@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.BastionHostInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Response for ListBastionHosts API service call. */
+/**
+ * Response for ListBastionHosts API service call.
+ */
 @Fluent
-public final class BastionHostListResult {
+public final class BastionHostListResult implements JsonSerializable<BastionHostListResult> {
     /*
      * List of Bastion Hosts in a resource group.
      */
-    @JsonProperty(value = "value")
     private List<BastionHostInner> value;
 
     /*
      * URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of BastionHostListResult class. */
+    /**
+     * Creates an instance of BastionHostListResult class.
+     */
     public BastionHostListResult() {
     }
 
     /**
      * Get the value property: List of Bastion Hosts in a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<BastionHostInner> value() {
@@ -39,7 +45,7 @@ public final class BastionHostListResult {
 
     /**
      * Set the value property: List of Bastion Hosts in a resource group.
-     *
+     * 
      * @param value the value value to set.
      * @return the BastionHostListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class BastionHostListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class BastionHostListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the BastionHostListResult object itself.
      */
@@ -70,12 +76,52 @@ public final class BastionHostListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BastionHostListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BastionHostListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BastionHostListResult.
+     */
+    public static BastionHostListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BastionHostListResult deserializedBastionHostListResult = new BastionHostListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<BastionHostInner> value = reader.readArray(reader1 -> BastionHostInner.fromJson(reader1));
+                    deserializedBastionHostListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedBastionHostListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBastionHostListResult;
+        });
     }
 }

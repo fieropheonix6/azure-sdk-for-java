@@ -5,60 +5,85 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Gets or sets the DB2 provider properties. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "providerType")
-@JsonTypeName("Db2")
+/**
+ * Gets or sets the DB2 provider properties.
+ */
 @Fluent
 public final class DB2ProviderInstanceProperties extends ProviderSpecificProperties {
     /*
+     * The provider type. For example, the value can be SapHana.
+     */
+    private String providerType = "Db2";
+
+    /*
      * Gets or sets the target virtual machine name.
      */
-    @JsonProperty(value = "hostname")
     private String hostname;
 
     /*
      * Gets or sets the db2 database name.
      */
-    @JsonProperty(value = "dbName")
     private String dbName;
 
     /*
      * Gets or sets the db2 database sql port.
      */
-    @JsonProperty(value = "dbPort")
     private String dbPort;
 
     /*
      * Gets or sets the db2 database user name.
      */
-    @JsonProperty(value = "dbUsername")
     private String dbUsername;
 
     /*
      * Gets or sets the db2 database password.
      */
-    @JsonProperty(value = "dbPassword")
     private String dbPassword;
 
     /*
      * Gets or sets the key vault URI to secret with the database password.
      */
-    @JsonProperty(value = "dbPasswordUri")
     private String dbPasswordUri;
 
     /*
      * Gets or sets the SAP System Identifier
      */
-    @JsonProperty(value = "sapSid")
     private String sapSid;
+
+    /*
+     * Gets or sets certificate preference if secure communication is enabled.
+     */
+    private SslPreference sslPreference;
+
+    /*
+     * Gets or sets the blob URI to SSL certificate for the DB2 Database.
+     */
+    private String sslCertificateUri;
+
+    /**
+     * Creates an instance of DB2ProviderInstanceProperties class.
+     */
+    public DB2ProviderInstanceProperties() {
+    }
+
+    /**
+     * Get the providerType property: The provider type. For example, the value can be SapHana.
+     * 
+     * @return the providerType value.
+     */
+    @Override
+    public String providerType() {
+        return this.providerType;
+    }
 
     /**
      * Get the hostname property: Gets or sets the target virtual machine name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -67,7 +92,7 @@ public final class DB2ProviderInstanceProperties extends ProviderSpecificPropert
 
     /**
      * Set the hostname property: Gets or sets the target virtual machine name.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the DB2ProviderInstanceProperties object itself.
      */
@@ -78,7 +103,7 @@ public final class DB2ProviderInstanceProperties extends ProviderSpecificPropert
 
     /**
      * Get the dbName property: Gets or sets the db2 database name.
-     *
+     * 
      * @return the dbName value.
      */
     public String dbName() {
@@ -87,7 +112,7 @@ public final class DB2ProviderInstanceProperties extends ProviderSpecificPropert
 
     /**
      * Set the dbName property: Gets or sets the db2 database name.
-     *
+     * 
      * @param dbName the dbName value to set.
      * @return the DB2ProviderInstanceProperties object itself.
      */
@@ -98,7 +123,7 @@ public final class DB2ProviderInstanceProperties extends ProviderSpecificPropert
 
     /**
      * Get the dbPort property: Gets or sets the db2 database sql port.
-     *
+     * 
      * @return the dbPort value.
      */
     public String dbPort() {
@@ -107,7 +132,7 @@ public final class DB2ProviderInstanceProperties extends ProviderSpecificPropert
 
     /**
      * Set the dbPort property: Gets or sets the db2 database sql port.
-     *
+     * 
      * @param dbPort the dbPort value to set.
      * @return the DB2ProviderInstanceProperties object itself.
      */
@@ -118,7 +143,7 @@ public final class DB2ProviderInstanceProperties extends ProviderSpecificPropert
 
     /**
      * Get the dbUsername property: Gets or sets the db2 database user name.
-     *
+     * 
      * @return the dbUsername value.
      */
     public String dbUsername() {
@@ -127,7 +152,7 @@ public final class DB2ProviderInstanceProperties extends ProviderSpecificPropert
 
     /**
      * Set the dbUsername property: Gets or sets the db2 database user name.
-     *
+     * 
      * @param dbUsername the dbUsername value to set.
      * @return the DB2ProviderInstanceProperties object itself.
      */
@@ -138,7 +163,7 @@ public final class DB2ProviderInstanceProperties extends ProviderSpecificPropert
 
     /**
      * Get the dbPassword property: Gets or sets the db2 database password.
-     *
+     * 
      * @return the dbPassword value.
      */
     public String dbPassword() {
@@ -147,7 +172,7 @@ public final class DB2ProviderInstanceProperties extends ProviderSpecificPropert
 
     /**
      * Set the dbPassword property: Gets or sets the db2 database password.
-     *
+     * 
      * @param dbPassword the dbPassword value to set.
      * @return the DB2ProviderInstanceProperties object itself.
      */
@@ -158,7 +183,7 @@ public final class DB2ProviderInstanceProperties extends ProviderSpecificPropert
 
     /**
      * Get the dbPasswordUri property: Gets or sets the key vault URI to secret with the database password.
-     *
+     * 
      * @return the dbPasswordUri value.
      */
     public String dbPasswordUri() {
@@ -167,7 +192,7 @@ public final class DB2ProviderInstanceProperties extends ProviderSpecificPropert
 
     /**
      * Set the dbPasswordUri property: Gets or sets the key vault URI to secret with the database password.
-     *
+     * 
      * @param dbPasswordUri the dbPasswordUri value to set.
      * @return the DB2ProviderInstanceProperties object itself.
      */
@@ -178,7 +203,7 @@ public final class DB2ProviderInstanceProperties extends ProviderSpecificPropert
 
     /**
      * Get the sapSid property: Gets or sets the SAP System Identifier.
-     *
+     * 
      * @return the sapSid value.
      */
     public String sapSid() {
@@ -187,7 +212,7 @@ public final class DB2ProviderInstanceProperties extends ProviderSpecificPropert
 
     /**
      * Set the sapSid property: Gets or sets the SAP System Identifier.
-     *
+     * 
      * @param sapSid the sapSid value to set.
      * @return the DB2ProviderInstanceProperties object itself.
      */
@@ -197,12 +222,116 @@ public final class DB2ProviderInstanceProperties extends ProviderSpecificPropert
     }
 
     /**
+     * Get the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
+     * 
+     * @return the sslPreference value.
+     */
+    public SslPreference sslPreference() {
+        return this.sslPreference;
+    }
+
+    /**
+     * Set the sslPreference property: Gets or sets certificate preference if secure communication is enabled.
+     * 
+     * @param sslPreference the sslPreference value to set.
+     * @return the DB2ProviderInstanceProperties object itself.
+     */
+    public DB2ProviderInstanceProperties withSslPreference(SslPreference sslPreference) {
+        this.sslPreference = sslPreference;
+        return this;
+    }
+
+    /**
+     * Get the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the DB2 Database.
+     * 
+     * @return the sslCertificateUri value.
+     */
+    public String sslCertificateUri() {
+        return this.sslCertificateUri;
+    }
+
+    /**
+     * Set the sslCertificateUri property: Gets or sets the blob URI to SSL certificate for the DB2 Database.
+     * 
+     * @param sslCertificateUri the sslCertificateUri value to set.
+     * @return the DB2ProviderInstanceProperties object itself.
+     */
+    public DB2ProviderInstanceProperties withSslCertificateUri(String sslCertificateUri) {
+        this.sslCertificateUri = sslCertificateUri;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("providerType", this.providerType);
+        jsonWriter.writeStringField("hostname", this.hostname);
+        jsonWriter.writeStringField("dbName", this.dbName);
+        jsonWriter.writeStringField("dbPort", this.dbPort);
+        jsonWriter.writeStringField("dbUsername", this.dbUsername);
+        jsonWriter.writeStringField("dbPassword", this.dbPassword);
+        jsonWriter.writeStringField("dbPasswordUri", this.dbPasswordUri);
+        jsonWriter.writeStringField("sapSid", this.sapSid);
+        jsonWriter.writeStringField("sslPreference", this.sslPreference == null ? null : this.sslPreference.toString());
+        jsonWriter.writeStringField("sslCertificateUri", this.sslCertificateUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DB2ProviderInstanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DB2ProviderInstanceProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DB2ProviderInstanceProperties.
+     */
+    public static DB2ProviderInstanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DB2ProviderInstanceProperties deserializedDB2ProviderInstanceProperties
+                = new DB2ProviderInstanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("providerType".equals(fieldName)) {
+                    deserializedDB2ProviderInstanceProperties.providerType = reader.getString();
+                } else if ("hostname".equals(fieldName)) {
+                    deserializedDB2ProviderInstanceProperties.hostname = reader.getString();
+                } else if ("dbName".equals(fieldName)) {
+                    deserializedDB2ProviderInstanceProperties.dbName = reader.getString();
+                } else if ("dbPort".equals(fieldName)) {
+                    deserializedDB2ProviderInstanceProperties.dbPort = reader.getString();
+                } else if ("dbUsername".equals(fieldName)) {
+                    deserializedDB2ProviderInstanceProperties.dbUsername = reader.getString();
+                } else if ("dbPassword".equals(fieldName)) {
+                    deserializedDB2ProviderInstanceProperties.dbPassword = reader.getString();
+                } else if ("dbPasswordUri".equals(fieldName)) {
+                    deserializedDB2ProviderInstanceProperties.dbPasswordUri = reader.getString();
+                } else if ("sapSid".equals(fieldName)) {
+                    deserializedDB2ProviderInstanceProperties.sapSid = reader.getString();
+                } else if ("sslPreference".equals(fieldName)) {
+                    deserializedDB2ProviderInstanceProperties.sslPreference
+                        = SslPreference.fromString(reader.getString());
+                } else if ("sslCertificateUri".equals(fieldName)) {
+                    deserializedDB2ProviderInstanceProperties.sslCertificateUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDB2ProviderInstanceProperties;
+        });
     }
 }

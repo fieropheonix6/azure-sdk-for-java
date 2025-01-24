@@ -8,35 +8,42 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.DetectorResponseInner;
 import com.azure.resourcemanager.batch.models.DetectorListResult;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DetectorListResultTests {
-    @Test
-    public void testDeserialize() {
-        DetectorListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"value\":\"dpydn\"},\"etag\":\"hxdeoejz\",\"id\":\"cwif\",\"name\":\"jttgzf\",\"type\":\"ishc\"},{\"properties\":{\"value\":\"ajdeyeamdphaga\"},\"etag\":\"buxwgip\",\"id\":\"honowkgshwank\",\"name\":\"xzbinjeputt\",\"type\":\"rywn\"},{\"properties\":{\"value\":\"qftiy\"},\"etag\":\"rnkcqvyxlw\",\"id\":\"zlsico\",\"name\":\"oqqnwvlryav\",\"type\":\"hheunmmqhgyx\"},{\"properties\":{\"value\":\"noc\"},\"etag\":\"oklyaxuconuq\",\"id\":\"zf\",\"name\":\"beypewrmjmw\",\"type\":\"vjektcxsenh\"}],\"nextLink\":\"rsffrzpwvlqdqgbi\"}")
-                .toObject(DetectorListResult.class);
-        Assertions.assertEquals("dpydn", model.value().get(0).value());
-        Assertions.assertEquals("rsffrzpwvlqdqgbi", model.nextLink());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DetectorListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"value\":\"atkpnp\"},\"etag\":\"exxbczwtr\",\"tags\":{\"yokacspkw\":\"qzbqjvsov\",\"rkcciwwzjuqk\":\"hzdobpxjmflbvvnc\"},\"id\":\"rsa\",\"name\":\"iwkuofos\",\"type\":\"ghsauuimjmvxied\"}],\"nextLink\":\"gidyjrrf\"}")
+            .toObject(DetectorListResult.class);
+        Assertions.assertEquals("qzbqjvsov", model.value().get(0).tags().get("yokacspkw"));
+        Assertions.assertEquals("atkpnp", model.value().get(0).value());
+        Assertions.assertEquals("gidyjrrf", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
-        DetectorListResult model =
-            new DetectorListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DetectorResponseInner().withValue("dpydn"),
-                            new DetectorResponseInner().withValue("ajdeyeamdphaga"),
-                            new DetectorResponseInner().withValue("qftiy"),
-                            new DetectorResponseInner().withValue("noc")))
-                .withNextLink("rsffrzpwvlqdqgbi");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DetectorListResult model = new DetectorListResult().withValue(Arrays.asList(
+            new DetectorResponseInner().withTags(mapOf("yokacspkw", "qzbqjvsov", "rkcciwwzjuqk", "hzdobpxjmflbvvnc"))
+                .withValue("atkpnp")))
+            .withNextLink("gidyjrrf");
         model = BinaryData.fromObject(model).toObject(DetectorListResult.class);
-        Assertions.assertEquals("dpydn", model.value().get(0).value());
-        Assertions.assertEquals("rsffrzpwvlqdqgbi", model.nextLink());
+        Assertions.assertEquals("qzbqjvsov", model.value().get(0).tags().get("yokacspkw"));
+        Assertions.assertEquals("atkpnp", model.value().get(0).value());
+        Assertions.assertEquals("gidyjrrf", model.nextLink());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

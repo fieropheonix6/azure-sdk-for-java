@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for NetworkGroups List. */
+/**
+ * Samples for NetworkGroups List.
+ */
 public final class NetworkGroupsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerGroupList.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkManagerGroupList.json
      */
     /**
      * Sample code: NetworkGroupsList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void networkGroupsList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getNetworkGroups()
-            .list("rg1", "testNetworkManager", null, null, Context.NONE);
+            .list("rg1", "testNetworkManager", null, null, com.azure.core.util.Context.NONE);
     }
 }

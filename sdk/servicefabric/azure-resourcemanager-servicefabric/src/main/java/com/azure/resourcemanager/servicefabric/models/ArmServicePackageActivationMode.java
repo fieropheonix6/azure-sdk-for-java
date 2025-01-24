@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ArmServicePackageActivationMode. */
+/**
+ * The activation Mode of the service package.
+ */
 public final class ArmServicePackageActivationMode extends ExpandableStringEnum<ArmServicePackageActivationMode> {
-    /** Static value SharedProcess for ArmServicePackageActivationMode. */
+    /**
+     * Static value SharedProcess for ArmServicePackageActivationMode.
+     */
     public static final ArmServicePackageActivationMode SHARED_PROCESS = fromString("SharedProcess");
 
-    /** Static value ExclusiveProcess for ArmServicePackageActivationMode. */
+    /**
+     * Static value ExclusiveProcess for ArmServicePackageActivationMode.
+     */
     public static final ArmServicePackageActivationMode EXCLUSIVE_PROCESS = fromString("ExclusiveProcess");
 
     /**
+     * Creates a new instance of ArmServicePackageActivationMode value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ArmServicePackageActivationMode() {
+    }
+
+    /**
      * Creates or finds a ArmServicePackageActivationMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ArmServicePackageActivationMode.
      */
-    @JsonCreator
     public static ArmServicePackageActivationMode fromString(String name) {
         return fromString(name, ArmServicePackageActivationMode.class);
     }
 
-    /** @return known ArmServicePackageActivationMode values. */
+    /**
+     * Gets known ArmServicePackageActivationMode values.
+     * 
+     * @return known ArmServicePackageActivationMode values.
+     */
     public static Collection<ArmServicePackageActivationMode> values() {
         return values(ArmServicePackageActivationMode.class);
     }

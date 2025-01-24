@@ -11,6 +11,7 @@ package com.microsoft.azure.batch.protocol.models;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import java.util.List;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -103,19 +104,8 @@ public class CloudPool {
     private String vmSize;
 
     /**
-     * The cloud service configuration for the Pool.
-     * This property and virtualMachineConfiguration are mutually exclusive and
-     * one of the properties must be specified. This property cannot be
-     * specified if the Batch Account was created with its poolAllocationMode
-     * property set to 'UserSubscription'.
-     */
-    @JsonProperty(value = "cloudServiceConfiguration")
-    private CloudServiceConfiguration cloudServiceConfiguration;
-
-    /**
      * The virtual machine configuration for the Pool.
-     * This property and cloudServiceConfiguration are mutually exclusive and
-     * one of the properties must be specified.
+     * This property must be specified.
      */
     @JsonProperty(value = "virtualMachineConfiguration")
     private VirtualMachineConfiguration virtualMachineConfiguration;
@@ -231,6 +221,11 @@ public class CloudPool {
      * 'remoteUser', a 'certs' directory is created in the user's home
      * directory (e.g., /home/{user-name}/certs) and Certificates are placed in
      * that directory.
+     *
+     * Warning: This property is deprecated and will be removed after February,
+     * 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
+     * instead.
      */
     @JsonProperty(value = "certificateReferences")
     private List<CertificateReference> certificateReferences;
@@ -244,16 +239,6 @@ public class CloudPool {
      */
     @JsonProperty(value = "applicationPackageReferences")
     private List<ApplicationPackageReference> applicationPackageReferences;
-
-    /**
-     * The list of application licenses the Batch service will make available
-     * on each Compute Node in the Pool.
-     * The list of application licenses must be a subset of available Batch
-     * service application licenses. If a license is requested which is not
-     * supported, Pool creation will fail.
-     */
-    @JsonProperty(value = "applicationLicenses")
-    private List<String> applicationLicenses;
 
     /**
      * The number of task slots that can be used to run concurrent tasks on a
@@ -325,6 +310,24 @@ public class CloudPool {
      */
     @JsonProperty(value = "currentNodeCommunicationMode", access = JsonProperty.Access.WRITE_ONLY)
     private NodeCommunicationMode currentNodeCommunicationMode;
+
+    /**
+     * The upgrade policy for the Pool.
+     * Describes an upgrade policy - automatic, manual, or rolling.
+     */
+    @JsonProperty(value = "upgradePolicy")
+    private UpgradePolicy upgradePolicy;
+
+    /**
+     * The user-specified tags associated with the pool.
+     * The user-defined tags to be associated with the Azure Batch Pool. When
+     * specified, these tags are propagated to the backing Azure resources
+     * associated with the pool. This property can only be specified when the
+     * Batch account was created with the poolAllocationMode property set to
+     * 'UserSubscription'.
+     */
+    @JsonProperty(value = "resourceTags")
+    private Map<String, String> resourceTags;
 
     /**
      * Get the ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
@@ -547,27 +550,7 @@ public class CloudPool {
     }
 
     /**
-     * Get this property and virtualMachineConfiguration are mutually exclusive and one of the properties must be specified. This property cannot be specified if the Batch Account was created with its poolAllocationMode property set to 'UserSubscription'.
-     *
-     * @return the cloudServiceConfiguration value
-     */
-    public CloudServiceConfiguration cloudServiceConfiguration() {
-        return this.cloudServiceConfiguration;
-    }
-
-    /**
-     * Set this property and virtualMachineConfiguration are mutually exclusive and one of the properties must be specified. This property cannot be specified if the Batch Account was created with its poolAllocationMode property set to 'UserSubscription'.
-     *
-     * @param cloudServiceConfiguration the cloudServiceConfiguration value to set
-     * @return the CloudPool object itself.
-     */
-    public CloudPool withCloudServiceConfiguration(CloudServiceConfiguration cloudServiceConfiguration) {
-        this.cloudServiceConfiguration = cloudServiceConfiguration;
-        return this;
-    }
-
-    /**
-     * Get this property and cloudServiceConfiguration are mutually exclusive and one of the properties must be specified.
+     * Get this property must be specified.
      *
      * @return the virtualMachineConfiguration value
      */
@@ -576,7 +559,7 @@ public class CloudPool {
     }
 
     /**
-     * Set this property and cloudServiceConfiguration are mutually exclusive and one of the properties must be specified.
+     * Set this property must be specified.
      *
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set
      * @return the CloudPool object itself.
@@ -848,6 +831,7 @@ public class CloudPool {
 
     /**
      * Get for Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @return the certificateReferences value
      */
@@ -857,6 +841,7 @@ public class CloudPool {
 
     /**
      * Set for Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @param certificateReferences the certificateReferences value to set
      * @return the CloudPool object itself.
@@ -883,26 +868,6 @@ public class CloudPool {
      */
     public CloudPool withApplicationPackageReferences(List<ApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
-        return this;
-    }
-
-    /**
-     * Get the list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, Pool creation will fail.
-     *
-     * @return the applicationLicenses value
-     */
-    public List<String> applicationLicenses() {
-        return this.applicationLicenses;
-    }
-
-    /**
-     * Set the list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, Pool creation will fail.
-     *
-     * @param applicationLicenses the applicationLicenses value to set
-     * @return the CloudPool object itself.
-     */
-    public CloudPool withApplicationLicenses(List<String> applicationLicenses) {
-        this.applicationLicenses = applicationLicenses;
         return this;
     }
 
@@ -1073,6 +1038,46 @@ public class CloudPool {
      */
     public NodeCommunicationMode currentNodeCommunicationMode() {
         return this.currentNodeCommunicationMode;
+    }
+
+    /**
+     * Get describes an upgrade policy - automatic, manual, or rolling.
+     *
+     * @return the upgradePolicy value
+     */
+    public UpgradePolicy upgradePolicy() {
+        return this.upgradePolicy;
+    }
+
+    /**
+     * Set describes an upgrade policy - automatic, manual, or rolling.
+     *
+     * @param upgradePolicy the upgradePolicy value to set
+     * @return the CloudPool object itself.
+     */
+    public CloudPool withUpgradePolicy(UpgradePolicy upgradePolicy) {
+        this.upgradePolicy = upgradePolicy;
+        return this;
+    }
+
+    /**
+     * Get the user-defined tags to be associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This property can only be specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.
+     *
+     * @return the resourceTags value
+     */
+    public Map<String, String> resourceTags() {
+        return this.resourceTags;
+    }
+
+    /**
+     * Set the user-defined tags to be associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This property can only be specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.
+     *
+     * @param resourceTags the resourceTags value to set
+     * @return the CloudPool object itself.
+     */
+    public CloudPool withResourceTags(Map<String, String> resourceTags) {
+        this.resourceTags = resourceTags;
+        return this;
     }
 
 }

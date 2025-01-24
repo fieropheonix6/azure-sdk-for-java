@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.IpActionType;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
@@ -13,31 +12,34 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Topics Update. */
+/**
+ * Samples for Topics Update.
+ */
 public final class TopicsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Topics_Update.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/Topics_Update.
+     * json
      */
     /**
      * Sample code: Topics_Update.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void topicsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        Topic resource =
-            manager.topics().getByResourceGroupWithResponse("examplerg", "exampletopic1", Context.NONE).getValue();
-        resource
-            .update()
+        Topic resource = manager.topics()
+            .getByResourceGroupWithResponse("examplerg", "exampletopic1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
             .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
             .withInboundIpRules(
-                Arrays
-                    .asList(
-                        new InboundIpRule().withIpMask("12.18.30.15").withAction(IpActionType.ALLOW),
-                        new InboundIpRule().withIpMask("12.18.176.1").withAction(IpActionType.ALLOW)))
+                Arrays.asList(new InboundIpRule().withIpMask("12.18.30.15").withAction(IpActionType.ALLOW),
+                    new InboundIpRule().withIpMask("12.18.176.1").withAction(IpActionType.ALLOW)))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

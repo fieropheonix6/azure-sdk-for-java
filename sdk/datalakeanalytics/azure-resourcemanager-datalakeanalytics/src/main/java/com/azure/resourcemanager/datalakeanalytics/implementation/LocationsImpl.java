@@ -12,39 +12,34 @@ import com.azure.resourcemanager.datalakeanalytics.fluent.LocationsClient;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.CapabilityInformationInner;
 import com.azure.resourcemanager.datalakeanalytics.models.CapabilityInformation;
 import com.azure.resourcemanager.datalakeanalytics.models.Locations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationsImpl implements Locations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LocationsImpl.class);
 
     private final LocationsClient innerClient;
 
     private final com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager;
 
-    public LocationsImpl(
-        LocationsClient innerClient,
+    public LocationsImpl(LocationsClient innerClient,
         com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<CapabilityInformation> getCapabilityWithResponse(String location, Context context) {
+        Response<CapabilityInformationInner> inner = this.serviceClient().getCapabilityWithResponse(location, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CapabilityInformationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CapabilityInformation getCapability(String location) {
         CapabilityInformationInner inner = this.serviceClient().getCapability(location);
         if (inner != null) {
             return new CapabilityInformationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<CapabilityInformation> getCapabilityWithResponse(String location, Context context) {
-        Response<CapabilityInformationInner> inner = this.serviceClient().getCapabilityWithResponse(location, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CapabilityInformationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

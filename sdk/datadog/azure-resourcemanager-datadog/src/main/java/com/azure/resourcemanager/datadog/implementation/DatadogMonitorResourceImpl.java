@@ -80,6 +80,10 @@ public final class DatadogMonitorResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DatadogMonitorResourceInner innerModel() {
         return this.innerObject;
     }
@@ -100,20 +104,16 @@ public final class DatadogMonitorResourceImpl
     }
 
     public DatadogMonitorResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .create(resourceGroupName, monitorName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .create(resourceGroupName, monitorName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DatadogMonitorResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .create(resourceGroupName, monitorName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .create(resourceGroupName, monitorName, this.innerModel(), context);
         return this;
     }
 
@@ -129,46 +129,39 @@ public final class DatadogMonitorResourceImpl
     }
 
     public DatadogMonitorResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .update(resourceGroupName, monitorName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .update(resourceGroupName, monitorName, updateBody, Context.NONE);
         return this;
     }
 
     public DatadogMonitorResource apply(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getMonitors().update(resourceGroupName, monitorName, updateBody, context);
+        this.innerObject
+            = serviceManager.serviceClient().getMonitors().update(resourceGroupName, monitorName, updateBody, context);
         return this;
     }
 
-    DatadogMonitorResourceImpl(
-        DatadogMonitorResourceInner innerObject,
+    DatadogMonitorResourceImpl(DatadogMonitorResourceInner innerObject,
         com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.monitorName = Utils.getValueFromIdByName(innerObject.id(), "monitors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.monitorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitors");
     }
 
     public DatadogMonitorResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DatadogMonitorResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .getByResourceGroupWithResponse(resourceGroupName, monitorName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .getByResourceGroupWithResponse(resourceGroupName, monitorName, context)
+            .getValue();
         return this;
     }
 
@@ -180,20 +173,20 @@ public final class DatadogMonitorResourceImpl
         return serviceManager.monitors().listApiKeys(resourceGroupName, monitorName, context);
     }
 
-    public DatadogApiKey getDefaultKey() {
-        return serviceManager.monitors().getDefaultKey(resourceGroupName, monitorName);
-    }
-
     public Response<DatadogApiKey> getDefaultKeyWithResponse(Context context) {
         return serviceManager.monitors().getDefaultKeyWithResponse(resourceGroupName, monitorName, context);
     }
 
-    public void setDefaultKey() {
-        serviceManager.monitors().setDefaultKey(resourceGroupName, monitorName);
+    public DatadogApiKey getDefaultKey() {
+        return serviceManager.monitors().getDefaultKey(resourceGroupName, monitorName);
     }
 
     public Response<Void> setDefaultKeyWithResponse(DatadogApiKeyInner body, Context context) {
         return serviceManager.monitors().setDefaultKeyWithResponse(resourceGroupName, monitorName, body, context);
+    }
+
+    public void setDefaultKey() {
+        serviceManager.monitors().setDefaultKey(resourceGroupName, monitorName);
     }
 
     public PagedIterable<DatadogHost> listHosts() {
@@ -220,12 +213,12 @@ public final class DatadogMonitorResourceImpl
         return serviceManager.monitors().listMonitoredResources(resourceGroupName, monitorName, context);
     }
 
-    public DatadogSetPasswordLink refreshSetPasswordLink() {
-        return serviceManager.monitors().refreshSetPasswordLink(resourceGroupName, monitorName);
-    }
-
     public Response<DatadogSetPasswordLink> refreshSetPasswordLinkWithResponse(Context context) {
         return serviceManager.monitors().refreshSetPasswordLinkWithResponse(resourceGroupName, monitorName, context);
+    }
+
+    public DatadogSetPasswordLink refreshSetPasswordLink() {
+        return serviceManager.monitors().refreshSetPasswordLink(resourceGroupName, monitorName);
     }
 
     public DatadogMonitorResourceImpl withRegion(Region location) {

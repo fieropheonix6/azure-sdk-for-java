@@ -5,46 +5,53 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.CsmOperationDescriptionProperties;
 import com.azure.resourcemanager.appservice.models.CsmOperationDisplay;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Description of an operation available for Microsoft.Web resource provider. */
+/**
+ * Description of an operation available for Microsoft.Web resource provider.
+ */
 @Fluent
-public final class CsmOperationDescriptionInner {
+public final class CsmOperationDescriptionInner implements JsonSerializable<CsmOperationDescriptionInner> {
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The isDataAction property.
      */
-    @JsonProperty(value = "isDataAction")
     private Boolean isDataAction;
 
     /*
      * Meta data about operation used for display in portal.
      */
-    @JsonProperty(value = "display")
     private CsmOperationDisplay display;
 
     /*
      * The origin property.
      */
-    @JsonProperty(value = "origin")
     private String origin;
 
     /*
      * Properties available for a Microsoft.Web resource provider operation.
      */
-    @JsonProperty(value = "properties")
     private CsmOperationDescriptionProperties properties;
 
     /**
+     * Creates an instance of CsmOperationDescriptionInner class.
+     */
+    public CsmOperationDescriptionInner() {
+    }
+
+    /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -53,7 +60,7 @@ public final class CsmOperationDescriptionInner {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the CsmOperationDescriptionInner object itself.
      */
@@ -64,7 +71,7 @@ public final class CsmOperationDescriptionInner {
 
     /**
      * Get the isDataAction property: The isDataAction property.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -73,7 +80,7 @@ public final class CsmOperationDescriptionInner {
 
     /**
      * Set the isDataAction property: The isDataAction property.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the CsmOperationDescriptionInner object itself.
      */
@@ -84,7 +91,7 @@ public final class CsmOperationDescriptionInner {
 
     /**
      * Get the display property: Meta data about operation used for display in portal.
-     *
+     * 
      * @return the display value.
      */
     public CsmOperationDisplay display() {
@@ -93,7 +100,7 @@ public final class CsmOperationDescriptionInner {
 
     /**
      * Set the display property: Meta data about operation used for display in portal.
-     *
+     * 
      * @param display the display value to set.
      * @return the CsmOperationDescriptionInner object itself.
      */
@@ -104,7 +111,7 @@ public final class CsmOperationDescriptionInner {
 
     /**
      * Get the origin property: The origin property.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -113,7 +120,7 @@ public final class CsmOperationDescriptionInner {
 
     /**
      * Set the origin property: The origin property.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the CsmOperationDescriptionInner object itself.
      */
@@ -124,7 +131,7 @@ public final class CsmOperationDescriptionInner {
 
     /**
      * Get the properties property: Properties available for a Microsoft.Web resource provider operation.
-     *
+     * 
      * @return the properties value.
      */
     public CsmOperationDescriptionProperties properties() {
@@ -133,7 +140,7 @@ public final class CsmOperationDescriptionInner {
 
     /**
      * Set the properties property: Properties available for a Microsoft.Web resource provider operation.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the CsmOperationDescriptionInner object itself.
      */
@@ -144,7 +151,7 @@ public final class CsmOperationDescriptionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -154,5 +161,54 @@ public final class CsmOperationDescriptionInner {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("isDataAction", this.isDataAction);
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeStringField("origin", this.origin);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CsmOperationDescriptionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CsmOperationDescriptionInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CsmOperationDescriptionInner.
+     */
+    public static CsmOperationDescriptionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CsmOperationDescriptionInner deserializedCsmOperationDescriptionInner = new CsmOperationDescriptionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCsmOperationDescriptionInner.name = reader.getString();
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedCsmOperationDescriptionInner.isDataAction = reader.getNullable(JsonReader::getBoolean);
+                } else if ("display".equals(fieldName)) {
+                    deserializedCsmOperationDescriptionInner.display = CsmOperationDisplay.fromJson(reader);
+                } else if ("origin".equals(fieldName)) {
+                    deserializedCsmOperationDescriptionInner.origin = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCsmOperationDescriptionInner.properties
+                        = CsmOperationDescriptionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCsmOperationDescriptionInner;
+        });
     }
 }

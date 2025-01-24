@@ -10,7 +10,6 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.dynatrace.fluent.models.MonitorResourceInner;
-import com.azure.resourcemanager.dynatrace.models.AccountInfoSecure;
 import com.azure.resourcemanager.dynatrace.models.AppServiceInfo;
 import com.azure.resourcemanager.dynatrace.models.DynatraceEnvironmentProperties;
 import com.azure.resourcemanager.dynatrace.models.IdentityProperties;
@@ -18,6 +17,7 @@ import com.azure.resourcemanager.dynatrace.models.LiftrResourceCategories;
 import com.azure.resourcemanager.dynatrace.models.LinkableEnvironmentRequest;
 import com.azure.resourcemanager.dynatrace.models.LinkableEnvironmentResponse;
 import com.azure.resourcemanager.dynatrace.models.MarketplaceSubscriptionStatus;
+import com.azure.resourcemanager.dynatrace.models.MetricsStatusResponse;
 import com.azure.resourcemanager.dynatrace.models.MonitorResource;
 import com.azure.resourcemanager.dynatrace.models.MonitorResourceUpdate;
 import com.azure.resourcemanager.dynatrace.models.MonitoredResource;
@@ -134,20 +134,16 @@ public final class MonitorResourceImpl implements MonitorResource, MonitorResour
     }
 
     public MonitorResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .createOrUpdate(resourceGroupName, monitorName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .createOrUpdate(resourceGroupName, monitorName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public MonitorResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .createOrUpdate(resourceGroupName, monitorName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .createOrUpdate(resourceGroupName, monitorName, this.innerModel(), context);
         return this;
     }
 
@@ -163,59 +159,43 @@ public final class MonitorResourceImpl implements MonitorResource, MonitorResour
     }
 
     public MonitorResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .updateWithResponse(resourceGroupName, monitorName, updateResource, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .updateWithResponse(resourceGroupName, monitorName, updateResource, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MonitorResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .updateWithResponse(resourceGroupName, monitorName, updateResource, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .updateWithResponse(resourceGroupName, monitorName, updateResource, context)
+            .getValue();
         return this;
     }
 
-    MonitorResourceImpl(
-        MonitorResourceInner innerObject, com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
+    MonitorResourceImpl(MonitorResourceInner innerObject,
+        com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.monitorName = Utils.getValueFromIdByName(innerObject.id(), "monitors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.monitorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitors");
     }
 
     public MonitorResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MonitorResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMonitors()
-                .getByResourceGroupWithResponse(resourceGroupName, monitorName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMonitors()
+            .getByResourceGroupWithResponse(resourceGroupName, monitorName, context)
+            .getValue();
         return this;
-    }
-
-    public AccountInfoSecure getAccountCredentials() {
-        return serviceManager.monitors().getAccountCredentials(resourceGroupName, monitorName);
-    }
-
-    public Response<AccountInfoSecure> getAccountCredentialsWithResponse(Context context) {
-        return serviceManager.monitors().getAccountCredentialsWithResponse(resourceGroupName, monitorName, context);
     }
 
     public PagedIterable<MonitoredResource> listMonitoredResources() {
@@ -226,12 +206,12 @@ public final class MonitorResourceImpl implements MonitorResource, MonitorResour
         return serviceManager.monitors().listMonitoredResources(resourceGroupName, monitorName, context);
     }
 
-    public VMExtensionPayload getVMHostPayload() {
-        return serviceManager.monitors().getVMHostPayload(resourceGroupName, monitorName);
-    }
-
     public Response<VMExtensionPayload> getVMHostPayloadWithResponse(Context context) {
         return serviceManager.monitors().getVMHostPayloadWithResponse(resourceGroupName, monitorName, context);
+    }
+
+    public VMExtensionPayload getVMHostPayload() {
+        return serviceManager.monitors().getVMHostPayload(resourceGroupName, monitorName);
     }
 
     public PagedIterable<VMInfo> listHosts() {
@@ -242,6 +222,14 @@ public final class MonitorResourceImpl implements MonitorResource, MonitorResour
         return serviceManager.monitors().listHosts(resourceGroupName, monitorName, context);
     }
 
+    public Response<MetricsStatusResponse> getMetricStatusWithResponse(Context context) {
+        return serviceManager.monitors().getMetricStatusWithResponse(resourceGroupName, monitorName, context);
+    }
+
+    public MetricsStatusResponse getMetricStatus() {
+        return serviceManager.monitors().getMetricStatus(resourceGroupName, monitorName);
+    }
+
     public PagedIterable<AppServiceInfo> listAppServices() {
         return serviceManager.monitors().listAppServices(resourceGroupName, monitorName);
     }
@@ -250,20 +238,20 @@ public final class MonitorResourceImpl implements MonitorResource, MonitorResour
         return serviceManager.monitors().listAppServices(resourceGroupName, monitorName, context);
     }
 
-    public SsoDetailsResponse getSsoDetails() {
-        return serviceManager.monitors().getSsoDetails(resourceGroupName, monitorName);
-    }
-
     public Response<SsoDetailsResponse> getSsoDetailsWithResponse(SsoDetailsRequest request, Context context) {
         return serviceManager.monitors().getSsoDetailsWithResponse(resourceGroupName, monitorName, request, context);
+    }
+
+    public SsoDetailsResponse getSsoDetails() {
+        return serviceManager.monitors().getSsoDetails(resourceGroupName, monitorName);
     }
 
     public PagedIterable<LinkableEnvironmentResponse> listLinkableEnvironments(LinkableEnvironmentRequest request) {
         return serviceManager.monitors().listLinkableEnvironments(resourceGroupName, monitorName, request);
     }
 
-    public PagedIterable<LinkableEnvironmentResponse> listLinkableEnvironments(
-        LinkableEnvironmentRequest request, Context context) {
+    public PagedIterable<LinkableEnvironmentResponse> listLinkableEnvironments(LinkableEnvironmentRequest request,
+        Context context) {
         return serviceManager.monitors().listLinkableEnvironments(resourceGroupName, monitorName, request, context);
     }
 
@@ -293,55 +281,30 @@ public final class MonitorResourceImpl implements MonitorResource, MonitorResour
     }
 
     public MonitorResourceImpl withMonitoringStatus(MonitoringStatus monitoringStatus) {
-        if (isInCreateMode()) {
-            this.innerModel().withMonitoringStatus(monitoringStatus);
-            return this;
-        } else {
-            this.updateResource.withMonitoringStatus(monitoringStatus);
-            return this;
-        }
+        this.innerModel().withMonitoringStatus(monitoringStatus);
+        return this;
     }
 
-    public MonitorResourceImpl withMarketplaceSubscriptionStatus(
-        MarketplaceSubscriptionStatus marketplaceSubscriptionStatus) {
-        if (isInCreateMode()) {
-            this.innerModel().withMarketplaceSubscriptionStatus(marketplaceSubscriptionStatus);
-            return this;
-        } else {
-            this.updateResource.withMarketplaceSubscriptionStatus(marketplaceSubscriptionStatus);
-            return this;
-        }
+    public MonitorResourceImpl
+        withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus marketplaceSubscriptionStatus) {
+        this.innerModel().withMarketplaceSubscriptionStatus(marketplaceSubscriptionStatus);
+        return this;
     }
 
-    public MonitorResourceImpl withDynatraceEnvironmentProperties(
-        DynatraceEnvironmentProperties dynatraceEnvironmentProperties) {
-        if (isInCreateMode()) {
-            this.innerModel().withDynatraceEnvironmentProperties(dynatraceEnvironmentProperties);
-            return this;
-        } else {
-            this.updateResource.withDynatraceEnvironmentProperties(dynatraceEnvironmentProperties);
-            return this;
-        }
+    public MonitorResourceImpl
+        withDynatraceEnvironmentProperties(DynatraceEnvironmentProperties dynatraceEnvironmentProperties) {
+        this.innerModel().withDynatraceEnvironmentProperties(dynatraceEnvironmentProperties);
+        return this;
     }
 
     public MonitorResourceImpl withUserInfo(UserInfo userInfo) {
-        if (isInCreateMode()) {
-            this.innerModel().withUserInfo(userInfo);
-            return this;
-        } else {
-            this.updateResource.withUserInfo(userInfo);
-            return this;
-        }
+        this.innerModel().withUserInfo(userInfo);
+        return this;
     }
 
     public MonitorResourceImpl withPlanData(PlanData planData) {
-        if (isInCreateMode()) {
-            this.innerModel().withPlanData(planData);
-            return this;
-        } else {
-            this.updateResource.withPlanData(planData);
-            return this;
-        }
+        this.innerModel().withPlanData(planData);
+        return this;
     }
 
     private boolean isInCreateMode() {

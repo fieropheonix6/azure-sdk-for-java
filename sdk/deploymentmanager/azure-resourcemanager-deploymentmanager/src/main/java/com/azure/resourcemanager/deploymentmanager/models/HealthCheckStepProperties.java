@@ -6,7 +6,6 @@ package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +15,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("HealthCheck")
 @Fluent
 public final class HealthCheckStepProperties extends StepProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HealthCheckStepProperties.class);
-
     /*
      * The health check step attributes
      */
     @JsonProperty(value = "attributes", required = true)
     private HealthCheckStepAttributes attributes;
+
+    /** Creates an instance of HealthCheckStepProperties class. */
+    public HealthCheckStepProperties() {
+    }
 
     /**
      * Get the attributes property: The health check step attributes.
@@ -53,12 +54,12 @@ public final class HealthCheckStepProperties extends StepProperties {
     public void validate() {
         super.validate();
         if (attributes() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property attributes in model HealthCheckStepProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property attributes in model HealthCheckStepProperties"));
         } else {
             attributes().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HealthCheckStepProperties.class);
 }

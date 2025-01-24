@@ -7,24 +7,22 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.LiteralJobInput;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class LiteralJobInputTests {
-    @Test
-    public void testDeserialize() {
-        LiteralJobInput model =
-            BinaryData
-                .fromString("{\"jobInputType\":\"literal\",\"value\":\"mabeddqilwgdf\",\"description\":\"qfp\"}")
-                .toObject(LiteralJobInput.class);
-        Assertions.assertEquals("qfp", model.description());
-        Assertions.assertEquals("mabeddqilwgdf", model.value());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        LiteralJobInput model = BinaryData
+            .fromString("{\"jobInputType\":\"literal\",\"value\":\"ntqrcjqpzj\",\"description\":\"pjrrhpgsjbioag\"}")
+            .toObject(LiteralJobInput.class);
+        Assertions.assertEquals("pjrrhpgsjbioag", model.description());
+        Assertions.assertEquals("ntqrcjqpzj", model.value());
     }
 
-    @Test
-    public void testSerialize() {
-        LiteralJobInput model = new LiteralJobInput().withDescription("qfp").withValue("mabeddqilwgdf");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        LiteralJobInput model = new LiteralJobInput().withDescription("pjrrhpgsjbioag").withValue("ntqrcjqpzj");
         model = BinaryData.fromObject(model).toObject(LiteralJobInput.class);
-        Assertions.assertEquals("qfp", model.description());
-        Assertions.assertEquals("mabeddqilwgdf", model.value());
+        Assertions.assertEquals("pjrrhpgsjbioag", model.description());
+        Assertions.assertEquals("ntqrcjqpzj", model.value());
     }
 }

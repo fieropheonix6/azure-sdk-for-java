@@ -5,7 +5,9 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.databind.JsonNode;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,16 +19,24 @@ import java.util.Map;
  * @param <T> the resource type of the resource response.
  */
 public final class ResourceResponse<T extends Resource> {
-    private Class<T> cls;
-    private RxDocumentServiceResponse response;
-    private Map<String, Long> usageHeaders;
-    private Map<String, Long> quotaHeaders;
+    private final Class<T> cls;
+    private final RxDocumentServiceResponse response;
+    private final Map<String, Long> usageHeaders;
+    private final Map<String, Long> quotaHeaders;
 
     public ResourceResponse(RxDocumentServiceResponse response, Class<T> cls) {
         this.response = response;
-        this.usageHeaders = new HashMap<String, Long>();
-        this.quotaHeaders = new HashMap<String, Long>();
+        this.usageHeaders = new HashMap<>();
+        this.quotaHeaders = new HashMap<>();
         this.cls = cls;
+    }
+
+    public boolean hasPayload() {
+        return this.response.hasPayload();
+    }
+
+    public int getResponsePayloadLength() {
+        return this.response.getResponsePayloadLength();
     }
 
     /**
@@ -256,12 +266,21 @@ public final class ResourceResponse<T extends Resource> {
         return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.CURRENT_RESOURCE_QUOTA_USAGE);
     }
 
-    public byte[] getBodyAsByteArray() {
-        return this.response.getResponseBodyAsByteArray();
+    public JsonNode getBody() {
+        return this.response.getResponseBody();
     }
 
-    public String getBodyAsString() {
-        return this.response.getResponseBodyAsString();
+    public <TBody> TBody getBody(Class<TBody> itemClassType) {
+        JsonNode jsonBody =  this.response.getResponseBody();
+        if (jsonBody == null) {
+            return null;
+        }
+
+        try {
+            return Utils.getSimpleObjectMapper().treeToValue(jsonBody, itemClassType);
+        } catch (IOException e) {
+            throw new IllegalStateException(String.format("Unable to parse JSON %s", jsonBody), e);
+        }
     }
 
     /**
@@ -287,6 +306,20 @@ public final class ResourceResponse<T extends Resource> {
             return 0;
         }
         return Double.parseDouble(value);
+    }
+
+    public void addRequestCharge(double requestCharge) {
+        double currentRequestCharge = 0;
+        String value = this.getResponseHeaders().get(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+        if (!StringUtils.isEmpty(value)) {
+            currentRequestCharge = Double.parseDouble(value);
+        }
+        currentRequestCharge += requestCharge;
+
+        if (currentRequestCharge > 0) {
+            this.getResponseHeaders().put(
+                HttpConstants.HttpHeaders.REQUEST_CHARGE, String.valueOf(currentRequestCharge));
+        }
     }
 
     /**
@@ -330,6 +363,9 @@ public final class ResourceResponse<T extends Resource> {
      * @return diagnostic statistics for the current request to Azure Cosmos DB service.
      */
     public CosmosDiagnostics getDiagnostics() {
+        if (this.response == null) {
+            return null;
+        }
         return this.response.getCosmosDiagnostics();
     }
 
@@ -339,7 +375,7 @@ public final class ResourceResponse<T extends Resource> {
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
     public Duration getDuration() {
-        CosmosDiagnostics cosmosDiagnostics = this.response.getCosmosDiagnostics();
+        CosmosDiagnostics cosmosDiagnostics = this.response != null ? this.response.getCosmosDiagnostics() : null;
         if (cosmosDiagnostics == null) {
             return Duration.ZERO;
         }
@@ -362,7 +398,6 @@ public final class ResourceResponse<T extends Resource> {
 
     /**
      * Gets the ETag from the response headers.
-     *
      * Null in case of delete operation.
      *
      * @return ETag
@@ -397,6 +432,13 @@ public final class ResourceResponse<T extends Resource> {
         }
 
         return 0;
+    }
+
+    public ResourceResponse<T> withRemappedStatusCode(int newStatusCode, double additionalRequestCharge) {
+        RxDocumentServiceResponse mappedResponse = this
+            .response
+            .withRemappedStatusCode(newStatusCode, additionalRequestCharge);
+        return new ResourceResponse<>(mappedResponse, this.cls);
     }
 
     private void populateQuotaHeader(String headerMaxQuota, String headerCurrentUsage) {

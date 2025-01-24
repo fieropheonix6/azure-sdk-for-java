@@ -14,30 +14,31 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.connectedvmware.fluent.models.ResourcePoolInner;
 import com.azure.resourcemanager.connectedvmware.models.ResourcePatch;
 
-/** An instance of this class provides access to all the operations defined in ResourcePoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourcePoolsClient.
+ */
 public interface ResourcePoolsClient {
     /**
      * Implements resourcePool PUT method.
-     *
-     * <p>Create Or Update resourcePool.
-     *
+     * 
+     * Create Or Update resourcePool.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
-     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of define the resourcePool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ResourcePoolInner>, ResourcePoolInner> beginCreate(
-        String resourceGroupName, String resourcePoolName, ResourcePoolInner body);
+    SyncPoller<PollResult<ResourcePoolInner>, ResourcePoolInner> beginCreate(String resourceGroupName,
+        String resourcePoolName);
 
     /**
      * Implements resourcePool PUT method.
-     *
-     * <p>Create Or Update resourcePool.
-     *
+     * 
+     * Create Or Update resourcePool.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param body Request payload.
@@ -48,30 +49,14 @@ public interface ResourcePoolsClient {
      * @return the {@link SyncPoller} for polling of define the resourcePool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ResourcePoolInner>, ResourcePoolInner> beginCreate(
-        String resourceGroupName, String resourcePoolName, ResourcePoolInner body, Context context);
+    SyncPoller<PollResult<ResourcePoolInner>, ResourcePoolInner> beginCreate(String resourceGroupName,
+        String resourcePoolName, ResourcePoolInner body, Context context);
 
     /**
      * Implements resourcePool PUT method.
-     *
-     * <p>Create Or Update resourcePool.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param resourcePoolName Name of the resourcePool.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the resourcePool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourcePoolInner create(String resourceGroupName, String resourcePoolName, ResourcePoolInner body);
-
-    /**
-     * Implements resourcePool PUT method.
-     *
-     * <p>Create Or Update resourcePool.
-     *
+     * 
+     * Create Or Update resourcePool.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -84,9 +69,9 @@ public interface ResourcePoolsClient {
 
     /**
      * Implements resourcePool PUT method.
-     *
-     * <p>Create Or Update resourcePool.
-     *
+     * 
+     * Create Or Update resourcePool.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param body Request payload.
@@ -97,14 +82,31 @@ public interface ResourcePoolsClient {
      * @return define the resourcePool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourcePoolInner create(
-        String resourceGroupName, String resourcePoolName, ResourcePoolInner body, Context context);
+    ResourcePoolInner create(String resourceGroupName, String resourcePoolName, ResourcePoolInner body,
+        Context context);
 
     /**
      * Gets a resourcePool.
-     *
-     * <p>Implements resourcePool GET method.
-     *
+     * 
+     * Implements resourcePool GET method.
+     * 
+     * @param resourceGroupName The Resource Group Name.
+     * @param resourcePoolName Name of the resourcePool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the resourcePool along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ResourcePoolInner> getByResourceGroupWithResponse(String resourceGroupName, String resourcePoolName,
+        Context context);
+
+    /**
+     * Gets a resourcePool.
+     * 
+     * Implements resourcePool GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,12 +118,13 @@ public interface ResourcePoolsClient {
     ResourcePoolInner getByResourceGroup(String resourceGroupName, String resourcePoolName);
 
     /**
-     * Gets a resourcePool.
-     *
-     * <p>Implements resourcePool GET method.
-     *
+     * Updates a resourcePool.
+     * 
+     * API to update certain properties of the resourcePool resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
+     * @param body Resource properties to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -129,14 +132,14 @@ public interface ResourcePoolsClient {
      * @return define the resourcePool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourcePoolInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourcePoolName, Context context);
+    Response<ResourcePoolInner> updateWithResponse(String resourceGroupName, String resourcePoolName,
+        ResourcePatch body, Context context);
 
     /**
      * Updates a resourcePool.
-     *
-     * <p>API to update certain properties of the resourcePool resource.
-     *
+     * 
+     * API to update certain properties of the resourcePool resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,44 +151,25 @@ public interface ResourcePoolsClient {
     ResourcePoolInner update(String resourceGroupName, String resourcePoolName);
 
     /**
-     * Updates a resourcePool.
-     *
-     * <p>API to update certain properties of the resourcePool resource.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param resourcePoolName Name of the resourcePool.
-     * @param body Resource properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the resourcePool along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourcePoolInner> updateWithResponse(
-        String resourceGroupName, String resourcePoolName, ResourcePatch body, Context context);
-
-    /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourcePoolName, Boolean force);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourcePoolName);
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param force Whether force delete was specified.
@@ -196,29 +180,14 @@ public interface ResourcePoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourcePoolName, Boolean force, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourcePoolName, Boolean force,
+        Context context);
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param resourcePoolName Name of the resourcePool.
-     * @param force Whether force delete was specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String resourcePoolName, Boolean force);
-
-    /**
-     * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -230,9 +199,9 @@ public interface ResourcePoolsClient {
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param force Whether force delete was specified.
@@ -246,9 +215,9 @@ public interface ResourcePoolsClient {
 
     /**
      * Implements GET resourcePools in a subscription.
-     *
-     * <p>List of resourcePools in a subscription.
-     *
+     * 
+     * List of resourcePools in a subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of ResourcePools as paginated response with {@link PagedIterable}.
@@ -258,9 +227,9 @@ public interface ResourcePoolsClient {
 
     /**
      * Implements GET resourcePools in a subscription.
-     *
-     * <p>List of resourcePools in a subscription.
-     *
+     * 
+     * List of resourcePools in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -272,9 +241,9 @@ public interface ResourcePoolsClient {
 
     /**
      * Implements GET resourcePools in a resource group.
-     *
-     * <p>List of resourcePools in a resource group.
-     *
+     * 
+     * List of resourcePools in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -286,9 +255,9 @@ public interface ResourcePoolsClient {
 
     /**
      * Implements GET resourcePools in a resource group.
-     *
-     * <p>List of resourcePools in a resource group.
-     *
+     * 
+     * List of resourcePools in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

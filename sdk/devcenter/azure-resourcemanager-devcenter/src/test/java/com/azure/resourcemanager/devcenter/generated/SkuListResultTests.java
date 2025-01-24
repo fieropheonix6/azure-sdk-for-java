@@ -6,20 +6,17 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.SkuListResult;
-import org.junit.jupiter.api.Test;
 
 public final class SkuListResultTests {
-    @Test
-    public void testDeserialize() {
-        SkuListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"resourceType\":\"flrwd\",\"locations\":[\"lxyjr\",\"sag\"],\"capabilities\":[],\"name\":\"nihgwqapnedg\",\"tier\":\"Premium\",\"size\":\"kcvqvpke\",\"family\":\"cvdrhvoodsot\",\"capacity\":1862615744},{\"resourceType\":\"dopcjwvnh\",\"locations\":[\"wmgxcxrsl\"],\"capabilities\":[],\"name\":\"twuoegrpkhjwni\",\"tier\":\"Standard\",\"size\":\"uicpd\",\"family\":\"kzzlvmbmpaxmodf\",\"capacity\":843823748},{\"resourceType\":\"yw\",\"locations\":[\"fvmwy\",\"rfouyftaakcpw\",\"yzvqt\"],\"capabilities\":[],\"name\":\"bexkpzksmondj\",\"tier\":\"Premium\",\"size\":\"vypomgkopkwho\",\"family\":\"pajqgxysm\",\"capacity\":1907336189}],\"nextLink\":\"qfqvmkc\"}")
-                .toObject(SkuListResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SkuListResult model = BinaryData.fromString(
+            "{\"value\":[{\"resourceType\":\"lwfffi\",\"locations\":[\"jpqqmted\",\"tmmjihyeozph\",\"wau\",\"qncygupkvi\"],\"capabilities\":[{\"name\":\"cwxqu\",\"value\":\"vzhfstotxhoj\"},{\"name\":\"bypel\",\"value\":\"uvhixbjxyfwn\"},{\"name\":\"r\",\"value\":\"o\"},{\"name\":\"ttpkiwkkbnujrywv\",\"value\":\"lbfpncurd\"}],\"name\":\"iwii\",\"tier\":\"Standard\",\"size\":\"wubxc\",\"family\":\"h\",\"capacity\":1060824316}],\"nextLink\":\"fdntwjchrdgoih\"}")
+            .toObject(SkuListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuListResult model = new SkuListResult();
         model = BinaryData.fromObject(model).toObject(SkuListResult.class);
     }

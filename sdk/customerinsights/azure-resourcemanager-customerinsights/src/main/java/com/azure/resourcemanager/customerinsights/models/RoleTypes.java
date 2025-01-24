@@ -4,30 +4,43 @@
 
 package com.azure.resourcemanager.customerinsights.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for RoleTypes. */
+/**
+ * Type of roles.
+ */
 public enum RoleTypes {
-    /** Enum value Admin. */
+    /**
+     * Enum value Admin.
+     */
     ADMIN("Admin"),
 
-    /** Enum value Reader. */
+    /**
+     * Enum value Reader.
+     */
     READER("Reader"),
 
-    /** Enum value ManageAdmin. */
+    /**
+     * Enum value ManageAdmin.
+     */
     MANAGE_ADMIN("ManageAdmin"),
 
-    /** Enum value ManageReader. */
+    /**
+     * Enum value ManageReader.
+     */
     MANAGE_READER("ManageReader"),
 
-    /** Enum value DataAdmin. */
+    /**
+     * Enum value DataAdmin.
+     */
     DATA_ADMIN("DataAdmin"),
 
-    /** Enum value DataReader. */
+    /**
+     * Enum value DataReader.
+     */
     DATA_READER("DataReader");
 
-    /** The actual serialized value for a RoleTypes instance. */
+    /**
+     * The actual serialized value for a RoleTypes instance.
+     */
     private final String value;
 
     RoleTypes(String value) {
@@ -36,12 +49,14 @@ public enum RoleTypes {
 
     /**
      * Parses a serialized value to a RoleTypes instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RoleTypes object, or null if unable to parse.
      */
-    @JsonCreator
     public static RoleTypes fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RoleTypes[] items = RoleTypes.values();
         for (RoleTypes item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,7 +66,9 @@ public enum RoleTypes {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

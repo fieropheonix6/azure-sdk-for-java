@@ -23,31 +23,28 @@ public final class EmailServicesImpl implements EmailServices {
 
     private final com.azure.resourcemanager.communication.CommunicationManager serviceManager;
 
-    public EmailServicesImpl(
-        EmailServicesClient innerClient, com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
+    public EmailServicesImpl(EmailServicesClient innerClient,
+        com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<EmailServiceResource> getByResourceGroupWithResponse(String resourceGroupName,
+        String emailServiceName, Context context) {
+        Response<EmailServiceResourceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, emailServiceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EmailServiceResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public EmailServiceResource getByResourceGroup(String resourceGroupName, String emailServiceName) {
         EmailServiceResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, emailServiceName);
         if (inner != null) {
             return new EmailServiceResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<EmailServiceResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String emailServiceName, Context context) {
-        Response<EmailServiceResourceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, emailServiceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new EmailServiceResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -63,23 +60,27 @@ public final class EmailServicesImpl implements EmailServices {
 
     public PagedIterable<EmailServiceResource> list() {
         PagedIterable<EmailServiceResourceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new EmailServiceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmailServiceResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EmailServiceResource> list(Context context) {
         PagedIterable<EmailServiceResourceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new EmailServiceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmailServiceResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EmailServiceResource> listByResourceGroup(String resourceGroupName) {
         PagedIterable<EmailServiceResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new EmailServiceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmailServiceResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EmailServiceResource> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<EmailServiceResourceInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new EmailServiceResourceImpl(inner1, this.manager()));
+        PagedIterable<EmailServiceResourceInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmailServiceResourceImpl(inner1, this.manager()));
+    }
+
+    public Response<List<String>> listVerifiedExchangeOnlineDomainsWithResponse(Context context) {
+        return this.serviceClient().listVerifiedExchangeOnlineDomainsWithResponse(context);
     }
 
     public List<String> listVerifiedExchangeOnlineDomains() {
@@ -91,82 +92,58 @@ public final class EmailServicesImpl implements EmailServices {
         }
     }
 
-    public Response<List<String>> listVerifiedExchangeOnlineDomainsWithResponse(Context context) {
-        return this.serviceClient().listVerifiedExchangeOnlineDomainsWithResponse(context);
-    }
-
     public EmailServiceResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String emailServiceName = Utils.getValueFromIdByName(id, "emailServices");
+        String emailServiceName = ResourceManagerUtils.getValueFromIdByName(id, "emailServices");
         if (emailServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, emailServiceName, Context.NONE).getValue();
     }
 
     public Response<EmailServiceResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String emailServiceName = Utils.getValueFromIdByName(id, "emailServices");
+        String emailServiceName = ResourceManagerUtils.getValueFromIdByName(id, "emailServices");
         if (emailServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, emailServiceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String emailServiceName = Utils.getValueFromIdByName(id, "emailServices");
+        String emailServiceName = ResourceManagerUtils.getValueFromIdByName(id, "emailServices");
         if (emailServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
         }
         this.delete(resourceGroupName, emailServiceName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String emailServiceName = Utils.getValueFromIdByName(id, "emailServices");
+        String emailServiceName = ResourceManagerUtils.getValueFromIdByName(id, "emailServices");
         if (emailServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'emailServices'.", id)));
         }
         this.delete(resourceGroupName, emailServiceName, context);
     }

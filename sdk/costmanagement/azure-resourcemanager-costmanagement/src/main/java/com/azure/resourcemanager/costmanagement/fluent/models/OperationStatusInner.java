@@ -5,52 +5,59 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.costmanagement.models.Status;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.costmanagement.models.OperationStatusType;
+import com.azure.resourcemanager.costmanagement.models.ReservationReportSchema;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The status of the long running operation. */
+/**
+ * The status of the long running operation.
+ */
 @Fluent
-public final class OperationStatusInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationStatusInner.class);
-
+public final class OperationStatusInner implements JsonSerializable<OperationStatusInner> {
     /*
      * The status of the long running operation.
      */
-    @JsonProperty(value = "status")
-    private Status status;
+    private OperationStatusType status;
 
     /*
      * The properties of the resource generated.
      */
-    @JsonProperty(value = "properties")
     private ReportUrl innerProperties;
 
     /**
+     * Creates an instance of OperationStatusInner class.
+     */
+    public OperationStatusInner() {
+    }
+
+    /**
      * Get the status property: The status of the long running operation.
-     *
+     * 
      * @return the status value.
      */
-    public Status status() {
+    public OperationStatusType status() {
         return this.status;
     }
 
     /**
      * Set the status property: The status of the long running operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the OperationStatusInner object itself.
      */
-    public OperationStatusInner withStatus(Status status) {
+    public OperationStatusInner withStatus(OperationStatusType status) {
         this.status = status;
         return this;
     }
 
     /**
      * Get the innerProperties property: The properties of the resource generated.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ReportUrl innerProperties() {
@@ -58,21 +65,23 @@ public final class OperationStatusInner {
     }
 
     /**
-     * Get the reportUrl property: The URL to download the generated report.
-     *
+     * Get the reportUrl property: The CSV file from the reportUrl blob link consists of reservation usage data with the
+     * following schema at daily granularity.
+     * 
      * @return the reportUrl value.
      */
-    public String reportUrl() {
+    public ReservationReportSchema reportUrl() {
         return this.innerProperties() == null ? null : this.innerProperties().reportUrl();
     }
 
     /**
-     * Set the reportUrl property: The URL to download the generated report.
-     *
+     * Set the reportUrl property: The CSV file from the reportUrl blob link consists of reservation usage data with the
+     * following schema at daily granularity.
+     * 
      * @param reportUrl the reportUrl value to set.
      * @return the OperationStatusInner object itself.
      */
-    public OperationStatusInner withReportUrl(String reportUrl) {
+    public OperationStatusInner withReportUrl(ReservationReportSchema reportUrl) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ReportUrl();
         }
@@ -82,7 +91,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the validUntil property: The time at which report URL becomes invalid.
-     *
+     * 
      * @return the validUntil value.
      */
     public OffsetDateTime validUntil() {
@@ -91,7 +100,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the validUntil property: The time at which report URL becomes invalid.
-     *
+     * 
      * @param validUntil the validUntil value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -105,15 +114,51 @@ public final class OperationStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (status() != null) {
-            status().validate();
-        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationStatusInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationStatusInner.
+     */
+    public static OperationStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationStatusInner deserializedOperationStatusInner = new OperationStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedOperationStatusInner.status = OperationStatusType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperationStatusInner.innerProperties = ReportUrl.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationStatusInner;
+        });
     }
 }

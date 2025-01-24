@@ -4,42 +4,63 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for BackupItemStatus. */
+/**
+ * Backup status.
+ */
 public enum BackupItemStatus {
-    /** Enum value InProgress. */
+    /**
+     * Enum value InProgress.
+     */
     IN_PROGRESS("InProgress"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed"),
 
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded"),
 
-    /** Enum value TimedOut. */
+    /**
+     * Enum value TimedOut.
+     */
     TIMED_OUT("TimedOut"),
 
-    /** Enum value Created. */
+    /**
+     * Enum value Created.
+     */
     CREATED("Created"),
 
-    /** Enum value Skipped. */
+    /**
+     * Enum value Skipped.
+     */
     SKIPPED("Skipped"),
 
-    /** Enum value PartiallySucceeded. */
+    /**
+     * Enum value PartiallySucceeded.
+     */
     PARTIALLY_SUCCEEDED("PartiallySucceeded"),
 
-    /** Enum value DeleteInProgress. */
+    /**
+     * Enum value DeleteInProgress.
+     */
     DELETE_IN_PROGRESS("DeleteInProgress"),
 
-    /** Enum value DeleteFailed. */
+    /**
+     * Enum value DeleteFailed.
+     */
     DELETE_FAILED("DeleteFailed"),
 
-    /** Enum value Deleted. */
+    /**
+     * Enum value Deleted.
+     */
     DELETED("Deleted");
 
-    /** The actual serialized value for a BackupItemStatus instance. */
+    /**
+     * The actual serialized value for a BackupItemStatus instance.
+     */
     private final String value;
 
     BackupItemStatus(String value) {
@@ -48,12 +69,14 @@ public enum BackupItemStatus {
 
     /**
      * Parses a serialized value to a BackupItemStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed BackupItemStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static BackupItemStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         BackupItemStatus[] items = BackupItemStatus.values();
         for (BackupItemStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -63,7 +86,9 @@ public enum BackupItemStatus {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

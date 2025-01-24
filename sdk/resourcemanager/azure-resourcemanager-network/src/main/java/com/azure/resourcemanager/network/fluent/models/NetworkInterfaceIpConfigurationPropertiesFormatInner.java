@@ -6,108 +6,110 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of IP configuration. */
+/**
+ * Properties of IP configuration.
+ */
 @Fluent
-public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
+public final class NetworkInterfaceIpConfigurationPropertiesFormatInner
+    implements JsonSerializable<NetworkInterfaceIpConfigurationPropertiesFormatInner> {
     /*
      * The reference to gateway load balancer frontend IP.
      */
-    @JsonProperty(value = "gatewayLoadBalancer")
     private SubResource gatewayLoadBalancer;
 
     /*
      * The reference to Virtual Network Taps.
      */
-    @JsonProperty(value = "virtualNetworkTaps")
     private List<VirtualNetworkTapInner> virtualNetworkTaps;
 
     /*
      * The reference to ApplicationGatewayBackendAddressPool resource.
      */
-    @JsonProperty(value = "applicationGatewayBackendAddressPools")
     private List<ApplicationGatewayBackendAddressPool> applicationGatewayBackendAddressPools;
 
     /*
      * The reference to LoadBalancerBackendAddressPool resource.
      */
-    @JsonProperty(value = "loadBalancerBackendAddressPools")
     private List<BackendAddressPoolInner> loadBalancerBackendAddressPools;
 
     /*
      * A list of references of LoadBalancerInboundNatRules.
      */
-    @JsonProperty(value = "loadBalancerInboundNatRules")
     private List<InboundNatRuleInner> loadBalancerInboundNatRules;
 
     /*
-     * Private IP address of the IP configuration.
+     * Private IP address of the IP configuration. It can be a single IP address or a CIDR block in the format
+     * <address>/<prefix-length>.
      */
-    @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
+
+    /*
+     * The private IP address prefix length. If specified and the allocation method is dynamic, the service will
+     * allocate a CIDR block instead of a single IP address.
+     */
+    private Integer privateIpAddressPrefixLength;
 
     /*
      * The private IP address allocation method.
      */
-    @JsonProperty(value = "privateIPAllocationMethod")
     private IpAllocationMethod privateIpAllocationMethod;
 
     /*
      * Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
      */
-    @JsonProperty(value = "privateIPAddressVersion")
     private IpVersion privateIpAddressVersion;
 
     /*
      * Subnet bound to the IP configuration.
      */
-    @JsonProperty(value = "subnet")
     private SubnetInner subnet;
 
     /*
      * Whether this is a primary customer address on the network interface.
      */
-    @JsonProperty(value = "primary")
     private Boolean primary;
 
     /*
      * Public IP address bound to the IP configuration.
      */
-    @JsonProperty(value = "publicIPAddress")
     private PublicIpAddressInner publicIpAddress;
 
     /*
      * Application security groups in which the IP configuration is included.
      */
-    @JsonProperty(value = "applicationSecurityGroups")
     private List<ApplicationSecurityGroupInner> applicationSecurityGroups;
 
     /*
      * The provisioning state of the network interface IP configuration.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * PrivateLinkConnection properties for the network interface.
      */
-    @JsonProperty(value = "privateLinkConnectionProperties", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties privateLinkConnectionProperties;
 
-    /** Creates an instance of NetworkInterfaceIpConfigurationPropertiesFormatInner class. */
+    /**
+     * Creates an instance of NetworkInterfaceIpConfigurationPropertiesFormatInner class.
+     */
     public NetworkInterfaceIpConfigurationPropertiesFormatInner() {
     }
 
     /**
      * Get the gatewayLoadBalancer property: The reference to gateway load balancer frontend IP.
-     *
+     * 
      * @return the gatewayLoadBalancer value.
      */
     public SubResource gatewayLoadBalancer() {
@@ -116,19 +118,19 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
 
     /**
      * Set the gatewayLoadBalancer property: The reference to gateway load balancer frontend IP.
-     *
+     * 
      * @param gatewayLoadBalancer the gatewayLoadBalancer value to set.
      * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIpConfigurationPropertiesFormatInner withGatewayLoadBalancer(
-        SubResource gatewayLoadBalancer) {
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
+        withGatewayLoadBalancer(SubResource gatewayLoadBalancer) {
         this.gatewayLoadBalancer = gatewayLoadBalancer;
         return this;
     }
 
     /**
      * Get the virtualNetworkTaps property: The reference to Virtual Network Taps.
-     *
+     * 
      * @return the virtualNetworkTaps value.
      */
     public List<VirtualNetworkTapInner> virtualNetworkTaps() {
@@ -137,12 +139,12 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
 
     /**
      * Set the virtualNetworkTaps property: The reference to Virtual Network Taps.
-     *
+     * 
      * @param virtualNetworkTaps the virtualNetworkTaps value to set.
      * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIpConfigurationPropertiesFormatInner withVirtualNetworkTaps(
-        List<VirtualNetworkTapInner> virtualNetworkTaps) {
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
+        withVirtualNetworkTaps(List<VirtualNetworkTapInner> virtualNetworkTaps) {
         this.virtualNetworkTaps = virtualNetworkTaps;
         return this;
     }
@@ -150,7 +152,7 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     /**
      * Get the applicationGatewayBackendAddressPools property: The reference to ApplicationGatewayBackendAddressPool
      * resource.
-     *
+     * 
      * @return the applicationGatewayBackendAddressPools value.
      */
     public List<ApplicationGatewayBackendAddressPool> applicationGatewayBackendAddressPools() {
@@ -160,7 +162,7 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     /**
      * Set the applicationGatewayBackendAddressPools property: The reference to ApplicationGatewayBackendAddressPool
      * resource.
-     *
+     * 
      * @param applicationGatewayBackendAddressPools the applicationGatewayBackendAddressPools value to set.
      * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
@@ -172,7 +174,7 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
 
     /**
      * Get the loadBalancerBackendAddressPools property: The reference to LoadBalancerBackendAddressPool resource.
-     *
+     * 
      * @return the loadBalancerBackendAddressPools value.
      */
     public List<BackendAddressPoolInner> loadBalancerBackendAddressPools() {
@@ -181,19 +183,19 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
 
     /**
      * Set the loadBalancerBackendAddressPools property: The reference to LoadBalancerBackendAddressPool resource.
-     *
+     * 
      * @param loadBalancerBackendAddressPools the loadBalancerBackendAddressPools value to set.
      * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIpConfigurationPropertiesFormatInner withLoadBalancerBackendAddressPools(
-        List<BackendAddressPoolInner> loadBalancerBackendAddressPools) {
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
+        withLoadBalancerBackendAddressPools(List<BackendAddressPoolInner> loadBalancerBackendAddressPools) {
         this.loadBalancerBackendAddressPools = loadBalancerBackendAddressPools;
         return this;
     }
 
     /**
      * Get the loadBalancerInboundNatRules property: A list of references of LoadBalancerInboundNatRules.
-     *
+     * 
      * @return the loadBalancerInboundNatRules value.
      */
     public List<InboundNatRuleInner> loadBalancerInboundNatRules() {
@@ -202,19 +204,20 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
 
     /**
      * Set the loadBalancerInboundNatRules property: A list of references of LoadBalancerInboundNatRules.
-     *
+     * 
      * @param loadBalancerInboundNatRules the loadBalancerInboundNatRules value to set.
      * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIpConfigurationPropertiesFormatInner withLoadBalancerInboundNatRules(
-        List<InboundNatRuleInner> loadBalancerInboundNatRules) {
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
+        withLoadBalancerInboundNatRules(List<InboundNatRuleInner> loadBalancerInboundNatRules) {
         this.loadBalancerInboundNatRules = loadBalancerInboundNatRules;
         return this;
     }
 
     /**
-     * Get the privateIpAddress property: Private IP address of the IP configuration.
-     *
+     * Get the privateIpAddress property: Private IP address of the IP configuration. It can be a single IP address or a
+     * CIDR block in the format &lt;address&gt;/&lt;prefix-length&gt;.
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -222,8 +225,9 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Set the privateIpAddress property: Private IP address of the IP configuration.
-     *
+     * Set the privateIpAddress property: Private IP address of the IP configuration. It can be a single IP address or a
+     * CIDR block in the format &lt;address&gt;/&lt;prefix-length&gt;.
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
@@ -233,8 +237,31 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     }
 
     /**
+     * Get the privateIpAddressPrefixLength property: The private IP address prefix length. If specified and the
+     * allocation method is dynamic, the service will allocate a CIDR block instead of a single IP address.
+     * 
+     * @return the privateIpAddressPrefixLength value.
+     */
+    public Integer privateIpAddressPrefixLength() {
+        return this.privateIpAddressPrefixLength;
+    }
+
+    /**
+     * Set the privateIpAddressPrefixLength property: The private IP address prefix length. If specified and the
+     * allocation method is dynamic, the service will allocate a CIDR block instead of a single IP address.
+     * 
+     * @param privateIpAddressPrefixLength the privateIpAddressPrefixLength value to set.
+     * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
+     */
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
+        withPrivateIpAddressPrefixLength(Integer privateIpAddressPrefixLength) {
+        this.privateIpAddressPrefixLength = privateIpAddressPrefixLength;
+        return this;
+    }
+
+    /**
      * Get the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
@@ -243,19 +270,19 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
 
     /**
      * Set the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIpConfigurationPropertiesFormatInner withPrivateIpAllocationMethod(
-        IpAllocationMethod privateIpAllocationMethod) {
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
+        withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
     }
 
     /**
      * Get the privateIpAddressVersion property: Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
-     *
+     * 
      * @return the privateIpAddressVersion value.
      */
     public IpVersion privateIpAddressVersion() {
@@ -264,19 +291,19 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
 
     /**
      * Set the privateIpAddressVersion property: Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
-     *
+     * 
      * @param privateIpAddressVersion the privateIpAddressVersion value to set.
      * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIpConfigurationPropertiesFormatInner withPrivateIpAddressVersion(
-        IpVersion privateIpAddressVersion) {
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
+        withPrivateIpAddressVersion(IpVersion privateIpAddressVersion) {
         this.privateIpAddressVersion = privateIpAddressVersion;
         return this;
     }
 
     /**
      * Get the subnet property: Subnet bound to the IP configuration.
-     *
+     * 
      * @return the subnet value.
      */
     public SubnetInner subnet() {
@@ -285,7 +312,7 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
 
     /**
      * Set the subnet property: Subnet bound to the IP configuration.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
@@ -296,7 +323,7 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
 
     /**
      * Get the primary property: Whether this is a primary customer address on the network interface.
-     *
+     * 
      * @return the primary value.
      */
     public Boolean primary() {
@@ -305,7 +332,7 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
 
     /**
      * Set the primary property: Whether this is a primary customer address on the network interface.
-     *
+     * 
      * @param primary the primary value to set.
      * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
@@ -316,7 +343,7 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
 
     /**
      * Get the publicIpAddress property: Public IP address bound to the IP configuration.
-     *
+     * 
      * @return the publicIpAddress value.
      */
     public PublicIpAddressInner publicIpAddress() {
@@ -325,12 +352,12 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
 
     /**
      * Set the publicIpAddress property: Public IP address bound to the IP configuration.
-     *
+     * 
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIpConfigurationPropertiesFormatInner withPublicIpAddress(
-        PublicIpAddressInner publicIpAddress) {
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
+        withPublicIpAddress(PublicIpAddressInner publicIpAddress) {
         this.publicIpAddress = publicIpAddress;
         return this;
     }
@@ -338,7 +365,7 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     /**
      * Get the applicationSecurityGroups property: Application security groups in which the IP configuration is
      * included.
-     *
+     * 
      * @return the applicationSecurityGroups value.
      */
     public List<ApplicationSecurityGroupInner> applicationSecurityGroups() {
@@ -348,19 +375,19 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     /**
      * Set the applicationSecurityGroups property: Application security groups in which the IP configuration is
      * included.
-     *
+     * 
      * @param applicationSecurityGroups the applicationSecurityGroups value to set.
      * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIpConfigurationPropertiesFormatInner withApplicationSecurityGroups(
-        List<ApplicationSecurityGroupInner> applicationSecurityGroups) {
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
+        withApplicationSecurityGroups(List<ApplicationSecurityGroupInner> applicationSecurityGroups) {
         this.applicationSecurityGroups = applicationSecurityGroups;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the network interface IP configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -369,7 +396,7 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
 
     /**
      * Get the privateLinkConnectionProperties property: PrivateLinkConnection properties for the network interface.
-     *
+     * 
      * @return the privateLinkConnectionProperties value.
      */
     public NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties privateLinkConnectionProperties() {
@@ -378,7 +405,7 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -406,5 +433,115 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
         if (privateLinkConnectionProperties() != null) {
             privateLinkConnectionProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("gatewayLoadBalancer", this.gatewayLoadBalancer);
+        jsonWriter.writeArrayField("virtualNetworkTaps", this.virtualNetworkTaps,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("applicationGatewayBackendAddressPools", this.applicationGatewayBackendAddressPools,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("loadBalancerBackendAddressPools", this.loadBalancerBackendAddressPools,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("loadBalancerInboundNatRules", this.loadBalancerInboundNatRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("privateIPAddress", this.privateIpAddress);
+        jsonWriter.writeNumberField("privateIPAddressPrefixLength", this.privateIpAddressPrefixLength);
+        jsonWriter.writeStringField("privateIPAllocationMethod",
+            this.privateIpAllocationMethod == null ? null : this.privateIpAllocationMethod.toString());
+        jsonWriter.writeStringField("privateIPAddressVersion",
+            this.privateIpAddressVersion == null ? null : this.privateIpAddressVersion.toString());
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeBooleanField("primary", this.primary);
+        jsonWriter.writeJsonField("publicIPAddress", this.publicIpAddress);
+        jsonWriter.writeArrayField("applicationSecurityGroups", this.applicationSecurityGroups,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkInterfaceIpConfigurationPropertiesFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkInterfaceIpConfigurationPropertiesFormatInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkInterfaceIpConfigurationPropertiesFormatInner.
+     */
+    public static NetworkInterfaceIpConfigurationPropertiesFormatInner fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkInterfaceIpConfigurationPropertiesFormatInner deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner
+                = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("gatewayLoadBalancer".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.gatewayLoadBalancer
+                        = SubResource.fromJson(reader);
+                } else if ("virtualNetworkTaps".equals(fieldName)) {
+                    List<VirtualNetworkTapInner> virtualNetworkTaps
+                        = reader.readArray(reader1 -> VirtualNetworkTapInner.fromJson(reader1));
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.virtualNetworkTaps
+                        = virtualNetworkTaps;
+                } else if ("applicationGatewayBackendAddressPools".equals(fieldName)) {
+                    List<ApplicationGatewayBackendAddressPool> applicationGatewayBackendAddressPools
+                        = reader.readArray(reader1 -> ApplicationGatewayBackendAddressPool.fromJson(reader1));
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.applicationGatewayBackendAddressPools
+                        = applicationGatewayBackendAddressPools;
+                } else if ("loadBalancerBackendAddressPools".equals(fieldName)) {
+                    List<BackendAddressPoolInner> loadBalancerBackendAddressPools
+                        = reader.readArray(reader1 -> BackendAddressPoolInner.fromJson(reader1));
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.loadBalancerBackendAddressPools
+                        = loadBalancerBackendAddressPools;
+                } else if ("loadBalancerInboundNatRules".equals(fieldName)) {
+                    List<InboundNatRuleInner> loadBalancerInboundNatRules
+                        = reader.readArray(reader1 -> InboundNatRuleInner.fromJson(reader1));
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.loadBalancerInboundNatRules
+                        = loadBalancerInboundNatRules;
+                } else if ("privateIPAddress".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.privateIpAddress
+                        = reader.getString();
+                } else if ("privateIPAddressPrefixLength".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.privateIpAddressPrefixLength
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("privateIPAllocationMethod".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.privateIpAllocationMethod
+                        = IpAllocationMethod.fromString(reader.getString());
+                } else if ("privateIPAddressVersion".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.privateIpAddressVersion
+                        = IpVersion.fromString(reader.getString());
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.subnet
+                        = SubnetInner.fromJson(reader);
+                } else if ("primary".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.primary
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publicIPAddress".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.publicIpAddress
+                        = PublicIpAddressInner.fromJson(reader);
+                } else if ("applicationSecurityGroups".equals(fieldName)) {
+                    List<ApplicationSecurityGroupInner> applicationSecurityGroups
+                        = reader.readArray(reader1 -> ApplicationSecurityGroupInner.fromJson(reader1));
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.applicationSecurityGroups
+                        = applicationSecurityGroups;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("privateLinkConnectionProperties".equals(fieldName)) {
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.privateLinkConnectionProperties
+                        = NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner;
+        });
     }
 }

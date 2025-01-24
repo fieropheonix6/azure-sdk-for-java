@@ -27,6 +27,11 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     private HttpHeaders azureCoreHeaders;
     private boolean converted = false;
 
+    /**
+     * Creates an OkHttpToAzureCoreHttpHeadersWrapper.
+     *
+     * @param okhttpHeaders The OkHttp headers to wrap.
+     */
     public OkHttpToAzureCoreHttpHeadersWrapper(Headers okhttpHeaders) {
         this.okhttpHeaders = okhttpHeaders;
         this.azureCoreHeaders = new HttpHeaders(okhttpHeaders.size() * 2);
@@ -38,6 +43,7 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    @Deprecated
     public HttpHeaders add(String name, String value) {
         if (name == null || value == null) {
             return this;
@@ -62,6 +68,7 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    @Deprecated
     public HttpHeaders set(String name, String value) {
         if (name == null) {
             return this;
@@ -86,6 +93,7 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    @Deprecated
     public HttpHeaders set(String name, List<String> values) {
         if (name == null) {
             return this;
@@ -118,6 +126,15 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    public HttpHeaders setAllHttpHeaders(HttpHeaders headers) {
+        convertIfNeeded();
+
+        azureCoreHeaders.setAllHttpHeaders(headers);
+        return this;
+    }
+
+    @Override
+    @Deprecated
     public HttpHeader get(String name) {
         convertIfNeeded();
 
@@ -132,6 +149,7 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    @Deprecated
     public HttpHeader remove(String name) {
         convertIfNeeded();
 
@@ -146,6 +164,7 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    @Deprecated
     public String getValue(String name) {
         convertIfNeeded();
 
@@ -160,6 +179,7 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    @Deprecated
     public String[] getValues(String name) {
         convertIfNeeded();
 

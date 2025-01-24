@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Individual port mappings for inbound NAT rule created for backend pool. */
+/**
+ * Individual port mappings for inbound NAT rule created for backend pool.
+ */
 @Immutable
-public final class InboundNatRulePortMapping {
+public final class InboundNatRulePortMapping implements JsonSerializable<InboundNatRulePortMapping> {
     /*
      * Name of inbound NAT rule.
      */
-    @JsonProperty(value = "inboundNatRuleName", access = JsonProperty.Access.WRITE_ONLY)
     private String inboundNatRuleName;
 
     /*
      * The reference to the transport protocol used by the inbound NAT rule.
      */
-    @JsonProperty(value = "protocol", access = JsonProperty.Access.WRITE_ONLY)
     private TransportProtocol protocol;
 
     /*
      * Frontend port.
      */
-    @JsonProperty(value = "frontendPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer frontendPort;
 
     /*
      * Backend port.
      */
-    @JsonProperty(value = "backendPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer backendPort;
 
-    /** Creates an instance of InboundNatRulePortMapping class. */
+    /**
+     * Creates an instance of InboundNatRulePortMapping class.
+     */
     public InboundNatRulePortMapping() {
     }
 
     /**
      * Get the inboundNatRuleName property: Name of inbound NAT rule.
-     *
+     * 
      * @return the inboundNatRuleName value.
      */
     public String inboundNatRuleName() {
@@ -49,7 +53,7 @@ public final class InboundNatRulePortMapping {
 
     /**
      * Get the protocol property: The reference to the transport protocol used by the inbound NAT rule.
-     *
+     * 
      * @return the protocol value.
      */
     public TransportProtocol protocol() {
@@ -58,7 +62,7 @@ public final class InboundNatRulePortMapping {
 
     /**
      * Get the frontendPort property: Frontend port.
-     *
+     * 
      * @return the frontendPort value.
      */
     public Integer frontendPort() {
@@ -67,7 +71,7 @@ public final class InboundNatRulePortMapping {
 
     /**
      * Get the backendPort property: Backend port.
-     *
+     * 
      * @return the backendPort value.
      */
     public Integer backendPort() {
@@ -76,9 +80,50 @@ public final class InboundNatRulePortMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InboundNatRulePortMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InboundNatRulePortMapping if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InboundNatRulePortMapping.
+     */
+    public static InboundNatRulePortMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InboundNatRulePortMapping deserializedInboundNatRulePortMapping = new InboundNatRulePortMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("inboundNatRuleName".equals(fieldName)) {
+                    deserializedInboundNatRulePortMapping.inboundNatRuleName = reader.getString();
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedInboundNatRulePortMapping.protocol = TransportProtocol.fromString(reader.getString());
+                } else if ("frontendPort".equals(fieldName)) {
+                    deserializedInboundNatRulePortMapping.frontendPort = reader.getNullable(JsonReader::getInt);
+                } else if ("backendPort".equals(fieldName)) {
+                    deserializedInboundNatRulePortMapping.backendPort = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInboundNatRulePortMapping;
+        });
     }
 }

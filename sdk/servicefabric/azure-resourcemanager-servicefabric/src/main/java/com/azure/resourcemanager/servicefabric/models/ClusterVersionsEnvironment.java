@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ClusterVersionsEnvironment. */
+/**
+ * Defines values for ClusterVersionsEnvironment.
+ */
 public final class ClusterVersionsEnvironment extends ExpandableStringEnum<ClusterVersionsEnvironment> {
-    /** Static value Windows for ClusterVersionsEnvironment. */
+    /**
+     * Static value Windows for ClusterVersionsEnvironment.
+     */
     public static final ClusterVersionsEnvironment WINDOWS = fromString("Windows");
 
-    /** Static value Linux for ClusterVersionsEnvironment. */
+    /**
+     * Static value Linux for ClusterVersionsEnvironment.
+     */
     public static final ClusterVersionsEnvironment LINUX = fromString("Linux");
 
     /**
+     * Creates a new instance of ClusterVersionsEnvironment value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClusterVersionsEnvironment() {
+    }
+
+    /**
      * Creates or finds a ClusterVersionsEnvironment from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ClusterVersionsEnvironment.
      */
-    @JsonCreator
     public static ClusterVersionsEnvironment fromString(String name) {
         return fromString(name, ClusterVersionsEnvironment.class);
     }
 
-    /** @return known ClusterVersionsEnvironment values. */
+    /**
+     * Gets known ClusterVersionsEnvironment values.
+     * 
+     * @return known ClusterVersionsEnvironment values.
+     */
     public static Collection<ClusterVersionsEnvironment> values() {
         return values(ClusterVersionsEnvironment.class);
     }

@@ -6,58 +6,44 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.ProjectEnvironmentTypeUpdateProperties;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
 import com.azure.resourcemanager.devcenter.models.EnvironmentRole;
+import com.azure.resourcemanager.devcenter.models.EnvironmentTypeEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment;
 import com.azure.resourcemanager.devcenter.models.UserRoleAssignmentValue;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProjectEnvironmentTypeUpdatePropertiesTests {
-    @Test
-    public void testDeserialize() {
-        ProjectEnvironmentTypeUpdateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"deploymentTargetId\":\"wzbhvgyugu\",\"status\":\"Disabled\",\"creatorRoleAssignment\":{\"roles\":{\"mg\":{\"roleName\":\"sxqu\",\"description\":\"fpl\"},\"wzbaiue\":{\"roleName\":\"nkjzkdeslpvlop\",\"description\":\"yighxpk\"},\"smtxpsieb\":{\"roleName\":\"a\",\"description\":\"nyqupedeojnabck\"}}},\"userRoleAssignments\":{\"esap\":{\"roles\":{}},\"dqmh\":{\"roles\":{}},\"htldwk\":{\"roles\":{}},\"uutkncw\":{\"roles\":{}}}}")
-                .toObject(ProjectEnvironmentTypeUpdateProperties.class);
-        Assertions.assertEquals("wzbhvgyugu", model.deploymentTargetId());
-        Assertions.assertEquals(EnableStatus.DISABLED, model.status());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ProjectEnvironmentTypeUpdateProperties model = BinaryData.fromString(
+            "{\"deploymentTargetId\":\"dvstkw\",\"displayName\":\"tchealmf\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{\"udxepxgyqagv\":{\"roleName\":\"dvwvgpio\",\"description\":\"wxrt\"},\"j\":{\"roleName\":\"mnpkukghimdblxg\",\"description\":\"mfnjh\"}}},\"userRoleAssignments\":{\"vxwc\":{\"roles\":{\"a\":{\"roleName\":\"kfoqreyfkzikfj\",\"description\":\"n\"}}},\"zikhl\":{\"roles\":{\"abfatkl\":{\"roleName\":\"c\",\"description\":\"elsfeaen\"},\"xagl\":{\"roleName\":\"xbjhwuaanozjosph\",\"description\":\"ulpjr\"},\"fcktqumiekke\":{\"roleName\":\"imjwosyt\",\"description\":\"tcs\"}}}}}")
+            .toObject(ProjectEnvironmentTypeUpdateProperties.class);
+        Assertions.assertEquals("dvstkw", model.deploymentTargetId());
+        Assertions.assertEquals("tchealmf", model.displayName());
+        Assertions.assertEquals(EnvironmentTypeEnableStatus.ENABLED, model.status());
     }
 
-    @Test
-    public void testSerialize() {
-        ProjectEnvironmentTypeUpdateProperties model =
-            new ProjectEnvironmentTypeUpdateProperties()
-                .withDeploymentTargetId("wzbhvgyugu")
-                .withStatus(EnableStatus.DISABLED)
-                .withCreatorRoleAssignment(
-                    new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment()
-                        .withRoles(
-                            mapOf(
-                                "mg",
-                                new EnvironmentRole(),
-                                "wzbaiue",
-                                new EnvironmentRole(),
-                                "smtxpsieb",
-                                new EnvironmentRole())))
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ProjectEnvironmentTypeUpdateProperties model
+            = new ProjectEnvironmentTypeUpdateProperties().withDeploymentTargetId("dvstkw")
+                .withDisplayName("tchealmf")
+                .withStatus(EnvironmentTypeEnableStatus.ENABLED)
+                .withCreatorRoleAssignment(new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment()
+                    .withRoles(mapOf("udxepxgyqagv", new EnvironmentRole(), "j", new EnvironmentRole())))
                 .withUserRoleAssignments(
-                    mapOf(
-                        "esap",
-                        new UserRoleAssignmentValue().withRoles(mapOf()),
-                        "dqmh",
-                        new UserRoleAssignmentValue().withRoles(mapOf()),
-                        "htldwk",
-                        new UserRoleAssignmentValue().withRoles(mapOf()),
-                        "uutkncw",
-                        new UserRoleAssignmentValue().withRoles(mapOf())));
+                    mapOf("vxwc", new UserRoleAssignmentValue().withRoles(mapOf("a", new EnvironmentRole())), "zikhl",
+                        new UserRoleAssignmentValue().withRoles(mapOf("abfatkl", new EnvironmentRole(), "xagl",
+                            new EnvironmentRole(), "fcktqumiekke", new EnvironmentRole()))));
         model = BinaryData.fromObject(model).toObject(ProjectEnvironmentTypeUpdateProperties.class);
-        Assertions.assertEquals("wzbhvgyugu", model.deploymentTargetId());
-        Assertions.assertEquals(EnableStatus.DISABLED, model.status());
+        Assertions.assertEquals("dvstkw", model.deploymentTargetId());
+        Assertions.assertEquals("tchealmf", model.displayName());
+        Assertions.assertEquals(EnvironmentTypeEnableStatus.ENABLED, model.status());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

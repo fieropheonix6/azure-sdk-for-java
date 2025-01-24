@@ -6,7 +6,8 @@ package com.azure.resourcemanager.costmanagement.implementation;
 
 import com.azure.resourcemanager.costmanagement.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.costmanagement.models.OperationStatus;
-import com.azure.resourcemanager.costmanagement.models.Status;
+import com.azure.resourcemanager.costmanagement.models.OperationStatusType;
+import com.azure.resourcemanager.costmanagement.models.ReservationReportSchema;
 import java.time.OffsetDateTime;
 
 public final class OperationStatusImpl implements OperationStatus {
@@ -14,18 +15,17 @@ public final class OperationStatusImpl implements OperationStatus {
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    OperationStatusImpl(
-        OperationStatusInner innerObject,
+    OperationStatusImpl(OperationStatusInner innerObject,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
 
-    public Status status() {
+    public OperationStatusType status() {
         return this.innerModel().status();
     }
 
-    public String reportUrl() {
+    public ReservationReportSchema reportUrl() {
         return this.innerModel().reportUrl();
     }
 

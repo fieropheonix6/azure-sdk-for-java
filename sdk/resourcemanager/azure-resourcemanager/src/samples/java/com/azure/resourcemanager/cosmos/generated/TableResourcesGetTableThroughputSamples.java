@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for TableResources GetTableThroughput. */
+/**
+ * Samples for TableResources GetTableThroughput.
+ */
 public final class TableResourcesGetTableThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBTableThroughputGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
+     * CosmosDBTableThroughputGet.json
      */
     /**
      * Sample code: CosmosDBTableThroughputGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBTableThroughputGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
+        azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getTableResources()
-            .getTableThroughputWithResponse("rg1", "ddb1", "tableName", Context.NONE);
+            .getTableThroughputWithResponse("rg1", "ddb1", "tableName", com.azure.core.util.Context.NONE);
     }
 }

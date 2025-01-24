@@ -6,25 +6,50 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.BackendCredentialsContract;
 import com.azure.resourcemanager.apimanagement.models.BackendProperties;
 import com.azure.resourcemanager.apimanagement.models.BackendProtocol;
 import com.azure.resourcemanager.apimanagement.models.BackendProxyContract;
 import com.azure.resourcemanager.apimanagement.models.BackendTlsProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Backend details. */
+/**
+ * Backend details.
+ */
 @Fluent
 public final class BackendContractInner extends ProxyResource {
     /*
      * Backend entity contract properties.
      */
-    @JsonProperty(value = "properties")
     private BackendContractProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of BackendContractInner class.
+     */
+    public BackendContractInner() {
+    }
 
     /**
      * Get the innerProperties property: Backend entity contract properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BackendContractProperties innerProperties() {
@@ -32,8 +57,38 @@ public final class BackendContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the url property: Runtime Url of the Backend.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -42,7 +97,7 @@ public final class BackendContractInner extends ProxyResource {
 
     /**
      * Set the url property: Runtime Url of the Backend.
-     *
+     * 
      * @param url the url value to set.
      * @return the BackendContractInner object itself.
      */
@@ -56,7 +111,7 @@ public final class BackendContractInner extends ProxyResource {
 
     /**
      * Get the protocol property: Backend communication protocol.
-     *
+     * 
      * @return the protocol value.
      */
     public BackendProtocol protocol() {
@@ -65,7 +120,7 @@ public final class BackendContractInner extends ProxyResource {
 
     /**
      * Set the protocol property: Backend communication protocol.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the BackendContractInner object itself.
      */
@@ -79,7 +134,7 @@ public final class BackendContractInner extends ProxyResource {
 
     /**
      * Get the title property: Backend Title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -88,7 +143,7 @@ public final class BackendContractInner extends ProxyResource {
 
     /**
      * Set the title property: Backend Title.
-     *
+     * 
      * @param title the title value to set.
      * @return the BackendContractInner object itself.
      */
@@ -102,7 +157,7 @@ public final class BackendContractInner extends ProxyResource {
 
     /**
      * Get the description property: Backend Description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -111,7 +166,7 @@ public final class BackendContractInner extends ProxyResource {
 
     /**
      * Set the description property: Backend Description.
-     *
+     * 
      * @param description the description value to set.
      * @return the BackendContractInner object itself.
      */
@@ -124,9 +179,9 @@ public final class BackendContractInner extends ProxyResource {
     }
 
     /**
-     * Get the resourceId property: Management Uri of the Resource in External System. This url can be the Arm Resource
+     * Get the resourceId property: Management Uri of the Resource in External System. This URL can be the Arm Resource
      * Id of Logic Apps, Function Apps or API Apps.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -134,9 +189,9 @@ public final class BackendContractInner extends ProxyResource {
     }
 
     /**
-     * Set the resourceId property: Management Uri of the Resource in External System. This url can be the Arm Resource
+     * Set the resourceId property: Management Uri of the Resource in External System. This URL can be the Arm Resource
      * Id of Logic Apps, Function Apps or API Apps.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the BackendContractInner object itself.
      */
@@ -150,7 +205,7 @@ public final class BackendContractInner extends ProxyResource {
 
     /**
      * Get the properties property: Backend Properties contract.
-     *
+     * 
      * @return the properties value.
      */
     public BackendProperties properties() {
@@ -159,7 +214,7 @@ public final class BackendContractInner extends ProxyResource {
 
     /**
      * Set the properties property: Backend Properties contract.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the BackendContractInner object itself.
      */
@@ -173,7 +228,7 @@ public final class BackendContractInner extends ProxyResource {
 
     /**
      * Get the credentials property: Backend Credentials Contract Properties.
-     *
+     * 
      * @return the credentials value.
      */
     public BackendCredentialsContract credentials() {
@@ -182,7 +237,7 @@ public final class BackendContractInner extends ProxyResource {
 
     /**
      * Set the credentials property: Backend Credentials Contract Properties.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the BackendContractInner object itself.
      */
@@ -195,8 +250,8 @@ public final class BackendContractInner extends ProxyResource {
     }
 
     /**
-     * Get the proxy property: Backend Proxy Contract Properties.
-     *
+     * Get the proxy property: Backend gateway Contract Properties.
+     * 
      * @return the proxy value.
      */
     public BackendProxyContract proxy() {
@@ -204,8 +259,8 @@ public final class BackendContractInner extends ProxyResource {
     }
 
     /**
-     * Set the proxy property: Backend Proxy Contract Properties.
-     *
+     * Set the proxy property: Backend gateway Contract Properties.
+     * 
      * @param proxy the proxy value to set.
      * @return the BackendContractInner object itself.
      */
@@ -219,7 +274,7 @@ public final class BackendContractInner extends ProxyResource {
 
     /**
      * Get the tls property: Backend TLS Properties.
-     *
+     * 
      * @return the tls value.
      */
     public BackendTlsProperties tls() {
@@ -228,7 +283,7 @@ public final class BackendContractInner extends ProxyResource {
 
     /**
      * Set the tls property: Backend TLS Properties.
-     *
+     * 
      * @param tls the tls value to set.
      * @return the BackendContractInner object itself.
      */
@@ -242,12 +297,55 @@ public final class BackendContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackendContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackendContractInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BackendContractInner.
+     */
+    public static BackendContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackendContractInner deserializedBackendContractInner = new BackendContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBackendContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBackendContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBackendContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBackendContractInner.innerProperties = BackendContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackendContractInner;
+        });
     }
 }

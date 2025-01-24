@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity sink for a CosmosDB (MongoDB API) database. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("CosmosDbMongoDbApiSink")
+/**
+ * A copy activity sink for a CosmosDB (MongoDB API) database.
+ */
 @Fluent
 public final class CosmosDbMongoDbApiSink extends CopySink {
     /*
-     * Specifies whether the document with same key to be overwritten (upsert) rather than throw exception (insert).
-     * The default value is "insert". Type: string (or Expression with resultType string). Type: string (or Expression
-     * with resultType string).
+     * Copy sink type.
      */
-    @JsonProperty(value = "writeBehavior")
+    private String type = "CosmosDbMongoDbApiSink";
+
+    /*
+     * Specifies whether the document with same key to be overwritten (upsert) rather than throw exception (insert). The
+     * default value is "insert". Type: string (or Expression with resultType string). Type: string (or Expression with
+     * resultType string).
+     */
     private Object writeBehavior;
 
-    /** Creates an instance of CosmosDbMongoDbApiSink class. */
+    /**
+     * Creates an instance of CosmosDbMongoDbApiSink class.
+     */
     public CosmosDbMongoDbApiSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
      * Get the writeBehavior property: Specifies whether the document with same key to be overwritten (upsert) rather
      * than throw exception (insert). The default value is "insert". Type: string (or Expression with resultType
      * string). Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the writeBehavior value.
      */
     public Object writeBehavior() {
@@ -41,7 +60,7 @@ public final class CosmosDbMongoDbApiSink extends CopySink {
      * Set the writeBehavior property: Specifies whether the document with same key to be overwritten (upsert) rather
      * than throw exception (insert). The default value is "insert". Type: string (or Expression with resultType
      * string). Type: string (or Expression with resultType string).
-     *
+     * 
      * @param writeBehavior the writeBehavior value to set.
      * @return the CosmosDbMongoDbApiSink object itself.
      */
@@ -50,42 +69,54 @@ public final class CosmosDbMongoDbApiSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CosmosDbMongoDbApiSink withWriteBatchSize(Object writeBatchSize) {
         super.withWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CosmosDbMongoDbApiSink withWriteBatchTimeout(Object writeBatchTimeout) {
         super.withWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CosmosDbMongoDbApiSink withSinkRetryCount(Object sinkRetryCount) {
         super.withSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CosmosDbMongoDbApiSink withSinkRetryWait(Object sinkRetryWait) {
         super.withSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CosmosDbMongoDbApiSink withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CosmosDbMongoDbApiSink withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -94,11 +125,78 @@ public final class CosmosDbMongoDbApiSink extends CopySink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("writeBehavior", this.writeBehavior);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CosmosDbMongoDbApiSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CosmosDbMongoDbApiSink if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CosmosDbMongoDbApiSink.
+     */
+    public static CosmosDbMongoDbApiSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CosmosDbMongoDbApiSink deserializedCosmosDbMongoDbApiSink = new CosmosDbMongoDbApiSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiSink.withWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiSink.withWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiSink.withSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiSink.withSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiSink.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiSink.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiSink.type = reader.getString();
+                } else if ("writeBehavior".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiSink.writeBehavior = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedCosmosDbMongoDbApiSink.withAdditionalProperties(additionalProperties);
+
+            return deserializedCosmosDbMongoDbApiSink;
+        });
     }
 }

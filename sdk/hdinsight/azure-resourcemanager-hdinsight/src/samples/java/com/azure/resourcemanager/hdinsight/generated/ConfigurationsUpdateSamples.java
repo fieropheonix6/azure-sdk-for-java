@@ -4,51 +4,48 @@
 
 package com.azure.resourcemanager.hdinsight.generated;
 
-import com.azure.core.util.Context;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Configurations Update. */
+/**
+ * Samples for Configurations Update.
+ */
 public final class ConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/ChangeHttpConnectivityEnable.json
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * ChangeHttpConnectivityEnable.json
      */
     /**
      * Sample code: Enable HTTP connectivity.
-     *
+     * 
      * @param manager Entry point to HDInsightManager.
      */
     public static void enableHTTPConnectivity(com.azure.resourcemanager.hdinsight.HDInsightManager manager) {
-        manager
-            .configurations()
-            .update(
-                "rg1",
-                "cluster1",
-                "gateway",
-                mapOf(
-                    "restAuthCredential.isEnabled",
-                    "true",
-                    "restAuthCredential.password",
-                    "**********",
-                    "restAuthCredential.username",
-                    "hadoop"),
-                Context.NONE);
+        manager.configurations()
+            .update("rg1", "cluster1", "gateway",
+                mapOf("restAuthCredential.isEnabled", "fakeTokenPlaceholder", "restAuthCredential.password",
+                    "fakeTokenPlaceholder", "restAuthCredential.username", "fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/ChangeHttpConnectivityDisable.json
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * ChangeHttpConnectivityDisable.json
      */
     /**
      * Sample code: Disable HTTP connectivity.
-     *
+     * 
      * @param manager Entry point to HDInsightManager.
      */
     public static void disableHTTPConnectivity(com.azure.resourcemanager.hdinsight.HDInsightManager manager) {
-        manager
-            .configurations()
-            .update("rg1", "cluster1", "gateway", mapOf("restAuthCredential.isEnabled", "false"), Context.NONE);
+        manager.configurations()
+            .update("rg1", "cluster1", "gateway", mapOf("restAuthCredential.isEnabled", "fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

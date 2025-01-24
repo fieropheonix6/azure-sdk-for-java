@@ -3,100 +3,71 @@
 
 package com.azure.containers.containerregistry.implementation.authentication;
 
-import com.azure.containers.containerregistry.implementation.models.TokenGrantType;
+import com.azure.containers.containerregistry.ContainerRegistryServiceVersion;
+import com.azure.containers.containerregistry.implementation.AuthenticationsImpl;
+import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
+import com.azure.containers.containerregistry.implementation.models.AcrAccessToken;
+import com.azure.containers.containerregistry.implementation.models.AcrRefreshToken;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.serializer.SerializerAdapter;
-import org.junit.jupiter.api.BeforeEach;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.test.http.MockHttpResponse;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.test.StepVerifier;
 
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import java.util.concurrent.CountDownLatch;
+import java.util.Base64;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ContainerRegistryTokenServiceTest {
-
-    private TokenCredential tokenCredential;
-    private HttpPipeline httpPipeline;
-    private SerializerAdapter serializerAdapter;
-    private TokenServiceImpl tokenServiceImpl;
-    private AccessTokenCacheImpl refreshTokenCache;
-    private ContainerRegistryTokenRequestContext requestContext;
-    private ContainerRegistryRefreshTokenCredential refreshTokenCredential;
-
-    private static final String SCOPE = "scope";
-    private static final String SERVICENAME = "serviceName";
-    private static final String REFRESHTOKEN = "refresh_token";
-    private static final String ACCESSTOKEN = "access_token";
-
-    @BeforeEach
-    public void setup() {
-        this.httpPipeline = mock(HttpPipeline.class);
-        this.serializerAdapter = mock(SerializerAdapter.class);
-
-        TokenServiceImpl impl = mock(TokenServiceImpl.class);
-        AccessToken refreshToken = new AccessToken(REFRESHTOKEN, OffsetDateTime.now().plusMinutes(30));
-        AccessToken accessToken = new AccessToken(ACCESSTOKEN, OffsetDateTime.now().plusMinutes(30));
-        when(impl.getAcrAccessTokenAsync(anyString(), anyString(), anyString(), any(TokenGrantType.class))).thenReturn(Mono.just(accessToken));
-        when(impl.getAcrRefreshTokenAsync(anyString(), anyString())).thenReturn(Mono.just(refreshToken));
-
-        TokenCredential tokenCredential = mock(TokenCredential.class);
-        when(tokenCredential.getToken(any(TokenRequestContext.class))).thenReturn(Mono.just(accessToken));
-
-        ContainerRegistryTokenRequestContext tokenRequestContext = mock(ContainerRegistryTokenRequestContext.class);
-        when(tokenRequestContext.getScope()).thenReturn(SCOPE);
-        when(tokenRequestContext.getServiceName()).thenReturn(SERVICENAME);
-
-        ContainerRegistryRefreshTokenCredential spyRefreshTokenCredential = spy(mock(ContainerRegistryRefreshTokenCredential.class));
-        doReturn(Mono.just(refreshToken)).when(spyRefreshTokenCredential).getToken(any(ContainerRegistryTokenRequestContext.class));
-
-
-
-        AccessTokenCacheImpl refreshTokenCache = new AccessTokenCacheImpl(spyRefreshTokenCredential);
-        this.tokenCredential = tokenCredential;
-        this.refreshTokenCache = refreshTokenCache;
-        this.refreshTokenCredential = spyRefreshTokenCredential;
-        this.requestContext = tokenRequestContext;
-        this.tokenServiceImpl = impl;
-    }
-
     @Test
-    public void refreshTokenRestAPICalledOnlyOnce() throws Exception {
-        ContainerRegistryTokenService service = new ContainerRegistryTokenService(
-            this.tokenCredential,
-            null,
-            "myString",
-            null,
-            this.httpPipeline,
-            this.serializerAdapter
-        );
+    public void refreshTokenRestAPICalledOnlyOnce() {
+        String mockToken = "{\"exp\":" + OffsetDateTime.now().plusHours(1).toEpochSecond() + "}";
+        String mockBase64 = "." + Base64.getEncoder().encodeToString(mockToken.getBytes(StandardCharsets.UTF_8)) + ".";
+        AcrRefreshToken refreshToken = new AcrRefreshToken().setRefreshToken(mockBase64);
+        AcrAccessToken accessToken = new AcrAccessToken().setAccessToken(mockBase64);
 
-        service.setTokenService(this.tokenServiceImpl);
-        service.setRefreshTokenCache(this.refreshTokenCache);
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            String path = request.getUrl().getPath();
+            if (request.getUrl().getPath().contains("/oauth2/token")) {
+                return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(), accessToken));
+            } else if (path.contains("/oauth2/exchange")) {
+                return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(), refreshToken));
+            } else {
+                return null;
+            }
+        }).build();
+        AuthenticationsImpl authenticationsImpl = new AzureContainerRegistryImpl(pipeline, "https://mytest.azurecr.io",
+            ContainerRegistryServiceVersion.getLatest().toString()).getAuthentications();
+        AtomicInteger callCount = new AtomicInteger();
+        TokenCredential refreshTokenCredential = tokenRequestContext -> {
+            int count = callCount.getAndIncrement();
+            if (count == 0) {
+                return Mono.just(new AccessToken(accessToken.getAccessToken(), OffsetDateTime.now().plusHours(1)));
+            } else if (count == 1) {
+                return Mono.just(new AccessToken(refreshToken.getRefreshToken(), OffsetDateTime.now().plusHours(1)));
+            } else {
+                return null;
+            }
+        };
 
-        CountDownLatch latch = new CountDownLatch(1);
+        ContainerRegistryTokenService service
+            = new ContainerRegistryTokenService(authenticationsImpl, new AccessTokenCacheImpl(refreshTokenCredential));
 
-        Flux.range(1, 10)
-            .flatMap(i -> Mono.just(OffsetDateTime.now())
-                // Runs cache.getToken() on 10 different threads
-                .subscribeOn(Schedulers.newParallel("pool", 10))
-                .flatMap(
-                    start -> service.getToken(this.requestContext).map(accessToken -> 1))
-                )
-                .doOnComplete(latch::countDown)
-                .subscribe();
+        int count = 10;
+        StepVerifier.create(Flux.range(1, count)
+            .flatMap(i -> service.getToken(new ContainerRegistryTokenRequestContext("serviceName", "scope")))
+            .subscribeOn(Schedulers.newParallel("pool", count))).expectNextCount(count).verifyComplete();
 
-        latch.await();
-
-        // We call the acrrefreshToken method only once.
-        verify(this.refreshTokenCredential, times(1)).getToken(this.requestContext);
-
+        // We call the refreshToken method only once.
+        assertEquals(1, callCount.get());
     }
 }

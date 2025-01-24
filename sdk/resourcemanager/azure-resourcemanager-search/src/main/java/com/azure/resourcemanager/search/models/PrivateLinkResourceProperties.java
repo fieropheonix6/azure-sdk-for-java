@@ -5,43 +5,48 @@
 package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * Describes the properties of a supported private link resource for the Azure Cognitive Search service. For a given API
- * version, this represents the 'supported' groupIds when creating a shared private link resource.
+ * Describes the properties of a supported private link resource for the search service. For a given API version, this
+ * represents the 'supported' groupIds when creating a shared private link resource.
  */
 @Immutable
-public final class PrivateLinkResourceProperties {
+public final class PrivateLinkResourceProperties implements JsonSerializable<PrivateLinkResourceProperties> {
     /*
      * The group ID of the private link resource.
      */
-    @JsonProperty(value = "groupId", access = JsonProperty.Access.WRITE_ONLY)
     private String groupId;
 
     /*
      * The list of required members of the private link resource.
      */
-    @JsonProperty(value = "requiredMembers", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> requiredMembers;
 
     /*
      * The list of required DNS zone names of the private link resource.
      */
-    @JsonProperty(value = "requiredZoneNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> requiredZoneNames;
 
     /*
-     * The list of resources that are onboarded to private link service, that
-     * are supported by Azure Cognitive Search.
+     * The list of resources that are onboarded to private link service and that are supported by search.
      */
-    @JsonProperty(value = "shareablePrivateLinkResourceTypes", access = JsonProperty.Access.WRITE_ONLY)
     private List<ShareablePrivateLinkResourceType> shareablePrivateLinkResourceTypes;
 
     /**
+     * Creates an instance of PrivateLinkResourceProperties class.
+     */
+    public PrivateLinkResourceProperties() {
+    }
+
+    /**
      * Get the groupId property: The group ID of the private link resource.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -50,7 +55,7 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Get the requiredMembers property: The list of required members of the private link resource.
-     *
+     * 
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -59,7 +64,7 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Get the requiredZoneNames property: The list of required DNS zone names of the private link resource.
-     *
+     * 
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -68,8 +73,8 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Get the shareablePrivateLinkResourceTypes property: The list of resources that are onboarded to private link
-     * service, that are supported by Azure Cognitive Search.
-     *
+     * service and that are supported by search.
+     * 
      * @return the shareablePrivateLinkResourceTypes value.
      */
     public List<ShareablePrivateLinkResourceType> shareablePrivateLinkResourceTypes() {
@@ -78,12 +83,59 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (shareablePrivateLinkResourceTypes() != null) {
             shareablePrivateLinkResourceTypes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkResourceProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateLinkResourceProperties.
+     */
+    public static PrivateLinkResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkResourceProperties deserializedPrivateLinkResourceProperties
+                = new PrivateLinkResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groupId".equals(fieldName)) {
+                    deserializedPrivateLinkResourceProperties.groupId = reader.getString();
+                } else if ("requiredMembers".equals(fieldName)) {
+                    List<String> requiredMembers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrivateLinkResourceProperties.requiredMembers = requiredMembers;
+                } else if ("requiredZoneNames".equals(fieldName)) {
+                    List<String> requiredZoneNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrivateLinkResourceProperties.requiredZoneNames = requiredZoneNames;
+                } else if ("shareablePrivateLinkResourceTypes".equals(fieldName)) {
+                    List<ShareablePrivateLinkResourceType> shareablePrivateLinkResourceTypes
+                        = reader.readArray(reader1 -> ShareablePrivateLinkResourceType.fromJson(reader1));
+                    deserializedPrivateLinkResourceProperties.shareablePrivateLinkResourceTypes
+                        = shareablePrivateLinkResourceTypes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkResourceProperties;
+        });
     }
 }

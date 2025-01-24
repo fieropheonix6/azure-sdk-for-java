@@ -6,6 +6,9 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ChildResource;
 import com.azure.resourcemanager.network.models.ConnectivityGroupItem;
 import com.azure.resourcemanager.network.models.ConnectivityTopology;
@@ -13,31 +16,53 @@ import com.azure.resourcemanager.network.models.DeleteExistingPeering;
 import com.azure.resourcemanager.network.models.Hub;
 import com.azure.resourcemanager.network.models.IsGlobal;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The network manager connectivity configuration resource. */
+/**
+ * The network manager connectivity configuration resource.
+ */
 @Fluent
 public final class ConnectivityConfigurationInner extends ChildResource {
     /*
      * Properties of a network manager connectivity configuration
      */
-    @JsonProperty(value = "properties")
     private ConnectivityConfigurationProperties innerProperties;
 
     /*
      * The system metadata related to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ConnectivityConfigurationInner class. */
+    /*
+     * A unique read-only string that changes whenever the resource is updated.
+     */
+    private String etag;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ConnectivityConfigurationInner class.
+     */
     public ConnectivityConfigurationInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of a network manager connectivity configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ConnectivityConfigurationProperties innerProperties() {
@@ -46,7 +71,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Get the systemData property: The system metadata related to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -54,8 +79,48 @@ public final class ConnectivityConfigurationInner extends ChildResource {
     }
 
     /**
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the description property: A description of the connectivity configuration.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -64,7 +129,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Set the description property: A description of the connectivity configuration.
-     *
+     * 
      * @param description the description value to set.
      * @return the ConnectivityConfigurationInner object itself.
      */
@@ -78,7 +143,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Get the connectivityTopology property: Connectivity topology type.
-     *
+     * 
      * @return the connectivityTopology value.
      */
     public ConnectivityTopology connectivityTopology() {
@@ -87,7 +152,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Set the connectivityTopology property: Connectivity topology type.
-     *
+     * 
      * @param connectivityTopology the connectivityTopology value to set.
      * @return the ConnectivityConfigurationInner object itself.
      */
@@ -101,7 +166,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Get the hubs property: List of hubItems.
-     *
+     * 
      * @return the hubs value.
      */
     public List<Hub> hubs() {
@@ -110,7 +175,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Set the hubs property: List of hubItems.
-     *
+     * 
      * @param hubs the hubs value to set.
      * @return the ConnectivityConfigurationInner object itself.
      */
@@ -124,7 +189,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Get the isGlobal property: Flag if global mesh is supported.
-     *
+     * 
      * @return the isGlobal value.
      */
     public IsGlobal isGlobal() {
@@ -133,7 +198,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Set the isGlobal property: Flag if global mesh is supported.
-     *
+     * 
      * @param isGlobal the isGlobal value to set.
      * @return the ConnectivityConfigurationInner object itself.
      */
@@ -147,7 +212,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Get the appliesToGroups property: Groups for configuration.
-     *
+     * 
      * @return the appliesToGroups value.
      */
     public List<ConnectivityGroupItem> appliesToGroups() {
@@ -156,7 +221,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Set the appliesToGroups property: Groups for configuration.
-     *
+     * 
      * @param appliesToGroups the appliesToGroups value to set.
      * @return the ConnectivityConfigurationInner object itself.
      */
@@ -170,7 +235,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the connectivity configuration resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -179,7 +244,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Get the deleteExistingPeering property: Flag if need to remove current existing peerings.
-     *
+     * 
      * @return the deleteExistingPeering value.
      */
     public DeleteExistingPeering deleteExistingPeering() {
@@ -188,7 +253,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
 
     /**
      * Set the deleteExistingPeering property: Flag if need to remove current existing peerings.
-     *
+     * 
      * @param deleteExistingPeering the deleteExistingPeering value to set.
      * @return the ConnectivityConfigurationInner object itself.
      */
@@ -201,15 +266,72 @@ public final class ConnectivityConfigurationInner extends ChildResource {
     }
 
     /**
+     * Get the resourceGuid property: Unique identifier for this resource.
+     * 
+     * @return the resourceGuid value.
+     */
+    public String resourceGuid() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceGuid();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectivityConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectivityConfigurationInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectivityConfigurationInner.
+     */
+    public static ConnectivityConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectivityConfigurationInner deserializedConnectivityConfigurationInner
+                = new ConnectivityConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConnectivityConfigurationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedConnectivityConfigurationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedConnectivityConfigurationInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedConnectivityConfigurationInner.etag = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedConnectivityConfigurationInner.innerProperties
+                        = ConnectivityConfigurationProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedConnectivityConfigurationInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectivityConfigurationInner;
+        });
     }
 }

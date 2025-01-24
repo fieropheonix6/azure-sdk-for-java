@@ -7,25 +7,23 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.ComputeIsolationProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ComputeIsolationPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        ComputeIsolationProperties model =
-            BinaryData
-                .fromString("{\"enableComputeIsolation\":false,\"hostSku\":\"rfidfvzwdz\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ComputeIsolationProperties model
+            = BinaryData.fromString("{\"enableComputeIsolation\":true,\"hostSku\":\"dhxujznbmpo\"}")
                 .toObject(ComputeIsolationProperties.class);
-        Assertions.assertEquals(false, model.enableComputeIsolation());
-        Assertions.assertEquals("rfidfvzwdz", model.hostSku());
+        Assertions.assertEquals(true, model.enableComputeIsolation());
+        Assertions.assertEquals("dhxujznbmpo", model.hostSku());
     }
 
-    @Test
-    public void testSerialize() {
-        ComputeIsolationProperties model =
-            new ComputeIsolationProperties().withEnableComputeIsolation(false).withHostSku("rfidfvzwdz");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ComputeIsolationProperties model
+            = new ComputeIsolationProperties().withEnableComputeIsolation(true).withHostSku("dhxujznbmpo");
         model = BinaryData.fromObject(model).toObject(ComputeIsolationProperties.class);
-        Assertions.assertEquals(false, model.enableComputeIsolation());
-        Assertions.assertEquals("rfidfvzwdz", model.hostSku());
+        Assertions.assertEquals(true, model.enableComputeIsolation());
+        Assertions.assertEquals("dhxujznbmpo", model.hostSku());
     }
 }

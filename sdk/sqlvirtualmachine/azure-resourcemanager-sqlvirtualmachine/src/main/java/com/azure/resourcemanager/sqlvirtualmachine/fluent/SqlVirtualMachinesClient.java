@@ -14,43 +14,45 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.SqlVirtualMachineInner;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachineUpdate;
 
-/** An instance of this class provides access to all the operations defined in SqlVirtualMachinesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlVirtualMachinesClient.
+ */
 public interface SqlVirtualMachinesClient {
     /**
      * Gets the list of sql virtual machines in a SQL virtual machine group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of sql virtual machines in a SQL virtual machine group as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of sql virtual machines in a SQL virtual machine group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SqlVirtualMachineInner> listBySqlVmGroup(String resourceGroupName, String sqlVirtualMachineGroupName);
 
     /**
      * Gets the list of sql virtual machines in a SQL virtual machine group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of sql virtual machines in a SQL virtual machine group as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of sql virtual machines in a SQL virtual machine group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlVirtualMachineInner> listBySqlVmGroup(
-        String resourceGroupName, String sqlVirtualMachineGroupName, Context context);
+    PagedIterable<SqlVirtualMachineInner> listBySqlVmGroup(String resourceGroupName, String sqlVirtualMachineGroupName,
+        Context context);
 
     /**
      * Gets all SQL virtual machines in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all SQL virtual machines in a subscription as paginated response with {@link PagedIterable}.
@@ -60,7 +62,7 @@ public interface SqlVirtualMachinesClient {
 
     /**
      * Gets all SQL virtual machines in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -71,124 +73,27 @@ public interface SqlVirtualMachinesClient {
     PagedIterable<SqlVirtualMachineInner> list(Context context);
 
     /**
-     * Starts Assessment on SQL virtual machine.
-     *
+     * Gets a SQL virtual machine.
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStartAssessment(String resourceGroupName, String sqlVirtualMachineName);
-
-    /**
-     * Starts Assessment on SQL virtual machine.
-     *
-     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
-     * @param sqlVirtualMachineName Name of the SQL virtual machine.
+     * @param expand The child resources to include in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStartAssessment(
-        String resourceGroupName, String sqlVirtualMachineName, Context context);
-
-    /**
-     * Starts Assessment on SQL virtual machine.
-     *
-     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
-     * @param sqlVirtualMachineName Name of the SQL virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SQL virtual machine along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void startAssessment(String resourceGroupName, String sqlVirtualMachineName);
-
-    /**
-     * Starts Assessment on SQL virtual machine.
-     *
-     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
-     * @param sqlVirtualMachineName Name of the SQL virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void startAssessment(String resourceGroupName, String sqlVirtualMachineName, Context context);
-
-    /**
-     * Uninstalls and reinstalls the SQL Iaas Extension.
-     *
-     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
-     * @param sqlVirtualMachineName Name of the SQL virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRedeploy(String resourceGroupName, String sqlVirtualMachineName);
-
-    /**
-     * Uninstalls and reinstalls the SQL Iaas Extension.
-     *
-     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
-     * @param sqlVirtualMachineName Name of the SQL virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRedeploy(
-        String resourceGroupName, String sqlVirtualMachineName, Context context);
-
-    /**
-     * Uninstalls and reinstalls the SQL Iaas Extension.
-     *
-     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
-     * @param sqlVirtualMachineName Name of the SQL virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void redeploy(String resourceGroupName, String sqlVirtualMachineName);
-
-    /**
-     * Uninstalls and reinstalls the SQL Iaas Extension.
-     *
-     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
-     * @param sqlVirtualMachineName Name of the SQL virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void redeploy(String resourceGroupName, String sqlVirtualMachineName, Context context);
+    Response<SqlVirtualMachineInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String sqlVirtualMachineName, String expand, Context context);
 
     /**
      * Gets a SQL virtual machine.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -199,27 +104,10 @@ public interface SqlVirtualMachinesClient {
     SqlVirtualMachineInner getByResourceGroup(String resourceGroupName, String sqlVirtualMachineName);
 
     /**
-     * Gets a SQL virtual machine.
-     *
-     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
-     * @param sqlVirtualMachineName Name of the SQL virtual machine.
-     * @param expand The child resources to include in the response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL virtual machine along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlVirtualMachineInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String sqlVirtualMachineName, String expand, Context context);
-
-    /**
      * Creates or updates a SQL virtual machine.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,14 +116,14 @@ public interface SqlVirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginCreateOrUpdate(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters);
+    SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginCreateOrUpdate(String resourceGroupName,
+        String sqlVirtualMachineName, SqlVirtualMachineInner parameters);
 
     /**
      * Creates or updates a SQL virtual machine.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine.
      * @param context The context to associate with this operation.
@@ -245,14 +133,14 @@ public interface SqlVirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginCreateOrUpdate(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters, Context context);
+    SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginCreateOrUpdate(String resourceGroupName,
+        String sqlVirtualMachineName, SqlVirtualMachineInner parameters, Context context);
 
     /**
      * Creates or updates a SQL virtual machine.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -261,14 +149,14 @@ public interface SqlVirtualMachinesClient {
      * @return a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlVirtualMachineInner createOrUpdate(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters);
+    SqlVirtualMachineInner createOrUpdate(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVirtualMachineInner parameters);
 
     /**
      * Creates or updates a SQL virtual machine.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine.
      * @param context The context to associate with this operation.
@@ -278,14 +166,14 @@ public interface SqlVirtualMachinesClient {
      * @return a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlVirtualMachineInner createOrUpdate(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters, Context context);
+    SqlVirtualMachineInner createOrUpdate(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVirtualMachineInner parameters, Context context);
 
     /**
      * Deletes a SQL virtual machine.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -297,9 +185,9 @@ public interface SqlVirtualMachinesClient {
 
     /**
      * Deletes a SQL virtual machine.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -308,14 +196,14 @@ public interface SqlVirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String sqlVirtualMachineName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sqlVirtualMachineName,
+        Context context);
 
     /**
      * Deletes a SQL virtual machine.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -326,9 +214,9 @@ public interface SqlVirtualMachinesClient {
 
     /**
      * Deletes a SQL virtual machine.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -340,9 +228,9 @@ public interface SqlVirtualMachinesClient {
 
     /**
      * Updates a SQL virtual machine.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -351,14 +239,14 @@ public interface SqlVirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginUpdate(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters);
+    SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginUpdate(String resourceGroupName,
+        String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters);
 
     /**
      * Updates a SQL virtual machine.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine.
      * @param context The context to associate with this operation.
@@ -368,14 +256,14 @@ public interface SqlVirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginUpdate(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters, Context context);
+    SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginUpdate(String resourceGroupName,
+        String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters, Context context);
 
     /**
      * Updates a SQL virtual machine.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -384,14 +272,14 @@ public interface SqlVirtualMachinesClient {
      * @return a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlVirtualMachineInner update(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters);
+    SqlVirtualMachineInner update(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVirtualMachineUpdate parameters);
 
     /**
      * Updates a SQL virtual machine.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine.
      * @param context The context to associate with this operation.
@@ -401,14 +289,14 @@ public interface SqlVirtualMachinesClient {
      * @return a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlVirtualMachineInner update(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters, Context context);
+    SqlVirtualMachineInner update(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVirtualMachineUpdate parameters, Context context);
 
     /**
      * Gets all SQL virtual machines in a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -419,9 +307,9 @@ public interface SqlVirtualMachinesClient {
 
     /**
      * Gets all SQL virtual machines in a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -430,4 +318,118 @@ public interface SqlVirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SqlVirtualMachineInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Starts SQL best practices Assessment on SQL virtual machine.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName Name of the SQL virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginStartAssessment(String resourceGroupName, String sqlVirtualMachineName);
+
+    /**
+     * Starts SQL best practices Assessment on SQL virtual machine.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName Name of the SQL virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginStartAssessment(String resourceGroupName, String sqlVirtualMachineName,
+        Context context);
+
+    /**
+     * Starts SQL best practices Assessment on SQL virtual machine.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName Name of the SQL virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void startAssessment(String resourceGroupName, String sqlVirtualMachineName);
+
+    /**
+     * Starts SQL best practices Assessment on SQL virtual machine.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName Name of the SQL virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void startAssessment(String resourceGroupName, String sqlVirtualMachineName, Context context);
+
+    /**
+     * Uninstalls and reinstalls the SQL IaaS Extension.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName Name of the SQL virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRedeploy(String resourceGroupName, String sqlVirtualMachineName);
+
+    /**
+     * Uninstalls and reinstalls the SQL IaaS Extension.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName Name of the SQL virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRedeploy(String resourceGroupName, String sqlVirtualMachineName,
+        Context context);
+
+    /**
+     * Uninstalls and reinstalls the SQL IaaS Extension.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName Name of the SQL virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void redeploy(String resourceGroupName, String sqlVirtualMachineName);
+
+    /**
+     * Uninstalls and reinstalls the SQL IaaS Extension.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName Name of the SQL virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void redeploy(String resourceGroupName, String sqlVirtualMachineName, Context context);
 }

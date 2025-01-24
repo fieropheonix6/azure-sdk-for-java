@@ -7,24 +7,21 @@ package com.azure.resourcemanager.devcenter.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.UsageName;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UsageNameTests {
-    @Test
-    public void testDeserialize() {
-        UsageName model =
-            BinaryData
-                .fromString("{\"localizedValue\":\"clvit\",\"value\":\"qzonosggbhcohf\"}")
-                .toObject(UsageName.class);
-        Assertions.assertEquals("clvit", model.localizedValue());
-        Assertions.assertEquals("qzonosggbhcohf", model.value());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        UsageName model = BinaryData.fromString("{\"localizedValue\":\"elfk\",\"value\":\"plcrpwjxeznoig\"}")
+            .toObject(UsageName.class);
+        Assertions.assertEquals("elfk", model.localizedValue());
+        Assertions.assertEquals("plcrpwjxeznoig", model.value());
     }
 
-    @Test
-    public void testSerialize() {
-        UsageName model = new UsageName().withLocalizedValue("clvit").withValue("qzonosggbhcohf");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        UsageName model = new UsageName().withLocalizedValue("elfk").withValue("plcrpwjxeznoig");
         model = BinaryData.fromObject(model).toObject(UsageName.class);
-        Assertions.assertEquals("clvit", model.localizedValue());
-        Assertions.assertEquals("qzonosggbhcohf", model.value());
+        Assertions.assertEquals("elfk", model.localizedValue());
+        Assertions.assertEquals("plcrpwjxeznoig", model.value());
     }
 }

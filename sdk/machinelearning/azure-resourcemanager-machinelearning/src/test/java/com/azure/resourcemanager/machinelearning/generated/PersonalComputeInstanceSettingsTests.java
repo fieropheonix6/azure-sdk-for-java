@@ -8,26 +8,23 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.AssignedUser;
 import com.azure.resourcemanager.machinelearning.models.PersonalComputeInstanceSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PersonalComputeInstanceSettingsTests {
-    @Test
-    public void testDeserialize() {
-        PersonalComputeInstanceSettings model =
-            BinaryData
-                .fromString("{\"assignedUser\":{\"objectId\":\"emc\",\"tenantId\":\"jk\"}}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PersonalComputeInstanceSettings model
+            = BinaryData.fromString("{\"assignedUser\":{\"objectId\":\"rgkrfi\",\"tenantId\":\"rpywlptyuqh\"}}")
                 .toObject(PersonalComputeInstanceSettings.class);
-        Assertions.assertEquals("emc", model.assignedUser().objectId());
-        Assertions.assertEquals("jk", model.assignedUser().tenantId());
+        Assertions.assertEquals("rgkrfi", model.assignedUser().objectId());
+        Assertions.assertEquals("rpywlptyuqh", model.assignedUser().tenantId());
     }
 
-    @Test
-    public void testSerialize() {
-        PersonalComputeInstanceSettings model =
-            new PersonalComputeInstanceSettings()
-                .withAssignedUser(new AssignedUser().withObjectId("emc").withTenantId("jk"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PersonalComputeInstanceSettings model = new PersonalComputeInstanceSettings()
+            .withAssignedUser(new AssignedUser().withObjectId("rgkrfi").withTenantId("rpywlptyuqh"));
         model = BinaryData.fromObject(model).toObject(PersonalComputeInstanceSettings.class);
-        Assertions.assertEquals("emc", model.assignedUser().objectId());
-        Assertions.assertEquals("jk", model.assignedUser().tenantId());
+        Assertions.assertEquals("rgkrfi", model.assignedUser().objectId());
+        Assertions.assertEquals("rpywlptyuqh", model.assignedUser().tenantId());
     }
 }

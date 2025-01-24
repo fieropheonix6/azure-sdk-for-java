@@ -4,32 +4,20 @@
 
 package com.azure.resourcemanager.servicefabric.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ApplicationTypeVersions. */
+/**
+ * Resource collection API of ApplicationTypeVersions.
+ */
 public interface ApplicationTypeVersions {
     /**
+     * Gets a Service Fabric application type version resource.
+     * 
      * Get a Service Fabric application type version resource created or in the process of being created in the Service
      * Fabric application type name resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationTypeName The name of the application type name resource.
-     * @param version The application type version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric application type version resource created or in the process of being created in the
-     *     Service Fabric application type name resource.
-     */
-    ApplicationTypeVersionResource get(
-        String resourceGroupName, String clusterName, String applicationTypeName, String version);
-
-    /**
-     * Get a Service Fabric application type version resource created or in the process of being created in the Service
-     * Fabric application type name resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -39,14 +27,35 @@ public interface ApplicationTypeVersions {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric application type version resource created or in the process of being created in the
-     *     Service Fabric application type name resource.
+     * Service Fabric application type name resource along with {@link Response}.
      */
-    Response<ApplicationTypeVersionResource> getWithResponse(
-        String resourceGroupName, String clusterName, String applicationTypeName, String version, Context context);
+    Response<ApplicationTypeVersionResource> getWithResponse(String resourceGroupName, String clusterName,
+        String applicationTypeName, String version, Context context);
 
     /**
+     * Gets a Service Fabric application type version resource.
+     * 
+     * Get a Service Fabric application type version resource created or in the process of being created in the Service
+     * Fabric application type name resource.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationTypeName The name of the application type name resource.
+     * @param version The application type version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Service Fabric application type version resource created or in the process of being created in the
+     * Service Fabric application type name resource.
+     */
+    ApplicationTypeVersionResource get(String resourceGroupName, String clusterName, String applicationTypeName,
+        String version);
+
+    /**
+     * Deletes a Service Fabric application type version resource.
+     * 
      * Delete a Service Fabric application type version resource with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -58,8 +67,10 @@ public interface ApplicationTypeVersions {
     void delete(String resourceGroupName, String clusterName, String applicationTypeName, String version);
 
     /**
+     * Deletes a Service Fabric application type version resource.
+     * 
      * Delete a Service Fabric application type version resource with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -69,13 +80,16 @@ public interface ApplicationTypeVersions {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String clusterName, String applicationTypeName, String version, Context context);
+    void delete(String resourceGroupName, String clusterName, String applicationTypeName, String version,
+        Context context);
 
     /**
+     * Gets the list of application type version resources created in the specified Service Fabric application type name
+     * resource.
+     * 
      * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -83,14 +97,18 @@ public interface ApplicationTypeVersions {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all application type version resources created or in the process of being created in the Service Fabric
-     *     application type name resource.
+     * application type name resource as paginated response with {@link PagedIterable}.
      */
-    ApplicationTypeVersionResourceList list(String resourceGroupName, String clusterName, String applicationTypeName);
+    PagedIterable<ApplicationTypeVersionResource> list(String resourceGroupName, String clusterName,
+        String applicationTypeName);
 
     /**
+     * Gets the list of application type version resources created in the specified Service Fabric application type name
+     * resource.
+     * 
      * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -99,41 +117,47 @@ public interface ApplicationTypeVersions {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all application type version resources created or in the process of being created in the Service Fabric
-     *     application type name resource.
+     * application type name resource as paginated response with {@link PagedIterable}.
      */
-    Response<ApplicationTypeVersionResourceList> listWithResponse(
-        String resourceGroupName, String clusterName, String applicationTypeName, Context context);
+    PagedIterable<ApplicationTypeVersionResource> list(String resourceGroupName, String clusterName,
+        String applicationTypeName, Context context);
 
     /**
+     * Gets a Service Fabric application type version resource.
+     * 
      * Get a Service Fabric application type version resource created or in the process of being created in the Service
      * Fabric application type name resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric application type version resource created or in the process of being created in the
-     *     Service Fabric application type name resource.
+     * Service Fabric application type name resource along with {@link Response}.
      */
     ApplicationTypeVersionResource getById(String id);
 
     /**
+     * Gets a Service Fabric application type version resource.
+     * 
      * Get a Service Fabric application type version resource created or in the process of being created in the Service
      * Fabric application type name resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric application type version resource created or in the process of being created in the
-     *     Service Fabric application type name resource.
+     * Service Fabric application type name resource along with {@link Response}.
      */
     Response<ApplicationTypeVersionResource> getByIdWithResponse(String id, Context context);
 
     /**
+     * Deletes a Service Fabric application type version resource.
+     * 
      * Delete a Service Fabric application type version resource with the specified name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -142,8 +166,10 @@ public interface ApplicationTypeVersions {
     void deleteById(String id);
 
     /**
+     * Deletes a Service Fabric application type version resource.
+     * 
      * Delete a Service Fabric application type version resource with the specified name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -154,7 +180,7 @@ public interface ApplicationTypeVersions {
 
     /**
      * Begins definition for a new ApplicationTypeVersionResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ApplicationTypeVersionResource definition.
      */

@@ -62,6 +62,10 @@ public final class ArtifactSourceImpl implements ArtifactSource, ArtifactSource.
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ArtifactSourceInner innerModel() {
         return this.innerObject;
     }
@@ -80,22 +84,18 @@ public final class ArtifactSourceImpl implements ArtifactSource, ArtifactSource.
     }
 
     public ArtifactSource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getArtifactSources()
-                .createOrUpdateWithResponse(resourceGroupName, artifactSourceName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactSources()
+            .createOrUpdateWithResponse(resourceGroupName, artifactSourceName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ArtifactSource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getArtifactSources()
-                .createOrUpdateWithResponse(resourceGroupName, artifactSourceName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactSources()
+            .createOrUpdateWithResponse(resourceGroupName, artifactSourceName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -110,27 +110,23 @@ public final class ArtifactSourceImpl implements ArtifactSource, ArtifactSource.
     }
 
     public ArtifactSource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getArtifactSources()
-                .createOrUpdateWithResponse(resourceGroupName, artifactSourceName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactSources()
+            .createOrUpdateWithResponse(resourceGroupName, artifactSourceName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ArtifactSource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getArtifactSources()
-                .createOrUpdateWithResponse(resourceGroupName, artifactSourceName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactSources()
+            .createOrUpdateWithResponse(resourceGroupName, artifactSourceName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ArtifactSourceImpl(
-        ArtifactSourceInner innerObject, com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
+    ArtifactSourceImpl(ArtifactSourceInner innerObject,
+        com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -138,22 +134,18 @@ public final class ArtifactSourceImpl implements ArtifactSource, ArtifactSource.
     }
 
     public ArtifactSource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getArtifactSources()
-                .getByResourceGroupWithResponse(resourceGroupName, artifactSourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactSources()
+            .getByResourceGroupWithResponse(resourceGroupName, artifactSourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ArtifactSource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getArtifactSources()
-                .getByResourceGroupWithResponse(resourceGroupName, artifactSourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactSources()
+            .getByResourceGroupWithResponse(resourceGroupName, artifactSourceName, context)
+            .getValue();
         return this;
     }
 

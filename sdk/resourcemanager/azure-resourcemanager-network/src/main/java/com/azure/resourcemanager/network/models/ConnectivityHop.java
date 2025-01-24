@@ -5,73 +5,72 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Information about a hop between the source and the destination. */
+/**
+ * Information about a hop between the source and the destination.
+ */
 @Immutable
-public final class ConnectivityHop {
+public final class ConnectivityHop implements JsonSerializable<ConnectivityHop> {
     /*
      * The type of the hop.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The ID of the hop.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The IP address of the hop.
      */
-    @JsonProperty(value = "address", access = JsonProperty.Access.WRITE_ONLY)
     private String address;
 
     /*
      * The ID of the resource corresponding to this hop.
      */
-    @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceId;
 
     /*
      * List of next hop identifiers.
      */
-    @JsonProperty(value = "nextHopIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> nextHopIds;
 
     /*
      * List of previous hop identifiers.
      */
-    @JsonProperty(value = "previousHopIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> previousHopIds;
 
     /*
      * List of hop links.
      */
-    @JsonProperty(value = "links", access = JsonProperty.Access.WRITE_ONLY)
     private List<HopLink> links;
 
     /*
      * List of previous hop links.
      */
-    @JsonProperty(value = "previousLinks", access = JsonProperty.Access.WRITE_ONLY)
     private List<HopLink> previousLinks;
 
     /*
      * List of issues.
      */
-    @JsonProperty(value = "issues", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectivityIssue> issues;
 
-    /** Creates an instance of ConnectivityHop class. */
+    /**
+     * Creates an instance of ConnectivityHop class.
+     */
     public ConnectivityHop() {
     }
 
     /**
      * Get the type property: The type of the hop.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -80,7 +79,7 @@ public final class ConnectivityHop {
 
     /**
      * Get the id property: The ID of the hop.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -89,7 +88,7 @@ public final class ConnectivityHop {
 
     /**
      * Get the address property: The IP address of the hop.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -98,7 +97,7 @@ public final class ConnectivityHop {
 
     /**
      * Get the resourceId property: The ID of the resource corresponding to this hop.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -107,7 +106,7 @@ public final class ConnectivityHop {
 
     /**
      * Get the nextHopIds property: List of next hop identifiers.
-     *
+     * 
      * @return the nextHopIds value.
      */
     public List<String> nextHopIds() {
@@ -116,7 +115,7 @@ public final class ConnectivityHop {
 
     /**
      * Get the previousHopIds property: List of previous hop identifiers.
-     *
+     * 
      * @return the previousHopIds value.
      */
     public List<String> previousHopIds() {
@@ -125,7 +124,7 @@ public final class ConnectivityHop {
 
     /**
      * Get the links property: List of hop links.
-     *
+     * 
      * @return the links value.
      */
     public List<HopLink> links() {
@@ -134,7 +133,7 @@ public final class ConnectivityHop {
 
     /**
      * Get the previousLinks property: List of previous hop links.
-     *
+     * 
      * @return the previousLinks value.
      */
     public List<HopLink> previousLinks() {
@@ -143,7 +142,7 @@ public final class ConnectivityHop {
 
     /**
      * Get the issues property: List of issues.
-     *
+     * 
      * @return the issues value.
      */
     public List<ConnectivityIssue> issues() {
@@ -152,7 +151,7 @@ public final class ConnectivityHop {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -165,5 +164,61 @@ public final class ConnectivityHop {
         if (issues() != null) {
             issues().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectivityHop from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectivityHop if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectivityHop.
+     */
+    public static ConnectivityHop fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectivityHop deserializedConnectivityHop = new ConnectivityHop();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedConnectivityHop.type = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedConnectivityHop.id = reader.getString();
+                } else if ("address".equals(fieldName)) {
+                    deserializedConnectivityHop.address = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedConnectivityHop.resourceId = reader.getString();
+                } else if ("nextHopIds".equals(fieldName)) {
+                    List<String> nextHopIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedConnectivityHop.nextHopIds = nextHopIds;
+                } else if ("previousHopIds".equals(fieldName)) {
+                    List<String> previousHopIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedConnectivityHop.previousHopIds = previousHopIds;
+                } else if ("links".equals(fieldName)) {
+                    List<HopLink> links = reader.readArray(reader1 -> HopLink.fromJson(reader1));
+                    deserializedConnectivityHop.links = links;
+                } else if ("previousLinks".equals(fieldName)) {
+                    List<HopLink> previousLinks = reader.readArray(reader1 -> HopLink.fromJson(reader1));
+                    deserializedConnectivityHop.previousLinks = previousLinks;
+                } else if ("issues".equals(fieldName)) {
+                    List<ConnectivityIssue> issues = reader.readArray(reader1 -> ConnectivityIssue.fromJson(reader1));
+                    deserializedConnectivityHop.issues = issues;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectivityHop;
+        });
     }
 }

@@ -8,30 +8,25 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elastic.fluent.models.MonitoredResourceInner;
 import com.azure.resourcemanager.elastic.models.SendingLogs;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MonitoredResourceInnerTests {
-    @Test
-    public void testDeserialize() {
-        MonitoredResourceInner model =
-            BinaryData
-                .fromString("{\"id\":\"hurzafblj\",\"sendingLogs\":\"False\",\"reasonForLogsStatus\":\"toqcjmklja\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        MonitoredResourceInner model
+            = BinaryData.fromString("{\"id\":\"e\",\"sendingLogs\":\"True\",\"reasonForLogsStatus\":\"a\"}")
                 .toObject(MonitoredResourceInner.class);
-        Assertions.assertEquals("hurzafblj", model.id());
-        Assertions.assertEquals(SendingLogs.FALSE, model.sendingLogs());
-        Assertions.assertEquals("toqcjmklja", model.reasonForLogsStatus());
+        Assertions.assertEquals("e", model.id());
+        Assertions.assertEquals(SendingLogs.TRUE, model.sendingLogs());
+        Assertions.assertEquals("a", model.reasonForLogsStatus());
     }
 
-    @Test
-    public void testSerialize() {
-        MonitoredResourceInner model =
-            new MonitoredResourceInner()
-                .withId("hurzafblj")
-                .withSendingLogs(SendingLogs.FALSE)
-                .withReasonForLogsStatus("toqcjmklja");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        MonitoredResourceInner model
+            = new MonitoredResourceInner().withId("e").withSendingLogs(SendingLogs.TRUE).withReasonForLogsStatus("a");
         model = BinaryData.fromObject(model).toObject(MonitoredResourceInner.class);
-        Assertions.assertEquals("hurzafblj", model.id());
-        Assertions.assertEquals(SendingLogs.FALSE, model.sendingLogs());
-        Assertions.assertEquals("toqcjmklja", model.reasonForLogsStatus());
+        Assertions.assertEquals("e", model.id());
+        Assertions.assertEquals(SendingLogs.TRUE, model.sendingLogs());
+        Assertions.assertEquals("a", model.reasonForLogsStatus());
     }
 }

@@ -5,65 +5,76 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Rule of type network. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
-@JsonTypeName("NetworkRule")
+/**
+ * Rule of type network.
+ */
 @Fluent
 public final class NetworkRule extends FirewallPolicyRule {
     /*
+     * Rule Type.
+     */
+    private FirewallPolicyRuleType ruleType = FirewallPolicyRuleType.NETWORK_RULE;
+
+    /*
      * Array of FirewallPolicyRuleNetworkProtocols.
      */
-    @JsonProperty(value = "ipProtocols")
     private List<FirewallPolicyRuleNetworkProtocol> ipProtocols;
 
     /*
      * List of source IP addresses for this rule.
      */
-    @JsonProperty(value = "sourceAddresses")
     private List<String> sourceAddresses;
 
     /*
      * List of destination IP addresses or Service Tags.
      */
-    @JsonProperty(value = "destinationAddresses")
     private List<String> destinationAddresses;
 
     /*
      * List of destination ports.
      */
-    @JsonProperty(value = "destinationPorts")
     private List<String> destinationPorts;
 
     /*
      * List of source IpGroups for this rule.
      */
-    @JsonProperty(value = "sourceIpGroups")
     private List<String> sourceIpGroups;
 
     /*
      * List of destination IpGroups for this rule.
      */
-    @JsonProperty(value = "destinationIpGroups")
     private List<String> destinationIpGroups;
 
     /*
      * List of destination FQDNs.
      */
-    @JsonProperty(value = "destinationFqdns")
     private List<String> destinationFqdns;
 
-    /** Creates an instance of NetworkRule class. */
+    /**
+     * Creates an instance of NetworkRule class.
+     */
     public NetworkRule() {
     }
 
     /**
+     * Get the ruleType property: Rule Type.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public FirewallPolicyRuleType ruleType() {
+        return this.ruleType;
+    }
+
+    /**
      * Get the ipProtocols property: Array of FirewallPolicyRuleNetworkProtocols.
-     *
+     * 
      * @return the ipProtocols value.
      */
     public List<FirewallPolicyRuleNetworkProtocol> ipProtocols() {
@@ -72,7 +83,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Set the ipProtocols property: Array of FirewallPolicyRuleNetworkProtocols.
-     *
+     * 
      * @param ipProtocols the ipProtocols value to set.
      * @return the NetworkRule object itself.
      */
@@ -83,7 +94,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Get the sourceAddresses property: List of source IP addresses for this rule.
-     *
+     * 
      * @return the sourceAddresses value.
      */
     public List<String> sourceAddresses() {
@@ -92,7 +103,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Set the sourceAddresses property: List of source IP addresses for this rule.
-     *
+     * 
      * @param sourceAddresses the sourceAddresses value to set.
      * @return the NetworkRule object itself.
      */
@@ -103,7 +114,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Get the destinationAddresses property: List of destination IP addresses or Service Tags.
-     *
+     * 
      * @return the destinationAddresses value.
      */
     public List<String> destinationAddresses() {
@@ -112,7 +123,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Set the destinationAddresses property: List of destination IP addresses or Service Tags.
-     *
+     * 
      * @param destinationAddresses the destinationAddresses value to set.
      * @return the NetworkRule object itself.
      */
@@ -123,7 +134,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Get the destinationPorts property: List of destination ports.
-     *
+     * 
      * @return the destinationPorts value.
      */
     public List<String> destinationPorts() {
@@ -132,7 +143,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Set the destinationPorts property: List of destination ports.
-     *
+     * 
      * @param destinationPorts the destinationPorts value to set.
      * @return the NetworkRule object itself.
      */
@@ -143,7 +154,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Get the sourceIpGroups property: List of source IpGroups for this rule.
-     *
+     * 
      * @return the sourceIpGroups value.
      */
     public List<String> sourceIpGroups() {
@@ -152,7 +163,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Set the sourceIpGroups property: List of source IpGroups for this rule.
-     *
+     * 
      * @param sourceIpGroups the sourceIpGroups value to set.
      * @return the NetworkRule object itself.
      */
@@ -163,7 +174,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Get the destinationIpGroups property: List of destination IpGroups for this rule.
-     *
+     * 
      * @return the destinationIpGroups value.
      */
     public List<String> destinationIpGroups() {
@@ -172,7 +183,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Set the destinationIpGroups property: List of destination IpGroups for this rule.
-     *
+     * 
      * @param destinationIpGroups the destinationIpGroups value to set.
      * @return the NetworkRule object itself.
      */
@@ -183,7 +194,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Get the destinationFqdns property: List of destination FQDNs.
-     *
+     * 
      * @return the destinationFqdns value.
      */
     public List<String> destinationFqdns() {
@@ -192,7 +203,7 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Set the destinationFqdns property: List of destination FQDNs.
-     *
+     * 
      * @param destinationFqdns the destinationFqdns value to set.
      * @return the NetworkRule object itself.
      */
@@ -201,14 +212,18 @@ public final class NetworkRule extends FirewallPolicyRule {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkRule withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkRule withDescription(String description) {
         super.withDescription(description);
@@ -217,11 +232,88 @@ public final class NetworkRule extends FirewallPolicyRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("ruleType", this.ruleType == null ? null : this.ruleType.toString());
+        jsonWriter.writeArrayField("ipProtocols", this.ipProtocols,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("sourceAddresses", this.sourceAddresses,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("destinationAddresses", this.destinationAddresses,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("destinationPorts", this.destinationPorts,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("sourceIpGroups", this.sourceIpGroups,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("destinationIpGroups", this.destinationIpGroups,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("destinationFqdns", this.destinationFqdns,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkRule.
+     */
+    public static NetworkRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkRule deserializedNetworkRule = new NetworkRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNetworkRule.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedNetworkRule.withDescription(reader.getString());
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedNetworkRule.ruleType = FirewallPolicyRuleType.fromString(reader.getString());
+                } else if ("ipProtocols".equals(fieldName)) {
+                    List<FirewallPolicyRuleNetworkProtocol> ipProtocols = reader
+                        .readArray(reader1 -> FirewallPolicyRuleNetworkProtocol.fromString(reader1.getString()));
+                    deserializedNetworkRule.ipProtocols = ipProtocols;
+                } else if ("sourceAddresses".equals(fieldName)) {
+                    List<String> sourceAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkRule.sourceAddresses = sourceAddresses;
+                } else if ("destinationAddresses".equals(fieldName)) {
+                    List<String> destinationAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkRule.destinationAddresses = destinationAddresses;
+                } else if ("destinationPorts".equals(fieldName)) {
+                    List<String> destinationPorts = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkRule.destinationPorts = destinationPorts;
+                } else if ("sourceIpGroups".equals(fieldName)) {
+                    List<String> sourceIpGroups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkRule.sourceIpGroups = sourceIpGroups;
+                } else if ("destinationIpGroups".equals(fieldName)) {
+                    List<String> destinationIpGroups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkRule.destinationIpGroups = destinationIpGroups;
+                } else if ("destinationFqdns".equals(fieldName)) {
+                    List<String> destinationFqdns = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkRule.destinationFqdns = destinationFqdns;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkRule;
+        });
     }
 }

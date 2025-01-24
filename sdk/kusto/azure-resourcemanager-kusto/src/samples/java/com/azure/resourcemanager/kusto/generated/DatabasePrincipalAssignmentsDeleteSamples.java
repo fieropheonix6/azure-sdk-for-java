@@ -4,21 +4,22 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DatabasePrincipalAssignments Delete. */
+/**
+ * Samples for DatabasePrincipalAssignments Delete.
+ */
 public final class DatabasePrincipalAssignmentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoDatabasePrincipalAssignmentsDelete.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDatabasePrincipalAssignmentsDelete.json
      */
     /**
      * Sample code: KustoDatabasePrincipalAssignmentsDelete.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabasePrincipalAssignmentsDelete(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databasePrincipalAssignments()
-            .delete("kustorptest", "kustoCluster", "Kustodatabase8", "kustoprincipal1", Context.NONE);
+        manager.databasePrincipalAssignments()
+            .delete("kustorptest", "kustoCluster", "Kustodatabase8", "kustoprincipal1",
+                com.azure.core.util.Context.NONE);
     }
 }

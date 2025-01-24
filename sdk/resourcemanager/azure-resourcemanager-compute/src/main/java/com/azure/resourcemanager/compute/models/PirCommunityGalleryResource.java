@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.CommunityGalleryIdentifier;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Base information about the community gallery resource in pir. */
+/**
+ * Base information about the community gallery resource in azure compute gallery.
+ */
 @Fluent
-public class PirCommunityGalleryResource {
+public class PirCommunityGalleryResource implements JsonSerializable<PirCommunityGalleryResource> {
     /*
      * Resource name
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Resource location
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The identifier information of community gallery.
      */
-    @JsonProperty(value = "identifier")
     private CommunityGalleryIdentifier innerIdentifier;
 
-    /** Creates an instance of PirCommunityGalleryResource class. */
+    /**
+     * Creates an instance of PirCommunityGalleryResource class.
+     */
     public PirCommunityGalleryResource() {
     }
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,8 +53,19 @@ public class PirCommunityGalleryResource {
     }
 
     /**
+     * Set the name property: Resource name.
+     * 
+     * @param name the name value to set.
+     * @return the PirCommunityGalleryResource object itself.
+     */
+    PirCommunityGalleryResource withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -58,8 +73,19 @@ public class PirCommunityGalleryResource {
     }
 
     /**
+     * Set the location property: Resource location.
+     * 
+     * @param location the location value to set.
+     * @return the PirCommunityGalleryResource object itself.
+     */
+    PirCommunityGalleryResource withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -67,8 +93,19 @@ public class PirCommunityGalleryResource {
     }
 
     /**
+     * Set the type property: Resource type.
+     * 
+     * @param type the type value to set.
+     * @return the PirCommunityGalleryResource object itself.
+     */
+    PirCommunityGalleryResource withType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
      * Get the innerIdentifier property: The identifier information of community gallery.
-     *
+     * 
      * @return the innerIdentifier value.
      */
     private CommunityGalleryIdentifier innerIdentifier() {
@@ -76,8 +113,19 @@ public class PirCommunityGalleryResource {
     }
 
     /**
+     * Set the innerIdentifier property: The identifier information of community gallery.
+     * 
+     * @param innerIdentifier the innerIdentifier value to set.
+     * @return the PirCommunityGalleryResource object itself.
+     */
+    PirCommunityGalleryResource withInnerIdentifier(CommunityGalleryIdentifier innerIdentifier) {
+        this.innerIdentifier = innerIdentifier;
+        return this;
+    }
+
+    /**
      * Get the uniqueId property: The unique id of this community gallery.
-     *
+     * 
      * @return the uniqueId value.
      */
     public String uniqueId() {
@@ -86,7 +134,7 @@ public class PirCommunityGalleryResource {
 
     /**
      * Set the uniqueId property: The unique id of this community gallery.
-     *
+     * 
      * @param uniqueId the uniqueId value to set.
      * @return the PirCommunityGalleryResource object itself.
      */
@@ -100,12 +148,55 @@ public class PirCommunityGalleryResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerIdentifier() != null) {
             innerIdentifier().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identifier", this.innerIdentifier);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PirCommunityGalleryResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PirCommunityGalleryResource if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PirCommunityGalleryResource.
+     */
+    public static PirCommunityGalleryResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PirCommunityGalleryResource deserializedPirCommunityGalleryResource = new PirCommunityGalleryResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPirCommunityGalleryResource.name = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedPirCommunityGalleryResource.location = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPirCommunityGalleryResource.type = reader.getString();
+                } else if ("identifier".equals(fieldName)) {
+                    deserializedPirCommunityGalleryResource.innerIdentifier
+                        = CommunityGalleryIdentifier.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPirCommunityGalleryResource;
+        });
     }
 }

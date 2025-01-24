@@ -9,28 +9,21 @@ import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkResource;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkResourceProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkResourceTests {
-    @Test
-    public void testDeserialize() {
-        PrivateLinkResource model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"groupId\":\"ongmtsa\",\"requiredMembers\":[\"bp\",\"xqpsrknftguv\",\"iuhprwmdyvxqta\",\"riwwroy\"],\"requiredZoneNames\":[\"xrmcqibycnojvk\",\"mefqsgzvahapjyzh\",\"vgqzcjrvxd\",\"zlmwlxkvugfhz\"],\"displayName\":\"awjvzunluthnnp\"},\"id\":\"nxipeil\",\"name\":\"jzuaejxdultskzbb\",\"type\":\"dzumveekg\"}")
-                .toObject(PrivateLinkResource.class);
-        Assertions.assertEquals("xrmcqibycnojvk", model.properties().requiredZoneNames().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateLinkResource model = BinaryData.fromString(
+            "{\"properties\":{\"groupId\":\"ezw\",\"requiredMembers\":[\"wxuqlcvydypatdoo\",\"ojknio\",\"kooebwnu\"],\"requiredZoneNames\":[\"mmsbvdkcrodtjin\",\"wj\",\"fltkacjv\"],\"displayName\":\"kdlfoa\"},\"id\":\"ggkfpagaowpul\",\"name\":\"qblylsyxkqj\",\"type\":\"sjervti\"}")
+            .toObject(PrivateLinkResource.class);
+        Assertions.assertEquals("mmsbvdkcrodtjin", model.properties().requiredZoneNames().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateLinkResource model =
-            new PrivateLinkResource()
-                .withProperties(
-                    new PrivateLinkResourceProperties()
-                        .withRequiredZoneNames(
-                            Arrays.asList("xrmcqibycnojvk", "mefqsgzvahapjyzh", "vgqzcjrvxd", "zlmwlxkvugfhz")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateLinkResource model = new PrivateLinkResource().withProperties(new PrivateLinkResourceProperties()
+            .withRequiredZoneNames(Arrays.asList("mmsbvdkcrodtjin", "wj", "fltkacjv")));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResource.class);
-        Assertions.assertEquals("xrmcqibycnojvk", model.properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("mmsbvdkcrodtjin", model.properties().requiredZoneNames().get(0));
     }
 }

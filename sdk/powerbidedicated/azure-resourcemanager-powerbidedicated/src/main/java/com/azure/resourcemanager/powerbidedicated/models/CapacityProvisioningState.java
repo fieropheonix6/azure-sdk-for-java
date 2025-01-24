@@ -5,59 +5,97 @@
 package com.azure.resourcemanager.powerbidedicated.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CapacityProvisioningState. */
+/**
+ * The current deployment state of PowerBI Dedicated resource. The provisioningState is to indicate states for resource
+ * provisioning.
+ */
 public final class CapacityProvisioningState extends ExpandableStringEnum<CapacityProvisioningState> {
-    /** Static value Deleting for CapacityProvisioningState. */
+    /**
+     * Static value Deleting for CapacityProvisioningState.
+     */
     public static final CapacityProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Succeeded for CapacityProvisioningState. */
+    /**
+     * Static value Succeeded for CapacityProvisioningState.
+     */
     public static final CapacityProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for CapacityProvisioningState. */
+    /**
+     * Static value Failed for CapacityProvisioningState.
+     */
     public static final CapacityProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Paused for CapacityProvisioningState. */
+    /**
+     * Static value Paused for CapacityProvisioningState.
+     */
     public static final CapacityProvisioningState PAUSED = fromString("Paused");
 
-    /** Static value Suspended for CapacityProvisioningState. */
+    /**
+     * Static value Suspended for CapacityProvisioningState.
+     */
     public static final CapacityProvisioningState SUSPENDED = fromString("Suspended");
 
-    /** Static value Provisioning for CapacityProvisioningState. */
+    /**
+     * Static value Provisioning for CapacityProvisioningState.
+     */
     public static final CapacityProvisioningState PROVISIONING = fromString("Provisioning");
 
-    /** Static value Updating for CapacityProvisioningState. */
+    /**
+     * Static value Updating for CapacityProvisioningState.
+     */
     public static final CapacityProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Suspending for CapacityProvisioningState. */
+    /**
+     * Static value Suspending for CapacityProvisioningState.
+     */
     public static final CapacityProvisioningState SUSPENDING = fromString("Suspending");
 
-    /** Static value Pausing for CapacityProvisioningState. */
+    /**
+     * Static value Pausing for CapacityProvisioningState.
+     */
     public static final CapacityProvisioningState PAUSING = fromString("Pausing");
 
-    /** Static value Resuming for CapacityProvisioningState. */
+    /**
+     * Static value Resuming for CapacityProvisioningState.
+     */
     public static final CapacityProvisioningState RESUMING = fromString("Resuming");
 
-    /** Static value Preparing for CapacityProvisioningState. */
+    /**
+     * Static value Preparing for CapacityProvisioningState.
+     */
     public static final CapacityProvisioningState PREPARING = fromString("Preparing");
 
-    /** Static value Scaling for CapacityProvisioningState. */
+    /**
+     * Static value Scaling for CapacityProvisioningState.
+     */
     public static final CapacityProvisioningState SCALING = fromString("Scaling");
 
     /**
+     * Creates a new instance of CapacityProvisioningState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CapacityProvisioningState() {
+    }
+
+    /**
      * Creates or finds a CapacityProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CapacityProvisioningState.
      */
-    @JsonCreator
     public static CapacityProvisioningState fromString(String name) {
         return fromString(name, CapacityProvisioningState.class);
     }
 
-    /** @return known CapacityProvisioningState values. */
+    /**
+     * Gets known CapacityProvisioningState values.
+     * 
+     * @return known CapacityProvisioningState values.
+     */
     public static Collection<CapacityProvisioningState> values() {
         return values(CapacityProvisioningState.class);
     }

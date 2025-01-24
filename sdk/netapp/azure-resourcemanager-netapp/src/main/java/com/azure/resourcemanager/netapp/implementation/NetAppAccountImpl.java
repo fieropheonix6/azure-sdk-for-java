@@ -5,11 +5,14 @@
 package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
-import com.azure.resourcemanager.netapp.models.Identity;
+import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
+import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
+import com.azure.resourcemanager.netapp.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.netapp.models.NetAppAccount;
 import com.azure.resourcemanager.netapp.models.NetAppAccountPatch;
 import java.util.Collections;
@@ -50,8 +53,12 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         return this.innerModel().etag();
     }
 
-    public Identity identity() {
+    public ManagedServiceIdentity identity() {
         return this.innerModel().identity();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String provisioningState() {
@@ -73,6 +80,14 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
 
     public Boolean disableShowmount() {
         return this.innerModel().disableShowmount();
+    }
+
+    public String nfsV4IdDomain() {
+        return this.innerModel().nfsV4IdDomain();
+    }
+
+    public Boolean isMultiAdEnabled() {
+        return this.innerModel().isMultiAdEnabled();
     }
 
     public Region region() {
@@ -107,20 +122,16 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     public NetAppAccount create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .createOrUpdate(resourceGroupName, accountName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .createOrUpdate(resourceGroupName, accountName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NetAppAccount create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .createOrUpdate(resourceGroupName, accountName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .createOrUpdate(resourceGroupName, accountName, this.innerModel(), context);
         return this;
     }
 
@@ -136,45 +147,39 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     public NetAppAccount apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .update(resourceGroupName, accountName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .update(resourceGroupName, accountName, updateBody, Context.NONE);
         return this;
     }
 
     public NetAppAccount apply(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getAccounts().update(resourceGroupName, accountName, updateBody, context);
+        this.innerObject
+            = serviceManager.serviceClient().getAccounts().update(resourceGroupName, accountName, updateBody, context);
         return this;
     }
 
-    NetAppAccountImpl(
-        NetAppAccountInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    NetAppAccountImpl(NetAppAccountInner innerObject,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
     }
 
     public NetAppAccount refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NetAppAccount refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
+            .getValue();
         return this;
     }
 
@@ -184,6 +189,30 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
 
     public void renewCredentials(Context context) {
         serviceManager.accounts().renewCredentials(resourceGroupName, accountName, context);
+    }
+
+    public void transitionToCmk() {
+        serviceManager.accounts().transitionToCmk(resourceGroupName, accountName);
+    }
+
+    public void transitionToCmk(EncryptionTransitionRequest body, Context context) {
+        serviceManager.accounts().transitionToCmk(resourceGroupName, accountName, body, context);
+    }
+
+    public void getChangeKeyVaultInformation() {
+        serviceManager.accounts().getChangeKeyVaultInformation(resourceGroupName, accountName);
+    }
+
+    public void getChangeKeyVaultInformation(Context context) {
+        serviceManager.accounts().getChangeKeyVaultInformation(resourceGroupName, accountName, context);
+    }
+
+    public void changeKeyVault() {
+        serviceManager.accounts().changeKeyVault(resourceGroupName, accountName);
+    }
+
+    public void changeKeyVault(ChangeKeyVault body, Context context) {
+        serviceManager.accounts().changeKeyVault(resourceGroupName, accountName, body, context);
     }
 
     public NetAppAccountImpl withRegion(Region location) {
@@ -206,9 +235,14 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         }
     }
 
-    public NetAppAccountImpl withIdentity(Identity identity) {
-        this.innerModel().withIdentity(identity);
-        return this;
+    public NetAppAccountImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateBody.withIdentity(identity);
+            return this;
+        }
     }
 
     public NetAppAccountImpl withActiveDirectories(List<ActiveDirectory> activeDirectories) {
@@ -227,6 +261,16 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
             return this;
         } else {
             this.updateBody.withEncryption(encryption);
+            return this;
+        }
+    }
+
+    public NetAppAccountImpl withNfsV4IdDomain(String nfsV4IdDomain) {
+        if (isInCreateMode()) {
+            this.innerModel().withNfsV4IdDomain(nfsV4IdDomain);
+            return this;
+        } else {
+            this.updateBody.withNfsV4IdDomain(nfsV4IdDomain);
             return this;
         }
     }

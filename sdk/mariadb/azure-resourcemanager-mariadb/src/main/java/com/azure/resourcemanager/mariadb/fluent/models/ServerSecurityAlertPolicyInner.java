@@ -5,217 +5,304 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mariadb.models.ServerSecurityAlertPolicyState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A server security alert policy. */
-@JsonFlatten
+/**
+ * A server security alert policy.
+ */
 @Fluent
-public class ServerSecurityAlertPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerSecurityAlertPolicyInner.class);
+public final class ServerSecurityAlertPolicyInner extends ProxyResource {
+    /*
+     * Resource properties.
+     */
+    private SecurityAlertPolicyProperties innerProperties;
 
     /*
-     * Specifies the state of the policy, whether it is enabled or disabled.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.state")
-    private ServerSecurityAlertPolicyState state;
+    private String type;
 
     /*
-     * Specifies an array of alerts that are disabled. Allowed values are:
-     * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.disabledAlerts")
-    private List<String> disabledAlerts;
+    private String name;
 
     /*
-     * Specifies an array of e-mail addresses to which the alert is sent.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.emailAddresses")
-    private List<String> emailAddresses;
+    private String id;
 
-    /*
-     * Specifies that the alert is sent to the account administrators.
+    /**
+     * Creates an instance of ServerSecurityAlertPolicyInner class.
      */
-    @JsonProperty(value = "properties.emailAccountAdmins")
-    private Boolean emailAccountAdmins;
+    public ServerSecurityAlertPolicyInner() {
+    }
 
-    /*
-     * Specifies the blob storage endpoint (e.g.
-     * https://MyAccount.blob.core.windows.net). This blob storage will hold
-     * all Threat Detection audit logs.
+    /**
+     * Get the innerProperties property: Resource properties.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.storageEndpoint")
-    private String storageEndpoint;
+    private SecurityAlertPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Specifies the identifier key of the Threat Detection audit storage
-     * account.
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.storageAccountAccessKey")
-    private String storageAccountAccessKey;
+    @Override
+    public String type() {
+        return this.type;
+    }
 
-    /*
-     * Specifies the number of days to keep in the Threat Detection audit logs.
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    @JsonProperty(value = "properties.retentionDays")
-    private Integer retentionDays;
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the state property: Specifies the state of the policy, whether it is enabled or disabled.
-     *
+     * 
      * @return the state value.
      */
     public ServerSecurityAlertPolicyState state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
      * Set the state property: Specifies the state of the policy, whether it is enabled or disabled.
-     *
+     * 
      * @param state the state value to set.
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withState(ServerSecurityAlertPolicyState state) {
-        this.state = state;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityAlertPolicyProperties();
+        }
+        this.innerProperties().withState(state);
         return this;
     }
 
     /**
      * Get the disabledAlerts property: Specifies an array of alerts that are disabled. Allowed values are:
      * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly.
-     *
+     * 
      * @return the disabledAlerts value.
      */
     public List<String> disabledAlerts() {
-        return this.disabledAlerts;
+        return this.innerProperties() == null ? null : this.innerProperties().disabledAlerts();
     }
 
     /**
      * Set the disabledAlerts property: Specifies an array of alerts that are disabled. Allowed values are:
      * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly.
-     *
+     * 
      * @param disabledAlerts the disabledAlerts value to set.
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withDisabledAlerts(List<String> disabledAlerts) {
-        this.disabledAlerts = disabledAlerts;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityAlertPolicyProperties();
+        }
+        this.innerProperties().withDisabledAlerts(disabledAlerts);
         return this;
     }
 
     /**
      * Get the emailAddresses property: Specifies an array of e-mail addresses to which the alert is sent.
-     *
+     * 
      * @return the emailAddresses value.
      */
     public List<String> emailAddresses() {
-        return this.emailAddresses;
+        return this.innerProperties() == null ? null : this.innerProperties().emailAddresses();
     }
 
     /**
      * Set the emailAddresses property: Specifies an array of e-mail addresses to which the alert is sent.
-     *
+     * 
      * @param emailAddresses the emailAddresses value to set.
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withEmailAddresses(List<String> emailAddresses) {
-        this.emailAddresses = emailAddresses;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityAlertPolicyProperties();
+        }
+        this.innerProperties().withEmailAddresses(emailAddresses);
         return this;
     }
 
     /**
      * Get the emailAccountAdmins property: Specifies that the alert is sent to the account administrators.
-     *
+     * 
      * @return the emailAccountAdmins value.
      */
     public Boolean emailAccountAdmins() {
-        return this.emailAccountAdmins;
+        return this.innerProperties() == null ? null : this.innerProperties().emailAccountAdmins();
     }
 
     /**
      * Set the emailAccountAdmins property: Specifies that the alert is sent to the account administrators.
-     *
+     * 
      * @param emailAccountAdmins the emailAccountAdmins value to set.
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withEmailAccountAdmins(Boolean emailAccountAdmins) {
-        this.emailAccountAdmins = emailAccountAdmins;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityAlertPolicyProperties();
+        }
+        this.innerProperties().withEmailAccountAdmins(emailAccountAdmins);
         return this;
     }
 
     /**
      * Get the storageEndpoint property: Specifies the blob storage endpoint (e.g.
      * https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.
-     *
+     * 
      * @return the storageEndpoint value.
      */
     public String storageEndpoint() {
-        return this.storageEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().storageEndpoint();
     }
 
     /**
      * Set the storageEndpoint property: Specifies the blob storage endpoint (e.g.
      * https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.
-     *
+     * 
      * @param storageEndpoint the storageEndpoint value to set.
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withStorageEndpoint(String storageEndpoint) {
-        this.storageEndpoint = storageEndpoint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityAlertPolicyProperties();
+        }
+        this.innerProperties().withStorageEndpoint(storageEndpoint);
         return this;
     }
 
     /**
      * Get the storageAccountAccessKey property: Specifies the identifier key of the Threat Detection audit storage
      * account.
-     *
+     * 
      * @return the storageAccountAccessKey value.
      */
     public String storageAccountAccessKey() {
-        return this.storageAccountAccessKey;
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountAccessKey();
     }
 
     /**
      * Set the storageAccountAccessKey property: Specifies the identifier key of the Threat Detection audit storage
      * account.
-     *
+     * 
      * @param storageAccountAccessKey the storageAccountAccessKey value to set.
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withStorageAccountAccessKey(String storageAccountAccessKey) {
-        this.storageAccountAccessKey = storageAccountAccessKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityAlertPolicyProperties();
+        }
+        this.innerProperties().withStorageAccountAccessKey(storageAccountAccessKey);
         return this;
     }
 
     /**
      * Get the retentionDays property: Specifies the number of days to keep in the Threat Detection audit logs.
-     *
+     * 
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
-        return this.retentionDays;
+        return this.innerProperties() == null ? null : this.innerProperties().retentionDays();
     }
 
     /**
      * Set the retentionDays property: Specifies the number of days to keep in the Threat Detection audit logs.
-     *
+     * 
      * @param retentionDays the retentionDays value to set.
      * @return the ServerSecurityAlertPolicyInner object itself.
      */
     public ServerSecurityAlertPolicyInner withRetentionDays(Integer retentionDays) {
-        this.retentionDays = retentionDays;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityAlertPolicyProperties();
+        }
+        this.innerProperties().withRetentionDays(retentionDays);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerSecurityAlertPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerSecurityAlertPolicyInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerSecurityAlertPolicyInner.
+     */
+    public static ServerSecurityAlertPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerSecurityAlertPolicyInner deserializedServerSecurityAlertPolicyInner
+                = new ServerSecurityAlertPolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedServerSecurityAlertPolicyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedServerSecurityAlertPolicyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServerSecurityAlertPolicyInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServerSecurityAlertPolicyInner.innerProperties
+                        = SecurityAlertPolicyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerSecurityAlertPolicyInner;
+        });
     }
 }

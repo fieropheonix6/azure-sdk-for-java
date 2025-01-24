@@ -5,32 +5,53 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RequiredNsgRules. */
+/**
+ * Gets or sets a value indicating whether data plane (clusters) to control plane communication happen over private
+ * endpoint. Supported values are 'AllRules' and 'NoAzureDatabricksRules'. 'NoAzureServiceRules' value is for internal
+ * use only.
+ */
 public final class RequiredNsgRules extends ExpandableStringEnum<RequiredNsgRules> {
-    /** Static value AllRules for RequiredNsgRules. */
+    /**
+     * Static value AllRules for RequiredNsgRules.
+     */
     public static final RequiredNsgRules ALL_RULES = fromString("AllRules");
 
-    /** Static value NoAzureDatabricksRules for RequiredNsgRules. */
+    /**
+     * Static value NoAzureDatabricksRules for RequiredNsgRules.
+     */
     public static final RequiredNsgRules NO_AZURE_DATABRICKS_RULES = fromString("NoAzureDatabricksRules");
 
-    /** Static value NoAzureServiceRules for RequiredNsgRules. */
+    /**
+     * Static value NoAzureServiceRules for RequiredNsgRules.
+     */
     public static final RequiredNsgRules NO_AZURE_SERVICE_RULES = fromString("NoAzureServiceRules");
 
     /**
+     * Creates a new instance of RequiredNsgRules value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RequiredNsgRules() {
+    }
+
+    /**
      * Creates or finds a RequiredNsgRules from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RequiredNsgRules.
      */
-    @JsonCreator
     public static RequiredNsgRules fromString(String name) {
         return fromString(name, RequiredNsgRules.class);
     }
 
-    /** @return known RequiredNsgRules values. */
+    /**
+     * Gets known RequiredNsgRules values.
+     * 
+     * @return known RequiredNsgRules values.
+     */
     public static Collection<RequiredNsgRules> values() {
         return values(RequiredNsgRules.class);
     }

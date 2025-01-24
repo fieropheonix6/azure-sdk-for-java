@@ -4,53 +4,53 @@
 
 package com.azure.resourcemanager.dataprotection.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The ResourceGuard model. */
-@Immutable
-public final class ResourceGuard {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGuard.class);
-
+/**
+ * The ResourceGuard model.
+ */
+@Fluent
+public final class ResourceGuard implements JsonSerializable<ResourceGuard> {
     /*
      * Provisioning state of the BackupVault resource
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * This flag indicates whether auto approval is allowed or not.
      */
-    @JsonProperty(value = "allowAutoApprovals", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean allowAutoApprovals;
 
     /*
-     * {readonly} List of operation details those are protected by the
-     * ResourceGuard resource
+     * {readonly} List of operation details those are protected by the ResourceGuard resource
      */
-    @JsonProperty(value = "resourceGuardOperations", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceGuardOperation> resourceGuardOperations;
 
     /*
-     * List of critical operations which are not protected by this
-     * resourceGuard
+     * List of critical operations which are not protected by this resourceGuard
      */
-    @JsonProperty(value = "vaultCriticalOperationExclusionList", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> vaultCriticalOperationExclusionList;
 
     /*
-     * Description about the pre-req steps to perform all the critical
-     * operations.
+     * Description about the pre-req steps to perform all the critical operations.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /**
+     * Creates an instance of ResourceGuard class.
+     */
+    public ResourceGuard() {
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the BackupVault resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -59,7 +59,7 @@ public final class ResourceGuard {
 
     /**
      * Get the allowAutoApprovals property: This flag indicates whether auto approval is allowed or not.
-     *
+     * 
      * @return the allowAutoApprovals value.
      */
     public Boolean allowAutoApprovals() {
@@ -69,7 +69,7 @@ public final class ResourceGuard {
     /**
      * Get the resourceGuardOperations property: {readonly} List of operation details those are protected by the
      * ResourceGuard resource.
-     *
+     * 
      * @return the resourceGuardOperations value.
      */
     public List<ResourceGuardOperation> resourceGuardOperations() {
@@ -79,7 +79,7 @@ public final class ResourceGuard {
     /**
      * Get the vaultCriticalOperationExclusionList property: List of critical operations which are not protected by this
      * resourceGuard.
-     *
+     * 
      * @return the vaultCriticalOperationExclusionList value.
      */
     public List<String> vaultCriticalOperationExclusionList() {
@@ -87,8 +87,20 @@ public final class ResourceGuard {
     }
 
     /**
+     * Set the vaultCriticalOperationExclusionList property: List of critical operations which are not protected by this
+     * resourceGuard.
+     * 
+     * @param vaultCriticalOperationExclusionList the vaultCriticalOperationExclusionList value to set.
+     * @return the ResourceGuard object itself.
+     */
+    public ResourceGuard withVaultCriticalOperationExclusionList(List<String> vaultCriticalOperationExclusionList) {
+        this.vaultCriticalOperationExclusionList = vaultCriticalOperationExclusionList;
+        return this;
+    }
+
+    /**
      * Get the description property: Description about the pre-req steps to perform all the critical operations.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -97,12 +109,60 @@ public final class ResourceGuard {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceGuardOperations() != null) {
             resourceGuardOperations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("vaultCriticalOperationExclusionList", this.vaultCriticalOperationExclusionList,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceGuard from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceGuard if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceGuard.
+     */
+    public static ResourceGuard fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceGuard deserializedResourceGuard = new ResourceGuard();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedResourceGuard.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("allowAutoApprovals".equals(fieldName)) {
+                    deserializedResourceGuard.allowAutoApprovals = reader.getNullable(JsonReader::getBoolean);
+                } else if ("resourceGuardOperations".equals(fieldName)) {
+                    List<ResourceGuardOperation> resourceGuardOperations
+                        = reader.readArray(reader1 -> ResourceGuardOperation.fromJson(reader1));
+                    deserializedResourceGuard.resourceGuardOperations = resourceGuardOperations;
+                } else if ("vaultCriticalOperationExclusionList".equals(fieldName)) {
+                    List<String> vaultCriticalOperationExclusionList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceGuard.vaultCriticalOperationExclusionList = vaultCriticalOperationExclusionList;
+                } else if ("description".equals(fieldName)) {
+                    deserializedResourceGuard.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceGuard;
+        });
     }
 }

@@ -4,36 +4,53 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for AuthorizationMethod. */
+/**
+ * Defines values for AuthorizationMethod.
+ */
 public enum AuthorizationMethod {
-    /** Enum value HEAD. */
+    /**
+     * Enum value HEAD.
+     */
     HEAD("HEAD"),
 
-    /** Enum value OPTIONS. */
+    /**
+     * Enum value OPTIONS.
+     */
     OPTIONS("OPTIONS"),
 
-    /** Enum value TRACE. */
+    /**
+     * Enum value TRACE.
+     */
     TRACE("TRACE"),
 
-    /** Enum value GET. */
+    /**
+     * Enum value GET.
+     */
     GET("GET"),
 
-    /** Enum value POST. */
+    /**
+     * Enum value POST.
+     */
     POST("POST"),
 
-    /** Enum value PUT. */
+    /**
+     * Enum value PUT.
+     */
     PUT("PUT"),
 
-    /** Enum value PATCH. */
+    /**
+     * Enum value PATCH.
+     */
     PATCH("PATCH"),
 
-    /** Enum value DELETE. */
+    /**
+     * Enum value DELETE.
+     */
     DELETE("DELETE");
 
-    /** The actual serialized value for a AuthorizationMethod instance. */
+    /**
+     * The actual serialized value for a AuthorizationMethod instance.
+     */
     private final String value;
 
     AuthorizationMethod(String value) {
@@ -42,12 +59,14 @@ public enum AuthorizationMethod {
 
     /**
      * Parses a serialized value to a AuthorizationMethod instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AuthorizationMethod object, or null if unable to parse.
      */
-    @JsonCreator
     public static AuthorizationMethod fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AuthorizationMethod[] items = AuthorizationMethod.values();
         for (AuthorizationMethod item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -57,7 +76,9 @@ public enum AuthorizationMethod {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

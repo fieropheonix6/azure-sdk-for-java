@@ -4,27 +4,38 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ContinuousWebJobStatus. */
+/**
+ * Job status.
+ */
 public enum ContinuousWebJobStatus {
-    /** Enum value Initializing. */
+    /**
+     * Enum value Initializing.
+     */
     INITIALIZING("Initializing"),
 
-    /** Enum value Starting. */
+    /**
+     * Enum value Starting.
+     */
     STARTING("Starting"),
 
-    /** Enum value Running. */
+    /**
+     * Enum value Running.
+     */
     RUNNING("Running"),
 
-    /** Enum value PendingRestart. */
+    /**
+     * Enum value PendingRestart.
+     */
     PENDING_RESTART("PendingRestart"),
 
-    /** Enum value Stopped. */
+    /**
+     * Enum value Stopped.
+     */
     STOPPED("Stopped");
 
-    /** The actual serialized value for a ContinuousWebJobStatus instance. */
+    /**
+     * The actual serialized value for a ContinuousWebJobStatus instance.
+     */
     private final String value;
 
     ContinuousWebJobStatus(String value) {
@@ -33,12 +44,14 @@ public enum ContinuousWebJobStatus {
 
     /**
      * Parses a serialized value to a ContinuousWebJobStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ContinuousWebJobStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static ContinuousWebJobStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ContinuousWebJobStatus[] items = ContinuousWebJobStatus.values();
         for (ContinuousWebJobStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,7 +61,9 @@ public enum ContinuousWebJobStatus {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -9,11 +9,29 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.util.List;
 
-/** Resource collection API of Profiles. */
+/**
+ * Resource collection API of Profiles.
+ */
 public interface Profiles {
     /**
      * Gets information about the specified profile.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param profileName The name of the profile.
+     * @param localeCode Locale of profile to retrieve, default is en-us.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified profile along with {@link Response}.
+     */
+    Response<ProfileResourceFormat> getWithResponse(String resourceGroupName, String hubName, String profileName,
+        String localeCode, Context context);
+
+    /**
+     * Gets information about the specified profile.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param profileName The name of the profile.
@@ -25,37 +43,8 @@ public interface Profiles {
     ProfileResourceFormat get(String resourceGroupName, String hubName, String profileName);
 
     /**
-     * Gets information about the specified profile.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param profileName The name of the profile.
-     * @param localeCode Locale of profile to retrieve, default is en-us.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified profile.
-     */
-    Response<ProfileResourceFormat> getWithResponse(
-        String resourceGroupName, String hubName, String profileName, String localeCode, Context context);
-
-    /**
      * Deletes a profile within a hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param profileName The name of the profile.
-     * @param localeCode Locale of profile to retrieve, default is en-us.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String hubName, String profileName, String localeCode);
-
-    /**
-     * Deletes a profile within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param profileName The name of the profile.
@@ -67,7 +56,7 @@ public interface Profiles {
 
     /**
      * Deletes a profile within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param profileName The name of the profile.
@@ -81,19 +70,19 @@ public interface Profiles {
 
     /**
      * Gets all profile in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all profile in the hub.
+     * @return all profile in the hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ProfileResourceFormat> listByHub(String resourceGroupName, String hubName);
 
     /**
      * Gets all profile in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param localeCode Locale of profile to retrieve, default is en-us.
@@ -101,15 +90,31 @@ public interface Profiles {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all profile in the hub.
+     * @return all profile in the hub as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ProfileResourceFormat> listByHub(
-        String resourceGroupName, String hubName, String localeCode, Context context);
+    PagedIterable<ProfileResourceFormat> listByHub(String resourceGroupName, String hubName, String localeCode,
+        Context context);
 
     /**
      * Gets the KPIs that enrich the profile Type identified by the supplied name. Enrichment happens through
      * participants of the Interaction on an Interaction KPI and through Relationships for Profile KPIs.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param profileName The name of the profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the KPIs that enrich the profile Type identified by the supplied name along with {@link Response}.
+     */
+    Response<List<KpiDefinition>> getEnrichingKpisWithResponse(String resourceGroupName, String hubName,
+        String profileName, Context context);
+
+    /**
+     * Gets the KPIs that enrich the profile Type identified by the supplied name. Enrichment happens through
+     * participants of the Interaction on an Interaction KPI and through Relationships for Profile KPIs.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param profileName The name of the profile.
@@ -121,48 +126,32 @@ public interface Profiles {
     List<KpiDefinition> getEnrichingKpis(String resourceGroupName, String hubName, String profileName);
 
     /**
-     * Gets the KPIs that enrich the profile Type identified by the supplied name. Enrichment happens through
-     * participants of the Interaction on an Interaction KPI and through Relationships for Profile KPIs.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param profileName The name of the profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the KPIs that enrich the profile Type identified by the supplied name.
-     */
-    Response<List<KpiDefinition>> getEnrichingKpisWithResponse(
-        String resourceGroupName, String hubName, String profileName, Context context);
-
-    /**
      * Gets information about the specified profile.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified profile.
+     * @return information about the specified profile along with {@link Response}.
      */
     ProfileResourceFormat getById(String id);
 
     /**
      * Gets information about the specified profile.
-     *
+     * 
      * @param id the resource ID.
      * @param localeCode Locale of profile to retrieve, default is en-us.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified profile.
+     * @return information about the specified profile along with {@link Response}.
      */
     Response<ProfileResourceFormat> getByIdWithResponse(String id, String localeCode, Context context);
 
     /**
      * Deletes a profile within a hub.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -172,7 +161,7 @@ public interface Profiles {
 
     /**
      * Deletes a profile within a hub.
-     *
+     * 
      * @param id the resource ID.
      * @param localeCode Locale of profile to retrieve, default is en-us.
      * @param context The context to associate with this operation.
@@ -184,7 +173,7 @@ public interface Profiles {
 
     /**
      * Begins definition for a new ProfileResourceFormat resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ProfileResourceFormat definition.
      */

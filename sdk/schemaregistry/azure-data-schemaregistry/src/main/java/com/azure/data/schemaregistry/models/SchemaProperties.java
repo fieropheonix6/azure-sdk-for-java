@@ -24,13 +24,7 @@ public final class SchemaProperties {
     private final int version;
 
     static {
-        SchemaRegistryHelper.setAccessor(new SchemaRegistryHelper.SchemaRegistryModelsAccessor() {
-            @Override
-            public SchemaProperties getSchemaProperties(String id, SchemaFormat format, String groupName, String name,
-                int version) {
-                return new SchemaProperties(id, format, groupName, name, version);
-            }
-        });
+        SchemaRegistryHelper.setAccessor(SchemaProperties::new);
     }
 
     /**
@@ -69,8 +63,9 @@ public final class SchemaProperties {
     }
 
     /**
-     * The schema format of this schema.
-     * @return schema type associated with the schema payload
+     * The format of this schema.
+     *
+     * @return The format associated with the schema payload.
      */
     public SchemaFormat getFormat() {
         return format;

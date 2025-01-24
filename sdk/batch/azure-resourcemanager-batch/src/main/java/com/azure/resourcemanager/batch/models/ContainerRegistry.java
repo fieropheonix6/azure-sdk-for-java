@@ -5,44 +5,46 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A private container registry. */
+/**
+ * A private container registry.
+ */
 @Fluent
-public final class ContainerRegistry {
+public final class ContainerRegistry implements JsonSerializable<ContainerRegistry> {
     /*
      * The user name to log into the registry server.
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * The password to log into the registry server.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
-     * The registry URL.
-     *
      * If omitted, the default is "docker.io".
      */
-    @JsonProperty(value = "registryServer")
     private String registryServer;
 
     /*
      * The reference to a user assigned identity associated with the Batch pool which a compute node will use.
      */
-    @JsonProperty(value = "identityReference")
     private ComputeNodeIdentityReference identityReference;
 
-    /** Creates an instance of ContainerRegistry class. */
+    /**
+     * Creates an instance of ContainerRegistry class.
+     */
     public ContainerRegistry() {
     }
 
     /**
      * Get the username property: The user name to log into the registry server.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -51,7 +53,7 @@ public final class ContainerRegistry {
 
     /**
      * Set the username property: The user name to log into the registry server.
-     *
+     * 
      * @param username the username value to set.
      * @return the ContainerRegistry object itself.
      */
@@ -62,7 +64,7 @@ public final class ContainerRegistry {
 
     /**
      * Get the password property: The password to log into the registry server.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -71,7 +73,7 @@ public final class ContainerRegistry {
 
     /**
      * Set the password property: The password to log into the registry server.
-     *
+     * 
      * @param password the password value to set.
      * @return the ContainerRegistry object itself.
      */
@@ -81,10 +83,8 @@ public final class ContainerRegistry {
     }
 
     /**
-     * Get the registryServer property: The registry URL.
-     *
-     * <p>If omitted, the default is "docker.io".
-     *
+     * Get the registryServer property: If omitted, the default is "docker.io".
+     * 
      * @return the registryServer value.
      */
     public String registryServer() {
@@ -92,10 +92,8 @@ public final class ContainerRegistry {
     }
 
     /**
-     * Set the registryServer property: The registry URL.
-     *
-     * <p>If omitted, the default is "docker.io".
-     *
+     * Set the registryServer property: If omitted, the default is "docker.io".
+     * 
      * @param registryServer the registryServer value to set.
      * @return the ContainerRegistry object itself.
      */
@@ -107,7 +105,7 @@ public final class ContainerRegistry {
     /**
      * Get the identityReference property: The reference to a user assigned identity associated with the Batch pool
      * which a compute node will use.
-     *
+     * 
      * @return the identityReference value.
      */
     public ComputeNodeIdentityReference identityReference() {
@@ -117,7 +115,7 @@ public final class ContainerRegistry {
     /**
      * Set the identityReference property: The reference to a user assigned identity associated with the Batch pool
      * which a compute node will use.
-     *
+     * 
      * @param identityReference the identityReference value to set.
      * @return the ContainerRegistry object itself.
      */
@@ -128,12 +126,57 @@ public final class ContainerRegistry {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (identityReference() != null) {
             identityReference().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("registryServer", this.registryServer);
+        jsonWriter.writeJsonField("identityReference", this.identityReference);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerRegistry from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerRegistry if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerRegistry.
+     */
+    public static ContainerRegistry fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerRegistry deserializedContainerRegistry = new ContainerRegistry();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("username".equals(fieldName)) {
+                    deserializedContainerRegistry.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedContainerRegistry.password = reader.getString();
+                } else if ("registryServer".equals(fieldName)) {
+                    deserializedContainerRegistry.registryServer = reader.getString();
+                } else if ("identityReference".equals(fieldName)) {
+                    deserializedContainerRegistry.identityReference = ComputeNodeIdentityReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerRegistry;
+        });
     }
 }

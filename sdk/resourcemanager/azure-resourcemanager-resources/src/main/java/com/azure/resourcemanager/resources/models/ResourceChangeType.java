@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.resources.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ResourceChangeType. */
+/**
+ * The type of change that was captured in the resource.
+ */
 public enum ResourceChangeType {
-    /** Enum value Update. */
+    /**
+     * Enum value Update.
+     */
     UPDATE("Update"),
 
-    /** Enum value Delete. */
+    /**
+     * Enum value Delete.
+     */
     DELETE("Delete"),
 
-    /** Enum value Create. */
+    /**
+     * Enum value Create.
+     */
     CREATE("Create");
 
-    /** The actual serialized value for a ResourceChangeType instance. */
+    /**
+     * The actual serialized value for a ResourceChangeType instance.
+     */
     private final String value;
 
     ResourceChangeType(String value) {
@@ -27,12 +34,14 @@ public enum ResourceChangeType {
 
     /**
      * Parses a serialized value to a ResourceChangeType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ResourceChangeType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ResourceChangeType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ResourceChangeType[] items = ResourceChangeType.values();
         for (ResourceChangeType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +51,9 @@ public enum ResourceChangeType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

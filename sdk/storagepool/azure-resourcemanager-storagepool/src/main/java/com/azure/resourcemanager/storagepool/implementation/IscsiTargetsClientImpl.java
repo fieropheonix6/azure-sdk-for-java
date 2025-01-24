@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.storagepool.fluent.IscsiTargetsClient;
@@ -42,24 +41,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in IscsiTargetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IscsiTargetsClient.
+ */
 public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
-    private final ClientLogger logger = new ClientLogger(IscsiTargetsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IscsiTargetsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final StoragePoolManagementImpl client;
 
     /**
      * Initializes an instance of IscsiTargetsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IscsiTargetsClientImpl(StoragePoolManagementImpl client) {
-        this.service =
-            RestProxy.create(IscsiTargetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(IscsiTargetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,123 +72,87 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "StoragePoolManagemen")
-    private interface IscsiTargetsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool"
-                + "/diskPools/{diskPoolName}/iscsiTargets")
-        @ExpectedResponses({200})
+    public interface IscsiTargetsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/iscsiTargets")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IscsiTargetList>> listByDiskPool(
-            @HostParam("$host") String endpoint,
+        Mono<Response<IscsiTargetList>> listByDiskPool(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("diskPoolName") String diskPoolName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("diskPoolName") String diskPoolName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool"
-                + "/diskPools/{diskPoolName}/iscsiTargets/{iscsiTargetName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/iscsiTargets/{iscsiTargetName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("diskPoolName") String diskPoolName,
-            @PathParam("iscsiTargetName") String iscsiTargetName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("diskPoolName") String diskPoolName,
+            @PathParam("iscsiTargetName") String iscsiTargetName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") IscsiTargetCreate iscsiTargetCreatePayload,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool"
-                + "/diskPools/{diskPoolName}/iscsiTargets/{iscsiTargetName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/iscsiTargets/{iscsiTargetName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("diskPoolName") String diskPoolName,
-            @PathParam("iscsiTargetName") String iscsiTargetName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("diskPoolName") String diskPoolName,
+            @PathParam("iscsiTargetName") String iscsiTargetName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") IscsiTargetUpdate iscsiTargetUpdatePayload,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool"
-                + "/diskPools/{diskPoolName}/iscsiTargets/{iscsiTargetName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/iscsiTargets/{iscsiTargetName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("diskPoolName") String diskPoolName,
-            @PathParam("iscsiTargetName") String iscsiTargetName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("diskPoolName") String diskPoolName,
+            @PathParam("iscsiTargetName") String iscsiTargetName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool"
-                + "/diskPools/{diskPoolName}/iscsiTargets/{iscsiTargetName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StoragePool/diskPools/{diskPoolName}/iscsiTargets/{iscsiTargetName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IscsiTargetInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<IscsiTargetInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("diskPoolName") String diskPoolName,
-            @PathParam("iscsiTargetName") String iscsiTargetName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("diskPoolName") String diskPoolName,
+            @PathParam("iscsiTargetName") String iscsiTargetName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IscsiTargetList>> listByDiskPoolNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get iSCSI Targets in a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iSCSI Targets in a Disk pool.
+     * @return iSCSI Targets in a Disk pool along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IscsiTargetInner>> listByDiskPoolSinglePageAsync(
-        String resourceGroupName, String diskPoolName) {
+    private Mono<PagedResponse<IscsiTargetInner>> listByDiskPoolSinglePageAsync(String resourceGroupName,
+        String diskPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -196,54 +163,34 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDiskPool(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            diskPoolName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<IscsiTargetInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByDiskPool(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, diskPoolName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<IscsiTargetInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get iSCSI Targets in a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iSCSI Targets in a Disk pool.
+     * @return iSCSI Targets in a Disk pool along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IscsiTargetInner>> listByDiskPoolSinglePageAsync(
-        String resourceGroupName, String diskPoolName, Context context) {
+    private Mono<PagedResponse<IscsiTargetInner>> listByDiskPoolSinglePageAsync(String resourceGroupName,
+        String diskPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -255,70 +202,55 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDiskPool(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                diskPoolName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByDiskPool(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, diskPoolName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get iSCSI Targets in a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iSCSI Targets in a Disk pool.
+     * @return iSCSI Targets in a Disk pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IscsiTargetInner> listByDiskPoolAsync(String resourceGroupName, String diskPoolName) {
-        return new PagedFlux<>(
-            () -> listByDiskPoolSinglePageAsync(resourceGroupName, diskPoolName),
+        return new PagedFlux<>(() -> listByDiskPoolSinglePageAsync(resourceGroupName, diskPoolName),
             nextLink -> listByDiskPoolNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get iSCSI Targets in a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iSCSI Targets in a Disk pool.
+     * @return iSCSI Targets in a Disk pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<IscsiTargetInner> listByDiskPoolAsync(
-        String resourceGroupName, String diskPoolName, Context context) {
-        return new PagedFlux<>(
-            () -> listByDiskPoolSinglePageAsync(resourceGroupName, diskPoolName, context),
+    private PagedFlux<IscsiTargetInner> listByDiskPoolAsync(String resourceGroupName, String diskPoolName,
+        Context context) {
+        return new PagedFlux<>(() -> listByDiskPoolSinglePageAsync(resourceGroupName, diskPoolName, context),
             nextLink -> listByDiskPoolNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get iSCSI Targets in a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iSCSI Targets in a Disk pool.
+     * @return iSCSI Targets in a Disk pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IscsiTargetInner> listByDiskPool(String resourceGroupName, String diskPoolName) {
@@ -327,24 +259,24 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
 
     /**
      * Get iSCSI Targets in a Disk pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iSCSI Targets in a Disk pool.
+     * @return iSCSI Targets in a Disk pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IscsiTargetInner> listByDiskPool(
-        String resourceGroupName, String diskPoolName, Context context) {
+    public PagedIterable<IscsiTargetInner> listByDiskPool(String resourceGroupName, String diskPoolName,
+        Context context) {
         return new PagedIterable<>(listByDiskPoolAsync(resourceGroupName, diskPoolName, context));
     }
 
     /**
      * Create or Update an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -352,25 +284,18 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return response for iSCSI Target requests along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
-        IscsiTargetCreate iscsiTargetCreatePayload) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String diskPoolName, String iscsiTargetName, IscsiTargetCreate iscsiTargetCreatePayload) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -384,33 +309,22 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
                 .error(new IllegalArgumentException("Parameter iscsiTargetName is required and cannot be null."));
         }
         if (iscsiTargetCreatePayload == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter iscsiTargetCreatePayload is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter iscsiTargetCreatePayload is required and cannot be null."));
         } else {
             iscsiTargetCreatePayload.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            diskPoolName,
-                            iscsiTargetName,
-                            this.client.getApiVersion(),
-                            iscsiTargetCreatePayload,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, diskPoolName, iscsiTargetName, this.client.getApiVersion(), iscsiTargetCreatePayload,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or Update an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -419,26 +333,18 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return response for iSCSI Target requests along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
-        IscsiTargetCreate iscsiTargetCreatePayload,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String diskPoolName, String iscsiTargetName, IscsiTargetCreate iscsiTargetCreatePayload, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -452,30 +358,20 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
                 .error(new IllegalArgumentException("Parameter iscsiTargetName is required and cannot be null."));
         }
         if (iscsiTargetCreatePayload == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter iscsiTargetCreatePayload is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter iscsiTargetCreatePayload is required and cannot be null."));
         } else {
             iscsiTargetCreatePayload.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                diskPoolName,
-                iscsiTargetName,
-                this.client.getApiVersion(),
-                iscsiTargetCreatePayload,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            diskPoolName, iscsiTargetName, this.client.getApiVersion(), iscsiTargetCreatePayload, accept, context);
     }
 
     /**
      * Create or Update an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -483,25 +379,21 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return the {@link PollerFlux} for polling of response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IscsiTargetInner>, IscsiTargetInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
+        String resourceGroupName, String diskPoolName, String iscsiTargetName,
         IscsiTargetCreate iscsiTargetCreatePayload) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetCreatePayload);
-        return this
-            .client
-            .<IscsiTargetInner, IscsiTargetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), IscsiTargetInner.class, IscsiTargetInner.class, Context.NONE);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, diskPoolName,
+            iscsiTargetName, iscsiTargetCreatePayload);
+        return this.client.<IscsiTargetInner, IscsiTargetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            IscsiTargetInner.class, IscsiTargetInner.class, this.client.getContext());
     }
 
     /**
      * Create or Update an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -510,28 +402,63 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return the {@link PollerFlux} for polling of response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IscsiTargetInner>, IscsiTargetInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
-        IscsiTargetCreate iscsiTargetCreatePayload,
-        Context context) {
+        String resourceGroupName, String diskPoolName, String iscsiTargetName,
+        IscsiTargetCreate iscsiTargetCreatePayload, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetCreatePayload, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, diskPoolName,
+            iscsiTargetName, iscsiTargetCreatePayload, context);
+        return this.client.<IscsiTargetInner, IscsiTargetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            IscsiTargetInner.class, IscsiTargetInner.class, context);
+    }
+
+    /**
+     * Create or Update an iSCSI Target.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param diskPoolName The name of the Disk Pool.
+     * @param iscsiTargetName The name of the iSCSI Target.
+     * @param iscsiTargetCreatePayload Request payload for iSCSI Target create operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for iSCSI Target requests.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<IscsiTargetInner>, IscsiTargetInner> beginCreateOrUpdate(String resourceGroupName,
+        String diskPoolName, String iscsiTargetName, IscsiTargetCreate iscsiTargetCreatePayload) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetCreatePayload)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create or Update an iSCSI Target.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param diskPoolName The name of the Disk Pool.
+     * @param iscsiTargetName The name of the iSCSI Target.
+     * @param iscsiTargetCreatePayload Request payload for iSCSI Target create operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for iSCSI Target requests.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<IscsiTargetInner>, IscsiTargetInner> beginCreateOrUpdate(String resourceGroupName,
+        String diskPoolName, String iscsiTargetName, IscsiTargetCreate iscsiTargetCreatePayload, Context context) {
         return this
-            .client
-            .<IscsiTargetInner, IscsiTargetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), IscsiTargetInner.class, IscsiTargetInner.class, context);
+            .beginCreateOrUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetCreatePayload,
+                context)
+            .getSyncPoller();
     }
 
     /**
      * Create or Update an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -539,21 +466,19 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return response for iSCSI Target requests on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<IscsiTargetInner>, IscsiTargetInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
-        IscsiTargetCreate iscsiTargetCreatePayload) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<IscsiTargetInner> createOrUpdateAsync(String resourceGroupName, String diskPoolName,
+        String iscsiTargetName, IscsiTargetCreate iscsiTargetCreatePayload) {
         return beginCreateOrUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetCreatePayload)
-            .getSyncPoller();
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or Update an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -562,23 +487,18 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return response for iSCSI Target requests on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<IscsiTargetInner>, IscsiTargetInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
-        IscsiTargetCreate iscsiTargetCreatePayload,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetCreatePayload, context)
-            .getSyncPoller();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<IscsiTargetInner> createOrUpdateAsync(String resourceGroupName, String diskPoolName,
+        String iscsiTargetName, IscsiTargetCreate iscsiTargetCreatePayload, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetCreatePayload,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or Update an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -589,66 +509,14 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @return response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IscsiTargetInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
-        IscsiTargetCreate iscsiTargetCreatePayload) {
-        return beginCreateOrUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetCreatePayload)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or Update an iSCSI Target.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diskPoolName The name of the Disk Pool.
-     * @param iscsiTargetName The name of the iSCSI Target.
-     * @param iscsiTargetCreatePayload Request payload for iSCSI Target create operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IscsiTargetInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
-        IscsiTargetCreate iscsiTargetCreatePayload,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetCreatePayload, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or Update an iSCSI Target.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diskPoolName The name of the Disk Pool.
-     * @param iscsiTargetName The name of the iSCSI Target.
-     * @param iscsiTargetCreatePayload Request payload for iSCSI Target create operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IscsiTargetInner createOrUpdate(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
+    public IscsiTargetInner createOrUpdate(String resourceGroupName, String diskPoolName, String iscsiTargetName,
         IscsiTargetCreate iscsiTargetCreatePayload) {
         return createOrUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetCreatePayload).block();
     }
 
     /**
      * Create or Update an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -660,19 +528,15 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @return response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IscsiTargetInner createOrUpdate(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
-        IscsiTargetCreate iscsiTargetCreatePayload,
-        Context context) {
+    public IscsiTargetInner createOrUpdate(String resourceGroupName, String diskPoolName, String iscsiTargetName,
+        IscsiTargetCreate iscsiTargetCreatePayload, Context context) {
         return createOrUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetCreatePayload, context)
             .block();
     }
 
     /**
      * Update an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -680,25 +544,18 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return response for iSCSI Target requests along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
-        IscsiTargetUpdate iscsiTargetUpdatePayload) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String diskPoolName,
+        String iscsiTargetName, IscsiTargetUpdate iscsiTargetUpdatePayload) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -712,33 +569,22 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
                 .error(new IllegalArgumentException("Parameter iscsiTargetName is required and cannot be null."));
         }
         if (iscsiTargetUpdatePayload == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter iscsiTargetUpdatePayload is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter iscsiTargetUpdatePayload is required and cannot be null."));
         } else {
             iscsiTargetUpdatePayload.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            diskPoolName,
-                            iscsiTargetName,
-                            this.client.getApiVersion(),
-                            iscsiTargetUpdatePayload,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, diskPoolName, iscsiTargetName, this.client.getApiVersion(), iscsiTargetUpdatePayload,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -747,26 +593,18 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return response for iSCSI Target requests along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
-        IscsiTargetUpdate iscsiTargetUpdatePayload,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String diskPoolName,
+        String iscsiTargetName, IscsiTargetUpdate iscsiTargetUpdatePayload, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -780,30 +618,20 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
                 .error(new IllegalArgumentException("Parameter iscsiTargetName is required and cannot be null."));
         }
         if (iscsiTargetUpdatePayload == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter iscsiTargetUpdatePayload is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter iscsiTargetUpdatePayload is required and cannot be null."));
         } else {
             iscsiTargetUpdatePayload.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                diskPoolName,
-                iscsiTargetName,
-                this.client.getApiVersion(),
-                iscsiTargetUpdatePayload,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            diskPoolName, iscsiTargetName, this.client.getApiVersion(), iscsiTargetUpdatePayload, accept, context);
     }
 
     /**
      * Update an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -811,25 +639,20 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return the {@link PollerFlux} for polling of response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<IscsiTargetInner>, IscsiTargetInner> beginUpdateAsync(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
-        IscsiTargetUpdate iscsiTargetUpdatePayload) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetUpdatePayload);
-        return this
-            .client
-            .<IscsiTargetInner, IscsiTargetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), IscsiTargetInner.class, IscsiTargetInner.class, Context.NONE);
+    private PollerFlux<PollResult<IscsiTargetInner>, IscsiTargetInner> beginUpdateAsync(String resourceGroupName,
+        String diskPoolName, String iscsiTargetName, IscsiTargetUpdate iscsiTargetUpdatePayload) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetUpdatePayload);
+        return this.client.<IscsiTargetInner, IscsiTargetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            IscsiTargetInner.class, IscsiTargetInner.class, this.client.getContext());
     }
 
     /**
      * Update an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -838,28 +661,61 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return the {@link PollerFlux} for polling of response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<IscsiTargetInner>, IscsiTargetInner> beginUpdateAsync(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
-        IscsiTargetUpdate iscsiTargetUpdatePayload,
-        Context context) {
+    private PollerFlux<PollResult<IscsiTargetInner>, IscsiTargetInner> beginUpdateAsync(String resourceGroupName,
+        String diskPoolName, String iscsiTargetName, IscsiTargetUpdate iscsiTargetUpdatePayload, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetUpdatePayload, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, diskPoolName,
+            iscsiTargetName, iscsiTargetUpdatePayload, context);
+        return this.client.<IscsiTargetInner, IscsiTargetInner>getLroResult(mono, this.client.getHttpPipeline(),
+            IscsiTargetInner.class, IscsiTargetInner.class, context);
+    }
+
+    /**
+     * Update an iSCSI Target.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param diskPoolName The name of the Disk Pool.
+     * @param iscsiTargetName The name of the iSCSI Target.
+     * @param iscsiTargetUpdatePayload Request payload for iSCSI Target update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for iSCSI Target requests.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<IscsiTargetInner>, IscsiTargetInner> beginUpdate(String resourceGroupName,
+        String diskPoolName, String iscsiTargetName, IscsiTargetUpdate iscsiTargetUpdatePayload) {
+        return this.beginUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetUpdatePayload)
+            .getSyncPoller();
+    }
+
+    /**
+     * Update an iSCSI Target.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param diskPoolName The name of the Disk Pool.
+     * @param iscsiTargetName The name of the iSCSI Target.
+     * @param iscsiTargetUpdatePayload Request payload for iSCSI Target update operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response for iSCSI Target requests.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<IscsiTargetInner>, IscsiTargetInner> beginUpdate(String resourceGroupName,
+        String diskPoolName, String iscsiTargetName, IscsiTargetUpdate iscsiTargetUpdatePayload, Context context) {
         return this
-            .client
-            .<IscsiTargetInner, IscsiTargetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), IscsiTargetInner.class, IscsiTargetInner.class, context);
+            .beginUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetUpdatePayload, context)
+            .getSyncPoller();
     }
 
     /**
      * Update an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -867,21 +723,18 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return response for iSCSI Target requests on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<IscsiTargetInner>, IscsiTargetInner> beginUpdate(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<IscsiTargetInner> updateAsync(String resourceGroupName, String diskPoolName, String iscsiTargetName,
         IscsiTargetUpdate iscsiTargetUpdatePayload) {
-        return beginUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetUpdatePayload)
-            .getSyncPoller();
+        return beginUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetUpdatePayload).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -890,62 +743,11 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<IscsiTargetInner>, IscsiTargetInner> beginUpdate(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
-        IscsiTargetUpdate iscsiTargetUpdatePayload,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetUpdatePayload, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Update an iSCSI Target.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diskPoolName The name of the Disk Pool.
-     * @param iscsiTargetName The name of the iSCSI Target.
-     * @param iscsiTargetUpdatePayload Request payload for iSCSI Target update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
+     * @return response for iSCSI Target requests on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IscsiTargetInner> updateAsync(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
-        IscsiTargetUpdate iscsiTargetUpdatePayload) {
-        return beginUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetUpdatePayload)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update an iSCSI Target.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diskPoolName The name of the Disk Pool.
-     * @param iscsiTargetName The name of the iSCSI Target.
-     * @param iscsiTargetUpdatePayload Request payload for iSCSI Target update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for iSCSI Target requests.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IscsiTargetInner> updateAsync(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
-        IscsiTargetUpdate iscsiTargetUpdatePayload,
-        Context context) {
+    private Mono<IscsiTargetInner> updateAsync(String resourceGroupName, String diskPoolName, String iscsiTargetName,
+        IscsiTargetUpdate iscsiTargetUpdatePayload, Context context) {
         return beginUpdateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetUpdatePayload, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -953,7 +755,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
 
     /**
      * Update an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -964,17 +766,14 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @return response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IscsiTargetInner update(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
+    public IscsiTargetInner update(String resourceGroupName, String diskPoolName, String iscsiTargetName,
         IscsiTargetUpdate iscsiTargetUpdatePayload) {
         return updateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetUpdatePayload).block();
     }
 
     /**
      * Update an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -986,40 +785,32 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @return response for iSCSI Target requests.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IscsiTargetInner update(
-        String resourceGroupName,
-        String diskPoolName,
-        String iscsiTargetName,
-        IscsiTargetUpdate iscsiTargetUpdatePayload,
-        Context context) {
+    public IscsiTargetInner update(String resourceGroupName, String diskPoolName, String iscsiTargetName,
+        IscsiTargetUpdate iscsiTargetUpdatePayload, Context context) {
         return updateAsync(resourceGroupName, diskPoolName, iscsiTargetName, iscsiTargetUpdatePayload, context).block();
     }
 
     /**
      * Delete an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String diskPoolName, String iscsiTargetName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String diskPoolName,
+        String iscsiTargetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1034,24 +825,14 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            diskPoolName,
-                            iscsiTargetName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, diskPoolName, iscsiTargetName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -1059,22 +840,18 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String diskPoolName, String iscsiTargetName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String diskPoolName,
+        String iscsiTargetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1089,42 +866,33 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                diskPoolName,
-                iscsiTargetName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            diskPoolName, iscsiTargetName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String diskPoolName, String iscsiTargetName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, diskPoolName, iscsiTargetName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String diskPoolName,
+        String iscsiTargetName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, diskPoolName, iscsiTargetName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -1132,39 +900,38 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String diskPoolName, String iscsiTargetName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String diskPoolName,
+        String iscsiTargetName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, diskPoolName, iscsiTargetName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, diskPoolName, iscsiTargetName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String diskPoolName, String iscsiTargetName) {
-        return beginDeleteAsync(resourceGroupName, diskPoolName, iscsiTargetName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskPoolName,
+        String iscsiTargetName) {
+        return this.beginDeleteAsync(resourceGroupName, diskPoolName, iscsiTargetName).getSyncPoller();
     }
 
     /**
      * Delete an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -1172,35 +939,34 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String diskPoolName, String iscsiTargetName, Context context) {
-        return beginDeleteAsync(resourceGroupName, diskPoolName, iscsiTargetName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskPoolName,
+        String iscsiTargetName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, diskPoolName, iscsiTargetName, context).getSyncPoller();
     }
 
     /**
      * Delete an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String diskPoolName, String iscsiTargetName) {
-        return beginDeleteAsync(resourceGroupName, diskPoolName, iscsiTargetName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, diskPoolName, iscsiTargetName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -1208,19 +974,18 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String diskPoolName, String iscsiTargetName, Context context) {
-        return beginDeleteAsync(resourceGroupName, diskPoolName, iscsiTargetName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String diskPoolName, String iscsiTargetName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, diskPoolName, iscsiTargetName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -1235,7 +1000,7 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
 
     /**
      * Delete an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -1251,29 +1016,25 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
 
     /**
      * Get an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an iSCSI Target.
+     * @return an iSCSI Target along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IscsiTargetInner>> getWithResponseAsync(
-        String resourceGroupName, String diskPoolName, String iscsiTargetName) {
+    private Mono<Response<IscsiTargetInner>> getWithResponseAsync(String resourceGroupName, String diskPoolName,
+        String iscsiTargetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1288,24 +1049,14 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            diskPoolName,
-                            iscsiTargetName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, diskPoolName, iscsiTargetName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -1313,22 +1064,18 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an iSCSI Target.
+     * @return an iSCSI Target along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IscsiTargetInner>> getWithResponseAsync(
-        String resourceGroupName, String diskPoolName, String iscsiTargetName, Context context) {
+    private Mono<Response<IscsiTargetInner>> getWithResponseAsync(String resourceGroupName, String diskPoolName,
+        String iscsiTargetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1343,45 +1090,48 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                diskPoolName,
-                iscsiTargetName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, diskPoolName,
+            iscsiTargetName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get an iSCSI Target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an iSCSI Target.
+     * @return an iSCSI Target on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IscsiTargetInner> getAsync(String resourceGroupName, String diskPoolName, String iscsiTargetName) {
         return getWithResponseAsync(resourceGroupName, diskPoolName, iscsiTargetName)
-            .flatMap(
-                (Response<IscsiTargetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get an iSCSI Target.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param diskPoolName The name of the Disk Pool.
+     * @param iscsiTargetName The name of the iSCSI Target.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an iSCSI Target along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<IscsiTargetInner> getWithResponse(String resourceGroupName, String diskPoolName,
+        String iscsiTargetName, Context context) {
+        return getWithResponseAsync(resourceGroupName, diskPoolName, iscsiTargetName, context).block();
+    }
+
+    /**
+     * Get an iSCSI Target.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param diskPoolName The name of the Disk Pool.
      * @param iscsiTargetName The name of the iSCSI Target.
@@ -1392,35 +1142,17 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IscsiTargetInner get(String resourceGroupName, String diskPoolName, String iscsiTargetName) {
-        return getAsync(resourceGroupName, diskPoolName, iscsiTargetName).block();
-    }
-
-    /**
-     * Get an iSCSI Target.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param diskPoolName The name of the Disk Pool.
-     * @param iscsiTargetName The name of the iSCSI Target.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an iSCSI Target.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IscsiTargetInner> getWithResponse(
-        String resourceGroupName, String diskPoolName, String iscsiTargetName, Context context) {
-        return getWithResponseAsync(resourceGroupName, diskPoolName, iscsiTargetName, context).block();
+        return getWithResponse(resourceGroupName, diskPoolName, iscsiTargetName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of iSCSI Targets.
+     * @return list of iSCSI Targets along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IscsiTargetInner>> listByDiskPoolNextSinglePageAsync(String nextLink) {
@@ -1428,35 +1160,26 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDiskPoolNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<IscsiTargetInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<IscsiTargetInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of iSCSI Targets.
+     * @return list of iSCSI Targets along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IscsiTargetInner>> listByDiskPoolNextSinglePageAsync(String nextLink, Context context) {
@@ -1464,23 +1187,13 @@ public final class IscsiTargetsClientImpl implements IscsiTargetsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByDiskPoolNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByDiskPoolNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

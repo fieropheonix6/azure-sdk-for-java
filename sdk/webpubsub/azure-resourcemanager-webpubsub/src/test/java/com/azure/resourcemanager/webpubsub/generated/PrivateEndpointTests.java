@@ -7,19 +7,18 @@ package com.azure.resourcemanager.webpubsub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.PrivateEndpoint;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointTests {
-    @Test
-    public void testDeserialize() {
-        PrivateEndpoint model = BinaryData.fromString("{\"id\":\"qlfktsths\"}").toObject(PrivateEndpoint.class);
-        Assertions.assertEquals("qlfktsths", model.id());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateEndpoint model = BinaryData.fromString("{\"id\":\"n\"}").toObject(PrivateEndpoint.class);
+        Assertions.assertEquals("n", model.id());
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateEndpoint model = new PrivateEndpoint().withId("qlfktsths");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateEndpoint model = new PrivateEndpoint().withId("n");
         model = BinaryData.fromObject(model).toObject(PrivateEndpoint.class);
-        Assertions.assertEquals("qlfktsths", model.id());
+        Assertions.assertEquals("n", model.id());
     }
 }

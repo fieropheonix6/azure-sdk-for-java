@@ -5,65 +5,66 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Build properties for the static site. */
+/**
+ * Build properties for the static site.
+ */
 @Fluent
-public final class StaticSiteBuildProperties {
+public final class StaticSiteBuildProperties implements JsonSerializable<StaticSiteBuildProperties> {
     /*
      * The path to the app code within the repository.
      */
-    @JsonProperty(value = "appLocation")
     private String appLocation;
 
     /*
      * The path to the api code within the repository.
      */
-    @JsonProperty(value = "apiLocation")
     private String apiLocation;
 
     /*
-     * Deprecated: The path of the app artifacts after building (deprecated in
-     * favor of OutputLocation)
+     * Deprecated: The path of the app artifacts after building (deprecated in favor of OutputLocation)
      */
-    @JsonProperty(value = "appArtifactLocation")
     private String appArtifactLocation;
 
     /*
      * The output path of the app after building.
      */
-    @JsonProperty(value = "outputLocation")
     private String outputLocation;
 
     /*
-     * A custom command to run during deployment of the static content
-     * application.
+     * A custom command to run during deployment of the static content application.
      */
-    @JsonProperty(value = "appBuildCommand")
     private String appBuildCommand;
 
     /*
-     * A custom command to run during deployment of the Azure Functions API
-     * application.
+     * A custom command to run during deployment of the Azure Functions API application.
      */
-    @JsonProperty(value = "apiBuildCommand")
     private String apiBuildCommand;
 
     /*
      * Skip Github Action workflow generation.
      */
-    @JsonProperty(value = "skipGithubActionWorkflowGeneration")
     private Boolean skipGithubActionWorkflowGeneration;
 
     /*
      * Github Action secret name override.
      */
-    @JsonProperty(value = "githubActionSecretNameOverride")
     private String githubActionSecretNameOverride;
 
     /**
+     * Creates an instance of StaticSiteBuildProperties class.
+     */
+    public StaticSiteBuildProperties() {
+    }
+
+    /**
      * Get the appLocation property: The path to the app code within the repository.
-     *
+     * 
      * @return the appLocation value.
      */
     public String appLocation() {
@@ -72,7 +73,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Set the appLocation property: The path to the app code within the repository.
-     *
+     * 
      * @param appLocation the appLocation value to set.
      * @return the StaticSiteBuildProperties object itself.
      */
@@ -83,7 +84,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Get the apiLocation property: The path to the api code within the repository.
-     *
+     * 
      * @return the apiLocation value.
      */
     public String apiLocation() {
@@ -92,7 +93,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Set the apiLocation property: The path to the api code within the repository.
-     *
+     * 
      * @param apiLocation the apiLocation value to set.
      * @return the StaticSiteBuildProperties object itself.
      */
@@ -104,7 +105,7 @@ public final class StaticSiteBuildProperties {
     /**
      * Get the appArtifactLocation property: Deprecated: The path of the app artifacts after building (deprecated in
      * favor of OutputLocation).
-     *
+     * 
      * @return the appArtifactLocation value.
      */
     public String appArtifactLocation() {
@@ -114,7 +115,7 @@ public final class StaticSiteBuildProperties {
     /**
      * Set the appArtifactLocation property: Deprecated: The path of the app artifacts after building (deprecated in
      * favor of OutputLocation).
-     *
+     * 
      * @param appArtifactLocation the appArtifactLocation value to set.
      * @return the StaticSiteBuildProperties object itself.
      */
@@ -125,7 +126,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Get the outputLocation property: The output path of the app after building.
-     *
+     * 
      * @return the outputLocation value.
      */
     public String outputLocation() {
@@ -134,7 +135,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Set the outputLocation property: The output path of the app after building.
-     *
+     * 
      * @param outputLocation the outputLocation value to set.
      * @return the StaticSiteBuildProperties object itself.
      */
@@ -145,7 +146,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Get the appBuildCommand property: A custom command to run during deployment of the static content application.
-     *
+     * 
      * @return the appBuildCommand value.
      */
     public String appBuildCommand() {
@@ -154,7 +155,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Set the appBuildCommand property: A custom command to run during deployment of the static content application.
-     *
+     * 
      * @param appBuildCommand the appBuildCommand value to set.
      * @return the StaticSiteBuildProperties object itself.
      */
@@ -166,7 +167,7 @@ public final class StaticSiteBuildProperties {
     /**
      * Get the apiBuildCommand property: A custom command to run during deployment of the Azure Functions API
      * application.
-     *
+     * 
      * @return the apiBuildCommand value.
      */
     public String apiBuildCommand() {
@@ -176,7 +177,7 @@ public final class StaticSiteBuildProperties {
     /**
      * Set the apiBuildCommand property: A custom command to run during deployment of the Azure Functions API
      * application.
-     *
+     * 
      * @param apiBuildCommand the apiBuildCommand value to set.
      * @return the StaticSiteBuildProperties object itself.
      */
@@ -187,7 +188,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Get the skipGithubActionWorkflowGeneration property: Skip Github Action workflow generation.
-     *
+     * 
      * @return the skipGithubActionWorkflowGeneration value.
      */
     public Boolean skipGithubActionWorkflowGeneration() {
@@ -196,19 +197,19 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Set the skipGithubActionWorkflowGeneration property: Skip Github Action workflow generation.
-     *
+     * 
      * @param skipGithubActionWorkflowGeneration the skipGithubActionWorkflowGeneration value to set.
      * @return the StaticSiteBuildProperties object itself.
      */
-    public StaticSiteBuildProperties withSkipGithubActionWorkflowGeneration(
-        Boolean skipGithubActionWorkflowGeneration) {
+    public StaticSiteBuildProperties
+        withSkipGithubActionWorkflowGeneration(Boolean skipGithubActionWorkflowGeneration) {
         this.skipGithubActionWorkflowGeneration = skipGithubActionWorkflowGeneration;
         return this;
     }
 
     /**
      * Get the githubActionSecretNameOverride property: Github Action secret name override.
-     *
+     * 
      * @return the githubActionSecretNameOverride value.
      */
     public String githubActionSecretNameOverride() {
@@ -217,7 +218,7 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Set the githubActionSecretNameOverride property: Github Action secret name override.
-     *
+     * 
      * @param githubActionSecretNameOverride the githubActionSecretNameOverride value to set.
      * @return the StaticSiteBuildProperties object itself.
      */
@@ -228,9 +229,67 @@ public final class StaticSiteBuildProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("appLocation", this.appLocation);
+        jsonWriter.writeStringField("apiLocation", this.apiLocation);
+        jsonWriter.writeStringField("appArtifactLocation", this.appArtifactLocation);
+        jsonWriter.writeStringField("outputLocation", this.outputLocation);
+        jsonWriter.writeStringField("appBuildCommand", this.appBuildCommand);
+        jsonWriter.writeStringField("apiBuildCommand", this.apiBuildCommand);
+        jsonWriter.writeBooleanField("skipGithubActionWorkflowGeneration", this.skipGithubActionWorkflowGeneration);
+        jsonWriter.writeStringField("githubActionSecretNameOverride", this.githubActionSecretNameOverride);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StaticSiteBuildProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StaticSiteBuildProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StaticSiteBuildProperties.
+     */
+    public static StaticSiteBuildProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StaticSiteBuildProperties deserializedStaticSiteBuildProperties = new StaticSiteBuildProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("appLocation".equals(fieldName)) {
+                    deserializedStaticSiteBuildProperties.appLocation = reader.getString();
+                } else if ("apiLocation".equals(fieldName)) {
+                    deserializedStaticSiteBuildProperties.apiLocation = reader.getString();
+                } else if ("appArtifactLocation".equals(fieldName)) {
+                    deserializedStaticSiteBuildProperties.appArtifactLocation = reader.getString();
+                } else if ("outputLocation".equals(fieldName)) {
+                    deserializedStaticSiteBuildProperties.outputLocation = reader.getString();
+                } else if ("appBuildCommand".equals(fieldName)) {
+                    deserializedStaticSiteBuildProperties.appBuildCommand = reader.getString();
+                } else if ("apiBuildCommand".equals(fieldName)) {
+                    deserializedStaticSiteBuildProperties.apiBuildCommand = reader.getString();
+                } else if ("skipGithubActionWorkflowGeneration".equals(fieldName)) {
+                    deserializedStaticSiteBuildProperties.skipGithubActionWorkflowGeneration
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("githubActionSecretNameOverride".equals(fieldName)) {
+                    deserializedStaticSiteBuildProperties.githubActionSecretNameOverride = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStaticSiteBuildProperties;
+        });
     }
 }

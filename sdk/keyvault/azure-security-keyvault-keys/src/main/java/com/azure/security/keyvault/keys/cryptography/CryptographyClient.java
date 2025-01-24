@@ -3,14 +3,17 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.Response;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyService;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
+import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyClientImpl;
+import com.azure.security.keyvault.keys.cryptography.implementation.LocalKeyCryptographyClient;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
@@ -22,16 +25,41 @@ import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
+import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
+import com.azure.security.keyvault.keys.implementation.SecretMinClientImpl;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
+
+import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.createLocalClient;
+import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.isThrowableRetryable;
+import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.retrieveJwkAndCreateLocalClient;
 
 /**
  * The {@link CryptographyClient} provides synchronous methods to perform cryptographic operations using asymmetric and
  * symmetric keys. The client supports encrypt, decrypt, wrap key, unwrap key, sign and verify operations using the
  * configured key.
  *
- * <p><strong>Samples to construct the sync client</strong></p>
+ * <h2>Getting Started</h2>
+ *
+ * <p>In order to interact with the Azure Key Vault service, you will need to create an instance of the
+ * {@link CryptographyClient} class, a vault url and a credential object.</p>
+ *
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally,
+ * we recommend using a
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">
+ * managed identity</a> for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">
+ * Azure Identity documentation"</a>.</p>
+ *
+ * <p><strong>Sample: Construct Synchronous Cryptography Client</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link CryptographyClient}, using the
+ * {@link CryptographyClientBuilder} to configure it.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.instantiation -->
  * <pre>
@@ -50,19 +78,125 @@ import reactor.core.publisher.Mono;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation -->
  *
+ * <p>When a {@link CryptographyClient} gets created using a {@code Azure Key Vault key identifier}, the first time a
+ * cryptographic operation is attempted, the client will attempt to retrieve the key material from the service, cache
+ * it, and perform all future cryptographic operations locally, deferring to the service when that's not possible. If
+ * key retrieval and caching fails because of a non-retryable error, the client will not make any further attempts and
+ * will fall back to performing all cryptographic operations on the service side. Conversely, when a
+ * {@link CryptographyClient} created using a {@link JsonWebKey JSON Web Key}, all cryptographic operations will be
+ * performed locally.</p>
+ *
+ * <br>
+ *
+ * <hr>
+ *
+ * <h2>Encrypt Data</h2>
+ * The {@link CryptographyClient} can be used to encrypt data.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously encrypt data using the
+ * {@link CryptographyClient#encrypt(EncryptionAlgorithm, byte[])} API.
+ * </p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte -->
+ * <pre>
+ * byte[] plaintext = new byte[100];
+ * new Random&#40;0x1234567L&#41;.nextBytes&#40;plaintext&#41;;
+ *
+ * EncryptResult encryptResult = cryptographyClient.encrypt&#40;EncryptionAlgorithm.RSA_OAEP, plaintext&#41;;
+ *
+ * System.out.printf&#40;&quot;Received encrypted content of length: %d, with algorithm: %s.%n&quot;,
+ *     encryptResult.getCipherText&#40;&#41;.length, encryptResult.getAlgorithm&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link CryptographyAsyncClient}.</p>
+ *
+ * <br>
+ *
+ * <hr>
+ *
+ * <h2>Decrypt Data</h2>
+ * The {@link CryptographyClient} can be used to decrypt data.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously decrypt data using the
+ * {@link CryptographyClient#decrypt(EncryptionAlgorithm, byte[])} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte -->
+ * <pre>
+ * byte[] ciphertext = new byte[100];
+ * new Random&#40;0x1234567L&#41;.nextBytes&#40;ciphertext&#41;;
+ *
+ * DecryptResult decryptResult = cryptographyClient.decrypt&#40;EncryptionAlgorithm.RSA_OAEP, ciphertext&#41;;
+ *
+ * System.out.printf&#40;&quot;Received decrypted content of length: %d.%n&quot;, decryptResult.getPlainText&#40;&#41;.length&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link CryptographyAsyncClient}.</p>
+ *
+ * @see com.azure.security.keyvault.keys.cryptography
  * @see CryptographyClientBuilder
  */
-@ServiceClient(builder = CryptographyClientBuilder.class, serviceInterfaces = CryptographyService.class)
+@ServiceClient(
+    builder = CryptographyClientBuilder.class,
+    serviceInterfaces = { KeyClientImpl.KeyClientService.class, SecretMinClientImpl.SecretMinClientService.class })
 public class CryptographyClient {
-    private final CryptographyAsyncClient client;
+    private static final ClientLogger LOGGER = new ClientLogger(CryptographyClient.class);
+
+    private volatile boolean skipLocalClientCreation;
+    private volatile LocalKeyCryptographyClient localKeyCryptographyClient;
+
+    final CryptographyClientImpl implClient;
+    final String keyId;
 
     /**
      * Creates a {@link CryptographyClient} that uses a given {@link HttpPipeline pipeline} to service requests.
      *
-     * @param client The {@link CryptographyAsyncClient} that the client routes its request through.
+     * @param keyId The Azure Key Vault key identifier to use for cryptography operations.
+     * @param pipeline {@link HttpPipeline} that the HTTP requests and responses flow through.
+     * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
+     * @param disableKeyCaching Indicates if local key caching should be disabled and all cryptographic operations
+     * deferred to the service.
      */
-    CryptographyClient(CryptographyAsyncClient client) {
-        this.client = client;
+    CryptographyClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version,
+        boolean disableKeyCaching) {
+        this.implClient = new CryptographyClientImpl(keyId, pipeline, version);
+        this.keyId = keyId;
+        this.skipLocalClientCreation = disableKeyCaching;
+    }
+
+    /**
+     * Creates a {@link CryptographyAsyncClient} that uses a {@link JsonWebKey} to perform local cryptography
+     * operations.
+     *
+     * @param jsonWebKey The {@link JsonWebKey} to use for local cryptography operations.
+     */
+    CryptographyClient(JsonWebKey jsonWebKey) {
+        Objects.requireNonNull(jsonWebKey, "The JSON Web Key is required.");
+
+        if (!jsonWebKey.isValid()) {
+            throw new IllegalArgumentException("The JSON Web Key is not valid.");
+        }
+
+        if (jsonWebKey.getKeyOps() == null) {
+            throw new IllegalArgumentException("The JSON Web Key's key operations property is not configured.");
+        }
+
+        if (jsonWebKey.getKeyType() == null) {
+            throw new IllegalArgumentException("The JSON Web Key's key type property is not configured.");
+        }
+
+        this.implClient = null;
+        this.keyId = jsonWebKey.getId();
+
+        try {
+            this.localKeyCryptographyClient = createLocalClient(jsonWebKey, null);
+        } catch (RuntimeException e) {
+            throw LOGGER
+                .logExceptionAsError(new RuntimeException("Could not initialize local cryptography client.", e));
+        }
     }
 
     /**
@@ -70,8 +204,8 @@ public class CryptographyClient {
      * the {@code keys/get} permission for non-local operations.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets the configured key in the client. Subscribes to the call asynchronously and prints out the returned key
-     * details when a response has been received.</p>
+     * <p>Gets the configured key in the client and prints out the returned key details when a response has been
+     * received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.getKey -->
      * <pre>
@@ -95,8 +229,8 @@ public class CryptographyClient {
      * the {@code keys/get} permission for non-local operations.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets the configured key in the client. Subscribes to the call asynchronously and prints out the returned key
-     * details when a response has been received.</p>
+     * <p>Gets the configured key in the client and prints out the returned key details when a response has been
+     * received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.getKeyWithResponse#Context -->
      * <pre>
@@ -113,14 +247,22 @@ public class CryptographyClient {
      * requested {@link KeyVaultKey key}.
      *
      * @throws ResourceNotFoundException When the configured key doesn't exist in the key vault.
+     * @throws UnsupportedOperationException When operating in local-only mode (using a client created using a
+     * JsonWebKey instance).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> getKeyWithResponse(Context context) {
-        return client.getKeyWithResponse(context).block();
+        if (implClient != null) {
+            return implClient.getKey(context);
+        } else {
+            throw LOGGER.logExceptionAsError(
+                new UnsupportedOperationException("Operation not supported when operating in local-only mode."));
+        }
     }
 
     /**
-     * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports a
+     * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports
+     * a
      * single block of data, the size of which is dependent on the target key and the encryption algorithm to be used.
      * The encrypt operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys, the
      * public portion of the key is used for encryption. This operation requires the {@code keys/encrypt} permission
@@ -130,7 +272,7 @@ public class CryptographyClient {
      * the specified {@code plaintext}. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
      * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
@@ -140,8 +282,7 @@ public class CryptographyClient {
      * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
-     * a response has been received.</p>
+     * <p>Encrypts the content and prints out the encrypted content details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte -->
      * <pre>
@@ -172,7 +313,8 @@ public class CryptographyClient {
 
     /**
      * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports
-     * a single block of data, the size of which is dependent on the target key and the encryption algorithm to be used.
+     * a single block of data, the size of which is dependent on the target key and the encryption algorithm to be
+     * used.
      * The encrypt operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys, the
      * public portion of the key is used for encryption. This operation requires the {@code keys/encrypt} permission
      * for non-local operations.
@@ -181,7 +323,7 @@ public class CryptographyClient {
      * the specified {@code plaintext}. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
      * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
@@ -191,8 +333,7 @@ public class CryptographyClient {
      * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
-     * a response has been received.</p>
+     * <p>Encrypts the content prints out the encrypted content details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-Context -->
      * <pre>
@@ -220,12 +361,21 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
-        return client.encrypt(algorithm, plaintext, context).block();
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.encrypt(algorithm, plaintext, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
+            return implClient.encrypt(algorithm, plaintext, context);
+        }
     }
 
     /**
      * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports
-     * a single block of data, the size of which is dependent on the target key and the encryption algorithm to be used.
+     * a single block of data, the size of which is dependent on the target key and the encryption algorithm to be
+     * used.
      * The encrypt operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys, the
      * public portion of the key is used for encryption. This operation requires the {@code keys/encrypt} permission
      * for non-local operations.
@@ -234,7 +384,7 @@ public class CryptographyClient {
      * the specified {@code plaintext}. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
      * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
@@ -244,8 +394,7 @@ public class CryptographyClient {
      * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
-     * a response has been received.</p>
+     * <p>Encrypts the content prints out the encrypted content details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptParameters-Context -->
      * <pre>
@@ -276,12 +425,21 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptResult encrypt(EncryptParameters encryptParameters, Context context) {
-        return client.encrypt(encryptParameters, context).block();
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.encrypt(encryptParameters, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
+            return implClient.encrypt(encryptParameters, context);
+        }
     }
 
     /**
      * Decrypts a single block of encrypted data using the configured key and specified algorithm. Note that only a
-     * single block of data may be decrypted, the size of this block is dependent on the target key and the algorithm to
+     * single block of data may be decrypted, the size of this block is dependent on the target key and the algorithm
+     * to
      * be used. The decrypt operation is supported for both asymmetric and symmetric keys. This operation requires
      * the {@code keys/decrypt} permission for non-local operations.
      *
@@ -289,7 +447,7 @@ public class CryptographyClient {
      * the specified encrypted content. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
      * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
@@ -299,8 +457,8 @@ public class CryptographyClient {
      * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
-     * details when a response has been received.</p>
+     * <p>Decrypts the encrypted content prints out the decrypted content details when a response has been
+     * received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte -->
      * <pre>
@@ -316,7 +474,8 @@ public class CryptographyClient {
      * @param algorithm The algorithm to be used for decryption.
      * @param ciphertext The content to be decrypted. Microsoft recommends you not use CBC without first ensuring the
      * integrity of the ciphertext using an HMAC, for example.
-     * See https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
+     * See <a href="https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode">Timing vulnerabilities
+     * with CBC-mode symmetric decryption using padding</a> for more information.
      *
      * @return The {@link DecryptResult} whose {@link DecryptResult#getPlainText() plain text} contains the decrypted
      * content.
@@ -332,7 +491,8 @@ public class CryptographyClient {
 
     /**
      * Decrypts a single block of encrypted data using the configured key and specified algorithm. Note that only a
-     * single block of data may be decrypted, the size of this block is dependent on the target key and the algorithm to
+     * single block of data may be decrypted, the size of this block is dependent on the target key and the algorithm
+     * to
      * be used. The decrypt operation is supported for both asymmetric and symmetric keys. This operation requires
      * the {@code keys/decrypt} permission for non-local operations.
      *
@@ -340,7 +500,7 @@ public class CryptographyClient {
      * the specified encrypted content. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
      * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
@@ -350,8 +510,8 @@ public class CryptographyClient {
      * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
-     * details when a response has been received.</p>
+     * <p>Decrypts the encrypted content prints out the decrypted content details when a response has been
+     * received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-Context -->
      * <pre>
@@ -368,7 +528,8 @@ public class CryptographyClient {
      * @param algorithm The algorithm to be used for decryption.
      * @param ciphertext The content to be decrypted. Microsoft recommends you not use CBC without first ensuring the
      * integrity of the ciphertext using an HMAC, for example.
-     * See https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
+     * See <a href="https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode">Timing vulnerabilities
+     * with CBC-mode symmetric decryption using padding</a> for more information.
      * @param context Additional context that is passed through the {@link HttpPipeline} during the service call.
      *
      * @return The {@link DecryptResult} whose {@link DecryptResult#getPlainText() plain text} contains the decrypted
@@ -380,12 +541,21 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
-        return client.decrypt(algorithm, ciphertext, context).block();
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.decrypt(algorithm, ciphertext, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
+            return implClient.decrypt(algorithm, ciphertext, context);
+        }
     }
 
     /**
      * Decrypts a single block of encrypted data using the configured key and specified algorithm. Note that only a
-     * single block of data may be decrypted, the size of this block is dependent on the target key and the algorithm to
+     * single block of data may be decrypted, the size of this block is dependent on the target key and the algorithm
+     * to
      * be used. The decrypt operation is supported for both asymmetric and symmetric keys. This operation requires
      * the {@code keys/decrypt} permission for non-local operations.
      *
@@ -393,7 +563,7 @@ public class CryptographyClient {
      * the specified encrypted content. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
      * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
@@ -403,8 +573,8 @@ public class CryptographyClient {
      * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
-     * details when a response has been received.</p>
+     * <p>Decrypts the encrypted content prints out the decrypted content details when a response has been
+     * received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptParameters-Context -->
      * <pre>
@@ -424,7 +594,8 @@ public class CryptographyClient {
      *
      * @param decryptParameters The parameters to use in the decryption operation. Microsoft recommends you not use CBC
      * without first ensuring the integrity of the ciphertext using an HMAC, for example.
-     * See https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
+     * See <a href="https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode">Timing vulnerabilities
+     * with CBC-mode symmetric decryption using padding</a> for more information.
      * @param context Additional context that is passed through the {@link HttpPipeline} during the service call.
      *
      * @return The {@link DecryptResult} whose {@link DecryptResult#getPlainText() plain text} contains the decrypted
@@ -436,7 +607,15 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(DecryptParameters decryptParameters, Context context) {
-        return client.decrypt(decryptParameters, context).block();
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.decrypt(decryptParameters, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
+            return implClient.decrypt(decryptParameters, context);
+        }
     }
 
     /**
@@ -449,12 +628,10 @@ public class CryptographyClient {
      * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
-     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response
-     * has been received.</p>
+     * <p>Sings the digest prints out the signature details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.sign#SignatureAlgorithm-byte -->
      * <pre>
@@ -482,7 +659,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult sign(SignatureAlgorithm algorithm, byte[] digest) {
-        return client.sign(algorithm, digest, Context.NONE).block();
+        return sign(algorithm, digest, Context.NONE);
     }
 
     /**
@@ -495,12 +672,10 @@ public class CryptographyClient {
      * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
-     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response
-     * has been received.</p>
+     * <p>Sings the digest prints out the signature details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.sign#SignatureAlgorithm-byte-Context -->
      * <pre>
@@ -530,7 +705,15 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, Context context) {
-        return client.sign(algorithm, digest, context).block();
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.sign(algorithm, digest, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
+            return implClient.sign(algorithm, digest, context);
+        }
     }
 
     /**
@@ -544,12 +727,11 @@ public class CryptographyClient {
      * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512}
-     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the
-     * verification details when a response has been received.</p>
+     * <p>Verifies the signature against the specified digest prints out the verification details when a response has
+     * been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte -->
      * <pre>
@@ -592,12 +774,11 @@ public class CryptographyClient {
      * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
-     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the
-     * verification details when a response has been received.</p>
+     * <p>Verifies the signature against the specified digest prints out the verification details when a response has
+     * been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte-Context -->
      * <pre>
@@ -628,7 +809,15 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
-        return client.verify(algorithm, digest, signature, context).block();
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.verify(algorithm, digest, signature, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
+            return implClient.verify(algorithm, digest, signature, context);
+        }
     }
 
     /**
@@ -640,13 +829,12 @@ public class CryptographyClient {
      * key content. Possible values include:
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128KW A128KW},
      * {@link EncryptionAlgorithm#A192KW A192KW} and {@link EncryptionAlgorithm#A256KW A256KW}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a
-     * response has been received.</p>
+     * <p>Wraps the key content prints out the wrapped key details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte -->
      * <pre>
@@ -684,13 +872,12 @@ public class CryptographyClient {
      * key content. Possible values include:
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128KW A128KW},
      * {@link EncryptionAlgorithm#A192KW A192KW} and {@link EncryptionAlgorithm#A256KW A256KW}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a
-     * response has been received.</p>
+     * <p>Wraps the key content prints out the wrapped key details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-Context -->
      * <pre>
@@ -718,25 +905,33 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
-        return client.wrapKey(algorithm, key, context).block();
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.wrapKey(algorithm, key, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
+            return implClient.wrapKey(algorithm, key, context);
+        }
     }
 
     /**
      * Unwraps a symmetric key using the configured key that was initially used for wrapping that key. This operation
-     * is the reverse of the wrap operation. The unwrap operation supports asymmetric and symmetric keys to unwrap. This
+     * is the reverse of the wrap operation. The unwrap operation supports asymmetric and symmetric keys to unwrap.
+     * This
      * operation requires the {@code keys/unwrapKey} permission for non-local operations.
      *
      * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for unwrapping the
      * specified encrypted key content. Possible values for asymmetric keys include:
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link KeyWrapAlgorithm#A128KW A128KW},
      * {@link KeyWrapAlgorithm#A192KW A192KW} and {@link KeyWrapAlgorithm#A256KW A256KW}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Unwraps the key content. Subscribes to the call asynchronously and prints out the unwrapped key details when
-     * a response has been received.</p>
+     * <p>Unwraps the key content prints out the unwrapped key details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte -->
      * <pre>
@@ -769,20 +964,20 @@ public class CryptographyClient {
 
     /**
      * Unwraps a symmetric key using the configured key that was initially used for wrapping that key. This operation
-     * is the reverse of the wrap operation. The unwrap operation supports asymmetric and symmetric keys to unwrap. This
+     * is the reverse of the wrap operation. The unwrap operation supports asymmetric and symmetric keys to unwrap.
+     * This
      * operation requires the {@code keys/unwrapKey} permission for non-local operations.
      *
      * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for unwrapping the
      * specified encrypted key content. Possible values for asymmetric keys include:
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link KeyWrapAlgorithm#A128KW A128KW},
      * {@link KeyWrapAlgorithm#A192KW A192KW} and {@link KeyWrapAlgorithm#A256KW A256KW}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Unwraps the key content. Subscribes to the call asynchronously and prints out the unwrapped key details when
-     * a response has been received.</p>
+     * <p>Unwraps the key content prints out the unwrapped key details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-Context -->
      * <pre>
@@ -812,7 +1007,15 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
-        return client.unwrapKey(algorithm, encryptedKey, context).block();
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.unwrapKey(algorithm, encryptedKey, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
+            return implClient.unwrapKey(algorithm, encryptedKey, context);
+        }
     }
 
     /**
@@ -825,16 +1028,14 @@ public class CryptographyClient {
      * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
-     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a
-     * response has been received.</p>
+     * <p>Signs the raw data prints out the signature details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte -->
      * <pre>
-     * byte[] data = new byte[100];
+     * byte[] data = new byte[32];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;data&#41;;
      *
      * SignResult signResult = cryptographyClient.sign&#40;SignatureAlgorithm.ES256, data&#41;;
@@ -868,16 +1069,14 @@ public class CryptographyClient {
      * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
-     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a
-     * response has been received.</p>
+     * <p>Signs the raw data prints out the signature details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte-Context -->
      * <pre>
-     * byte[] plainTextData = new byte[100];
+     * byte[] plainTextData = new byte[32];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;plainTextData&#41;;
      *
      * SignResult signingResult = cryptographyClient.sign&#40;SignatureAlgorithm.ES256, plainTextData&#41;;
@@ -899,7 +1098,15 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult signData(SignatureAlgorithm algorithm, byte[] data, Context context) {
-        return client.signData(algorithm, data, context).block();
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.signData(algorithm, data, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
+            return implClient.signData(algorithm, data, context);
+        }
     }
 
     /**
@@ -913,16 +1120,15 @@ public class CryptographyClient {
      * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
-     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the
-     * verification details when a response has been received.</p>
+     * <p>Verifies the signature against the raw data prints out the verification details when a response has been
+     * received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte -->
      * <pre>
-     * byte[] myData = new byte[100];
+     * byte[] myData = new byte[32];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;myData&#41;;
      *
      * &#47;&#47; A signature can be obtained from the SignResult returned by the CryptographyClient.sign&#40;&#41; operation.
@@ -958,16 +1164,15 @@ public class CryptographyClient {
      * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
-     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the
-     * verification details when a response has been received.</p>
+     * <p>Verifies the signature against the raw data prints out the verification details when a response has been
+     * received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte-Context -->
      * <pre>
-     * byte[] dataToVerify = new byte[100];
+     * byte[] dataToVerify = new byte[32];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;dataToVerify&#41;;
      *
      * &#47;&#47; A signature can be obtained from the SignResult returned by the CryptographyClient.sign&#40;&#41; operation.
@@ -991,10 +1196,38 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context) {
-        return client.verifyData(algorithm, data, signature, context).block();
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.verifyData(algorithm, data, signature, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
+            return implClient.verifyData(algorithm, data, signature, context);
+        }
     }
 
-    CryptographyServiceClient getServiceClient() {
-        return client.getCryptographyServiceClient();
+    String getVaultUrl() {
+        return implClient.getVaultUrl();
+    }
+
+    private boolean isLocalClientAvailable() {
+        if (!skipLocalClientCreation && localKeyCryptographyClient == null) {
+            try {
+                localKeyCryptographyClient = retrieveJwkAndCreateLocalClient(implClient);
+            } catch (Throwable t) {
+                if (isThrowableRetryable(t)) {
+                    LOGGER.log(LogLevel.VERBOSE, () -> "Could not set up local cryptography for this operation. "
+                        + "Defaulting to service-side cryptography.", t);
+                } else {
+                    skipLocalClientCreation = true;
+
+                    LOGGER.log(LogLevel.VERBOSE, () -> "Could not set up local cryptography. Defaulting to "
+                        + "service-side cryptography for all operations.", t);
+                }
+            }
+        }
+
+        return localKeyCryptographyClient != null;
     }
 }

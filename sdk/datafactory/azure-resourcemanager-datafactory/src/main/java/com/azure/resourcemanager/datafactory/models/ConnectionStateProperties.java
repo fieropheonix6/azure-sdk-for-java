@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The connection state of a managed private endpoint. */
+/**
+ * The connection state of a managed private endpoint.
+ */
 @Immutable
-public final class ConnectionStateProperties {
+public final class ConnectionStateProperties implements JsonSerializable<ConnectionStateProperties> {
     /*
      * The actions required on the managed private endpoint
      */
-    @JsonProperty(value = "actionsRequired", access = JsonProperty.Access.WRITE_ONLY)
     private String actionsRequired;
 
     /*
      * The managed private endpoint description
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * The approval status
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
-    /** Creates an instance of ConnectionStateProperties class. */
+    /**
+     * Creates an instance of ConnectionStateProperties class.
+     */
     public ConnectionStateProperties() {
     }
 
     /**
      * Get the actionsRequired property: The actions required on the managed private endpoint.
-     *
+     * 
      * @return the actionsRequired value.
      */
     public String actionsRequired() {
@@ -43,7 +48,7 @@ public final class ConnectionStateProperties {
 
     /**
      * Get the description property: The managed private endpoint description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -52,7 +57,7 @@ public final class ConnectionStateProperties {
 
     /**
      * Get the status property: The approval status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -61,9 +66,48 @@ public final class ConnectionStateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionStateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionStateProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionStateProperties.
+     */
+    public static ConnectionStateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionStateProperties deserializedConnectionStateProperties = new ConnectionStateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actionsRequired".equals(fieldName)) {
+                    deserializedConnectionStateProperties.actionsRequired = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedConnectionStateProperties.description = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedConnectionStateProperties.status = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionStateProperties;
+        });
     }
 }

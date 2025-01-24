@@ -5,51 +5,51 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** ResourceMoveDetails will be returned in response to GetResource call from ARM. */
+/**
+ * ResourceMoveDetails will be returned in response to GetResource call from ARM.
+ */
 @Fluent
-public final class ResourceMoveDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceMoveDetails.class);
-
+public final class ResourceMoveDetails implements JsonSerializable<ResourceMoveDetails> {
     /*
      * CorrelationId of latest ResourceMove operation attempted
      */
-    @JsonProperty(value = "operationId")
     private String operationId;
 
     /*
-     * Start time in UTC of latest ResourceMove operation attempted. ISO 8601
-     * format.
+     * Start time in UTC of latest ResourceMove operation attempted. ISO 8601 format.
      */
-    @JsonProperty(value = "startTimeUtc")
     private String startTimeUtc;
 
     /*
-     * Completion time in UTC of latest ResourceMove operation attempted. ISO
-     * 8601 format.
+     * Completion time in UTC of latest ResourceMove operation attempted. ISO 8601 format.
      */
-    @JsonProperty(value = "completionTimeUtc")
     private String completionTimeUtc;
 
     /*
      * ARM resource path of source resource
      */
-    @JsonProperty(value = "sourceResourcePath")
     private String sourceResourcePath;
 
     /*
-     * ARM resource path of target resource used in latest ResourceMove
-     * operation
+     * ARM resource path of target resource used in latest ResourceMove operation
      */
-    @JsonProperty(value = "targetResourcePath")
     private String targetResourcePath;
 
     /**
+     * Creates an instance of ResourceMoveDetails class.
+     */
+    public ResourceMoveDetails() {
+    }
+
+    /**
      * Get the operationId property: CorrelationId of latest ResourceMove operation attempted.
-     *
+     * 
      * @return the operationId value.
      */
     public String operationId() {
@@ -58,7 +58,7 @@ public final class ResourceMoveDetails {
 
     /**
      * Set the operationId property: CorrelationId of latest ResourceMove operation attempted.
-     *
+     * 
      * @param operationId the operationId value to set.
      * @return the ResourceMoveDetails object itself.
      */
@@ -69,7 +69,7 @@ public final class ResourceMoveDetails {
 
     /**
      * Get the startTimeUtc property: Start time in UTC of latest ResourceMove operation attempted. ISO 8601 format.
-     *
+     * 
      * @return the startTimeUtc value.
      */
     public String startTimeUtc() {
@@ -78,7 +78,7 @@ public final class ResourceMoveDetails {
 
     /**
      * Set the startTimeUtc property: Start time in UTC of latest ResourceMove operation attempted. ISO 8601 format.
-     *
+     * 
      * @param startTimeUtc the startTimeUtc value to set.
      * @return the ResourceMoveDetails object itself.
      */
@@ -90,7 +90,7 @@ public final class ResourceMoveDetails {
     /**
      * Get the completionTimeUtc property: Completion time in UTC of latest ResourceMove operation attempted. ISO 8601
      * format.
-     *
+     * 
      * @return the completionTimeUtc value.
      */
     public String completionTimeUtc() {
@@ -100,7 +100,7 @@ public final class ResourceMoveDetails {
     /**
      * Set the completionTimeUtc property: Completion time in UTC of latest ResourceMove operation attempted. ISO 8601
      * format.
-     *
+     * 
      * @param completionTimeUtc the completionTimeUtc value to set.
      * @return the ResourceMoveDetails object itself.
      */
@@ -111,7 +111,7 @@ public final class ResourceMoveDetails {
 
     /**
      * Get the sourceResourcePath property: ARM resource path of source resource.
-     *
+     * 
      * @return the sourceResourcePath value.
      */
     public String sourceResourcePath() {
@@ -120,7 +120,7 @@ public final class ResourceMoveDetails {
 
     /**
      * Set the sourceResourcePath property: ARM resource path of source resource.
-     *
+     * 
      * @param sourceResourcePath the sourceResourcePath value to set.
      * @return the ResourceMoveDetails object itself.
      */
@@ -131,7 +131,7 @@ public final class ResourceMoveDetails {
 
     /**
      * Get the targetResourcePath property: ARM resource path of target resource used in latest ResourceMove operation.
-     *
+     * 
      * @return the targetResourcePath value.
      */
     public String targetResourcePath() {
@@ -140,7 +140,7 @@ public final class ResourceMoveDetails {
 
     /**
      * Set the targetResourcePath property: ARM resource path of target resource used in latest ResourceMove operation.
-     *
+     * 
      * @param targetResourcePath the targetResourcePath value to set.
      * @return the ResourceMoveDetails object itself.
      */
@@ -151,9 +151,57 @@ public final class ResourceMoveDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationId", this.operationId);
+        jsonWriter.writeStringField("startTimeUtc", this.startTimeUtc);
+        jsonWriter.writeStringField("completionTimeUtc", this.completionTimeUtc);
+        jsonWriter.writeStringField("sourceResourcePath", this.sourceResourcePath);
+        jsonWriter.writeStringField("targetResourcePath", this.targetResourcePath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceMoveDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceMoveDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceMoveDetails.
+     */
+    public static ResourceMoveDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceMoveDetails deserializedResourceMoveDetails = new ResourceMoveDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operationId".equals(fieldName)) {
+                    deserializedResourceMoveDetails.operationId = reader.getString();
+                } else if ("startTimeUtc".equals(fieldName)) {
+                    deserializedResourceMoveDetails.startTimeUtc = reader.getString();
+                } else if ("completionTimeUtc".equals(fieldName)) {
+                    deserializedResourceMoveDetails.completionTimeUtc = reader.getString();
+                } else if ("sourceResourcePath".equals(fieldName)) {
+                    deserializedResourceMoveDetails.sourceResourcePath = reader.getString();
+                } else if ("targetResourcePath".equals(fieldName)) {
+                    deserializedResourceMoveDetails.targetResourcePath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceMoveDetails;
+        });
     }
 }

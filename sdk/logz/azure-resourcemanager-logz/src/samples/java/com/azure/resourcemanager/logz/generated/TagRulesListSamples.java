@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.logz.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for TagRules List. */
+/**
+ * Samples for TagRules List.
+ */
 public final class TagRulesListSamples {
     /*
-     * x-ms-original-file: specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/TagRules_List.json
+     * x-ms-original-file:
+     * specification/logz/resource-manager/Microsoft.Logz/stable/2020-10-01/examples/TagRules_List.json
      */
     /**
      * Sample code: TagRules_List.
-     *
+     * 
      * @param manager Entry point to LogzManager.
      */
     public static void tagRulesList(com.azure.resourcemanager.logz.LogzManager manager) {
-        manager.tagRules().list("myResourceGroup", "myMonitor", Context.NONE);
+        manager.tagRules().list("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 }

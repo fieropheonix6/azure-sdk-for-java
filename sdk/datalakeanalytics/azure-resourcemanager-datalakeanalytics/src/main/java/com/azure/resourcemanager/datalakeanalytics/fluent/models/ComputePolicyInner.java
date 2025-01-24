@@ -4,98 +4,53 @@
 
 package com.azure.resourcemanager.datalakeanalytics.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakeanalytics.models.AadObjectType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.UUID;
 
-/** Data Lake Analytics compute policy information. */
-@JsonFlatten
-@Immutable
-public class ComputePolicyInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputePolicyInner.class);
-
+/**
+ * Data Lake Analytics compute policy information.
+ */
+@Fluent
+public final class ComputePolicyInner extends SubResource {
     /*
-     * The AAD object identifier for the entity to create a policy for.
+     * The compute policy properties.
      */
-    @JsonProperty(value = "properties.objectId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID objectId;
-
-    /*
-     * The type of AAD object the object identifier refers to.
-     */
-    @JsonProperty(value = "properties.objectType", access = JsonProperty.Access.WRITE_ONLY)
-    private AadObjectType objectType;
-
-    /*
-     * The maximum degree of parallelism per job this user can use to submit
-     * jobs.
-     */
-    @JsonProperty(value = "properties.maxDegreeOfParallelismPerJob", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer maxDegreeOfParallelismPerJob;
-
-    /*
-     * The minimum priority per job this user can use to submit jobs.
-     */
-    @JsonProperty(value = "properties.minPriorityPerJob", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer minPriorityPerJob;
+    private ComputePolicyProperties innerProperties;
 
     /*
      * The resource name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
-     * Get the objectId property: The AAD object identifier for the entity to create a policy for.
-     *
-     * @return the objectId value.
+     * Creates an instance of ComputePolicyInner class.
      */
-    public UUID objectId() {
-        return this.objectId;
+    public ComputePolicyInner() {
     }
 
     /**
-     * Get the objectType property: The type of AAD object the object identifier refers to.
-     *
-     * @return the objectType value.
+     * Get the innerProperties property: The compute policy properties.
+     * 
+     * @return the innerProperties value.
      */
-    public AadObjectType objectType() {
-        return this.objectType;
-    }
-
-    /**
-     * Get the maxDegreeOfParallelismPerJob property: The maximum degree of parallelism per job this user can use to
-     * submit jobs.
-     *
-     * @return the maxDegreeOfParallelismPerJob value.
-     */
-    public Integer maxDegreeOfParallelismPerJob() {
-        return this.maxDegreeOfParallelismPerJob;
-    }
-
-    /**
-     * Get the minPriorityPerJob property: The minimum priority per job this user can use to submit jobs.
-     *
-     * @return the minPriorityPerJob value.
-     */
-    public Integer minPriorityPerJob() {
-        return this.minPriorityPerJob;
+    private ComputePolicyProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
      * Get the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -104,14 +59,16 @@ public class ComputePolicyInner extends SubResource {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ComputePolicyInner withId(String id) {
         super.withId(id);
@@ -119,10 +76,92 @@ public class ComputePolicyInner extends SubResource {
     }
 
     /**
+     * Get the objectId property: The AAD object identifier for the entity to create a policy for.
+     * 
+     * @return the objectId value.
+     */
+    public UUID objectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().objectId();
+    }
+
+    /**
+     * Get the objectType property: The type of AAD object the object identifier refers to.
+     * 
+     * @return the objectType value.
+     */
+    public AadObjectType objectType() {
+        return this.innerProperties() == null ? null : this.innerProperties().objectType();
+    }
+
+    /**
+     * Get the maxDegreeOfParallelismPerJob property: The maximum degree of parallelism per job this user can use to
+     * submit jobs.
+     * 
+     * @return the maxDegreeOfParallelismPerJob value.
+     */
+    public Integer maxDegreeOfParallelismPerJob() {
+        return this.innerProperties() == null ? null : this.innerProperties().maxDegreeOfParallelismPerJob();
+    }
+
+    /**
+     * Get the minPriorityPerJob property: The minimum priority per job this user can use to submit jobs.
+     * 
+     * @return the minPriorityPerJob value.
+     */
+    public Integer minPriorityPerJob() {
+        return this.innerProperties() == null ? null : this.innerProperties().minPriorityPerJob();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComputePolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComputePolicyInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComputePolicyInner.
+     */
+    public static ComputePolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComputePolicyInner deserializedComputePolicyInner = new ComputePolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedComputePolicyInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedComputePolicyInner.innerProperties = ComputePolicyProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedComputePolicyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedComputePolicyInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComputePolicyInner;
+        });
     }
 }

@@ -7,31 +7,26 @@ package com.azure.resourcemanager.webpubsub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.fluent.models.SharedPrivateLinkResourceInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SharedPrivateLinkResourceInnerTests {
-    @Test
-    public void testDeserialize() {
-        SharedPrivateLinkResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"groupId\":\"ckzywbiexzfeyue\",\"privateLinkResourceId\":\"xibxujwbhqwalm\",\"provisioningState\":\"Moving\",\"requestMessage\":\"xaepdkzjancuxr\",\"status\":\"Rejected\"},\"id\":\"bavxbniwdjswzt\",\"name\":\"dbpgnxytxhp\",\"type\":\"xbzpfzab\"}")
-                .toObject(SharedPrivateLinkResourceInner.class);
-        Assertions.assertEquals("ckzywbiexzfeyue", model.groupId());
-        Assertions.assertEquals("xibxujwbhqwalm", model.privateLinkResourceId());
-        Assertions.assertEquals("xaepdkzjancuxr", model.requestMessage());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SharedPrivateLinkResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"groupId\":\"wwa\",\"privateLinkResourceId\":\"zkoj\",\"provisioningState\":\"Running\",\"requestMessage\":\"zfoqouicybxar\",\"status\":\"Disconnected\"},\"id\":\"ufoxc\",\"name\":\"q\",\"type\":\"p\"}")
+            .toObject(SharedPrivateLinkResourceInner.class);
+        Assertions.assertEquals("wwa", model.groupId());
+        Assertions.assertEquals("zkoj", model.privateLinkResourceId());
+        Assertions.assertEquals("zfoqouicybxar", model.requestMessage());
     }
 
-    @Test
-    public void testSerialize() {
-        SharedPrivateLinkResourceInner model =
-            new SharedPrivateLinkResourceInner()
-                .withGroupId("ckzywbiexzfeyue")
-                .withPrivateLinkResourceId("xibxujwbhqwalm")
-                .withRequestMessage("xaepdkzjancuxr");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SharedPrivateLinkResourceInner model = new SharedPrivateLinkResourceInner().withGroupId("wwa")
+            .withPrivateLinkResourceId("zkoj")
+            .withRequestMessage("zfoqouicybxar");
         model = BinaryData.fromObject(model).toObject(SharedPrivateLinkResourceInner.class);
-        Assertions.assertEquals("ckzywbiexzfeyue", model.groupId());
-        Assertions.assertEquals("xibxujwbhqwalm", model.privateLinkResourceId());
-        Assertions.assertEquals("xaepdkzjancuxr", model.requestMessage());
+        Assertions.assertEquals("wwa", model.groupId());
+        Assertions.assertEquals("zkoj", model.privateLinkResourceId());
+        Assertions.assertEquals("zfoqouicybxar", model.requestMessage());
     }
 }

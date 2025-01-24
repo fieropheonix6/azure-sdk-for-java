@@ -6,32 +6,45 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.ApplicationInner;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ApplicationInnerTests {
-    @Test
-    public void testDeserialize() {
-        ApplicationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"ifiyipjxsqwpgrj\",\"allowUpdates\":true,\"defaultVersion\":\"rcjxvsnbyxqabn\"},\"etag\":\"cpc\",\"id\":\"shurzafbljjgpbto\",\"name\":\"c\",\"type\":\"mkljavb\"}")
-                .toObject(ApplicationInner.class);
-        Assertions.assertEquals("ifiyipjxsqwpgrj", model.displayName());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ApplicationInner model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"qfprwzwbn\",\"allowUpdates\":true,\"defaultVersion\":\"nwui\"},\"etag\":\"a\",\"tags\":{\"hr\":\"fizuckyf\",\"zwdzuh\":\"idf\",\"wxmnteiwao\":\"ymwisdkft\"},\"id\":\"vkmijcmmxdcuf\",\"name\":\"fsrpymzidnse\",\"type\":\"cxtbzsg\"}")
+            .toObject(ApplicationInner.class);
+        Assertions.assertEquals("fizuckyf", model.tags().get("hr"));
+        Assertions.assertEquals("qfprwzwbn", model.displayName());
         Assertions.assertEquals(true, model.allowUpdates());
-        Assertions.assertEquals("rcjxvsnbyxqabn", model.defaultVersion());
+        Assertions.assertEquals("nwui", model.defaultVersion());
     }
 
-    @Test
-    public void testSerialize() {
-        ApplicationInner model =
-            new ApplicationInner()
-                .withDisplayName("ifiyipjxsqwpgrj")
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ApplicationInner model
+            = new ApplicationInner().withTags(mapOf("hr", "fizuckyf", "zwdzuh", "idf", "wxmnteiwao", "ymwisdkft"))
+                .withDisplayName("qfprwzwbn")
                 .withAllowUpdates(true)
-                .withDefaultVersion("rcjxvsnbyxqabn");
+                .withDefaultVersion("nwui");
         model = BinaryData.fromObject(model).toObject(ApplicationInner.class);
-        Assertions.assertEquals("ifiyipjxsqwpgrj", model.displayName());
+        Assertions.assertEquals("fizuckyf", model.tags().get("hr"));
+        Assertions.assertEquals("qfprwzwbn", model.displayName());
         Assertions.assertEquals(true, model.allowUpdates());
-        Assertions.assertEquals("rcjxvsnbyxqabn", model.defaultVersion());
+        Assertions.assertEquals("nwui", model.defaultVersion());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

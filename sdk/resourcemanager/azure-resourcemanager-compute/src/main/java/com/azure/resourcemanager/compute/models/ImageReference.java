@@ -6,7 +6,10 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies information about the image to use. You can specify information about platform images, marketplace images,
@@ -19,62 +22,57 @@ public final class ImageReference extends SubResource {
     /*
      * The image publisher.
      */
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
      * Specifies the offer of the platform image or marketplace image used to create the virtual machine.
      */
-    @JsonProperty(value = "offer")
     private String offer;
 
     /*
      * The image SKU.
      */
-    @JsonProperty(value = "sku")
     private String sku;
 
     /*
      * Specifies the version of the platform image or marketplace image used to create the virtual machine. The allowed
      * formats are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal numbers. Specify 'latest' to use
      * the latest version of an image available at deploy time. Even if you use 'latest', the VM image will not
-     * automatically update after deploy time even if a new version becomes available. Please do not use field
-     * 'version' for gallery image deployment, gallery image should always use 'id' field for deployment, to use
-     * 'latest' version of gallery image, just set
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}'
-     * in the 'id' field without version input.
+     * automatically update after deploy time even if a new version becomes available. Please do not use field 'version'
+     * for gallery image deployment, gallery image should always use 'id' field for deployment, to use 'latest' version
+     * of gallery image, just set
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{
+     * galleryName}/images/{imageName}' in the 'id' field without version input.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Specifies in decimal numbers, the version of platform image or marketplace image used to create the virtual
      * machine. This readonly field differs from 'version', only if the value specified in 'version' field is 'latest'.
      */
-    @JsonProperty(value = "exactVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String exactVersion;
 
     /*
-     * Specified the shared gallery image unique id for vm deployment. This can be fetched from shared gallery image
-     * GET call.
+     * Specified the shared gallery image unique id for vm deployment. This can be fetched from shared gallery image GET
+     * call.
      */
-    @JsonProperty(value = "sharedGalleryImageId")
     private String sharedGalleryImageId;
 
     /*
      * Specified the community gallery image unique id for vm deployment. This can be fetched from community gallery
      * image GET call.
      */
-    @JsonProperty(value = "communityGalleryImageId")
     private String communityGalleryImageId;
 
-    /** Creates an instance of ImageReference class. */
+    /**
+     * Creates an instance of ImageReference class.
+     */
     public ImageReference() {
     }
 
     /**
      * Get the publisher property: The image publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -83,7 +81,7 @@ public final class ImageReference extends SubResource {
 
     /**
      * Set the publisher property: The image publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the ImageReference object itself.
      */
@@ -95,7 +93,7 @@ public final class ImageReference extends SubResource {
     /**
      * Get the offer property: Specifies the offer of the platform image or marketplace image used to create the virtual
      * machine.
-     *
+     * 
      * @return the offer value.
      */
     public String offer() {
@@ -105,7 +103,7 @@ public final class ImageReference extends SubResource {
     /**
      * Set the offer property: Specifies the offer of the platform image or marketplace image used to create the virtual
      * machine.
-     *
+     * 
      * @param offer the offer value to set.
      * @return the ImageReference object itself.
      */
@@ -116,7 +114,7 @@ public final class ImageReference extends SubResource {
 
     /**
      * Get the sku property: The image SKU.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -125,7 +123,7 @@ public final class ImageReference extends SubResource {
 
     /**
      * Set the sku property: The image SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ImageReference object itself.
      */
@@ -143,7 +141,7 @@ public final class ImageReference extends SubResource {
      * deployment, to use 'latest' version of gallery image, just set
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}'
      * in the 'id' field without version input.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -159,7 +157,7 @@ public final class ImageReference extends SubResource {
      * deployment, to use 'latest' version of gallery image, just set
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}'
      * in the 'id' field without version input.
-     *
+     * 
      * @param version the version value to set.
      * @return the ImageReference object itself.
      */
@@ -172,7 +170,7 @@ public final class ImageReference extends SubResource {
      * Get the exactVersion property: Specifies in decimal numbers, the version of platform image or marketplace image
      * used to create the virtual machine. This readonly field differs from 'version', only if the value specified in
      * 'version' field is 'latest'.
-     *
+     * 
      * @return the exactVersion value.
      */
     public String exactVersion() {
@@ -182,7 +180,7 @@ public final class ImageReference extends SubResource {
     /**
      * Get the sharedGalleryImageId property: Specified the shared gallery image unique id for vm deployment. This can
      * be fetched from shared gallery image GET call.
-     *
+     * 
      * @return the sharedGalleryImageId value.
      */
     public String sharedGalleryImageId() {
@@ -192,7 +190,7 @@ public final class ImageReference extends SubResource {
     /**
      * Set the sharedGalleryImageId property: Specified the shared gallery image unique id for vm deployment. This can
      * be fetched from shared gallery image GET call.
-     *
+     * 
      * @param sharedGalleryImageId the sharedGalleryImageId value to set.
      * @return the ImageReference object itself.
      */
@@ -204,7 +202,7 @@ public final class ImageReference extends SubResource {
     /**
      * Get the communityGalleryImageId property: Specified the community gallery image unique id for vm deployment. This
      * can be fetched from community gallery image GET call.
-     *
+     * 
      * @return the communityGalleryImageId value.
      */
     public String communityGalleryImageId() {
@@ -214,7 +212,7 @@ public final class ImageReference extends SubResource {
     /**
      * Set the communityGalleryImageId property: Specified the community gallery image unique id for vm deployment. This
      * can be fetched from community gallery image GET call.
-     *
+     * 
      * @param communityGalleryImageId the communityGalleryImageId value to set.
      * @return the ImageReference object itself.
      */
@@ -223,7 +221,9 @@ public final class ImageReference extends SubResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageReference withId(String id) {
         super.withId(id);
@@ -232,9 +232,65 @@ public final class ImageReference extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("offer", this.offer);
+        jsonWriter.writeStringField("sku", this.sku);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("sharedGalleryImageId", this.sharedGalleryImageId);
+        jsonWriter.writeStringField("communityGalleryImageId", this.communityGalleryImageId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageReference.
+     */
+    public static ImageReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageReference deserializedImageReference = new ImageReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedImageReference.withId(reader.getString());
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedImageReference.publisher = reader.getString();
+                } else if ("offer".equals(fieldName)) {
+                    deserializedImageReference.offer = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedImageReference.sku = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedImageReference.version = reader.getString();
+                } else if ("exactVersion".equals(fieldName)) {
+                    deserializedImageReference.exactVersion = reader.getString();
+                } else if ("sharedGalleryImageId".equals(fieldName)) {
+                    deserializedImageReference.sharedGalleryImageId = reader.getString();
+                } else if ("communityGalleryImageId".equals(fieldName)) {
+                    deserializedImageReference.communityGalleryImageId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageReference;
+        });
     }
 }

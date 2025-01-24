@@ -6,37 +6,41 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties related to the auto-storage account. */
+/**
+ * The properties related to the auto-storage account.
+ */
 @Fluent
-public class AutoStorageBaseProperties {
+public class AutoStorageBaseProperties implements JsonSerializable<AutoStorageBaseProperties> {
     /*
      * The resource ID of the storage account to be used for auto-storage account.
      */
-    @JsonProperty(value = "storageAccountId", required = true)
     private String storageAccountId;
 
     /*
      * The authentication mode which the Batch service will use to manage the auto-storage account.
      */
-    @JsonProperty(value = "authenticationMode")
     private AutoStorageAuthenticationMode authenticationMode;
 
     /*
-     * The identity referenced here must be assigned to pools which have compute nodes that need access to
-     * auto-storage.
+     * The identity referenced here must be assigned to pools which have compute nodes that need access to auto-storage.
      */
-    @JsonProperty(value = "nodeIdentityReference")
     private ComputeNodeIdentityReference nodeIdentityReference;
 
-    /** Creates an instance of AutoStorageBaseProperties class. */
+    /**
+     * Creates an instance of AutoStorageBaseProperties class.
+     */
     public AutoStorageBaseProperties() {
     }
 
     /**
      * Get the storageAccountId property: The resource ID of the storage account to be used for auto-storage account.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -45,7 +49,7 @@ public class AutoStorageBaseProperties {
 
     /**
      * Set the storageAccountId property: The resource ID of the storage account to be used for auto-storage account.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the AutoStorageBaseProperties object itself.
      */
@@ -57,7 +61,7 @@ public class AutoStorageBaseProperties {
     /**
      * Get the authenticationMode property: The authentication mode which the Batch service will use to manage the
      * auto-storage account.
-     *
+     * 
      * @return the authenticationMode value.
      */
     public AutoStorageAuthenticationMode authenticationMode() {
@@ -67,7 +71,7 @@ public class AutoStorageBaseProperties {
     /**
      * Set the authenticationMode property: The authentication mode which the Batch service will use to manage the
      * auto-storage account.
-     *
+     * 
      * @param authenticationMode the authenticationMode value to set.
      * @return the AutoStorageBaseProperties object itself.
      */
@@ -79,7 +83,7 @@ public class AutoStorageBaseProperties {
     /**
      * Get the nodeIdentityReference property: The identity referenced here must be assigned to pools which have compute
      * nodes that need access to auto-storage.
-     *
+     * 
      * @return the nodeIdentityReference value.
      */
     public ComputeNodeIdentityReference nodeIdentityReference() {
@@ -89,7 +93,7 @@ public class AutoStorageBaseProperties {
     /**
      * Set the nodeIdentityReference property: The identity referenced here must be assigned to pools which have compute
      * nodes that need access to auto-storage.
-     *
+     * 
      * @param nodeIdentityReference the nodeIdentityReference value to set.
      * @return the AutoStorageBaseProperties object itself.
      */
@@ -100,15 +104,14 @@ public class AutoStorageBaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageAccountId in model AutoStorageBaseProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccountId in model AutoStorageBaseProperties"));
         }
         if (nodeIdentityReference() != null) {
             nodeIdentityReference().validate();
@@ -116,4 +119,50 @@ public class AutoStorageBaseProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AutoStorageBaseProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageAccountId", this.storageAccountId);
+        jsonWriter.writeStringField("authenticationMode",
+            this.authenticationMode == null ? null : this.authenticationMode.toString());
+        jsonWriter.writeJsonField("nodeIdentityReference", this.nodeIdentityReference);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoStorageBaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoStorageBaseProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutoStorageBaseProperties.
+     */
+    public static AutoStorageBaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoStorageBaseProperties deserializedAutoStorageBaseProperties = new AutoStorageBaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageAccountId".equals(fieldName)) {
+                    deserializedAutoStorageBaseProperties.storageAccountId = reader.getString();
+                } else if ("authenticationMode".equals(fieldName)) {
+                    deserializedAutoStorageBaseProperties.authenticationMode
+                        = AutoStorageAuthenticationMode.fromString(reader.getString());
+                } else if ("nodeIdentityReference".equals(fieldName)) {
+                    deserializedAutoStorageBaseProperties.nodeIdentityReference
+                        = ComputeNodeIdentityReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoStorageBaseProperties;
+        });
+    }
 }

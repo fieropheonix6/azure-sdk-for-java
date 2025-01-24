@@ -4,7 +4,7 @@
 package com.azure.monitor.ingestion;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.monitor.ingestion.models.UploadLogsResult;
+import com.azure.monitor.ingestion.models.LogsIngestionAudience;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -22,12 +22,13 @@ public final class UploadLogsSample {
     public static void main(String[] args) {
         LogsIngestionClient client = new LogsIngestionClientBuilder()
                 .endpoint("<data-collection-endpoint>")
+                .audience(LogsIngestionAudience.AZURE_PUBLIC_CLOUD)
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
         List<Object> dataList = getLogs();
-        UploadLogsResult result = client.upload("<data-collection-rule-id>", "<stream-name>", dataList);
-        System.out.println(result.getStatus());
+        client.upload("<data-collection-rule-id>", "<stream-name>", dataList);
+        System.out.println("Logs uploaded successfully");
     }
 
     private static List<Object> getLogs() {

@@ -63,10 +63,12 @@ class AvailabilitySetImpl
 
     @Override
     public Set<String> virtualMachineIds() {
-        if (idOfVMsInSet == null) {
+        if (idOfVMsInSet == null && this.innerModel().virtualMachines() != null) {
             idOfVMsInSet = new HashSet<>();
             for (SubResource resource : this.innerModel().virtualMachines()) {
-                idOfVMsInSet.add(resource.id());
+                if (resource != null) {
+                    idOfVMsInSet.add(resource.id());
+                }
             }
         }
         return Collections.unmodifiableSet(idOfVMsInSet);
@@ -78,11 +80,9 @@ class AvailabilitySetImpl
             return null;
         } else {
             ResourceId id = ResourceId.fromString(innerModel().proximityPlacementGroup().id());
-            ProximityPlacementGroupInner plgInner =
-                manager()
-                    .serviceClient()
-                    .getProximityPlacementGroups()
-                    .getByResourceGroup(id.resourceGroupName(), id.name());
+            ProximityPlacementGroupInner plgInner = manager().serviceClient()
+                .getProximityPlacementGroups()
+                .getByResourceGroup(id.resourceGroupName(), id.name());
             if (plgInner == null) {
                 return null;
             } else {
@@ -98,29 +98,23 @@ class AvailabilitySetImpl
 
     @Override
     public PagedIterable<VirtualMachineSize> listVirtualMachineSizes() {
-        return PagedConverter.mapPage(manager()
-            .serviceClient()
-            .getAvailabilitySets()
-            .listAvailableSizes(resourceGroupName(), name()),
+        return PagedConverter.mapPage(
+            manager().serviceClient().getAvailabilitySets().listAvailableSizes(resourceGroupName(), name()),
             virtualMachineSizeInner -> new VirtualMachineSizeImpl(virtualMachineSizeInner));
     }
 
     @Override
     public Mono<AvailabilitySet> refreshAsync() {
-        return super
-            .refreshAsync()
-            .map(
-                availabilitySet -> {
-                    AvailabilitySetImpl impl = (AvailabilitySetImpl) availabilitySet;
-                    impl.idOfVMsInSet = null;
-                    return impl;
-                });
+        return super.refreshAsync().map(availabilitySet -> {
+            AvailabilitySetImpl impl = (AvailabilitySetImpl) availabilitySet;
+            impl.idOfVMsInSet = null;
+            return impl;
+        });
     }
 
     @Override
     protected Mono<AvailabilitySetInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getAvailabilitySets()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
@@ -156,8 +150,8 @@ class AvailabilitySetImpl
     }
 
     @Override
-    public AvailabilitySetImpl withNewProximityPlacementGroup(
-        String proximityPlacementGroupName, ProximityPlacementGroupType type) {
+    public AvailabilitySetImpl withNewProximityPlacementGroup(String proximityPlacementGroupName,
+        ProximityPlacementGroupType type) {
         this.newProximityPlacementGroupName = proximityPlacementGroupName;
         this.newProximityPlacementGroupType = type;
 
@@ -183,20 +177,15 @@ class AvailabilitySetImpl
         if (this.innerModel().platformUpdateDomainCount() == null) {
             this.innerModel().withPlatformUpdateDomainCount(5);
         }
-        return this
-            .createNewProximityPlacementGroupAsync()
-            .flatMap(
-                availabilitySet ->
-                    manager()
-                        .serviceClient()
-                        .getAvailabilitySets()
-                        .createOrUpdateAsync(resourceGroupName(), name(), innerModel())
-                        .map(
-                            availabilitySetInner -> {
-                                self.setInner(availabilitySetInner);
-                                idOfVMsInSet = null;
-                                return self;
-                            }));
+        return this.createNewProximityPlacementGroupAsync()
+            .flatMap(availabilitySet -> manager().serviceClient()
+                .getAvailabilitySets()
+                .createOrUpdateAsync(resourceGroupName(), name(), innerModel())
+                .map(availabilitySetInner -> {
+                    self.setInner(availabilitySetInner);
+                    idOfVMsInSet = null;
+                    return self;
+                }));
     }
 
     private Mono<AvailabilitySetImpl> createNewProximityPlacementGroupAsync() {
@@ -205,18 +194,14 @@ class AvailabilitySetImpl
                 ProximityPlacementGroupInner plgInner = new ProximityPlacementGroupInner();
                 plgInner.withProximityPlacementGroupType(this.newProximityPlacementGroupType);
                 plgInner.withLocation(this.innerModel().location());
-                return this
-                    .manager()
+                return this.manager()
                     .serviceClient()
                     .getProximityPlacementGroups()
                     .createOrUpdateAsync(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner)
-                    .map(
-                        createdPlgInner -> {
-                            this
-                                .innerModel()
-                                .withProximityPlacementGroup(new SubResource().withId(createdPlgInner.id()));
-                            return this;
-                        });
+                    .map(createdPlgInner -> {
+                        this.innerModel().withProximityPlacementGroup(new SubResource().withId(createdPlgInner.id()));
+                        return this;
+                    });
             }
         }
         return Mono.just(this);

@@ -16,8 +16,8 @@ public final class VerifiedPartnerImpl implements VerifiedPartner {
 
     private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    VerifiedPartnerImpl(
-        VerifiedPartnerInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+    VerifiedPartnerImpl(VerifiedPartnerInner innerObject,
+        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -52,6 +52,10 @@ public final class VerifiedPartnerImpl implements VerifiedPartner {
 
     public PartnerDetails partnerTopicDetails() {
         return this.innerModel().partnerTopicDetails();
+    }
+
+    public PartnerDetails partnerDestinationDetails() {
+        return this.innerModel().partnerDestinationDetails();
     }
 
     public VerifiedPartnerProvisioningState provisioningState() {

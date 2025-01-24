@@ -5,33 +5,42 @@
 package com.azure.resourcemanager.deviceupdate.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Private link service connection details. */
+/**
+ * Private link service connection details.
+ */
 @Fluent
-public final class PrivateLinkServiceConnection {
+public final class PrivateLinkServiceConnection implements JsonSerializable<PrivateLinkServiceConnection> {
     /*
      * Private link service connection name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * List of group IDs.
      */
-    @JsonProperty(value = "groupIds")
     private List<String> groupIds;
 
     /*
      * Request message.
      */
-    @JsonProperty(value = "requestMessage")
     private String requestMessage;
 
     /**
+     * Creates an instance of PrivateLinkServiceConnection class.
+     */
+    public PrivateLinkServiceConnection() {
+    }
+
+    /**
      * Get the name property: Private link service connection name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -40,7 +49,7 @@ public final class PrivateLinkServiceConnection {
 
     /**
      * Set the name property: Private link service connection name.
-     *
+     * 
      * @param name the name value to set.
      * @return the PrivateLinkServiceConnection object itself.
      */
@@ -51,7 +60,7 @@ public final class PrivateLinkServiceConnection {
 
     /**
      * Get the groupIds property: List of group IDs.
-     *
+     * 
      * @return the groupIds value.
      */
     public List<String> groupIds() {
@@ -60,7 +69,7 @@ public final class PrivateLinkServiceConnection {
 
     /**
      * Set the groupIds property: List of group IDs.
-     *
+     * 
      * @param groupIds the groupIds value to set.
      * @return the PrivateLinkServiceConnection object itself.
      */
@@ -71,7 +80,7 @@ public final class PrivateLinkServiceConnection {
 
     /**
      * Get the requestMessage property: Request message.
-     *
+     * 
      * @return the requestMessage value.
      */
     public String requestMessage() {
@@ -80,7 +89,7 @@ public final class PrivateLinkServiceConnection {
 
     /**
      * Set the requestMessage property: Request message.
-     *
+     * 
      * @param requestMessage the requestMessage value to set.
      * @return the PrivateLinkServiceConnection object itself.
      */
@@ -91,9 +100,52 @@ public final class PrivateLinkServiceConnection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("groupIds", this.groupIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("requestMessage", this.requestMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkServiceConnection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkServiceConnection if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateLinkServiceConnection.
+     */
+    public static PrivateLinkServiceConnection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkServiceConnection deserializedPrivateLinkServiceConnection = new PrivateLinkServiceConnection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPrivateLinkServiceConnection.name = reader.getString();
+                } else if ("groupIds".equals(fieldName)) {
+                    List<String> groupIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPrivateLinkServiceConnection.groupIds = groupIds;
+                } else if ("requestMessage".equals(fieldName)) {
+                    deserializedPrivateLinkServiceConnection.requestMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkServiceConnection;
+        });
     }
 }

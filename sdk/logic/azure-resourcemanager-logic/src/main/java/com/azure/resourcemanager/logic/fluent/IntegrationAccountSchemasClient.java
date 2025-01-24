@@ -13,24 +13,26 @@ import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountSchemaInn
 import com.azure.resourcemanager.logic.fluent.models.WorkflowTriggerCallbackUrlInner;
 import com.azure.resourcemanager.logic.models.GetCallbackUrlParameters;
 
-/** An instance of this class provides access to all the operations defined in IntegrationAccountSchemasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IntegrationAccountSchemasClient.
+ */
 public interface IntegrationAccountSchemasClient {
     /**
      * Gets a list of integration account schemas.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account schemas.
+     * @return a list of integration account schemas as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IntegrationAccountSchemaInner> list(String resourceGroupName, String integrationAccountName);
 
     /**
      * Gets a list of integration account schemas.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
@@ -39,15 +41,31 @@ public interface IntegrationAccountSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration account schemas.
+     * @return a list of integration account schemas as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IntegrationAccountSchemaInner> list(
-        String resourceGroupName, String integrationAccountName, Integer top, String filter, Context context);
+    PagedIterable<IntegrationAccountSchemaInner> list(String resourceGroupName, String integrationAccountName,
+        Integer top, String filter, Context context);
 
     /**
      * Gets an integration account schema.
-     *
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param schemaName The integration account schema name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an integration account schema along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<IntegrationAccountSchemaInner> getWithResponse(String resourceGroupName, String integrationAccountName,
+        String schemaName, Context context);
+
+    /**
+     * Gets an integration account schema.
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param schemaName The integration account schema name.
@@ -60,24 +78,25 @@ public interface IntegrationAccountSchemasClient {
     IntegrationAccountSchemaInner get(String resourceGroupName, String integrationAccountName, String schemaName);
 
     /**
-     * Gets an integration account schema.
-     *
+     * Creates or updates an integration account schema.
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param schemaName The integration account schema name.
+     * @param schema The integration account schema.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration account schema.
+     * @return the integration account schema along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationAccountSchemaInner> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String schemaName, Context context);
+    Response<IntegrationAccountSchemaInner> createOrUpdateWithResponse(String resourceGroupName,
+        String integrationAccountName, String schemaName, IntegrationAccountSchemaInner schema, Context context);
 
     /**
      * Creates or updates an integration account schema.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param schemaName The integration account schema name.
@@ -88,36 +107,28 @@ public interface IntegrationAccountSchemasClient {
      * @return the integration account schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationAccountSchemaInner createOrUpdate(
-        String resourceGroupName,
-        String integrationAccountName,
-        String schemaName,
-        IntegrationAccountSchemaInner schema);
+    IntegrationAccountSchemaInner createOrUpdate(String resourceGroupName, String integrationAccountName,
+        String schemaName, IntegrationAccountSchemaInner schema);
 
     /**
-     * Creates or updates an integration account schema.
-     *
+     * Deletes an integration account schema.
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param schemaName The integration account schema name.
-     * @param schema The integration account schema.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration account schema.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationAccountSchemaInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String schemaName,
-        IntegrationAccountSchemaInner schema,
+    Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName, String schemaName,
         Context context);
 
     /**
      * Deletes an integration account schema.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param schemaName The integration account schema name.
@@ -129,58 +140,36 @@ public interface IntegrationAccountSchemasClient {
     void delete(String resourceGroupName, String integrationAccountName, String schemaName);
 
     /**
-     * Deletes an integration account schema.
-     *
+     * Get the content callback url.
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param schemaName The integration account schema name.
+     * @param listContentCallbackUrl The listContentCallbackUrl parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the content callback url along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String schemaName, Context context);
-
-    /**
-     * Get the content callback url.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param schemaName The integration account schema name.
-     * @param listContentCallbackUrl The callback url parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkflowTriggerCallbackUrlInner listContentCallbackUrl(
-        String resourceGroupName,
-        String integrationAccountName,
-        String schemaName,
-        GetCallbackUrlParameters listContentCallbackUrl);
-
-    /**
-     * Get the content callback url.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param schemaName The integration account schema name.
-     * @param listContentCallbackUrl The callback url parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the content callback url.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String schemaName,
-        GetCallbackUrlParameters listContentCallbackUrl,
+    Response<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlWithResponse(String resourceGroupName,
+        String integrationAccountName, String schemaName, GetCallbackUrlParameters listContentCallbackUrl,
         Context context);
+
+    /**
+     * Get the content callback url.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param schemaName The integration account schema name.
+     * @param listContentCallbackUrl The listContentCallbackUrl parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the content callback url.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkflowTriggerCallbackUrlInner listContentCallbackUrl(String resourceGroupName, String integrationAccountName,
+        String schemaName, GetCallbackUrlParameters listContentCallbackUrl);
 }

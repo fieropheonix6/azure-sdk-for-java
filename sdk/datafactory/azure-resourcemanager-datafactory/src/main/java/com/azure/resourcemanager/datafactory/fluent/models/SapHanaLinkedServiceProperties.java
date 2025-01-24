@@ -5,58 +5,60 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SapHanaAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties specific to this linked service type. */
+/**
+ * Properties specific to this linked service type.
+ */
 @Fluent
-public final class SapHanaLinkedServiceProperties {
+public final class SapHanaLinkedServiceProperties implements JsonSerializable<SapHanaLinkedServiceProperties> {
     /*
      * SAP HANA ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString")
     private Object connectionString;
 
     /*
      * Host name of the SAP HANA server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "server")
     private Object server;
 
     /*
      * The authentication type to be used to connect to the SAP HANA server.
      */
-    @JsonProperty(value = "authenticationType")
     private SapHanaAuthenticationType authenticationType;
 
     /*
      * Username to access the SAP HANA server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "userName")
     private Object username;
 
     /*
      * Password to access the SAP HANA server.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of SapHanaLinkedServiceProperties class. */
+    /**
+     * Creates an instance of SapHanaLinkedServiceProperties class.
+     */
     public SapHanaLinkedServiceProperties() {
     }
 
     /**
      * Get the connectionString property: SAP HANA ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -66,7 +68,7 @@ public final class SapHanaLinkedServiceProperties {
     /**
      * Set the connectionString property: SAP HANA ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the SapHanaLinkedServiceProperties object itself.
      */
@@ -77,7 +79,7 @@ public final class SapHanaLinkedServiceProperties {
 
     /**
      * Get the server property: Host name of the SAP HANA server. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the server value.
      */
     public Object server() {
@@ -86,7 +88,7 @@ public final class SapHanaLinkedServiceProperties {
 
     /**
      * Set the server property: Host name of the SAP HANA server. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param server the server value to set.
      * @return the SapHanaLinkedServiceProperties object itself.
      */
@@ -97,7 +99,7 @@ public final class SapHanaLinkedServiceProperties {
 
     /**
      * Get the authenticationType property: The authentication type to be used to connect to the SAP HANA server.
-     *
+     * 
      * @return the authenticationType value.
      */
     public SapHanaAuthenticationType authenticationType() {
@@ -106,7 +108,7 @@ public final class SapHanaLinkedServiceProperties {
 
     /**
      * Set the authenticationType property: The authentication type to be used to connect to the SAP HANA server.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the SapHanaLinkedServiceProperties object itself.
      */
@@ -118,7 +120,7 @@ public final class SapHanaLinkedServiceProperties {
     /**
      * Get the username property: Username to access the SAP HANA server. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -128,7 +130,7 @@ public final class SapHanaLinkedServiceProperties {
     /**
      * Set the username property: Username to access the SAP HANA server. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param username the username value to set.
      * @return the SapHanaLinkedServiceProperties object itself.
      */
@@ -139,7 +141,7 @@ public final class SapHanaLinkedServiceProperties {
 
     /**
      * Get the password property: Password to access the SAP HANA server.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -148,7 +150,7 @@ public final class SapHanaLinkedServiceProperties {
 
     /**
      * Set the password property: Password to access the SAP HANA server.
-     *
+     * 
      * @param password the password value to set.
      * @return the SapHanaLinkedServiceProperties object itself.
      */
@@ -159,34 +161,88 @@ public final class SapHanaLinkedServiceProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapHanaLinkedServiceProperties object itself.
      */
-    public SapHanaLinkedServiceProperties withEncryptedCredential(Object encryptedCredential) {
+    public SapHanaLinkedServiceProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (password() != null) {
             password().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeUntypedField("server", this.server);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeUntypedField("userName", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapHanaLinkedServiceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapHanaLinkedServiceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapHanaLinkedServiceProperties.
+     */
+    public static SapHanaLinkedServiceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapHanaLinkedServiceProperties deserializedSapHanaLinkedServiceProperties
+                = new SapHanaLinkedServiceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionString".equals(fieldName)) {
+                    deserializedSapHanaLinkedServiceProperties.connectionString = reader.readUntyped();
+                } else if ("server".equals(fieldName)) {
+                    deserializedSapHanaLinkedServiceProperties.server = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedSapHanaLinkedServiceProperties.authenticationType
+                        = SapHanaAuthenticationType.fromString(reader.getString());
+                } else if ("userName".equals(fieldName)) {
+                    deserializedSapHanaLinkedServiceProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedSapHanaLinkedServiceProperties.password = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedSapHanaLinkedServiceProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapHanaLinkedServiceProperties;
+        });
     }
 }

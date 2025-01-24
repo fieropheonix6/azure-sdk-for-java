@@ -30,6 +30,12 @@
         "description": "The location of the resource. By default, this is the same as the resource group."
       }
     },
+    "testApplicationOid": {
+      "type": "string",
+      "metadata": {
+        "description": "The principal to assign the role to. This is application object id."
+      }
+    },
     "searchSku": {
       "type": "string",
       "defaultValue": "basic",
@@ -45,12 +51,31 @@
   },
   "variables": {
     "searchServiceName": "[concat('azs-java-', parameters('baseName'))]",
-    "searchApiVersion": "2020-03-13",
-    "storageAccountName": "[concat('azsstg', parameters('baseName'))]",
-    "storageContainerName": "[concat('azscontainer', parameters('baseName'))]",
-    "storageApiVersion": "2019-06-01"
+    "searchApiVersion": "2023-11-01",
+    "storageAccountName": "[concat('search', parameters('baseName'))]",
+    "storageApiVersion": "2022-05-01",
+    "searchIndexDataContributorRoleId": "8ebe5a00-799e-43f5-93ac-243d3dce84a7",
+    "searchServiceContributorRoleId": "7ca78c08-252a-4471-8644-bb5ff32d4ba0"
   },
   "resources": [
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2019-04-01-preview",
+      "name": "[guid(resourceGroup().id, parameters('testApplicationOid'), variables('searchIndexDataContributorRoleId'))]",
+      "properties": {
+        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('searchIndexDataContributorRoleId'))]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2019-04-01-preview",
+      "name": "[guid(resourceGroup().id, parameters('testApplicationOid'), variables('searchServiceContributorRoleId'))]",
+      "properties": {
+        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('searchServiceContributorRoleId'))]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
     {
       "name": "[variables('searchServiceName')]",
       "type": "Microsoft.Search/searchServices",
@@ -63,10 +88,15 @@
         "replicaCount": 1,
         "partitionCount": 1,
         "hostingMode": "Default",
+        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('searchIndexDataContributorRoleId'))]",
+        "principalId": "[parameters('testApplicationOid')]",
+        "scope": "[resourceGroup().id]",
         "publicNetworkAccess": "Enabled",
         "networkRuleSet": {
           "ipRules": []
-        }
+        },
+        "disableLocalAuth": true,
+        "authOptions": null
       }
     },
     {
@@ -76,7 +106,8 @@
       "location": "[parameters('location')]",
       "properties": {
         "accessTier": "Hot",
-        "supportsHttpsTrafficOnly": true
+        "supportsHttpsTrafficOnly": true,
+        "minimumTlsVersion": "TLS1_2"
       },
       "sku": {
         "name": "Standard_LRS",
@@ -86,7 +117,7 @@
       "resources": [
         {
           "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-          "name": "[concat(variables('storageAccountName'), '/default/', variables('storageContainerName'))]",
+          "name": "[concat(variables('storageAccountName'), '/default/', 'searchcontainer')]",
           "apiVersion": "[variables('storageApiVersion')]",
           "properties": {},
           "dependsOn": [
@@ -112,10 +143,6 @@
     "SEARCH_STORAGE_CONNECTION_STRING": {
       "type": "string",
       "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountName'), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
-    },
-    "SEARCH_STORAGE_CONTAINER_NAME": {
-      "type": "string",
-      "value": "[variables('storageContainerName')]"
     }
   }
 }

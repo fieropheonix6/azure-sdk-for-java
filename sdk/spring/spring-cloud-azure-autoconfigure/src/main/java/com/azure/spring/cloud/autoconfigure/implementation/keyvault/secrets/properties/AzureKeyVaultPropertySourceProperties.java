@@ -19,7 +19,7 @@ public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConf
     public static final Duration DEFAULT_REFRESH_INTERVAL = Duration.ofMinutes(30);
 
     /**
-     * Azure Key Vault endpoint.
+     * Azure Key Vault endpoint. For instance, 'https://{your-unique-keyvault-name}.vault.azure.net/'.
      */
     private String endpoint;
     /**
@@ -27,21 +27,27 @@ public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConf
      */
     private SecretServiceVersion serviceVersion;
     /**
-     * Name of this property source.
+     * Name of this property source. Each name must be unique.
      */
     private String name;
     /**
-     * Defines the constant for the property that enables/disables case-sensitive keys.
+     * Whether to enable case-sensitive for secret keys. The default value is `false`.
      */
     private boolean caseSensitive = false;
     /**
-     * The secret keys supported for this property source.
+     * The configured secret keys will be loaded from Azure Key Vaults secret, if configured nothing, then load all the secrets. Only support exact value for secret names, For example, if you configured secret key name `SecretKey1` in Key Vaults secret, you should configure 'SecretKey1' here.
      */
     private List<String> secretKeys;
     /**
      * Time interval to refresh all Key Vault secrets.
      */
     private Duration refreshInterval = DEFAULT_REFRESH_INTERVAL;
+
+    /**
+     * Whether to enable the Azure Key Vault challenge resource verification, default: true.
+     * Calls the disableChallengeResourceVerification method of the Azure Key Vault Client Builder when set to false.
+     */
+    private boolean challengeResourceVerificationEnabled = true;
 
     /**
      *
@@ -137,5 +143,22 @@ public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConf
      */
     public void setRefreshInterval(Duration refreshInterval) {
         this.refreshInterval = refreshInterval;
+    }
+
+    /**
+     *
+     * @return Whether we should keep Azure Key Vault challenge resource verification enabled
+     */
+    public boolean isChallengeResourceVerificationEnabled() {
+        return challengeResourceVerificationEnabled;
+    }
+
+    /**
+     *
+     * @param challengeResourceVerificationEnabled Whether we should keep Azure Key Vault challenge resource verification enabled
+     */
+    public void setChallengeResourceVerificationEnabled(
+        boolean challengeResourceVerificationEnabled) {
+        this.challengeResourceVerificationEnabled = challengeResourceVerificationEnabled;
     }
 }

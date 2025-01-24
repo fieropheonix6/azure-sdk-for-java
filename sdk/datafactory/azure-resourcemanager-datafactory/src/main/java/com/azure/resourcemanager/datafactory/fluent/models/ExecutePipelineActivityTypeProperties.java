@@ -6,40 +6,44 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.PipelineReference;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Execute pipeline activity properties. */
+/**
+ * Execute pipeline activity properties.
+ */
 @Fluent
-public final class ExecutePipelineActivityTypeProperties {
+public final class ExecutePipelineActivityTypeProperties
+    implements JsonSerializable<ExecutePipelineActivityTypeProperties> {
     /*
      * Pipeline reference.
      */
-    @JsonProperty(value = "pipeline", required = true)
     private PipelineReference pipeline;
 
     /*
      * Pipeline parameters.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> parameters;
 
     /*
      * Defines whether activity execution will wait for the dependent pipeline execution to finish. Default is false.
      */
-    @JsonProperty(value = "waitOnCompletion")
     private Boolean waitOnCompletion;
 
-    /** Creates an instance of ExecutePipelineActivityTypeProperties class. */
+    /**
+     * Creates an instance of ExecutePipelineActivityTypeProperties class.
+     */
     public ExecutePipelineActivityTypeProperties() {
     }
 
     /**
      * Get the pipeline property: Pipeline reference.
-     *
+     * 
      * @return the pipeline value.
      */
     public PipelineReference pipeline() {
@@ -48,7 +52,7 @@ public final class ExecutePipelineActivityTypeProperties {
 
     /**
      * Set the pipeline property: Pipeline reference.
-     *
+     * 
      * @param pipeline the pipeline value to set.
      * @return the ExecutePipelineActivityTypeProperties object itself.
      */
@@ -59,7 +63,7 @@ public final class ExecutePipelineActivityTypeProperties {
 
     /**
      * Get the parameters property: Pipeline parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, Object> parameters() {
@@ -68,7 +72,7 @@ public final class ExecutePipelineActivityTypeProperties {
 
     /**
      * Set the parameters property: Pipeline parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the ExecutePipelineActivityTypeProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class ExecutePipelineActivityTypeProperties {
     /**
      * Get the waitOnCompletion property: Defines whether activity execution will wait for the dependent pipeline
      * execution to finish. Default is false.
-     *
+     * 
      * @return the waitOnCompletion value.
      */
     public Boolean waitOnCompletion() {
@@ -90,7 +94,7 @@ public final class ExecutePipelineActivityTypeProperties {
     /**
      * Set the waitOnCompletion property: Defines whether activity execution will wait for the dependent pipeline
      * execution to finish. Default is false.
-     *
+     * 
      * @param waitOnCompletion the waitOnCompletion value to set.
      * @return the ExecutePipelineActivityTypeProperties object itself.
      */
@@ -101,19 +105,64 @@ public final class ExecutePipelineActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (pipeline() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property pipeline in model ExecutePipelineActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property pipeline in model ExecutePipelineActivityTypeProperties"));
         } else {
             pipeline().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExecutePipelineActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("pipeline", this.pipeline);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeBooleanField("waitOnCompletion", this.waitOnCompletion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExecutePipelineActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExecutePipelineActivityTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExecutePipelineActivityTypeProperties.
+     */
+    public static ExecutePipelineActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExecutePipelineActivityTypeProperties deserializedExecutePipelineActivityTypeProperties
+                = new ExecutePipelineActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pipeline".equals(fieldName)) {
+                    deserializedExecutePipelineActivityTypeProperties.pipeline = PipelineReference.fromJson(reader);
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, Object> parameters = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedExecutePipelineActivityTypeProperties.parameters = parameters;
+                } else if ("waitOnCompletion".equals(fieldName)) {
+                    deserializedExecutePipelineActivityTypeProperties.waitOnCompletion
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExecutePipelineActivityTypeProperties;
+        });
+    }
 }

@@ -5,29 +5,51 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SourceKindType. */
+/**
+ * Source Kind to pull the configuration data from.
+ */
 public final class SourceKindType extends ExpandableStringEnum<SourceKindType> {
-    /** Static value GitRepository for SourceKindType. */
+    /**
+     * Static value GitRepository for SourceKindType.
+     */
     public static final SourceKindType GIT_REPOSITORY = fromString("GitRepository");
 
-    /** Static value Bucket for SourceKindType. */
+    /**
+     * Static value Bucket for SourceKindType.
+     */
     public static final SourceKindType BUCKET = fromString("Bucket");
 
     /**
+     * Static value AzureBlob for SourceKindType.
+     */
+    public static final SourceKindType AZURE_BLOB = fromString("AzureBlob");
+
+    /**
+     * Creates a new instance of SourceKindType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SourceKindType() {
+    }
+
+    /**
      * Creates or finds a SourceKindType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SourceKindType.
      */
-    @JsonCreator
     public static SourceKindType fromString(String name) {
         return fromString(name, SourceKindType.class);
     }
 
-    /** @return known SourceKindType values. */
+    /**
+     * Gets known SourceKindType values.
+     * 
+     * @return known SourceKindType values.
+     */
     public static Collection<SourceKindType> values() {
         return values(SourceKindType.class);
     }

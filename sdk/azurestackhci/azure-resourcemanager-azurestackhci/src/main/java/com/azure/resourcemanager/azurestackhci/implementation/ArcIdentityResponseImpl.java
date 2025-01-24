@@ -12,8 +12,7 @@ public final class ArcIdentityResponseImpl implements ArcIdentityResponse {
 
     private final com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager;
 
-    ArcIdentityResponseImpl(
-        ArcIdentityResponseInner innerObject,
+    ArcIdentityResponseImpl(ArcIdentityResponseInner innerObject,
         com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

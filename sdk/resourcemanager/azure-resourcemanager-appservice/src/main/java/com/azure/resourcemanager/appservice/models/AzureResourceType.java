@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for AzureResourceType. */
+/**
+ * Type of the Azure resource the hostname is assigned to.
+ */
 public enum AzureResourceType {
-    /** Enum value Website. */
+    /**
+     * Enum value Website.
+     */
     WEBSITE("Website"),
 
-    /** Enum value TrafficManager. */
+    /**
+     * Enum value TrafficManager.
+     */
     TRAFFIC_MANAGER("TrafficManager");
 
-    /** The actual serialized value for a AzureResourceType instance. */
+    /**
+     * The actual serialized value for a AzureResourceType instance.
+     */
     private final String value;
 
     AzureResourceType(String value) {
@@ -24,12 +29,14 @@ public enum AzureResourceType {
 
     /**
      * Parses a serialized value to a AzureResourceType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AzureResourceType object, or null if unable to parse.
      */
-    @JsonCreator
     public static AzureResourceType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AzureResourceType[] items = AzureResourceType.values();
         for (AzureResourceType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum AzureResourceType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

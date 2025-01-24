@@ -5,38 +5,50 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.models.AlertPropertiesDefinition;
 import com.azure.resourcemanager.costmanagement.models.AlertPropertiesDetails;
 import com.azure.resourcemanager.costmanagement.models.AlertSource;
 import com.azure.resourcemanager.costmanagement.models.AlertStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
+import com.azure.resourcemanager.costmanagement.models.CostManagementProxyResource;
+import java.io.IOException;
 
-/** An individual alert. */
+/**
+ * An individual alert.
+ */
 @Fluent
-public final class AlertInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertInner.class);
-
+public final class AlertInner extends CostManagementProxyResource {
     /*
-     * The properties property.
+     * Alert properties.
      */
-    @JsonProperty(value = "properties")
     private AlertProperties innerProperties;
 
     /*
-     * Resource tags.
+     * The type of the resource.
      */
-    @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
-     * Get the innerProperties property: The properties property.
-     *
+     * Creates an instance of AlertInner class.
+     */
+    public AlertInner() {
+    }
+
+    /**
+     * Get the innerProperties property: Alert properties.
+     * 
      * @return the innerProperties value.
      */
     private AlertProperties innerProperties() {
@@ -44,17 +56,47 @@ public final class AlertInner extends ProxyResource {
     }
 
     /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public Map<String, String> tags() {
-        return this.tags;
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AlertInner withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
     }
 
     /**
      * Get the definition property: defines the type of alert.
-     *
+     * 
      * @return the definition value.
      */
     public AlertPropertiesDefinition definition() {
@@ -63,7 +105,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Set the definition property: defines the type of alert.
-     *
+     * 
      * @param definition the definition value to set.
      * @return the AlertInner object itself.
      */
@@ -77,7 +119,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the description property: Alert description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -86,7 +128,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Set the description property: Alert description.
-     *
+     * 
      * @param description the description value to set.
      * @return the AlertInner object itself.
      */
@@ -100,7 +142,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the source property: Source of alert.
-     *
+     * 
      * @return the source value.
      */
     public AlertSource source() {
@@ -109,7 +151,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Set the source property: Source of alert.
-     *
+     * 
      * @param source the source value to set.
      * @return the AlertInner object itself.
      */
@@ -123,7 +165,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the details property: Alert details.
-     *
+     * 
      * @return the details value.
      */
     public AlertPropertiesDetails details() {
@@ -132,7 +174,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Set the details property: Alert details.
-     *
+     * 
      * @param details the details value to set.
      * @return the AlertInner object itself.
      */
@@ -146,7 +188,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the costEntityId property: related budget.
-     *
+     * 
      * @return the costEntityId value.
      */
     public String costEntityId() {
@@ -155,7 +197,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Set the costEntityId property: related budget.
-     *
+     * 
      * @param costEntityId the costEntityId value to set.
      * @return the AlertInner object itself.
      */
@@ -169,7 +211,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the status property: alert status.
-     *
+     * 
      * @return the status value.
      */
     public AlertStatus status() {
@@ -178,7 +220,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Set the status property: alert status.
-     *
+     * 
      * @param status the status value to set.
      * @return the AlertInner object itself.
      */
@@ -192,7 +234,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the creationTime property: dateTime in which alert was created.
-     *
+     * 
      * @return the creationTime value.
      */
     public String creationTime() {
@@ -201,7 +243,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Set the creationTime property: dateTime in which alert was created.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the AlertInner object itself.
      */
@@ -215,7 +257,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the closeTime property: dateTime in which alert was closed.
-     *
+     * 
      * @return the closeTime value.
      */
     public String closeTime() {
@@ -224,7 +266,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Set the closeTime property: dateTime in which alert was closed.
-     *
+     * 
      * @param closeTime the closeTime value to set.
      * @return the AlertInner object itself.
      */
@@ -238,7 +280,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the modificationTime property: dateTime in which alert was last modified.
-     *
+     * 
      * @return the modificationTime value.
      */
     public String modificationTime() {
@@ -247,7 +289,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Set the modificationTime property: dateTime in which alert was last modified.
-     *
+     * 
      * @param modificationTime the modificationTime value to set.
      * @return the AlertInner object itself.
      */
@@ -260,8 +302,8 @@ public final class AlertInner extends ProxyResource {
     }
 
     /**
-     * Get the statusModificationUsername property: The statusModificationUserName property.
-     *
+     * Get the statusModificationUsername property: User who last modified the alert.
+     * 
      * @return the statusModificationUsername value.
      */
     public String statusModificationUsername() {
@@ -269,8 +311,8 @@ public final class AlertInner extends ProxyResource {
     }
 
     /**
-     * Set the statusModificationUsername property: The statusModificationUserName property.
-     *
+     * Set the statusModificationUsername property: User who last modified the alert.
+     * 
      * @param statusModificationUsername the statusModificationUsername value to set.
      * @return the AlertInner object itself.
      */
@@ -284,7 +326,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the statusModificationTime property: dateTime in which the alert status was last modified.
-     *
+     * 
      * @return the statusModificationTime value.
      */
     public String statusModificationTime() {
@@ -293,7 +335,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Set the statusModificationTime property: dateTime in which the alert status was last modified.
-     *
+     * 
      * @param statusModificationTime the statusModificationTime value to set.
      * @return the AlertInner object itself.
      */
@@ -307,12 +349,59 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("eTag", etag());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AlertInner.
+     */
+    public static AlertInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertInner deserializedAlertInner = new AlertInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAlertInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAlertInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAlertInner.type = reader.getString();
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedAlertInner.withEtag(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAlertInner.innerProperties = AlertProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertInner;
+        });
     }
 }

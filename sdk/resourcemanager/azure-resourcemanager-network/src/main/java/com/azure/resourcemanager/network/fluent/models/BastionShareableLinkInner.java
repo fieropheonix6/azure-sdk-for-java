@@ -6,43 +6,47 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.VM;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Bastion Shareable Link. */
+/**
+ * Bastion Shareable Link.
+ */
 @Fluent
-public final class BastionShareableLinkInner {
+public final class BastionShareableLinkInner implements JsonSerializable<BastionShareableLinkInner> {
     /*
      * Reference of the virtual machine resource.
      */
-    @JsonProperty(value = "vm", required = true)
     private VM vm;
 
     /*
      * The unique Bastion Shareable Link to the virtual machine.
      */
-    @JsonProperty(value = "bsl", access = JsonProperty.Access.WRITE_ONLY)
     private String bsl;
 
     /*
      * The time when the link was created.
      */
-    @JsonProperty(value = "createdAt", access = JsonProperty.Access.WRITE_ONLY)
     private String createdAt;
 
     /*
      * Optional field indicating the warning or error message related to the vm in case of partial failure.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of BastionShareableLinkInner class. */
+    /**
+     * Creates an instance of BastionShareableLinkInner class.
+     */
     public BastionShareableLinkInner() {
     }
 
     /**
      * Get the vm property: Reference of the virtual machine resource.
-     *
+     * 
      * @return the vm value.
      */
     public VM vm() {
@@ -51,7 +55,7 @@ public final class BastionShareableLinkInner {
 
     /**
      * Set the vm property: Reference of the virtual machine resource.
-     *
+     * 
      * @param vm the vm value to set.
      * @return the BastionShareableLinkInner object itself.
      */
@@ -62,7 +66,7 @@ public final class BastionShareableLinkInner {
 
     /**
      * Get the bsl property: The unique Bastion Shareable Link to the virtual machine.
-     *
+     * 
      * @return the bsl value.
      */
     public String bsl() {
@@ -71,7 +75,7 @@ public final class BastionShareableLinkInner {
 
     /**
      * Get the createdAt property: The time when the link was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public String createdAt() {
@@ -81,7 +85,7 @@ public final class BastionShareableLinkInner {
     /**
      * Get the message property: Optional field indicating the warning or error message related to the vm in case of
      * partial failure.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -90,18 +94,60 @@ public final class BastionShareableLinkInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (vm() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property vm in model BastionShareableLinkInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property vm in model BastionShareableLinkInner"));
         } else {
             vm().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BastionShareableLinkInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("vm", this.vm);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BastionShareableLinkInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BastionShareableLinkInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BastionShareableLinkInner.
+     */
+    public static BastionShareableLinkInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BastionShareableLinkInner deserializedBastionShareableLinkInner = new BastionShareableLinkInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vm".equals(fieldName)) {
+                    deserializedBastionShareableLinkInner.vm = VM.fromJson(reader);
+                } else if ("bsl".equals(fieldName)) {
+                    deserializedBastionShareableLinkInner.bsl = reader.getString();
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedBastionShareableLinkInner.createdAt = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedBastionShareableLinkInner.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBastionShareableLinkInner;
+        });
+    }
 }

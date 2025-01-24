@@ -6,6 +6,7 @@ package com.azure.resourcemanager.kubernetesconfiguration.implementation;
 
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.models.FluxConfigurationInner;
+import com.azure.resourcemanager.kubernetesconfiguration.models.AzureBlobDefinition;
 import com.azure.resourcemanager.kubernetesconfiguration.models.BucketDefinition;
 import com.azure.resourcemanager.kubernetesconfiguration.models.FluxComplianceState;
 import com.azure.resourcemanager.kubernetesconfiguration.models.FluxConfiguration;
@@ -25,8 +26,7 @@ public final class FluxConfigurationImpl implements FluxConfiguration {
 
     private final com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager serviceManager;
 
-    FluxConfigurationImpl(
-        FluxConfigurationInner innerObject,
+    FluxConfigurationImpl(FluxConfigurationInner innerObject,
         com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -72,6 +72,10 @@ public final class FluxConfigurationImpl implements FluxConfiguration {
         return this.innerModel().bucket();
     }
 
+    public AzureBlobDefinition azureBlob() {
+        return this.innerModel().azureBlob();
+    }
+
     public Map<String, KustomizationDefinition> kustomizations() {
         Map<String, KustomizationDefinition> inner = this.innerModel().kustomizations();
         if (inner != null) {
@@ -113,6 +117,14 @@ public final class FluxConfigurationImpl implements FluxConfiguration {
 
     public OffsetDateTime statusUpdatedAt() {
         return this.innerModel().statusUpdatedAt();
+    }
+
+    public Boolean waitForReconciliation() {
+        return this.innerModel().waitForReconciliation();
+    }
+
+    public String reconciliationWaitDuration() {
+        return this.innerModel().reconciliationWaitDuration();
     }
 
     public FluxComplianceState complianceState() {

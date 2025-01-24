@@ -5,38 +5,41 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Volume Backup Properties. */
+/**
+ * Volume Backup Properties.
+ */
 @Fluent
-public final class VolumeBackupProperties {
+public final class VolumeBackupProperties implements JsonSerializable<VolumeBackupProperties> {
     /*
      * Backup Policy Resource ID
      */
-    @JsonProperty(value = "backupPolicyId")
     private String backupPolicyId;
 
     /*
      * Policy Enforced
      */
-    @JsonProperty(value = "policyEnforced")
     private Boolean policyEnforced;
 
     /*
-     * Vault Resource ID
+     * Backup Vault Resource ID
      */
-    @JsonProperty(value = "vaultId")
-    private String vaultId;
+    private String backupVaultId;
 
-    /*
-     * Backup Enabled
+    /**
+     * Creates an instance of VolumeBackupProperties class.
      */
-    @JsonProperty(value = "backupEnabled")
-    private Boolean backupEnabled;
+    public VolumeBackupProperties() {
+    }
 
     /**
      * Get the backupPolicyId property: Backup Policy Resource ID.
-     *
+     * 
      * @return the backupPolicyId value.
      */
     public String backupPolicyId() {
@@ -45,7 +48,7 @@ public final class VolumeBackupProperties {
 
     /**
      * Set the backupPolicyId property: Backup Policy Resource ID.
-     *
+     * 
      * @param backupPolicyId the backupPolicyId value to set.
      * @return the VolumeBackupProperties object itself.
      */
@@ -56,7 +59,7 @@ public final class VolumeBackupProperties {
 
     /**
      * Get the policyEnforced property: Policy Enforced.
-     *
+     * 
      * @return the policyEnforced value.
      */
     public Boolean policyEnforced() {
@@ -65,7 +68,7 @@ public final class VolumeBackupProperties {
 
     /**
      * Set the policyEnforced property: Policy Enforced.
-     *
+     * 
      * @param policyEnforced the policyEnforced value to set.
      * @return the VolumeBackupProperties object itself.
      */
@@ -75,50 +78,72 @@ public final class VolumeBackupProperties {
     }
 
     /**
-     * Get the vaultId property: Vault Resource ID.
-     *
-     * @return the vaultId value.
+     * Get the backupVaultId property: Backup Vault Resource ID.
+     * 
+     * @return the backupVaultId value.
      */
-    public String vaultId() {
-        return this.vaultId;
+    public String backupVaultId() {
+        return this.backupVaultId;
     }
 
     /**
-     * Set the vaultId property: Vault Resource ID.
-     *
-     * @param vaultId the vaultId value to set.
+     * Set the backupVaultId property: Backup Vault Resource ID.
+     * 
+     * @param backupVaultId the backupVaultId value to set.
      * @return the VolumeBackupProperties object itself.
      */
-    public VolumeBackupProperties withVaultId(String vaultId) {
-        this.vaultId = vaultId;
-        return this;
-    }
-
-    /**
-     * Get the backupEnabled property: Backup Enabled.
-     *
-     * @return the backupEnabled value.
-     */
-    public Boolean backupEnabled() {
-        return this.backupEnabled;
-    }
-
-    /**
-     * Set the backupEnabled property: Backup Enabled.
-     *
-     * @param backupEnabled the backupEnabled value to set.
-     * @return the VolumeBackupProperties object itself.
-     */
-    public VolumeBackupProperties withBackupEnabled(Boolean backupEnabled) {
-        this.backupEnabled = backupEnabled;
+    public VolumeBackupProperties withBackupVaultId(String backupVaultId) {
+        this.backupVaultId = backupVaultId;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("backupPolicyId", this.backupPolicyId);
+        jsonWriter.writeBooleanField("policyEnforced", this.policyEnforced);
+        jsonWriter.writeStringField("backupVaultId", this.backupVaultId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeBackupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeBackupProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VolumeBackupProperties.
+     */
+    public static VolumeBackupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeBackupProperties deserializedVolumeBackupProperties = new VolumeBackupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupPolicyId".equals(fieldName)) {
+                    deserializedVolumeBackupProperties.backupPolicyId = reader.getString();
+                } else if ("policyEnforced".equals(fieldName)) {
+                    deserializedVolumeBackupProperties.policyEnforced = reader.getNullable(JsonReader::getBoolean);
+                } else if ("backupVaultId".equals(fieldName)) {
+                    deserializedVolumeBackupProperties.backupVaultId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeBackupProperties;
+        });
     }
 }

@@ -5,10 +5,13 @@ package com.azure.core.util;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.AsynchronousByteChannelWriteSubscriber;
 import com.azure.core.implementation.ByteBufferCollector;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.OutputStreamWriteSubscriber;
 import com.azure.core.implementation.RetriableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
@@ -94,15 +97,14 @@ public final class FluxUtil {
 
         return Mono.just(progressReporter).flatMapMany(reporter -> {
             /*
-            Each time there is a new subscription, we will rewind the progress. This is desirable specifically
-            for retries, which resubscribe on each try. The first time this flowable is subscribed to, the
-            reset will be a noop as there will have been no progress made. Subsequent rewinds will work as
-            expected.
+             * Each time there is a new subscription, we will rewind the progress. This is desirable specifically for
+             * retries, which resubscribe on each try. The first time this flowable is subscribed to, the reset will be
+             * a noop as there will have been no progress made. Subsequent rewinds will work as expected.
              */
             reporter.reset();
 
             /*
-            Every time we emit some data, report it to the Tracker, which will pass it on to the end user.
+             * Every time we emit some data, report it to the Tracker, which will pass it on to the end user.
              */
             return flux.doOnNext(buffer -> reporter.reportProgress(buffer.remaining()));
         });
@@ -199,7 +201,8 @@ public final class FluxUtil {
      */
     public static Flux<ByteBuffer> createRetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
         BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries) {
-        return createRetriableDownloadFlux(downloadSupplier, onDownloadErrorResume, maxRetries, 0L);
+        return createRetriableDownloadFlux(downloadSupplier, onDownloadErrorResume,
+            createDefaultRetryOptions(maxRetries), 0L);
     }
 
     /**
@@ -214,7 +217,29 @@ public final class FluxUtil {
      */
     public static Flux<ByteBuffer> createRetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
         BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries, long position) {
-        return new RetriableDownloadFlux(downloadSupplier, onDownloadErrorResume, maxRetries, position);
+        return createRetriableDownloadFlux(downloadSupplier, onDownloadErrorResume,
+            createDefaultRetryOptions(maxRetries), position);
+    }
+
+    private static RetryOptions createDefaultRetryOptions(int maxRetries) {
+        return new RetryOptions(new ExponentialBackoffOptions().setMaxRetries(Math.max(0, maxRetries)));
+    }
+
+    /**
+     * Creates a {@link Flux} that is capable of resuming a download by applying retry logic when an error occurs.
+     *
+     * @param downloadSupplier Supplier of the initial download.
+     * @param onDownloadErrorResume {@link BiFunction} of {@link Throwable} and {@link Long} which is used to resume
+     * downloading when an error occurs.
+     * @param retryOptions The options for retrying.
+     * @param position The initial offset for the download.
+     * @return A {@link Flux} that downloads reliably.
+     */
+    public static Flux<ByteBuffer> createRetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
+        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, RetryOptions retryOptions, long position) {
+        RetryOptions options
+            = (retryOptions == null) ? new RetryOptions(new ExponentialBackoffOptions()) : retryOptions;
+        return new RetriableDownloadFlux(downloadSupplier, onDownloadErrorResume, options, position);
     }
 
     /**
@@ -258,7 +283,13 @@ public final class FluxUtil {
         // the FileInputStream to generated MappedByteBuffers which aren't loaded into memory until the content is
         // consumed. This at least defers the memory usage until later and may also provide downstream calls ways to
         // optimize if they have special cases for MappedByteBuffer.
-        if (inputStream instanceof FileInputStream) {
+        //
+        // NOTE: DO NOT use this logic in Windows! https://bugs.java.com/bugdatabase/view_bug?bug_id=6359560
+        // Java/Windows has a bad runtime behavior where when the MappedByteBuffer is garbage collected the underlying
+        // file may not be deletable. For Windows use the less favorable behavior by reading the file into memory.
+        // Ideally, we push users to using BinaryData.fromFile as that can leverage zero-copy, or low copy,
+        // functionality deeper in the stack.
+        if (inputStream instanceof FileInputStream && !System.getProperty("os.name").contains("Windows")) {
             FileChannel fileChannel = ((FileInputStream) inputStream).getChannel();
 
             return Flux.<ByteBuffer, FileChannel>generate(() -> fileChannel, (channel, sink) -> {
@@ -328,13 +359,13 @@ public final class FluxUtil {
      * </p>
      *
      * <p><strong>Code samples</strong></p>
-     * <!-- src_embed com.azure.core.implementation.util.fluxutil.withcontext -->
+     * <!-- src_embed com.azure.core.implementation.util.FluxUtil.withContext -->
      * <pre>
      * String prefix = &quot;Hello, &quot;;
      * Mono&lt;String&gt; response = FluxUtil
      *     .withContext&#40;context -&gt; serviceCallReturnsSingle&#40;prefix, context&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.implementation.util.fluxutil.withcontext -->
+     * <!-- end com.azure.core.implementation.util.FluxUtil.withContext -->
      *
      * @param serviceCall The lambda function that makes the service call into which azure context will be passed
      * @param <T> The type of response returned from the service call
@@ -361,15 +392,15 @@ public final class FluxUtil {
     public static <T> Mono<T> withContext(Function<Context, Mono<T>> serviceCall,
         Map<String, String> contextAttributes) {
         return Mono.deferContextual(context -> {
-            final Context[] azureContext = new Context[]{Context.NONE};
+            final Context[] azureContext = new Context[] { Context.NONE };
 
             if (!CoreUtils.isNullOrEmpty(contextAttributes)) {
                 contextAttributes.forEach((key, value) -> azureContext[0] = azureContext[0].addData(key, value));
             }
 
             if (!context.isEmpty()) {
-                context.stream().forEach(entry ->
-                    azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
+                context.stream()
+                    .forEach(entry -> azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
             }
 
             return serviceCall.apply(azureContext[0]);
@@ -444,13 +475,13 @@ public final class FluxUtil {
      * </p>
      *
      * <p><strong>Code samples</strong></p>
-     * <!-- src_embed com.azure.core.implementation.util.fluxutil.fluxcontext -->
+     * <!-- src_embed com.azure.core.implementation.util.FluxUtil.fluxContext -->
      * <pre>
      * String prefix = &quot;Hello, &quot;;
      * Flux&lt;String&gt; response = FluxUtil
      *     .fluxContext&#40;context -&gt; serviceCallReturnsCollection&#40;prefix, context&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.core.implementation.util.fluxutil.fluxcontext -->
+     * <!-- end com.azure.core.implementation.util.FluxUtil.fluxContext -->
      *
      * @param serviceCall The lambda function that makes the service call into which the context will be passed
      * @param <T> The type of response returned from the service call
@@ -468,11 +499,11 @@ public final class FluxUtil {
      * @return The azure context
      */
     private static Context toAzureContext(ContextView context) {
-        final Context[] azureContext = new Context[]{Context.NONE};
+        final Context[] azureContext = new Context[] { Context.NONE };
 
         if (!context.isEmpty()) {
-            context.stream().forEach(entry ->
-                azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
+            context.stream()
+                .forEach(entry -> azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
         }
 
         return azureContext[0];
@@ -581,8 +612,8 @@ public final class FluxUtil {
         } else if (position < 0) {
             return monoError(LOGGER, new IllegalArgumentException("'position' cannot be less than 0."));
         }
-
-        return writeToAsynchronousByteChannel(content, IOUtils.toAsynchronousByteChannel(outFile, position));
+        return Mono.create(emitter -> content.subscribe(
+            new AsynchronousByteChannelWriteSubscriber(IOUtils.toAsynchronousByteChannel(outFile, position), emitter)));
     }
 
     /**
@@ -609,8 +640,7 @@ public final class FluxUtil {
             return monoError(LOGGER, new NullPointerException("'channel' cannot be null."));
         }
 
-        return Mono.create(emitter -> content.subscribe(
-            new AsynchronousByteChannelWriteSubscriber(channel, emitter)));
+        return Mono.create(emitter -> content.subscribe(new AsynchronousByteChannelWriteSubscriber(channel, emitter)));
     }
 
     /**
@@ -637,17 +667,14 @@ public final class FluxUtil {
             return monoError(LOGGER, new NullPointerException("'channel' cannot be null."));
         }
 
-        return content.publishOn(Schedulers.boundedElastic())
-            .map(buffer -> {
-                while (buffer.hasRemaining()) {
-                    try {
-                        channel.write(buffer);
-                    } catch (IOException e) {
-                        throw Exceptions.propagate(e);
-                    }
-                }
-                return buffer;
-            }).then();
+        return content.publishOn(Schedulers.boundedElastic()).map(buffer -> {
+            try {
+                ImplUtils.fullyWriteBuffer(buffer, channel);
+            } catch (IOException e) {
+                throw Exceptions.propagate(e);
+            }
+            return buffer;
+        }).then();
     }
 
     /**
@@ -709,8 +736,8 @@ public final class FluxUtil {
 
         @Override
         public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
-            FileReadSubscription subscription =
-                new FileReadSubscription(actual, fileChannel, chunkSize, offset, length);
+            FileReadSubscription subscription
+                = new FileReadSubscription(actual, fileChannel, chunkSize, offset, length);
             actual.onSubscribe(subscription);
         }
 
@@ -732,12 +759,12 @@ public final class FluxUtil {
             private volatile boolean cancelled;
             //
             volatile int wip;
-            static final AtomicIntegerFieldUpdater<FileReadSubscription> WIP =
-                AtomicIntegerFieldUpdater.newUpdater(FileReadSubscription.class, "wip");
+            static final AtomicIntegerFieldUpdater<FileReadSubscription> WIP
+                = AtomicIntegerFieldUpdater.newUpdater(FileReadSubscription.class, "wip");
 
             volatile long requested;
-            static final AtomicLongFieldUpdater<FileReadSubscription> REQUESTED =
-                AtomicLongFieldUpdater.newUpdater(FileReadSubscription.class, "requested");
+            static final AtomicLongFieldUpdater<FileReadSubscription> REQUESTED
+                = AtomicLongFieldUpdater.newUpdater(FileReadSubscription.class, "requested");
             //
 
             FileReadSubscription(Subscriber<? super ByteBuffer> subscriber, AsynchronousFileChannel fileChannel,
@@ -752,7 +779,7 @@ public final class FluxUtil {
                 this.position = NOT_SET;
             }
 
-            //region Subscription implementation
+            // region Subscription implementation
 
             @Override
             public void request(long n) {
@@ -767,9 +794,9 @@ public final class FluxUtil {
                 this.cancelled = true;
             }
 
-            //endregion
+            // endregion
 
-            //region CompletionHandler implementation
+            // region CompletionHandler implementation
 
             @Override
             public void completed(Integer bytesRead, ByteBuffer buffer) {
@@ -781,7 +808,7 @@ public final class FluxUtil {
                         long pos = position;
                         int bytesWanted = Math.min(bytesRead, maxRequired(pos));
                         long position2 = pos + bytesWanted;
-                        //noinspection NonAtomicOperationOnVolatileField
+                        // noinspection NonAtomicOperationOnVolatileField
                         position = position2;
                         buffer.position(bytesWanted);
                         buffer.flip();
@@ -805,7 +832,7 @@ public final class FluxUtil {
                 }
             }
 
-            //endregion
+            // endregion
 
             private void drain() {
                 if (WIP.getAndIncrement(this) != 0) {
@@ -879,7 +906,6 @@ public final class FluxUtil {
             }
         }
     }
-
 
     // Private Ctr
     private FluxUtil() {

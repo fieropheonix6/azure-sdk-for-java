@@ -5,35 +5,56 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.batch.models.AzureProxyResource;
 import com.azure.resourcemanager.batch.models.CertificateFormat;
 import com.azure.resourcemanager.batch.models.CertificateProvisioningState;
 import com.azure.resourcemanager.batch.models.DeleteCertificateError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
-/** Contains information about a certificate. */
+/**
+ * Contains information about a certificate.
+ */
 @Fluent
-public final class CertificateInner extends ProxyResource {
+public final class CertificateInner extends AzureProxyResource {
     /*
      * The properties associated with the certificate.
      */
-    @JsonProperty(value = "properties")
     private CertificateProperties innerProperties;
 
     /*
      * The ETag of the resource, used for concurrency statements.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of CertificateInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CertificateInner class.
+     */
     public CertificateInner() {
     }
 
     /**
      * Get the innerProperties property: The properties associated with the certificate.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CertificateProperties innerProperties() {
@@ -42,16 +63,56 @@ public final class CertificateInner extends ProxyResource {
 
     /**
      * Get the etag property: The ETag of the resource, used for concurrency statements.
-     *
+     * 
      * @return the etag value.
      */
+    @Override
     public String etag() {
         return this.etag;
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CertificateInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CertificateProvisioningState provisioningState() {
@@ -60,7 +121,7 @@ public final class CertificateInner extends ProxyResource {
 
     /**
      * Get the provisioningStateTransitionTime property: The time at which the certificate entered its current state.
-     *
+     * 
      * @return the provisioningStateTransitionTime value.
      */
     public OffsetDateTime provisioningStateTransitionTime() {
@@ -69,7 +130,7 @@ public final class CertificateInner extends ProxyResource {
 
     /**
      * Get the previousProvisioningState property: The previous provisioned state of the resource.
-     *
+     * 
      * @return the previousProvisioningState value.
      */
     public CertificateProvisioningState previousProvisioningState() {
@@ -79,7 +140,7 @@ public final class CertificateInner extends ProxyResource {
     /**
      * Get the previousProvisioningStateTransitionTime property: The time at which the certificate entered its previous
      * state.
-     *
+     * 
      * @return the previousProvisioningStateTransitionTime value.
      */
     public OffsetDateTime previousProvisioningStateTransitionTime() {
@@ -88,7 +149,7 @@ public final class CertificateInner extends ProxyResource {
 
     /**
      * Get the publicData property: The public key of the certificate.
-     *
+     * 
      * @return the publicData value.
      */
     public String publicData() {
@@ -98,7 +159,7 @@ public final class CertificateInner extends ProxyResource {
     /**
      * Get the deleteCertificateError property: This is only returned when the certificate provisioningState is
      * 'Failed'.
-     *
+     * 
      * @return the deleteCertificateError value.
      */
     public DeleteCertificateError deleteCertificateError() {
@@ -106,10 +167,9 @@ public final class CertificateInner extends ProxyResource {
     }
 
     /**
-     * Get the thumbprintAlgorithm property: The algorithm of the certificate thumbprint.
-     *
-     * <p>This must match the first portion of the certificate name. Currently required to be 'SHA1'.
-     *
+     * Get the thumbprintAlgorithm property: This must match the first portion of the certificate name. Currently
+     * required to be 'SHA1'.
+     * 
      * @return the thumbprintAlgorithm value.
      */
     public String thumbprintAlgorithm() {
@@ -117,10 +177,9 @@ public final class CertificateInner extends ProxyResource {
     }
 
     /**
-     * Set the thumbprintAlgorithm property: The algorithm of the certificate thumbprint.
-     *
-     * <p>This must match the first portion of the certificate name. Currently required to be 'SHA1'.
-     *
+     * Set the thumbprintAlgorithm property: This must match the first portion of the certificate name. Currently
+     * required to be 'SHA1'.
+     * 
      * @param thumbprintAlgorithm the thumbprintAlgorithm value to set.
      * @return the CertificateInner object itself.
      */
@@ -133,10 +192,8 @@ public final class CertificateInner extends ProxyResource {
     }
 
     /**
-     * Get the thumbprint property: The thumbprint of the certificate.
-     *
-     * <p>This must match the thumbprint from the name.
-     *
+     * Get the thumbprint property: This must match the thumbprint from the name.
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -144,10 +201,8 @@ public final class CertificateInner extends ProxyResource {
     }
 
     /**
-     * Set the thumbprint property: The thumbprint of the certificate.
-     *
-     * <p>This must match the thumbprint from the name.
-     *
+     * Set the thumbprint property: This must match the thumbprint from the name.
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the CertificateInner object itself.
      */
@@ -161,7 +216,7 @@ public final class CertificateInner extends ProxyResource {
 
     /**
      * Get the format property: The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx.
-     *
+     * 
      * @return the format value.
      */
     public CertificateFormat format() {
@@ -170,7 +225,7 @@ public final class CertificateInner extends ProxyResource {
 
     /**
      * Set the format property: The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx.
-     *
+     * 
      * @param format the format value to set.
      * @return the CertificateInner object itself.
      */
@@ -184,12 +239,62 @@ public final class CertificateInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CertificateInner.
+     */
+    public static CertificateInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateInner deserializedCertificateInner = new CertificateInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCertificateInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCertificateInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCertificateInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedCertificateInner.etag = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCertificateInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCertificateInner.innerProperties = CertificateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateInner;
+        });
     }
 }

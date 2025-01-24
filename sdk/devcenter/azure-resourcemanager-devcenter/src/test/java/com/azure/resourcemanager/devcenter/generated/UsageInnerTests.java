@@ -9,36 +9,34 @@ import com.azure.resourcemanager.devcenter.fluent.models.UsageInner;
 import com.azure.resourcemanager.devcenter.models.UsageName;
 import com.azure.resourcemanager.devcenter.models.UsageUnit;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UsageInnerTests {
-    @Test
-    public void testDeserialize() {
-        UsageInner model =
-            BinaryData
-                .fromString(
-                    "{\"currentValue\":9193479715444111968,\"limit\":7606552657334268394,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"phsdyhto\",\"value\":\"ikdowwquuvx\"}}")
-                .toObject(UsageInner.class);
-        Assertions.assertEquals(9193479715444111968L, model.currentValue());
-        Assertions.assertEquals(7606552657334268394L, model.limit());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        UsageInner model = BinaryData.fromString(
+            "{\"currentValue\":3797997651495402097,\"limit\":1729044894039608020,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"rrjreafxtsgu\",\"value\":\"jglikkxwslolb\"},\"id\":\"vuzlm\"}")
+            .toObject(UsageInner.class);
+        Assertions.assertEquals(3797997651495402097L, model.currentValue());
+        Assertions.assertEquals(1729044894039608020L, model.limit());
         Assertions.assertEquals(UsageUnit.COUNT, model.unit());
-        Assertions.assertEquals("phsdyhto", model.name().localizedValue());
-        Assertions.assertEquals("ikdowwquuvx", model.name().value());
+        Assertions.assertEquals("rrjreafxtsgu", model.name().localizedValue());
+        Assertions.assertEquals("jglikkxwslolb", model.name().value());
+        Assertions.assertEquals("vuzlm", model.id());
     }
 
-    @Test
-    public void testSerialize() {
-        UsageInner model =
-            new UsageInner()
-                .withCurrentValue(9193479715444111968L)
-                .withLimit(7606552657334268394L)
-                .withUnit(UsageUnit.COUNT)
-                .withName(new UsageName().withLocalizedValue("phsdyhto").withValue("ikdowwquuvx"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        UsageInner model = new UsageInner().withCurrentValue(3797997651495402097L)
+            .withLimit(1729044894039608020L)
+            .withUnit(UsageUnit.COUNT)
+            .withName(new UsageName().withLocalizedValue("rrjreafxtsgu").withValue("jglikkxwslolb"))
+            .withId("vuzlm");
         model = BinaryData.fromObject(model).toObject(UsageInner.class);
-        Assertions.assertEquals(9193479715444111968L, model.currentValue());
-        Assertions.assertEquals(7606552657334268394L, model.limit());
+        Assertions.assertEquals(3797997651495402097L, model.currentValue());
+        Assertions.assertEquals(1729044894039608020L, model.limit());
         Assertions.assertEquals(UsageUnit.COUNT, model.unit());
-        Assertions.assertEquals("phsdyhto", model.name().localizedValue());
-        Assertions.assertEquals("ikdowwquuvx", model.name().value());
+        Assertions.assertEquals("rrjreafxtsgu", model.name().localizedValue());
+        Assertions.assertEquals("jglikkxwslolb", model.name().value());
+        Assertions.assertEquals("vuzlm", model.id());
     }
 }

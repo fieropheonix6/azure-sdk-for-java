@@ -15,14 +15,17 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Initializes a new instance of the synchronous ArtifactsClient type. */
+/**
+ * Initializes a new instance of the synchronous ArtifactsClient type.
+ */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class SqlPoolsClient {
-    @Generated private final SqlPoolsImpl serviceClient;
+    @Generated
+    private final SqlPoolsImpl serviceClient;
 
     /**
      * Initializes an instance of SqlPoolsClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -32,20 +35,7 @@ public final class SqlPoolsClient {
 
     /**
      * List Sql Pools.
-     *
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool collection.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlPoolInfoListResult list() {
-        return this.serviceClient.list();
-    }
-
-    /**
-     * List Sql Pools.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -59,23 +49,21 @@ public final class SqlPoolsClient {
     }
 
     /**
-     * Get Sql Pool.
-     *
-     * @param sqlPoolName The Sql Pool name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * List Sql Pools.
+     * 
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool.
+     * @return sQL pool collection.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlPool get(String sqlPoolName) {
-        return this.serviceClient.get(sqlPoolName);
+    public SqlPoolInfoListResult list() {
+        return this.serviceClient.list();
     }
 
     /**
      * Get Sql Pool.
-     *
+     * 
      * @param sqlPoolName The Sql Pool name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,5 +75,20 @@ public final class SqlPoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlPool> getWithResponse(String sqlPoolName, Context context) {
         return this.serviceClient.getWithResponse(sqlPoolName, context);
+    }
+
+    /**
+     * Get Sql Pool.
+     * 
+     * @param sqlPoolName The Sql Pool name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sql Pool.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SqlPool get(String sqlPoolName) {
+        return this.serviceClient.get(sqlPoolName);
     }
 }

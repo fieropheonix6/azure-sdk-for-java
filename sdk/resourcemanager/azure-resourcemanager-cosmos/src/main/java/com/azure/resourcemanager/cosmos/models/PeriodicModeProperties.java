@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Configuration values for periodic mode backup. */
+/**
+ * Configuration values for periodic mode backup.
+ */
 @Fluent
-public final class PeriodicModeProperties {
+public final class PeriodicModeProperties implements JsonSerializable<PeriodicModeProperties> {
     /*
      * An integer representing the interval in minutes between two backups
      */
-    @JsonProperty(value = "backupIntervalInMinutes")
     private Integer backupIntervalInMinutes;
 
     /*
      * An integer representing the time (in hours) that each backup is retained
      */
-    @JsonProperty(value = "backupRetentionIntervalInHours")
     private Integer backupRetentionIntervalInHours;
 
     /*
      * Enum to indicate type of backup residency
      */
-    @JsonProperty(value = "backupStorageRedundancy")
     private BackupStorageRedundancy backupStorageRedundancy;
 
     /**
+     * Creates an instance of PeriodicModeProperties class.
+     */
+    public PeriodicModeProperties() {
+    }
+
+    /**
      * Get the backupIntervalInMinutes property: An integer representing the interval in minutes between two backups.
-     *
+     * 
      * @return the backupIntervalInMinutes value.
      */
     public Integer backupIntervalInMinutes() {
@@ -39,7 +48,7 @@ public final class PeriodicModeProperties {
 
     /**
      * Set the backupIntervalInMinutes property: An integer representing the interval in minutes between two backups.
-     *
+     * 
      * @param backupIntervalInMinutes the backupIntervalInMinutes value to set.
      * @return the PeriodicModeProperties object itself.
      */
@@ -51,7 +60,7 @@ public final class PeriodicModeProperties {
     /**
      * Get the backupRetentionIntervalInHours property: An integer representing the time (in hours) that each backup is
      * retained.
-     *
+     * 
      * @return the backupRetentionIntervalInHours value.
      */
     public Integer backupRetentionIntervalInHours() {
@@ -61,7 +70,7 @@ public final class PeriodicModeProperties {
     /**
      * Set the backupRetentionIntervalInHours property: An integer representing the time (in hours) that each backup is
      * retained.
-     *
+     * 
      * @param backupRetentionIntervalInHours the backupRetentionIntervalInHours value to set.
      * @return the PeriodicModeProperties object itself.
      */
@@ -72,7 +81,7 @@ public final class PeriodicModeProperties {
 
     /**
      * Get the backupStorageRedundancy property: Enum to indicate type of backup residency.
-     *
+     * 
      * @return the backupStorageRedundancy value.
      */
     public BackupStorageRedundancy backupStorageRedundancy() {
@@ -81,7 +90,7 @@ public final class PeriodicModeProperties {
 
     /**
      * Set the backupStorageRedundancy property: Enum to indicate type of backup residency.
-     *
+     * 
      * @param backupStorageRedundancy the backupStorageRedundancy value to set.
      * @return the PeriodicModeProperties object itself.
      */
@@ -92,9 +101,54 @@ public final class PeriodicModeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("backupIntervalInMinutes", this.backupIntervalInMinutes);
+        jsonWriter.writeNumberField("backupRetentionIntervalInHours", this.backupRetentionIntervalInHours);
+        jsonWriter.writeStringField("backupStorageRedundancy",
+            this.backupStorageRedundancy == null ? null : this.backupStorageRedundancy.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeriodicModeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeriodicModeProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeriodicModeProperties.
+     */
+    public static PeriodicModeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeriodicModeProperties deserializedPeriodicModeProperties = new PeriodicModeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupIntervalInMinutes".equals(fieldName)) {
+                    deserializedPeriodicModeProperties.backupIntervalInMinutes = reader.getNullable(JsonReader::getInt);
+                } else if ("backupRetentionIntervalInHours".equals(fieldName)) {
+                    deserializedPeriodicModeProperties.backupRetentionIntervalInHours
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("backupStorageRedundancy".equals(fieldName)) {
+                    deserializedPeriodicModeProperties.backupStorageRedundancy
+                        = BackupStorageRedundancy.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeriodicModeProperties;
+        });
     }
 }

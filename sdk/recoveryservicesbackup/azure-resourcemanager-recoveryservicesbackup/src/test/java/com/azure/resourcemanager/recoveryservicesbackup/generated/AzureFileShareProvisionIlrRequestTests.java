@@ -7,28 +7,23 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureFileShareProvisionIlrRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureFileShareProvisionIlrRequestTests {
-    @Test
-    public void testDeserialize() {
-        AzureFileShareProvisionIlrRequest model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"AzureFileShareProvisionILRRequest\",\"recoveryPointId\":\"fcsserxhtvsox\",\"sourceResourceId\":\"wntsjgqrsxy\"}")
-                .toObject(AzureFileShareProvisionIlrRequest.class);
-        Assertions.assertEquals("fcsserxhtvsox", model.recoveryPointId());
-        Assertions.assertEquals("wntsjgqrsxy", model.sourceResourceId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureFileShareProvisionIlrRequest model = BinaryData.fromString(
+            "{\"objectType\":\"AzureFileShareProvisionILRRequest\",\"recoveryPointId\":\"lnnpx\",\"sourceResourceId\":\"afiqgeaarbgjekg\"}")
+            .toObject(AzureFileShareProvisionIlrRequest.class);
+        Assertions.assertEquals("lnnpx", model.recoveryPointId());
+        Assertions.assertEquals("afiqgeaarbgjekg", model.sourceResourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureFileShareProvisionIlrRequest model =
-            new AzureFileShareProvisionIlrRequest()
-                .withRecoveryPointId("fcsserxhtvsox")
-                .withSourceResourceId("wntsjgqrsxy");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureFileShareProvisionIlrRequest model = new AzureFileShareProvisionIlrRequest().withRecoveryPointId("lnnpx")
+            .withSourceResourceId("afiqgeaarbgjekg");
         model = BinaryData.fromObject(model).toObject(AzureFileShareProvisionIlrRequest.class);
-        Assertions.assertEquals("fcsserxhtvsox", model.recoveryPointId());
-        Assertions.assertEquals("wntsjgqrsxy", model.sourceResourceId());
+        Assertions.assertEquals("lnnpx", model.recoveryPointId());
+        Assertions.assertEquals("afiqgeaarbgjekg", model.sourceResourceId());
     }
 }

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Hub Item. */
+/**
+ * Hub Item.
+ */
 @Fluent
-public final class Hub {
+public final class Hub implements JsonSerializable<Hub> {
     /*
      * Resource Id.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * Resource Type.
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
-    /** Creates an instance of Hub class. */
+    /**
+     * Creates an instance of Hub class.
+     */
     public Hub() {
     }
 
     /**
      * Get the resourceId property: Resource Id.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -37,7 +43,7 @@ public final class Hub {
 
     /**
      * Set the resourceId property: Resource Id.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the Hub object itself.
      */
@@ -48,7 +54,7 @@ public final class Hub {
 
     /**
      * Get the resourceType property: Resource Type.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -57,7 +63,7 @@ public final class Hub {
 
     /**
      * Set the resourceType property: Resource Type.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the Hub object itself.
      */
@@ -68,9 +74,48 @@ public final class Hub {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Hub from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Hub if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Hub.
+     */
+    public static Hub fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Hub deserializedHub = new Hub();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedHub.resourceId = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedHub.resourceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHub;
+        });
     }
 }

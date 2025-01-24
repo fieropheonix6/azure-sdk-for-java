@@ -5,29 +5,73 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
-/** Defines the NSG resource settings. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
-@JsonTypeName("Microsoft.Network/networkSecurityGroups")
+/**
+ * Defines the NSG resource settings.
+ */
 @Fluent
 public final class NetworkSecurityGroupResourceSettings extends ResourceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkSecurityGroupResourceSettings.class);
+    /*
+     * The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+     */
+    private String resourceType = "Microsoft.Network/networkSecurityGroups";
+
+    /*
+     * Gets or sets the Resource tags.
+     */
+    private Map<String, String> tags;
 
     /*
      * Gets or sets Security rules of network security group.
      */
-    @JsonProperty(value = "securityRules")
     private List<NsgSecurityRule> securityRules;
 
     /**
+     * Creates an instance of NetworkSecurityGroupResourceSettings class.
+     */
+    public NetworkSecurityGroupResourceSettings() {
+    }
+
+    /**
+     * Get the resourceType property: The resource type. For example, the value can be
+     * Microsoft.Compute/virtualMachines.
+     * 
+     * @return the resourceType value.
+     */
+    @Override
+    public String resourceType() {
+        return this.resourceType;
+    }
+
+    /**
+     * Get the tags property: Gets or sets the Resource tags.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Gets or sets the Resource tags.
+     * 
+     * @param tags the tags value to set.
+     * @return the NetworkSecurityGroupResourceSettings object itself.
+     */
+    public NetworkSecurityGroupResourceSettings withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
      * Get the securityRules property: Gets or sets Security rules of network security group.
-     *
+     * 
      * @return the securityRules value.
      */
     public List<NsgSecurityRule> securityRules() {
@@ -36,7 +80,7 @@ public final class NetworkSecurityGroupResourceSettings extends ResourceSettings
 
     /**
      * Set the securityRules property: Gets or sets Security rules of network security group.
-     *
+     * 
      * @param securityRules the securityRules value to set.
      * @return the NetworkSecurityGroupResourceSettings object itself.
      */
@@ -45,7 +89,9 @@ public final class NetworkSecurityGroupResourceSettings extends ResourceSettings
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkSecurityGroupResourceSettings withTargetResourceName(String targetResourceName) {
         super.withTargetResourceName(targetResourceName);
@@ -53,15 +99,75 @@ public final class NetworkSecurityGroupResourceSettings extends ResourceSettings
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NetworkSecurityGroupResourceSettings withTargetResourceGroupName(String targetResourceGroupName) {
+        super.withTargetResourceGroupName(targetResourceGroupName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (securityRules() != null) {
             securityRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetResourceName", targetResourceName());
+        jsonWriter.writeStringField("targetResourceGroupName", targetResourceGroupName());
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("securityRules", this.securityRules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkSecurityGroupResourceSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkSecurityGroupResourceSettings if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkSecurityGroupResourceSettings.
+     */
+    public static NetworkSecurityGroupResourceSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkSecurityGroupResourceSettings deserializedNetworkSecurityGroupResourceSettings
+                = new NetworkSecurityGroupResourceSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceName".equals(fieldName)) {
+                    deserializedNetworkSecurityGroupResourceSettings.withTargetResourceName(reader.getString());
+                } else if ("targetResourceGroupName".equals(fieldName)) {
+                    deserializedNetworkSecurityGroupResourceSettings.withTargetResourceGroupName(reader.getString());
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedNetworkSecurityGroupResourceSettings.resourceType = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNetworkSecurityGroupResourceSettings.tags = tags;
+                } else if ("securityRules".equals(fieldName)) {
+                    List<NsgSecurityRule> securityRules
+                        = reader.readArray(reader1 -> NsgSecurityRule.fromJson(reader1));
+                    deserializedNetworkSecurityGroupResourceSettings.securityRules = securityRules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkSecurityGroupResourceSettings;
+        });
     }
 }

@@ -9,32 +9,26 @@ import com.azure.resourcemanager.kusto.fluent.models.FollowerDatabaseDefinitionI
 import com.azure.resourcemanager.kusto.models.FollowerDatabaseListResult;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class FollowerDatabaseListResultTests {
-    @Test
-    public void testDeserialize() {
-        FollowerDatabaseListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"clusterResourceId\":\"iuxhqyudxorr\",\"attachedDatabaseConfigurationName\":\"nbpoczvyifqrvkdv\",\"databaseName\":\"llr\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[],\"tablesToExclude\":[],\"externalTablesToInclude\":[],\"externalTablesToExclude\":[],\"materializedViewsToInclude\":[],\"materializedViewsToExclude\":[]},\"databaseShareOrigin\":\"Other\"}]}")
-                .toObject(FollowerDatabaseListResult.class);
-        Assertions.assertEquals("iuxhqyudxorr", model.value().get(0).clusterResourceId());
-        Assertions.assertEquals("nbpoczvyifqrvkdv", model.value().get(0).attachedDatabaseConfigurationName());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        FollowerDatabaseListResult model = BinaryData.fromString(
+            "{\"value\":[{\"clusterResourceId\":\"njeputtmrywn\",\"attachedDatabaseConfigurationName\":\"zoqftiyqzrnkcqvy\",\"databaseName\":\"whzlsicohoq\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"lryav\",\"hheunmmqhgyx\",\"konocu\",\"oklyaxuconuq\"],\"tablesToExclude\":[\"kbeype\",\"rmjmwvvjektc\"],\"externalTablesToInclude\":[\"nhwlrsffrzpwvl\",\"dqgbiqylihkaetc\"],\"externalTablesToExclude\":[\"fcivfsnkym\",\"ctq\",\"jf\",\"ebrjcxe\"],\"materializedViewsToInclude\":[\"wutttxfvjrbi\",\"phxepcyvahf\",\"ljkyqxjvuuj\",\"gidokgjljyoxgvcl\"],\"materializedViewsToExclude\":[\"sncghkjeszz\",\"bijhtxfvgxbf\",\"mxnehmp\"],\"functionsToInclude\":[\"xgodebfqkkrbmp\",\"kgriwflzlfbx\"],\"functionsToExclude\":[\"zycispn\",\"zahmgkbrpyydhibn\",\"qqkpikadrg\"]},\"databaseShareOrigin\":\"Other\"},{\"clusterResourceId\":\"agnb\",\"attachedDatabaseConfigurationName\":\"ynhijggme\",\"databaseName\":\"siarbutrcvpn\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"hj\",\"unmpxttd\",\"hrbnlankxmyskpbh\",\"nbtkcxywnytnr\"],\"tablesToExclude\":[\"lqidyby\",\"czfc\",\"haaxdbabphl\"],\"externalTablesToInclude\":[\"lfktsths\",\"cocmnyyaztt\",\"twwrqp\"],\"externalTablesToExclude\":[\"ckzywbiexzfeyue\",\"xibxujwbhqwalm\",\"zyoxaepdkzjan\"],\"materializedViewsToInclude\":[\"rhdwbavxbniw\",\"jswztsdbpg\",\"xytxhpzxbz\",\"fzab\"],\"materializedViewsToExclude\":[\"uhxwtctyqiklbbov\"],\"functionsToInclude\":[\"zbhvgyuguosv\",\"kfssxqukkf\",\"l\"],\"functionsToExclude\":[\"sxnkjzkdeslpvlo\",\"wiyighxpkdw\",\"baiuebbaumny\",\"upedeojnabckhs\"]},\"databaseShareOrigin\":\"Direct\"}]}")
+            .toObject(FollowerDatabaseListResult.class);
+        Assertions.assertEquals("njeputtmrywn", model.value().get(0).clusterResourceId());
+        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.value().get(0).attachedDatabaseConfigurationName());
     }
 
-    @Test
-    public void testSerialize() {
-        FollowerDatabaseListResult model =
-            new FollowerDatabaseListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new FollowerDatabaseDefinitionInner()
-                                .withClusterResourceId("iuxhqyudxorr")
-                                .withAttachedDatabaseConfigurationName("nbpoczvyifqrvkdv")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        FollowerDatabaseListResult model = new FollowerDatabaseListResult().withValue(Arrays.asList(
+            new FollowerDatabaseDefinitionInner().withClusterResourceId("njeputtmrywn")
+                .withAttachedDatabaseConfigurationName("zoqftiyqzrnkcqvy"),
+            new FollowerDatabaseDefinitionInner().withClusterResourceId("agnb")
+                .withAttachedDatabaseConfigurationName("ynhijggme")));
         model = BinaryData.fromObject(model).toObject(FollowerDatabaseListResult.class);
-        Assertions.assertEquals("iuxhqyudxorr", model.value().get(0).clusterResourceId());
-        Assertions.assertEquals("nbpoczvyifqrvkdv", model.value().get(0).attachedDatabaseConfigurationName());
+        Assertions.assertEquals("njeputtmrywn", model.value().get(0).clusterResourceId());
+        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.value().get(0).attachedDatabaseConfigurationName());
     }
 }

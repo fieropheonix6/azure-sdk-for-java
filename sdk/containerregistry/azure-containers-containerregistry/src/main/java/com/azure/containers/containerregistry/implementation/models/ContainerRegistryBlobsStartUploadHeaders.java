@@ -5,32 +5,46 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 
-/** The ContainerRegistryBlobsStartUploadHeaders model. */
+/**
+ * The ContainerRegistryBlobsStartUploadHeaders model.
+ */
 @Fluent
 public final class ContainerRegistryBlobsStartUploadHeaders {
     /*
      * The Docker-Upload-UUID property.
      */
-    @JsonProperty(value = "Docker-Upload-UUID")
     private String dockerUploadUUID;
 
     /*
      * The Range property.
      */
-    @JsonProperty(value = "Range")
     private String range;
 
     /*
      * The Location property.
      */
-    @JsonProperty(value = "Location")
     private String location;
+
+    private static final HttpHeaderName DOCKER_UPLOAD_UUID = HttpHeaderName.fromString("Docker-Upload-UUID");
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of ContainerRegistryBlobsStartUploadHeaders class.
+     * 
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public ContainerRegistryBlobsStartUploadHeaders(HttpHeaders rawHeaders) {
+        this.dockerUploadUUID = rawHeaders.getValue(DOCKER_UPLOAD_UUID);
+        this.range = rawHeaders.getValue(HttpHeaderName.RANGE);
+        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
+    }
 
     /**
      * Get the dockerUploadUUID property: The Docker-Upload-UUID property.
-     *
+     * 
      * @return the dockerUploadUUID value.
      */
     public String getDockerUploadUUID() {
@@ -39,7 +53,7 @@ public final class ContainerRegistryBlobsStartUploadHeaders {
 
     /**
      * Set the dockerUploadUUID property: The Docker-Upload-UUID property.
-     *
+     * 
      * @param dockerUploadUUID the dockerUploadUUID value to set.
      * @return the ContainerRegistryBlobsStartUploadHeaders object itself.
      */
@@ -50,7 +64,7 @@ public final class ContainerRegistryBlobsStartUploadHeaders {
 
     /**
      * Get the range property: The Range property.
-     *
+     * 
      * @return the range value.
      */
     public String getRange() {
@@ -59,7 +73,7 @@ public final class ContainerRegistryBlobsStartUploadHeaders {
 
     /**
      * Set the range property: The Range property.
-     *
+     * 
      * @param range the range value to set.
      * @return the ContainerRegistryBlobsStartUploadHeaders object itself.
      */
@@ -70,7 +84,7 @@ public final class ContainerRegistryBlobsStartUploadHeaders {
 
     /**
      * Get the location property: The Location property.
-     *
+     * 
      * @return the location value.
      */
     public String getLocation() {
@@ -79,7 +93,7 @@ public final class ContainerRegistryBlobsStartUploadHeaders {
 
     /**
      * Set the location property: The Location property.
-     *
+     * 
      * @param location the location value to set.
      * @return the ContainerRegistryBlobsStartUploadHeaders object itself.
      */

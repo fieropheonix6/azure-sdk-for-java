@@ -6,19 +6,16 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.DistributionConfiguration;
-import org.junit.jupiter.api.Test;
 
 public final class DistributionConfigurationTests {
-    @Test
-    public void testDeserialize() {
-        DistributionConfiguration model =
-            BinaryData
-                .fromString("{\"distributionType\":\"DistributionConfiguration\"}")
-                .toObject(DistributionConfiguration.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DistributionConfiguration model = BinaryData.fromString("{\"distributionType\":\"DistributionConfiguration\"}")
+            .toObject(DistributionConfiguration.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DistributionConfiguration model = new DistributionConfiguration();
         model = BinaryData.fromObject(model).toObject(DistributionConfiguration.class);
     }

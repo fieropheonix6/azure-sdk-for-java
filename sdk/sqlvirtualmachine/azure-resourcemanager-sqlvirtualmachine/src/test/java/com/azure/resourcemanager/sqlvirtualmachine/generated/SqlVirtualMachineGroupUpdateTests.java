@@ -9,26 +9,23 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachineGroup
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SqlVirtualMachineGroupUpdateTests {
-    @Test
-    public void testDeserialize() {
-        SqlVirtualMachineGroupUpdate model =
-            BinaryData
-                .fromString("{\"tags\":{\"jxvsnbyxqabn\":\"pjxsqwpgrjbznor\"}}")
-                .toObject(SqlVirtualMachineGroupUpdate.class);
-        Assertions.assertEquals("pjxsqwpgrjbznor", model.tags().get("jxvsnbyxqabn"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SqlVirtualMachineGroupUpdate model
+            = BinaryData.fromString("{\"tags\":{\"w\":\"m\"}}").toObject(SqlVirtualMachineGroupUpdate.class);
+        Assertions.assertEquals("m", model.tags().get("w"));
     }
 
-    @Test
-    public void testSerialize() {
-        SqlVirtualMachineGroupUpdate model =
-            new SqlVirtualMachineGroupUpdate().withTags(mapOf("jxvsnbyxqabn", "pjxsqwpgrjbznor"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SqlVirtualMachineGroupUpdate model = new SqlVirtualMachineGroupUpdate().withTags(mapOf("w", "m"));
         model = BinaryData.fromObject(model).toObject(SqlVirtualMachineGroupUpdate.class);
-        Assertions.assertEquals("pjxsqwpgrjbznor", model.tags().get("jxvsnbyxqabn"));
+        Assertions.assertEquals("m", model.tags().get("w"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

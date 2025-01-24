@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,26 +12,38 @@ import java.util.Collection;
  * traffic routing method.
  */
 public final class EndpointStatus extends ExpandableStringEnum<EndpointStatus> {
-    /** Static value Enabled for EndpointStatus. */
+    /**
+     * Static value Enabled for EndpointStatus.
+     */
     public static final EndpointStatus ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for EndpointStatus. */
+    /**
+     * Static value Disabled for EndpointStatus.
+     */
     public static final EndpointStatus DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of EndpointStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EndpointStatus() {
+    }
+
+    /**
      * Creates or finds a EndpointStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EndpointStatus.
      */
-    @JsonCreator
     public static EndpointStatus fromString(String name) {
         return fromString(name, EndpointStatus.class);
     }
 
     /**
      * Gets known EndpointStatus values.
-     *
+     * 
      * @return known EndpointStatus values.
      */
     public static Collection<EndpointStatus> values() {

@@ -6,48 +6,46 @@ package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Mount target properties. */
+/**
+ * Mount target properties.
+ */
 @Fluent
-public final class MountTargetProperties {
+public final class MountTargetProperties implements JsonSerializable<MountTargetProperties> {
     /*
-     * mountTargetId
-     *
      * UUID v4 used to identify the MountTarget
      */
-    @JsonProperty(value = "mountTargetId", access = JsonProperty.Access.WRITE_ONLY)
     private String mountTargetId;
 
     /*
-     * fileSystemId
-     *
      * UUID v4 used to identify the MountTarget
      */
-    @JsonProperty(value = "fileSystemId", required = true)
     private String fileSystemId;
 
     /*
-     * ipAddress
-     *
      * The mount target's IPv4 address
      */
-    @JsonProperty(value = "ipAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String ipAddress;
 
     /*
-     * smbServerFQDN
-     *
      * The SMB server's Fully Qualified Domain Name, FQDN
      */
-    @JsonProperty(value = "smbServerFqdn")
     private String smbServerFqdn;
 
     /**
-     * Get the mountTargetId property: mountTargetId
-     *
-     * <p>UUID v4 used to identify the MountTarget.
-     *
+     * Creates an instance of MountTargetProperties class.
+     */
+    public MountTargetProperties() {
+    }
+
+    /**
+     * Get the mountTargetId property: UUID v4 used to identify the MountTarget.
+     * 
      * @return the mountTargetId value.
      */
     public String mountTargetId() {
@@ -55,10 +53,8 @@ public final class MountTargetProperties {
     }
 
     /**
-     * Get the fileSystemId property: fileSystemId
-     *
-     * <p>UUID v4 used to identify the MountTarget.
-     *
+     * Get the fileSystemId property: UUID v4 used to identify the MountTarget.
+     * 
      * @return the fileSystemId value.
      */
     public String fileSystemId() {
@@ -66,10 +62,8 @@ public final class MountTargetProperties {
     }
 
     /**
-     * Set the fileSystemId property: fileSystemId
-     *
-     * <p>UUID v4 used to identify the MountTarget.
-     *
+     * Set the fileSystemId property: UUID v4 used to identify the MountTarget.
+     * 
      * @param fileSystemId the fileSystemId value to set.
      * @return the MountTargetProperties object itself.
      */
@@ -79,10 +73,8 @@ public final class MountTargetProperties {
     }
 
     /**
-     * Get the ipAddress property: ipAddress
-     *
-     * <p>The mount target's IPv4 address.
-     *
+     * Get the ipAddress property: The mount target's IPv4 address.
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -90,10 +82,8 @@ public final class MountTargetProperties {
     }
 
     /**
-     * Get the smbServerFqdn property: smbServerFQDN
-     *
-     * <p>The SMB server's Fully Qualified Domain Name, FQDN.
-     *
+     * Get the smbServerFqdn property: The SMB server's Fully Qualified Domain Name, FQDN.
+     * 
      * @return the smbServerFqdn value.
      */
     public String smbServerFqdn() {
@@ -101,10 +91,8 @@ public final class MountTargetProperties {
     }
 
     /**
-     * Set the smbServerFqdn property: smbServerFQDN
-     *
-     * <p>The SMB server's Fully Qualified Domain Name, FQDN.
-     *
+     * Set the smbServerFqdn property: The SMB server's Fully Qualified Domain Name, FQDN.
+     * 
      * @param smbServerFqdn the smbServerFqdn value to set.
      * @return the MountTargetProperties object itself.
      */
@@ -115,17 +103,60 @@ public final class MountTargetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (fileSystemId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fileSystemId in model MountTargetProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fileSystemId in model MountTargetProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MountTargetProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fileSystemId", this.fileSystemId);
+        jsonWriter.writeStringField("smbServerFqdn", this.smbServerFqdn);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MountTargetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MountTargetProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MountTargetProperties.
+     */
+    public static MountTargetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MountTargetProperties deserializedMountTargetProperties = new MountTargetProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fileSystemId".equals(fieldName)) {
+                    deserializedMountTargetProperties.fileSystemId = reader.getString();
+                } else if ("mountTargetId".equals(fieldName)) {
+                    deserializedMountTargetProperties.mountTargetId = reader.getString();
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedMountTargetProperties.ipAddress = reader.getString();
+                } else if ("smbServerFqdn".equals(fieldName)) {
+                    deserializedMountTargetProperties.smbServerFqdn = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMountTargetProperties;
+        });
+    }
 }

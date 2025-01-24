@@ -150,6 +150,10 @@ public final class KpiResourceFormatImpl
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public KpiResourceFormatInner innerModel() {
         return this.innerObject;
     }
@@ -171,25 +175,21 @@ public final class KpiResourceFormatImpl
     }
 
     public KpiResourceFormat create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKpis()
-                .createOrUpdate(resourceGroupName, hubName, kpiName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getKpis()
+            .createOrUpdate(resourceGroupName, hubName, kpiName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public KpiResourceFormat create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKpis()
-                .createOrUpdate(resourceGroupName, hubName, kpiName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getKpis()
+            .createOrUpdate(resourceGroupName, hubName, kpiName, this.innerModel(), context);
         return this;
     }
 
-    KpiResourceFormatImpl(
-        String name, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
+    KpiResourceFormatImpl(String name,
+        com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = new KpiResourceFormatInner();
         this.serviceManager = serviceManager;
         this.kpiName = name;
@@ -200,59 +200,50 @@ public final class KpiResourceFormatImpl
     }
 
     public KpiResourceFormat apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKpis()
-                .createOrUpdate(resourceGroupName, hubName, kpiName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getKpis()
+            .createOrUpdate(resourceGroupName, hubName, kpiName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public KpiResourceFormat apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKpis()
-                .createOrUpdate(resourceGroupName, hubName, kpiName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getKpis()
+            .createOrUpdate(resourceGroupName, hubName, kpiName, this.innerModel(), context);
         return this;
     }
 
-    KpiResourceFormatImpl(
-        KpiResourceFormatInner innerObject,
+    KpiResourceFormatImpl(KpiResourceFormatInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hubName = Utils.getValueFromIdByName(innerObject.id(), "hubs");
-        this.kpiName = Utils.getValueFromIdByName(innerObject.id(), "kpi");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.hubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hubs");
+        this.kpiName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "kpi");
     }
 
     public KpiResourceFormat refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKpis()
-                .getWithResponse(resourceGroupName, hubName, kpiName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKpis()
+            .getWithResponse(resourceGroupName, hubName, kpiName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public KpiResourceFormat refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKpis()
-                .getWithResponse(resourceGroupName, hubName, kpiName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKpis()
+            .getWithResponse(resourceGroupName, hubName, kpiName, context)
+            .getValue();
         return this;
-    }
-
-    public void reprocess() {
-        serviceManager.kpis().reprocess(resourceGroupName, hubName, kpiName);
     }
 
     public Response<Void> reprocessWithResponse(Context context) {
         return serviceManager.kpis().reprocessWithResponse(resourceGroupName, hubName, kpiName, context);
+    }
+
+    public void reprocess() {
+        serviceManager.kpis().reprocess(resourceGroupName, hubName, kpiName);
     }
 
     public KpiResourceFormatImpl withEntityType(EntityTypes entityType) {

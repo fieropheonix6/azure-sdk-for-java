@@ -10,34 +10,30 @@ import com.azure.resourcemanager.machinelearning.models.PartialBatchDeploymentPa
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PartialBatchDeploymentPartialMinimalTrackedResourceWithPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"frvtpuqu\"},\"tags\":{\"doaon\":\"lgkfbt\",\"ed\":\"bjcntujitc\"}}")
-                .toObject(PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties.class);
-        Assertions.assertEquals("frvtpuqu", model.properties().description());
-        Assertions.assertEquals("lgkfbt", model.tags().get("doaon"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties model = BinaryData
+            .fromString("{\"properties\":{\"description\":\"yxrxmunj\"},\"tags\":{\"ivbgkcv\":\"glnkvxlxpagl\"}}")
+            .toObject(PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties.class);
+        Assertions.assertEquals("yxrxmunj", model.properties().description());
+        Assertions.assertEquals("glnkvxlxpagl", model.tags().get("ivbgkcv"));
     }
 
-    @Test
-    public void testSerialize() {
-        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties model =
-            new PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties()
-                .withProperties(new PartialBatchDeployment().withDescription("frvtpuqu"))
-                .withTags(mapOf("doaon", "lgkfbt", "ed", "bjcntujitc"));
-        model =
-            BinaryData
-                .fromObject(model)
-                .toObject(PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties.class);
-        Assertions.assertEquals("frvtpuqu", model.properties().description());
-        Assertions.assertEquals("lgkfbt", model.tags().get("doaon"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties model
+            = new PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties()
+                .withProperties(new PartialBatchDeployment().withDescription("yxrxmunj"))
+                .withTags(mapOf("ivbgkcv", "glnkvxlxpagl"));
+        model = BinaryData.fromObject(model)
+            .toObject(PartialBatchDeploymentPartialMinimalTrackedResourceWithProperties.class);
+        Assertions.assertEquals("yxrxmunj", model.properties().description());
+        Assertions.assertEquals("glnkvxlxpagl", model.tags().get("ivbgkcv"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

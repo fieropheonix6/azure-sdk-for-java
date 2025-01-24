@@ -6,20 +6,17 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.HealthCheckStatusDetailsInner;
-import org.junit.jupiter.api.Test;
 
 public final class HealthCheckStatusDetailsInnerTests {
-    @Test
-    public void testDeserialize() {
-        HealthCheckStatusDetailsInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"startDateTime\":\"2021-01-15T20:49Z\",\"endDateTime\":\"2021-04-16T00:49:55Z\",\"healthChecks\":[{\"status\":\"Passed\",\"displayName\":\"ujitcjedftww\",\"startDateTime\":\"2021-04-17T00:18:26Z\",\"endDateTime\":\"2021-01-22T13:54:08Z\",\"errorType\":\"v\",\"recommendedAction\":\"pzfoqoui\",\"additionalDetails\":\"bxarzgszufoxci\"},{\"status\":\"Passed\",\"displayName\":\"doamciodhkha\",\"startDateTime\":\"2021-06-05T04:56:19Z\",\"endDateTime\":\"2021-11-22T06:47:21Z\",\"errorType\":\"bon\",\"recommendedAction\":\"ntoe\",\"additionalDetails\":\"kdwbwhkszz\"}]},\"id\":\"rvexztvb\",\"name\":\"qgsfraoyzkoow\",\"type\":\"lmnguxaw\"}")
-                .toObject(HealthCheckStatusDetailsInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        HealthCheckStatusDetailsInner model = BinaryData.fromString(
+            "{\"properties\":{\"startDateTime\":\"2021-06-01T08:07:59Z\",\"endDateTime\":\"2021-10-20T08:24:02Z\",\"healthChecks\":[{\"status\":\"Pending\",\"displayName\":\"gvmnvuqeq\",\"startDateTime\":\"2021-08-08T15:42:49Z\",\"endDateTime\":\"2021-09-04T08:46:12Z\",\"errorType\":\"stjbkkdmfl\",\"recommendedAction\":\"stmjlxrri\",\"additionalDetails\":\"zapeewchpx\"},{\"status\":\"Unknown\",\"displayName\":\"kuziycsle\",\"startDateTime\":\"2021-05-20T02:11:38Z\",\"endDateTime\":\"2021-06-26T17:11:18Z\",\"errorType\":\"cktyh\",\"recommendedAction\":\"qedcgzulwm\",\"additionalDetails\":\"qzz\"},{\"status\":\"Failed\",\"displayName\":\"pglydz\",\"startDateTime\":\"2021-02-08T17:34:52Z\",\"endDateTime\":\"2021-06-13T21:50:19Z\",\"errorType\":\"ev\",\"recommendedAction\":\"epr\",\"additionalDetails\":\"t\"},{\"status\":\"Warning\",\"displayName\":\"pzdm\",\"startDateTime\":\"2021-04-29T18:17:57Z\",\"endDateTime\":\"2021-08-21T09:22:41Z\",\"errorType\":\"aawzqadfl\",\"recommendedAction\":\"ur\",\"additionalDetails\":\"laecxndticok\"}]},\"id\":\"zmlqtmldgxo\",\"name\":\"firclnpkciayz\",\"type\":\"iykhy\"}")
+            .toObject(HealthCheckStatusDetailsInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         HealthCheckStatusDetailsInner model = new HealthCheckStatusDetailsInner();
         model = BinaryData.fromObject(model).toObject(HealthCheckStatusDetailsInner.class);
     }

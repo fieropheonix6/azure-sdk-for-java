@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.fluent.models.ClusterResourceInner;
 import com.azure.resourcemanager.cosmos.models.AuthenticationMethod;
 import com.azure.resourcemanager.cosmos.models.Certificate;
@@ -14,48 +13,35 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for CassandraClusters Update. */
+/**
+ * Samples for CassandraClusters Update.
+ */
 public final class CassandraClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBManagedCassandraClusterPatch.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
+     * CosmosDBManagedCassandraClusterPatch.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraClusterPatch.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBManagedCassandraClusterPatch(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
+        azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getCassandraClusters()
-            .update(
-                "cassandra-prod-rg",
-                "cassandra-prod",
-                new ClusterResourceInner()
-                    .withTags(mapOf("owner", "mike"))
-                    .withProperties(
-                        new ClusterResourceProperties()
-                            .withAuthenticationMethod(AuthenticationMethod.NONE)
-                            .withExternalGossipCertificates(
-                                Arrays
-                                    .asList(
-                                        new Certificate()
-                                            .withPem(
-                                                "-----BEGIN CERTIFICATE-----\n"
-                                                    + "...Base64 encoded certificate...\n"
-                                                    + "-----END CERTIFICATE-----")))
-                            .withExternalSeedNodes(
-                                Arrays
-                                    .asList(
-                                        new SeedNode().withIpAddress("10.52.221.2"),
-                                        new SeedNode().withIpAddress("10.52.221.3"),
-                                        new SeedNode().withIpAddress("10.52.221.4")))
-                            .withHoursBetweenBackups(12)),
-                Context.NONE);
+            .update("cassandra-prod-rg", "cassandra-prod", new ClusterResourceInner().withTags(mapOf("owner", "mike"))
+                .withProperties(new ClusterResourceProperties().withAuthenticationMethod(AuthenticationMethod.NONE)
+                    .withExternalGossipCertificates(Arrays.asList(new Certificate().withPem(
+                        "-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----")))
+                    .withExternalSeedNodes(Arrays.asList(new SeedNode().withIpAddress("10.52.221.2"),
+                        new SeedNode().withIpAddress("10.52.221.3"), new SeedNode().withIpAddress("10.52.221.4")))
+                    .withHoursBetweenBackups(12)),
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

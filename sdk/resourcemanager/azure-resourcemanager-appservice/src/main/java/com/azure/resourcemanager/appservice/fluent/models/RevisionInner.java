@@ -6,31 +6,57 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.RevisionHealthState;
 import com.azure.resourcemanager.appservice.models.RevisionProvisioningState;
 import com.azure.resourcemanager.appservice.models.Template;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Container App Revision. */
+/**
+ * Container App Revision.
+ */
 @Fluent
 public final class RevisionInner extends Resource {
     /*
      * Revision resource specific properties
      */
-    @JsonProperty(value = "properties")
     private RevisionProperties innerProperties;
 
     /*
-     * Kind of resource.
+     * Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-
+     * resource-kind-reference for details supported values for kind.
      */
-    @JsonProperty(value = "kind")
     private String kind;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RevisionInner class.
+     */
+    public RevisionInner() {
+    }
 
     /**
      * Get the innerProperties property: Revision resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RevisionProperties innerProperties() {
@@ -38,8 +64,10 @@ public final class RevisionInner extends Resource {
     }
 
     /**
-     * Get the kind property: Kind of resource.
-     *
+     * Get the kind property: Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
+     * for details supported values for kind.
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -47,8 +75,10 @@ public final class RevisionInner extends Resource {
     }
 
     /**
-     * Set the kind property: Kind of resource.
-     *
+     * Set the kind property: Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
+     * for details supported values for kind.
+     * 
      * @param kind the kind value to set.
      * @return the RevisionInner object itself.
      */
@@ -57,14 +87,48 @@ public final class RevisionInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RevisionInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RevisionInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -72,8 +136,9 @@ public final class RevisionInner extends Resource {
     }
 
     /**
-     * Get the createdTime property: Timestamp describing when the revision was created by controller.
-     *
+     * Get the createdTime property: Timestamp describing when the revision was created
+     * by controller.
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -82,7 +147,7 @@ public final class RevisionInner extends Resource {
 
     /**
      * Get the fqdn property: Fully qualified domain name of the revision.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -90,9 +155,10 @@ public final class RevisionInner extends Resource {
     }
 
     /**
-     * Get the template property: Container App Revision Template with all possible settings and the defaults if user
-     * did not provide them. The defaults are populated as they were at the creation time.
-     *
+     * Get the template property: Container App Revision Template with all possible settings and the
+     * defaults if user did not provide them. The defaults are populated
+     * as they were at the creation time.
+     * 
      * @return the template value.
      */
     public Template template() {
@@ -101,7 +167,7 @@ public final class RevisionInner extends Resource {
 
     /**
      * Get the active property: Boolean describing if the Revision is Active.
-     *
+     * 
      * @return the active value.
      */
     public Boolean active() {
@@ -110,7 +176,7 @@ public final class RevisionInner extends Resource {
 
     /**
      * Get the replicas property: Number of pods currently running for this revision.
-     *
+     * 
      * @return the replicas value.
      */
     public Integer replicas() {
@@ -119,7 +185,7 @@ public final class RevisionInner extends Resource {
 
     /**
      * Get the trafficWeight property: Traffic weight assigned to this revision.
-     *
+     * 
      * @return the trafficWeight value.
      */
     public Integer trafficWeight() {
@@ -128,7 +194,7 @@ public final class RevisionInner extends Resource {
 
     /**
      * Get the provisioningError property: Optional Field - Platform Error Message.
-     *
+     * 
      * @return the provisioningError value.
      */
     public String provisioningError() {
@@ -137,7 +203,7 @@ public final class RevisionInner extends Resource {
 
     /**
      * Get the healthState property: Current health State of the revision.
-     *
+     * 
      * @return the healthState value.
      */
     public RevisionHealthState healthState() {
@@ -146,7 +212,7 @@ public final class RevisionInner extends Resource {
 
     /**
      * Get the provisioningState property: Current provisioning State of the revision.
-     *
+     * 
      * @return the provisioningState value.
      */
     public RevisionProvisioningState provisioningState() {
@@ -155,12 +221,65 @@ public final class RevisionInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RevisionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RevisionInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RevisionInner.
+     */
+    public static RevisionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RevisionInner deserializedRevisionInner = new RevisionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRevisionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRevisionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRevisionInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedRevisionInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRevisionInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRevisionInner.innerProperties = RevisionProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedRevisionInner.kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRevisionInner;
+        });
     }
 }

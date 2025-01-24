@@ -13,9 +13,9 @@ import com.azure.messaging.eventhubs.implementation.MessageUtils;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.codec.DroppingWritableBuffer;
 import org.apache.qpid.proton.message.Message;
 
-import java.nio.BufferOverflowException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,7 +24,8 @@ import java.util.Objects;
 
 /**
  * A class for aggregating {@link EventData} into a single, size-limited, batch. It is treated as a single message when
- * sent to the Azure Event Hubs service.
+ * sent to the Azure Event Hubs service.  {@link EventDataBatch} is recommended in scenarios requiring high throughput
+ * for publishing events.
  *
  * @see EventHubProducerClient#createBatch()
  * @see EventHubProducerClient#createBatch(CreateBatchOptions)
@@ -39,7 +40,6 @@ public final class EventDataBatch {
     private final String partitionKey;
     private final ErrorContextProvider contextProvider;
     private final List<EventData> events;
-    private final byte[] eventBytes;
     private final String partitionId;
     private int sizeInBytes;
     private final EventHubsTracer tracer;
@@ -52,7 +52,6 @@ public final class EventDataBatch {
         this.contextProvider = contextProvider;
         this.events = new LinkedList<>();
         this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
-        this.eventBytes = new byte[maxMessageSize];
         this.tracer = instrumentation.getTracer();
     }
 
@@ -89,9 +88,12 @@ public final class EventDataBatch {
      * <p>This method is not thread-safe; make sure to synchronize the method access when using multiple threads
      * to add events.</p>
      *
+     * <p>When batch was create with partition key, the event data will be updated with this partition key.</p>
+     *
      * @param eventData The {@link EventData} to add to the batch.
      * @return {@code true} if the event could be added to the batch; {@code false} if the event was too large to fit in
-     *     the batch.
+     *     the batch, to accommodate the event, the application should obtain a new {@link EventDataBatch} object and
+     *     add event to it.
      * @throws IllegalArgumentException if {@code eventData} is {@code null}.
      * @throws AmqpException if {@code eventData} is larger than the maximum size of the {@link EventDataBatch}.
      */
@@ -102,21 +104,18 @@ public final class EventDataBatch {
 
         tracer.reportMessageSpan(eventData, eventData.getContext());
 
-        final int size;
-        try {
-            size = getSize(eventData, events.isEmpty());
-        } catch (BufferOverflowException exception) {
-            throw LOGGER.logExceptionAsWarning(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
-                    maxMessageSize / 1024),
-                contextProvider.getErrorContext()));
-        }
-
+        final int size = getSize(eventData, events.isEmpty());
         if (this.sizeInBytes + size > this.maxMessageSize) {
             return false;
         }
 
         this.sizeInBytes += size;
+
+        // updating event data only if we're going to add it to the batch
+        if (partitionKey != null) {
+            eventData.setPartitionKeyAnnotation(partitionKey);
+        }
+
         this.events.add(eventData);
         return true;
     }
@@ -137,7 +136,7 @@ public final class EventDataBatch {
         Objects.requireNonNull(eventData, "'eventData' cannot be null.");
 
         final Message amqpMessage = createAmqpMessage(eventData, partitionKey);
-        int eventSize = amqpMessage.encode(this.eventBytes, 0, maxMessageSize); // actual encoded bytes size
+        int eventSize = encodedSize(amqpMessage); // actual encoded bytes size
         eventSize += 16; // data section overhead
 
         if (isFirst) {
@@ -146,7 +145,7 @@ public final class EventDataBatch {
             amqpMessage.setProperties(null);
             amqpMessage.setDeliveryAnnotations(null);
 
-            eventSize += amqpMessage.encode(this.eventBytes, 0, maxMessageSize);
+            eventSize += encodedSize(amqpMessage);
         }
 
         return eventSize;
@@ -171,5 +170,19 @@ public final class EventDataBatch {
         messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
 
         return protonJ;
+    }
+
+    private int encodedSize(Message amqpMessage) {
+        final int size = amqpMessage.encode(new DroppingWritableBuffer());
+        if (size > maxMessageSize) {
+            // The maxMessageSize is the Event Hubs service enforced upper limit for the message size or the application
+            // configured limit (lower than the service limit) when obtaining the batch object.
+            // https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-faq#what-is-the-message-event-size-for-event-hubs-
+            throw LOGGER.logExceptionAsWarning(new AmqpException(
+                false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, String.format(Locale.US,
+                    "Size of the payload exceeded maximum message size: %s kb", maxMessageSize / 1024),
+                contextProvider.getErrorContext()));
+        }
+        return size;
     }
 }

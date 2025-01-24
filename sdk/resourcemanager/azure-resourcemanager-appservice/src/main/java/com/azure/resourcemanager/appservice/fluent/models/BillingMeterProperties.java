@@ -5,56 +5,61 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** BillingMeter resource specific properties. */
+/**
+ * BillingMeter resource specific properties.
+ */
 @Fluent
-public final class BillingMeterProperties {
+public final class BillingMeterProperties implements JsonSerializable<BillingMeterProperties> {
     /*
      * Meter GUID onboarded in Commerce
      */
-    @JsonProperty(value = "meterId")
     private String meterId;
 
     /*
      * Azure Location of billable resource
      */
-    @JsonProperty(value = "billingLocation")
     private String billingLocation;
 
     /*
      * Short Name from App Service Azure pricing Page
      */
-    @JsonProperty(value = "shortName")
     private String shortName;
 
     /*
      * Friendly name of the meter
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * App Service ResourceType meter used for
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
      * App Service OS type meter used for
      */
-    @JsonProperty(value = "osType")
     private String osType;
 
     /*
      * Meter Multiplier
      */
-    @JsonProperty(value = "multiplier")
     private Double multiplier;
 
     /**
+     * Creates an instance of BillingMeterProperties class.
+     */
+    public BillingMeterProperties() {
+    }
+
+    /**
      * Get the meterId property: Meter GUID onboarded in Commerce.
-     *
+     * 
      * @return the meterId value.
      */
     public String meterId() {
@@ -63,7 +68,7 @@ public final class BillingMeterProperties {
 
     /**
      * Set the meterId property: Meter GUID onboarded in Commerce.
-     *
+     * 
      * @param meterId the meterId value to set.
      * @return the BillingMeterProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class BillingMeterProperties {
 
     /**
      * Get the billingLocation property: Azure Location of billable resource.
-     *
+     * 
      * @return the billingLocation value.
      */
     public String billingLocation() {
@@ -83,7 +88,7 @@ public final class BillingMeterProperties {
 
     /**
      * Set the billingLocation property: Azure Location of billable resource.
-     *
+     * 
      * @param billingLocation the billingLocation value to set.
      * @return the BillingMeterProperties object itself.
      */
@@ -94,7 +99,7 @@ public final class BillingMeterProperties {
 
     /**
      * Get the shortName property: Short Name from App Service Azure pricing Page.
-     *
+     * 
      * @return the shortName value.
      */
     public String shortName() {
@@ -103,7 +108,7 @@ public final class BillingMeterProperties {
 
     /**
      * Set the shortName property: Short Name from App Service Azure pricing Page.
-     *
+     * 
      * @param shortName the shortName value to set.
      * @return the BillingMeterProperties object itself.
      */
@@ -114,7 +119,7 @@ public final class BillingMeterProperties {
 
     /**
      * Get the friendlyName property: Friendly name of the meter.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -123,7 +128,7 @@ public final class BillingMeterProperties {
 
     /**
      * Set the friendlyName property: Friendly name of the meter.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the BillingMeterProperties object itself.
      */
@@ -134,7 +139,7 @@ public final class BillingMeterProperties {
 
     /**
      * Get the resourceType property: App Service ResourceType meter used for.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -143,7 +148,7 @@ public final class BillingMeterProperties {
 
     /**
      * Set the resourceType property: App Service ResourceType meter used for.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the BillingMeterProperties object itself.
      */
@@ -154,7 +159,7 @@ public final class BillingMeterProperties {
 
     /**
      * Get the osType property: App Service OS type meter used for.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -163,7 +168,7 @@ public final class BillingMeterProperties {
 
     /**
      * Set the osType property: App Service OS type meter used for.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the BillingMeterProperties object itself.
      */
@@ -174,7 +179,7 @@ public final class BillingMeterProperties {
 
     /**
      * Get the multiplier property: Meter Multiplier.
-     *
+     * 
      * @return the multiplier value.
      */
     public Double multiplier() {
@@ -183,7 +188,7 @@ public final class BillingMeterProperties {
 
     /**
      * Set the multiplier property: Meter Multiplier.
-     *
+     * 
      * @param multiplier the multiplier value to set.
      * @return the BillingMeterProperties object itself.
      */
@@ -194,9 +199,63 @@ public final class BillingMeterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("meterId", this.meterId);
+        jsonWriter.writeStringField("billingLocation", this.billingLocation);
+        jsonWriter.writeStringField("shortName", this.shortName);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeStringField("osType", this.osType);
+        jsonWriter.writeNumberField("multiplier", this.multiplier);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BillingMeterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BillingMeterProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BillingMeterProperties.
+     */
+    public static BillingMeterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BillingMeterProperties deserializedBillingMeterProperties = new BillingMeterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("meterId".equals(fieldName)) {
+                    deserializedBillingMeterProperties.meterId = reader.getString();
+                } else if ("billingLocation".equals(fieldName)) {
+                    deserializedBillingMeterProperties.billingLocation = reader.getString();
+                } else if ("shortName".equals(fieldName)) {
+                    deserializedBillingMeterProperties.shortName = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedBillingMeterProperties.friendlyName = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedBillingMeterProperties.resourceType = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedBillingMeterProperties.osType = reader.getString();
+                } else if ("multiplier".equals(fieldName)) {
+                    deserializedBillingMeterProperties.multiplier = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBillingMeterProperties;
+        });
     }
 }

@@ -5,238 +5,102 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.LabCostDetailsProperties;
 import com.azure.resourcemanager.devtestlabs.models.LabCostSummaryProperties;
 import com.azure.resourcemanager.devtestlabs.models.LabResourceCostProperties;
 import com.azure.resourcemanager.devtestlabs.models.TargetCostProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** A cost item. */
-@JsonFlatten
+/**
+ * A cost item.
+ */
 @Fluent
-public class LabCostInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabCostInner.class);
+public final class LabCostInner extends Resource {
+    /*
+     * The properties of the resource.
+     */
+    private LabCostProperties innerProperties = new LabCostProperties();
 
     /*
-     * The target cost properties
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.targetCost")
-    private TargetCostProperties targetCost;
+    private String type;
 
     /*
-     * The lab cost summary component of the cost data.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.labCostSummary", access = JsonProperty.Access.WRITE_ONLY)
-    private LabCostSummaryProperties labCostSummary;
+    private String name;
 
     /*
-     * The lab cost details component of the cost data.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.labCostDetails", access = JsonProperty.Access.WRITE_ONLY)
-    private List<LabCostDetailsProperties> labCostDetails;
-
-    /*
-     * The resource cost component of the cost data.
-     */
-    @JsonProperty(value = "properties.resourceCosts", access = JsonProperty.Access.WRITE_ONLY)
-    private List<LabResourceCostProperties> resourceCosts;
-
-    /*
-     * The currency code of the cost.
-     */
-    @JsonProperty(value = "properties.currencyCode")
-    private String currencyCode;
-
-    /*
-     * The start time of the cost data.
-     */
-    @JsonProperty(value = "properties.startDateTime")
-    private OffsetDateTime startDateTime;
-
-    /*
-     * The end time of the cost data.
-     */
-    @JsonProperty(value = "properties.endDateTime")
-    private OffsetDateTime endDateTime;
-
-    /*
-     * The creation date of the cost.
-     */
-    @JsonProperty(value = "properties.createdDate")
-    private OffsetDateTime createdDate;
-
-    /*
-     * The provisioning status of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The unique immutable identifier of a resource (Guid).
-     */
-    @JsonProperty(value = "properties.uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
-    private String uniqueIdentifier;
+    private String id;
 
     /**
-     * Get the targetCost property: The target cost properties.
-     *
-     * @return the targetCost value.
+     * Creates an instance of LabCostInner class.
      */
-    public TargetCostProperties targetCost() {
-        return this.targetCost;
+    public LabCostInner() {
     }
 
     /**
-     * Set the targetCost property: The target cost properties.
-     *
-     * @param targetCost the targetCost value to set.
-     * @return the LabCostInner object itself.
+     * Get the innerProperties property: The properties of the resource.
+     * 
+     * @return the innerProperties value.
      */
-    public LabCostInner withTargetCost(TargetCostProperties targetCost) {
-        this.targetCost = targetCost;
-        return this;
+    private LabCostProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the labCostSummary property: The lab cost summary component of the cost data.
-     *
-     * @return the labCostSummary value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public LabCostSummaryProperties labCostSummary() {
-        return this.labCostSummary;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the labCostDetails property: The lab cost details component of the cost data.
-     *
-     * @return the labCostDetails value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public List<LabCostDetailsProperties> labCostDetails() {
-        return this.labCostDetails;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the resourceCosts property: The resource cost component of the cost data.
-     *
-     * @return the resourceCosts value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public List<LabResourceCostProperties> resourceCosts() {
-        return this.resourceCosts;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the currencyCode property: The currency code of the cost.
-     *
-     * @return the currencyCode value.
+     * {@inheritDoc}
      */
-    public String currencyCode() {
-        return this.currencyCode;
-    }
-
-    /**
-     * Set the currencyCode property: The currency code of the cost.
-     *
-     * @param currencyCode the currencyCode value to set.
-     * @return the LabCostInner object itself.
-     */
-    public LabCostInner withCurrencyCode(String currencyCode) {
-        this.currencyCode = currencyCode;
-        return this;
-    }
-
-    /**
-     * Get the startDateTime property: The start time of the cost data.
-     *
-     * @return the startDateTime value.
-     */
-    public OffsetDateTime startDateTime() {
-        return this.startDateTime;
-    }
-
-    /**
-     * Set the startDateTime property: The start time of the cost data.
-     *
-     * @param startDateTime the startDateTime value to set.
-     * @return the LabCostInner object itself.
-     */
-    public LabCostInner withStartDateTime(OffsetDateTime startDateTime) {
-        this.startDateTime = startDateTime;
-        return this;
-    }
-
-    /**
-     * Get the endDateTime property: The end time of the cost data.
-     *
-     * @return the endDateTime value.
-     */
-    public OffsetDateTime endDateTime() {
-        return this.endDateTime;
-    }
-
-    /**
-     * Set the endDateTime property: The end time of the cost data.
-     *
-     * @param endDateTime the endDateTime value to set.
-     * @return the LabCostInner object itself.
-     */
-    public LabCostInner withEndDateTime(OffsetDateTime endDateTime) {
-        this.endDateTime = endDateTime;
-        return this;
-    }
-
-    /**
-     * Get the createdDate property: The creation date of the cost.
-     *
-     * @return the createdDate value.
-     */
-    public OffsetDateTime createdDate() {
-        return this.createdDate;
-    }
-
-    /**
-     * Set the createdDate property: The creation date of the cost.
-     *
-     * @param createdDate the createdDate value to set.
-     * @return the LabCostInner object itself.
-     */
-    public LabCostInner withCreatedDate(OffsetDateTime createdDate) {
-        this.createdDate = createdDate;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning status of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
-     * @return the uniqueIdentifier value.
-     */
-    public String uniqueIdentifier() {
-        return this.uniqueIdentifier;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public LabCostInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LabCostInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -244,22 +108,228 @@ public class LabCostInner extends Resource {
     }
 
     /**
+     * Get the targetCost property: The target cost properties.
+     * 
+     * @return the targetCost value.
+     */
+    public TargetCostProperties targetCost() {
+        return this.innerProperties() == null ? null : this.innerProperties().targetCost();
+    }
+
+    /**
+     * Set the targetCost property: The target cost properties.
+     * 
+     * @param targetCost the targetCost value to set.
+     * @return the LabCostInner object itself.
+     */
+    public LabCostInner withTargetCost(TargetCostProperties targetCost) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabCostProperties();
+        }
+        this.innerProperties().withTargetCost(targetCost);
+        return this;
+    }
+
+    /**
+     * Get the labCostSummary property: The lab cost summary component of the cost data.
+     * 
+     * @return the labCostSummary value.
+     */
+    public LabCostSummaryProperties labCostSummary() {
+        return this.innerProperties() == null ? null : this.innerProperties().labCostSummary();
+    }
+
+    /**
+     * Get the labCostDetails property: The lab cost details component of the cost data.
+     * 
+     * @return the labCostDetails value.
+     */
+    public List<LabCostDetailsProperties> labCostDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().labCostDetails();
+    }
+
+    /**
+     * Get the resourceCosts property: The resource cost component of the cost data.
+     * 
+     * @return the resourceCosts value.
+     */
+    public List<LabResourceCostProperties> resourceCosts() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceCosts();
+    }
+
+    /**
+     * Get the currencyCode property: The currency code of the cost.
+     * 
+     * @return the currencyCode value.
+     */
+    public String currencyCode() {
+        return this.innerProperties() == null ? null : this.innerProperties().currencyCode();
+    }
+
+    /**
+     * Set the currencyCode property: The currency code of the cost.
+     * 
+     * @param currencyCode the currencyCode value to set.
+     * @return the LabCostInner object itself.
+     */
+    public LabCostInner withCurrencyCode(String currencyCode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabCostProperties();
+        }
+        this.innerProperties().withCurrencyCode(currencyCode);
+        return this;
+    }
+
+    /**
+     * Get the startDateTime property: The start time of the cost data.
+     * 
+     * @return the startDateTime value.
+     */
+    public OffsetDateTime startDateTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().startDateTime();
+    }
+
+    /**
+     * Set the startDateTime property: The start time of the cost data.
+     * 
+     * @param startDateTime the startDateTime value to set.
+     * @return the LabCostInner object itself.
+     */
+    public LabCostInner withStartDateTime(OffsetDateTime startDateTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabCostProperties();
+        }
+        this.innerProperties().withStartDateTime(startDateTime);
+        return this;
+    }
+
+    /**
+     * Get the endDateTime property: The end time of the cost data.
+     * 
+     * @return the endDateTime value.
+     */
+    public OffsetDateTime endDateTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().endDateTime();
+    }
+
+    /**
+     * Set the endDateTime property: The end time of the cost data.
+     * 
+     * @param endDateTime the endDateTime value to set.
+     * @return the LabCostInner object itself.
+     */
+    public LabCostInner withEndDateTime(OffsetDateTime endDateTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabCostProperties();
+        }
+        this.innerProperties().withEndDateTime(endDateTime);
+        return this;
+    }
+
+    /**
+     * Get the createdDate property: The creation date of the cost.
+     * 
+     * @return the createdDate value.
+     */
+    public OffsetDateTime createdDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
+    }
+
+    /**
+     * Set the createdDate property: The creation date of the cost.
+     * 
+     * @param createdDate the createdDate value to set.
+     * @return the LabCostInner object itself.
+     */
+    public LabCostInner withCreatedDate(OffsetDateTime createdDate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabCostProperties();
+        }
+        this.innerProperties().withCreatedDate(createdDate);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning status of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
+     * 
+     * @return the uniqueIdentifier value.
+     */
+    public String uniqueIdentifier() {
+        return this.innerProperties() == null ? null : this.innerProperties().uniqueIdentifier();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (targetCost() != null) {
-            targetCost().validate();
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model LabCostInner"));
+        } else {
+            innerProperties().validate();
         }
-        if (labCostSummary() != null) {
-            labCostSummary().validate();
-        }
-        if (labCostDetails() != null) {
-            labCostDetails().forEach(e -> e.validate());
-        }
-        if (resourceCosts() != null) {
-            resourceCosts().forEach(e -> e.validate());
-        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LabCostInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabCostInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabCostInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LabCostInner.
+     */
+    public static LabCostInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabCostInner deserializedLabCostInner = new LabCostInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLabCostInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLabCostInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLabCostInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedLabCostInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedLabCostInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLabCostInner.innerProperties = LabCostProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabCostInner;
+        });
     }
 }

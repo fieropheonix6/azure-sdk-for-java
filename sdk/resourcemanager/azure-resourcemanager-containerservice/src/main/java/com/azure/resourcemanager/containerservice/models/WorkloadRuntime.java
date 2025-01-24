@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Determines the type of workload a node can run. */
+/**
+ * Determines the type of workload a node can run.
+ */
 public final class WorkloadRuntime extends ExpandableStringEnum<WorkloadRuntime> {
-    /** Static value OCIContainer for WorkloadRuntime. */
+    /**
+     * Static value OCIContainer for WorkloadRuntime.
+     */
     public static final WorkloadRuntime OCICONTAINER = fromString("OCIContainer");
 
-    /** Static value WasmWasi for WorkloadRuntime. */
+    /**
+     * Static value WasmWasi for WorkloadRuntime.
+     */
     public static final WorkloadRuntime WASM_WASI = fromString("WasmWasi");
 
     /**
+     * Creates a new instance of WorkloadRuntime value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkloadRuntime() {
+    }
+
+    /**
      * Creates or finds a WorkloadRuntime from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WorkloadRuntime.
      */
-    @JsonCreator
     public static WorkloadRuntime fromString(String name) {
         return fromString(name, WorkloadRuntime.class);
     }
 
     /**
      * Gets known WorkloadRuntime values.
-     *
+     * 
      * @return known WorkloadRuntime values.
      */
     public static Collection<WorkloadRuntime> values() {

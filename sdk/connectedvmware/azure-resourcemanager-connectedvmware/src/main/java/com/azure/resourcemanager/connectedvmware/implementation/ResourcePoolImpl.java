@@ -9,6 +9,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.connectedvmware.fluent.models.ResourcePoolInner;
 import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
+import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourcePatch;
 import com.azure.resourcemanager.connectedvmware.models.ResourcePool;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
@@ -102,8 +103,42 @@ public final class ResourcePoolImpl implements ResourcePool, ResourcePool.Defini
         return this.innerModel().memLimitMB();
     }
 
+    public Long memOverallUsageGB() {
+        return this.innerModel().memOverallUsageGB();
+    }
+
+    public Long memCapacityGB() {
+        return this.innerModel().memCapacityGB();
+    }
+
+    public Long cpuOverallUsageMHz() {
+        return this.innerModel().cpuOverallUsageMHz();
+    }
+
+    public Long cpuCapacityMHz() {
+        return this.innerModel().cpuCapacityMHz();
+    }
+
     public String customResourceName() {
         return this.innerModel().customResourceName();
+    }
+
+    public List<String> datastoreIds() {
+        List<String> inner = this.innerModel().datastoreIds();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<String> networkIds() {
+        List<String> inner = this.innerModel().networkIds();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public List<ResourceStatus> statuses() {
@@ -115,7 +150,7 @@ public final class ResourcePoolImpl implements ResourcePool, ResourcePool.Defini
         }
     }
 
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 
@@ -151,20 +186,16 @@ public final class ResourcePoolImpl implements ResourcePool, ResourcePool.Defini
     }
 
     public ResourcePool create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourcePools()
-                .create(resourceGroupName, resourcePoolName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getResourcePools()
+            .create(resourceGroupName, resourcePoolName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ResourcePool create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourcePools()
-                .create(resourceGroupName, resourcePoolName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getResourcePools()
+            .create(resourceGroupName, resourcePoolName, this.innerModel(), context);
         return this;
     }
 
@@ -180,51 +211,42 @@ public final class ResourcePoolImpl implements ResourcePool, ResourcePool.Defini
     }
 
     public ResourcePool apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourcePools()
-                .updateWithResponse(resourceGroupName, resourcePoolName, updateBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getResourcePools()
+            .updateWithResponse(resourceGroupName, resourcePoolName, updateBody, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ResourcePool apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourcePools()
-                .updateWithResponse(resourceGroupName, resourcePoolName, updateBody, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getResourcePools()
+            .updateWithResponse(resourceGroupName, resourcePoolName, updateBody, context)
+            .getValue();
         return this;
     }
 
-    ResourcePoolImpl(
-        ResourcePoolInner innerObject,
+    ResourcePoolImpl(ResourcePoolInner innerObject,
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourcePoolName = Utils.getValueFromIdByName(innerObject.id(), "resourcePools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourcePoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcePools");
     }
 
     public ResourcePool refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourcePools()
-                .getByResourceGroupWithResponse(resourceGroupName, resourcePoolName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getResourcePools()
+            .getByResourceGroupWithResponse(resourceGroupName, resourcePoolName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ResourcePool refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourcePools()
-                .getByResourceGroupWithResponse(resourceGroupName, resourcePoolName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getResourcePools()
+            .getByResourceGroupWithResponse(resourceGroupName, resourcePoolName, context)
+            .getValue();
         return this;
     }
 

@@ -5,28 +5,85 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteZipDeployment;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Static site zip deployment ARM resource. */
+/**
+ * Static site zip deployment ARM resource.
+ */
 @Fluent
 public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource {
     /*
      * Core resource properties
      */
-    @JsonProperty(value = "properties")
     private StaticSiteZipDeployment innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of StaticSiteZipDeploymentArmResource class.
+     */
+    public StaticSiteZipDeploymentArmResource() {
+    }
 
     /**
      * Get the innerProperties property: Core resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StaticSiteZipDeployment innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StaticSiteZipDeploymentArmResource withKind(String kind) {
         super.withKind(kind);
@@ -35,7 +92,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Get the appZipUrl property: URL for the zipped app content.
-     *
+     * 
      * @return the appZipUrl value.
      */
     public String appZipUrl() {
@@ -44,7 +101,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Set the appZipUrl property: URL for the zipped app content.
-     *
+     * 
      * @param appZipUrl the appZipUrl value to set.
      * @return the StaticSiteZipDeploymentArmResource object itself.
      */
@@ -58,7 +115,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Get the apiZipUrl property: URL for the zipped api content.
-     *
+     * 
      * @return the apiZipUrl value.
      */
     public String apiZipUrl() {
@@ -67,7 +124,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Set the apiZipUrl property: URL for the zipped api content.
-     *
+     * 
      * @param apiZipUrl the apiZipUrl value to set.
      * @return the StaticSiteZipDeploymentArmResource object itself.
      */
@@ -81,7 +138,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Get the deploymentTitle property: A title to label the deployment.
-     *
+     * 
      * @return the deploymentTitle value.
      */
     public String deploymentTitle() {
@@ -90,7 +147,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Set the deploymentTitle property: A title to label the deployment.
-     *
+     * 
      * @param deploymentTitle the deploymentTitle value to set.
      * @return the StaticSiteZipDeploymentArmResource object itself.
      */
@@ -104,7 +161,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Get the provider property: The provider submitting this deployment.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -113,7 +170,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Set the provider property: The provider submitting this deployment.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the StaticSiteZipDeploymentArmResource object itself.
      */
@@ -127,7 +184,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Get the functionLanguage property: The language of the api content, if it exists.
-     *
+     * 
      * @return the functionLanguage value.
      */
     public String functionLanguage() {
@@ -136,7 +193,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Set the functionLanguage property: The language of the api content, if it exists.
-     *
+     * 
      * @param functionLanguage the functionLanguage value to set.
      * @return the StaticSiteZipDeploymentArmResource object itself.
      */
@@ -150,14 +207,61 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StaticSiteZipDeploymentArmResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StaticSiteZipDeploymentArmResource if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StaticSiteZipDeploymentArmResource.
+     */
+    public static StaticSiteZipDeploymentArmResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StaticSiteZipDeploymentArmResource deserializedStaticSiteZipDeploymentArmResource
+                = new StaticSiteZipDeploymentArmResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStaticSiteZipDeploymentArmResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStaticSiteZipDeploymentArmResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStaticSiteZipDeploymentArmResource.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedStaticSiteZipDeploymentArmResource.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStaticSiteZipDeploymentArmResource.innerProperties
+                        = StaticSiteZipDeployment.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStaticSiteZipDeploymentArmResource;
+        });
     }
 }

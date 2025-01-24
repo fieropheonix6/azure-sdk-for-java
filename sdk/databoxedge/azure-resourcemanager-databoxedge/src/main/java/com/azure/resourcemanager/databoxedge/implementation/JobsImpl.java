@@ -12,10 +12,9 @@ import com.azure.resourcemanager.databoxedge.fluent.JobsClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.JobInner;
 import com.azure.resourcemanager.databoxedge.models.Job;
 import com.azure.resourcemanager.databoxedge.models.Jobs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class JobsImpl implements Jobs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JobsImpl.class);
 
     private final JobsClient innerClient;
 
@@ -26,23 +25,20 @@ public final class JobsImpl implements Jobs {
         this.serviceManager = serviceManager;
     }
 
-    public Job get(String deviceName, String name, String resourceGroupName) {
-        JobInner inner = this.serviceClient().get(deviceName, name, resourceGroupName);
+    public Response<Job> getWithResponse(String deviceName, String name, String resourceGroupName, Context context) {
+        Response<JobInner> inner = this.serviceClient().getWithResponse(deviceName, name, resourceGroupName, context);
         if (inner != null) {
-            return new JobImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new JobImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<Job> getWithResponse(String deviceName, String name, String resourceGroupName, Context context) {
-        Response<JobInner> inner = this.serviceClient().getWithResponse(deviceName, name, resourceGroupName, context);
+    public Job get(String deviceName, String name, String resourceGroupName) {
+        JobInner inner = this.serviceClient().get(deviceName, name, resourceGroupName);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new JobImpl(inner.getValue(), this.manager()));
+            return new JobImpl(inner, this.manager());
         } else {
             return null;
         }

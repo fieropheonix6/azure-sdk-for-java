@@ -8,10 +8,26 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ForkJoinPool;
 
 /**
  * Fluent credential builder for instantiating a {@link EnvironmentCredential}.
+ *
+ * <p>The {@link EnvironmentCredential} is appropriate for scenarios where the application is looking to read credential
+ * information from environment variables. The credential supports service principal and user credential based
+ * authentication and requires a set of environment variables to be configured for each scenario.</p>
+ *
+ * <p><strong>Sample: Construct EnvironmentCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.EnvironmentCredential},
+ * using the {@link com.azure.identity.EnvironmentCredentialBuilder} to configure it. Once this credential is
+ * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'
+ * parameter.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.environmentcredential.construct -->
+ * <pre>
+ * TokenCredential environmentCredential = new EnvironmentCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.environmentcredential.construct -->
  *
  * @see EnvironmentCredential
  */
@@ -21,8 +37,15 @@ public class EnvironmentCredentialBuilder extends CredentialBuilderBase<Environm
     private String authorityHost;
 
     /**
-     * Specifies the Azure Active Directory endpoint to acquire tokens.
-     * @param authorityHost the Azure Active Directory endpoint
+     * Constructs an instance of EnvironmentCredentialBuilder.
+     */
+    public EnvironmentCredentialBuilder() {
+        super();
+    }
+
+    /**
+     * Specifies the Microsoft Entra endpoint to acquire tokens.
+     * @param authorityHost the Microsoft Entra endpoint
      * @return An updated instance of this builder with the authority host set as specified.
      */
     public EnvironmentCredentialBuilder authorityHost(String authorityHost) {
@@ -36,9 +59,9 @@ public class EnvironmentCredentialBuilder extends CredentialBuilderBase<Environm
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
      * <p>
-     * If this is not configured, the {@link ForkJoinPool#commonPool()} will be used which is
-     * also shared with other application tasks. If the common pool is heavily used for other tasks, authentication
-     * requests might starve and setting up this executor service should be considered.
+     * If this is not configured, the {@link com.azure.core.util.SharedExecutorService} will be used which is
+     * also shared with other SDK libraries. If there are many concurrent SDK tasks occurring, authentication
+     * requests might starve and configuring a separate executor service should be considered.
      * </p>
      *
      * <p> The executor service and can be safely shutdown if the TokenCredential is no longer being used by the

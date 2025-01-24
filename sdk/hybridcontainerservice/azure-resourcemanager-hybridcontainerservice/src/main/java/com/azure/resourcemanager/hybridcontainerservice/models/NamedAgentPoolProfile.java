@@ -5,27 +5,100 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Agent pool profile along with a name parameter. */
+/**
+ * Profile of the default agent pool along with a name parameter.
+ */
 @Fluent
-public class NamedAgentPoolProfile extends AgentPoolProfile {
+public final class NamedAgentPoolProfile extends AgentPoolProfile {
     /*
-     * Unique name of the agent pool profile in the context of the subscription and resource group.
+     * Number of nodes in the agent pool. The default value is 1.
      */
-    @JsonProperty(value = "name")
+    private Integer count;
+
+    /*
+     * The VM sku size of the agent pool node VMs.
+     */
+    private String vmSize;
+
+    /*
+     * Version of Kubernetes in use by the agent pool. This is inherited from the kubernetesVersion of the provisioned
+     * cluster.
+     */
+    private String kubernetesVersion;
+
+    /*
+     * Unique name of the default agent pool in the context of the provisioned cluster. Default value is
+     * <clusterName>-nodepool1
+     */
     private String name;
 
-    /** Creates an instance of NamedAgentPoolProfile class. */
+    /**
+     * Creates an instance of NamedAgentPoolProfile class.
+     */
     public NamedAgentPoolProfile() {
     }
 
     /**
-     * Get the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group.
-     *
+     * Get the count property: Number of nodes in the agent pool. The default value is 1.
+     * 
+     * @return the count value.
+     */
+    public Integer count() {
+        return this.count;
+    }
+
+    /**
+     * Set the count property: Number of nodes in the agent pool. The default value is 1.
+     * 
+     * @param count the count value to set.
+     * @return the NamedAgentPoolProfile object itself.
+     */
+    public NamedAgentPoolProfile withCount(Integer count) {
+        this.count = count;
+        return this;
+    }
+
+    /**
+     * Get the vmSize property: The VM sku size of the agent pool node VMs.
+     * 
+     * @return the vmSize value.
+     */
+    public String vmSize() {
+        return this.vmSize;
+    }
+
+    /**
+     * Set the vmSize property: The VM sku size of the agent pool node VMs.
+     * 
+     * @param vmSize the vmSize value to set.
+     * @return the NamedAgentPoolProfile object itself.
+     */
+    public NamedAgentPoolProfile withVmSize(String vmSize) {
+        this.vmSize = vmSize;
+        return this;
+    }
+
+    /**
+     * Get the kubernetesVersion property: Version of Kubernetes in use by the agent pool. This is inherited from the
+     * kubernetesVersion of the provisioned cluster.
+     * 
+     * @return the kubernetesVersion value.
+     */
+    public String kubernetesVersion() {
+        return this.kubernetesVersion;
+    }
+
+    /**
+     * Get the name property: Unique name of the default agent pool in the context of the provisioned cluster. Default
+     * value is &lt;clusterName&gt;-nodepool1.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -33,9 +106,9 @@ public class NamedAgentPoolProfile extends AgentPoolProfile {
     }
 
     /**
-     * Set the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group.
-     *
+     * Set the name property: Unique name of the default agent pool in the context of the provisioned cluster. Default
+     * value is &lt;clusterName&gt;-nodepool1.
+     * 
      * @param name the name value to set.
      * @return the NamedAgentPoolProfile object itself.
      */
@@ -44,97 +117,154 @@ public class NamedAgentPoolProfile extends AgentPoolProfile {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public NamedAgentPoolProfile withCount(Integer count) {
-        super.withCount(count);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public NamedAgentPoolProfile withAvailabilityZones(List<String> availabilityZones) {
-        super.withAvailabilityZones(availabilityZones);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public NamedAgentPoolProfile withMaxCount(Integer maxCount) {
-        super.withMaxCount(maxCount);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public NamedAgentPoolProfile withMaxPods(Integer maxPods) {
-        super.withMaxPods(maxPods);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public NamedAgentPoolProfile withMinCount(Integer minCount) {
-        super.withMinCount(minCount);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public NamedAgentPoolProfile withMode(Mode mode) {
-        super.withMode(mode);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public NamedAgentPoolProfile withNodeLabels(Map<String, String> nodeLabels) {
-        super.withNodeLabels(nodeLabels);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public NamedAgentPoolProfile withNodeTaints(List<String> nodeTaints) {
-        super.withNodeTaints(nodeTaints);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NamedAgentPoolProfile withOsType(OsType osType) {
         super.withOsType(osType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public NamedAgentPoolProfile withNodeImageVersion(String nodeImageVersion) {
-        super.withNodeImageVersion(nodeImageVersion);
+    public NamedAgentPoolProfile withOsSku(Ossku osSku) {
+        super.withOsSku(osSku);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public NamedAgentPoolProfile withVmSize(String vmSize) {
-        super.withVmSize(vmSize);
+    public NamedAgentPoolProfile withNodeLabels(Map<String, String> nodeLabels) {
+        super.withNodeLabels(nodeLabels);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public NamedAgentPoolProfile withCloudProviderProfile(CloudProviderProfile cloudProviderProfile) {
-        super.withCloudProviderProfile(cloudProviderProfile);
+    public NamedAgentPoolProfile withNodeTaints(List<String> nodeTaints) {
+        super.withNodeTaints(nodeTaints);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NamedAgentPoolProfile withMaxCount(Integer maxCount) {
+        super.withMaxCount(maxCount);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NamedAgentPoolProfile withMinCount(Integer minCount) {
+        super.withMinCount(minCount);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NamedAgentPoolProfile withEnableAutoScaling(Boolean enableAutoScaling) {
+        super.withEnableAutoScaling(enableAutoScaling);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NamedAgentPoolProfile withMaxPods(Integer maxPods) {
+        super.withMaxPods(maxPods);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("osType", osType() == null ? null : osType().toString());
+        jsonWriter.writeStringField("osSKU", osSku() == null ? null : osSku().toString());
+        jsonWriter.writeMapField("nodeLabels", nodeLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("nodeTaints", nodeTaints(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("maxCount", maxCount());
+        jsonWriter.writeNumberField("minCount", minCount());
+        jsonWriter.writeBooleanField("enableAutoScaling", enableAutoScaling());
+        jsonWriter.writeNumberField("maxPods", maxPods());
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("vmSize", this.vmSize);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NamedAgentPoolProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NamedAgentPoolProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NamedAgentPoolProfile.
+     */
+    public static NamedAgentPoolProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NamedAgentPoolProfile deserializedNamedAgentPoolProfile = new NamedAgentPoolProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("osType".equals(fieldName)) {
+                    deserializedNamedAgentPoolProfile.withOsType(OsType.fromString(reader.getString()));
+                } else if ("osSKU".equals(fieldName)) {
+                    deserializedNamedAgentPoolProfile.withOsSku(Ossku.fromString(reader.getString()));
+                } else if ("nodeLabels".equals(fieldName)) {
+                    Map<String, String> nodeLabels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNamedAgentPoolProfile.withNodeLabels(nodeLabels);
+                } else if ("nodeTaints".equals(fieldName)) {
+                    List<String> nodeTaints = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNamedAgentPoolProfile.withNodeTaints(nodeTaints);
+                } else if ("maxCount".equals(fieldName)) {
+                    deserializedNamedAgentPoolProfile.withMaxCount(reader.getNullable(JsonReader::getInt));
+                } else if ("minCount".equals(fieldName)) {
+                    deserializedNamedAgentPoolProfile.withMinCount(reader.getNullable(JsonReader::getInt));
+                } else if ("enableAutoScaling".equals(fieldName)) {
+                    deserializedNamedAgentPoolProfile.withEnableAutoScaling(reader.getNullable(JsonReader::getBoolean));
+                } else if ("maxPods".equals(fieldName)) {
+                    deserializedNamedAgentPoolProfile.withMaxPods(reader.getNullable(JsonReader::getInt));
+                } else if ("count".equals(fieldName)) {
+                    deserializedNamedAgentPoolProfile.count = reader.getNullable(JsonReader::getInt);
+                } else if ("vmSize".equals(fieldName)) {
+                    deserializedNamedAgentPoolProfile.vmSize = reader.getString();
+                } else if ("kubernetesVersion".equals(fieldName)) {
+                    deserializedNamedAgentPoolProfile.kubernetesVersion = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNamedAgentPoolProfile.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNamedAgentPoolProfile;
+        });
     }
 }

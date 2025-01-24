@@ -9,46 +9,33 @@ import com.azure.resourcemanager.signalr.fluent.models.SharedPrivateLinkResource
 import com.azure.resourcemanager.signalr.models.SharedPrivateLinkResourceList;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SharedPrivateLinkResourceListTests {
-    @Test
-    public void testDeserialize() {
-        SharedPrivateLinkResourceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"tg\",\"privateLinkResourceId\":\"wbwo\",\"provisioningState\":\"Canceled\",\"requestMessage\":\"shrtdtkcnqxwb\",\"status\":\"Approved\"},\"id\":\"ulpiuj\",\"name\":\"aasipqi\",\"type\":\"obyu\"},{\"properties\":{\"groupId\":\"pqlpq\",\"privateLinkResourceId\":\"cciuqgbdbutau\",\"provisioningState\":\"Running\",\"requestMessage\":\"kuwhh\",\"status\":\"Approved\"},\"id\":\"k\",\"name\":\"joxafnndlpi\",\"type\":\"hkoymkcdyhbp\"},{\"properties\":{\"groupId\":\"wdreqnovvqfovl\",\"privateLinkResourceId\":\"xywsuws\",\"provisioningState\":\"Running\",\"requestMessage\":\"dsytgadgvr\",\"status\":\"Pending\"},\"id\":\"en\",\"name\":\"qnzarrwl\",\"type\":\"uu\"}],\"nextLink\":\"fqka\"}")
-                .toObject(SharedPrivateLinkResourceList.class);
-        Assertions.assertEquals("tg", model.value().get(0).groupId());
-        Assertions.assertEquals("wbwo", model.value().get(0).privateLinkResourceId());
-        Assertions.assertEquals("shrtdtkcnqxwb", model.value().get(0).requestMessage());
-        Assertions.assertEquals("fqka", model.nextLink());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SharedPrivateLinkResourceList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"groupId\":\"lma\",\"privateLinkResourceId\":\"stcyohpfkyrkdbd\",\"provisioningState\":\"Succeeded\",\"requestMessage\":\"sjkmnwqj\",\"status\":\"Pending\"},\"id\":\"aiy\",\"name\":\"ddviacegfnmntfpm\",\"type\":\"memfnczdwvvbalxl\"},{\"properties\":{\"groupId\":\"hpodbzev\",\"privateLinkResourceId\":\"rdnhfuku\",\"provisioningState\":\"Deleting\",\"requestMessage\":\"swsmys\",\"status\":\"Rejected\"},\"id\":\"uqypfcvle\",\"name\":\"chpqbmfpjba\",\"type\":\"widf\"}],\"nextLink\":\"sspuunnoxyhkx\"}")
+            .toObject(SharedPrivateLinkResourceList.class);
+        Assertions.assertEquals("lma", model.value().get(0).groupId());
+        Assertions.assertEquals("stcyohpfkyrkdbd", model.value().get(0).privateLinkResourceId());
+        Assertions.assertEquals("sjkmnwqj", model.value().get(0).requestMessage());
+        Assertions.assertEquals("sspuunnoxyhkx", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
-        SharedPrivateLinkResourceList model =
-            new SharedPrivateLinkResourceList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SharedPrivateLinkResourceInner()
-                                .withGroupId("tg")
-                                .withPrivateLinkResourceId("wbwo")
-                                .withRequestMessage("shrtdtkcnqxwb"),
-                            new SharedPrivateLinkResourceInner()
-                                .withGroupId("pqlpq")
-                                .withPrivateLinkResourceId("cciuqgbdbutau")
-                                .withRequestMessage("kuwhh"),
-                            new SharedPrivateLinkResourceInner()
-                                .withGroupId("wdreqnovvqfovl")
-                                .withPrivateLinkResourceId("xywsuws")
-                                .withRequestMessage("dsytgadgvr")))
-                .withNextLink("fqka");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SharedPrivateLinkResourceList model = new SharedPrivateLinkResourceList().withValue(Arrays.asList(
+            new SharedPrivateLinkResourceInner().withGroupId("lma")
+                .withPrivateLinkResourceId("stcyohpfkyrkdbd")
+                .withRequestMessage("sjkmnwqj"),
+            new SharedPrivateLinkResourceInner().withGroupId("hpodbzev")
+                .withPrivateLinkResourceId("rdnhfuku")
+                .withRequestMessage("swsmys")))
+            .withNextLink("sspuunnoxyhkx");
         model = BinaryData.fromObject(model).toObject(SharedPrivateLinkResourceList.class);
-        Assertions.assertEquals("tg", model.value().get(0).groupId());
-        Assertions.assertEquals("wbwo", model.value().get(0).privateLinkResourceId());
-        Assertions.assertEquals("shrtdtkcnqxwb", model.value().get(0).requestMessage());
-        Assertions.assertEquals("fqka", model.nextLink());
+        Assertions.assertEquals("lma", model.value().get(0).groupId());
+        Assertions.assertEquals("stcyohpfkyrkdbd", model.value().get(0).privateLinkResourceId());
+        Assertions.assertEquals("sjkmnwqj", model.value().get(0).requestMessage());
+        Assertions.assertEquals("sspuunnoxyhkx", model.nextLink());
     }
 }

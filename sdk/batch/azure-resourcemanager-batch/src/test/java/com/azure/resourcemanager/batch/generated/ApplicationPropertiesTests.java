@@ -7,31 +7,26 @@ package com.azure.resourcemanager.batch.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.ApplicationProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ApplicationPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        ApplicationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"dtqajzyulpkudj\",\"allowUpdates\":false,\"defaultVersion\":\"hbzhfepg\"}")
-                .toObject(ApplicationProperties.class);
-        Assertions.assertEquals("dtqajzyulpkudj", model.displayName());
-        Assertions.assertEquals(false, model.allowUpdates());
-        Assertions.assertEquals("hbzhfepg", model.defaultVersion());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ApplicationProperties model = BinaryData
+            .fromString("{\"displayName\":\"c\",\"allowUpdates\":true,\"defaultVersion\":\"wmdwzjeiachboo\"}")
+            .toObject(ApplicationProperties.class);
+        Assertions.assertEquals("c", model.displayName());
+        Assertions.assertEquals(true, model.allowUpdates());
+        Assertions.assertEquals("wmdwzjeiachboo", model.defaultVersion());
     }
 
-    @Test
-    public void testSerialize() {
-        ApplicationProperties model =
-            new ApplicationProperties()
-                .withDisplayName("dtqajzyulpkudj")
-                .withAllowUpdates(false)
-                .withDefaultVersion("hbzhfepg");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ApplicationProperties model = new ApplicationProperties().withDisplayName("c")
+            .withAllowUpdates(true)
+            .withDefaultVersion("wmdwzjeiachboo");
         model = BinaryData.fromObject(model).toObject(ApplicationProperties.class);
-        Assertions.assertEquals("dtqajzyulpkudj", model.displayName());
-        Assertions.assertEquals(false, model.allowUpdates());
-        Assertions.assertEquals("hbzhfepg", model.defaultVersion());
+        Assertions.assertEquals("c", model.displayName());
+        Assertions.assertEquals(true, model.allowUpdates());
+        Assertions.assertEquals("wmdwzjeiachboo", model.defaultVersion());
     }
 }

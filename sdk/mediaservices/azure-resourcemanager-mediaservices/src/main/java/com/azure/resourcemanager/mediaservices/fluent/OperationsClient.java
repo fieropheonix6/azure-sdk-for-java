@@ -10,25 +10,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.OperationCollectionInner;
 
-/** An instance of this class provides access to all the operations defined in OperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsClient.
+ */
 public interface OperationsClient {
     /**
      * List Operations
-     *
-     * <p>Lists all the Media Services operations.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of Operation items.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationCollectionInner list();
-
-    /**
-     * List Operations
-     *
-     * <p>Lists all the Media Services operations.
-     *
+     * 
+     * Lists all the Media Services operations.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -37,4 +27,16 @@ public interface OperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OperationCollectionInner> listWithResponse(Context context);
+
+    /**
+     * List Operations
+     * 
+     * Lists all the Media Services operations.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of Operation items.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationCollectionInner list();
 }

@@ -6,71 +6,73 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Contact information for domain registration. If 'Domain Privacy' option is not selected then the contact information
- * is made publicly available through the Whois directories as per ICANN requirements.
+ * is made publicly available through the Whois
+ * directories as per ICANN requirements.
  */
 @Fluent
-public final class Contact {
+public final class Contact implements JsonSerializable<Contact> {
     /*
      * Mailing address.
      */
-    @JsonProperty(value = "addressMailing")
     private Address addressMailing;
 
     /*
      * Email address.
      */
-    @JsonProperty(value = "email", required = true)
     private String email;
 
     /*
      * Fax number.
      */
-    @JsonProperty(value = "fax")
     private String fax;
 
     /*
      * Job title.
      */
-    @JsonProperty(value = "jobTitle")
     private String jobTitle;
 
     /*
      * First name.
      */
-    @JsonProperty(value = "nameFirst", required = true)
     private String nameFirst;
 
     /*
      * Last name.
      */
-    @JsonProperty(value = "nameLast", required = true)
     private String nameLast;
 
     /*
      * Middle name.
      */
-    @JsonProperty(value = "nameMiddle")
     private String nameMiddle;
 
     /*
      * Organization contact belongs to.
      */
-    @JsonProperty(value = "organization")
     private String organization;
 
     /*
      * Phone number.
      */
-    @JsonProperty(value = "phone", required = true)
     private String phone;
 
     /**
+     * Creates an instance of Contact class.
+     */
+    public Contact() {
+    }
+
+    /**
      * Get the addressMailing property: Mailing address.
-     *
+     * 
      * @return the addressMailing value.
      */
     public Address addressMailing() {
@@ -79,7 +81,7 @@ public final class Contact {
 
     /**
      * Set the addressMailing property: Mailing address.
-     *
+     * 
      * @param addressMailing the addressMailing value to set.
      * @return the Contact object itself.
      */
@@ -90,7 +92,7 @@ public final class Contact {
 
     /**
      * Get the email property: Email address.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -99,7 +101,7 @@ public final class Contact {
 
     /**
      * Set the email property: Email address.
-     *
+     * 
      * @param email the email value to set.
      * @return the Contact object itself.
      */
@@ -110,7 +112,7 @@ public final class Contact {
 
     /**
      * Get the fax property: Fax number.
-     *
+     * 
      * @return the fax value.
      */
     public String fax() {
@@ -119,7 +121,7 @@ public final class Contact {
 
     /**
      * Set the fax property: Fax number.
-     *
+     * 
      * @param fax the fax value to set.
      * @return the Contact object itself.
      */
@@ -130,7 +132,7 @@ public final class Contact {
 
     /**
      * Get the jobTitle property: Job title.
-     *
+     * 
      * @return the jobTitle value.
      */
     public String jobTitle() {
@@ -139,7 +141,7 @@ public final class Contact {
 
     /**
      * Set the jobTitle property: Job title.
-     *
+     * 
      * @param jobTitle the jobTitle value to set.
      * @return the Contact object itself.
      */
@@ -150,7 +152,7 @@ public final class Contact {
 
     /**
      * Get the nameFirst property: First name.
-     *
+     * 
      * @return the nameFirst value.
      */
     public String nameFirst() {
@@ -159,7 +161,7 @@ public final class Contact {
 
     /**
      * Set the nameFirst property: First name.
-     *
+     * 
      * @param nameFirst the nameFirst value to set.
      * @return the Contact object itself.
      */
@@ -170,7 +172,7 @@ public final class Contact {
 
     /**
      * Get the nameLast property: Last name.
-     *
+     * 
      * @return the nameLast value.
      */
     public String nameLast() {
@@ -179,7 +181,7 @@ public final class Contact {
 
     /**
      * Set the nameLast property: Last name.
-     *
+     * 
      * @param nameLast the nameLast value to set.
      * @return the Contact object itself.
      */
@@ -190,7 +192,7 @@ public final class Contact {
 
     /**
      * Get the nameMiddle property: Middle name.
-     *
+     * 
      * @return the nameMiddle value.
      */
     public String nameMiddle() {
@@ -199,7 +201,7 @@ public final class Contact {
 
     /**
      * Set the nameMiddle property: Middle name.
-     *
+     * 
      * @param nameMiddle the nameMiddle value to set.
      * @return the Contact object itself.
      */
@@ -210,7 +212,7 @@ public final class Contact {
 
     /**
      * Get the organization property: Organization contact belongs to.
-     *
+     * 
      * @return the organization value.
      */
     public String organization() {
@@ -219,7 +221,7 @@ public final class Contact {
 
     /**
      * Set the organization property: Organization contact belongs to.
-     *
+     * 
      * @param organization the organization value to set.
      * @return the Contact object itself.
      */
@@ -230,7 +232,7 @@ public final class Contact {
 
     /**
      * Get the phone property: Phone number.
-     *
+     * 
      * @return the phone value.
      */
     public String phone() {
@@ -239,7 +241,7 @@ public final class Contact {
 
     /**
      * Set the phone property: Phone number.
-     *
+     * 
      * @param phone the phone value to set.
      * @return the Contact object itself.
      */
@@ -250,7 +252,7 @@ public final class Contact {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -258,24 +260,83 @@ public final class Contact {
             addressMailing().validate();
         }
         if (email() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property email in model Contact"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property email in model Contact"));
         }
         if (nameFirst() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property nameFirst in model Contact"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property nameFirst in model Contact"));
         }
         if (nameLast() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property nameLast in model Contact"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property nameLast in model Contact"));
         }
         if (phone() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property phone in model Contact"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property phone in model Contact"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Contact.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("email", this.email);
+        jsonWriter.writeStringField("nameFirst", this.nameFirst);
+        jsonWriter.writeStringField("nameLast", this.nameLast);
+        jsonWriter.writeStringField("phone", this.phone);
+        jsonWriter.writeJsonField("addressMailing", this.addressMailing);
+        jsonWriter.writeStringField("fax", this.fax);
+        jsonWriter.writeStringField("jobTitle", this.jobTitle);
+        jsonWriter.writeStringField("nameMiddle", this.nameMiddle);
+        jsonWriter.writeStringField("organization", this.organization);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Contact from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Contact if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Contact.
+     */
+    public static Contact fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Contact deserializedContact = new Contact();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("email".equals(fieldName)) {
+                    deserializedContact.email = reader.getString();
+                } else if ("nameFirst".equals(fieldName)) {
+                    deserializedContact.nameFirst = reader.getString();
+                } else if ("nameLast".equals(fieldName)) {
+                    deserializedContact.nameLast = reader.getString();
+                } else if ("phone".equals(fieldName)) {
+                    deserializedContact.phone = reader.getString();
+                } else if ("addressMailing".equals(fieldName)) {
+                    deserializedContact.addressMailing = Address.fromJson(reader);
+                } else if ("fax".equals(fieldName)) {
+                    deserializedContact.fax = reader.getString();
+                } else if ("jobTitle".equals(fieldName)) {
+                    deserializedContact.jobTitle = reader.getString();
+                } else if ("nameMiddle".equals(fieldName)) {
+                    deserializedContact.nameMiddle = reader.getString();
+                } else if ("organization".equals(fieldName)) {
+                    deserializedContact.organization = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContact;
+        });
+    }
 }

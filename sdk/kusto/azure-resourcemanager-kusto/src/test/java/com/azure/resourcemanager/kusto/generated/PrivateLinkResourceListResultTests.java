@@ -8,22 +8,19 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.kusto.models.PrivateLinkResourceListResult;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkResourceListResultTests {
-    @Test
-    public void testDeserialize() {
-        PrivateLinkResourceListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"sdqrhzoymibmrq\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"hwflu\",\"name\":\"zdtmhrkwofy\",\"type\":\"voqacpiexpbt\"}]}")
-                .toObject(PrivateLinkResourceListResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateLinkResourceListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"groupId\":\"ldgmfpgvmpip\",\"requiredMembers\":[\"thaqfxssmwu\"],\"requiredZoneNames\":[\"dsrezpdrhneuyow\",\"kdw\"]},\"id\":\"i\",\"name\":\"ib\",\"type\":\"rcgp\"}]}")
+            .toObject(PrivateLinkResourceListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateLinkResourceListResult model =
-            new PrivateLinkResourceListResult().withValue(Arrays.asList(new PrivateLinkResourceInner()));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateLinkResourceListResult model
+            = new PrivateLinkResourceListResult().withValue(Arrays.asList(new PrivateLinkResourceInner()));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceListResult.class);
     }
 }

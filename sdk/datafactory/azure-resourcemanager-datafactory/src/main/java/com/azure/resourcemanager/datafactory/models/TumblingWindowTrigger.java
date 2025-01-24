@@ -6,41 +6,57 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.TumblingWindowTriggerTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Trigger that schedules pipeline runs for all fixed time interval windows from a start time without gaps and also
  * supports backfill scenarios (when start time is in the past).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("TumblingWindowTrigger")
 @Fluent
 public final class TumblingWindowTrigger extends Trigger {
     /*
+     * Trigger type.
+     */
+    private String type = "TumblingWindowTrigger";
+
+    /*
      * Pipeline for which runs are created when an event is fired for trigger window that is ready.
      */
-    @JsonProperty(value = "pipeline", required = true)
     private TriggerPipelineReference pipeline;
 
     /*
      * Tumbling Window Trigger properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private TumblingWindowTriggerTypeProperties innerTypeProperties = new TumblingWindowTriggerTypeProperties();
 
-    /** Creates an instance of TumblingWindowTrigger class. */
+    /**
+     * Creates an instance of TumblingWindowTrigger class.
+     */
     public TumblingWindowTrigger() {
+    }
+
+    /**
+     * Get the type property: Trigger type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
      * Get the pipeline property: Pipeline for which runs are created when an event is fired for trigger window that is
      * ready.
-     *
+     * 
      * @return the pipeline value.
      */
     public TriggerPipelineReference pipeline() {
@@ -50,7 +66,7 @@ public final class TumblingWindowTrigger extends Trigger {
     /**
      * Set the pipeline property: Pipeline for which runs are created when an event is fired for trigger window that is
      * ready.
-     *
+     * 
      * @param pipeline the pipeline value to set.
      * @return the TumblingWindowTrigger object itself.
      */
@@ -61,21 +77,25 @@ public final class TumblingWindowTrigger extends Trigger {
 
     /**
      * Get the innerTypeProperties property: Tumbling Window Trigger properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private TumblingWindowTriggerTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TumblingWindowTrigger withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TumblingWindowTrigger withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -84,7 +104,7 @@ public final class TumblingWindowTrigger extends Trigger {
 
     /**
      * Get the frequency property: The frequency of the time windows.
-     *
+     * 
      * @return the frequency value.
      */
     public TumblingWindowFrequency frequency() {
@@ -93,7 +113,7 @@ public final class TumblingWindowTrigger extends Trigger {
 
     /**
      * Set the frequency property: The frequency of the time windows.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the TumblingWindowTrigger object itself.
      */
@@ -107,7 +127,7 @@ public final class TumblingWindowTrigger extends Trigger {
 
     /**
      * Get the interval property: The interval of the time windows. The minimum interval allowed is 15 Minutes.
-     *
+     * 
      * @return the interval value.
      */
     public int interval() {
@@ -116,7 +136,7 @@ public final class TumblingWindowTrigger extends Trigger {
 
     /**
      * Set the interval property: The interval of the time windows. The minimum interval allowed is 15 Minutes.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the TumblingWindowTrigger object itself.
      */
@@ -131,7 +151,7 @@ public final class TumblingWindowTrigger extends Trigger {
     /**
      * Get the startTime property: The start time for the time period for the trigger during which events are fired for
      * windows that are ready. Only UTC time is currently supported.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -141,7 +161,7 @@ public final class TumblingWindowTrigger extends Trigger {
     /**
      * Set the startTime property: The start time for the time period for the trigger during which events are fired for
      * windows that are ready. Only UTC time is currently supported.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the TumblingWindowTrigger object itself.
      */
@@ -156,7 +176,7 @@ public final class TumblingWindowTrigger extends Trigger {
     /**
      * Get the endTime property: The end time for the time period for the trigger during which events are fired for
      * windows that are ready. Only UTC time is currently supported.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -166,7 +186,7 @@ public final class TumblingWindowTrigger extends Trigger {
     /**
      * Set the endTime property: The end time for the time period for the trigger during which events are fired for
      * windows that are ready. Only UTC time is currently supported.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the TumblingWindowTrigger object itself.
      */
@@ -182,7 +202,7 @@ public final class TumblingWindowTrigger extends Trigger {
      * Get the delay property: Specifies how long the trigger waits past due time before triggering new run. It doesn't
      * alter window start and end time. The default is 0. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the delay value.
      */
     public Object delay() {
@@ -193,7 +213,7 @@ public final class TumblingWindowTrigger extends Trigger {
      * Set the delay property: Specifies how long the trigger waits past due time before triggering new run. It doesn't
      * alter window start and end time. The default is 0. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param delay the delay value to set.
      * @return the TumblingWindowTrigger object itself.
      */
@@ -208,7 +228,7 @@ public final class TumblingWindowTrigger extends Trigger {
     /**
      * Get the maxConcurrency property: The max number of parallel time windows (ready for execution) for which a new
      * run is triggered.
-     *
+     * 
      * @return the maxConcurrency value.
      */
     public int maxConcurrency() {
@@ -218,7 +238,7 @@ public final class TumblingWindowTrigger extends Trigger {
     /**
      * Set the maxConcurrency property: The max number of parallel time windows (ready for execution) for which a new
      * run is triggered.
-     *
+     * 
      * @param maxConcurrency the maxConcurrency value to set.
      * @return the TumblingWindowTrigger object itself.
      */
@@ -232,7 +252,7 @@ public final class TumblingWindowTrigger extends Trigger {
 
     /**
      * Get the retryPolicy property: Retry policy that will be applied for failed pipeline runs.
-     *
+     * 
      * @return the retryPolicy value.
      */
     public RetryPolicy retryPolicy() {
@@ -241,7 +261,7 @@ public final class TumblingWindowTrigger extends Trigger {
 
     /**
      * Set the retryPolicy property: Retry policy that will be applied for failed pipeline runs.
-     *
+     * 
      * @param retryPolicy the retryPolicy value to set.
      * @return the TumblingWindowTrigger object itself.
      */
@@ -255,7 +275,7 @@ public final class TumblingWindowTrigger extends Trigger {
 
     /**
      * Get the dependsOn property: Triggers that this trigger depends on. Only tumbling window triggers are supported.
-     *
+     * 
      * @return the dependsOn value.
      */
     public List<DependencyReference> dependsOn() {
@@ -264,7 +284,7 @@ public final class TumblingWindowTrigger extends Trigger {
 
     /**
      * Set the dependsOn property: Triggers that this trigger depends on. Only tumbling window triggers are supported.
-     *
+     * 
      * @param dependsOn the dependsOn value to set.
      * @return the TumblingWindowTrigger object itself.
      */
@@ -278,28 +298,90 @@ public final class TumblingWindowTrigger extends Trigger {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (pipeline() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property pipeline in model TumblingWindowTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property pipeline in model TumblingWindowTrigger"));
         } else {
             pipeline().validate();
         }
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model TumblingWindowTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model TumblingWindowTrigger"));
         } else {
             innerTypeProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TumblingWindowTrigger.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("pipeline", this.pipeline);
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TumblingWindowTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TumblingWindowTrigger if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TumblingWindowTrigger.
+     */
+    public static TumblingWindowTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TumblingWindowTrigger deserializedTumblingWindowTrigger = new TumblingWindowTrigger();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedTumblingWindowTrigger.withDescription(reader.getString());
+                } else if ("runtimeState".equals(fieldName)) {
+                    deserializedTumblingWindowTrigger
+                        .withRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedTumblingWindowTrigger.withAnnotations(annotations);
+                } else if ("pipeline".equals(fieldName)) {
+                    deserializedTumblingWindowTrigger.pipeline = TriggerPipelineReference.fromJson(reader);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedTumblingWindowTrigger.innerTypeProperties
+                        = TumblingWindowTriggerTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedTumblingWindowTrigger.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedTumblingWindowTrigger.withAdditionalProperties(additionalProperties);
+
+            return deserializedTumblingWindowTrigger;
+        });
+    }
 }

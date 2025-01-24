@@ -4,51 +4,45 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.kusto.models.CallerRole;
 import com.azure.resourcemanager.kusto.models.ReadOnlyFollowingDatabase;
 import com.azure.resourcemanager.kusto.models.ReadWriteDatabase;
 import java.time.Duration;
 
-/** Samples for Databases CreateOrUpdate. */
+/**
+ * Samples for Databases CreateOrUpdate.
+ */
 public final class DatabasesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoDatabaseReadonlyUpdate.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDatabaseReadonlyUpdate
+     * .json
      */
     /**
      * Sample code: Kusto ReadOnly database update.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoReadOnlyDatabaseUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databases()
-            .createOrUpdate(
-                "kustorptest",
-                "kustoCluster",
-                "kustoReadOnlyDatabase",
-                new ReadOnlyFollowingDatabase().withLocation("westus").withHotCachePeriod(Duration.parse("P1D")),
-                null,
-                Context.NONE);
+        manager.databases()
+            .createOrUpdate("kustorptest", "kustoCluster", "kustoReadOnlyDatabase",
+                new ReadOnlyFollowingDatabase().withLocation("westus").withHotCachePeriod(Duration.parse("P1D")), null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoDatabasesCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDatabasesCreateOrUpdate.json
      */
     /**
      * Sample code: Kusto ReadWrite database create or update.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoReadWriteDatabaseCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .databases()
-            .createOrUpdate(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
+        manager.databases()
+            .createOrUpdate("kustorptest", "kustoCluster", "KustoDatabase8",
                 new ReadWriteDatabase().withLocation("westus").withSoftDeletePeriod(Duration.parse("P1D")),
-                CallerRole.ADMIN,
-                Context.NONE);
+                CallerRole.ADMIN, com.azure.core.util.Context.NONE);
     }
 }

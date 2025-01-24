@@ -9,97 +9,122 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.AzureWorkloadSqlP
 import com.azure.resourcemanager.recoveryservicesbackup.models.OverwriteOptions;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryMode;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryType;
+import com.azure.resourcemanager.recoveryservicesbackup.models.SnapshotRestoreParameters;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SqlDataDirectoryMapping;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SqlDataDirectoryType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TargetRestoreInfo;
+import com.azure.resourcemanager.recoveryservicesbackup.models.UserAssignedIdentityProperties;
+import com.azure.resourcemanager.recoveryservicesbackup.models.UserAssignedManagedIdentityDetails;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureWorkloadSqlPointInTimeRestoreRequestTests {
-    @Test
-    public void testDeserialize() {
-        AzureWorkloadSqlPointInTimeRestoreRequest model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"AzureWorkloadSQLPointInTimeRestoreRequest\",\"pointInTime\":\"2021-04-30T04:43:06Z\",\"shouldUseAlternateTargetLocation\":true,\"isNonRecoverable\":false,\"alternateDirectoryPaths\":[{\"mappingType\":\"Log\",\"sourceLogicalName\":\"qrntv\",\"sourcePath\":\"ijpstte\",\"targetPath\":\"qqpwcyyuf\"},{\"mappingType\":\"Invalid\",\"sourceLogicalName\":\"nc\",\"sourcePath\":\"mqspkcdqzhlctdd\",\"targetPath\":\"qn\"},{\"mappingType\":\"Log\",\"sourceLogicalName\":\"chrqb\",\"sourcePath\":\"jrcg\",\"targetPath\":\"ydcwboxjumv\"}],\"recoveryType\":\"Offline\",\"sourceResourceId\":\"ihrraiouaub\",\"propertyBag\":{\"rzpasccbiuimzdly\":\"loqxfuojrngif\",\"fdvruz\":\"dfqwmkyoq\",\"hpc\":\"lzo\"},\"targetInfo\":{\"overwriteOption\":\"Invalid\",\"containerId\":\"xotngfdguge\",\"databaseName\":\"i\",\"targetDirectoryForFileRestore\":\"rkyui\"},\"recoveryMode\":\"WorkloadRecovery\",\"targetVirtualMachineId\":\"nmfpp\"}")
-                .toObject(AzureWorkloadSqlPointInTimeRestoreRequest.class);
-        Assertions.assertEquals(RecoveryType.OFFLINE, model.recoveryType());
-        Assertions.assertEquals("ihrraiouaub", model.sourceResourceId());
-        Assertions.assertEquals("loqxfuojrngif", model.propertyBag().get("rzpasccbiuimzdly"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureWorkloadSqlPointInTimeRestoreRequest model = BinaryData.fromString(
+            "{\"objectType\":\"AzureWorkloadSQLPointInTimeRestoreRequest\",\"pointInTime\":\"2021-05-03T01:44:42Z\",\"shouldUseAlternateTargetLocation\":false,\"isNonRecoverable\":true,\"alternateDirectoryPaths\":[{\"mappingType\":\"Data\",\"sourceLogicalName\":\"lbiojlvfhrb\",\"sourcePath\":\"neqvcwwyyurmo\",\"targetPath\":\"ppr\"},{\"mappingType\":\"Invalid\",\"sourceLogicalName\":\"mo\",\"sourcePath\":\"yzejnhlbk\",\"targetPath\":\"z\"},{\"mappingType\":\"Invalid\",\"sourceLogicalName\":\"ljhah\",\"sourcePath\":\"echndbnwieholew\",\"targetPath\":\"iuubwefqsf\"},{\"mappingType\":\"Invalid\",\"sourceLogicalName\":\"tf\",\"sourcePath\":\"rqwexjkmfxapjwog\",\"targetPath\":\"nobpudcdabtqwpw\"}],\"recoveryType\":\"OriginalLocation\",\"sourceResourceId\":\"zasqbucljgkyexao\",\"propertyBag\":{\"jumfqwazlnq\":\"aipidsdaultxi\",\"zqdqxt\":\"mcjn\",\"nyfusfzsvtuikzh\":\"jw\"},\"targetInfo\":{\"overwriteOption\":\"Invalid\",\"containerId\":\"cfhmlrqryxyn\",\"databaseName\":\"zrdpsovwxznptgoe\",\"targetDirectoryForFileRestore\":\"bbabp\"},\"recoveryMode\":\"SnapshotAttach\",\"targetResourceGroupName\":\"slkvntjl\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"jkskyr\",\"identityName\":\"ovzidsx\",\"userAssignedIdentityProperties\":{\"clientId\":\"bzmifrygznmmaxr\",\"principalId\":\"kzobgopxlhsln\"}},\"snapshotRestoreParameters\":{\"skipAttachAndMount\":true,\"logPointInTimeForDBRecovery\":\"ixynllxecwcrojp\"},\"targetVirtualMachineId\":\"lhc\",\"resourceGuardOperationRequests\":[\"u\",\"i\",\"dwfmvigorqjb\",\"tzh\"]}")
+            .toObject(AzureWorkloadSqlPointInTimeRestoreRequest.class);
+        Assertions.assertEquals("u", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(RecoveryType.ORIGINAL_LOCATION, model.recoveryType());
+        Assertions.assertEquals("zasqbucljgkyexao", model.sourceResourceId());
+        Assertions.assertEquals("aipidsdaultxi", model.propertyBag().get("jumfqwazlnq"));
         Assertions.assertEquals(OverwriteOptions.INVALID, model.targetInfo().overwriteOption());
-        Assertions.assertEquals("xotngfdguge", model.targetInfo().containerId());
-        Assertions.assertEquals("i", model.targetInfo().databaseName());
-        Assertions.assertEquals("rkyui", model.targetInfo().targetDirectoryForFileRestore());
-        Assertions.assertEquals(RecoveryMode.WORKLOAD_RECOVERY, model.recoveryMode());
-        Assertions.assertEquals("nmfpp", model.targetVirtualMachineId());
-        Assertions.assertEquals(true, model.shouldUseAlternateTargetLocation());
-        Assertions.assertEquals(false, model.isNonRecoverable());
-        Assertions.assertEquals(SqlDataDirectoryType.LOG, model.alternateDirectoryPaths().get(0).mappingType());
-        Assertions.assertEquals("qrntv", model.alternateDirectoryPaths().get(0).sourceLogicalName());
-        Assertions.assertEquals("ijpstte", model.alternateDirectoryPaths().get(0).sourcePath());
-        Assertions.assertEquals("qqpwcyyuf", model.alternateDirectoryPaths().get(0).targetPath());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T04:43:06Z"), model.pointInTime());
+        Assertions.assertEquals("cfhmlrqryxyn", model.targetInfo().containerId());
+        Assertions.assertEquals("zrdpsovwxznptgoe", model.targetInfo().databaseName());
+        Assertions.assertEquals("bbabp", model.targetInfo().targetDirectoryForFileRestore());
+        Assertions.assertEquals(RecoveryMode.SNAPSHOT_ATTACH, model.recoveryMode());
+        Assertions.assertEquals("slkvntjl", model.targetResourceGroupName());
+        Assertions.assertEquals("jkskyr", model.userAssignedManagedIdentityDetails().identityArmId());
+        Assertions.assertEquals("ovzidsx", model.userAssignedManagedIdentityDetails().identityName());
+        Assertions.assertEquals("bzmifrygznmmaxr",
+            model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().clientId());
+        Assertions.assertEquals("kzobgopxlhsln",
+            model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().principalId());
+        Assertions.assertEquals(true, model.snapshotRestoreParameters().skipAttachAndMount());
+        Assertions.assertEquals("ixynllxecwcrojp", model.snapshotRestoreParameters().logPointInTimeForDBRecovery());
+        Assertions.assertEquals("lhc", model.targetVirtualMachineId());
+        Assertions.assertEquals(false, model.shouldUseAlternateTargetLocation());
+        Assertions.assertEquals(true, model.isNonRecoverable());
+        Assertions.assertEquals(SqlDataDirectoryType.DATA, model.alternateDirectoryPaths().get(0).mappingType());
+        Assertions.assertEquals("lbiojlvfhrb", model.alternateDirectoryPaths().get(0).sourceLogicalName());
+        Assertions.assertEquals("neqvcwwyyurmo", model.alternateDirectoryPaths().get(0).sourcePath());
+        Assertions.assertEquals("ppr", model.alternateDirectoryPaths().get(0).targetPath());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-03T01:44:42Z"), model.pointInTime());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureWorkloadSqlPointInTimeRestoreRequest model =
-            new AzureWorkloadSqlPointInTimeRestoreRequest()
-                .withRecoveryType(RecoveryType.OFFLINE)
-                .withSourceResourceId("ihrraiouaub")
-                .withPropertyBag(mapOf("rzpasccbiuimzdly", "loqxfuojrngif", "fdvruz", "dfqwmkyoq", "hpc", "lzo"))
-                .withTargetInfo(
-                    new TargetRestoreInfo()
-                        .withOverwriteOption(OverwriteOptions.INVALID)
-                        .withContainerId("xotngfdguge")
-                        .withDatabaseName("i")
-                        .withTargetDirectoryForFileRestore("rkyui"))
-                .withRecoveryMode(RecoveryMode.WORKLOAD_RECOVERY)
-                .withTargetVirtualMachineId("nmfpp")
-                .withShouldUseAlternateTargetLocation(true)
-                .withIsNonRecoverable(false)
-                .withAlternateDirectoryPaths(
-                    Arrays
-                        .asList(
-                            new SqlDataDirectoryMapping()
-                                .withMappingType(SqlDataDirectoryType.LOG)
-                                .withSourceLogicalName("qrntv")
-                                .withSourcePath("ijpstte")
-                                .withTargetPath("qqpwcyyuf"),
-                            new SqlDataDirectoryMapping()
-                                .withMappingType(SqlDataDirectoryType.INVALID)
-                                .withSourceLogicalName("nc")
-                                .withSourcePath("mqspkcdqzhlctdd")
-                                .withTargetPath("qn"),
-                            new SqlDataDirectoryMapping()
-                                .withMappingType(SqlDataDirectoryType.LOG)
-                                .withSourceLogicalName("chrqb")
-                                .withSourcePath("jrcg")
-                                .withTargetPath("ydcwboxjumv")))
-                .withPointInTime(OffsetDateTime.parse("2021-04-30T04:43:06Z"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureWorkloadSqlPointInTimeRestoreRequest model = new AzureWorkloadSqlPointInTimeRestoreRequest()
+            .withResourceGuardOperationRequests(Arrays.asList("u", "i", "dwfmvigorqjb", "tzh"))
+            .withRecoveryType(RecoveryType.ORIGINAL_LOCATION)
+            .withSourceResourceId("zasqbucljgkyexao")
+            .withPropertyBag(mapOf("jumfqwazlnq", "aipidsdaultxi", "zqdqxt", "mcjn", "nyfusfzsvtuikzh", "jw"))
+            .withTargetInfo(new TargetRestoreInfo().withOverwriteOption(OverwriteOptions.INVALID)
+                .withContainerId("cfhmlrqryxyn")
+                .withDatabaseName("zrdpsovwxznptgoe")
+                .withTargetDirectoryForFileRestore("bbabp"))
+            .withRecoveryMode(RecoveryMode.SNAPSHOT_ATTACH)
+            .withTargetResourceGroupName("slkvntjl")
+            .withUserAssignedManagedIdentityDetails(new UserAssignedManagedIdentityDetails().withIdentityArmId("jkskyr")
+                .withIdentityName("ovzidsx")
+                .withUserAssignedIdentityProperties(new UserAssignedIdentityProperties().withClientId("bzmifrygznmmaxr")
+                    .withPrincipalId("kzobgopxlhsln")))
+            .withSnapshotRestoreParameters(new SnapshotRestoreParameters().withSkipAttachAndMount(true)
+                .withLogPointInTimeForDBRecovery("ixynllxecwcrojp"))
+            .withTargetVirtualMachineId("lhc")
+            .withShouldUseAlternateTargetLocation(false)
+            .withIsNonRecoverable(true)
+            .withAlternateDirectoryPaths(Arrays.asList(
+                new SqlDataDirectoryMapping().withMappingType(SqlDataDirectoryType.DATA)
+                    .withSourceLogicalName("lbiojlvfhrb")
+                    .withSourcePath("neqvcwwyyurmo")
+                    .withTargetPath("ppr"),
+                new SqlDataDirectoryMapping().withMappingType(SqlDataDirectoryType.INVALID)
+                    .withSourceLogicalName("mo")
+                    .withSourcePath("yzejnhlbk")
+                    .withTargetPath("z"),
+                new SqlDataDirectoryMapping().withMappingType(SqlDataDirectoryType.INVALID)
+                    .withSourceLogicalName("ljhah")
+                    .withSourcePath("echndbnwieholew")
+                    .withTargetPath("iuubwefqsf"),
+                new SqlDataDirectoryMapping().withMappingType(SqlDataDirectoryType.INVALID)
+                    .withSourceLogicalName("tf")
+                    .withSourcePath("rqwexjkmfxapjwog")
+                    .withTargetPath("nobpudcdabtqwpw")))
+            .withPointInTime(OffsetDateTime.parse("2021-05-03T01:44:42Z"));
         model = BinaryData.fromObject(model).toObject(AzureWorkloadSqlPointInTimeRestoreRequest.class);
-        Assertions.assertEquals(RecoveryType.OFFLINE, model.recoveryType());
-        Assertions.assertEquals("ihrraiouaub", model.sourceResourceId());
-        Assertions.assertEquals("loqxfuojrngif", model.propertyBag().get("rzpasccbiuimzdly"));
+        Assertions.assertEquals("u", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(RecoveryType.ORIGINAL_LOCATION, model.recoveryType());
+        Assertions.assertEquals("zasqbucljgkyexao", model.sourceResourceId());
+        Assertions.assertEquals("aipidsdaultxi", model.propertyBag().get("jumfqwazlnq"));
         Assertions.assertEquals(OverwriteOptions.INVALID, model.targetInfo().overwriteOption());
-        Assertions.assertEquals("xotngfdguge", model.targetInfo().containerId());
-        Assertions.assertEquals("i", model.targetInfo().databaseName());
-        Assertions.assertEquals("rkyui", model.targetInfo().targetDirectoryForFileRestore());
-        Assertions.assertEquals(RecoveryMode.WORKLOAD_RECOVERY, model.recoveryMode());
-        Assertions.assertEquals("nmfpp", model.targetVirtualMachineId());
-        Assertions.assertEquals(true, model.shouldUseAlternateTargetLocation());
-        Assertions.assertEquals(false, model.isNonRecoverable());
-        Assertions.assertEquals(SqlDataDirectoryType.LOG, model.alternateDirectoryPaths().get(0).mappingType());
-        Assertions.assertEquals("qrntv", model.alternateDirectoryPaths().get(0).sourceLogicalName());
-        Assertions.assertEquals("ijpstte", model.alternateDirectoryPaths().get(0).sourcePath());
-        Assertions.assertEquals("qqpwcyyuf", model.alternateDirectoryPaths().get(0).targetPath());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T04:43:06Z"), model.pointInTime());
+        Assertions.assertEquals("cfhmlrqryxyn", model.targetInfo().containerId());
+        Assertions.assertEquals("zrdpsovwxznptgoe", model.targetInfo().databaseName());
+        Assertions.assertEquals("bbabp", model.targetInfo().targetDirectoryForFileRestore());
+        Assertions.assertEquals(RecoveryMode.SNAPSHOT_ATTACH, model.recoveryMode());
+        Assertions.assertEquals("slkvntjl", model.targetResourceGroupName());
+        Assertions.assertEquals("jkskyr", model.userAssignedManagedIdentityDetails().identityArmId());
+        Assertions.assertEquals("ovzidsx", model.userAssignedManagedIdentityDetails().identityName());
+        Assertions.assertEquals("bzmifrygznmmaxr",
+            model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().clientId());
+        Assertions.assertEquals("kzobgopxlhsln",
+            model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().principalId());
+        Assertions.assertEquals(true, model.snapshotRestoreParameters().skipAttachAndMount());
+        Assertions.assertEquals("ixynllxecwcrojp", model.snapshotRestoreParameters().logPointInTimeForDBRecovery());
+        Assertions.assertEquals("lhc", model.targetVirtualMachineId());
+        Assertions.assertEquals(false, model.shouldUseAlternateTargetLocation());
+        Assertions.assertEquals(true, model.isNonRecoverable());
+        Assertions.assertEquals(SqlDataDirectoryType.DATA, model.alternateDirectoryPaths().get(0).mappingType());
+        Assertions.assertEquals("lbiojlvfhrb", model.alternateDirectoryPaths().get(0).sourceLogicalName());
+        Assertions.assertEquals("neqvcwwyyurmo", model.alternateDirectoryPaths().get(0).sourcePath());
+        Assertions.assertEquals("ppr", model.alternateDirectoryPaths().get(0).targetPath());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-03T01:44:42Z"), model.pointInTime());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

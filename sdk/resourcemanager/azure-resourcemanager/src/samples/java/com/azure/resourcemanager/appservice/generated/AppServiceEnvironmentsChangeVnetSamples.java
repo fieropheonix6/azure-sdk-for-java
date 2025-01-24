@@ -4,32 +4,30 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.models.VirtualNetworkProfile;
 
-/** Samples for AppServiceEnvironments ChangeVnet. */
+/**
+ * Samples for AppServiceEnvironments ChangeVnet.
+ */
 public final class AppServiceEnvironmentsChangeVnetSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_ChangeVnet.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/AppServiceEnvironments_ChangeVnet.
+     * json
      */
     /**
      * Sample code: Move an App Service Environment to a different VNET.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void moveAnAppServiceEnvironmentToADifferentVNET(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
+    public static void
+        moveAnAppServiceEnvironmentToADifferentVNET(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.webApps()
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .changeVnet(
-                "test-rg",
-                "test-ase",
-                new VirtualNetworkProfile()
-                    .withId(
-                        "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/default"),
-                Context.NONE);
+            .changeVnet("test-rg", "test-ase", new VirtualNetworkProfile().withId(
+                "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/default"),
+                com.azure.core.util.Context.NONE);
     }
 }

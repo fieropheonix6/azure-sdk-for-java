@@ -3,6 +3,10 @@
 
 package com.azure.core.util;
 
+import com.azure.core.implementation.ReflectionUtils;
+import com.azure.core.implementation.ReflectiveInvoker;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.ArrayList;
@@ -16,10 +20,12 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @param <T> a specific expandable enum type
  */
-public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
+public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> implements ExpandableEnum<String> {
+    private static final Map<Class<?>, ReflectiveInvoker> CONSTRUCTORS = new ConcurrentHashMap<>();
     private static final Map<Class<?>, ConcurrentHashMap<String, ? extends ExpandableStringEnum<?>>> VALUES
         = new ConcurrentHashMap<>();
 
+    private static final ClientLogger LOGGER = new ClientLogger(ExpandableStringEnum.class);
     private String name;
     private Class<T> clazz;
 
@@ -42,8 +48,10 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
      * @param clazz The class of the expandable string enum.
      * @param <T> the class of the expandable string enum.
      * @return The expandable string enum instance.
+     *
+     * @throws RuntimeException wrapping implementation class constructor exception (if any is thrown).
      */
-    @SuppressWarnings({"unchecked", "deprecation"})
+    @SuppressWarnings({ "unchecked", "deprecation" })
     protected static <T extends ExpandableStringEnum<T>> T fromString(String name, Class<T> clazz) {
         if (name == null) {
             return null;
@@ -55,13 +63,40 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
         if (value != null) {
             return value;
         } else {
-            try {
-                value = clazz.newInstance();
-                return value.nameAndAddValue(name, value, clazz);
-            } catch (IllegalAccessException | InstantiationException ex) {
+            if (CONSTRUCTORS.size() > 10000) {
+                CONSTRUCTORS.clear();
+            }
+
+            ReflectiveInvoker ctor = CONSTRUCTORS.computeIfAbsent(clazz, ExpandableStringEnum::getDefaultConstructor);
+
+            if (ctor == null) {
+                // logged in ExpandableStringEnum::getDefaultConstructor
                 return null;
             }
+
+            try {
+                value = (T) ctor.invokeStatic();
+            } catch (Exception e) {
+                LOGGER.log(LogLevel.WARNING,
+                    () -> "Failed to create " + clazz.getName() + ", default constructor threw exception", e);
+                return null;
+            }
+
+            return value.nameAndAddValue(name, value, clazz);
         }
+    }
+
+    private static <T> ReflectiveInvoker getDefaultConstructor(Class<T> clazz) {
+        try {
+            return ReflectionUtils.getConstructorInvoker(clazz, clazz.getDeclaredConstructor());
+        } catch (NoSuchMethodException | IllegalAccessException e) {
+            LOGGER.log(LogLevel.VERBOSE, () -> "Can't find or access default constructor for " + clazz.getName()
+                + ", make sure corresponding package is open to azure-core", e);
+        } catch (Exception e) {
+            LOGGER.log(LogLevel.VERBOSE, () -> "Failed to get default constructor for " + clazz.getName(), e);
+        }
+
+        return null;
     }
 
     @SuppressWarnings("unchecked")
@@ -88,6 +123,11 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
     @Override
     @JsonValue
     public String toString() {
+        return this.name;
+    }
+
+    @Override
+    public String getValue() {
         return this.name;
     }
 

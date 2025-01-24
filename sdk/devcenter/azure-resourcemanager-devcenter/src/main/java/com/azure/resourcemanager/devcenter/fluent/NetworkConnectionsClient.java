@@ -13,13 +13,16 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devcenter.fluent.models.HealthCheckStatusDetailsInner;
 import com.azure.resourcemanager.devcenter.fluent.models.NetworkConnectionInner;
+import com.azure.resourcemanager.devcenter.fluent.models.OutboundEnvironmentEndpointInner;
 import com.azure.resourcemanager.devcenter.models.NetworkConnectionUpdate;
 
-/** An instance of this class provides access to all the operations defined in NetworkConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkConnectionsClient.
+ */
 public interface NetworkConnectionsClient {
     /**
      * Lists network connections in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the network connection list operation as paginated response with {@link PagedIterable}.
@@ -29,7 +32,7 @@ public interface NetworkConnectionsClient {
 
     /**
      * Lists network connections in a subscription.
-     *
+     * 
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,7 +45,7 @@ public interface NetworkConnectionsClient {
 
     /**
      * Lists network connections in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,7 +57,7 @@ public interface NetworkConnectionsClient {
 
     /**
      * Lists network connections in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -68,7 +71,7 @@ public interface NetworkConnectionsClient {
 
     /**
      * Gets a network connection resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -78,12 +81,12 @@ public interface NetworkConnectionsClient {
      * @return a network connection resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkConnectionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkConnectionName, Context context);
+    Response<NetworkConnectionInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String networkConnectionName, Context context);
 
     /**
      * Gets a network connection resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,7 +99,7 @@ public interface NetworkConnectionsClient {
 
     /**
      * Creates or updates a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -106,12 +109,12 @@ public interface NetworkConnectionsClient {
      * @return the {@link SyncPoller} for polling of network related settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionInner body);
+    SyncPoller<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginCreateOrUpdate(String resourceGroupName,
+        String networkConnectionName, NetworkConnectionInner body);
 
     /**
      * Creates or updates a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -122,12 +125,12 @@ public interface NetworkConnectionsClient {
      * @return the {@link SyncPoller} for polling of network related settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionInner body, Context context);
+    SyncPoller<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginCreateOrUpdate(String resourceGroupName,
+        String networkConnectionName, NetworkConnectionInner body, Context context);
 
     /**
      * Creates or updates a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -137,12 +140,12 @@ public interface NetworkConnectionsClient {
      * @return network related settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkConnectionInner createOrUpdate(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionInner body);
+    NetworkConnectionInner createOrUpdate(String resourceGroupName, String networkConnectionName,
+        NetworkConnectionInner body);
 
     /**
      * Creates or updates a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -153,12 +156,12 @@ public interface NetworkConnectionsClient {
      * @return network related settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkConnectionInner createOrUpdate(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionInner body, Context context);
+    NetworkConnectionInner createOrUpdate(String resourceGroupName, String networkConnectionName,
+        NetworkConnectionInner body, Context context);
 
     /**
      * Partially updates a Network Connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -168,12 +171,12 @@ public interface NetworkConnectionsClient {
      * @return the {@link SyncPoller} for polling of network related settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginUpdate(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionUpdate body);
+    SyncPoller<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginUpdate(String resourceGroupName,
+        String networkConnectionName, NetworkConnectionUpdate body);
 
     /**
      * Partially updates a Network Connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -184,12 +187,12 @@ public interface NetworkConnectionsClient {
      * @return the {@link SyncPoller} for polling of network related settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginUpdate(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionUpdate body, Context context);
+    SyncPoller<PollResult<NetworkConnectionInner>, NetworkConnectionInner> beginUpdate(String resourceGroupName,
+        String networkConnectionName, NetworkConnectionUpdate body, Context context);
 
     /**
      * Partially updates a Network Connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -203,7 +206,7 @@ public interface NetworkConnectionsClient {
 
     /**
      * Partially updates a Network Connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param body Represents network connection.
@@ -214,12 +217,12 @@ public interface NetworkConnectionsClient {
      * @return network related settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkConnectionInner update(
-        String resourceGroupName, String networkConnectionName, NetworkConnectionUpdate body, Context context);
+    NetworkConnectionInner update(String resourceGroupName, String networkConnectionName, NetworkConnectionUpdate body,
+        Context context);
 
     /**
      * Deletes a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,7 +235,7 @@ public interface NetworkConnectionsClient {
 
     /**
      * Deletes a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -242,12 +245,12 @@ public interface NetworkConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkConnectionName,
+        Context context);
 
     /**
      * Deletes a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -259,7 +262,7 @@ public interface NetworkConnectionsClient {
 
     /**
      * Deletes a Network Connections resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -272,7 +275,7 @@ public interface NetworkConnectionsClient {
 
     /**
      * Lists health check status details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,12 +284,12 @@ public interface NetworkConnectionsClient {
      * @return result of the network health check list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<HealthCheckStatusDetailsInner> listHealthDetails(
-        String resourceGroupName, String networkConnectionName);
+    PagedIterable<HealthCheckStatusDetailsInner> listHealthDetails(String resourceGroupName,
+        String networkConnectionName);
 
     /**
      * Lists health check status details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -297,12 +300,12 @@ public interface NetworkConnectionsClient {
      * @return result of the network health check list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<HealthCheckStatusDetailsInner> listHealthDetails(
-        String resourceGroupName, String networkConnectionName, Integer top, Context context);
+    PagedIterable<HealthCheckStatusDetailsInner> listHealthDetails(String resourceGroupName,
+        String networkConnectionName, Integer top, Context context);
 
     /**
      * Gets health check status details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -312,12 +315,12 @@ public interface NetworkConnectionsClient {
      * @return health check status details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HealthCheckStatusDetailsInner> getHealthDetailsWithResponse(
-        String resourceGroupName, String networkConnectionName, Context context);
+    Response<HealthCheckStatusDetailsInner> getHealthDetailsWithResponse(String resourceGroupName,
+        String networkConnectionName, Context context);
 
     /**
      * Gets health check status details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -331,7 +334,7 @@ public interface NetworkConnectionsClient {
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -345,7 +348,7 @@ public interface NetworkConnectionsClient {
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -355,13 +358,13 @@ public interface NetworkConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRunHealthChecks(
-        String resourceGroupName, String networkConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRunHealthChecks(String resourceGroupName, String networkConnectionName,
+        Context context);
 
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -374,7 +377,7 @@ public interface NetworkConnectionsClient {
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
@@ -384,4 +387,36 @@ public interface NetworkConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void runHealthChecks(String resourceGroupName, String networkConnectionName, Context context);
+
+    /**
+     * Lists the endpoints that agents may call as part of Dev Box service administration. These FQDNs should be allowed
+     * for outbound access in order for the Dev Box service to function.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String networkConnectionName);
+
+    /**
+     * Lists the endpoints that agents may call as part of Dev Box service administration. These FQDNs should be allowed
+     * for outbound access in order for the Dev Box service to function.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String networkConnectionName, Integer top, Context context);
 }

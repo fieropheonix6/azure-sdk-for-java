@@ -5,537 +5,560 @@
 package com.azure.resourcemanager.advisor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.advisor.models.Category;
 import com.azure.resourcemanager.advisor.models.Impact;
 import com.azure.resourcemanager.advisor.models.ResourceMetadata;
-import com.azure.resourcemanager.advisor.models.Risk;
 import com.azure.resourcemanager.advisor.models.ShortDescription;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-/** Advisor Recommendation. */
-@JsonFlatten
+/**
+ * Advisor Recommendation.
+ */
 @Fluent
-public class ResourceRecommendationBaseInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceRecommendationBaseInner.class);
+public final class ResourceRecommendationBaseInner extends ProxyResource {
+    /*
+     * The properties of the recommendation.
+     */
+    private RecommendationProperties innerProperties;
 
     /*
-     * The category of the recommendation.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.category")
-    private Category category;
+    private String type;
 
     /*
-     * The business impact of the recommendation.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.impact")
-    private Impact impact;
+    private String name;
 
     /*
-     * The resource type identified by Advisor.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.impactedField")
-    private String impactedField;
+    private String id;
 
-    /*
-     * The resource identified by Advisor.
+    /**
+     * Creates an instance of ResourceRecommendationBaseInner class.
      */
-    @JsonProperty(value = "properties.impactedValue")
-    private String impactedValue;
+    public ResourceRecommendationBaseInner() {
+    }
 
-    /*
-     * The most recent time that Advisor checked the validity of the
-     * recommendation.
+    /**
+     * Get the innerProperties property: The properties of the recommendation.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.lastUpdated")
-    private OffsetDateTime lastUpdated;
+    private RecommendationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The recommendation metadata.
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.metadata")
-    private Map<String, Object> metadata;
+    @Override
+    public String type() {
+        return this.type;
+    }
 
-    /*
-     * The recommendation-type GUID.
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    @JsonProperty(value = "properties.recommendationTypeId")
-    private String recommendationTypeId;
+    @Override
+    public String name() {
+        return this.name;
+    }
 
-    /*
-     * The potential risk of not implementing the recommendation.
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    @JsonProperty(value = "properties.risk")
-    private Risk risk;
-
-    /*
-     * A summary of the recommendation.
-     */
-    @JsonProperty(value = "properties.shortDescription")
-    private ShortDescription shortDescription;
-
-    /*
-     * The list of snoozed and dismissed rules for the recommendation.
-     */
-    @JsonProperty(value = "properties.suppressionIds")
-    private List<UUID> suppressionIds;
-
-    /*
-     * Extended properties
-     */
-    @JsonProperty(value = "properties.extendedProperties")
-    private Map<String, String> extendedProperties;
-
-    /*
-     * Metadata of resource that was assessed
-     */
-    @JsonProperty(value = "properties.resourceMetadata")
-    private ResourceMetadata resourceMetadata;
-
-    /*
-     * The detailed description of recommendation.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * The label of recommendation.
-     */
-    @JsonProperty(value = "properties.label")
-    private String label;
-
-    /*
-     * The link to learn more about recommendation and generation logic.
-     */
-    @JsonProperty(value = "properties.learnMoreLink")
-    private String learnMoreLink;
-
-    /*
-     * The potential benefit of implementing recommendation.
-     */
-    @JsonProperty(value = "properties.potentialBenefits")
-    private String potentialBenefits;
-
-    /*
-     * The list of recommended actions to implement recommendation.
-     */
-    @JsonProperty(value = "properties.actions")
-    private List<Map<String, Object>> actions;
-
-    /*
-     * The automated way to apply recommendation.
-     */
-    @JsonProperty(value = "properties.remediation")
-    private Map<String, Object> remediation;
-
-    /*
-     * The recommendation metadata properties exposed to customer to provide
-     * additional information.
-     */
-    @JsonProperty(value = "properties.exposedMetadataProperties")
-    private Map<String, Object> exposedMetadataProperties;
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the category property: The category of the recommendation.
-     *
+     * 
      * @return the category value.
      */
     public Category category() {
-        return this.category;
+        return this.innerProperties() == null ? null : this.innerProperties().category();
     }
 
     /**
      * Set the category property: The category of the recommendation.
-     *
+     * 
      * @param category the category value to set.
      * @return the ResourceRecommendationBaseInner object itself.
      */
     public ResourceRecommendationBaseInner withCategory(Category category) {
-        this.category = category;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationProperties();
+        }
+        this.innerProperties().withCategory(category);
         return this;
     }
 
     /**
      * Get the impact property: The business impact of the recommendation.
-     *
+     * 
      * @return the impact value.
      */
     public Impact impact() {
-        return this.impact;
+        return this.innerProperties() == null ? null : this.innerProperties().impact();
     }
 
     /**
      * Set the impact property: The business impact of the recommendation.
-     *
+     * 
      * @param impact the impact value to set.
      * @return the ResourceRecommendationBaseInner object itself.
      */
     public ResourceRecommendationBaseInner withImpact(Impact impact) {
-        this.impact = impact;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationProperties();
+        }
+        this.innerProperties().withImpact(impact);
         return this;
     }
 
     /**
      * Get the impactedField property: The resource type identified by Advisor.
-     *
+     * 
      * @return the impactedField value.
      */
     public String impactedField() {
-        return this.impactedField;
+        return this.innerProperties() == null ? null : this.innerProperties().impactedField();
     }
 
     /**
      * Set the impactedField property: The resource type identified by Advisor.
-     *
+     * 
      * @param impactedField the impactedField value to set.
      * @return the ResourceRecommendationBaseInner object itself.
      */
     public ResourceRecommendationBaseInner withImpactedField(String impactedField) {
-        this.impactedField = impactedField;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationProperties();
+        }
+        this.innerProperties().withImpactedField(impactedField);
         return this;
     }
 
     /**
      * Get the impactedValue property: The resource identified by Advisor.
-     *
+     * 
      * @return the impactedValue value.
      */
     public String impactedValue() {
-        return this.impactedValue;
+        return this.innerProperties() == null ? null : this.innerProperties().impactedValue();
     }
 
     /**
      * Set the impactedValue property: The resource identified by Advisor.
-     *
+     * 
      * @param impactedValue the impactedValue value to set.
      * @return the ResourceRecommendationBaseInner object itself.
      */
     public ResourceRecommendationBaseInner withImpactedValue(String impactedValue) {
-        this.impactedValue = impactedValue;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationProperties();
+        }
+        this.innerProperties().withImpactedValue(impactedValue);
         return this;
     }
 
     /**
      * Get the lastUpdated property: The most recent time that Advisor checked the validity of the recommendation.
-     *
+     * 
      * @return the lastUpdated value.
      */
     public OffsetDateTime lastUpdated() {
-        return this.lastUpdated;
+        return this.innerProperties() == null ? null : this.innerProperties().lastUpdated();
     }
 
     /**
      * Set the lastUpdated property: The most recent time that Advisor checked the validity of the recommendation.
-     *
+     * 
      * @param lastUpdated the lastUpdated value to set.
      * @return the ResourceRecommendationBaseInner object itself.
      */
     public ResourceRecommendationBaseInner withLastUpdated(OffsetDateTime lastUpdated) {
-        this.lastUpdated = lastUpdated;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationProperties();
+        }
+        this.innerProperties().withLastUpdated(lastUpdated);
         return this;
     }
 
     /**
      * Get the metadata property: The recommendation metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, Object> metadata() {
-        return this.metadata;
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
     }
 
     /**
      * Set the metadata property: The recommendation metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the ResourceRecommendationBaseInner object itself.
      */
     public ResourceRecommendationBaseInner withMetadata(Map<String, Object> metadata) {
-        this.metadata = metadata;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationProperties();
+        }
+        this.innerProperties().withMetadata(metadata);
         return this;
     }
 
     /**
      * Get the recommendationTypeId property: The recommendation-type GUID.
-     *
+     * 
      * @return the recommendationTypeId value.
      */
     public String recommendationTypeId() {
-        return this.recommendationTypeId;
+        return this.innerProperties() == null ? null : this.innerProperties().recommendationTypeId();
     }
 
     /**
      * Set the recommendationTypeId property: The recommendation-type GUID.
-     *
+     * 
      * @param recommendationTypeId the recommendationTypeId value to set.
      * @return the ResourceRecommendationBaseInner object itself.
      */
     public ResourceRecommendationBaseInner withRecommendationTypeId(String recommendationTypeId) {
-        this.recommendationTypeId = recommendationTypeId;
-        return this;
-    }
-
-    /**
-     * Get the risk property: The potential risk of not implementing the recommendation.
-     *
-     * @return the risk value.
-     */
-    public Risk risk() {
-        return this.risk;
-    }
-
-    /**
-     * Set the risk property: The potential risk of not implementing the recommendation.
-     *
-     * @param risk the risk value to set.
-     * @return the ResourceRecommendationBaseInner object itself.
-     */
-    public ResourceRecommendationBaseInner withRisk(Risk risk) {
-        this.risk = risk;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationProperties();
+        }
+        this.innerProperties().withRecommendationTypeId(recommendationTypeId);
         return this;
     }
 
     /**
      * Get the shortDescription property: A summary of the recommendation.
-     *
+     * 
      * @return the shortDescription value.
      */
     public ShortDescription shortDescription() {
-        return this.shortDescription;
+        return this.innerProperties() == null ? null : this.innerProperties().shortDescription();
     }
 
     /**
      * Set the shortDescription property: A summary of the recommendation.
-     *
+     * 
      * @param shortDescription the shortDescription value to set.
      * @return the ResourceRecommendationBaseInner object itself.
      */
     public ResourceRecommendationBaseInner withShortDescription(ShortDescription shortDescription) {
-        this.shortDescription = shortDescription;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationProperties();
+        }
+        this.innerProperties().withShortDescription(shortDescription);
         return this;
     }
 
     /**
      * Get the suppressionIds property: The list of snoozed and dismissed rules for the recommendation.
-     *
+     * 
      * @return the suppressionIds value.
      */
     public List<UUID> suppressionIds() {
-        return this.suppressionIds;
+        return this.innerProperties() == null ? null : this.innerProperties().suppressionIds();
     }
 
     /**
      * Set the suppressionIds property: The list of snoozed and dismissed rules for the recommendation.
-     *
+     * 
      * @param suppressionIds the suppressionIds value to set.
      * @return the ResourceRecommendationBaseInner object itself.
      */
     public ResourceRecommendationBaseInner withSuppressionIds(List<UUID> suppressionIds) {
-        this.suppressionIds = suppressionIds;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationProperties();
+        }
+        this.innerProperties().withSuppressionIds(suppressionIds);
         return this;
     }
 
     /**
      * Get the extendedProperties property: Extended properties.
-     *
+     * 
      * @return the extendedProperties value.
      */
     public Map<String, String> extendedProperties() {
-        return this.extendedProperties;
+        return this.innerProperties() == null ? null : this.innerProperties().extendedProperties();
     }
 
     /**
      * Set the extendedProperties property: Extended properties.
-     *
+     * 
      * @param extendedProperties the extendedProperties value to set.
      * @return the ResourceRecommendationBaseInner object itself.
      */
     public ResourceRecommendationBaseInner withExtendedProperties(Map<String, String> extendedProperties) {
-        this.extendedProperties = extendedProperties;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationProperties();
+        }
+        this.innerProperties().withExtendedProperties(extendedProperties);
         return this;
     }
 
     /**
      * Get the resourceMetadata property: Metadata of resource that was assessed.
-     *
+     * 
      * @return the resourceMetadata value.
      */
     public ResourceMetadata resourceMetadata() {
-        return this.resourceMetadata;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceMetadata();
     }
 
     /**
      * Set the resourceMetadata property: Metadata of resource that was assessed.
-     *
+     * 
      * @param resourceMetadata the resourceMetadata value to set.
      * @return the ResourceRecommendationBaseInner object itself.
      */
     public ResourceRecommendationBaseInner withResourceMetadata(ResourceMetadata resourceMetadata) {
-        this.resourceMetadata = resourceMetadata;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationProperties();
+        }
+        this.innerProperties().withResourceMetadata(resourceMetadata);
         return this;
     }
 
     /**
      * Get the description property: The detailed description of recommendation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
      * Set the description property: The detailed description of recommendation.
-     *
+     * 
      * @param description the description value to set.
      * @return the ResourceRecommendationBaseInner object itself.
      */
     public ResourceRecommendationBaseInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
     /**
      * Get the label property: The label of recommendation.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
-        return this.label;
+        return this.innerProperties() == null ? null : this.innerProperties().label();
     }
 
     /**
      * Set the label property: The label of recommendation.
-     *
+     * 
      * @param label the label value to set.
      * @return the ResourceRecommendationBaseInner object itself.
      */
     public ResourceRecommendationBaseInner withLabel(String label) {
-        this.label = label;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationProperties();
+        }
+        this.innerProperties().withLabel(label);
         return this;
     }
 
     /**
      * Get the learnMoreLink property: The link to learn more about recommendation and generation logic.
-     *
+     * 
      * @return the learnMoreLink value.
      */
     public String learnMoreLink() {
-        return this.learnMoreLink;
+        return this.innerProperties() == null ? null : this.innerProperties().learnMoreLink();
     }
 
     /**
      * Set the learnMoreLink property: The link to learn more about recommendation and generation logic.
-     *
+     * 
      * @param learnMoreLink the learnMoreLink value to set.
      * @return the ResourceRecommendationBaseInner object itself.
      */
     public ResourceRecommendationBaseInner withLearnMoreLink(String learnMoreLink) {
-        this.learnMoreLink = learnMoreLink;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationProperties();
+        }
+        this.innerProperties().withLearnMoreLink(learnMoreLink);
         return this;
     }
 
     /**
      * Get the potentialBenefits property: The potential benefit of implementing recommendation.
-     *
+     * 
      * @return the potentialBenefits value.
      */
     public String potentialBenefits() {
-        return this.potentialBenefits;
+        return this.innerProperties() == null ? null : this.innerProperties().potentialBenefits();
     }
 
     /**
      * Set the potentialBenefits property: The potential benefit of implementing recommendation.
-     *
+     * 
      * @param potentialBenefits the potentialBenefits value to set.
      * @return the ResourceRecommendationBaseInner object itself.
      */
     public ResourceRecommendationBaseInner withPotentialBenefits(String potentialBenefits) {
-        this.potentialBenefits = potentialBenefits;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationProperties();
+        }
+        this.innerProperties().withPotentialBenefits(potentialBenefits);
         return this;
     }
 
     /**
      * Get the actions property: The list of recommended actions to implement recommendation.
-     *
+     * 
      * @return the actions value.
      */
     public List<Map<String, Object>> actions() {
-        return this.actions;
+        return this.innerProperties() == null ? null : this.innerProperties().actions();
     }
 
     /**
      * Set the actions property: The list of recommended actions to implement recommendation.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the ResourceRecommendationBaseInner object itself.
      */
     public ResourceRecommendationBaseInner withActions(List<Map<String, Object>> actions) {
-        this.actions = actions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationProperties();
+        }
+        this.innerProperties().withActions(actions);
         return this;
     }
 
     /**
      * Get the remediation property: The automated way to apply recommendation.
-     *
+     * 
      * @return the remediation value.
      */
     public Map<String, Object> remediation() {
-        return this.remediation;
+        return this.innerProperties() == null ? null : this.innerProperties().remediation();
     }
 
     /**
      * Set the remediation property: The automated way to apply recommendation.
-     *
+     * 
      * @param remediation the remediation value to set.
      * @return the ResourceRecommendationBaseInner object itself.
      */
     public ResourceRecommendationBaseInner withRemediation(Map<String, Object> remediation) {
-        this.remediation = remediation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationProperties();
+        }
+        this.innerProperties().withRemediation(remediation);
         return this;
     }
 
     /**
      * Get the exposedMetadataProperties property: The recommendation metadata properties exposed to customer to provide
      * additional information.
-     *
+     * 
      * @return the exposedMetadataProperties value.
      */
     public Map<String, Object> exposedMetadataProperties() {
-        return this.exposedMetadataProperties;
+        return this.innerProperties() == null ? null : this.innerProperties().exposedMetadataProperties();
     }
 
     /**
      * Set the exposedMetadataProperties property: The recommendation metadata properties exposed to customer to provide
      * additional information.
-     *
+     * 
      * @param exposedMetadataProperties the exposedMetadataProperties value to set.
      * @return the ResourceRecommendationBaseInner object itself.
      */
-    public ResourceRecommendationBaseInner withExposedMetadataProperties(
-        Map<String, Object> exposedMetadataProperties) {
-        this.exposedMetadataProperties = exposedMetadataProperties;
+    public ResourceRecommendationBaseInner
+        withExposedMetadataProperties(Map<String, Object> exposedMetadataProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationProperties();
+        }
+        this.innerProperties().withExposedMetadataProperties(exposedMetadataProperties);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (shortDescription() != null) {
-            shortDescription().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
-        if (resourceMetadata() != null) {
-            resourceMetadata().validate();
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceRecommendationBaseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceRecommendationBaseInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceRecommendationBaseInner.
+     */
+    public static ResourceRecommendationBaseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceRecommendationBaseInner deserializedResourceRecommendationBaseInner
+                = new ResourceRecommendationBaseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedResourceRecommendationBaseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedResourceRecommendationBaseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedResourceRecommendationBaseInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedResourceRecommendationBaseInner.innerProperties
+                        = RecommendationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceRecommendationBaseInner;
+        });
     }
 }

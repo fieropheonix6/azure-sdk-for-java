@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The routes table associated with the ExpressRouteCircuit. */
+/**
+ * The routes table associated with the ExpressRouteCircuit.
+ */
 @Fluent
-public final class ExpressRouteCircuitRoutesTable {
+public final class ExpressRouteCircuitRoutesTable implements JsonSerializable<ExpressRouteCircuitRoutesTable> {
     /*
      * IP address of a network entity.
      */
-    @JsonProperty(value = "network")
     private String network;
 
     /*
      * NextHop address.
      */
-    @JsonProperty(value = "nextHop")
     private String nextHop;
 
     /*
      * Local preference value as set with the set local-preference route-map configuration command.
      */
-    @JsonProperty(value = "locPrf")
     private String locPrf;
 
     /*
      * Route Weight.
      */
-    @JsonProperty(value = "weight")
     private Integer weight;
 
     /*
      * Autonomous system paths to the destination network.
      */
-    @JsonProperty(value = "path")
     private String path;
 
-    /** Creates an instance of ExpressRouteCircuitRoutesTable class. */
+    /**
+     * Creates an instance of ExpressRouteCircuitRoutesTable class.
+     */
     public ExpressRouteCircuitRoutesTable() {
     }
 
     /**
      * Get the network property: IP address of a network entity.
-     *
+     * 
      * @return the network value.
      */
     public String network() {
@@ -55,7 +58,7 @@ public final class ExpressRouteCircuitRoutesTable {
 
     /**
      * Set the network property: IP address of a network entity.
-     *
+     * 
      * @param network the network value to set.
      * @return the ExpressRouteCircuitRoutesTable object itself.
      */
@@ -66,7 +69,7 @@ public final class ExpressRouteCircuitRoutesTable {
 
     /**
      * Get the nextHop property: NextHop address.
-     *
+     * 
      * @return the nextHop value.
      */
     public String nextHop() {
@@ -75,7 +78,7 @@ public final class ExpressRouteCircuitRoutesTable {
 
     /**
      * Set the nextHop property: NextHop address.
-     *
+     * 
      * @param nextHop the nextHop value to set.
      * @return the ExpressRouteCircuitRoutesTable object itself.
      */
@@ -87,7 +90,7 @@ public final class ExpressRouteCircuitRoutesTable {
     /**
      * Get the locPrf property: Local preference value as set with the set local-preference route-map configuration
      * command.
-     *
+     * 
      * @return the locPrf value.
      */
     public String locPrf() {
@@ -97,7 +100,7 @@ public final class ExpressRouteCircuitRoutesTable {
     /**
      * Set the locPrf property: Local preference value as set with the set local-preference route-map configuration
      * command.
-     *
+     * 
      * @param locPrf the locPrf value to set.
      * @return the ExpressRouteCircuitRoutesTable object itself.
      */
@@ -108,7 +111,7 @@ public final class ExpressRouteCircuitRoutesTable {
 
     /**
      * Get the weight property: Route Weight.
-     *
+     * 
      * @return the weight value.
      */
     public Integer weight() {
@@ -117,7 +120,7 @@ public final class ExpressRouteCircuitRoutesTable {
 
     /**
      * Set the weight property: Route Weight.
-     *
+     * 
      * @param weight the weight value to set.
      * @return the ExpressRouteCircuitRoutesTable object itself.
      */
@@ -128,7 +131,7 @@ public final class ExpressRouteCircuitRoutesTable {
 
     /**
      * Get the path property: Autonomous system paths to the destination network.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -137,7 +140,7 @@ public final class ExpressRouteCircuitRoutesTable {
 
     /**
      * Set the path property: Autonomous system paths to the destination network.
-     *
+     * 
      * @param path the path value to set.
      * @return the ExpressRouteCircuitRoutesTable object itself.
      */
@@ -148,9 +151,58 @@ public final class ExpressRouteCircuitRoutesTable {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("network", this.network);
+        jsonWriter.writeStringField("nextHop", this.nextHop);
+        jsonWriter.writeStringField("locPrf", this.locPrf);
+        jsonWriter.writeNumberField("weight", this.weight);
+        jsonWriter.writeStringField("path", this.path);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteCircuitRoutesTable from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteCircuitRoutesTable if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRouteCircuitRoutesTable.
+     */
+    public static ExpressRouteCircuitRoutesTable fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteCircuitRoutesTable deserializedExpressRouteCircuitRoutesTable
+                = new ExpressRouteCircuitRoutesTable();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("network".equals(fieldName)) {
+                    deserializedExpressRouteCircuitRoutesTable.network = reader.getString();
+                } else if ("nextHop".equals(fieldName)) {
+                    deserializedExpressRouteCircuitRoutesTable.nextHop = reader.getString();
+                } else if ("locPrf".equals(fieldName)) {
+                    deserializedExpressRouteCircuitRoutesTable.locPrf = reader.getString();
+                } else if ("weight".equals(fieldName)) {
+                    deserializedExpressRouteCircuitRoutesTable.weight = reader.getNullable(JsonReader::getInt);
+                } else if ("path".equals(fieldName)) {
+                    deserializedExpressRouteCircuitRoutesTable.path = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteCircuitRoutesTable;
+        });
     }
 }

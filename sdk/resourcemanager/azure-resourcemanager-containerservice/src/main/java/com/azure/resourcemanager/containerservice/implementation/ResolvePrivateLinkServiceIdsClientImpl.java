@@ -26,24 +26,28 @@ import com.azure.resourcemanager.containerservice.fluent.ResolvePrivateLinkServi
 import com.azure.resourcemanager.containerservice.fluent.models.PrivateLinkResourceInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResolvePrivateLinkServiceIdsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResolvePrivateLinkServiceIdsClient.
+ */
 public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePrivateLinkServiceIdsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResolvePrivateLinkServiceIdsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ContainerServiceManagementClientImpl client;
 
     /**
      * Initializes an instance of ResolvePrivateLinkServiceIdsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResolvePrivateLinkServiceIdsClientImpl(ContainerServiceManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ResolvePrivateLinkServiceIdsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ResolvePrivateLinkServiceIdsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,27 +57,21 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
-    private interface ResolvePrivateLinkServiceIdsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
-                + "/managedClusters/{resourceName}/resolvePrivateLinkServiceId")
-        @ExpectedResponses({200})
+    public interface ResolvePrivateLinkServiceIdsService {
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/resolvePrivateLinkServiceId")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceInner>> post(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @BodyParam("application/json") PrivateLinkResourceInner parameters,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<PrivateLinkResourceInner>> post(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") PrivateLinkResourceInner parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Gets the private link service ID for the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.
@@ -81,22 +79,18 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link service ID for the specified managed cluster along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PrivateLinkResourceInner>> postWithResponseAsync(
-        String resourceGroupName, String resourceName, PrivateLinkResourceInner parameters) {
+    public Mono<Response<PrivateLinkResourceInner>> postWithResponseAsync(String resourceGroupName, String resourceName,
+        PrivateLinkResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -110,27 +104,17 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2024-09-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .post(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.post(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the private link service ID for the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.
@@ -139,22 +123,18 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link service ID for the specified managed cluster along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceInner>> postWithResponseAsync(
-        String resourceGroupName, String resourceName, PrivateLinkResourceInner parameters, Context context) {
+    private Mono<Response<PrivateLinkResourceInner>> postWithResponseAsync(String resourceGroupName,
+        String resourceName, PrivateLinkResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -168,24 +148,16 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2024-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .post(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                parameters,
-                accept,
-                context);
+        return service.post(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            resourceName, parameters, accept, context);
     }
 
     /**
      * Gets the private link service ID for the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.
@@ -195,15 +167,15 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
      * @return the private link service ID for the specified managed cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateLinkResourceInner> postAsync(
-        String resourceGroupName, String resourceName, PrivateLinkResourceInner parameters) {
+    public Mono<PrivateLinkResourceInner> postAsync(String resourceGroupName, String resourceName,
+        PrivateLinkResourceInner parameters) {
         return postWithResponseAsync(resourceGroupName, resourceName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the private link service ID for the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.
@@ -214,14 +186,14 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
      * @return the private link service ID for the specified managed cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateLinkResourceInner> postWithResponse(
-        String resourceGroupName, String resourceName, PrivateLinkResourceInner parameters, Context context) {
+    public Response<PrivateLinkResourceInner> postWithResponse(String resourceGroupName, String resourceName,
+        PrivateLinkResourceInner parameters, Context context) {
         return postWithResponseAsync(resourceGroupName, resourceName, parameters, context).block();
     }
 
     /**
      * Gets the private link service ID for the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.
@@ -231,8 +203,8 @@ public final class ResolvePrivateLinkServiceIdsClientImpl implements ResolvePriv
      * @return the private link service ID for the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkResourceInner post(
-        String resourceGroupName, String resourceName, PrivateLinkResourceInner parameters) {
+    public PrivateLinkResourceInner post(String resourceGroupName, String resourceName,
+        PrivateLinkResourceInner parameters) {
         return postWithResponse(resourceGroupName, resourceName, parameters, Context.NONE).getValue();
     }
 }

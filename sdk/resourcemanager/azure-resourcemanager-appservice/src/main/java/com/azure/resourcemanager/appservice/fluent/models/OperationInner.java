@@ -5,67 +5,74 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ErrorEntity;
 import com.azure.resourcemanager.appservice.models.OperationStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
-/** An operation on a resource. */
+/**
+ * An operation on a resource.
+ */
 @Fluent
-public final class OperationInner {
+public final class OperationInner implements JsonSerializable<OperationInner> {
     /*
      * Operation ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Operation name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The current status of the operation.
      */
-    @JsonProperty(value = "status")
     private OperationStatus status;
 
     /*
      * Any errors associate with the operation.
      */
-    @JsonProperty(value = "errors")
     private List<ErrorEntity> errors;
 
     /*
      * Time when operation has started.
      */
-    @JsonProperty(value = "createdTime")
     private OffsetDateTime createdTime;
 
     /*
      * Time when operation has been updated.
      */
-    @JsonProperty(value = "modifiedTime")
     private OffsetDateTime modifiedTime;
 
     /*
      * Time when operation will expire.
      */
-    @JsonProperty(value = "expirationTime")
     private OffsetDateTime expirationTime;
 
     /*
      * Applicable only for stamp operation ids.
      */
-    @JsonProperty(value = "geoMasterOperationId")
     private UUID geoMasterOperationId;
 
     /**
+     * Creates an instance of OperationInner class.
+     */
+    public OperationInner() {
+    }
+
+    /**
      * Get the id property: Operation ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -74,7 +81,7 @@ public final class OperationInner {
 
     /**
      * Set the id property: Operation ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the OperationInner object itself.
      */
@@ -85,7 +92,7 @@ public final class OperationInner {
 
     /**
      * Get the name property: Operation name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -94,7 +101,7 @@ public final class OperationInner {
 
     /**
      * Set the name property: Operation name.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationInner object itself.
      */
@@ -105,7 +112,7 @@ public final class OperationInner {
 
     /**
      * Get the status property: The current status of the operation.
-     *
+     * 
      * @return the status value.
      */
     public OperationStatus status() {
@@ -114,7 +121,7 @@ public final class OperationInner {
 
     /**
      * Set the status property: The current status of the operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the OperationInner object itself.
      */
@@ -125,7 +132,7 @@ public final class OperationInner {
 
     /**
      * Get the errors property: Any errors associate with the operation.
-     *
+     * 
      * @return the errors value.
      */
     public List<ErrorEntity> errors() {
@@ -134,7 +141,7 @@ public final class OperationInner {
 
     /**
      * Set the errors property: Any errors associate with the operation.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the OperationInner object itself.
      */
@@ -145,7 +152,7 @@ public final class OperationInner {
 
     /**
      * Get the createdTime property: Time when operation has started.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -154,7 +161,7 @@ public final class OperationInner {
 
     /**
      * Set the createdTime property: Time when operation has started.
-     *
+     * 
      * @param createdTime the createdTime value to set.
      * @return the OperationInner object itself.
      */
@@ -165,7 +172,7 @@ public final class OperationInner {
 
     /**
      * Get the modifiedTime property: Time when operation has been updated.
-     *
+     * 
      * @return the modifiedTime value.
      */
     public OffsetDateTime modifiedTime() {
@@ -174,7 +181,7 @@ public final class OperationInner {
 
     /**
      * Set the modifiedTime property: Time when operation has been updated.
-     *
+     * 
      * @param modifiedTime the modifiedTime value to set.
      * @return the OperationInner object itself.
      */
@@ -185,7 +192,7 @@ public final class OperationInner {
 
     /**
      * Get the expirationTime property: Time when operation will expire.
-     *
+     * 
      * @return the expirationTime value.
      */
     public OffsetDateTime expirationTime() {
@@ -194,7 +201,7 @@ public final class OperationInner {
 
     /**
      * Set the expirationTime property: Time when operation will expire.
-     *
+     * 
      * @param expirationTime the expirationTime value to set.
      * @return the OperationInner object itself.
      */
@@ -205,7 +212,7 @@ public final class OperationInner {
 
     /**
      * Get the geoMasterOperationId property: Applicable only for stamp operation ids.
-     *
+     * 
      * @return the geoMasterOperationId value.
      */
     public UUID geoMasterOperationId() {
@@ -214,7 +221,7 @@ public final class OperationInner {
 
     /**
      * Set the geoMasterOperationId property: Applicable only for stamp operation ids.
-     *
+     * 
      * @param geoMasterOperationId the geoMasterOperationId value to set.
      * @return the OperationInner object itself.
      */
@@ -225,12 +232,77 @@ public final class OperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (errors() != null) {
             errors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("createdTime",
+            this.createdTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdTime));
+        jsonWriter.writeStringField("modifiedTime",
+            this.modifiedTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.modifiedTime));
+        jsonWriter.writeStringField("expirationTime",
+            this.expirationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationTime));
+        jsonWriter.writeStringField("geoMasterOperationId", Objects.toString(this.geoMasterOperationId, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationInner.
+     */
+    public static OperationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationInner deserializedOperationInner = new OperationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOperationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationInner.name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedOperationInner.status = OperationStatus.fromString(reader.getString());
+                } else if ("errors".equals(fieldName)) {
+                    List<ErrorEntity> errors = reader.readArray(reader1 -> ErrorEntity.fromJson(reader1));
+                    deserializedOperationInner.errors = errors;
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedOperationInner.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("modifiedTime".equals(fieldName)) {
+                    deserializedOperationInner.modifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expirationTime".equals(fieldName)) {
+                    deserializedOperationInner.expirationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("geoMasterOperationId".equals(fieldName)) {
+                    deserializedOperationInner.geoMasterOperationId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationInner;
+        });
     }
 }

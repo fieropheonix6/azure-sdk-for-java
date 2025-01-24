@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The parameters specifying the resource whose effective routes are being requested. */
+/**
+ * The parameters specifying the resource whose effective routes are being requested.
+ */
 @Fluent
-public final class EffectiveRoutesParameters {
+public final class EffectiveRoutesParameters implements JsonSerializable<EffectiveRoutesParameters> {
     /*
      * The resource whose effective routes are being requested.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The type of the specified resource like RouteTable, ExpressRouteConnection, HubVirtualNetworkConnection,
      * VpnConnection and P2SConnection.
      */
-    @JsonProperty(value = "virtualWanResourceType")
     private String virtualWanResourceType;
 
-    /** Creates an instance of EffectiveRoutesParameters class. */
+    /**
+     * Creates an instance of EffectiveRoutesParameters class.
+     */
     public EffectiveRoutesParameters() {
     }
 
     /**
      * Get the resourceId property: The resource whose effective routes are being requested.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -38,7 +44,7 @@ public final class EffectiveRoutesParameters {
 
     /**
      * Set the resourceId property: The resource whose effective routes are being requested.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the EffectiveRoutesParameters object itself.
      */
@@ -50,7 +56,7 @@ public final class EffectiveRoutesParameters {
     /**
      * Get the virtualWanResourceType property: The type of the specified resource like RouteTable,
      * ExpressRouteConnection, HubVirtualNetworkConnection, VpnConnection and P2SConnection.
-     *
+     * 
      * @return the virtualWanResourceType value.
      */
     public String virtualWanResourceType() {
@@ -60,7 +66,7 @@ public final class EffectiveRoutesParameters {
     /**
      * Set the virtualWanResourceType property: The type of the specified resource like RouteTable,
      * ExpressRouteConnection, HubVirtualNetworkConnection, VpnConnection and P2SConnection.
-     *
+     * 
      * @param virtualWanResourceType the virtualWanResourceType value to set.
      * @return the EffectiveRoutesParameters object itself.
      */
@@ -71,9 +77,48 @@ public final class EffectiveRoutesParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("virtualWanResourceType", this.virtualWanResourceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EffectiveRoutesParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EffectiveRoutesParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EffectiveRoutesParameters.
+     */
+    public static EffectiveRoutesParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EffectiveRoutesParameters deserializedEffectiveRoutesParameters = new EffectiveRoutesParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedEffectiveRoutesParameters.resourceId = reader.getString();
+                } else if ("virtualWanResourceType".equals(fieldName)) {
+                    deserializedEffectiveRoutesParameters.virtualWanResourceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEffectiveRoutesParameters;
+        });
     }
 }

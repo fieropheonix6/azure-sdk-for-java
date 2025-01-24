@@ -4,43 +4,45 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualMachineScaleSetRollingUpgrades StartOSUpgrade. */
+/**
+ * Samples for VirtualMachineScaleSetRollingUpgrades StartOSUpgrade.
+ */
 public final class VirtualMachineScaleSetRollingUpgradesStartOSUpgradeSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrades_StartOSUpgrade_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_StartOSUpgrade_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSetRollingUpgrades_StartOSUpgrade_MinimumSet_Gen.
-     *
+     * Sample code: VirtualMachineScaleSetRollingUpgrade_StartOSUpgrade_MaximumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetRollingUpgradesStartOSUpgradeMinimumSetGen(
+    public static void virtualMachineScaleSetRollingUpgradeStartOSUpgradeMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetRollingUpgrades()
-            .startOSUpgrade("rgcompute", "aaaaaaaaaaaaaaaaaa", Context.NONE);
+            .startOSUpgrade("rgcompute", "aaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrades_StartOSUpgrade_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineScaleSetExamples/VirtualMachineScaleSetRollingUpgrade_StartOSUpgrade_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSetRollingUpgrades_StartOSUpgrade_MaximumSet_Gen.
-     *
+     * Sample code: VirtualMachineScaleSetRollingUpgrade_StartOSUpgrade_MinimumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetRollingUpgradesStartOSUpgradeMaximumSetGen(
+    public static void virtualMachineScaleSetRollingUpgradeStartOSUpgradeMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetRollingUpgrades()
-            .startOSUpgrade("rgcompute", "aaaa", Context.NONE);
+            .startOSUpgrade("rgcompute", "aaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

@@ -18,7 +18,6 @@ import java.util.Objects;
  * Flux operator that traces receive and process calls
  */
 final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusMessageContext> {
-    static final String PROCESS_ERROR_KEY = "process-error";
     private final ServiceBusReceiverInstrumentation instrumentation;
 
     FluxTrace(Flux<? extends ServiceBusMessageContext> upstream, ServiceBusReceiverInstrumentation instrumentation) {
@@ -38,7 +37,9 @@ final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusM
         private final CoreSubscriber<? super ServiceBusMessageContext> downstream;
         private final ServiceBusReceiverInstrumentation instrumentation;
         private final ServiceBusTracer tracer;
-        TracingSubscriber(CoreSubscriber<? super ServiceBusMessageContext> downstream, ServiceBusReceiverInstrumentation instrumentation) {
+
+        TracingSubscriber(CoreSubscriber<? super ServiceBusMessageContext> downstream,
+            ServiceBusReceiverInstrumentation instrumentation) {
             this.downstream = downstream;
             this.instrumentation = instrumentation;
             this.tracer = instrumentation.getTracer();
@@ -56,23 +57,25 @@ final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusM
 
         @Override
         protected void hookOnNext(ServiceBusMessageContext message) {
-            Throwable exception = null;
-            Context span = instrumentation.instrumentProcess("ServiceBus.process", message.getMessage(), Context.NONE);
-            message.getMessage().setContext(span);
+            if (message == null || message.getMessage() == null) {
+                downstream.onNext(message);
+                return;
+            }
 
+            Context span = instrumentation.startProcessInstrumentation("ServiceBus.process",
+                message.getMessage().getApplicationProperties(), message.getMessage().getEnqueuedTime(), Context.NONE);
+            message.getMessage().setContext(span);
+            AutoCloseable scope = tracer.makeSpanCurrent(span);
             try {
                 downstream.onNext(message);
-            } catch (Throwable t) {
-                exception = t;
-            } finally {
-                Context context = message.getMessage().getContext();
-                if (context != null) {
-                    Object processorException = context.getData(PROCESS_ERROR_KEY).orElse(null);
-                    if (processorException instanceof Throwable) {
-                        exception = (Throwable) processorException;
-                    }
+                if (!instrumentation.isProcessorInstrumentation()) {
+                    tracer.endSpan(null, span, scope);
                 }
-                tracer.endSpan(exception, context, null);
+            } catch (Throwable t) {
+                tracer.endSpan(t, span, scope);
+                throw t;
+            } finally {
+                tracer.closeScope(scope);
             }
         }
 

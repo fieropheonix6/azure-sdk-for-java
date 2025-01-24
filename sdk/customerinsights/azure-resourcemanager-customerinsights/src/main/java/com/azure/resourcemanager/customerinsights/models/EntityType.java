@@ -4,24 +4,33 @@
 
 package com.azure.resourcemanager.customerinsights.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for EntityType. */
+/**
+ * Type of source entity.
+ */
 public enum EntityType {
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None"),
 
-    /** Enum value Profile. */
+    /**
+     * Enum value Profile.
+     */
     PROFILE("Profile"),
 
-    /** Enum value Interaction. */
+    /**
+     * Enum value Interaction.
+     */
     INTERACTION("Interaction"),
 
-    /** Enum value Relationship. */
+    /**
+     * Enum value Relationship.
+     */
     RELATIONSHIP("Relationship");
 
-    /** The actual serialized value for a EntityType instance. */
+    /**
+     * The actual serialized value for a EntityType instance.
+     */
     private final String value;
 
     EntityType(String value) {
@@ -30,12 +39,14 @@ public enum EntityType {
 
     /**
      * Parses a serialized value to a EntityType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed EntityType object, or null if unable to parse.
      */
-    @JsonCreator
     public static EntityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         EntityType[] items = EntityType.values();
         for (EntityType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,7 +56,9 @@ public enum EntityType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

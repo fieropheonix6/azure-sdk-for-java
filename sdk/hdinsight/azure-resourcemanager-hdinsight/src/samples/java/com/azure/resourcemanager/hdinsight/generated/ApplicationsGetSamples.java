@@ -4,33 +4,37 @@
 
 package com.azure.resourcemanager.hdinsight.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Applications Get. */
+/**
+ * Samples for Applications Get.
+ */
 public final class ApplicationsGetSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetApplicationInProgress.json
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * GetApplicationInProgress.json
      */
     /**
      * Sample code: Get application on HDInsight cluster creation in progress.
-     *
+     * 
      * @param manager Entry point to HDInsightManager.
      */
     public static void getApplicationOnHDInsightClusterCreationInProgress(
         com.azure.resourcemanager.hdinsight.HDInsightManager manager) {
-        manager.applications().getWithResponse("rg1", "cluster1", "app", Context.NONE);
+        manager.applications().getWithResponse("rg1", "cluster1", "app", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetApplicationCreated.json
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * GetApplicationCreated.json
      */
     /**
      * Sample code: Get application on HDInsight cluster successfully created.
-     *
+     * 
      * @param manager Entry point to HDInsightManager.
      */
     public static void getApplicationOnHDInsightClusterSuccessfullyCreated(
         com.azure.resourcemanager.hdinsight.HDInsightManager manager) {
-        manager.applications().getWithResponse("rg1", "cluster1", "app", Context.NONE);
+        manager.applications().getWithResponse("rg1", "cluster1", "app", com.azure.core.util.Context.NONE);
     }
 }

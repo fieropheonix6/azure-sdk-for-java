@@ -7,11 +7,11 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
-import java.util.List;
-import java.util.Locale;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -80,10 +80,19 @@ public class SampleCheckpointStore implements CheckpointStore {
             firstEntry.getConsumerGroup(), OWNERSHIP);
 
         return Flux.fromIterable(requestedPartitionOwnerships)
-            .filter(partitionOwnership -> {
-                return !partitionOwnershipMap.containsKey(partitionOwnership.getPartitionId())
-                    || partitionOwnershipMap.get(partitionOwnership.getPartitionId()).getETag()
-                    .equals(partitionOwnership.getETag());
+            .filter(ownershipRequest -> {
+                final String key = prefix + SEPARATOR + ownershipRequest.getPartitionId();
+                final PartitionOwnership existing = partitionOwnershipMap.get(key);
+
+                // There are no existing ownership records. Safe to claim.
+                if (existing == null) {
+                    return true;
+                }
+
+                // The eTag for the ownership request matches the one we have in our store.  If they did not match,
+                // it means that between the time the ownership request was being calculated and now, another thread,
+                // process, etc. updated the blob.  Consequently, we will deny this ownership request.
+                return existing.getETag().equals(ownershipRequest.getETag());
             })
             .doOnNext(partitionOwnership ->
                 LOGGER.atInfo()
@@ -93,7 +102,10 @@ public class SampleCheckpointStore implements CheckpointStore {
             .map(partitionOwnership -> {
                 partitionOwnership.setETag(UUID.randomUUID().toString())
                     .setLastModifiedTime(System.currentTimeMillis());
-                partitionOwnershipMap.put(prefix + SEPARATOR + partitionOwnership.getPartitionId(), partitionOwnership);
+
+                final String key = prefix + SEPARATOR + partitionOwnership.getPartitionId();
+                partitionOwnershipMap.put(key, partitionOwnership);
+
                 return partitionOwnership;
             });
     }

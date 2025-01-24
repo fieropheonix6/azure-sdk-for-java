@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information about the retry policy for an event subscription. */
+/**
+ * Information about the retry policy for an event subscription.
+ */
 @Fluent
-public final class RetryPolicy {
+public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
     /*
      * Maximum number of delivery retry attempts for events.
      */
-    @JsonProperty(value = "maxDeliveryAttempts")
     private Integer maxDeliveryAttempts;
 
     /*
      * Time To Live (in minutes) for events.
      */
-    @JsonProperty(value = "eventTimeToLiveInMinutes")
     private Integer eventTimeToLiveInMinutes;
 
     /**
+     * Creates an instance of RetryPolicy class.
+     */
+    public RetryPolicy() {
+    }
+
+    /**
      * Get the maxDeliveryAttempts property: Maximum number of delivery retry attempts for events.
-     *
+     * 
      * @return the maxDeliveryAttempts value.
      */
     public Integer maxDeliveryAttempts() {
@@ -33,7 +43,7 @@ public final class RetryPolicy {
 
     /**
      * Set the maxDeliveryAttempts property: Maximum number of delivery retry attempts for events.
-     *
+     * 
      * @param maxDeliveryAttempts the maxDeliveryAttempts value to set.
      * @return the RetryPolicy object itself.
      */
@@ -44,7 +54,7 @@ public final class RetryPolicy {
 
     /**
      * Get the eventTimeToLiveInMinutes property: Time To Live (in minutes) for events.
-     *
+     * 
      * @return the eventTimeToLiveInMinutes value.
      */
     public Integer eventTimeToLiveInMinutes() {
@@ -53,7 +63,7 @@ public final class RetryPolicy {
 
     /**
      * Set the eventTimeToLiveInMinutes property: Time To Live (in minutes) for events.
-     *
+     * 
      * @param eventTimeToLiveInMinutes the eventTimeToLiveInMinutes value to set.
      * @return the RetryPolicy object itself.
      */
@@ -64,9 +74,48 @@ public final class RetryPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("maxDeliveryAttempts", this.maxDeliveryAttempts);
+        jsonWriter.writeNumberField("eventTimeToLiveInMinutes", this.eventTimeToLiveInMinutes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RetryPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RetryPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RetryPolicy.
+     */
+    public static RetryPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RetryPolicy deserializedRetryPolicy = new RetryPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxDeliveryAttempts".equals(fieldName)) {
+                    deserializedRetryPolicy.maxDeliveryAttempts = reader.getNullable(JsonReader::getInt);
+                } else if ("eventTimeToLiveInMinutes".equals(fieldName)) {
+                    deserializedRetryPolicy.eventTimeToLiveInMinutes = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRetryPolicy;
+        });
     }
 }

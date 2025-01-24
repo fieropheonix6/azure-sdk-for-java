@@ -6,40 +6,42 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Integration runtime reference type. */
+/**
+ * Integration runtime reference type.
+ */
 @Fluent
-public final class IntegrationRuntimeReference {
+public final class IntegrationRuntimeReference implements JsonSerializable<IntegrationRuntimeReference> {
     /*
      * Type of integration runtime.
      */
-    @JsonProperty(value = "type", required = true)
-    private String type = "IntegrationRuntimeReference";
+    private final String type = "IntegrationRuntimeReference";
 
     /*
      * Reference integration runtime name.
      */
-    @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
     /*
      * Arguments for integration runtime.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> parameters;
 
-    /** Creates an instance of IntegrationRuntimeReference class. */
+    /**
+     * Creates an instance of IntegrationRuntimeReference class.
+     */
     public IntegrationRuntimeReference() {
-        type = "IntegrationRuntimeReference";
     }
 
     /**
      * Get the type property: Type of integration runtime.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -47,19 +49,8 @@ public final class IntegrationRuntimeReference {
     }
 
     /**
-     * Set the type property: Type of integration runtime.
-     *
-     * @param type the type value to set.
-     * @return the IntegrationRuntimeReference object itself.
-     */
-    public IntegrationRuntimeReference withType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
      * Get the referenceName property: Reference integration runtime name.
-     *
+     * 
      * @return the referenceName value.
      */
     public String referenceName() {
@@ -68,7 +59,7 @@ public final class IntegrationRuntimeReference {
 
     /**
      * Set the referenceName property: Reference integration runtime name.
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the IntegrationRuntimeReference object itself.
      */
@@ -79,7 +70,7 @@ public final class IntegrationRuntimeReference {
 
     /**
      * Get the parameters property: Arguments for integration runtime.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, Object> parameters() {
@@ -88,7 +79,7 @@ public final class IntegrationRuntimeReference {
 
     /**
      * Set the parameters property: Arguments for integration runtime.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the IntegrationRuntimeReference object itself.
      */
@@ -99,17 +90,58 @@ public final class IntegrationRuntimeReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (referenceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property referenceName in model IntegrationRuntimeReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property referenceName in model IntegrationRuntimeReference"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("referenceName", this.referenceName);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationRuntimeReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationRuntimeReference if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IntegrationRuntimeReference.
+     */
+    public static IntegrationRuntimeReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationRuntimeReference deserializedIntegrationRuntimeReference = new IntegrationRuntimeReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("referenceName".equals(fieldName)) {
+                    deserializedIntegrationRuntimeReference.referenceName = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, Object> parameters = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedIntegrationRuntimeReference.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationRuntimeReference;
+        });
+    }
 }

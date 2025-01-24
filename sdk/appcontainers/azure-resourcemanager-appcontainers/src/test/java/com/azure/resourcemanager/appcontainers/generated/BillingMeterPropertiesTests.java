@@ -6,33 +6,27 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.BillingMeterProperties;
-import com.azure.resourcemanager.appcontainers.models.Category;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BillingMeterPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        BillingMeterProperties model =
-            BinaryData
-                .fromString(
-                    "{\"category\":\"PremiumSkuGeneralPurpose\",\"meterType\":\"eqocljmygvk\",\"displayName\":\"kjjeokbz\"}")
-                .toObject(BillingMeterProperties.class);
-        Assertions.assertEquals(Category.PREMIUM_SKU_GENERAL_PURPOSE, model.category());
-        Assertions.assertEquals("eqocljmygvk", model.meterType());
-        Assertions.assertEquals("kjjeokbz", model.displayName());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        BillingMeterProperties model = BinaryData
+            .fromString("{\"category\":\"xlwhzlsicoh\",\"meterType\":\"qnwvlrya\",\"displayName\":\"hheunmmqhgyx\"}")
+            .toObject(BillingMeterProperties.class);
+        Assertions.assertEquals("xlwhzlsicoh", model.category());
+        Assertions.assertEquals("qnwvlrya", model.meterType());
+        Assertions.assertEquals("hheunmmqhgyx", model.displayName());
     }
 
-    @Test
-    public void testSerialize() {
-        BillingMeterProperties model =
-            new BillingMeterProperties()
-                .withCategory(Category.PREMIUM_SKU_GENERAL_PURPOSE)
-                .withMeterType("eqocljmygvk")
-                .withDisplayName("kjjeokbz");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        BillingMeterProperties model = new BillingMeterProperties().withCategory("xlwhzlsicoh")
+            .withMeterType("qnwvlrya")
+            .withDisplayName("hheunmmqhgyx");
         model = BinaryData.fromObject(model).toObject(BillingMeterProperties.class);
-        Assertions.assertEquals(Category.PREMIUM_SKU_GENERAL_PURPOSE, model.category());
-        Assertions.assertEquals("eqocljmygvk", model.meterType());
-        Assertions.assertEquals("kjjeokbz", model.displayName());
+        Assertions.assertEquals("xlwhzlsicoh", model.category());
+        Assertions.assertEquals("qnwvlrya", model.meterType());
+        Assertions.assertEquals("hheunmmqhgyx", model.displayName());
     }
 }

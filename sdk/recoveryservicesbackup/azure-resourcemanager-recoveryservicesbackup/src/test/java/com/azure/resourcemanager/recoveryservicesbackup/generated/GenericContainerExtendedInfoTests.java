@@ -10,46 +10,39 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.GenericContainerE
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class GenericContainerExtendedInfoTests {
-    @Test
-    public void testDeserialize() {
-        GenericContainerExtendedInfo model =
-            BinaryData
-                .fromString(
-                    "{\"rawCertData\":\"wflj\",\"containerIdentityInfo\":{\"uniqueName\":\"amtuatmzwcjjnc\",\"aadTenantId\":\"jzmizv\",\"servicePrincipalClientId\":\"gat\",\"audience\":\"uvbxngr\"},\"serviceEndpoints\":{\"lswva\":\"ggahtt\",\"zasunwqrjzfrgq\":\"qfutlxjo\",\"r\":\"aohcmbuocn\",\"yvk\":\"hmbpyryxamebly\"}}")
-                .toObject(GenericContainerExtendedInfo.class);
-        Assertions.assertEquals("wflj", model.rawCertData());
-        Assertions.assertEquals("amtuatmzwcjjnc", model.containerIdentityInfo().uniqueName());
-        Assertions.assertEquals("jzmizv", model.containerIdentityInfo().aadTenantId());
-        Assertions.assertEquals("gat", model.containerIdentityInfo().servicePrincipalClientId());
-        Assertions.assertEquals("uvbxngr", model.containerIdentityInfo().audience());
-        Assertions.assertEquals("ggahtt", model.serviceEndpoints().get("lswva"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        GenericContainerExtendedInfo model = BinaryData.fromString(
+            "{\"rawCertData\":\"mbltoo\",\"containerIdentityInfo\":{\"uniqueName\":\"fqlwxldykalsy\",\"aadTenantId\":\"olnjpnnbmjksibj\",\"servicePrincipalClientId\":\"jjxxahmrnadzyqe\",\"audience\":\"yi\"},\"serviceEndpoints\":{\"wbjijkgq\":\"nbm\",\"jauj\":\"nhmbkez\"}}")
+            .toObject(GenericContainerExtendedInfo.class);
+        Assertions.assertEquals("mbltoo", model.rawCertData());
+        Assertions.assertEquals("fqlwxldykalsy", model.containerIdentityInfo().uniqueName());
+        Assertions.assertEquals("olnjpnnbmjksibj", model.containerIdentityInfo().aadTenantId());
+        Assertions.assertEquals("jjxxahmrnadzyqe", model.containerIdentityInfo().servicePrincipalClientId());
+        Assertions.assertEquals("yi", model.containerIdentityInfo().audience());
+        Assertions.assertEquals("nbm", model.serviceEndpoints().get("wbjijkgq"));
     }
 
-    @Test
-    public void testSerialize() {
-        GenericContainerExtendedInfo model =
-            new GenericContainerExtendedInfo()
-                .withRawCertData("wflj")
-                .withContainerIdentityInfo(
-                    new ContainerIdentityInfo()
-                        .withUniqueName("amtuatmzwcjjnc")
-                        .withAadTenantId("jzmizv")
-                        .withServicePrincipalClientId("gat")
-                        .withAudience("uvbxngr"))
-                .withServiceEndpoints(
-                    mapOf("lswva", "ggahtt", "zasunwqrjzfrgq", "qfutlxjo", "r", "aohcmbuocn", "yvk", "hmbpyryxamebly"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        GenericContainerExtendedInfo model = new GenericContainerExtendedInfo().withRawCertData("mbltoo")
+            .withContainerIdentityInfo(new ContainerIdentityInfo().withUniqueName("fqlwxldykalsy")
+                .withAadTenantId("olnjpnnbmjksibj")
+                .withServicePrincipalClientId("jjxxahmrnadzyqe")
+                .withAudience("yi"))
+            .withServiceEndpoints(mapOf("wbjijkgq", "nbm", "jauj", "nhmbkez"));
         model = BinaryData.fromObject(model).toObject(GenericContainerExtendedInfo.class);
-        Assertions.assertEquals("wflj", model.rawCertData());
-        Assertions.assertEquals("amtuatmzwcjjnc", model.containerIdentityInfo().uniqueName());
-        Assertions.assertEquals("jzmizv", model.containerIdentityInfo().aadTenantId());
-        Assertions.assertEquals("gat", model.containerIdentityInfo().servicePrincipalClientId());
-        Assertions.assertEquals("uvbxngr", model.containerIdentityInfo().audience());
-        Assertions.assertEquals("ggahtt", model.serviceEndpoints().get("lswva"));
+        Assertions.assertEquals("mbltoo", model.rawCertData());
+        Assertions.assertEquals("fqlwxldykalsy", model.containerIdentityInfo().uniqueName());
+        Assertions.assertEquals("olnjpnnbmjksibj", model.containerIdentityInfo().aadTenantId());
+        Assertions.assertEquals("jjxxahmrnadzyqe", model.containerIdentityInfo().servicePrincipalClientId());
+        Assertions.assertEquals("yi", model.containerIdentityInfo().audience());
+        Assertions.assertEquals("nbm", model.serviceEndpoints().get("wbjijkgq"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -4,40 +4,39 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelineNextSyncPolicy;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
 /**
- * Pipeline policy that uses an {@link AzureKeyCredential} to set the authorization key for a request.
- * <p>
- * Requests sent with this pipeline policy are required to use {@code HTTPS}. If the request isn't using {@code HTTPS}
- * an exception will be thrown to prevent leaking the key.
+ * The {@code AzureKeyCredentialPolicy} class is an implementation of the {@link KeyCredentialPolicy} interface. This
+ * policy uses an {@link AzureKeyCredential} to set the authorization key for a request.
+ *
+ * <p>This class is useful when you need to authorize requests with a key from Azure.</p>
+ *
+ * <p>Requests sent with this pipeline policy are required to use {@code HTTPS}. If the request isn't using
+ * {@code HTTPS} an exception will be thrown to prevent leaking the key.</p>
+ *
+ * <p><strong>Code sample:</strong></p>
+ *
+ * <p>In this example, an {@code AzureKeyCredentialPolicy} is created with a key and a header name. The policy
+ * can be added to a pipeline. The requests sent by the pipeline will then include the specified header with the
+ * key as its value.</p>
+ *
+ * <!-- src_embed com.azure.core.http.policy.AzureKeyCredentialPolicy.constructor -->
+ * <pre>
+ * AzureKeyCredential credential = new AzureKeyCredential&#40;&quot;my_key&quot;&#41;;
+ * AzureKeyCredentialPolicy policy = new AzureKeyCredentialPolicy&#40;&quot;my_header&quot;, credential&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.AzureKeyCredentialPolicy.constructor -->
+ *
+ * @see com.azure.core.http.policy
+ * @see com.azure.core.http.policy.KeyCredentialPolicy
+ * @see com.azure.core.credential.AzureKeyCredential
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
  */
-public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
-    // AzureKeyCredentialPolicy can be a commonly used policy, use a static logger.
-    private static final ClientLogger LOGGER = new ClientLogger(AzureKeyCredentialPolicy.class);
-    private final HttpHeaderName name;
-    private final AzureKeyCredential credential;
-
-    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
-        @Override
-        protected void beforeSendingRequest(HttpPipelineCallContext context) {
-            if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
-            }
-
-            context.getHttpRequest().setHeader(name, credential.getKey());
-        }
-    };
-
+public final class AzureKeyCredentialPolicy extends KeyCredentialPolicy {
     /**
      * Creates a policy that uses the passed {@link AzureKeyCredential} to set the specified header name.
      *
@@ -47,23 +46,22 @@ public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
      * @throws IllegalArgumentException If {@code name} is empty.
      */
     public AzureKeyCredentialPolicy(String name, AzureKeyCredential credential) {
-        Objects.requireNonNull(credential, "'credential' cannot be null.");
-        Objects.requireNonNull(name, "'name' cannot be null.");
-        if (name.isEmpty()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty."));
-        }
-
-        this.name = HttpHeaderName.fromString(name);
-        this.credential = credential;
+        super(name, credential, null);
     }
 
-    @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return inner.process(context, next);
-    }
-
-    @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        return inner.processSync(context, next);
+    /**
+     * Creates a policy that uses the passed {@link AzureKeyCredential} to set the specified header name.
+     * <p>
+     * The {@code prefix} will be applied before the {@link AzureKeyCredential#getKey()} when setting the header. A
+     * space will be inserted between {@code prefix} and credential.
+     *
+     * @param name The name of the key header that will be set to {@link AzureKeyCredential#getKey()}.
+     * @param credential The {@link AzureKeyCredential} containing the authorization key to use.
+     * @param prefix The prefix to apply before the credential, for example "SharedAccessKey credential".
+     * @throws NullPointerException If {@code name} or {@code credential} is {@code null}.
+     * @throws IllegalArgumentException If {@code name} is empty.
+     */
+    public AzureKeyCredentialPolicy(String name, AzureKeyCredential credential, String prefix) {
+        super(name, Objects.requireNonNull(credential, "'credential' cannot be null."), prefix);
     }
 }

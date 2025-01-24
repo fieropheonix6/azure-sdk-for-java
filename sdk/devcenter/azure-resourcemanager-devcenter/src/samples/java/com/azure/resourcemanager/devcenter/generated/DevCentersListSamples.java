@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DevCenters List. */
+/**
+ * Samples for DevCenters List.
+ */
 public final class DevCentersListSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevCenters_ListBySubscription.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/
+     * DevCenters_ListBySubscription.json
      */
     /**
      * Sample code: DevCenters_ListBySubscription.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void devCentersListBySubscription(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.devCenters().list(null, Context.NONE);
+        manager.devCenters().list(null, com.azure.core.util.Context.NONE);
     }
 }

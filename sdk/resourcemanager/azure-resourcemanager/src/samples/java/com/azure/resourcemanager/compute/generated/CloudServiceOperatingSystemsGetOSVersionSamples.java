@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for CloudServiceOperatingSystems GetOSVersion. */
+/**
+ * Samples for CloudServiceOperatingSystems GetOSVersion.
+ */
 public final class CloudServiceOperatingSystemsGetOSVersionSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudServiceOSVersion_Get.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2024-11-04/examples/
+     * CloudServiceOSVersion_Get.json
      */
     /**
      * Sample code: Get Cloud Service OS Version.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getCloudServiceOSVersion(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getCloudServiceOperatingSystems()
-            .getOSVersionWithResponse("westus2", "WA-GUEST-OS-3.90_202010-02", Context.NONE);
+            .getOSVersionWithResponse("westus2", "WA-GUEST-OS-3.90_202010-02", com.azure.core.util.Context.NONE);
     }
 }

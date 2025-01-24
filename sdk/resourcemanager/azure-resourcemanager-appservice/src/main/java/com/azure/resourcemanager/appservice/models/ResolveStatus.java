@@ -4,45 +4,68 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ResolveStatus. */
+/**
+ * Defines values for ResolveStatus.
+ */
 public enum ResolveStatus {
-    /** Enum value Initialized. */
+    /**
+     * Enum value Initialized.
+     */
     INITIALIZED("Initialized"),
 
-    /** Enum value Resolved. */
+    /**
+     * Enum value Resolved.
+     */
     RESOLVED("Resolved"),
 
-    /** Enum value InvalidSyntax. */
+    /**
+     * Enum value InvalidSyntax.
+     */
     INVALID_SYNTAX("InvalidSyntax"),
 
-    /** Enum value MSINotEnabled. */
+    /**
+     * Enum value MSINotEnabled.
+     */
     MSINOT_ENABLED("MSINotEnabled"),
 
-    /** Enum value VaultNotFound. */
+    /**
+     * Enum value VaultNotFound.
+     */
     VAULT_NOT_FOUND("VaultNotFound"),
 
-    /** Enum value SecretNotFound. */
+    /**
+     * Enum value SecretNotFound.
+     */
     SECRET_NOT_FOUND("SecretNotFound"),
 
-    /** Enum value SecretVersionNotFound. */
+    /**
+     * Enum value SecretVersionNotFound.
+     */
     SECRET_VERSION_NOT_FOUND("SecretVersionNotFound"),
 
-    /** Enum value AccessToKeyVaultDenied. */
+    /**
+     * Enum value AccessToKeyVaultDenied.
+     */
     ACCESS_TO_KEY_VAULT_DENIED("AccessToKeyVaultDenied"),
 
-    /** Enum value OtherReasons. */
+    /**
+     * Enum value OtherReasons.
+     */
     OTHER_REASONS("OtherReasons"),
 
-    /** Enum value FetchTimedOut. */
+    /**
+     * Enum value FetchTimedOut.
+     */
     FETCH_TIMED_OUT("FetchTimedOut"),
 
-    /** Enum value UnauthorizedClient. */
+    /**
+     * Enum value UnauthorizedClient.
+     */
     UNAUTHORIZED_CLIENT("UnauthorizedClient");
 
-    /** The actual serialized value for a ResolveStatus instance. */
+    /**
+     * The actual serialized value for a ResolveStatus instance.
+     */
     private final String value;
 
     ResolveStatus(String value) {
@@ -51,12 +74,14 @@ public enum ResolveStatus {
 
     /**
      * Parses a serialized value to a ResolveStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ResolveStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static ResolveStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ResolveStatus[] items = ResolveStatus.values();
         for (ResolveStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -66,7 +91,9 @@ public enum ResolveStatus {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

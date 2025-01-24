@@ -5,38 +5,46 @@
 package com.azure.resourcemanager.azurestackhci.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ClusterIdentityResponseProperties model. */
+/**
+ * The ClusterIdentityResponseProperties model.
+ */
 @Fluent
-public final class ClusterIdentityResponseProperties {
+public final class ClusterIdentityResponseProperties implements JsonSerializable<ClusterIdentityResponseProperties> {
     /*
      * The aadClientId property.
      */
-    @JsonProperty(value = "aadClientId")
     private String aadClientId;
 
     /*
      * The aadTenantId property.
      */
-    @JsonProperty(value = "aadTenantId")
     private String aadTenantId;
 
     /*
      * The aadServicePrincipalObjectId property.
      */
-    @JsonProperty(value = "aadServicePrincipalObjectId")
     private String aadServicePrincipalObjectId;
 
     /*
      * The aadApplicationObjectId property.
      */
-    @JsonProperty(value = "aadApplicationObjectId")
     private String aadApplicationObjectId;
 
     /**
+     * Creates an instance of ClusterIdentityResponseProperties class.
+     */
+    public ClusterIdentityResponseProperties() {
+    }
+
+    /**
      * Get the aadClientId property: The aadClientId property.
-     *
+     * 
      * @return the aadClientId value.
      */
     public String aadClientId() {
@@ -45,7 +53,7 @@ public final class ClusterIdentityResponseProperties {
 
     /**
      * Set the aadClientId property: The aadClientId property.
-     *
+     * 
      * @param aadClientId the aadClientId value to set.
      * @return the ClusterIdentityResponseProperties object itself.
      */
@@ -56,7 +64,7 @@ public final class ClusterIdentityResponseProperties {
 
     /**
      * Get the aadTenantId property: The aadTenantId property.
-     *
+     * 
      * @return the aadTenantId value.
      */
     public String aadTenantId() {
@@ -65,7 +73,7 @@ public final class ClusterIdentityResponseProperties {
 
     /**
      * Set the aadTenantId property: The aadTenantId property.
-     *
+     * 
      * @param aadTenantId the aadTenantId value to set.
      * @return the ClusterIdentityResponseProperties object itself.
      */
@@ -76,7 +84,7 @@ public final class ClusterIdentityResponseProperties {
 
     /**
      * Get the aadServicePrincipalObjectId property: The aadServicePrincipalObjectId property.
-     *
+     * 
      * @return the aadServicePrincipalObjectId value.
      */
     public String aadServicePrincipalObjectId() {
@@ -85,7 +93,7 @@ public final class ClusterIdentityResponseProperties {
 
     /**
      * Set the aadServicePrincipalObjectId property: The aadServicePrincipalObjectId property.
-     *
+     * 
      * @param aadServicePrincipalObjectId the aadServicePrincipalObjectId value to set.
      * @return the ClusterIdentityResponseProperties object itself.
      */
@@ -96,7 +104,7 @@ public final class ClusterIdentityResponseProperties {
 
     /**
      * Get the aadApplicationObjectId property: The aadApplicationObjectId property.
-     *
+     * 
      * @return the aadApplicationObjectId value.
      */
     public String aadApplicationObjectId() {
@@ -105,7 +113,7 @@ public final class ClusterIdentityResponseProperties {
 
     /**
      * Set the aadApplicationObjectId property: The aadApplicationObjectId property.
-     *
+     * 
      * @param aadApplicationObjectId the aadApplicationObjectId value to set.
      * @return the ClusterIdentityResponseProperties object itself.
      */
@@ -116,9 +124,55 @@ public final class ClusterIdentityResponseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("aadClientId", this.aadClientId);
+        jsonWriter.writeStringField("aadTenantId", this.aadTenantId);
+        jsonWriter.writeStringField("aadServicePrincipalObjectId", this.aadServicePrincipalObjectId);
+        jsonWriter.writeStringField("aadApplicationObjectId", this.aadApplicationObjectId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterIdentityResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterIdentityResponseProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterIdentityResponseProperties.
+     */
+    public static ClusterIdentityResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterIdentityResponseProperties deserializedClusterIdentityResponseProperties
+                = new ClusterIdentityResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aadClientId".equals(fieldName)) {
+                    deserializedClusterIdentityResponseProperties.aadClientId = reader.getString();
+                } else if ("aadTenantId".equals(fieldName)) {
+                    deserializedClusterIdentityResponseProperties.aadTenantId = reader.getString();
+                } else if ("aadServicePrincipalObjectId".equals(fieldName)) {
+                    deserializedClusterIdentityResponseProperties.aadServicePrincipalObjectId = reader.getString();
+                } else if ("aadApplicationObjectId".equals(fieldName)) {
+                    deserializedClusterIdentityResponseProperties.aadApplicationObjectId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterIdentityResponseProperties;
+        });
     }
 }

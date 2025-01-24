@@ -5,34 +5,43 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The MongoDBCollectionGetPropertiesResource model. */
+/**
+ * The MongoDBCollectionGetPropertiesResource model.
+ */
 @Fluent
 public final class MongoDBCollectionGetPropertiesResource extends MongoDBCollectionResource {
     /*
      * A system generated property. A unique identifier.
      */
-    @JsonProperty(value = "_rid", access = JsonProperty.Access.WRITE_ONLY)
     private String rid;
 
     /*
      * A system generated property that denotes the last updated timestamp of the resource.
      */
-    @JsonProperty(value = "_ts", access = JsonProperty.Access.WRITE_ONLY)
     private Float ts;
 
     /*
      * A system generated property representing the resource etag required for optimistic concurrency control.
      */
-    @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
+     * Creates an instance of MongoDBCollectionGetPropertiesResource class.
+     */
+    public MongoDBCollectionGetPropertiesResource() {
+    }
+
+    /**
      * Get the rid property: A system generated property. A unique identifier.
-     *
+     * 
      * @return the rid value.
      */
     public String rid() {
@@ -41,7 +50,7 @@ public final class MongoDBCollectionGetPropertiesResource extends MongoDBCollect
 
     /**
      * Get the ts property: A system generated property that denotes the last updated timestamp of the resource.
-     *
+     * 
      * @return the ts value.
      */
     public Float ts() {
@@ -51,35 +60,43 @@ public final class MongoDBCollectionGetPropertiesResource extends MongoDBCollect
     /**
      * Get the etag property: A system generated property representing the resource etag required for optimistic
      * concurrency control.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBCollectionGetPropertiesResource withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBCollectionGetPropertiesResource withShardKey(Map<String, String> shardKey) {
         super.withShardKey(shardKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBCollectionGetPropertiesResource withIndexes(List<MongoIndex> indexes) {
         super.withIndexes(indexes);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBCollectionGetPropertiesResource withAnalyticalStorageTtl(Integer analyticalStorageTtl) {
         super.withAnalyticalStorageTtl(analyticalStorageTtl);
@@ -87,12 +104,106 @@ public final class MongoDBCollectionGetPropertiesResource extends MongoDBCollect
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MongoDBCollectionGetPropertiesResource withRestoreParameters(ResourceRestoreParameters restoreParameters) {
+        super.withRestoreParameters(restoreParameters);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MongoDBCollectionGetPropertiesResource withCreateMode(CreateMode createMode) {
+        super.withCreateMode(createMode);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (id() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property id in model MongoDBCollectionGetPropertiesResource"));
+        }
+        if (indexes() != null) {
+            indexes().forEach(e -> e.validate());
+        }
+        if (restoreParameters() != null) {
+            restoreParameters().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MongoDBCollectionGetPropertiesResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeMapField("shardKey", shardKey(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("indexes", indexes(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("analyticalStorageTtl", analyticalStorageTtl());
+        jsonWriter.writeJsonField("restoreParameters", restoreParameters());
+        jsonWriter.writeStringField("createMode", createMode() == null ? null : createMode().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MongoDBCollectionGetPropertiesResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MongoDBCollectionGetPropertiesResource if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MongoDBCollectionGetPropertiesResource.
+     */
+    public static MongoDBCollectionGetPropertiesResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MongoDBCollectionGetPropertiesResource deserializedMongoDBCollectionGetPropertiesResource
+                = new MongoDBCollectionGetPropertiesResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMongoDBCollectionGetPropertiesResource.withId(reader.getString());
+                } else if ("shardKey".equals(fieldName)) {
+                    Map<String, String> shardKey = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMongoDBCollectionGetPropertiesResource.withShardKey(shardKey);
+                } else if ("indexes".equals(fieldName)) {
+                    List<MongoIndex> indexes = reader.readArray(reader1 -> MongoIndex.fromJson(reader1));
+                    deserializedMongoDBCollectionGetPropertiesResource.withIndexes(indexes);
+                } else if ("analyticalStorageTtl".equals(fieldName)) {
+                    deserializedMongoDBCollectionGetPropertiesResource
+                        .withAnalyticalStorageTtl(reader.getNullable(JsonReader::getInt));
+                } else if ("restoreParameters".equals(fieldName)) {
+                    deserializedMongoDBCollectionGetPropertiesResource
+                        .withRestoreParameters(ResourceRestoreParameters.fromJson(reader));
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedMongoDBCollectionGetPropertiesResource
+                        .withCreateMode(CreateMode.fromString(reader.getString()));
+                } else if ("_rid".equals(fieldName)) {
+                    deserializedMongoDBCollectionGetPropertiesResource.rid = reader.getString();
+                } else if ("_ts".equals(fieldName)) {
+                    deserializedMongoDBCollectionGetPropertiesResource.ts = reader.getNullable(JsonReader::getFloat);
+                } else if ("_etag".equals(fieldName)) {
+                    deserializedMongoDBCollectionGetPropertiesResource.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMongoDBCollectionGetPropertiesResource;
+        });
     }
 }

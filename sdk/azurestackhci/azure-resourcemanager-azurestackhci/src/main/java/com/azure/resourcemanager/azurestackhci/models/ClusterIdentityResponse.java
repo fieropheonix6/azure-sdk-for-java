@@ -6,39 +6,41 @@ package com.azure.resourcemanager.azurestackhci.models;
 
 import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterIdentityResponseInner;
 
-/** An immutable client-side representation of ClusterIdentityResponse. */
+/**
+ * An immutable client-side representation of ClusterIdentityResponse.
+ */
 public interface ClusterIdentityResponse {
     /**
      * Gets the aadClientId property: The aadClientId property.
-     *
+     * 
      * @return the aadClientId value.
      */
     String aadClientId();
 
     /**
      * Gets the aadTenantId property: The aadTenantId property.
-     *
+     * 
      * @return the aadTenantId value.
      */
     String aadTenantId();
 
     /**
      * Gets the aadServicePrincipalObjectId property: The aadServicePrincipalObjectId property.
-     *
+     * 
      * @return the aadServicePrincipalObjectId value.
      */
     String aadServicePrincipalObjectId();
 
     /**
      * Gets the aadApplicationObjectId property: The aadApplicationObjectId property.
-     *
+     * 
      * @return the aadApplicationObjectId value.
      */
     String aadApplicationObjectId();
 
     /**
      * Gets the inner com.azure.resourcemanager.azurestackhci.fluent.models.ClusterIdentityResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     ClusterIdentityResponseInner innerModel();

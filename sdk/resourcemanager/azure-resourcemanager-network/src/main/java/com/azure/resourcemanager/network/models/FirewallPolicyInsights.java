@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Firewall Policy Insights. */
+/**
+ * Firewall Policy Insights.
+ */
 @Fluent
-public final class FirewallPolicyInsights {
+public final class FirewallPolicyInsights implements JsonSerializable<FirewallPolicyInsights> {
     /*
      * A flag to indicate if the insights are enabled on the policy.
      */
-    @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
     /*
      * Number of days the insights should be enabled on the policy.
      */
-    @JsonProperty(value = "retentionDays")
     private Integer retentionDays;
 
     /*
      * Workspaces needed to configure the Firewall Policy Insights.
      */
-    @JsonProperty(value = "logAnalyticsResources")
     private FirewallPolicyLogAnalyticsResources logAnalyticsResources;
 
-    /** Creates an instance of FirewallPolicyInsights class. */
+    /**
+     * Creates an instance of FirewallPolicyInsights class.
+     */
     public FirewallPolicyInsights() {
     }
 
     /**
      * Get the isEnabled property: A flag to indicate if the insights are enabled on the policy.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -43,7 +48,7 @@ public final class FirewallPolicyInsights {
 
     /**
      * Set the isEnabled property: A flag to indicate if the insights are enabled on the policy.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the FirewallPolicyInsights object itself.
      */
@@ -54,7 +59,7 @@ public final class FirewallPolicyInsights {
 
     /**
      * Get the retentionDays property: Number of days the insights should be enabled on the policy.
-     *
+     * 
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
@@ -63,7 +68,7 @@ public final class FirewallPolicyInsights {
 
     /**
      * Set the retentionDays property: Number of days the insights should be enabled on the policy.
-     *
+     * 
      * @param retentionDays the retentionDays value to set.
      * @return the FirewallPolicyInsights object itself.
      */
@@ -74,7 +79,7 @@ public final class FirewallPolicyInsights {
 
     /**
      * Get the logAnalyticsResources property: Workspaces needed to configure the Firewall Policy Insights.
-     *
+     * 
      * @return the logAnalyticsResources value.
      */
     public FirewallPolicyLogAnalyticsResources logAnalyticsResources() {
@@ -83,7 +88,7 @@ public final class FirewallPolicyInsights {
 
     /**
      * Set the logAnalyticsResources property: Workspaces needed to configure the Firewall Policy Insights.
-     *
+     * 
      * @param logAnalyticsResources the logAnalyticsResources value to set.
      * @return the FirewallPolicyInsights object itself.
      */
@@ -94,12 +99,55 @@ public final class FirewallPolicyInsights {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (logAnalyticsResources() != null) {
             logAnalyticsResources().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeNumberField("retentionDays", this.retentionDays);
+        jsonWriter.writeJsonField("logAnalyticsResources", this.logAnalyticsResources);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallPolicyInsights from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallPolicyInsights if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallPolicyInsights.
+     */
+    public static FirewallPolicyInsights fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallPolicyInsights deserializedFirewallPolicyInsights = new FirewallPolicyInsights();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedFirewallPolicyInsights.isEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("retentionDays".equals(fieldName)) {
+                    deserializedFirewallPolicyInsights.retentionDays = reader.getNullable(JsonReader::getInt);
+                } else if ("logAnalyticsResources".equals(fieldName)) {
+                    deserializedFirewallPolicyInsights.logAnalyticsResources
+                        = FirewallPolicyLogAnalyticsResources.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallPolicyInsights;
+        });
     }
 }

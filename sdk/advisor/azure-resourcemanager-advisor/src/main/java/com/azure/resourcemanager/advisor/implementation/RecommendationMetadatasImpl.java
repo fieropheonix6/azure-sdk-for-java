@@ -13,19 +13,28 @@ import com.azure.resourcemanager.advisor.fluent.RecommendationMetadatasClient;
 import com.azure.resourcemanager.advisor.fluent.models.MetadataEntityInner;
 import com.azure.resourcemanager.advisor.models.MetadataEntity;
 import com.azure.resourcemanager.advisor.models.RecommendationMetadatas;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RecommendationMetadatasImpl implements RecommendationMetadatas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendationMetadatasImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RecommendationMetadatasImpl.class);
 
     private final RecommendationMetadatasClient innerClient;
 
     private final com.azure.resourcemanager.advisor.AdvisorManager serviceManager;
 
-    public RecommendationMetadatasImpl(
-        RecommendationMetadatasClient innerClient, com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
+    public RecommendationMetadatasImpl(RecommendationMetadatasClient innerClient,
+        com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<MetadataEntity> getWithResponse(String name, Context context) {
+        Response<MetadataEntityInner> inner = this.serviceClient().getWithResponse(name, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MetadataEntityImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public MetadataEntity get(String name) {
@@ -37,27 +46,14 @@ public final class RecommendationMetadatasImpl implements RecommendationMetadata
         }
     }
 
-    public Response<MetadataEntity> getWithResponse(String name, Context context) {
-        Response<MetadataEntityInner> inner = this.serviceClient().getWithResponse(name, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new MetadataEntityImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<MetadataEntity> list() {
         PagedIterable<MetadataEntityInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new MetadataEntityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MetadataEntityImpl(inner1, this.manager()));
     }
 
     public PagedIterable<MetadataEntity> list(Context context) {
         PagedIterable<MetadataEntityInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new MetadataEntityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MetadataEntityImpl(inner1, this.manager()));
     }
 
     private RecommendationMetadatasClient serviceClient() {

@@ -5,39 +5,39 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datalakeanalytics.fluent.models.AddStorageAccountProperties;
+import java.io.IOException;
 
-/** The parameters used to add a new Azure Storage account while creating a new Data Lake Analytics account. */
-@JsonFlatten
+/**
+ * The parameters used to add a new Azure Storage account while creating a new Data Lake Analytics account.
+ */
 @Fluent
-public class AddStorageAccountWithAccountParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddStorageAccountWithAccountParameters.class);
-
+public final class AddStorageAccountWithAccountParameters
+    implements JsonSerializable<AddStorageAccountWithAccountParameters> {
     /*
      * The unique name of the Azure Storage account to add.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * The access key associated with this Azure Storage account that will be
-     * used to connect to it.
+     * The Azure Storage account properties to use when adding a new Azure Storage account.
      */
-    @JsonProperty(value = "properties.accessKey", required = true)
-    private String accessKey;
+    private AddStorageAccountProperties innerProperties = new AddStorageAccountProperties();
 
-    /*
-     * The optional suffix for the storage account.
+    /**
+     * Creates an instance of AddStorageAccountWithAccountParameters class.
      */
-    @JsonProperty(value = "properties.suffix")
-    private String suffix;
+    public AddStorageAccountWithAccountParameters() {
+    }
 
     /**
      * Get the name property: The unique name of the Azure Storage account to add.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -46,7 +46,7 @@ public class AddStorageAccountWithAccountParameters {
 
     /**
      * Set the name property: The unique name of the Azure Storage account to add.
-     *
+     * 
      * @param name the name value to set.
      * @return the AddStorageAccountWithAccountParameters object itself.
      */
@@ -56,64 +56,124 @@ public class AddStorageAccountWithAccountParameters {
     }
 
     /**
+     * Get the innerProperties property: The Azure Storage account properties to use when adding a new Azure Storage
+     * account.
+     * 
+     * @return the innerProperties value.
+     */
+    private AddStorageAccountProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the accessKey property: The access key associated with this Azure Storage account that will be used to
      * connect to it.
-     *
+     * 
      * @return the accessKey value.
      */
     public String accessKey() {
-        return this.accessKey;
+        return this.innerProperties() == null ? null : this.innerProperties().accessKey();
     }
 
     /**
      * Set the accessKey property: The access key associated with this Azure Storage account that will be used to
      * connect to it.
-     *
+     * 
      * @param accessKey the accessKey value to set.
      * @return the AddStorageAccountWithAccountParameters object itself.
      */
     public AddStorageAccountWithAccountParameters withAccessKey(String accessKey) {
-        this.accessKey = accessKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AddStorageAccountProperties();
+        }
+        this.innerProperties().withAccessKey(accessKey);
         return this;
     }
 
     /**
      * Get the suffix property: The optional suffix for the storage account.
-     *
+     * 
      * @return the suffix value.
      */
     public String suffix() {
-        return this.suffix;
+        return this.innerProperties() == null ? null : this.innerProperties().suffix();
     }
 
     /**
      * Set the suffix property: The optional suffix for the storage account.
-     *
+     * 
      * @param suffix the suffix value to set.
      * @return the AddStorageAccountWithAccountParameters object itself.
      */
     public AddStorageAccountWithAccountParameters withSuffix(String suffix) {
-        this.suffix = suffix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AddStorageAccountProperties();
+        }
+        this.innerProperties().withSuffix(suffix);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model AddStorageAccountWithAccountParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model AddStorageAccountWithAccountParameters"));
         }
-        if (accessKey() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property accessKey in model AddStorageAccountWithAccountParameters"));
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model AddStorageAccountWithAccountParameters"));
+        } else {
+            innerProperties().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AddStorageAccountWithAccountParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddStorageAccountWithAccountParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddStorageAccountWithAccountParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AddStorageAccountWithAccountParameters.
+     */
+    public static AddStorageAccountWithAccountParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddStorageAccountWithAccountParameters deserializedAddStorageAccountWithAccountParameters
+                = new AddStorageAccountWithAccountParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAddStorageAccountWithAccountParameters.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAddStorageAccountWithAccountParameters.innerProperties
+                        = AddStorageAccountProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddStorageAccountWithAccountParameters;
+        });
     }
 }

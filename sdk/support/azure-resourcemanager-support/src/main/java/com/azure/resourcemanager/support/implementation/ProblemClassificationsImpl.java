@@ -13,50 +13,46 @@ import com.azure.resourcemanager.support.fluent.ProblemClassificationsClient;
 import com.azure.resourcemanager.support.fluent.models.ProblemClassificationInner;
 import com.azure.resourcemanager.support.models.ProblemClassification;
 import com.azure.resourcemanager.support.models.ProblemClassifications;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProblemClassificationsImpl implements ProblemClassifications {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProblemClassificationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProblemClassificationsImpl.class);
 
     private final ProblemClassificationsClient innerClient;
 
     private final com.azure.resourcemanager.support.SupportManager serviceManager;
 
-    public ProblemClassificationsImpl(
-        ProblemClassificationsClient innerClient, com.azure.resourcemanager.support.SupportManager serviceManager) {
+    public ProblemClassificationsImpl(ProblemClassificationsClient innerClient,
+        com.azure.resourcemanager.support.SupportManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ProblemClassification> list(String serviceName) {
         PagedIterable<ProblemClassificationInner> inner = this.serviceClient().list(serviceName);
-        return Utils.mapPage(inner, inner1 -> new ProblemClassificationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProblemClassificationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ProblemClassification> list(String serviceName, Context context) {
         PagedIterable<ProblemClassificationInner> inner = this.serviceClient().list(serviceName, context);
-        return Utils.mapPage(inner, inner1 -> new ProblemClassificationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProblemClassificationImpl(inner1, this.manager()));
+    }
+
+    public Response<ProblemClassification> getWithResponse(String serviceName, String problemClassificationName,
+        Context context) {
+        Response<ProblemClassificationInner> inner
+            = this.serviceClient().getWithResponse(serviceName, problemClassificationName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ProblemClassificationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ProblemClassification get(String serviceName, String problemClassificationName) {
         ProblemClassificationInner inner = this.serviceClient().get(serviceName, problemClassificationName);
         if (inner != null) {
             return new ProblemClassificationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ProblemClassification> getWithResponse(
-        String serviceName, String problemClassificationName, Context context) {
-        Response<ProblemClassificationInner> inner =
-            this.serviceClient().getWithResponse(serviceName, problemClassificationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ProblemClassificationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

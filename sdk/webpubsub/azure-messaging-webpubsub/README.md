@@ -65,7 +65,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-webpubsub</artifactId>
-    <version>1.1.8</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 
@@ -115,6 +115,7 @@ When the client is connected, it can send messages to the upstream application, 
 ## Examples
 
 * [Broadcast message to entire hub](#broadcast-message-to-entire-hub)
+* [Send message to entire hub with filters](#broadcast-message-to-entire-hub-with-filter)
 * [Broadcast message to a group](#broadcast-message-to-a-group)
 * [Send message to a connection](#send-message-to-a-connection)
 * [Send message to a user](#send-message-to-a-user)
@@ -123,6 +124,25 @@ When the client is connected, it can send messages to the upstream application, 
 
 ```java readme-sample-broadcastToAll
 webPubSubServiceClient.sendToAll("Hello world!", WebPubSubContentType.TEXT_PLAIN);
+```
+
+### Broadcast message to entire hub with filter
+
+```java readme-sample-broadcastToAll-filter
+// send a text message to the entire hub with a filter on userId
+BinaryData message = BinaryData.fromString("Hello World - Broadcast test!");
+webPubSubServiceClient.sendToAllWithResponse(
+    message,
+    WebPubSubContentType.TEXT_PLAIN,
+    message.getLength(),
+    new RequestOptions().addQueryParam("filter", "userId ne 'user1'"));
+
+// send a text message to the entire hub with another filter on group
+webPubSubServiceClient.sendToAllWithResponse(
+    message,
+    WebPubSubContentType.TEXT_PLAIN,
+    message.getLength(),
+    new RequestOptions().addQueryParam("filter", "'GroupA' in groups and not('GroupB' in groups)"));
 ```
 
 ### Broadcast message to a group
@@ -153,7 +173,7 @@ be found here: [log levels][log_levels].
 ### Default HTTP Client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
-[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
 
 ### Default SSL library
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
@@ -182,7 +202,7 @@ comments.
 <!-- LINKS -->
 
 [azure_subscription]: https://azure.microsoft.com/free
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/webpubsub/azure-messaging-webpubsub/src
 [product_documentation]: https://aka.ms/awps/doc
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/webpubsub/azure-messaging-webpubsub/src/samples/README.md

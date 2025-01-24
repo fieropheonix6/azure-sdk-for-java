@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * App Service billing entity that contains information about meter which the Azure billing system utilizes to charge
@@ -17,19 +20,71 @@ public final class BillingMeterInner extends ProxyOnlyResource {
     /*
      * BillingMeter resource specific properties
      */
-    @JsonProperty(value = "properties")
     private BillingMeterProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of BillingMeterInner class.
+     */
+    public BillingMeterInner() {
+    }
 
     /**
      * Get the innerProperties property: BillingMeter resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BillingMeterProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BillingMeterInner withKind(String kind) {
         super.withKind(kind);
@@ -38,7 +93,7 @@ public final class BillingMeterInner extends ProxyOnlyResource {
 
     /**
      * Get the meterId property: Meter GUID onboarded in Commerce.
-     *
+     * 
      * @return the meterId value.
      */
     public String meterId() {
@@ -47,7 +102,7 @@ public final class BillingMeterInner extends ProxyOnlyResource {
 
     /**
      * Set the meterId property: Meter GUID onboarded in Commerce.
-     *
+     * 
      * @param meterId the meterId value to set.
      * @return the BillingMeterInner object itself.
      */
@@ -61,7 +116,7 @@ public final class BillingMeterInner extends ProxyOnlyResource {
 
     /**
      * Get the billingLocation property: Azure Location of billable resource.
-     *
+     * 
      * @return the billingLocation value.
      */
     public String billingLocation() {
@@ -70,7 +125,7 @@ public final class BillingMeterInner extends ProxyOnlyResource {
 
     /**
      * Set the billingLocation property: Azure Location of billable resource.
-     *
+     * 
      * @param billingLocation the billingLocation value to set.
      * @return the BillingMeterInner object itself.
      */
@@ -84,7 +139,7 @@ public final class BillingMeterInner extends ProxyOnlyResource {
 
     /**
      * Get the shortName property: Short Name from App Service Azure pricing Page.
-     *
+     * 
      * @return the shortName value.
      */
     public String shortName() {
@@ -93,7 +148,7 @@ public final class BillingMeterInner extends ProxyOnlyResource {
 
     /**
      * Set the shortName property: Short Name from App Service Azure pricing Page.
-     *
+     * 
      * @param shortName the shortName value to set.
      * @return the BillingMeterInner object itself.
      */
@@ -107,7 +162,7 @@ public final class BillingMeterInner extends ProxyOnlyResource {
 
     /**
      * Get the friendlyName property: Friendly name of the meter.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -116,7 +171,7 @@ public final class BillingMeterInner extends ProxyOnlyResource {
 
     /**
      * Set the friendlyName property: Friendly name of the meter.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the BillingMeterInner object itself.
      */
@@ -130,7 +185,7 @@ public final class BillingMeterInner extends ProxyOnlyResource {
 
     /**
      * Get the resourceType property: App Service ResourceType meter used for.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -139,7 +194,7 @@ public final class BillingMeterInner extends ProxyOnlyResource {
 
     /**
      * Set the resourceType property: App Service ResourceType meter used for.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the BillingMeterInner object itself.
      */
@@ -153,7 +208,7 @@ public final class BillingMeterInner extends ProxyOnlyResource {
 
     /**
      * Get the osType property: App Service OS type meter used for.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -162,7 +217,7 @@ public final class BillingMeterInner extends ProxyOnlyResource {
 
     /**
      * Set the osType property: App Service OS type meter used for.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the BillingMeterInner object itself.
      */
@@ -176,7 +231,7 @@ public final class BillingMeterInner extends ProxyOnlyResource {
 
     /**
      * Get the multiplier property: Meter Multiplier.
-     *
+     * 
      * @return the multiplier value.
      */
     public Double multiplier() {
@@ -185,7 +240,7 @@ public final class BillingMeterInner extends ProxyOnlyResource {
 
     /**
      * Set the multiplier property: Meter Multiplier.
-     *
+     * 
      * @param multiplier the multiplier value to set.
      * @return the BillingMeterInner object itself.
      */
@@ -199,14 +254,59 @@ public final class BillingMeterInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BillingMeterInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BillingMeterInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BillingMeterInner.
+     */
+    public static BillingMeterInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BillingMeterInner deserializedBillingMeterInner = new BillingMeterInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBillingMeterInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBillingMeterInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBillingMeterInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedBillingMeterInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBillingMeterInner.innerProperties = BillingMeterProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBillingMeterInner;
+        });
     }
 }

@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GalleryExpandParams. */
+/**
+ * Defines values for GalleryExpandParams.
+ */
 public final class GalleryExpandParams extends ExpandableStringEnum<GalleryExpandParams> {
-    /** Static value SharingProfile/Groups for GalleryExpandParams. */
+    /**
+     * Static value SharingProfile/Groups for GalleryExpandParams.
+     */
     public static final GalleryExpandParams SHARING_PROFILE_GROUPS = fromString("SharingProfile/Groups");
 
     /**
+     * Creates a new instance of GalleryExpandParams value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GalleryExpandParams() {
+    }
+
+    /**
      * Creates or finds a GalleryExpandParams from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GalleryExpandParams.
      */
-    @JsonCreator
     public static GalleryExpandParams fromString(String name) {
         return fromString(name, GalleryExpandParams.class);
     }
 
     /**
      * Gets known GalleryExpandParams values.
-     *
+     * 
      * @return known GalleryExpandParams values.
      */
     public static Collection<GalleryExpandParams> values() {

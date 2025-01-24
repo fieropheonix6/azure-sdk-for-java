@@ -7,8 +7,8 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.util.TestUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -22,48 +22,50 @@ import static org.mockito.Mockito.when;
 public class AzurePowerShellCredentialTest {
 
     @Test
-    public void getTokenMockAsync() throws Exception {
+    public void getTokenMockAsync() {
         // setup
         String token1 = "token1";
         TokenRequestContext request = new TokenRequestContext().addScopes("resourcename");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithAzurePowerShell(request))
-                .thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithAzurePowerShell(request))
+                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
+            })) {
 
             // test
             AzurePowerShellCredential credential = new AzurePowerShellCredentialBuilder().build();
             StepVerifier.create(credential.getToken(request))
-                    .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
-                            && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
-                    .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+                .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                    && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
+                .verifyComplete();
+            Assertions.assertNotNull(identityClientMock);
         }
 
     }
 
     @Test
-    public void azurePowerShellCredentialNotInstalledException() throws Exception {
+    public void azurePowerShellCredentialNotInstalledException() {
         // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("AzurePSNotInstalled");
 
         // mock
 
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithAzurePowerShell(request))
-                .thenReturn(Mono.error(new Exception("Azure PowerShell not installed")));
-            when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithAzurePowerShell(request))
+                    .thenReturn(Mono.error(new Exception("Azure PowerShell not installed")));
+                when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+            })) {
             // test
             AzurePowerShellCredential credential = new AzurePowerShellCredentialBuilder().build();
             StepVerifier.create(credential.getToken(request))
-                .expectErrorMatches(e -> e instanceof Exception && e.getMessage()
-                    .contains("Azure PowerShell not installed"))
+                .expectErrorMatches(
+                    e -> e instanceof Exception && e.getMessage().contains("Azure PowerShell not installed"))
                 .verify();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 }

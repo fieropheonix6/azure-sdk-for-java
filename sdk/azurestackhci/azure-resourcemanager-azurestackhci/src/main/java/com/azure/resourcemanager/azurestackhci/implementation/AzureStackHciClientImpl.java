@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.azurestackhci.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -12,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -25,8 +26,17 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.azurestackhci.fluent.ArcSettingsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.AzureStackHciClient;
 import com.azure.resourcemanager.azurestackhci.fluent.ClustersClient;
+import com.azure.resourcemanager.azurestackhci.fluent.DeploymentSettingsClient;
+import com.azure.resourcemanager.azurestackhci.fluent.EdgeDevicesClient;
 import com.azure.resourcemanager.azurestackhci.fluent.ExtensionsClient;
+import com.azure.resourcemanager.azurestackhci.fluent.OffersClient;
 import com.azure.resourcemanager.azurestackhci.fluent.OperationsClient;
+import com.azure.resourcemanager.azurestackhci.fluent.PublishersClient;
+import com.azure.resourcemanager.azurestackhci.fluent.SecuritySettingsClient;
+import com.azure.resourcemanager.azurestackhci.fluent.SkusClient;
+import com.azure.resourcemanager.azurestackhci.fluent.UpdateRunsClient;
+import com.azure.resourcemanager.azurestackhci.fluent.UpdatesClient;
+import com.azure.resourcemanager.azurestackhci.fluent.UpdateSummariesOperationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -36,123 +46,187 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the AzureStackHciClientImpl type. */
+/**
+ * Initializes a new instance of the AzureStackHciClientImpl type.
+ */
 @ServiceClient(builder = AzureStackHciClientBuilder.class)
 public final class AzureStackHciClientImpl implements AzureStackHciClient {
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
-     *
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The ArcSettingsClient object to access its operations. */
+    /**
+     * The ArcSettingsClient object to access its operations.
+     */
     private final ArcSettingsClient arcSettings;
 
     /**
      * Gets the ArcSettingsClient object to access its operations.
-     *
+     * 
      * @return the ArcSettingsClient object.
      */
     public ArcSettingsClient getArcSettings() {
         return this.arcSettings;
     }
 
-    /** The ClustersClient object to access its operations. */
+    /**
+     * The ClustersClient object to access its operations.
+     */
     private final ClustersClient clusters;
 
     /**
      * Gets the ClustersClient object to access its operations.
-     *
+     * 
      * @return the ClustersClient object.
      */
     public ClustersClient getClusters() {
         return this.clusters;
     }
 
-    /** The ExtensionsClient object to access its operations. */
+    /**
+     * The DeploymentSettingsClient object to access its operations.
+     */
+    private final DeploymentSettingsClient deploymentSettings;
+
+    /**
+     * Gets the DeploymentSettingsClient object to access its operations.
+     * 
+     * @return the DeploymentSettingsClient object.
+     */
+    public DeploymentSettingsClient getDeploymentSettings() {
+        return this.deploymentSettings;
+    }
+
+    /**
+     * The EdgeDevicesClient object to access its operations.
+     */
+    private final EdgeDevicesClient edgeDevices;
+
+    /**
+     * Gets the EdgeDevicesClient object to access its operations.
+     * 
+     * @return the EdgeDevicesClient object.
+     */
+    public EdgeDevicesClient getEdgeDevices() {
+        return this.edgeDevices;
+    }
+
+    /**
+     * The ExtensionsClient object to access its operations.
+     */
     private final ExtensionsClient extensions;
 
     /**
      * Gets the ExtensionsClient object to access its operations.
-     *
+     * 
      * @return the ExtensionsClient object.
      */
     public ExtensionsClient getExtensions() {
         return this.extensions;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OffersClient object to access its operations.
+     */
+    private final OffersClient offers;
+
+    /**
+     * Gets the OffersClient object to access its operations.
+     * 
+     * @return the OffersClient object.
+     */
+    public OffersClient getOffers() {
+        return this.offers;
+    }
+
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
@@ -160,37 +234,125 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
     }
 
     /**
+     * The PublishersClient object to access its operations.
+     */
+    private final PublishersClient publishers;
+
+    /**
+     * Gets the PublishersClient object to access its operations.
+     * 
+     * @return the PublishersClient object.
+     */
+    public PublishersClient getPublishers() {
+        return this.publishers;
+    }
+
+    /**
+     * The SecuritySettingsClient object to access its operations.
+     */
+    private final SecuritySettingsClient securitySettings;
+
+    /**
+     * Gets the SecuritySettingsClient object to access its operations.
+     * 
+     * @return the SecuritySettingsClient object.
+     */
+    public SecuritySettingsClient getSecuritySettings() {
+        return this.securitySettings;
+    }
+
+    /**
+     * The SkusClient object to access its operations.
+     */
+    private final SkusClient skus;
+
+    /**
+     * Gets the SkusClient object to access its operations.
+     * 
+     * @return the SkusClient object.
+     */
+    public SkusClient getSkus() {
+        return this.skus;
+    }
+
+    /**
+     * The UpdateRunsClient object to access its operations.
+     */
+    private final UpdateRunsClient updateRuns;
+
+    /**
+     * Gets the UpdateRunsClient object to access its operations.
+     * 
+     * @return the UpdateRunsClient object.
+     */
+    public UpdateRunsClient getUpdateRuns() {
+        return this.updateRuns;
+    }
+
+    /**
+     * The UpdateSummariesOperationsClient object to access its operations.
+     */
+    private final UpdateSummariesOperationsClient updateSummariesOperations;
+
+    /**
+     * Gets the UpdateSummariesOperationsClient object to access its operations.
+     * 
+     * @return the UpdateSummariesOperationsClient object.
+     */
+    public UpdateSummariesOperationsClient getUpdateSummariesOperations() {
+        return this.updateSummariesOperations;
+    }
+
+    /**
+     * The UpdatesClient object to access its operations.
+     */
+    private final UpdatesClient updates;
+
+    /**
+     * Gets the UpdatesClient object to access its operations.
+     * 
+     * @return the UpdatesClient object.
+     */
+    public UpdatesClient getUpdates() {
+        return this.updates;
+    }
+
+    /**
      * Initializes an instance of AzureStackHciClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
-    AzureStackHciClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    AzureStackHciClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-05-01";
+        this.apiVersion = "2024-04-01";
         this.arcSettings = new ArcSettingsClientImpl(this);
         this.clusters = new ClustersClientImpl(this);
+        this.deploymentSettings = new DeploymentSettingsClientImpl(this);
+        this.edgeDevices = new EdgeDevicesClientImpl(this);
         this.extensions = new ExtensionsClientImpl(this);
+        this.offers = new OffersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.publishers = new PublishersClientImpl(this);
+        this.securitySettings = new SecuritySettingsClientImpl(this);
+        this.skus = new SkusClientImpl(this);
+        this.updateRuns = new UpdateRunsClientImpl(this);
+        this.updateSummariesOperations = new UpdateSummariesOperationsClientImpl(this);
+        this.updates = new UpdatesClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -199,7 +361,7 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -209,7 +371,7 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -219,26 +381,15 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -251,19 +402,16 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -304,7 +452,7 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

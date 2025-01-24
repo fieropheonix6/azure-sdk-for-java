@@ -6,49 +6,58 @@ package com.azure.monitor.ingestion;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.JsonSerializerProviders;
-import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.monitor.ingestion.implementation.Batcher;
 import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesAsyncClient;
+import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesClient;
+import com.azure.monitor.ingestion.implementation.LogsIngestionRequest;
 import com.azure.monitor.ingestion.implementation.UploadLogsResponseHolder;
-import com.azure.monitor.ingestion.models.UploadLogsError;
-import com.azure.monitor.ingestion.models.UploadLogsOptions;
-import com.azure.monitor.ingestion.models.UploadLogsResult;
-import com.azure.monitor.ingestion.models.UploadLogsStatus;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import reactor.core.publisher.Flux;
+import com.azure.monitor.ingestion.models.LogsUploadError;
+import com.azure.monitor.ingestion.models.LogsUploadException;
+import com.azure.monitor.ingestion.models.LogsUploadOptions;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SynchronousSink;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.zip.GZIPOutputStream;
+import java.util.function.Consumer;
 
-import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.monitor.ingestion.implementation.Utils.GZIP;
+import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
+import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
 
 /**
- * The asynchronous client for uploading logs to Azure Monitor.
+ * <p>This class provides an asynchronous client for uploading custom logs to an Azure Monitor Log Analytics workspace.
+ * This client encapsulates REST API calls, used to send data to a Log Analytics workspace, into a set of asynchronous
+ * operations.</p>
+ *
+ * <h2>Getting Started</h2>
+ *
+ * <p>To create an instance of the {@link LogsIngestionClient}, use the {@link LogsIngestionClientBuilder} and configure
+ * the various options provided by the builder to customize the client as per your requirements. There are two required
+ * properties that should be set to build a client:
+ * <ol>
+ * <li>{@code endpoint} - The <a href="https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-endpoint-overview?tabs=portal#create-a-data-collection-endpoint">data collection endpoint</a>.
+ * See {@link LogsIngestionClientBuilder#endpoint(String) endpoint} method for more details.</li>
+ * <li>{@code credential} - The AAD authentication credential that has the "Monitoring Metrics Publisher" role assigned
+ * to it.
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>
+ * provides a variety of AAD credential types that can be used. See
+ * {@link LogsIngestionClientBuilder#credential(TokenCredential) credential} method for more details.</li>
+ * </ol>
  *
  * <p><strong>Instantiating an asynchronous Logs ingestion client</strong></p>
  * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionAsyncClient.instantiation -->
@@ -59,17 +68,41 @@ import static com.azure.core.util.FluxUtil.withContext;
  *         .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.instantiation -->
+ *
+ * <h3>Client Usage</h3>
+ *
+ * <p>
+ *     For additional information on how to use this client, see the following method documentation:
+ * </p>
+ *
+ * <ul>
+ *     <li>
+ *         {@link #upload(String, String, Iterable) upload(String, String, Iterable)} - Uploads
+ *         logs to a Log Analytics workspace.
+ *     </li>
+ *     <li>
+ *         {@link #upload(String, String, Iterable, LogsUploadOptions) upload(String, String, Iterable, LogsUploadOptions)}
+ *         - Uploads logs to a Log Analytics workspace with options to configure the upload request.
+ *     </li>
+ *     <li>
+ *         {@link #uploadWithResponse(String, String, BinaryData, RequestOptions) uploadWithResponse(String, String, BinaryData, RequestOptions)}
+ *         - Uploads logs to a Log Analytics workspace with options to configure the HTTP request.
+ *     </li>
+ * </ul>
+ *
+ * @see LogsIngestionClientBuilder
+ * @see LogsIngestionClient
+ * @see com.azure.monitor.ingestion
  */
 @ServiceClient(isAsync = true, builder = LogsIngestionClientBuilder.class)
 public final class LogsIngestionAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(LogsIngestionAsyncClient.class);
-    private static final String CONTENT_ENCODING = "Content-Encoding";
-    private static final long MAX_REQUEST_PAYLOAD_SIZE = 1024 * 1024; // 1 MB
-    private static final String GZIP = "gzip";
-    private static final JsonSerializer DEFAULT_SERIALIZER = JsonSerializerProviders.createInstance(true);
-
     private final IngestionUsingDataCollectionRulesAsyncClient service;
 
+    /**
+     * Creates a {@link LogsIngestionAsyncClient} that sends requests to the data collection endpoint.
+     *
+     * @param service The {@link IngestionUsingDataCollectionRulesClient} that the client routes its request through.
+     */
     LogsIngestionAsyncClient(IngestionUsingDataCollectionRulesAsyncClient service) {
         this.service = service;
     }
@@ -79,12 +112,18 @@ public final class LogsIngestionAsyncClient {
      * too large to be sent as a single request to the Azure Monitor service. In such cases, this method will split
      * the input logs into multiple smaller requests before sending to the service.
      *
+     * <p>
+     * Each log in the input collection must be a valid JSON object. The JSON object should match the
+     * <a href="https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-structure#streamdeclarations">schema defined
+     * by the stream name</a>. The stream's schema can be found in the Azure portal.
+     * </p>
+     *
      * <p><strong>Upload logs to Azure Monitor</strong></p>
      * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionAsyncClient.upload -->
      * <pre>
      * List&lt;Object&gt; logs = getLogs&#40;&#41;;
      * logsIngestionAsyncClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs&#41;
-     *         .subscribe&#40;result -&gt; System.out.println&#40;&quot;Logs upload result status &quot; + result.getStatus&#40;&#41;&#41;&#41;;
+     *         .subscribe&#40;&#41;;
      * </pre>
      * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.upload -->
      *
@@ -92,27 +131,37 @@ public final class LogsIngestionAsyncClient {
      * @param streamName the stream name configured in data collection rule that matches defines the structure of the
      * logs sent in this request.
      * @param logs the collection of logs to be uploaded.
-     * @return the result of the logs upload request.
+     * @return the {@link Mono} that completes on completion of the upload request.
      * @throws NullPointerException if any of {@code ruleId}, {@code streamName} or {@code logs} are null.
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadLogsResult> upload(String ruleId, String streamName, List<Object> logs) {
-        return upload(ruleId, streamName, logs, new UploadLogsOptions());
+    public Mono<Void> upload(String ruleId, String streamName, Iterable<Object> logs) {
+        return upload(ruleId, streamName, logs, new LogsUploadOptions());
     }
 
     /**
      * Uploads logs to Azure Monitor with specified data collection rule id and stream name. The input logs may be
      * too large to be sent as a single request to the Azure Monitor service. In such cases, this method will split
-     * the input logs into multiple smaller requests before sending to the service.
+     * the input logs into multiple smaller requests before sending to the service. If an
+     * {@link LogsUploadOptions#setLogsUploadErrorConsumer(Consumer) error handler} is set,
+     * then the service errors are surfaced to the error handler and the subscriber of this method won't receive an
+     * error signal.
+     *
+     * <p>
+     * Each log in the input collection must be a valid JSON object. The JSON object should match the
+     * <a href="https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-structure#streamdeclarations">schema defined
+     * by the stream name</a>. The stream's schema can be found in the Azure portal.
+     * </p>
+     *
      *
      * <p><strong>Upload logs to Azure Monitor</strong></p>
      * <!-- src_embed com.azure.monitor.ingestion.LogsIngestionAsyncClient.uploadWithConcurrency -->
      * <pre>
      * List&lt;Object&gt; logs = getLogs&#40;&#41;;
-     * UploadLogsOptions uploadLogsOptions = new UploadLogsOptions&#40;&#41;.setMaxConcurrency&#40;4&#41;;
-     * logsIngestionAsyncClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs, uploadLogsOptions&#41;
-     *         .subscribe&#40;result -&gt; System.out.println&#40;&quot;Logs upload result status &quot; + result.getStatus&#40;&#41;&#41;&#41;;
+     * LogsUploadOptions logsUploadOptions = new LogsUploadOptions&#40;&#41;.setMaxConcurrency&#40;4&#41;;
+     * logsIngestionAsyncClient.upload&#40;&quot;&lt;data-collection-rule-id&gt;&quot;, &quot;&lt;stream-name&gt;&quot;, logs, logsUploadOptions&#41;
+     *         .subscribe&#40;&#41;;
      * </pre>
      * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.uploadWithConcurrency -->
      *
@@ -121,18 +170,28 @@ public final class LogsIngestionAsyncClient {
      * logs sent in this request.
      * @param logs the collection of logs to be uploaded.
      * @param options the options to configure the upload request.
-     * @return the result of the logs upload request.
+     * @return the {@link Mono} that completes on completion of the upload request.
      * @throws NullPointerException if any of {@code ruleId}, {@code streamName} or {@code logs} are null.
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UploadLogsResult> upload(String ruleId, String streamName,
-                                         List<Object> logs, UploadLogsOptions options) {
+    public Mono<Void> upload(String ruleId, String streamName, Iterable<Object> logs, LogsUploadOptions options) {
         return withContext(context -> upload(ruleId, streamName, logs, options, context));
     }
 
     /**
-     * See error response code and error response message for more detail.
+     * This method is used to upload logs to Azure Monitor Log Analytics with specified data collection rule id and
+     * stream name. This upload method provides a more granular control of the HTTP request sent to the service. Use
+     * {@link RequestOptions} to configure the HTTP request.
+     *
+     * <p>
+     * The input logs should be a JSON array with each element in the array
+     * matching the <a href="https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-structure#streamdeclarations">schema defined
+     * by the stream name</a>. The stream's schema can be found in the Azure portal. This content will be gzipped before
+     * sending to the service. If the content is already gzipped, then set the {@code Content-Encoding} header to
+     * {@code gzip} using {@link RequestOptions#setHeader(HttpHeaderName, String) requestOptions} and pass the content
+     * as is.
+     * </p>
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -155,15 +214,15 @@ public final class LogsIngestionAsyncClient {
      * @param streamName The streamDeclaration name as defined in the Data Collection Rule.
      * @param logs An array of objects matching the schema defined by the provided stream.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> uploadWithResponse(
-            String ruleId, String streamName, BinaryData logs, RequestOptions requestOptions) {
+    public Mono<Response<Void>> uploadWithResponse(String ruleId, String streamName, BinaryData logs,
+        RequestOptions requestOptions) {
         Objects.requireNonNull(ruleId, "'ruleId' cannot be null.");
         Objects.requireNonNull(streamName, "'streamName' cannot be null.");
         Objects.requireNonNull(logs, "'logs' cannot be null.");
@@ -172,190 +231,85 @@ public final class LogsIngestionAsyncClient {
             requestOptions = new RequestOptions();
         }
         requestOptions.addRequestCallback(request -> {
-            HttpHeader httpHeader = request.getHeaders().get(CONTENT_ENCODING);
+            HttpHeader httpHeader = request.getHeaders().get(HttpHeaderName.CONTENT_ENCODING);
             if (httpHeader == null) {
                 BinaryData gzippedRequest = BinaryData.fromBytes(gzipRequest(logs.toBytes()));
                 request.setBody(gzippedRequest);
-                request.setHeader(CONTENT_ENCODING, GZIP);
+                request.setHeader(HttpHeaderName.CONTENT_ENCODING, GZIP);
             }
         });
         return service.uploadWithResponse(ruleId, streamName, logs, requestOptions);
     }
 
-    Mono<UploadLogsResult> upload(String ruleId, String streamName,
-                                  List<Object> logs, UploadLogsOptions options,
-                                  Context context) {
+    Mono<Void> upload(String ruleId, String streamName, Iterable<Object> logs, LogsUploadOptions options,
+        Context context) {
         return Mono.defer(() -> splitAndUpload(ruleId, streamName, logs, options, context));
     }
 
-    private Mono<UploadLogsResult> splitAndUpload(String ruleId, String streamName, List<Object> logs, UploadLogsOptions options, Context context) {
-        try {
-            Objects.requireNonNull(ruleId, "'ruleId' cannot be null.");
-            Objects.requireNonNull(streamName, "'streamName' cannot be null.");
-            Objects.requireNonNull(logs, "'logs' cannot be null.");
+    /**
+     * This method splits the input logs into < 1MB HTTP requests and uploads to the Azure Monitor service.
+     *
+     * @param ruleId The data collection rule id.
+     * @param streamName The stream name configured in the data collection rule.
+     * @param logs The input logs to upload.
+     * @param options The options to configure the upload request.
+     * @param context additional context that is passed through the Http pipeline during the service call. If no
+     * additional context is required, pass {@link Context#NONE} instead.
+     * @return the {@link Mono} that completes on completion of the upload request.
+     */
+    private Mono<Void> splitAndUpload(String ruleId, String streamName, Iterable<Object> logs,
+        LogsUploadOptions options, Context context) {
 
-            if (logs.isEmpty()) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("'logs' cannot be empty."));
-            }
+        int concurrency = getConcurrency(options);
 
-            ObjectSerializer serializer = DEFAULT_SERIALIZER;
+        return new Batcher(options, logs).toFlux()
+            .flatMapSequential(request -> uploadToService(ruleId, streamName, context, request), concurrency)
+            .<LogsUploadException>handle((responseHolder, sink) -> processResponse(options, responseHolder, sink))
+            .collectList()
+            .handle(this::processExceptions);
+    }
 
-            // set concurrency to 1 as default
-            int concurrency = 1;
+    private void processExceptions(List<LogsUploadException> result, SynchronousSink<Void> sink) {
+        long failedLogsCount = 0L;
+        List<HttpResponseException> exceptions = new ArrayList<>();
+        for (LogsUploadException exception : result) {
+            exceptions.addAll(exception.getLogsUploadErrors());
+            failedLogsCount += exception.getFailedLogsCount();
+        }
+        if (!exceptions.isEmpty()) {
+            sink.error(new LogsUploadException(exceptions, failedLogsCount));
+        } else {
+            sink.complete();
+        }
+    }
+
+    private void processResponse(LogsUploadOptions options, UploadLogsResponseHolder responseHolder,
+        SynchronousSink<LogsUploadException> sink) {
+        if (responseHolder.getException() != null) {
+            Consumer<LogsUploadError> uploadLogsErrorConsumer = null;
             if (options != null) {
-                if (options.getObjectSerializer() != null) {
-                    serializer = options.getObjectSerializer();
-                }
-                if (options.getMaxConcurrency() != null) {
-                    concurrency = options.getMaxConcurrency();
-                }
+                uploadLogsErrorConsumer = options.getLogsUploadErrorConsumer();
             }
-
-            List<List<Object>> logBatches = new ArrayList<>();
-            // TODO (srnagar): can improve memory usage by creating these request payloads right before sending the
-            //  request if the allowed concurrency is lower than the number of requests.
-            List<byte[]> requests = createGzipRequests(logs, serializer, logBatches);
-            RequestOptions requestOptions = new RequestOptions()
-                    .addHeader(CONTENT_ENCODING, GZIP)
-                    .setContext(context);
-
-            Iterator<List<Object>> logBatchesIterator = logBatches.iterator();
-            return Flux.fromIterable(requests)
-                    .flatMapSequential(bytes ->
-                            uploadToService(ruleId, streamName, requestOptions, bytes), concurrency)
-                    .map(responseHolder -> mapResult(logBatchesIterator, responseHolder))
-                    .collectList()
-                    .map(this::createResponse);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
-
-    private UploadLogsResult mapResult(Iterator<List<Object>> logBatchesIterator, UploadLogsResponseHolder responseHolder) {
-        List<Object> logsBatch = logBatchesIterator.next();
-        if (responseHolder.getStatus() == UploadLogsStatus.FAILURE) {
-            return new UploadLogsResult(responseHolder.getStatus(),
-                    Collections.singletonList(new UploadLogsError(responseHolder.getResponseError(), logsBatch)));
-        }
-        return new UploadLogsResult(UploadLogsStatus.SUCCESS, null);
-    }
-
-    private Mono<UploadLogsResponseHolder> uploadToService(String ruleId, String streamName, RequestOptions requestOptions, byte[] bytes) {
-        return service.uploadWithResponse(ruleId, streamName,
-                        BinaryData.fromBytes(bytes), requestOptions)
-                .map(response -> new UploadLogsResponseHolder(UploadLogsStatus.SUCCESS, null))
-                .onErrorResume(HttpResponseException.class,
-                        ex -> Mono.fromSupplier(() -> new UploadLogsResponseHolder(UploadLogsStatus.FAILURE,
-                                mapToResponseError(ex))));
-    }
-
-    /**
-     * Method to map the exception to {@link ResponseError}.
-     * @param ex the {@link HttpResponseException}.
-     * @return the mapped {@link ResponseError}.
-     */
-    private ResponseError mapToResponseError(HttpResponseException ex) {
-        ResponseError responseError = null;
-        // with DPG clients, the error object is just a LinkedHashMap and should map to the standard error
-        // response structure
-        // https://github.com/Azure/azure-rest-api-specs/blob/main/specification/common-types/data-plane/v1/types.json#L46
-        if (ex.getValue() instanceof LinkedHashMap<?, ?>) {
-            @SuppressWarnings("unchecked")
-            LinkedHashMap<String, Object> errorMap = (LinkedHashMap<String, Object>) ex.getValue();
-            if (errorMap.containsKey("error")) {
-                Object error = errorMap.get("error");
-                if (error instanceof LinkedHashMap<?, ?>) {
-                    @SuppressWarnings("unchecked")
-                    LinkedHashMap<String, String> errorDetails = (LinkedHashMap<String, String>) error;
-                    if (errorDetails.containsKey("code") && errorDetails.containsKey("message")) {
-                        responseError = new ResponseError(errorDetails.get("code"), errorDetails.get("message"));
-                    }
-                }
+            if (uploadLogsErrorConsumer != null) {
+                uploadLogsErrorConsumer
+                    .accept(new LogsUploadError(responseHolder.getException(), responseHolder.getRequest().getLogs()));
+                return;
             }
-        }
-        return responseError;
-    }
-
-    private UploadLogsResult createResponse(List<UploadLogsResult> results) {
-        int failureCount = 0;
-        List<UploadLogsError> errors =  new ArrayList<>();
-        for (UploadLogsResult result : results) {
-            if (result.getStatus() != UploadLogsStatus.SUCCESS) {
-                failureCount++;
-                errors.addAll(result.getErrors());
-            }
-        }
-        if (failureCount == 0) {
-            return new UploadLogsResult(UploadLogsStatus.SUCCESS, errors);
-        }
-        if (failureCount < results.size()) {
-            return new UploadLogsResult(UploadLogsStatus.PARTIAL_FAILURE, errors);
-        }
-        return new UploadLogsResult(UploadLogsStatus.FAILURE, errors);
-    }
-
-    private List<byte[]> createGzipRequests(List<Object> logs, ObjectSerializer serializer,
-                                            List<List<Object>> logBatches) {
-        try {
-            List<byte[]> requests = new ArrayList<>();
-            long currentBatchSize = 0;
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-            JsonGenerator generator = JsonFactory.builder().build().createGenerator(byteArrayOutputStream);
-            generator.writeStartArray();
-            List<String> serializedLogs = new ArrayList<>();
-
-            int currentBatchStart = 0;
-            for (int i = 0; i < logs.size(); i++) {
-                byte[] bytes = serializer.serializeToBytes(logs.get(i));
-                int currentLogSize = bytes.length;
-                currentBatchSize += currentLogSize;
-                if (currentBatchSize > MAX_REQUEST_PAYLOAD_SIZE) {
-                    writeLogsAndCloseJsonGenerator(generator, serializedLogs);
-                    requests.add(gzipRequest(byteArrayOutputStream.toByteArray()));
-
-                    byteArrayOutputStream = new ByteArrayOutputStream();
-                    generator = JsonFactory.builder().build().createGenerator(byteArrayOutputStream);
-                    generator.writeStartArray();
-                    currentBatchSize = currentLogSize;
-                    serializedLogs.clear();
-                    logBatches.add(logs.subList(currentBatchStart, i));
-                    currentBatchStart = i;
-                }
-                serializedLogs.add(new String(bytes, StandardCharsets.UTF_8));
-            }
-            if (currentBatchSize > 0) {
-                writeLogsAndCloseJsonGenerator(generator, serializedLogs);
-                requests.add(gzipRequest(byteArrayOutputStream.toByteArray()));
-                logBatches.add(logs.subList(currentBatchStart, logs.size()));
-            }
-            return requests;
-        } catch (IOException exception) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
+            // emit the responseHolder without the original logs only if there's an error and there's no
+            // error consumer
+            sink.next(new LogsUploadException(Collections.singletonList(responseHolder.getException()),
+                responseHolder.getRequest().getLogs().size()));
         }
     }
 
-    private void writeLogsAndCloseJsonGenerator(JsonGenerator generator, List<String> serializedLogs) throws IOException {
-        generator.writeRaw(serializedLogs.stream()
-                .collect(Collectors.joining(",")));
-        generator.writeEndArray();
-        generator.close();
-    }
-
-    /**
-     * Gzips the input byte array.
-     * @param bytes The input byte array.
-     * @return gzipped byte array.
-     */
-    private byte[] gzipRequest(byte[] bytes) {
-        // This should be moved to azure-core and should be enabled when the client library requests for gzipping the
-        // request body content.
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try (GZIPOutputStream zip = new GZIPOutputStream(byteArrayOutputStream)) {
-            zip.write(bytes);
-        } catch (IOException exception) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(exception));
-        }
-        return byteArrayOutputStream.toByteArray();
+    private Mono<UploadLogsResponseHolder> uploadToService(String ruleId, String streamName, Context context,
+        LogsIngestionRequest request) {
+        RequestOptions requestOptions
+            = new RequestOptions().addHeader(HttpHeaderName.CONTENT_ENCODING, GZIP).setContext(context);
+        return service
+            .uploadWithResponse(ruleId, streamName, BinaryData.fromBytes(request.getRequestBody()), requestOptions)
+            .map(response -> new UploadLogsResponseHolder(null, null))
+            .onErrorResume(HttpResponseException.class,
+                ex -> Mono.fromSupplier(() -> new UploadLogsResponseHolder(request, ex)));
     }
 }

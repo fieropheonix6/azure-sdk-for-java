@@ -5,34 +5,39 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
-/** AutoScale settings for the pool. */
+/**
+ * AutoScale settings for the pool.
+ */
 @Fluent
-public final class AutoScaleSettings {
+public final class AutoScaleSettings implements JsonSerializable<AutoScaleSettings> {
     /*
      * A formula for the desired number of compute nodes in the pool.
      */
-    @JsonProperty(value = "formula", required = true)
     private String formula;
 
     /*
-     * The time interval at which to automatically adjust the pool size according to the autoscale formula.
-     *
      * If omitted, the default value is 15 minutes (PT15M).
      */
-    @JsonProperty(value = "evaluationInterval")
     private Duration evaluationInterval;
 
-    /** Creates an instance of AutoScaleSettings class. */
+    /**
+     * Creates an instance of AutoScaleSettings class.
+     */
     public AutoScaleSettings() {
     }
 
     /**
      * Get the formula property: A formula for the desired number of compute nodes in the pool.
-     *
+     * 
      * @return the formula value.
      */
     public String formula() {
@@ -41,7 +46,7 @@ public final class AutoScaleSettings {
 
     /**
      * Set the formula property: A formula for the desired number of compute nodes in the pool.
-     *
+     * 
      * @param formula the formula value to set.
      * @return the AutoScaleSettings object itself.
      */
@@ -51,11 +56,8 @@ public final class AutoScaleSettings {
     }
 
     /**
-     * Get the evaluationInterval property: The time interval at which to automatically adjust the pool size according
-     * to the autoscale formula.
-     *
-     * <p>If omitted, the default value is 15 minutes (PT15M).
-     *
+     * Get the evaluationInterval property: If omitted, the default value is 15 minutes (PT15M).
+     * 
      * @return the evaluationInterval value.
      */
     public Duration evaluationInterval() {
@@ -63,11 +65,8 @@ public final class AutoScaleSettings {
     }
 
     /**
-     * Set the evaluationInterval property: The time interval at which to automatically adjust the pool size according
-     * to the autoscale formula.
-     *
-     * <p>If omitted, the default value is 15 minutes (PT15M).
-     *
+     * Set the evaluationInterval property: If omitted, the default value is 15 minutes (PT15M).
+     * 
      * @param evaluationInterval the evaluationInterval value to set.
      * @return the AutoScaleSettings object itself.
      */
@@ -78,16 +77,56 @@ public final class AutoScaleSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (formula() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property formula in model AutoScaleSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property formula in model AutoScaleSettings"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AutoScaleSettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("formula", this.formula);
+        jsonWriter.writeStringField("evaluationInterval", CoreUtils.durationToStringWithDays(this.evaluationInterval));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoScaleSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoScaleSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutoScaleSettings.
+     */
+    public static AutoScaleSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoScaleSettings deserializedAutoScaleSettings = new AutoScaleSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("formula".equals(fieldName)) {
+                    deserializedAutoScaleSettings.formula = reader.getString();
+                } else if ("evaluationInterval".equals(fieldName)) {
+                    deserializedAutoScaleSettings.evaluationInterval
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoScaleSettings;
+        });
+    }
 }

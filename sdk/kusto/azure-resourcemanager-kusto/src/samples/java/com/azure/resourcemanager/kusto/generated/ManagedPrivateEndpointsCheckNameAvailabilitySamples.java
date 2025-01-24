@@ -4,27 +4,25 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.kusto.models.ManagedPrivateEndpointsCheckNameRequest;
 
-/** Samples for ManagedPrivateEndpoints CheckNameAvailability. */
+/**
+ * Samples for ManagedPrivateEndpoints CheckNameAvailability.
+ */
 public final class ManagedPrivateEndpointsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoManagedPrivateEndpointsCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoManagedPrivateEndpointsCheckNameAvailability.json
      */
     /**
      * Sample code: KustoManagedPrivateEndpointsCheckNameAvailability.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void kustoManagedPrivateEndpointsCheckNameAvailability(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .managedPrivateEndpoints()
-            .checkNameAvailabilityWithResponse(
-                "kustorptest",
-                "kustoCluster",
-                new ManagedPrivateEndpointsCheckNameRequest().withName("pme1"),
-                Context.NONE);
+    public static void
+        kustoManagedPrivateEndpointsCheckNameAvailability(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.managedPrivateEndpoints()
+            .checkNameAvailabilityWithResponse("kustorptest", "kustoCluster",
+                new ManagedPrivateEndpointsCheckNameRequest().withName("pme1"), com.azure.core.util.Context.NONE);
     }
 }

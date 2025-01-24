@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Features Get. */
+/**
+ * Samples for Features Get.
+ */
 public final class FeaturesGetSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/getFeature.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/getFeature.json
      */
     /**
      * Sample code: Get feature.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getFeature(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .featureClient()
             .getFeatures()
-            .getWithResponse("Resource Provider Namespace", "feature", Context.NONE);
+            .getWithResponse("Resource Provider Namespace", "feature", com.azure.core.util.Context.NONE);
     }
 }

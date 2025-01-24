@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for CloudServices ListByResourceGroup. */
+/**
+ * Samples for CloudServices ListByResourceGroup.
+ */
 public final class CloudServicesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudService_List_ByResourceGroup.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2024-11-04/examples/
+     * CloudService_List_ByResourceGroup.json
      */
     /**
      * Sample code: List Cloud Services in a Resource Group.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listCloudServicesInAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getCloudServices()
-            .listByResourceGroup("ConstosoRG", Context.NONE);
+            .listByResourceGroup("ConstosoRG", com.azure.core.util.Context.NONE);
     }
 }

@@ -6,38 +6,46 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Cosmos DB Cassandra table resource object. */
+/**
+ * Cosmos DB Cassandra table resource object.
+ */
 @Fluent
-public class CassandraTableResource {
+public class CassandraTableResource implements JsonSerializable<CassandraTableResource> {
     /*
      * Name of the Cosmos DB Cassandra table
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Time to live of the Cosmos DB Cassandra table
      */
-    @JsonProperty(value = "defaultTtl")
     private Integer defaultTtl;
 
     /*
      * Schema of the Cosmos DB Cassandra table
      */
-    @JsonProperty(value = "schema")
     private CassandraSchema schema;
 
     /*
      * Analytical TTL.
      */
-    @JsonProperty(value = "analyticalStorageTtl")
     private Integer analyticalStorageTtl;
 
     /**
+     * Creates an instance of CassandraTableResource class.
+     */
+    public CassandraTableResource() {
+    }
+
+    /**
      * Get the id property: Name of the Cosmos DB Cassandra table.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -46,7 +54,7 @@ public class CassandraTableResource {
 
     /**
      * Set the id property: Name of the Cosmos DB Cassandra table.
-     *
+     * 
      * @param id the id value to set.
      * @return the CassandraTableResource object itself.
      */
@@ -57,7 +65,7 @@ public class CassandraTableResource {
 
     /**
      * Get the defaultTtl property: Time to live of the Cosmos DB Cassandra table.
-     *
+     * 
      * @return the defaultTtl value.
      */
     public Integer defaultTtl() {
@@ -66,7 +74,7 @@ public class CassandraTableResource {
 
     /**
      * Set the defaultTtl property: Time to live of the Cosmos DB Cassandra table.
-     *
+     * 
      * @param defaultTtl the defaultTtl value to set.
      * @return the CassandraTableResource object itself.
      */
@@ -77,7 +85,7 @@ public class CassandraTableResource {
 
     /**
      * Get the schema property: Schema of the Cosmos DB Cassandra table.
-     *
+     * 
      * @return the schema value.
      */
     public CassandraSchema schema() {
@@ -86,7 +94,7 @@ public class CassandraTableResource {
 
     /**
      * Set the schema property: Schema of the Cosmos DB Cassandra table.
-     *
+     * 
      * @param schema the schema value to set.
      * @return the CassandraTableResource object itself.
      */
@@ -97,7 +105,7 @@ public class CassandraTableResource {
 
     /**
      * Get the analyticalStorageTtl property: Analytical TTL.
-     *
+     * 
      * @return the analyticalStorageTtl value.
      */
     public Integer analyticalStorageTtl() {
@@ -106,7 +114,7 @@ public class CassandraTableResource {
 
     /**
      * Set the analyticalStorageTtl property: Analytical TTL.
-     *
+     * 
      * @param analyticalStorageTtl the analyticalStorageTtl value to set.
      * @return the CassandraTableResource object itself.
      */
@@ -117,14 +125,13 @@ public class CassandraTableResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model CassandraTableResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model CassandraTableResource"));
         }
         if (schema() != null) {
             schema().validate();
@@ -132,4 +139,50 @@ public class CassandraTableResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CassandraTableResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeNumberField("defaultTtl", this.defaultTtl);
+        jsonWriter.writeJsonField("schema", this.schema);
+        jsonWriter.writeNumberField("analyticalStorageTtl", this.analyticalStorageTtl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CassandraTableResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CassandraTableResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CassandraTableResource.
+     */
+    public static CassandraTableResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CassandraTableResource deserializedCassandraTableResource = new CassandraTableResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCassandraTableResource.id = reader.getString();
+                } else if ("defaultTtl".equals(fieldName)) {
+                    deserializedCassandraTableResource.defaultTtl = reader.getNullable(JsonReader::getInt);
+                } else if ("schema".equals(fieldName)) {
+                    deserializedCassandraTableResource.schema = CassandraSchema.fromJson(reader);
+                } else if ("analyticalStorageTtl".equals(fieldName)) {
+                    deserializedCassandraTableResource.analyticalStorageTtl = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCassandraTableResource;
+        });
+    }
 }

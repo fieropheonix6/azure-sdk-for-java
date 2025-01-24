@@ -6,20 +6,17 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.ImageVersionListResult;
-import org.junit.jupiter.api.Test;
 
 public final class ImageVersionListResultTests {
-    @Test
-    public void testDeserialize() {
-        ImageVersionListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"name\":\"v\",\"publishedDate\":\"2021-10-15T07:07:10Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":1894973970,\"provisioningState\":\"Created\"},\"id\":\"otwmcyn\",\"name\":\"wlbjnpgacftade\",\"type\":\"xnltyfsoppu\"},{\"properties\":{\"name\":\"snzwd\",\"publishedDate\":\"2021-03-20T11:41:09Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":1996811861,\"provisioningState\":\"Failed\"},\"id\":\"mohctb\",\"name\":\"vudwx\",\"type\":\"ndnvo\"}],\"nextLink\":\"ujjugwdkcglh\"}")
-                .toObject(ImageVersionListResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ImageVersionListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"name\":\"upqsx\",\"publishedDate\":\"2021-01-21T16:22:25Z\",\"excludeFromLatest\":false,\"osDiskImageSizeInGb\":1892680320,\"provisioningState\":\"Failed\"},\"id\":\"o\",\"name\":\"eil\",\"type\":\"vnotyfjfcnj\"},{\"properties\":{\"name\":\"nxdhbt\",\"publishedDate\":\"2020-12-23T07:25:08Z\",\"excludeFromLatest\":false,\"osDiskImageSizeInGb\":1501927720,\"provisioningState\":\"MovingResources\"},\"id\":\"t\",\"name\":\"qnermclfplphoxu\",\"type\":\"crpab\"},{\"properties\":{\"name\":\"psbjta\",\"publishedDate\":\"2021-10-14T16:25:44Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":2007801220,\"provisioningState\":\"Created\"},\"id\":\"eef\",\"name\":\"zwfqkqujidsuyon\",\"type\":\"bglaocqxtccm\"}],\"nextLink\":\"udxytlmoyrx\"}")
+            .toObject(ImageVersionListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ImageVersionListResult model = new ImageVersionListResult();
         model = BinaryData.fromObject(model).toObject(ImageVersionListResult.class);
     }

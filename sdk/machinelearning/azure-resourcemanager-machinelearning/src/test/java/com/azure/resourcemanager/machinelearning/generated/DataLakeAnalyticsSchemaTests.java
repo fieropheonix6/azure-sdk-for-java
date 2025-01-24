@@ -8,24 +8,21 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.DataLakeAnalyticsSchema;
 import com.azure.resourcemanager.machinelearning.models.DataLakeAnalyticsSchemaProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DataLakeAnalyticsSchemaTests {
-    @Test
-    public void testDeserialize() {
-        DataLakeAnalyticsSchema model =
-            BinaryData
-                .fromString("{\"properties\":{\"dataLakeStoreAccountName\":\"mg\"}}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DataLakeAnalyticsSchema model
+            = BinaryData.fromString("{\"properties\":{\"dataLakeStoreAccountName\":\"dbmp\"}}")
                 .toObject(DataLakeAnalyticsSchema.class);
-        Assertions.assertEquals("mg", model.properties().dataLakeStoreAccountName());
+        Assertions.assertEquals("dbmp", model.properties().dataLakeStoreAccountName());
     }
 
-    @Test
-    public void testSerialize() {
-        DataLakeAnalyticsSchema model =
-            new DataLakeAnalyticsSchema()
-                .withProperties(new DataLakeAnalyticsSchemaProperties().withDataLakeStoreAccountName("mg"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DataLakeAnalyticsSchema model = new DataLakeAnalyticsSchema()
+            .withProperties(new DataLakeAnalyticsSchemaProperties().withDataLakeStoreAccountName("dbmp"));
         model = BinaryData.fromObject(model).toObject(DataLakeAnalyticsSchema.class);
-        Assertions.assertEquals("mg", model.properties().dataLakeStoreAccountName());
+        Assertions.assertEquals("dbmp", model.properties().dataLakeStoreAccountName());
     }
 }

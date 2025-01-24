@@ -6,43 +6,48 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.Activity;
 import com.azure.resourcemanager.datafactory.models.Expression;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** IfCondition activity properties. */
+/**
+ * IfCondition activity properties.
+ */
 @Fluent
-public final class IfConditionActivityTypeProperties {
+public final class IfConditionActivityTypeProperties implements JsonSerializable<IfConditionActivityTypeProperties> {
     /*
-     * An expression that would evaluate to Boolean. This is used to determine the block of activities
-     * (ifTrueActivities or ifFalseActivities) that will be executed.
+     * An expression that would evaluate to Boolean. This is used to determine the block of activities (ifTrueActivities
+     * or ifFalseActivities) that will be executed.
      */
-    @JsonProperty(value = "expression", required = true)
     private Expression expression;
 
     /*
      * List of activities to execute if expression is evaluated to true. This is an optional property and if not
      * provided, the activity will exit without any action.
      */
-    @JsonProperty(value = "ifTrueActivities")
     private List<Activity> ifTrueActivities;
 
     /*
      * List of activities to execute if expression is evaluated to false. This is an optional property and if not
      * provided, the activity will exit without any action.
      */
-    @JsonProperty(value = "ifFalseActivities")
     private List<Activity> ifFalseActivities;
 
-    /** Creates an instance of IfConditionActivityTypeProperties class. */
+    /**
+     * Creates an instance of IfConditionActivityTypeProperties class.
+     */
     public IfConditionActivityTypeProperties() {
     }
 
     /**
      * Get the expression property: An expression that would evaluate to Boolean. This is used to determine the block of
      * activities (ifTrueActivities or ifFalseActivities) that will be executed.
-     *
+     * 
      * @return the expression value.
      */
     public Expression expression() {
@@ -52,7 +57,7 @@ public final class IfConditionActivityTypeProperties {
     /**
      * Set the expression property: An expression that would evaluate to Boolean. This is used to determine the block of
      * activities (ifTrueActivities or ifFalseActivities) that will be executed.
-     *
+     * 
      * @param expression the expression value to set.
      * @return the IfConditionActivityTypeProperties object itself.
      */
@@ -64,7 +69,7 @@ public final class IfConditionActivityTypeProperties {
     /**
      * Get the ifTrueActivities property: List of activities to execute if expression is evaluated to true. This is an
      * optional property and if not provided, the activity will exit without any action.
-     *
+     * 
      * @return the ifTrueActivities value.
      */
     public List<Activity> ifTrueActivities() {
@@ -74,7 +79,7 @@ public final class IfConditionActivityTypeProperties {
     /**
      * Set the ifTrueActivities property: List of activities to execute if expression is evaluated to true. This is an
      * optional property and if not provided, the activity will exit without any action.
-     *
+     * 
      * @param ifTrueActivities the ifTrueActivities value to set.
      * @return the IfConditionActivityTypeProperties object itself.
      */
@@ -86,7 +91,7 @@ public final class IfConditionActivityTypeProperties {
     /**
      * Get the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is an
      * optional property and if not provided, the activity will exit without any action.
-     *
+     * 
      * @return the ifFalseActivities value.
      */
     public List<Activity> ifFalseActivities() {
@@ -96,7 +101,7 @@ public final class IfConditionActivityTypeProperties {
     /**
      * Set the ifFalseActivities property: List of activities to execute if expression is evaluated to false. This is an
      * optional property and if not provided, the activity will exit without any action.
-     *
+     * 
      * @param ifFalseActivities the ifFalseActivities value to set.
      * @return the IfConditionActivityTypeProperties object itself.
      */
@@ -107,15 +112,14 @@ public final class IfConditionActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (expression() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property expression in model IfConditionActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property expression in model IfConditionActivityTypeProperties"));
         } else {
             expression().validate();
         }
@@ -128,4 +132,52 @@ public final class IfConditionActivityTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IfConditionActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("expression", this.expression);
+        jsonWriter.writeArrayField("ifTrueActivities", this.ifTrueActivities,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ifFalseActivities", this.ifFalseActivities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IfConditionActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IfConditionActivityTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IfConditionActivityTypeProperties.
+     */
+    public static IfConditionActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IfConditionActivityTypeProperties deserializedIfConditionActivityTypeProperties
+                = new IfConditionActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("expression".equals(fieldName)) {
+                    deserializedIfConditionActivityTypeProperties.expression = Expression.fromJson(reader);
+                } else if ("ifTrueActivities".equals(fieldName)) {
+                    List<Activity> ifTrueActivities = reader.readArray(reader1 -> Activity.fromJson(reader1));
+                    deserializedIfConditionActivityTypeProperties.ifTrueActivities = ifTrueActivities;
+                } else if ("ifFalseActivities".equals(fieldName)) {
+                    List<Activity> ifFalseActivities = reader.readArray(reader1 -> Activity.fromJson(reader1));
+                    deserializedIfConditionActivityTypeProperties.ifFalseActivities = ifFalseActivities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIfConditionActivityTypeProperties;
+        });
+    }
 }

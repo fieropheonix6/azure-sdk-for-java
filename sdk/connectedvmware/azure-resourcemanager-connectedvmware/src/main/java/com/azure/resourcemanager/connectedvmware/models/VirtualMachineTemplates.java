@@ -8,13 +8,31 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of VirtualMachineTemplates. */
+/**
+ * Resource collection API of VirtualMachineTemplates.
+ */
 public interface VirtualMachineTemplates {
     /**
      * Gets a virtual machine template.
-     *
-     * <p>Implements virtual machine template GET method.
-     *
+     * 
+     * Implements virtual machine template GET method.
+     * 
+     * @param resourceGroupName The Resource Group Name.
+     * @param virtualMachineTemplateName Name of the virtual machine template resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the virtualMachineTemplate along with {@link Response}.
+     */
+    Response<VirtualMachineTemplate> getByResourceGroupWithResponse(String resourceGroupName,
+        String virtualMachineTemplateName, Context context);
+
+    /**
+     * Gets a virtual machine template.
+     * 
+     * Implements virtual machine template GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -25,40 +43,10 @@ public interface VirtualMachineTemplates {
     VirtualMachineTemplate getByResourceGroup(String resourceGroupName, String virtualMachineTemplateName);
 
     /**
-     * Gets a virtual machine template.
-     *
-     * <p>Implements virtual machine template GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param virtualMachineTemplateName Name of the virtual machine template resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the virtualMachineTemplate along with {@link Response}.
-     */
-    Response<VirtualMachineTemplate> getByResourceGroupWithResponse(
-        String resourceGroupName, String virtualMachineTemplateName, Context context);
-
-    /**
      * Deletes an virtual machine template.
-     *
-     * <p>Implements virtual machine template DELETE method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param virtualMachineTemplateName Name of the virtual machine template resource.
-     * @param force Whether force delete was specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String virtualMachineTemplateName, Boolean force);
-
-    /**
-     * Deletes an virtual machine template.
-     *
-     * <p>Implements virtual machine template DELETE method.
-     *
+     * 
+     * Implements virtual machine template DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -69,9 +57,9 @@ public interface VirtualMachineTemplates {
 
     /**
      * Deletes an virtual machine template.
-     *
-     * <p>Implements virtual machine template DELETE method.
-     *
+     * 
+     * Implements virtual machine template DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualMachineTemplateName Name of the virtual machine template resource.
      * @param force Whether force delete was specified.
@@ -84,9 +72,9 @@ public interface VirtualMachineTemplates {
 
     /**
      * Implements GET virtualMachineTemplates in a subscription.
-     *
-     * <p>List of virtualMachineTemplates in a subscription.
-     *
+     * 
+     * List of virtualMachineTemplates in a subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of VirtualMachineTemplates as paginated response with {@link PagedIterable}.
@@ -95,9 +83,9 @@ public interface VirtualMachineTemplates {
 
     /**
      * Implements GET virtualMachineTemplates in a subscription.
-     *
-     * <p>List of virtualMachineTemplates in a subscription.
-     *
+     * 
+     * List of virtualMachineTemplates in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -108,9 +96,9 @@ public interface VirtualMachineTemplates {
 
     /**
      * Implements GET virtualMachineTemplates in a resource group.
-     *
-     * <p>List of virtualMachineTemplates in a resource group.
-     *
+     * 
+     * List of virtualMachineTemplates in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -121,9 +109,9 @@ public interface VirtualMachineTemplates {
 
     /**
      * Implements GET virtualMachineTemplates in a resource group.
-     *
-     * <p>List of virtualMachineTemplates in a resource group.
-     *
+     * 
+     * List of virtualMachineTemplates in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,9 +123,9 @@ public interface VirtualMachineTemplates {
 
     /**
      * Gets a virtual machine template.
-     *
-     * <p>Implements virtual machine template GET method.
-     *
+     * 
+     * Implements virtual machine template GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -148,9 +136,9 @@ public interface VirtualMachineTemplates {
 
     /**
      * Gets a virtual machine template.
-     *
-     * <p>Implements virtual machine template GET method.
-     *
+     * 
+     * Implements virtual machine template GET method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -162,9 +150,9 @@ public interface VirtualMachineTemplates {
 
     /**
      * Deletes an virtual machine template.
-     *
-     * <p>Implements virtual machine template DELETE method.
-     *
+     * 
+     * Implements virtual machine template DELETE method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -174,9 +162,9 @@ public interface VirtualMachineTemplates {
 
     /**
      * Deletes an virtual machine template.
-     *
-     * <p>Implements virtual machine template DELETE method.
-     *
+     * 
+     * Implements virtual machine template DELETE method.
+     * 
      * @param id the resource ID.
      * @param force Whether force delete was specified.
      * @param context The context to associate with this operation.
@@ -188,7 +176,7 @@ public interface VirtualMachineTemplates {
 
     /**
      * Begins definition for a new VirtualMachineTemplate resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new VirtualMachineTemplate definition.
      */

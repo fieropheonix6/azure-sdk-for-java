@@ -6,33 +6,40 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Azure Data Explorer command activity properties. */
+/**
+ * Azure Data Explorer command activity properties.
+ */
 @Fluent
-public final class AzureDataExplorerCommandActivityTypeProperties {
+public final class AzureDataExplorerCommandActivityTypeProperties
+    implements JsonSerializable<AzureDataExplorerCommandActivityTypeProperties> {
     /*
      * A control command, according to the Azure Data Explorer command syntax. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "command", required = true)
     private Object command;
 
     /*
      * Control command timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..)
      */
-    @JsonProperty(value = "commandTimeout")
     private Object commandTimeout;
 
-    /** Creates an instance of AzureDataExplorerCommandActivityTypeProperties class. */
+    /**
+     * Creates an instance of AzureDataExplorerCommandActivityTypeProperties class.
+     */
     public AzureDataExplorerCommandActivityTypeProperties() {
     }
 
     /**
      * Get the command property: A control command, according to the Azure Data Explorer command syntax. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the command value.
      */
     public Object command() {
@@ -42,7 +49,7 @@ public final class AzureDataExplorerCommandActivityTypeProperties {
     /**
      * Set the command property: A control command, according to the Azure Data Explorer command syntax. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param command the command value to set.
      * @return the AzureDataExplorerCommandActivityTypeProperties object itself.
      */
@@ -54,7 +61,7 @@ public final class AzureDataExplorerCommandActivityTypeProperties {
     /**
      * Get the commandTimeout property: Control command timeout. Type: string (or Expression with resultType string),
      * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..).
-     *
+     * 
      * @return the commandTimeout value.
      */
     public Object commandTimeout() {
@@ -64,7 +71,7 @@ public final class AzureDataExplorerCommandActivityTypeProperties {
     /**
      * Set the commandTimeout property: Control command timeout. Type: string (or Expression with resultType string),
      * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..).
-     *
+     * 
      * @param commandTimeout the commandTimeout value to set.
      * @return the AzureDataExplorerCommandActivityTypeProperties object itself.
      */
@@ -75,17 +82,57 @@ public final class AzureDataExplorerCommandActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (command() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property command in model AzureDataExplorerCommandActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property command in model AzureDataExplorerCommandActivityTypeProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureDataExplorerCommandActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("command", this.command);
+        jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDataExplorerCommandActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDataExplorerCommandActivityTypeProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureDataExplorerCommandActivityTypeProperties.
+     */
+    public static AzureDataExplorerCommandActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDataExplorerCommandActivityTypeProperties deserializedAzureDataExplorerCommandActivityTypeProperties
+                = new AzureDataExplorerCommandActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("command".equals(fieldName)) {
+                    deserializedAzureDataExplorerCommandActivityTypeProperties.command = reader.readUntyped();
+                } else if ("commandTimeout".equals(fieldName)) {
+                    deserializedAzureDataExplorerCommandActivityTypeProperties.commandTimeout = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureDataExplorerCommandActivityTypeProperties;
+        });
+    }
 }

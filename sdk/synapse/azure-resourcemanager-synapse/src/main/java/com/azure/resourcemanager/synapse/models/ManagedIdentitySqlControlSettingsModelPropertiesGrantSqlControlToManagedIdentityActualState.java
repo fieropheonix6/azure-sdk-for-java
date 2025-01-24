@@ -5,68 +5,79 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState. */
-public final class ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState
-    extends ExpandableStringEnum<
-        ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState> {
+/**
+ * Actual state.
+ */
+public final class ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState extends
+    ExpandableStringEnum<ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState> {
     /**
      * Static value Enabling for
      * ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState.
      */
-    public static final ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState
-        ENABLING = fromString("Enabling");
+    public static final ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState ENABLING
+        = fromString("Enabling");
 
     /**
      * Static value Enabled for
      * ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState.
      */
-    public static final ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState
-        ENABLED = fromString("Enabled");
+    public static final ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState ENABLED
+        = fromString("Enabled");
 
     /**
      * Static value Disabling for
      * ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState.
      */
-    public static final ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState
-        DISABLING = fromString("Disabling");
+    public static final ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState DISABLING
+        = fromString("Disabling");
 
     /**
      * Static value Disabled for
      * ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState.
      */
-    public static final ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState
-        DISABLED = fromString("Disabled");
+    public static final ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState DISABLED
+        = fromString("Disabled");
 
     /**
      * Static value Unknown for
      * ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState.
      */
-    public static final ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState
-        UNKNOWN = fromString("Unknown");
+    public static final ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState UNKNOWN
+        = fromString("Unknown");
+
+    /**
+     * Creates a new instance of
+     * ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState() {
+    }
 
     /**
      * Creates or finds a ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState
      * from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding
-     *     ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState.
+     * ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState.
      */
-    @JsonCreator
     public static ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState
         fromString(String name) {
-        return fromString(
-            name, ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState.class);
+        return fromString(name,
+            ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState.class);
     }
 
     /**
+     * Gets known ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState values.
+     * 
      * @return known ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState values.
      */
-    public static Collection<
-            ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState>
+    public static
+        Collection<ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState>
         values() {
         return values(
             ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState.class);

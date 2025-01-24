@@ -6,19 +6,17 @@ package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.ScriptActionExecutionSummary;
-import org.junit.jupiter.api.Test;
 
 public final class ScriptActionExecutionSummaryTests {
-    @Test
-    public void testDeserialize() {
-        ScriptActionExecutionSummary model =
-            BinaryData
-                .fromString("{\"status\":\"otxhojujby\",\"instanceCount\":159734052}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ScriptActionExecutionSummary model
+            = BinaryData.fromString("{\"status\":\"wpgdak\",\"instanceCount\":1202587998}")
                 .toObject(ScriptActionExecutionSummary.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ScriptActionExecutionSummary model = new ScriptActionExecutionSummary();
         model = BinaryData.fromObject(model).toObject(ScriptActionExecutionSummary.class);
     }

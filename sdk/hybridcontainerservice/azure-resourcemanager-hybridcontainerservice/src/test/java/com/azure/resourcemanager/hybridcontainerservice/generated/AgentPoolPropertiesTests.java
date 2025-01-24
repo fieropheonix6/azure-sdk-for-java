@@ -5,109 +5,72 @@
 package com.azure.resourcemanager.hybridcontainerservice.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.models.AgentPoolProperties;
+import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProperties;
 import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProvisioningStatusStatus;
-import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolProvisioningStatusStatusProvisioningStatus;
-import com.azure.resourcemanager.hybridcontainerservice.models.CloudProviderProfile;
-import com.azure.resourcemanager.hybridcontainerservice.models.CloudProviderProfileInfraNetworkProfile;
-import com.azure.resourcemanager.hybridcontainerservice.models.CloudProviderProfileInfraStorageProfile;
-import com.azure.resourcemanager.hybridcontainerservice.models.Mode;
+import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolUpdateProfile;
 import com.azure.resourcemanager.hybridcontainerservice.models.OsType;
+import com.azure.resourcemanager.hybridcontainerservice.models.Ossku;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AgentPoolPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        AgentPoolProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Succeeded\",\"status\":{\"errorMessage\":\"ylgqgitxmedjvcsl\",\"provisioningStatus\":{\"operationId\":\"wncwzzhxgktrmg\",\"phase\":\"napkteoellw\",\"status\":\"fdygpfqbuaceopz\"},\"readyReplicas\":1355653581,\"replicas\":1863472171},\"count\":350693240,\"availabilityZones\":[\"ppcqeqxolz\",\"ahzxctobgbk\",\"moizpos\"],\"maxCount\":1176728044,\"maxPods\":919813735,\"minCount\":661321063,\"mode\":\"User\",\"nodeLabels\":{\"xxjyngudivkrtsw\":\"fqjhhkxbpvjymj\",\"vjfdx\":\"xqzvszjfa\",\"qtdo\":\"ivetvtcq\"},\"nodeTaints\":[\"bxvwv\",\"yslqbhsfx\",\"blytk\",\"lmpewwwfbkr\"],\"osType\":\"Linux\",\"nodeImageVersion\":\"vshqjohxcr\",\"vmSize\":\"fovasr\",\"cloudProviderProfile\":{\"infraNetworkProfile\":{\"vnetSubnetIds\":[\"hsqfsubcgjbirxbp\",\"bsrfbj\",\"dtws\",\"otftpvjzbexilz\"]},\"infraStorageProfile\":{\"storageSpaceIds\":[\"q\",\"vwpm\"]}}}")
-                .toObject(AgentPoolProperties.class);
-        Assertions.assertEquals(350693240, model.count());
-        Assertions.assertEquals("ppcqeqxolz", model.availabilityZones().get(0));
-        Assertions.assertEquals(1176728044, model.maxCount());
-        Assertions.assertEquals(919813735, model.maxPods());
-        Assertions.assertEquals(661321063, model.minCount());
-        Assertions.assertEquals(Mode.USER, model.mode());
-        Assertions.assertEquals("fqjhhkxbpvjymj", model.nodeLabels().get("xxjyngudivkrtsw"));
-        Assertions.assertEquals("bxvwv", model.nodeTaints().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AgentPoolProperties model = BinaryData.fromString(
+            "{\"count\":1785230840,\"vmSize\":\"ckyfih\",\"kubernetesVersion\":\"idf\",\"provisioningState\":\"Deleting\",\"status\":{\"currentState\":\"Updating\",\"errorMessage\":\"tymw\",\"readyReplicas\":[{\"count\":1072165585,\"vmSize\":\"hwxmnteiwa\",\"kubernetesVersion\":\"vkmijcmmxdcuf\"},{\"count\":763181495,\"vmSize\":\"pymzidnsezcxtbzs\",\"kubernetesVersion\":\"yc\"},{\"count\":1827996208,\"vmSize\":\"wmdwzjeiachboo\",\"kubernetesVersion\":\"lnrosfqp\"}]},\"osType\":\"Linux\",\"osSKU\":\"CBLMariner\",\"nodeLabels\":{\"swjdkirso\":\"ypyqrimzinp\",\"soifiyipjxsqw\":\"dqxhcrmnohjtckwh\",\"bznorcjxvsnby\":\"gr\",\"cyshurzafbljjgp\":\"qabnmoc\"},\"nodeTaints\":[\"qcjm\"],\"maxCount\":897001974,\"minCount\":1217713745,\"enableAutoScaling\":true,\"maxPods\":1581174340}")
+            .toObject(AgentPoolProperties.class);
         Assertions.assertEquals(OsType.LINUX, model.osType());
-        Assertions.assertEquals("vshqjohxcr", model.nodeImageVersion());
-        Assertions.assertEquals("fovasr", model.vmSize());
-        Assertions
-            .assertEquals(
-                "hsqfsubcgjbirxbp", model.cloudProviderProfile().infraNetworkProfile().vnetSubnetIds().get(0));
-        Assertions.assertEquals("q", model.cloudProviderProfile().infraStorageProfile().storageSpaceIds().get(0));
-        Assertions.assertEquals("ylgqgitxmedjvcsl", model.status().errorMessage());
-        Assertions.assertEquals("wncwzzhxgktrmg", model.status().provisioningStatus().operationId());
-        Assertions.assertEquals("napkteoellw", model.status().provisioningStatus().phase());
-        Assertions.assertEquals("fdygpfqbuaceopz", model.status().provisioningStatus().status());
-        Assertions.assertEquals(1355653581, model.status().readyReplicas());
-        Assertions.assertEquals(1863472171, model.status().replicas());
+        Assertions.assertEquals(Ossku.CBLMARINER, model.osSku());
+        Assertions.assertEquals("ypyqrimzinp", model.nodeLabels().get("swjdkirso"));
+        Assertions.assertEquals("qcjm", model.nodeTaints().get(0));
+        Assertions.assertEquals(897001974, model.maxCount());
+        Assertions.assertEquals(1217713745, model.minCount());
+        Assertions.assertEquals(true, model.enableAutoScaling());
+        Assertions.assertEquals(1581174340, model.maxPods());
+        Assertions.assertEquals(1785230840, model.count());
+        Assertions.assertEquals("ckyfih", model.vmSize());
+        Assertions.assertEquals("tymw", model.status().errorMessage());
+        Assertions.assertEquals(1072165585, model.status().readyReplicas().get(0).count());
+        Assertions.assertEquals("hwxmnteiwa", model.status().readyReplicas().get(0).vmSize());
     }
 
-    @Test
-    public void testSerialize() {
-        AgentPoolProperties model =
-            new AgentPoolProperties()
-                .withCount(350693240)
-                .withAvailabilityZones(Arrays.asList("ppcqeqxolz", "ahzxctobgbk", "moizpos"))
-                .withMaxCount(1176728044)
-                .withMaxPods(919813735)
-                .withMinCount(661321063)
-                .withMode(Mode.USER)
-                .withNodeLabels(mapOf("xxjyngudivkrtsw", "fqjhhkxbpvjymj", "vjfdx", "xqzvszjfa", "qtdo", "ivetvtcq"))
-                .withNodeTaints(Arrays.asList("bxvwv", "yslqbhsfx", "blytk", "lmpewwwfbkr"))
-                .withOsType(OsType.LINUX)
-                .withNodeImageVersion("vshqjohxcr")
-                .withVmSize("fovasr")
-                .withCloudProviderProfile(
-                    new CloudProviderProfile()
-                        .withInfraNetworkProfile(
-                            new CloudProviderProfileInfraNetworkProfile()
-                                .withVnetSubnetIds(
-                                    Arrays.asList("hsqfsubcgjbirxbp", "bsrfbj", "dtws", "otftpvjzbexilz")))
-                        .withInfraStorageProfile(
-                            new CloudProviderProfileInfraStorageProfile()
-                                .withStorageSpaceIds(Arrays.asList("q", "vwpm"))))
-                .withStatus(
-                    new AgentPoolProvisioningStatusStatus()
-                        .withErrorMessage("ylgqgitxmedjvcsl")
-                        .withProvisioningStatus(
-                            new AgentPoolProvisioningStatusStatusProvisioningStatus()
-                                .withOperationId("wncwzzhxgktrmg")
-                                .withPhase("napkteoellw")
-                                .withStatus("fdygpfqbuaceopz"))
-                        .withReadyReplicas(1355653581)
-                        .withReplicas(1863472171));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AgentPoolProperties model = new AgentPoolProperties().withOsType(OsType.LINUX)
+            .withOsSku(Ossku.CBLMARINER)
+            .withNodeLabels(mapOf("swjdkirso", "ypyqrimzinp", "soifiyipjxsqw", "dqxhcrmnohjtckwh", "bznorcjxvsnby",
+                "gr", "cyshurzafbljjgp", "qabnmoc"))
+            .withNodeTaints(Arrays.asList("qcjm"))
+            .withMaxCount(897001974)
+            .withMinCount(1217713745)
+            .withEnableAutoScaling(true)
+            .withMaxPods(1581174340)
+            .withCount(1785230840)
+            .withVmSize("ckyfih")
+            .withStatus(new AgentPoolProvisioningStatusStatus().withErrorMessage("tymw")
+                .withReadyReplicas(
+                    Arrays.asList(new AgentPoolUpdateProfile().withCount(1072165585).withVmSize("hwxmnteiwa"),
+                        new AgentPoolUpdateProfile().withCount(763181495).withVmSize("pymzidnsezcxtbzs"),
+                        new AgentPoolUpdateProfile().withCount(1827996208).withVmSize("wmdwzjeiachboo"))));
         model = BinaryData.fromObject(model).toObject(AgentPoolProperties.class);
-        Assertions.assertEquals(350693240, model.count());
-        Assertions.assertEquals("ppcqeqxolz", model.availabilityZones().get(0));
-        Assertions.assertEquals(1176728044, model.maxCount());
-        Assertions.assertEquals(919813735, model.maxPods());
-        Assertions.assertEquals(661321063, model.minCount());
-        Assertions.assertEquals(Mode.USER, model.mode());
-        Assertions.assertEquals("fqjhhkxbpvjymj", model.nodeLabels().get("xxjyngudivkrtsw"));
-        Assertions.assertEquals("bxvwv", model.nodeTaints().get(0));
         Assertions.assertEquals(OsType.LINUX, model.osType());
-        Assertions.assertEquals("vshqjohxcr", model.nodeImageVersion());
-        Assertions.assertEquals("fovasr", model.vmSize());
-        Assertions
-            .assertEquals(
-                "hsqfsubcgjbirxbp", model.cloudProviderProfile().infraNetworkProfile().vnetSubnetIds().get(0));
-        Assertions.assertEquals("q", model.cloudProviderProfile().infraStorageProfile().storageSpaceIds().get(0));
-        Assertions.assertEquals("ylgqgitxmedjvcsl", model.status().errorMessage());
-        Assertions.assertEquals("wncwzzhxgktrmg", model.status().provisioningStatus().operationId());
-        Assertions.assertEquals("napkteoellw", model.status().provisioningStatus().phase());
-        Assertions.assertEquals("fdygpfqbuaceopz", model.status().provisioningStatus().status());
-        Assertions.assertEquals(1355653581, model.status().readyReplicas());
-        Assertions.assertEquals(1863472171, model.status().replicas());
+        Assertions.assertEquals(Ossku.CBLMARINER, model.osSku());
+        Assertions.assertEquals("ypyqrimzinp", model.nodeLabels().get("swjdkirso"));
+        Assertions.assertEquals("qcjm", model.nodeTaints().get(0));
+        Assertions.assertEquals(897001974, model.maxCount());
+        Assertions.assertEquals(1217713745, model.minCount());
+        Assertions.assertEquals(true, model.enableAutoScaling());
+        Assertions.assertEquals(1581174340, model.maxPods());
+        Assertions.assertEquals(1785230840, model.count());
+        Assertions.assertEquals("ckyfih", model.vmSize());
+        Assertions.assertEquals("tymw", model.status().errorMessage());
+        Assertions.assertEquals(1072165585, model.status().readyReplicas().get(0).count());
+        Assertions.assertEquals("hwxmnteiwa", model.status().readyReplicas().get(0).vmSize());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

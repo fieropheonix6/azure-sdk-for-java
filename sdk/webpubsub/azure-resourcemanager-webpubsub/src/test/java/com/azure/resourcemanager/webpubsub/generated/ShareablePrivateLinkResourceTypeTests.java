@@ -8,36 +8,29 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.ShareablePrivateLinkResourceProperties;
 import com.azure.resourcemanager.webpubsub.models.ShareablePrivateLinkResourceType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ShareablePrivateLinkResourceTypeTests {
-    @Test
-    public void testDeserialize() {
-        ShareablePrivateLinkResourceType model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"c\",\"properties\":{\"description\":\"wdsjnkalju\",\"groupId\":\"iswac\",\"type\":\"gdkz\"}}")
-                .toObject(ShareablePrivateLinkResourceType.class);
-        Assertions.assertEquals("c", model.name());
-        Assertions.assertEquals("wdsjnkalju", model.properties().description());
-        Assertions.assertEquals("iswac", model.properties().groupId());
-        Assertions.assertEquals("gdkz", model.properties().type());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ShareablePrivateLinkResourceType model = BinaryData.fromString(
+            "{\"name\":\"rwm\",\"properties\":{\"description\":\"wpklvxw\",\"groupId\":\"gdxpg\",\"type\":\"chisze\"}}")
+            .toObject(ShareablePrivateLinkResourceType.class);
+        Assertions.assertEquals("rwm", model.name());
+        Assertions.assertEquals("wpklvxw", model.properties().description());
+        Assertions.assertEquals("gdxpg", model.properties().groupId());
+        Assertions.assertEquals("chisze", model.properties().type());
     }
 
-    @Test
-    public void testSerialize() {
-        ShareablePrivateLinkResourceType model =
-            new ShareablePrivateLinkResourceType()
-                .withName("c")
-                .withProperties(
-                    new ShareablePrivateLinkResourceProperties()
-                        .withDescription("wdsjnkalju")
-                        .withGroupId("iswac")
-                        .withType("gdkz"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ShareablePrivateLinkResourceType model = new ShareablePrivateLinkResourceType().withName("rwm")
+            .withProperties(new ShareablePrivateLinkResourceProperties().withDescription("wpklvxw")
+                .withGroupId("gdxpg")
+                .withType("chisze"));
         model = BinaryData.fromObject(model).toObject(ShareablePrivateLinkResourceType.class);
-        Assertions.assertEquals("c", model.name());
-        Assertions.assertEquals("wdsjnkalju", model.properties().description());
-        Assertions.assertEquals("iswac", model.properties().groupId());
-        Assertions.assertEquals("gdkz", model.properties().type());
+        Assertions.assertEquals("rwm", model.name());
+        Assertions.assertEquals("wpklvxw", model.properties().description());
+        Assertions.assertEquals("gdxpg", model.properties().groupId());
+        Assertions.assertEquals("chisze", model.properties().type());
     }
 }

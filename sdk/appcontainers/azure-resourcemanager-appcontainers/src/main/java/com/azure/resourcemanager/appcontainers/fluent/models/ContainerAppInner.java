@@ -7,50 +7,83 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.Configuration;
+import com.azure.resourcemanager.appcontainers.models.ContainerAppPropertiesPatchingConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.ExtendedLocation;
+import com.azure.resourcemanager.appcontainers.models.Kind;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appcontainers.models.Template;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Container App. */
+/**
+ * Container App.
+ */
 @Fluent
 public final class ContainerAppInner extends Resource {
     /*
      * The complex type of the extended location.
      */
-    @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
     /*
-     * managed identities for the Container App to interact with other Azure services without maintaining any secrets
-     * or credentials in code.
+     * managed identities for the Container App to interact with other Azure services without maintaining any secrets or
+     * credentials in code.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
+
+    /*
+     * The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed
+     * by another Azure resource. If this is present, complete mode deployment will not delete the resource if it is
+     * removed from the template since it is managed by another resource.
+     */
+    private String managedBy;
+
+    /*
+     * Metadata used to render different experiences for resources of the same type; e.g. WorkflowApp is a kind of
+     * Microsoft.App/ContainerApps type. If supported, the resource provider must validate and persist this value.
+     */
+    private Kind kind;
 
     /*
      * ContainerApp resource specific properties
      */
-    @JsonProperty(value = "properties")
     private ContainerAppProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ContainerAppInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ContainerAppInner class.
+     */
     public ContainerAppInner() {
     }
 
     /**
      * Get the extendedLocation property: The complex type of the extended location.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -59,7 +92,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Set the extendedLocation property: The complex type of the extended location.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -71,7 +104,7 @@ public final class ContainerAppInner extends Resource {
     /**
      * Get the identity property: managed identities for the Container App to interact with other Azure services without
      * maintaining any secrets or credentials in code.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -81,7 +114,7 @@ public final class ContainerAppInner extends Resource {
     /**
      * Set the identity property: managed identities for the Container App to interact with other Azure services without
      * maintaining any secrets or credentials in code.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -91,8 +124,56 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
+     * Get the managedBy property: The fully qualified resource ID of the resource that manages this resource. Indicates
+     * if this resource is managed by another Azure resource. If this is present, complete mode deployment will not
+     * delete the resource if it is removed from the template since it is managed by another resource.
+     * 
+     * @return the managedBy value.
+     */
+    public String managedBy() {
+        return this.managedBy;
+    }
+
+    /**
+     * Set the managedBy property: The fully qualified resource ID of the resource that manages this resource. Indicates
+     * if this resource is managed by another Azure resource. If this is present, complete mode deployment will not
+     * delete the resource if it is removed from the template since it is managed by another resource.
+     * 
+     * @param managedBy the managedBy value to set.
+     * @return the ContainerAppInner object itself.
+     */
+    public ContainerAppInner withManagedBy(String managedBy) {
+        this.managedBy = managedBy;
+        return this;
+    }
+
+    /**
+     * Get the kind property: Metadata used to render different experiences for resources of the same type; e.g.
+     * WorkflowApp is a kind of Microsoft.App/ContainerApps type. If supported, the resource provider must validate and
+     * persist this value.
+     * 
+     * @return the kind value.
+     */
+    public Kind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Metadata used to render different experiences for resources of the same type; e.g.
+     * WorkflowApp is a kind of Microsoft.App/ContainerApps type. If supported, the resource provider must validate and
+     * persist this value.
+     * 
+     * @param kind the kind value to set.
+     * @return the ContainerAppInner object itself.
+     */
+    public ContainerAppInner withKind(Kind kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
      * Get the innerProperties property: ContainerApp resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ContainerAppProperties innerProperties() {
@@ -101,21 +182,55 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerAppInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerAppInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -124,7 +239,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the Container App.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ContainerAppProvisioningState provisioningState() {
@@ -132,8 +247,17 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
+     * Get the deploymentErrors property: Any errors that occurred during deployment.
+     * 
+     * @return the deploymentErrors value.
+     */
+    public String deploymentErrors() {
+        return this.innerProperties() == null ? null : this.innerProperties().deploymentErrors();
+    }
+
+    /**
      * Get the managedEnvironmentId property: Deprecated. Resource ID of the Container App's environment.
-     *
+     * 
      * @return the managedEnvironmentId value.
      */
     public String managedEnvironmentId() {
@@ -142,7 +266,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Set the managedEnvironmentId property: Deprecated. Resource ID of the Container App's environment.
-     *
+     * 
      * @param managedEnvironmentId the managedEnvironmentId value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -156,7 +280,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the environmentId property: Resource ID of environment.
-     *
+     * 
      * @return the environmentId value.
      */
     public String environmentId() {
@@ -165,7 +289,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Set the environmentId property: Resource ID of environment.
-     *
+     * 
      * @param environmentId the environmentId value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -178,31 +302,55 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
-     * Get the workloadProfileType property: Workload profile type to pin for container app execution.
-     *
-     * @return the workloadProfileType value.
+     * Get the workloadProfileName property: Workload profile name to pin for container app execution.
+     * 
+     * @return the workloadProfileName value.
      */
-    public String workloadProfileType() {
-        return this.innerProperties() == null ? null : this.innerProperties().workloadProfileType();
+    public String workloadProfileName() {
+        return this.innerProperties() == null ? null : this.innerProperties().workloadProfileName();
     }
 
     /**
-     * Set the workloadProfileType property: Workload profile type to pin for container app execution.
-     *
-     * @param workloadProfileType the workloadProfileType value to set.
+     * Set the workloadProfileName property: Workload profile name to pin for container app execution.
+     * 
+     * @param workloadProfileName the workloadProfileName value to set.
      * @return the ContainerAppInner object itself.
      */
-    public ContainerAppInner withWorkloadProfileType(String workloadProfileType) {
+    public ContainerAppInner withWorkloadProfileName(String workloadProfileName) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ContainerAppProperties();
         }
-        this.innerProperties().withWorkloadProfileType(workloadProfileType);
+        this.innerProperties().withWorkloadProfileName(workloadProfileName);
+        return this;
+    }
+
+    /**
+     * Get the patchingConfiguration property: Container App auto patch configuration.
+     * 
+     * @return the patchingConfiguration value.
+     */
+    public ContainerAppPropertiesPatchingConfiguration patchingConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().patchingConfiguration();
+    }
+
+    /**
+     * Set the patchingConfiguration property: Container App auto patch configuration.
+     * 
+     * @param patchingConfiguration the patchingConfiguration value to set.
+     * @return the ContainerAppInner object itself.
+     */
+    public ContainerAppInner
+        withPatchingConfiguration(ContainerAppPropertiesPatchingConfiguration patchingConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerAppProperties();
+        }
+        this.innerProperties().withPatchingConfiguration(patchingConfiguration);
         return this;
     }
 
     /**
      * Get the latestRevisionName property: Name of the latest revision of the Container App.
-     *
+     * 
      * @return the latestRevisionName value.
      */
     public String latestRevisionName() {
@@ -210,8 +358,17 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
+     * Get the latestReadyRevisionName property: Name of the latest ready revision of the Container App.
+     * 
+     * @return the latestReadyRevisionName value.
+     */
+    public String latestReadyRevisionName() {
+        return this.innerProperties() == null ? null : this.innerProperties().latestReadyRevisionName();
+    }
+
+    /**
      * Get the latestRevisionFqdn property: Fully Qualified Domain Name of the latest revision of the Container App.
-     *
+     * 
      * @return the latestRevisionFqdn value.
      */
     public String latestRevisionFqdn() {
@@ -220,7 +377,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the customDomainVerificationId property: Id used to verify domain name ownership.
-     *
+     * 
      * @return the customDomainVerificationId value.
      */
     public String customDomainVerificationId() {
@@ -229,7 +386,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the configuration property: Non versioned Container App configuration properties.
-     *
+     * 
      * @return the configuration value.
      */
     public Configuration configuration() {
@@ -238,7 +395,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Set the configuration property: Non versioned Container App configuration properties.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -252,7 +409,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the template property: Container App versioned application definition.
-     *
+     * 
      * @return the template value.
      */
     public Template template() {
@@ -261,7 +418,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Set the template property: Container App versioned application definition.
-     *
+     * 
      * @param template the template value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -275,7 +432,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the outboundIpAddresses property: Outbound IP Addresses for container app.
-     *
+     * 
      * @return the outboundIpAddresses value.
      */
     public List<String> outboundIpAddresses() {
@@ -284,7 +441,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the eventStreamEndpoint property: The endpoint of the eventstream of the container app.
-     *
+     * 
      * @return the eventStreamEndpoint value.
      */
     public String eventStreamEndpoint() {
@@ -293,7 +450,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -306,5 +463,69 @@ public final class ContainerAppInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("managedBy", this.managedBy);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerAppInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerAppInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContainerAppInner.
+     */
+    public static ContainerAppInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerAppInner deserializedContainerAppInner = new ContainerAppInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedContainerAppInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedContainerAppInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedContainerAppInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedContainerAppInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedContainerAppInner.withTags(tags);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedContainerAppInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedContainerAppInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedContainerAppInner.managedBy = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedContainerAppInner.kind = Kind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedContainerAppInner.innerProperties = ContainerAppProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedContainerAppInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerAppInner;
+        });
     }
 }

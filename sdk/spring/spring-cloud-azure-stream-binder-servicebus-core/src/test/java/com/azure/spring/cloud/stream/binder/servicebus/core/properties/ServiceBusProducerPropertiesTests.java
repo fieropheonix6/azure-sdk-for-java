@@ -3,11 +3,14 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.core.properties;
 
+import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -50,8 +53,17 @@ class ServiceBusProducerPropertiesTests {
     }
 
     @Test
+    void domainNameConfigureAsCloud() {
+        producerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, producerProperties.getProfile().getCloudType());
+        assertEquals(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName(), producerProperties.getDomainName());
+    }
+
+    @Test
     void customDomainNameShouldSet() {
         producerProperties.setDomainName("new.servicebus.windows.net");
+        producerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, producerProperties.getProfile().getCloudType());
         assertEquals("new.servicebus.windows.net", producerProperties.getDomainName());
     }
 
@@ -93,5 +105,16 @@ class ServiceBusProducerPropertiesTests {
     @Test
     void amqpTransportTypeDefaultIsNull() {
         assertNull(producerProperties.getClient().getTransportType());
+    }
+
+
+    @Test
+    void defaultMaxSizeInMegabytes() {
+        assertEquals(producerProperties.getMaxSizeInMegabytes(), 1024L);
+    }
+
+    @Test
+    void defaultMessageTimeToLive() {
+        assertEquals(producerProperties.getDefaultMessageTimeToLive(), MAX_DURATION);
     }
 }

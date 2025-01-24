@@ -8,11 +8,33 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SqlPoolWorkloadGroups. */
+/**
+ * Resource collection API of SqlPoolWorkloadGroups.
+ */
 public interface SqlPoolWorkloadGroups {
     /**
+     * Sql pool's workload group
+     * 
      * Get a Sql pool's workload group.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param workloadGroupName The name of the workload group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Sql pool's workload group along with {@link Response}.
+     */
+    Response<WorkloadGroup> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, Context context);
+
+    /**
+     * Sql pool's workload group
+     * 
+     * Get a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -25,24 +47,10 @@ public interface SqlPoolWorkloadGroups {
     WorkloadGroup get(String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName);
 
     /**
-     * Get a Sql pool's workload group.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param workloadGroupName The name of the workload group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's workload group along with {@link Response}.
-     */
-    Response<WorkloadGroup> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context);
-
-    /**
+     * Remove workload group
+     * 
      * Remove Sql pool's workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -54,8 +62,10 @@ public interface SqlPoolWorkloadGroups {
     void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName);
 
     /**
+     * Remove workload group
+     * 
      * Remove Sql pool's workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -65,12 +75,14 @@ public interface SqlPoolWorkloadGroups {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context);
+    void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
+        Context context);
 
     /**
+     * Sql pool's workload groups
+     * 
      * Get list of Sql pool's workload groups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -82,8 +94,10 @@ public interface SqlPoolWorkloadGroups {
     PagedIterable<WorkloadGroup> list(String resourceGroupName, String workspaceName, String sqlPoolName);
 
     /**
+     * Sql pool's workload groups
+     * 
      * Get list of Sql pool's workload groups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -93,12 +107,14 @@ public interface SqlPoolWorkloadGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Sql pool's workload groups as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkloadGroup> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<WorkloadGroup> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
+     * Sql pool's workload group
+     * 
      * Get a Sql pool's workload group.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -108,8 +124,10 @@ public interface SqlPoolWorkloadGroups {
     WorkloadGroup getById(String id);
 
     /**
+     * Sql pool's workload group
+     * 
      * Get a Sql pool's workload group.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -120,8 +138,10 @@ public interface SqlPoolWorkloadGroups {
     Response<WorkloadGroup> getByIdWithResponse(String id, Context context);
 
     /**
+     * Remove workload group
+     * 
      * Remove Sql pool's workload group.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -130,8 +150,10 @@ public interface SqlPoolWorkloadGroups {
     void deleteById(String id);
 
     /**
+     * Remove workload group
+     * 
      * Remove Sql pool's workload group.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,7 +164,7 @@ public interface SqlPoolWorkloadGroups {
 
     /**
      * Begins definition for a new WorkloadGroup resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new WorkloadGroup definition.
      */

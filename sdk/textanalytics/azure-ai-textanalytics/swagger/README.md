@@ -2,13 +2,22 @@
 
 > see https://aka.ms/autorest
 
+This is the AutoRest configuration file for Text Analytics.
+
+---
+## Getting Started
+To build the SDK for Text Analytics, simply [Install AutoRest](https://aka.ms/autorest) and
+in this folder, run:
+
+> `autorest`
+
+To see additional help and options, run:
+
+> `autorest --help`
+
+
 ### Setup
 ```ps
-Fork and clone https://github.com/Azure/autorest.java 
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal
-npm install
 npm install -g autorest
 ```
 
@@ -18,21 +27,30 @@ cd <swagger-folder>
 autorest
 ```
 
-### Code generation settings
-``` yaml
-use: '@autorest/java@4.1.2'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/527f6d35fb0d85c48210ca0f6f6f42814d63bd33/specification/cognitiveservices/data-plane/Language/preview/2022-10-01-preview/analyzetext.json
+### Code Generation
+```yaml
+use: '@autorest/java@4.1.42'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/53240ebc58b3c4e99de723194032064db1d97e63/specification/cognitiveservices/data-plane/Language/stable/2023-04-01/analyzetext.json
 java: true
-output-folder: ..\
-generate-client-as-impl: true
+output-folder: ../
 namespace: com.azure.ai.textanalytics
-generate-client-interfaces: false
-sync-methods: none
-license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-context-client-method-parameter: true
-service-interface-as-public: true
-generic-response-type: true
+enable-sync-stack: true
+generate-client-as-impl: true
+license-header: MICROSOFT_MIT_SMALL
+custom-types: HealthcareEntityRelationType,ExtractiveSummarySentencesOrder,HealthcareEntityCategory
+```
+
+### Renames
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.HealthcareRelation.properties.relationType
+    transform: >
+      $["x-ms-enum"].name = "HealthcareEntityRelationType";
+  - from: swagger-document
+    where: $.definitions.ExtractiveSummarizationSortingCriteria
+    transform: >
+        $["x-ms-enum"].name = "ExtractiveSummarySentencesOrder";
 ```

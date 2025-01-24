@@ -20,30 +20,31 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.GetPrivateDnsZoneSuffixesClient;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GetPrivateDnsZoneSuffixesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GetPrivateDnsZoneSuffixesClient.
+ */
 public final class GetPrivateDnsZoneSuffixesClientImpl implements GetPrivateDnsZoneSuffixesClient {
-    private final ClientLogger logger = new ClientLogger(GetPrivateDnsZoneSuffixesClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GetPrivateDnsZoneSuffixesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PostgreSqlManagementClientImpl client;
 
     /**
      * Initializes an instance of GetPrivateDnsZoneSuffixesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GetPrivateDnsZoneSuffixesClientImpl(PostgreSqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    GetPrivateDnsZoneSuffixesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(GetPrivateDnsZoneSuffixesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,32 +54,28 @@ public final class GetPrivateDnsZoneSuffixesClientImpl implements GetPrivateDnsZ
      */
     @Host("{$host}")
     @ServiceInterface(name = "PostgreSqlManagement")
-    private interface GetPrivateDnsZoneSuffixesService {
-        @Headers({"Content-Type: application/json"})
+    public interface GetPrivateDnsZoneSuffixesService {
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.DBforPostgreSQL/getPrivateDnsZoneSuffix")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<String>> execute(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<String>> execute(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get private DNS zone suffix in the cloud.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private DNS zone suffix in the cloud.
+     * @return private DNS zone suffix in the cloud along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<String>> executeWithResponseAsync() {
+    public Mono<Response<String>> executeWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -89,20 +86,19 @@ public final class GetPrivateDnsZoneSuffixesClientImpl implements GetPrivateDnsZ
 
     /**
      * Get private DNS zone suffix in the cloud.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private DNS zone suffix in the cloud.
+     * @return private DNS zone suffix in the cloud along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<String>> executeWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -111,47 +107,39 @@ public final class GetPrivateDnsZoneSuffixesClientImpl implements GetPrivateDnsZ
 
     /**
      * Get private DNS zone suffix in the cloud.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private DNS zone suffix in the cloud.
+     * @return private DNS zone suffix in the cloud on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<String> executeAsync() {
-        return executeWithResponseAsync()
-            .flatMap(
-                (Response<String> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Mono<String> executeAsync() {
+        return executeWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get private DNS zone suffix in the cloud.
-     *
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private DNS zone suffix in the cloud along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<String> executeWithResponse(Context context) {
+        return executeWithResponseAsync(context).block();
+    }
+
+    /**
+     * Get private DNS zone suffix in the cloud.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private DNS zone suffix in the cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String execute() {
-        return executeAsync().block();
-    }
-
-    /**
-     * Get private DNS zone suffix in the cloud.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private DNS zone suffix in the cloud.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> executeWithResponse(Context context) {
-        return executeWithResponseAsync(context).block();
+        return executeWithResponse(Context.NONE).getValue();
     }
 }

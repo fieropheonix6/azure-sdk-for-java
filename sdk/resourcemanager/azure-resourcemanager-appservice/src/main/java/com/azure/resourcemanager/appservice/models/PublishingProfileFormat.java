@@ -5,34 +5,52 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PublishingProfileFormat. */
+/**
+ * Name of the format. Valid values are:
+ * FileZilla3
+ * WebDeploy -- default
+ * Ftp.
+ */
 public final class PublishingProfileFormat extends ExpandableStringEnum<PublishingProfileFormat> {
-    /** Static value FileZilla3 for PublishingProfileFormat. */
+    /**
+     * Static value FileZilla3 for PublishingProfileFormat.
+     */
     public static final PublishingProfileFormat FILE_ZILLA3 = fromString("FileZilla3");
 
-    /** Static value WebDeploy for PublishingProfileFormat. */
+    /**
+     * Static value WebDeploy for PublishingProfileFormat.
+     */
     public static final PublishingProfileFormat WEB_DEPLOY = fromString("WebDeploy");
 
-    /** Static value Ftp for PublishingProfileFormat. */
+    /**
+     * Static value Ftp for PublishingProfileFormat.
+     */
     public static final PublishingProfileFormat FTP = fromString("Ftp");
 
     /**
+     * Creates a new instance of PublishingProfileFormat value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PublishingProfileFormat() {
+    }
+
+    /**
      * Creates or finds a PublishingProfileFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PublishingProfileFormat.
      */
-    @JsonCreator
     public static PublishingProfileFormat fromString(String name) {
         return fromString(name, PublishingProfileFormat.class);
     }
 
     /**
      * Gets known PublishingProfileFormat values.
-     *
+     * 
      * @return known PublishingProfileFormat values.
      */
     public static Collection<PublishingProfileFormat> values() {

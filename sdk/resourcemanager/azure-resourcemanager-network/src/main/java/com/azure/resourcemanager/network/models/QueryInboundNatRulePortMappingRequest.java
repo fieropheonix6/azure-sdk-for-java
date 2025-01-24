@@ -6,30 +6,37 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The request for a QueryInboundNatRulePortMapping API. Either IpConfiguration or IpAddress should be set. */
+/**
+ * The request for a QueryInboundNatRulePortMapping API. Either IpConfiguration or IpAddress should be set.
+ */
 @Fluent
-public final class QueryInboundNatRulePortMappingRequest {
+public final class QueryInboundNatRulePortMappingRequest
+    implements JsonSerializable<QueryInboundNatRulePortMappingRequest> {
     /*
      * NetworkInterfaceIPConfiguration set in load balancer backend address.
      */
-    @JsonProperty(value = "ipConfiguration")
     private SubResource ipConfiguration;
 
     /*
      * IP address set in load balancer backend address.
      */
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
-    /** Creates an instance of QueryInboundNatRulePortMappingRequest class. */
+    /**
+     * Creates an instance of QueryInboundNatRulePortMappingRequest class.
+     */
     public QueryInboundNatRulePortMappingRequest() {
     }
 
     /**
      * Get the ipConfiguration property: NetworkInterfaceIPConfiguration set in load balancer backend address.
-     *
+     * 
      * @return the ipConfiguration value.
      */
     public SubResource ipConfiguration() {
@@ -38,7 +45,7 @@ public final class QueryInboundNatRulePortMappingRequest {
 
     /**
      * Set the ipConfiguration property: NetworkInterfaceIPConfiguration set in load balancer backend address.
-     *
+     * 
      * @param ipConfiguration the ipConfiguration value to set.
      * @return the QueryInboundNatRulePortMappingRequest object itself.
      */
@@ -49,7 +56,7 @@ public final class QueryInboundNatRulePortMappingRequest {
 
     /**
      * Get the ipAddress property: IP address set in load balancer backend address.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -58,7 +65,7 @@ public final class QueryInboundNatRulePortMappingRequest {
 
     /**
      * Set the ipAddress property: IP address set in load balancer backend address.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the QueryInboundNatRulePortMappingRequest object itself.
      */
@@ -69,9 +76,49 @@ public final class QueryInboundNatRulePortMappingRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("ipConfiguration", this.ipConfiguration);
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryInboundNatRulePortMappingRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryInboundNatRulePortMappingRequest if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QueryInboundNatRulePortMappingRequest.
+     */
+    public static QueryInboundNatRulePortMappingRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryInboundNatRulePortMappingRequest deserializedQueryInboundNatRulePortMappingRequest
+                = new QueryInboundNatRulePortMappingRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipConfiguration".equals(fieldName)) {
+                    deserializedQueryInboundNatRulePortMappingRequest.ipConfiguration = SubResource.fromJson(reader);
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedQueryInboundNatRulePortMappingRequest.ipAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryInboundNatRulePortMappingRequest;
+        });
     }
 }

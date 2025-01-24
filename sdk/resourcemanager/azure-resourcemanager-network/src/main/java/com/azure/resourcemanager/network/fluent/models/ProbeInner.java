@@ -6,46 +6,50 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.ProbeNoHealthyBackendsBehavior;
 import com.azure.resourcemanager.network.models.ProbeProtocol;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A load balancer probe. */
+/**
+ * A load balancer probe.
+ */
 @Fluent
 public final class ProbeInner extends SubResource {
     /*
      * Properties of load balancer probe.
      */
-    @JsonProperty(value = "properties")
     private ProbePropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of probes used by the load balancer. This name can be
-     * used to access the resource.
+     * The name of the resource that is unique within the set of probes used by the load balancer. This name can be used
+     * to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ProbeInner class. */
+    /**
+     * Creates an instance of ProbeInner class.
+     */
     public ProbeInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of load balancer probe.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProbePropertiesFormat innerProperties() {
@@ -55,7 +59,7 @@ public final class ProbeInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within the set of probes used by the load
      * balancer. This name can be used to access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -65,7 +69,7 @@ public final class ProbeInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within the set of probes used by the load
      * balancer. This name can be used to access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the ProbeInner object itself.
      */
@@ -76,7 +80,7 @@ public final class ProbeInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -85,14 +89,16 @@ public final class ProbeInner extends SubResource {
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProbeInner withId(String id) {
         super.withId(id);
@@ -101,7 +107,7 @@ public final class ProbeInner extends SubResource {
 
     /**
      * Get the loadBalancingRules property: The load balancer rules that use this probe.
-     *
+     * 
      * @return the loadBalancingRules value.
      */
     public List<SubResource> loadBalancingRules() {
@@ -112,7 +118,7 @@ public final class ProbeInner extends SubResource {
      * Get the protocol property: The protocol of the end point. If 'Tcp' is specified, a received ACK is required for
      * the probe to be successful. If 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is
      * required for the probe to be successful.
-     *
+     * 
      * @return the protocol value.
      */
     public ProbeProtocol protocol() {
@@ -123,7 +129,7 @@ public final class ProbeInner extends SubResource {
      * Set the protocol property: The protocol of the end point. If 'Tcp' is specified, a received ACK is required for
      * the probe to be successful. If 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is
      * required for the probe to be successful.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the ProbeInner object itself.
      */
@@ -137,7 +143,7 @@ public final class ProbeInner extends SubResource {
 
     /**
      * Get the port property: The port for communicating the probe. Possible values range from 1 to 65535, inclusive.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -146,7 +152,7 @@ public final class ProbeInner extends SubResource {
 
     /**
      * Set the port property: The port for communicating the probe. Possible values range from 1 to 65535, inclusive.
-     *
+     * 
      * @param port the port value to set.
      * @return the ProbeInner object itself.
      */
@@ -162,7 +168,7 @@ public final class ProbeInner extends SubResource {
      * Get the intervalInSeconds property: The interval, in seconds, for how frequently to probe the endpoint for health
      * status. Typically, the interval is slightly less than half the allocated timeout period (in seconds) which allows
      * two full probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
-     *
+     * 
      * @return the intervalInSeconds value.
      */
     public Integer intervalInSeconds() {
@@ -173,7 +179,7 @@ public final class ProbeInner extends SubResource {
      * Set the intervalInSeconds property: The interval, in seconds, for how frequently to probe the endpoint for health
      * status. Typically, the interval is slightly less than half the allocated timeout period (in seconds) which allows
      * two full probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
-     *
+     * 
      * @param intervalInSeconds the intervalInSeconds value to set.
      * @return the ProbeInner object itself.
      */
@@ -186,10 +192,35 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
+     * Get the noHealthyBackendsBehavior property: Determines how new connections are handled by the load balancer when
+     * all backend instances are probed down.
+     * 
+     * @return the noHealthyBackendsBehavior value.
+     */
+    public ProbeNoHealthyBackendsBehavior noHealthyBackendsBehavior() {
+        return this.innerProperties() == null ? null : this.innerProperties().noHealthyBackendsBehavior();
+    }
+
+    /**
+     * Set the noHealthyBackendsBehavior property: Determines how new connections are handled by the load balancer when
+     * all backend instances are probed down.
+     * 
+     * @param noHealthyBackendsBehavior the noHealthyBackendsBehavior value to set.
+     * @return the ProbeInner object itself.
+     */
+    public ProbeInner withNoHealthyBackendsBehavior(ProbeNoHealthyBackendsBehavior noHealthyBackendsBehavior) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProbePropertiesFormat();
+        }
+        this.innerProperties().withNoHealthyBackendsBehavior(noHealthyBackendsBehavior);
+        return this;
+    }
+
+    /**
      * Get the numberOfProbes property: The number of probes where if no response, will result in stopping further
      * traffic from being delivered to the endpoint. This values allows endpoints to be taken out of rotation faster or
      * slower than the typical times used in Azure.
-     *
+     * 
      * @return the numberOfProbes value.
      */
     public Integer numberOfProbes() {
@@ -200,7 +231,7 @@ public final class ProbeInner extends SubResource {
      * Set the numberOfProbes property: The number of probes where if no response, will result in stopping further
      * traffic from being delivered to the endpoint. This values allows endpoints to be taken out of rotation faster or
      * slower than the typical times used in Azure.
-     *
+     * 
      * @param numberOfProbes the numberOfProbes value to set.
      * @return the ProbeInner object itself.
      */
@@ -217,7 +248,7 @@ public final class ProbeInner extends SubResource {
      * traffic from being delivered to this endpoint. After failing the number of consecutive probes equal to this
      * value, the endpoint will be taken out of rotation and require the same number of successful consecutive probes to
      * be placed back in rotation.
-     *
+     * 
      * @return the probeThreshold value.
      */
     public Integer probeThreshold() {
@@ -229,7 +260,7 @@ public final class ProbeInner extends SubResource {
      * traffic from being delivered to this endpoint. After failing the number of consecutive probes equal to this
      * value, the endpoint will be taken out of rotation and require the same number of successful consecutive probes to
      * be placed back in rotation.
-     *
+     * 
      * @param probeThreshold the probeThreshold value to set.
      * @return the ProbeInner object itself.
      */
@@ -244,7 +275,7 @@ public final class ProbeInner extends SubResource {
     /**
      * Get the requestPath property: The URI used for requesting health status from the VM. Path is required if a
      * protocol is set to http. Otherwise, it is not allowed. There is no default value.
-     *
+     * 
      * @return the requestPath value.
      */
     public String requestPath() {
@@ -254,7 +285,7 @@ public final class ProbeInner extends SubResource {
     /**
      * Set the requestPath property: The URI used for requesting health status from the VM. Path is required if a
      * protocol is set to http. Otherwise, it is not allowed. There is no default value.
-     *
+     * 
      * @param requestPath the requestPath value to set.
      * @return the ProbeInner object itself.
      */
@@ -268,7 +299,7 @@ public final class ProbeInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the probe resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -277,12 +308,58 @@ public final class ProbeInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProbeInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProbeInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ProbeInner.
+     */
+    public static ProbeInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProbeInner deserializedProbeInner = new ProbeInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedProbeInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedProbeInner.innerProperties = ProbePropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedProbeInner.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedProbeInner.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedProbeInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProbeInner;
+        });
     }
 }

@@ -13,39 +13,59 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.databoxedge.fluent.models.BandwidthScheduleInner;
 
-/** An instance of this class provides access to all the operations defined in BandwidthSchedulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BandwidthSchedulesClient.
+ */
 public interface BandwidthSchedulesClient {
     /**
      * Gets all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
+     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BandwidthScheduleInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName);
 
     /**
      * Gets all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
+     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BandwidthScheduleInner> listByDataBoxEdgeDevice(
-        String deviceName, String resourceGroupName, Context context);
+    PagedIterable<BandwidthScheduleInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName,
+        Context context);
 
     /**
      * Gets the properties of the specified bandwidth schedule.
-     *
+     * 
+     * @param deviceName The device name.
+     * @param name The bandwidth schedule name.
+     * @param resourceGroupName The resource group name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified bandwidth schedule along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BandwidthScheduleInner> getWithResponse(String deviceName, String name, String resourceGroupName,
+        Context context);
+
+    /**
+     * Gets the properties of the specified bandwidth schedule.
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.
@@ -58,24 +78,8 @@ public interface BandwidthSchedulesClient {
     BandwidthScheduleInner get(String deviceName, String name, String resourceGroupName);
 
     /**
-     * Gets the properties of the specified bandwidth schedule.
-     *
-     * @param deviceName The device name.
-     * @param name The bandwidth schedule name.
-     * @param resourceGroupName The resource group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified bandwidth schedule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BandwidthScheduleInner> getWithResponse(
-        String deviceName, String name, String resourceGroupName, Context context);
-
-    /**
      * Creates or updates a bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name which needs to be added/updated.
      * @param resourceGroupName The resource group name.
@@ -83,15 +87,15 @@ public interface BandwidthSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the bandwidth schedule details.
+     * @return the {@link SyncPoller} for polling of the bandwidth schedule details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<BandwidthScheduleInner>, BandwidthScheduleInner> beginCreateOrUpdate(
-        String deviceName, String name, String resourceGroupName, BandwidthScheduleInner parameters);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BandwidthScheduleInner>, BandwidthScheduleInner> beginCreateOrUpdate(String deviceName,
+        String name, String resourceGroupName, BandwidthScheduleInner parameters);
 
     /**
      * Creates or updates a bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name which needs to be added/updated.
      * @param resourceGroupName The resource group name.
@@ -100,15 +104,15 @@ public interface BandwidthSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the bandwidth schedule details.
+     * @return the {@link SyncPoller} for polling of the bandwidth schedule details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<BandwidthScheduleInner>, BandwidthScheduleInner> beginCreateOrUpdate(
-        String deviceName, String name, String resourceGroupName, BandwidthScheduleInner parameters, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BandwidthScheduleInner>, BandwidthScheduleInner> beginCreateOrUpdate(String deviceName,
+        String name, String resourceGroupName, BandwidthScheduleInner parameters, Context context);
 
     /**
      * Creates or updates a bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name which needs to be added/updated.
      * @param resourceGroupName The resource group name.
@@ -119,12 +123,12 @@ public interface BandwidthSchedulesClient {
      * @return the bandwidth schedule details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BandwidthScheduleInner createOrUpdate(
-        String deviceName, String name, String resourceGroupName, BandwidthScheduleInner parameters);
+    BandwidthScheduleInner createOrUpdate(String deviceName, String name, String resourceGroupName,
+        BandwidthScheduleInner parameters);
 
     /**
      * Creates or updates a bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name which needs to be added/updated.
      * @param resourceGroupName The resource group name.
@@ -136,26 +140,26 @@ public interface BandwidthSchedulesClient {
      * @return the bandwidth schedule details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BandwidthScheduleInner createOrUpdate(
-        String deviceName, String name, String resourceGroupName, BandwidthScheduleInner parameters, Context context);
+    BandwidthScheduleInner createOrUpdate(String deviceName, String name, String resourceGroupName,
+        BandwidthScheduleInner parameters, Context context);
 
     /**
      * Deletes the specified bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String name, String resourceGroupName);
 
     /**
      * Deletes the specified bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.
@@ -163,15 +167,15 @@ public interface BandwidthSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String deviceName, String name, String resourceGroupName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String name, String resourceGroupName,
+        Context context);
 
     /**
      * Deletes the specified bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.
@@ -184,7 +188,7 @@ public interface BandwidthSchedulesClient {
 
     /**
      * Deletes the specified bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.

@@ -7,46 +7,64 @@ package com.azure.resourcemanager.nginx.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.nginx.models.IdentityProperties;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentProperties;
 import com.azure.resourcemanager.nginx.models.ResourceSku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The NginxDeployment model. */
+/**
+ * The NginxDeployment model.
+ */
 @Fluent
 public final class NginxDeploymentInner extends Resource {
     /*
      * The identity property.
      */
-    @JsonProperty(value = "identity")
     private IdentityProperties identity;
 
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties")
     private NginxDeploymentProperties properties;
 
     /*
      * The sku property.
      */
-    @JsonProperty(value = "sku")
     private ResourceSku sku;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of NginxDeploymentInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of NginxDeploymentInner class.
+     */
     public NginxDeploymentInner() {
     }
 
     /**
      * Get the identity property: The identity property.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityProperties identity() {
@@ -55,7 +73,7 @@ public final class NginxDeploymentInner extends Resource {
 
     /**
      * Set the identity property: The identity property.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the NginxDeploymentInner object itself.
      */
@@ -66,7 +84,7 @@ public final class NginxDeploymentInner extends Resource {
 
     /**
      * Get the properties property: The properties property.
-     *
+     * 
      * @return the properties value.
      */
     public NginxDeploymentProperties properties() {
@@ -75,7 +93,7 @@ public final class NginxDeploymentInner extends Resource {
 
     /**
      * Set the properties property: The properties property.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the NginxDeploymentInner object itself.
      */
@@ -86,7 +104,7 @@ public final class NginxDeploymentInner extends Resource {
 
     /**
      * Get the sku property: The sku property.
-     *
+     * 
      * @return the sku value.
      */
     public ResourceSku sku() {
@@ -95,7 +113,7 @@ public final class NginxDeploymentInner extends Resource {
 
     /**
      * Set the sku property: The sku property.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the NginxDeploymentInner object itself.
      */
@@ -106,21 +124,55 @@ public final class NginxDeploymentInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NginxDeploymentInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NginxDeploymentInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -129,7 +181,7 @@ public final class NginxDeploymentInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -142,5 +194,63 @@ public final class NginxDeploymentInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NginxDeploymentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NginxDeploymentInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NginxDeploymentInner.
+     */
+    public static NginxDeploymentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NginxDeploymentInner deserializedNginxDeploymentInner = new NginxDeploymentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNginxDeploymentInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNginxDeploymentInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNginxDeploymentInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedNginxDeploymentInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNginxDeploymentInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedNginxDeploymentInner.identity = IdentityProperties.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNginxDeploymentInner.properties = NginxDeploymentProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedNginxDeploymentInner.sku = ResourceSku.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedNginxDeploymentInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNginxDeploymentInner;
+        });
     }
 }

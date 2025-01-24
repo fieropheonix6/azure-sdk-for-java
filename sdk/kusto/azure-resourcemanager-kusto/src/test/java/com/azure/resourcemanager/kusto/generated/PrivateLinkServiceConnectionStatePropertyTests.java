@@ -7,28 +7,23 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.PrivateLinkServiceConnectionStateProperty;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkServiceConnectionStatePropertyTests {
-    @Test
-    public void testDeserialize() {
-        PrivateLinkServiceConnectionStateProperty model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"fiyipjxsqwpgrj\",\"description\":\"norcjxvsnbyxqab\",\"actionsRequired\":\"ocpcy\"}")
-                .toObject(PrivateLinkServiceConnectionStateProperty.class);
-        Assertions.assertEquals("fiyipjxsqwpgrj", model.status());
-        Assertions.assertEquals("norcjxvsnbyxqab", model.description());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateLinkServiceConnectionStateProperty model = BinaryData
+            .fromString("{\"status\":\"krwpdap\",\"description\":\"sbdkvwr\",\"actionsRequired\":\"feusnhut\"}")
+            .toObject(PrivateLinkServiceConnectionStateProperty.class);
+        Assertions.assertEquals("krwpdap", model.status());
+        Assertions.assertEquals("sbdkvwr", model.description());
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateLinkServiceConnectionStateProperty model =
-            new PrivateLinkServiceConnectionStateProperty()
-                .withStatus("fiyipjxsqwpgrj")
-                .withDescription("norcjxvsnbyxqab");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateLinkServiceConnectionStateProperty model
+            = new PrivateLinkServiceConnectionStateProperty().withStatus("krwpdap").withDescription("sbdkvwr");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionStateProperty.class);
-        Assertions.assertEquals("fiyipjxsqwpgrj", model.status());
-        Assertions.assertEquals("norcjxvsnbyxqab", model.description());
+        Assertions.assertEquals("krwpdap", model.status());
+        Assertions.assertEquals("sbdkvwr", model.description());
     }
 }

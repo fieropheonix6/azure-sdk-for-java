@@ -11,36 +11,27 @@ import com.azure.resourcemanager.kusto.models.IdentityUserAssignedIdentities;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IdentityTests {
-    @Test
-    public void testDeserialize() {
-        Identity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"uwfzitonpe\",\"tenantId\":\"pjkjlxofpdv\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"kpode\":{\"principalId\":\"ypininm\",\"clientId\":\"huyb\"},\"o\":{\"principalId\":\"oginuvamiheognar\",\"clientId\":\"xth\"},\"bwjzr\":{\"principalId\":\"si\",\"clientId\":\"evcciqihnhun\"}}}")
-                .toObject(Identity.class);
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.type());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        Identity model = BinaryData.fromString(
+            "{\"principalId\":\"y\",\"tenantId\":\"nzwuxzd\",\"type\":\"None\",\"userAssignedIdentities\":{\"tijbpzvgnwzsymgl\":{\"principalId\":\"lhmwhfpmrqobm\",\"clientId\":\"kknryrtihf\"},\"s\":{\"principalId\":\"fcyzkohdbihanufh\",\"clientId\":\"bj\"},\"npqxuh\":{\"principalId\":\"ithxqhabifpi\",\"clientId\":\"wczbys\"},\"tfwvukxgaudc\":{\"principalId\":\"y\",\"clientId\":\"iwbybrkxvdumjg\"}}}")
+            .toObject(Identity.class);
+        Assertions.assertEquals(IdentityType.NONE, model.type());
     }
 
-    @Test
-    public void testSerialize() {
-        Identity model =
-            new Identity()
-                .withType(IdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "kpode",
-                        new IdentityUserAssignedIdentities(),
-                        "o",
-                        new IdentityUserAssignedIdentities(),
-                        "bwjzr",
-                        new IdentityUserAssignedIdentities()));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        Identity model = new Identity().withType(IdentityType.NONE)
+            .withUserAssignedIdentities(mapOf("tijbpzvgnwzsymgl", new IdentityUserAssignedIdentities(), "s",
+                new IdentityUserAssignedIdentities(), "npqxuh", new IdentityUserAssignedIdentities(), "tfwvukxgaudc",
+                new IdentityUserAssignedIdentities()));
         model = BinaryData.fromObject(model).toObject(Identity.class);
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(IdentityType.NONE, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

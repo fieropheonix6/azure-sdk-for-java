@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Clusters ListSkus. */
+/**
+ * Samples for Clusters ListSkus.
+ */
 public final class ClustersListSkusSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoClustersListSkus.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoClustersListSkus.json
      */
     /**
      * Sample code: KustoClustersListSkus.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClustersListSkus(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager.clusters().listSkus(Context.NONE);
+        manager.clusters().listSkus(com.azure.core.util.Context.NONE);
     }
 }

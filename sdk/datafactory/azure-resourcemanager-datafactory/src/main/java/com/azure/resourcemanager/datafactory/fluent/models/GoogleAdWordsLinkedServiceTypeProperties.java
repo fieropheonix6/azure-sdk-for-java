@@ -5,101 +5,126 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.GoogleAdWordsAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Google AdWords service linked service properties. */
+/**
+ * Google AdWords service linked service properties.
+ */
 @Fluent
-public final class GoogleAdWordsLinkedServiceTypeProperties {
+public final class GoogleAdWordsLinkedServiceTypeProperties
+    implements JsonSerializable<GoogleAdWordsLinkedServiceTypeProperties> {
     /*
-     * Properties used to connect to GoogleAds. It is mutually exclusive with any other properties in the linked
-     * service. Type: object.
+     * (Deprecated) Properties used to connect to GoogleAds. It is mutually exclusive with any other properties in the
+     * linked service. Type: object.
      */
-    @JsonProperty(value = "connectionProperties")
     private Object connectionProperties;
 
     /*
-     * The Client customer ID of the AdWords account that you want to fetch report data for.
+     * The Client customer ID of the AdWords account that you want to fetch report data for. Type: string (or Expression
+     * with resultType string).
      */
-    @JsonProperty(value = "clientCustomerID")
     private Object clientCustomerId;
 
     /*
      * The developer token associated with the manager account that you use to grant access to the AdWords API.
      */
-    @JsonProperty(value = "developerToken")
     private SecretBase developerToken;
 
     /*
      * The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication can only be used on
      * self-hosted IR.
      */
-    @JsonProperty(value = "authenticationType")
     private GoogleAdWordsAuthenticationType authenticationType;
 
     /*
      * The refresh token obtained from Google for authorizing access to AdWords for UserAuthentication.
      */
-    @JsonProperty(value = "refreshToken")
     private SecretBase refreshToken;
 
     /*
      * The client id of the google application used to acquire the refresh token. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "clientId")
     private Object clientId;
 
     /*
      * The client secret of the google application used to acquire the refresh token.
      */
-    @JsonProperty(value = "clientSecret")
     private SecretBase clientSecret;
 
     /*
-     * The service account email ID that is used for ServiceAuthentication and can only be used on self-hosted IR.
+     * The service account email ID that is used for ServiceAuthentication and can only be used on self-hosted IR. Type:
+     * string (or Expression with resultType string).
      */
-    @JsonProperty(value = "email")
     private Object email;
 
     /*
-     * The full path to the .p12 key file that is used to authenticate the service account email address and can only
-     * be used on self-hosted IR.
+     * (Deprecated) The full path to the .p12 key file that is used to authenticate the service account email address
+     * and can only be used on self-hosted IR. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "keyFilePath")
     private Object keyFilePath;
 
     /*
-     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
-     * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
-     * installed with the IR.
+     * (Deprecated) The full path of the .pem file containing trusted CA certificates for verifying the server when
+     * connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default value is the
+     * cacerts.pem file installed with the IR. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "trustedCertPath")
     private Object trustedCertPath;
 
     /*
-     * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default
-     * value is false.
+     * (Deprecated) Specifies whether to use a CA certificate from the system trust store or from a specified PEM file.
+     * The default value is false. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "useSystemTrustStore")
     private Object useSystemTrustStore;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * The private key that is used to authenticate the service account email address and can only be used on
+     * self-hosted IR.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private SecretBase privateKey;
 
-    /** Creates an instance of GoogleAdWordsLinkedServiceTypeProperties class. */
+    /*
+     * The customer ID of the Google Ads Manager account through which you want to fetch report data of specific
+     * Customer. Type: string (or Expression with resultType string).
+     */
+    private Object loginCustomerId;
+
+    /*
+     * The Google Ads API major version such as v14. The supported major versions could be found on
+     * https://developers.google.com/google-ads/api/docs/release-notes. Type: string (or Expression with resultType
+     * string).
+     */
+    private Object googleAdsApiVersion;
+
+    /*
+     * Specifies whether to use the legacy data type mappings, which maps float, int32 and int64 from Google to string.
+     * Do not set this to true unless you want to keep backward compatibility with legacy driver's data type mappings.
+     * Type: boolean (or Expression with resultType boolean).
+     */
+    private Object supportLegacyDataTypes;
+
+    /*
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
+     */
+    private String encryptedCredential;
+
+    /**
+     * Creates an instance of GoogleAdWordsLinkedServiceTypeProperties class.
+     */
     public GoogleAdWordsLinkedServiceTypeProperties() {
     }
 
     /**
-     * Get the connectionProperties property: Properties used to connect to GoogleAds. It is mutually exclusive with any
-     * other properties in the linked service. Type: object.
-     *
+     * Get the connectionProperties property: (Deprecated) Properties used to connect to GoogleAds. It is mutually
+     * exclusive with any other properties in the linked service. Type: object.
+     * 
      * @return the connectionProperties value.
      */
     public Object connectionProperties() {
@@ -107,9 +132,9 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the connectionProperties property: Properties used to connect to GoogleAds. It is mutually exclusive with any
-     * other properties in the linked service. Type: object.
-     *
+     * Set the connectionProperties property: (Deprecated) Properties used to connect to GoogleAds. It is mutually
+     * exclusive with any other properties in the linked service. Type: object.
+     * 
      * @param connectionProperties the connectionProperties value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
      */
@@ -120,8 +145,8 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
 
     /**
      * Get the clientCustomerId property: The Client customer ID of the AdWords account that you want to fetch report
-     * data for.
-     *
+     * data for. Type: string (or Expression with resultType string).
+     * 
      * @return the clientCustomerId value.
      */
     public Object clientCustomerId() {
@@ -130,8 +155,8 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
 
     /**
      * Set the clientCustomerId property: The Client customer ID of the AdWords account that you want to fetch report
-     * data for.
-     *
+     * data for. Type: string (or Expression with resultType string).
+     * 
      * @param clientCustomerId the clientCustomerId value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
      */
@@ -143,7 +168,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     /**
      * Get the developerToken property: The developer token associated with the manager account that you use to grant
      * access to the AdWords API.
-     *
+     * 
      * @return the developerToken value.
      */
     public SecretBase developerToken() {
@@ -153,7 +178,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     /**
      * Set the developerToken property: The developer token associated with the manager account that you use to grant
      * access to the AdWords API.
-     *
+     * 
      * @param developerToken the developerToken value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
      */
@@ -165,7 +190,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     /**
      * Get the authenticationType property: The OAuth 2.0 authentication mechanism used for authentication.
      * ServiceAuthentication can only be used on self-hosted IR.
-     *
+     * 
      * @return the authenticationType value.
      */
     public GoogleAdWordsAuthenticationType authenticationType() {
@@ -175,12 +200,12 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     /**
      * Set the authenticationType property: The OAuth 2.0 authentication mechanism used for authentication.
      * ServiceAuthentication can only be used on self-hosted IR.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
      */
-    public GoogleAdWordsLinkedServiceTypeProperties withAuthenticationType(
-        GoogleAdWordsAuthenticationType authenticationType) {
+    public GoogleAdWordsLinkedServiceTypeProperties
+        withAuthenticationType(GoogleAdWordsAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
     }
@@ -188,7 +213,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     /**
      * Get the refreshToken property: The refresh token obtained from Google for authorizing access to AdWords for
      * UserAuthentication.
-     *
+     * 
      * @return the refreshToken value.
      */
     public SecretBase refreshToken() {
@@ -198,7 +223,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     /**
      * Set the refreshToken property: The refresh token obtained from Google for authorizing access to AdWords for
      * UserAuthentication.
-     *
+     * 
      * @param refreshToken the refreshToken value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
      */
@@ -210,7 +235,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     /**
      * Get the clientId property: The client id of the google application used to acquire the refresh token. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the clientId value.
      */
     public Object clientId() {
@@ -220,7 +245,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     /**
      * Set the clientId property: The client id of the google application used to acquire the refresh token. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
      */
@@ -231,7 +256,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
 
     /**
      * Get the clientSecret property: The client secret of the google application used to acquire the refresh token.
-     *
+     * 
      * @return the clientSecret value.
      */
     public SecretBase clientSecret() {
@@ -240,7 +265,7 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
 
     /**
      * Set the clientSecret property: The client secret of the google application used to acquire the refresh token.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
      */
@@ -251,8 +276,8 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
 
     /**
      * Get the email property: The service account email ID that is used for ServiceAuthentication and can only be used
-     * on self-hosted IR.
-     *
+     * on self-hosted IR. Type: string (or Expression with resultType string).
+     * 
      * @return the email value.
      */
     public Object email() {
@@ -261,8 +286,8 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
 
     /**
      * Set the email property: The service account email ID that is used for ServiceAuthentication and can only be used
-     * on self-hosted IR.
-     *
+     * on self-hosted IR. Type: string (or Expression with resultType string).
+     * 
      * @param email the email value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
      */
@@ -272,9 +297,10 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service account
-     * email address and can only be used on self-hosted IR.
-     *
+     * Get the keyFilePath property: (Deprecated) The full path to the .p12 key file that is used to authenticate the
+     * service account email address and can only be used on self-hosted IR. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the keyFilePath value.
      */
     public Object keyFilePath() {
@@ -282,9 +308,10 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service account
-     * email address and can only be used on self-hosted IR.
-     *
+     * Set the keyFilePath property: (Deprecated) The full path to the .p12 key file that is used to authenticate the
+     * service account email address and can only be used on self-hosted IR. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param keyFilePath the keyFilePath value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
      */
@@ -294,10 +321,11 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
-     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
-     * value is the cacerts.pem file installed with the IR.
-     *
+     * Get the trustedCertPath property: (Deprecated) The full path of the .pem file containing trusted CA certificates
+     * for verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted
+     * IR. The default value is the cacerts.pem file installed with the IR. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the trustedCertPath value.
      */
     public Object trustedCertPath() {
@@ -305,10 +333,11 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
-     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
-     * value is the cacerts.pem file installed with the IR.
-     *
+     * Set the trustedCertPath property: (Deprecated) The full path of the .pem file containing trusted CA certificates
+     * for verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted
+     * IR. The default value is the cacerts.pem file installed with the IR. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
      */
@@ -318,9 +347,10 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
-     * from a specified PEM file. The default value is false.
-     *
+     * Get the useSystemTrustStore property: (Deprecated) Specifies whether to use a CA certificate from the system
+     * trust store or from a specified PEM file. The default value is false. Type: boolean (or Expression with
+     * resultType boolean).
+     * 
      * @return the useSystemTrustStore value.
      */
     public Object useSystemTrustStore() {
@@ -328,9 +358,10 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
-     * from a specified PEM file. The default value is false.
-     *
+     * Set the useSystemTrustStore property: (Deprecated) Specifies whether to use a CA certificate from the system
+     * trust store or from a specified PEM file. The default value is false. Type: boolean (or Expression with
+     * resultType boolean).
+     * 
      * @param useSystemTrustStore the useSystemTrustStore value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
      */
@@ -340,30 +371,122 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     }
 
     /**
+     * Get the privateKey property: The private key that is used to authenticate the service account email address and
+     * can only be used on self-hosted IR.
+     * 
+     * @return the privateKey value.
+     */
+    public SecretBase privateKey() {
+        return this.privateKey;
+    }
+
+    /**
+     * Set the privateKey property: The private key that is used to authenticate the service account email address and
+     * can only be used on self-hosted IR.
+     * 
+     * @param privateKey the privateKey value to set.
+     * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
+     */
+    public GoogleAdWordsLinkedServiceTypeProperties withPrivateKey(SecretBase privateKey) {
+        this.privateKey = privateKey;
+        return this;
+    }
+
+    /**
+     * Get the loginCustomerId property: The customer ID of the Google Ads Manager account through which you want to
+     * fetch report data of specific Customer. Type: string (or Expression with resultType string).
+     * 
+     * @return the loginCustomerId value.
+     */
+    public Object loginCustomerId() {
+        return this.loginCustomerId;
+    }
+
+    /**
+     * Set the loginCustomerId property: The customer ID of the Google Ads Manager account through which you want to
+     * fetch report data of specific Customer. Type: string (or Expression with resultType string).
+     * 
+     * @param loginCustomerId the loginCustomerId value to set.
+     * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
+     */
+    public GoogleAdWordsLinkedServiceTypeProperties withLoginCustomerId(Object loginCustomerId) {
+        this.loginCustomerId = loginCustomerId;
+        return this;
+    }
+
+    /**
+     * Get the googleAdsApiVersion property: The Google Ads API major version such as v14. The supported major versions
+     * could be found on https://developers.google.com/google-ads/api/docs/release-notes. Type: string (or Expression
+     * with resultType string).
+     * 
+     * @return the googleAdsApiVersion value.
+     */
+    public Object googleAdsApiVersion() {
+        return this.googleAdsApiVersion;
+    }
+
+    /**
+     * Set the googleAdsApiVersion property: The Google Ads API major version such as v14. The supported major versions
+     * could be found on https://developers.google.com/google-ads/api/docs/release-notes. Type: string (or Expression
+     * with resultType string).
+     * 
+     * @param googleAdsApiVersion the googleAdsApiVersion value to set.
+     * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
+     */
+    public GoogleAdWordsLinkedServiceTypeProperties withGoogleAdsApiVersion(Object googleAdsApiVersion) {
+        this.googleAdsApiVersion = googleAdsApiVersion;
+        return this;
+    }
+
+    /**
+     * Get the supportLegacyDataTypes property: Specifies whether to use the legacy data type mappings, which maps
+     * float, int32 and int64 from Google to string. Do not set this to true unless you want to keep backward
+     * compatibility with legacy driver's data type mappings. Type: boolean (or Expression with resultType boolean).
+     * 
+     * @return the supportLegacyDataTypes value.
+     */
+    public Object supportLegacyDataTypes() {
+        return this.supportLegacyDataTypes;
+    }
+
+    /**
+     * Set the supportLegacyDataTypes property: Specifies whether to use the legacy data type mappings, which maps
+     * float, int32 and int64 from Google to string. Do not set this to true unless you want to keep backward
+     * compatibility with legacy driver's data type mappings. Type: boolean (or Expression with resultType boolean).
+     * 
+     * @param supportLegacyDataTypes the supportLegacyDataTypes value to set.
+     * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
+     */
+    public GoogleAdWordsLinkedServiceTypeProperties withSupportLegacyDataTypes(Object supportLegacyDataTypes) {
+        this.supportLegacyDataTypes = supportLegacyDataTypes;
+        return this;
+    }
+
+    /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the GoogleAdWordsLinkedServiceTypeProperties object itself.
      */
-    public GoogleAdWordsLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public GoogleAdWordsLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -376,5 +499,92 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
         if (clientSecret() != null) {
             clientSecret().validate();
         }
+        if (privateKey() != null) {
+            privateKey().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
+        jsonWriter.writeUntypedField("clientCustomerID", this.clientCustomerId);
+        jsonWriter.writeJsonField("developerToken", this.developerToken);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeJsonField("refreshToken", this.refreshToken);
+        jsonWriter.writeUntypedField("clientId", this.clientId);
+        jsonWriter.writeJsonField("clientSecret", this.clientSecret);
+        jsonWriter.writeUntypedField("email", this.email);
+        jsonWriter.writeUntypedField("keyFilePath", this.keyFilePath);
+        jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
+        jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
+        jsonWriter.writeJsonField("privateKey", this.privateKey);
+        jsonWriter.writeUntypedField("loginCustomerID", this.loginCustomerId);
+        jsonWriter.writeUntypedField("googleAdsApiVersion", this.googleAdsApiVersion);
+        jsonWriter.writeUntypedField("supportLegacyDataTypes", this.supportLegacyDataTypes);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GoogleAdWordsLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GoogleAdWordsLinkedServiceTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GoogleAdWordsLinkedServiceTypeProperties.
+     */
+    public static GoogleAdWordsLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GoogleAdWordsLinkedServiceTypeProperties deserializedGoogleAdWordsLinkedServiceTypeProperties
+                = new GoogleAdWordsLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionProperties".equals(fieldName)) {
+                    deserializedGoogleAdWordsLinkedServiceTypeProperties.connectionProperties = reader.readUntyped();
+                } else if ("clientCustomerID".equals(fieldName)) {
+                    deserializedGoogleAdWordsLinkedServiceTypeProperties.clientCustomerId = reader.readUntyped();
+                } else if ("developerToken".equals(fieldName)) {
+                    deserializedGoogleAdWordsLinkedServiceTypeProperties.developerToken = SecretBase.fromJson(reader);
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedGoogleAdWordsLinkedServiceTypeProperties.authenticationType
+                        = GoogleAdWordsAuthenticationType.fromString(reader.getString());
+                } else if ("refreshToken".equals(fieldName)) {
+                    deserializedGoogleAdWordsLinkedServiceTypeProperties.refreshToken = SecretBase.fromJson(reader);
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedGoogleAdWordsLinkedServiceTypeProperties.clientId = reader.readUntyped();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedGoogleAdWordsLinkedServiceTypeProperties.clientSecret = SecretBase.fromJson(reader);
+                } else if ("email".equals(fieldName)) {
+                    deserializedGoogleAdWordsLinkedServiceTypeProperties.email = reader.readUntyped();
+                } else if ("keyFilePath".equals(fieldName)) {
+                    deserializedGoogleAdWordsLinkedServiceTypeProperties.keyFilePath = reader.readUntyped();
+                } else if ("trustedCertPath".equals(fieldName)) {
+                    deserializedGoogleAdWordsLinkedServiceTypeProperties.trustedCertPath = reader.readUntyped();
+                } else if ("useSystemTrustStore".equals(fieldName)) {
+                    deserializedGoogleAdWordsLinkedServiceTypeProperties.useSystemTrustStore = reader.readUntyped();
+                } else if ("privateKey".equals(fieldName)) {
+                    deserializedGoogleAdWordsLinkedServiceTypeProperties.privateKey = SecretBase.fromJson(reader);
+                } else if ("loginCustomerID".equals(fieldName)) {
+                    deserializedGoogleAdWordsLinkedServiceTypeProperties.loginCustomerId = reader.readUntyped();
+                } else if ("googleAdsApiVersion".equals(fieldName)) {
+                    deserializedGoogleAdWordsLinkedServiceTypeProperties.googleAdsApiVersion = reader.readUntyped();
+                } else if ("supportLegacyDataTypes".equals(fieldName)) {
+                    deserializedGoogleAdWordsLinkedServiceTypeProperties.supportLegacyDataTypes = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedGoogleAdWordsLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGoogleAdWordsLinkedServiceTypeProperties;
+        });
     }
 }

@@ -7,11 +7,29 @@ package com.azure.resourcemanager.logic.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of WorkflowRunOperations. */
+/**
+ * Resource collection API of WorkflowRunOperations.
+ */
 public interface WorkflowRunOperations {
     /**
      * Gets an operation for a run.
-     *
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param workflowName The workflow name.
+     * @param runName The workflow run name.
+     * @param operationId The workflow operation id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an operation for a run along with {@link Response}.
+     */
+    Response<WorkflowRun> getWithResponse(String resourceGroupName, String workflowName, String runName,
+        String operationId, Context context);
+
+    /**
+     * Gets an operation for a run.
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param runName The workflow run name.
@@ -22,20 +40,4 @@ public interface WorkflowRunOperations {
      * @return an operation for a run.
      */
     WorkflowRun get(String resourceGroupName, String workflowName, String runName, String operationId);
-
-    /**
-     * Gets an operation for a run.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param operationId The workflow operation id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an operation for a run.
-     */
-    Response<WorkflowRun> getWithResponse(
-        String resourceGroupName, String workflowName, String runName, String operationId, Context context);
 }

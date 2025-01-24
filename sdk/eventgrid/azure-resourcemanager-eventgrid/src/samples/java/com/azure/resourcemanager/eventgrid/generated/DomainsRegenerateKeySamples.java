@@ -4,23 +4,25 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.models.DomainRegenerateKeyRequest;
 
-/** Samples for Domains RegenerateKey. */
+/**
+ * Samples for Domains RegenerateKey.
+ */
 public final class DomainsRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Domains_RegenerateKey.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * Domains_RegenerateKey.json
      */
     /**
      * Sample code: Domains_RegenerateKey.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void domainsRegenerateKey(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .domains()
-            .regenerateKeyWithResponse(
-                "examplerg", "exampledomain2", new DomainRegenerateKeyRequest().withKeyName("key1"), Context.NONE);
+        manager.domains()
+            .regenerateKeyWithResponse("examplerg", "exampledomain2",
+                new DomainRegenerateKeyRequest().withKeyName("fakeTokenPlaceholder"), com.azure.core.util.Context.NONE);
     }
 }

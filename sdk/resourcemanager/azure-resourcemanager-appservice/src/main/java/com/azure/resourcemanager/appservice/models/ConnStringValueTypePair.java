@@ -6,26 +6,36 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Database connection string value to type pair. */
+/**
+ * Database connection string value to type pair.
+ */
 @Fluent
-public final class ConnStringValueTypePair {
+public final class ConnStringValueTypePair implements JsonSerializable<ConnStringValueTypePair> {
     /*
      * Value of pair.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /*
      * Type of database.
      */
-    @JsonProperty(value = "type", required = true)
     private ConnectionStringType type;
 
     /**
+     * Creates an instance of ConnStringValueTypePair class.
+     */
+    public ConnStringValueTypePair() {
+    }
+
+    /**
      * Get the value property: Value of pair.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -34,7 +44,7 @@ public final class ConnStringValueTypePair {
 
     /**
      * Set the value property: Value of pair.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConnStringValueTypePair object itself.
      */
@@ -45,7 +55,7 @@ public final class ConnStringValueTypePair {
 
     /**
      * Get the type property: Type of database.
-     *
+     * 
      * @return the type value.
      */
     public ConnectionStringType type() {
@@ -54,7 +64,7 @@ public final class ConnStringValueTypePair {
 
     /**
      * Set the type property: Type of database.
-     *
+     * 
      * @param type the type value to set.
      * @return the ConnStringValueTypePair object itself.
      */
@@ -65,21 +75,59 @@ public final class ConnStringValueTypePair {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ConnStringValueTypePair"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model ConnStringValueTypePair"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ConnStringValueTypePair"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ConnStringValueTypePair"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnStringValueTypePair.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnStringValueTypePair from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnStringValueTypePair if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnStringValueTypePair.
+     */
+    public static ConnStringValueTypePair fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnStringValueTypePair deserializedConnStringValueTypePair = new ConnStringValueTypePair();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedConnStringValueTypePair.value = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedConnStringValueTypePair.type = ConnectionStringType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnStringValueTypePair;
+        });
+    }
 }

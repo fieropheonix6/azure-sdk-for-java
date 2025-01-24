@@ -5,26 +5,41 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SettingsTypeName. */
+/**
+ * Defines values for SettingsTypeName.
+ */
 public final class SettingsTypeName extends ExpandableStringEnum<SettingsTypeName> {
-    /** Static value public for SettingsTypeName. */
+    /**
+     * Static value public for SettingsTypeName.
+     */
     public static final SettingsTypeName PUBLIC = fromString("public");
 
     /**
+     * Creates a new instance of SettingsTypeName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SettingsTypeName() {
+    }
+
+    /**
      * Creates or finds a SettingsTypeName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SettingsTypeName.
      */
-    @JsonCreator
     public static SettingsTypeName fromString(String name) {
         return fromString(name, SettingsTypeName.class);
     }
 
-    /** @return known SettingsTypeName values. */
+    /**
+     * Gets known SettingsTypeName values.
+     * 
+     * @return known SettingsTypeName values.
+     */
     public static Collection<SettingsTypeName> values() {
         return values(SettingsTypeName.class);
     }

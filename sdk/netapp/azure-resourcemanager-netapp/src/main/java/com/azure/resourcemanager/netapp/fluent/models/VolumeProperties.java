@@ -6,263 +6,241 @@ package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.netapp.models.AcceptGrowCapacityPoolForShortTermCloneSplit;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
+import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
+import com.azure.resourcemanager.netapp.models.FileAccessLogs;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
+import com.azure.resourcemanager.netapp.models.VolumeLanguage;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Volume properties. */
+/**
+ * Volume properties.
+ */
 @Fluent
-public final class VolumeProperties {
+public final class VolumeProperties implements JsonSerializable<VolumeProperties> {
     /*
-     * FileSystem ID
-     *
      * Unique FileSystem Identifier.
      */
-    @JsonProperty(value = "fileSystemId", access = JsonProperty.Access.WRITE_ONLY)
     private String fileSystemId;
 
     /*
-     * Creation Token or File Path
-     *
      * A unique file path for the volume. Used when creating mount targets
      */
-    @JsonProperty(value = "creationToken", required = true)
     private String creationToken;
 
     /*
-     * serviceLevel
-     *
      * The service level of the file system
      */
-    @JsonProperty(value = "serviceLevel")
     private ServiceLevel serviceLevel;
 
     /*
-     * usageThreshold
-     *
-     * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+     * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. For
+     * regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes, valid values are in the range
+     * 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values expressed in bytes as multiples
+     * of 1 GiB.
      */
-    @JsonProperty(value = "usageThreshold", required = true)
     private long usageThreshold;
 
     /*
-     * exportPolicy
-     *
      * Set of export policy rules
      */
-    @JsonProperty(value = "exportPolicy")
     private VolumePropertiesExportPolicy exportPolicy;
 
     /*
-     * protocolTypes
-     *
      * Set of protocol types, default NFSv3, CIFS for SMB protocol
      */
-    @JsonProperty(value = "protocolTypes")
     private List<String> protocolTypes;
 
     /*
      * Azure lifecycle management
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
-     * Snapshot ID
-     *
-     * UUID v4 or resource identifier used to identify the Snapshot.
+     * Resource identifier used to identify the Snapshot.
      */
-    @JsonProperty(value = "snapshotId")
     private String snapshotId;
 
     /*
      * If enabled (true) the snapshot the volume was created from will be automatically deleted after the volume create
-     * operation has finished.  Defaults to false
+     * operation has finished. Defaults to false
      */
-    @JsonProperty(value = "deleteBaseSnapshot")
     private Boolean deleteBaseSnapshot;
 
     /*
-     * Backup ID
-     *
-     * UUID v4 or resource identifier used to identify the Backup.
+     * Resource identifier used to identify the Backup.
      */
-    @JsonProperty(value = "backupId")
     private String backupId;
 
     /*
-     * Baremetal Tenant ID
-     *
      * Unique Baremetal Tenant Identifier.
      */
-    @JsonProperty(value = "baremetalTenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String baremetalTenantId;
 
     /*
      * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes
      */
-    @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
 
     /*
-     * Network features
-     *
-     * Basic network, or Standard features available to the volume.
+     * The original value of the network features type available to the volume at the time it was created.
      */
-    @JsonProperty(value = "networkFeatures")
     private NetworkFeatures networkFeatures;
 
     /*
-     * Network Sibling Set ID
-     *
+     * The effective value of the network features type available to the volume, or current effective state of update.
+     */
+    private NetworkFeatures effectiveNetworkFeatures;
+
+    /*
      * Network Sibling Set ID for the the group of volumes sharing networking resources.
      */
-    @JsonProperty(value = "networkSiblingSetId", access = JsonProperty.Access.WRITE_ONLY)
     private String networkSiblingSetId;
 
     /*
-     * Storage to Network Proximity
-     *
      * Provides storage to network proximity information for the volume.
      */
-    @JsonProperty(value = "storageToNetworkProximity", access = JsonProperty.Access.WRITE_ONLY)
     private VolumeStorageToNetworkProximity storageToNetworkProximity;
 
     /*
-     * mountTargets
-     *
      * List of mount targets
      */
-    @JsonProperty(value = "mountTargets", access = JsonProperty.Access.WRITE_ONLY)
     private List<MountTargetProperties> mountTargets;
 
     /*
-     * What type of volume is this. For destination volumes in Cross Region Replication, set type to DataProtection
+     * What type of volume is this. For destination volumes in Cross Region Replication, set type to DataProtection. For
+     * creating clone volume, set type to ShortTermClone
      */
-    @JsonProperty(value = "volumeType")
     private String volumeType;
 
     /*
-     * DataProtection
-     *
      * DataProtection type volumes include an object containing details of the replication
      */
-    @JsonProperty(value = "dataProtection")
     private VolumePropertiesDataProtection dataProtection;
+
+    /*
+     * While auto splitting the short term clone volume, if the parent pool does not have enough space to accommodate
+     * the volume after split, it will be automatically resized, which will lead to increased billing. To accept
+     * capacity pool size auto grow and create a short term clone volume, set the property as accepted.
+     */
+    private AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit;
 
     /*
      * Restoring
      */
-    @JsonProperty(value = "isRestoring")
     private Boolean isRestoring;
 
     /*
      * If enabled (true) the volume will contain a read-only snapshot directory which provides access to each of the
-     * volume's snapshots (default to true).
+     * volume's snapshots (defaults to true).
      */
-    @JsonProperty(value = "snapshotDirectoryVisible")
     private Boolean snapshotDirectoryVisible;
 
     /*
      * Describe if a volume is KerberosEnabled. To be use with swagger version 2020-05-01 or later
      */
-    @JsonProperty(value = "kerberosEnabled")
     private Boolean kerberosEnabled;
 
     /*
      * The security style of volume, default unix, defaults to ntfs for dual protocol or CIFS protocol
      */
-    @JsonProperty(value = "securityStyle")
     private SecurityStyle securityStyle;
 
     /*
      * Enables encryption for in-flight smb3 data. Only applicable for SMB/DualProtocol volume. To be used with swagger
      * version 2020-08-01 or later
      */
-    @JsonProperty(value = "smbEncryption")
     private Boolean smbEncryption;
 
     /*
-     * smbAccessBasedEnumeration
-     *
-     * Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume
+     * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume
      */
-    @JsonProperty(value = "smbAccessBasedEnumeration")
     private SmbAccessBasedEnumeration smbAccessBasedEnumeration;
 
     /*
-     * smbNonBrowsable
-     *
-     * Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume
+     * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume
      */
-    @JsonProperty(value = "smbNonBrowsable")
     private SmbNonBrowsable smbNonBrowsable;
 
     /*
      * Enables continuously available share property for smb volume. Only applicable for SMB volume
      */
-    @JsonProperty(value = "smbContinuouslyAvailable")
     private Boolean smbContinuouslyAvailable;
 
     /*
      * Maximum throughput in MiB/s that can be achieved by this volume and this will be accepted as input only for
      * manual qosType volume
      */
-    @JsonProperty(value = "throughputMibps")
     private Float throughputMibps;
+
+    /*
+     * Actual throughput in MiB/s for auto qosType volumes calculated based on size and serviceLevel
+     */
+    private Float actualThroughputMibps;
 
     /*
      * Source of key used to encrypt data in volume. Applicable if NetApp account has encryption.keySource =
      * 'Microsoft.KeyVault'. Possible values (case-insensitive) are: 'Microsoft.NetApp, Microsoft.KeyVault'
      */
-    @JsonProperty(value = "encryptionKeySource")
     private EncryptionKeySource encryptionKeySource;
 
     /*
      * The resource ID of private endpoint for KeyVault. It must reside in the same VNET as the volume. Only applicable
      * if encryptionKeySource = 'Microsoft.KeyVault'.
      */
-    @JsonProperty(value = "keyVaultPrivateEndpointResourceId")
     private String keyVaultPrivateEndpointResourceId;
 
     /*
      * Specifies whether LDAP is enabled or not for a given NFS volume.
      */
-    @JsonProperty(value = "ldapEnabled")
     private Boolean ldapEnabled;
 
     /*
      * Specifies whether Cool Access(tiering) is enabled for the volume.
      */
-    @JsonProperty(value = "coolAccess")
     private Boolean coolAccess;
 
     /*
      * Specifies the number of days after which data that is not accessed by clients will be tiered.
      */
-    @JsonProperty(value = "coolnessPeriod")
     private Integer coolnessPeriod;
+
+    /*
+     * coolAccessRetrievalPolicy determines the data retrieval behavior from the cool tier to standard storage based on
+     * the read pattern for cool access enabled volumes. The possible values for this field are:
+     * Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
+     * OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random
+     * reads.
+     * Never - No client-driven data is pulled from cool tier to standard storage.
+     */
+    private CoolAccessRetrievalPolicy coolAccessRetrievalPolicy;
 
     /*
      * UNIX permissions for NFS volume accepted in octal 4 digit format. First digit selects the set user ID(4), set
      * group ID (2) and sticky (1) attributes. Second digit selects permission for the owner of the file: read (4),
      * write (2) and execute (1). Third selects permissions for other users in the same group. the fourth for other
      * users not in the group. 0755 - gives read/write/execute permissions to owner and read/execute to group and other
-     * users.
+     * users. Avoid passing null value for unixPermissions in volume update operation, As per the behavior, If Null
+     * value is passed then user-visible unixPermissions value will became null, and user will not be able to get
+     * unixPermissions value. On safer side, actual unixPermissions value on volume will remain as its last saved value
+     * only.
      */
-    @JsonProperty(value = "unixPermissions")
     private String unixPermissions;
 
     /*
@@ -270,98 +248,121 @@ public final class VolumeProperties {
      * cloning process. When this value is empty/null there is no cloning process currently happening on this volume.
      * This value will update every 5 minutes during cloning.
      */
-    @JsonProperty(value = "cloneProgress", access = JsonProperty.Access.WRITE_ONLY)
     private Integer cloneProgress;
 
     /*
-     * avsDataStore
-     *
+     * Flag indicating whether file access logs are enabled for the volume, based on active diagnostic settings present
+     * on the volume.
+     */
+    private FileAccessLogs fileAccessLogs;
+
+    /*
      * Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose
      */
-    @JsonProperty(value = "avsDataStore")
     private AvsDataStore avsDataStore;
+
+    /*
+     * Data store resource unique identifier
+     */
+    private List<String> dataStoreResourceId;
 
     /*
      * Specifies if default quota is enabled for the volume.
      */
-    @JsonProperty(value = "isDefaultQuotaEnabled")
     private Boolean isDefaultQuotaEnabled;
 
     /*
      * Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies .
      */
-    @JsonProperty(value = "defaultUserQuotaInKiBs")
     private Long defaultUserQuotaInKiBs;
 
     /*
      * Default group quota for volume in KiBs. If isDefaultQuotaEnabled is set, the minimum value of 4 KiBs applies.
      */
-    @JsonProperty(value = "defaultGroupQuotaInKiBs")
     private Long defaultGroupQuotaInKiBs;
 
     /*
      * Maximum number of files allowed. Needs a service request in order to be changed. Only allowed to be changed if
      * volume quota is more than 4TiB.
      */
-    @JsonProperty(value = "maximumNumberOfFiles", access = JsonProperty.Access.WRITE_ONLY)
     private Long maximumNumberOfFiles;
 
     /*
      * Volume Group Name
      */
-    @JsonProperty(value = "volumeGroupName", access = JsonProperty.Access.WRITE_ONLY)
     private String volumeGroupName;
 
     /*
      * Pool Resource Id used in case of creating a volume through volume group
      */
-    @JsonProperty(value = "capacityPoolResourceId")
     private String capacityPoolResourceId;
 
     /*
      * Proximity placement group associated with the volume
      */
-    @JsonProperty(value = "proximityPlacementGroup")
     private String proximityPlacementGroup;
 
     /*
      * T2 network information
      */
-    @JsonProperty(value = "t2Network", access = JsonProperty.Access.WRITE_ONLY)
     private String t2Network;
 
     /*
      * Volume spec name is the application specific designation or identifier for the particular volume in a volume
      * group for e.g. data, log
      */
-    @JsonProperty(value = "volumeSpecName")
     private String volumeSpecName;
 
     /*
      * Specifies if the volume is encrypted or not. Only available on volumes created or updated after 2022-01-01.
      */
-    @JsonProperty(value = "encrypted", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean encrypted;
 
     /*
-     * Volume placement rules
-     *
      * Application specific placement rules for the particular volume
      */
-    @JsonProperty(value = "placementRules")
     private List<PlacementKeyValuePairs> placementRules;
 
     /*
      * Flag indicating whether subvolume operations are enabled on the volume
      */
-    @JsonProperty(value = "enableSubvolumes")
     private EnableSubvolumes enableSubvolumes;
 
+    /*
+     * The availability zone where the volume is provisioned. This refers to the logical availability zone where the
+     * volume resides.
+     */
+    private String provisionedAvailabilityZone;
+
+    /*
+     * Specifies whether volume is a Large Volume or Regular Volume.
+     */
+    private Boolean isLargeVolume;
+
+    /*
+     * Id of the snapshot or backup that the volume is restored from.
+     */
+    private String originatingResourceId;
+
+    /*
+     * Space shared by short term clone volume with parent volume in bytes.
+     */
+    private Long inheritedSizeInBytes;
+
+    /*
+     * Language supported for volume.
+     */
+    private VolumeLanguage language;
+
     /**
-     * Get the fileSystemId property: FileSystem ID
-     *
-     * <p>Unique FileSystem Identifier.
-     *
+     * Creates an instance of VolumeProperties class.
+     */
+    public VolumeProperties() {
+    }
+
+    /**
+     * Get the fileSystemId property: Unique FileSystem Identifier.
+     * 
      * @return the fileSystemId value.
      */
     public String fileSystemId() {
@@ -369,10 +370,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the creationToken property: Creation Token or File Path
-     *
-     * <p>A unique file path for the volume. Used when creating mount targets.
-     *
+     * Get the creationToken property: A unique file path for the volume. Used when creating mount targets.
+     * 
      * @return the creationToken value.
      */
     public String creationToken() {
@@ -380,10 +379,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the creationToken property: Creation Token or File Path
-     *
-     * <p>A unique file path for the volume. Used when creating mount targets.
-     *
+     * Set the creationToken property: A unique file path for the volume. Used when creating mount targets.
+     * 
      * @param creationToken the creationToken value to set.
      * @return the VolumeProperties object itself.
      */
@@ -393,10 +390,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the serviceLevel property: serviceLevel
-     *
-     * <p>The service level of the file system.
-     *
+     * Get the serviceLevel property: The service level of the file system.
+     * 
      * @return the serviceLevel value.
      */
     public ServiceLevel serviceLevel() {
@@ -404,10 +399,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the serviceLevel property: serviceLevel
-     *
-     * <p>The service level of the file system.
-     *
+     * Set the serviceLevel property: The service level of the file system.
+     * 
      * @param serviceLevel the serviceLevel value to set.
      * @return the VolumeProperties object itself.
      */
@@ -417,11 +410,11 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the usageThreshold property: usageThreshold
-     *
-     * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
-     *
+     * Get the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
+     * 
      * @return the usageThreshold value.
      */
     public long usageThreshold() {
@@ -429,11 +422,11 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the usageThreshold property: usageThreshold
-     *
-     * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 500 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
-     *
+     * Set the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
+     * 
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumeProperties object itself.
      */
@@ -443,10 +436,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the exportPolicy property: exportPolicy
-     *
-     * <p>Set of export policy rules.
-     *
+     * Get the exportPolicy property: Set of export policy rules.
+     * 
      * @return the exportPolicy value.
      */
     public VolumePropertiesExportPolicy exportPolicy() {
@@ -454,10 +445,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the exportPolicy property: exportPolicy
-     *
-     * <p>Set of export policy rules.
-     *
+     * Set the exportPolicy property: Set of export policy rules.
+     * 
      * @param exportPolicy the exportPolicy value to set.
      * @return the VolumeProperties object itself.
      */
@@ -467,10 +456,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the protocolTypes property: protocolTypes
-     *
-     * <p>Set of protocol types, default NFSv3, CIFS for SMB protocol.
-     *
+     * Get the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * 
      * @return the protocolTypes value.
      */
     public List<String> protocolTypes() {
@@ -478,10 +465,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the protocolTypes property: protocolTypes
-     *
-     * <p>Set of protocol types, default NFSv3, CIFS for SMB protocol.
-     *
+     * Set the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * 
      * @param protocolTypes the protocolTypes value to set.
      * @return the VolumeProperties object itself.
      */
@@ -492,7 +477,7 @@ public final class VolumeProperties {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -500,10 +485,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the snapshotId property: Snapshot ID
-     *
-     * <p>UUID v4 or resource identifier used to identify the Snapshot.
-     *
+     * Get the snapshotId property: Resource identifier used to identify the Snapshot.
+     * 
      * @return the snapshotId value.
      */
     public String snapshotId() {
@@ -511,10 +494,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the snapshotId property: Snapshot ID
-     *
-     * <p>UUID v4 or resource identifier used to identify the Snapshot.
-     *
+     * Set the snapshotId property: Resource identifier used to identify the Snapshot.
+     * 
      * @param snapshotId the snapshotId value to set.
      * @return the VolumeProperties object itself.
      */
@@ -526,7 +507,7 @@ public final class VolumeProperties {
     /**
      * Get the deleteBaseSnapshot property: If enabled (true) the snapshot the volume was created from will be
      * automatically deleted after the volume create operation has finished. Defaults to false.
-     *
+     * 
      * @return the deleteBaseSnapshot value.
      */
     public Boolean deleteBaseSnapshot() {
@@ -536,7 +517,7 @@ public final class VolumeProperties {
     /**
      * Set the deleteBaseSnapshot property: If enabled (true) the snapshot the volume was created from will be
      * automatically deleted after the volume create operation has finished. Defaults to false.
-     *
+     * 
      * @param deleteBaseSnapshot the deleteBaseSnapshot value to set.
      * @return the VolumeProperties object itself.
      */
@@ -546,10 +527,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the backupId property: Backup ID
-     *
-     * <p>UUID v4 or resource identifier used to identify the Backup.
-     *
+     * Get the backupId property: Resource identifier used to identify the Backup.
+     * 
      * @return the backupId value.
      */
     public String backupId() {
@@ -557,10 +536,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the backupId property: Backup ID
-     *
-     * <p>UUID v4 or resource identifier used to identify the Backup.
-     *
+     * Set the backupId property: Resource identifier used to identify the Backup.
+     * 
      * @param backupId the backupId value to set.
      * @return the VolumeProperties object itself.
      */
@@ -570,10 +547,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the baremetalTenantId property: Baremetal Tenant ID
-     *
-     * <p>Unique Baremetal Tenant Identifier.
-     *
+     * Get the baremetalTenantId property: Unique Baremetal Tenant Identifier.
+     * 
      * @return the baremetalTenantId value.
      */
     public String baremetalTenantId() {
@@ -583,7 +558,7 @@ public final class VolumeProperties {
     /**
      * Get the subnetId property: The Azure Resource URI for a delegated subnet. Must have the delegation
      * Microsoft.NetApp/volumes.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -593,7 +568,7 @@ public final class VolumeProperties {
     /**
      * Set the subnetId property: The Azure Resource URI for a delegated subnet. Must have the delegation
      * Microsoft.NetApp/volumes.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the VolumeProperties object itself.
      */
@@ -603,10 +578,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the networkFeatures property: Network features
-     *
-     * <p>Basic network, or Standard features available to the volume.
-     *
+     * Get the networkFeatures property: The original value of the network features type available to the volume at the
+     * time it was created.
+     * 
      * @return the networkFeatures value.
      */
     public NetworkFeatures networkFeatures() {
@@ -614,10 +588,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the networkFeatures property: Network features
-     *
-     * <p>Basic network, or Standard features available to the volume.
-     *
+     * Set the networkFeatures property: The original value of the network features type available to the volume at the
+     * time it was created.
+     * 
      * @param networkFeatures the networkFeatures value to set.
      * @return the VolumeProperties object itself.
      */
@@ -627,10 +600,19 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the networkSiblingSetId property: Network Sibling Set ID
-     *
-     * <p>Network Sibling Set ID for the the group of volumes sharing networking resources.
-     *
+     * Get the effectiveNetworkFeatures property: The effective value of the network features type available to the
+     * volume, or current effective state of update.
+     * 
+     * @return the effectiveNetworkFeatures value.
+     */
+    public NetworkFeatures effectiveNetworkFeatures() {
+        return this.effectiveNetworkFeatures;
+    }
+
+    /**
+     * Get the networkSiblingSetId property: Network Sibling Set ID for the the group of volumes sharing networking
+     * resources.
+     * 
      * @return the networkSiblingSetId value.
      */
     public String networkSiblingSetId() {
@@ -638,10 +620,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the storageToNetworkProximity property: Storage to Network Proximity
-     *
-     * <p>Provides storage to network proximity information for the volume.
-     *
+     * Get the storageToNetworkProximity property: Provides storage to network proximity information for the volume.
+     * 
      * @return the storageToNetworkProximity value.
      */
     public VolumeStorageToNetworkProximity storageToNetworkProximity() {
@@ -649,10 +629,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the mountTargets property: mountTargets
-     *
-     * <p>List of mount targets.
-     *
+     * Get the mountTargets property: List of mount targets.
+     * 
      * @return the mountTargets value.
      */
     public List<MountTargetProperties> mountTargets() {
@@ -661,8 +639,8 @@ public final class VolumeProperties {
 
     /**
      * Get the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection.
-     *
+     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+     * 
      * @return the volumeType value.
      */
     public String volumeType() {
@@ -671,8 +649,8 @@ public final class VolumeProperties {
 
     /**
      * Set the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection.
-     *
+     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+     * 
      * @param volumeType the volumeType value to set.
      * @return the VolumeProperties object itself.
      */
@@ -682,10 +660,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the dataProtection property: DataProtection
-     *
-     * <p>DataProtection type volumes include an object containing details of the replication.
-     *
+     * Get the dataProtection property: DataProtection type volumes include an object containing details of the
+     * replication.
+     * 
      * @return the dataProtection value.
      */
     public VolumePropertiesDataProtection dataProtection() {
@@ -693,10 +670,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the dataProtection property: DataProtection
-     *
-     * <p>DataProtection type volumes include an object containing details of the replication.
-     *
+     * Set the dataProtection property: DataProtection type volumes include an object containing details of the
+     * replication.
+     * 
      * @param dataProtection the dataProtection value to set.
      * @return the VolumeProperties object itself.
      */
@@ -706,8 +682,36 @@ public final class VolumeProperties {
     }
 
     /**
+     * Get the acceptGrowCapacityPoolForShortTermCloneSplit property: While auto splitting the short term clone volume,
+     * if the parent pool does not have enough space to accommodate the volume after split, it will be automatically
+     * resized, which will lead to increased billing. To accept capacity pool size auto grow and create a short term
+     * clone volume, set the property as accepted.
+     * 
+     * @return the acceptGrowCapacityPoolForShortTermCloneSplit value.
+     */
+    public AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit() {
+        return this.acceptGrowCapacityPoolForShortTermCloneSplit;
+    }
+
+    /**
+     * Set the acceptGrowCapacityPoolForShortTermCloneSplit property: While auto splitting the short term clone volume,
+     * if the parent pool does not have enough space to accommodate the volume after split, it will be automatically
+     * resized, which will lead to increased billing. To accept capacity pool size auto grow and create a short term
+     * clone volume, set the property as accepted.
+     * 
+     * @param acceptGrowCapacityPoolForShortTermCloneSplit the acceptGrowCapacityPoolForShortTermCloneSplit value to
+     * set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withAcceptGrowCapacityPoolForShortTermCloneSplit(
+        AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit) {
+        this.acceptGrowCapacityPoolForShortTermCloneSplit = acceptGrowCapacityPoolForShortTermCloneSplit;
+        return this;
+    }
+
+    /**
      * Get the isRestoring property: Restoring.
-     *
+     * 
      * @return the isRestoring value.
      */
     public Boolean isRestoring() {
@@ -716,7 +720,7 @@ public final class VolumeProperties {
 
     /**
      * Set the isRestoring property: Restoring.
-     *
+     * 
      * @param isRestoring the isRestoring value to set.
      * @return the VolumeProperties object itself.
      */
@@ -727,8 +731,8 @@ public final class VolumeProperties {
 
     /**
      * Get the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
-     * directory which provides access to each of the volume's snapshots (default to true).
-     *
+     * directory which provides access to each of the volume's snapshots (defaults to true).
+     * 
      * @return the snapshotDirectoryVisible value.
      */
     public Boolean snapshotDirectoryVisible() {
@@ -737,8 +741,8 @@ public final class VolumeProperties {
 
     /**
      * Set the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
-     * directory which provides access to each of the volume's snapshots (default to true).
-     *
+     * directory which provides access to each of the volume's snapshots (defaults to true).
+     * 
      * @param snapshotDirectoryVisible the snapshotDirectoryVisible value to set.
      * @return the VolumeProperties object itself.
      */
@@ -750,7 +754,7 @@ public final class VolumeProperties {
     /**
      * Get the kerberosEnabled property: Describe if a volume is KerberosEnabled. To be use with swagger version
      * 2020-05-01 or later.
-     *
+     * 
      * @return the kerberosEnabled value.
      */
     public Boolean kerberosEnabled() {
@@ -760,7 +764,7 @@ public final class VolumeProperties {
     /**
      * Set the kerberosEnabled property: Describe if a volume is KerberosEnabled. To be use with swagger version
      * 2020-05-01 or later.
-     *
+     * 
      * @param kerberosEnabled the kerberosEnabled value to set.
      * @return the VolumeProperties object itself.
      */
@@ -772,7 +776,7 @@ public final class VolumeProperties {
     /**
      * Get the securityStyle property: The security style of volume, default unix, defaults to ntfs for dual protocol or
      * CIFS protocol.
-     *
+     * 
      * @return the securityStyle value.
      */
     public SecurityStyle securityStyle() {
@@ -782,7 +786,7 @@ public final class VolumeProperties {
     /**
      * Set the securityStyle property: The security style of volume, default unix, defaults to ntfs for dual protocol or
      * CIFS protocol.
-     *
+     * 
      * @param securityStyle the securityStyle value to set.
      * @return the VolumeProperties object itself.
      */
@@ -794,7 +798,7 @@ public final class VolumeProperties {
     /**
      * Get the smbEncryption property: Enables encryption for in-flight smb3 data. Only applicable for SMB/DualProtocol
      * volume. To be used with swagger version 2020-08-01 or later.
-     *
+     * 
      * @return the smbEncryption value.
      */
     public Boolean smbEncryption() {
@@ -804,7 +808,7 @@ public final class VolumeProperties {
     /**
      * Set the smbEncryption property: Enables encryption for in-flight smb3 data. Only applicable for SMB/DualProtocol
      * volume. To be used with swagger version 2020-08-01 or later.
-     *
+     * 
      * @param smbEncryption the smbEncryption value to set.
      * @return the VolumeProperties object itself.
      */
@@ -814,10 +818,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
-     *
-     * <p>Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
-     *
+     * Get the smbAccessBasedEnumeration property: Enables access-based enumeration share property for SMB Shares. Only
+     * applicable for SMB/DualProtocol volume.
+     * 
      * @return the smbAccessBasedEnumeration value.
      */
     public SmbAccessBasedEnumeration smbAccessBasedEnumeration() {
@@ -825,10 +828,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
-     *
-     * <p>Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
-     *
+     * Set the smbAccessBasedEnumeration property: Enables access-based enumeration share property for SMB Shares. Only
+     * applicable for SMB/DualProtocol volume.
+     * 
      * @param smbAccessBasedEnumeration the smbAccessBasedEnumeration value to set.
      * @return the VolumeProperties object itself.
      */
@@ -838,10 +840,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the smbNonBrowsable property: smbNonBrowsable
-     *
-     * <p>Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
-     *
+     * Get the smbNonBrowsable property: Enables non-browsable property for SMB Shares. Only applicable for
+     * SMB/DualProtocol volume.
+     * 
      * @return the smbNonBrowsable value.
      */
     public SmbNonBrowsable smbNonBrowsable() {
@@ -849,10 +850,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the smbNonBrowsable property: smbNonBrowsable
-     *
-     * <p>Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
-     *
+     * Set the smbNonBrowsable property: Enables non-browsable property for SMB Shares. Only applicable for
+     * SMB/DualProtocol volume.
+     * 
      * @param smbNonBrowsable the smbNonBrowsable value to set.
      * @return the VolumeProperties object itself.
      */
@@ -864,7 +864,7 @@ public final class VolumeProperties {
     /**
      * Get the smbContinuouslyAvailable property: Enables continuously available share property for smb volume. Only
      * applicable for SMB volume.
-     *
+     * 
      * @return the smbContinuouslyAvailable value.
      */
     public Boolean smbContinuouslyAvailable() {
@@ -874,7 +874,7 @@ public final class VolumeProperties {
     /**
      * Set the smbContinuouslyAvailable property: Enables continuously available share property for smb volume. Only
      * applicable for SMB volume.
-     *
+     * 
      * @param smbContinuouslyAvailable the smbContinuouslyAvailable value to set.
      * @return the VolumeProperties object itself.
      */
@@ -886,7 +886,7 @@ public final class VolumeProperties {
     /**
      * Get the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
-     *
+     * 
      * @return the throughputMibps value.
      */
     public Float throughputMibps() {
@@ -896,7 +896,7 @@ public final class VolumeProperties {
     /**
      * Set the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
-     *
+     * 
      * @param throughputMibps the throughputMibps value to set.
      * @return the VolumeProperties object itself.
      */
@@ -906,10 +906,20 @@ public final class VolumeProperties {
     }
 
     /**
+     * Get the actualThroughputMibps property: Actual throughput in MiB/s for auto qosType volumes calculated based on
+     * size and serviceLevel.
+     * 
+     * @return the actualThroughputMibps value.
+     */
+    public Float actualThroughputMibps() {
+        return this.actualThroughputMibps;
+    }
+
+    /**
      * Get the encryptionKeySource property: Source of key used to encrypt data in volume. Applicable if NetApp account
      * has encryption.keySource = 'Microsoft.KeyVault'. Possible values (case-insensitive) are: 'Microsoft.NetApp,
      * Microsoft.KeyVault'.
-     *
+     * 
      * @return the encryptionKeySource value.
      */
     public EncryptionKeySource encryptionKeySource() {
@@ -920,7 +930,7 @@ public final class VolumeProperties {
      * Set the encryptionKeySource property: Source of key used to encrypt data in volume. Applicable if NetApp account
      * has encryption.keySource = 'Microsoft.KeyVault'. Possible values (case-insensitive) are: 'Microsoft.NetApp,
      * Microsoft.KeyVault'.
-     *
+     * 
      * @param encryptionKeySource the encryptionKeySource value to set.
      * @return the VolumeProperties object itself.
      */
@@ -932,7 +942,7 @@ public final class VolumeProperties {
     /**
      * Get the keyVaultPrivateEndpointResourceId property: The resource ID of private endpoint for KeyVault. It must
      * reside in the same VNET as the volume. Only applicable if encryptionKeySource = 'Microsoft.KeyVault'.
-     *
+     * 
      * @return the keyVaultPrivateEndpointResourceId value.
      */
     public String keyVaultPrivateEndpointResourceId() {
@@ -942,7 +952,7 @@ public final class VolumeProperties {
     /**
      * Set the keyVaultPrivateEndpointResourceId property: The resource ID of private endpoint for KeyVault. It must
      * reside in the same VNET as the volume. Only applicable if encryptionKeySource = 'Microsoft.KeyVault'.
-     *
+     * 
      * @param keyVaultPrivateEndpointResourceId the keyVaultPrivateEndpointResourceId value to set.
      * @return the VolumeProperties object itself.
      */
@@ -953,7 +963,7 @@ public final class VolumeProperties {
 
     /**
      * Get the ldapEnabled property: Specifies whether LDAP is enabled or not for a given NFS volume.
-     *
+     * 
      * @return the ldapEnabled value.
      */
     public Boolean ldapEnabled() {
@@ -962,7 +972,7 @@ public final class VolumeProperties {
 
     /**
      * Set the ldapEnabled property: Specifies whether LDAP is enabled or not for a given NFS volume.
-     *
+     * 
      * @param ldapEnabled the ldapEnabled value to set.
      * @return the VolumeProperties object itself.
      */
@@ -973,7 +983,7 @@ public final class VolumeProperties {
 
     /**
      * Get the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
-     *
+     * 
      * @return the coolAccess value.
      */
     public Boolean coolAccess() {
@@ -982,7 +992,7 @@ public final class VolumeProperties {
 
     /**
      * Set the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
-     *
+     * 
      * @param coolAccess the coolAccess value to set.
      * @return the VolumeProperties object itself.
      */
@@ -994,7 +1004,7 @@ public final class VolumeProperties {
     /**
      * Get the coolnessPeriod property: Specifies the number of days after which data that is not accessed by clients
      * will be tiered.
-     *
+     * 
      * @return the coolnessPeriod value.
      */
     public Integer coolnessPeriod() {
@@ -1004,7 +1014,7 @@ public final class VolumeProperties {
     /**
      * Set the coolnessPeriod property: Specifies the number of days after which data that is not accessed by clients
      * will be tiered.
-     *
+     * 
      * @param coolnessPeriod the coolnessPeriod value to set.
      * @return the VolumeProperties object itself.
      */
@@ -1014,12 +1024,47 @@ public final class VolumeProperties {
     }
 
     /**
+     * Get the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
+     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
+     * for this field are:
+     * Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
+     * OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random
+     * reads.
+     * Never - No client-driven data is pulled from cool tier to standard storage.
+     * 
+     * @return the coolAccessRetrievalPolicy value.
+     */
+    public CoolAccessRetrievalPolicy coolAccessRetrievalPolicy() {
+        return this.coolAccessRetrievalPolicy;
+    }
+
+    /**
+     * Set the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
+     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
+     * for this field are:
+     * Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
+     * OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random
+     * reads.
+     * Never - No client-driven data is pulled from cool tier to standard storage.
+     * 
+     * @param coolAccessRetrievalPolicy the coolAccessRetrievalPolicy value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withCoolAccessRetrievalPolicy(CoolAccessRetrievalPolicy coolAccessRetrievalPolicy) {
+        this.coolAccessRetrievalPolicy = coolAccessRetrievalPolicy;
+        return this;
+    }
+
+    /**
      * Get the unixPermissions property: UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
      * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
      * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
      * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
-     * read/execute to group and other users.
-     *
+     * read/execute to group and other users. Avoid passing null value for unixPermissions in volume update operation,
+     * As per the behavior, If Null value is passed then user-visible unixPermissions value will became null, and user
+     * will not be able to get unixPermissions value. On safer side, actual unixPermissions value on volume will remain
+     * as its last saved value only.
+     * 
      * @return the unixPermissions value.
      */
     public String unixPermissions() {
@@ -1031,8 +1076,11 @@ public final class VolumeProperties {
      * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
      * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
      * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
-     * read/execute to group and other users.
-     *
+     * read/execute to group and other users. Avoid passing null value for unixPermissions in volume update operation,
+     * As per the behavior, If Null value is passed then user-visible unixPermissions value will became null, and user
+     * will not be able to get unixPermissions value. On safer side, actual unixPermissions value on volume will remain
+     * as its last saved value only.
+     * 
      * @param unixPermissions the unixPermissions value to set.
      * @return the VolumeProperties object itself.
      */
@@ -1045,7 +1093,7 @@ public final class VolumeProperties {
      * Get the cloneProgress property: When a volume is being restored from another volume's snapshot, will show the
      * percentage completion of this cloning process. When this value is empty/null there is no cloning process
      * currently happening on this volume. This value will update every 5 minutes during cloning.
-     *
+     * 
      * @return the cloneProgress value.
      */
     public Integer cloneProgress() {
@@ -1053,10 +1101,19 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the avsDataStore property: avsDataStore
-     *
-     * <p>Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
-     *
+     * Get the fileAccessLogs property: Flag indicating whether file access logs are enabled for the volume, based on
+     * active diagnostic settings present on the volume.
+     * 
+     * @return the fileAccessLogs value.
+     */
+    public FileAccessLogs fileAccessLogs() {
+        return this.fileAccessLogs;
+    }
+
+    /**
+     * Get the avsDataStore property: Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore
+     * purpose.
+     * 
      * @return the avsDataStore value.
      */
     public AvsDataStore avsDataStore() {
@@ -1064,10 +1121,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the avsDataStore property: avsDataStore
-     *
-     * <p>Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
-     *
+     * Set the avsDataStore property: Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore
+     * purpose.
+     * 
      * @param avsDataStore the avsDataStore value to set.
      * @return the VolumeProperties object itself.
      */
@@ -1077,8 +1133,17 @@ public final class VolumeProperties {
     }
 
     /**
+     * Get the dataStoreResourceId property: Data store resource unique identifier.
+     * 
+     * @return the dataStoreResourceId value.
+     */
+    public List<String> dataStoreResourceId() {
+        return this.dataStoreResourceId;
+    }
+
+    /**
      * Get the isDefaultQuotaEnabled property: Specifies if default quota is enabled for the volume.
-     *
+     * 
      * @return the isDefaultQuotaEnabled value.
      */
     public Boolean isDefaultQuotaEnabled() {
@@ -1087,7 +1152,7 @@ public final class VolumeProperties {
 
     /**
      * Set the isDefaultQuotaEnabled property: Specifies if default quota is enabled for the volume.
-     *
+     * 
      * @param isDefaultQuotaEnabled the isDefaultQuotaEnabled value to set.
      * @return the VolumeProperties object itself.
      */
@@ -1099,7 +1164,7 @@ public final class VolumeProperties {
     /**
      * Get the defaultUserQuotaInKiBs property: Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set,
      * the minimum value of 4 KiBs applies .
-     *
+     * 
      * @return the defaultUserQuotaInKiBs value.
      */
     public Long defaultUserQuotaInKiBs() {
@@ -1109,7 +1174,7 @@ public final class VolumeProperties {
     /**
      * Set the defaultUserQuotaInKiBs property: Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set,
      * the minimum value of 4 KiBs applies .
-     *
+     * 
      * @param defaultUserQuotaInKiBs the defaultUserQuotaInKiBs value to set.
      * @return the VolumeProperties object itself.
      */
@@ -1121,7 +1186,7 @@ public final class VolumeProperties {
     /**
      * Get the defaultGroupQuotaInKiBs property: Default group quota for volume in KiBs. If isDefaultQuotaEnabled is
      * set, the minimum value of 4 KiBs applies.
-     *
+     * 
      * @return the defaultGroupQuotaInKiBs value.
      */
     public Long defaultGroupQuotaInKiBs() {
@@ -1131,7 +1196,7 @@ public final class VolumeProperties {
     /**
      * Set the defaultGroupQuotaInKiBs property: Default group quota for volume in KiBs. If isDefaultQuotaEnabled is
      * set, the minimum value of 4 KiBs applies.
-     *
+     * 
      * @param defaultGroupQuotaInKiBs the defaultGroupQuotaInKiBs value to set.
      * @return the VolumeProperties object itself.
      */
@@ -1143,7 +1208,7 @@ public final class VolumeProperties {
     /**
      * Get the maximumNumberOfFiles property: Maximum number of files allowed. Needs a service request in order to be
      * changed. Only allowed to be changed if volume quota is more than 4TiB.
-     *
+     * 
      * @return the maximumNumberOfFiles value.
      */
     public Long maximumNumberOfFiles() {
@@ -1152,7 +1217,7 @@ public final class VolumeProperties {
 
     /**
      * Get the volumeGroupName property: Volume Group Name.
-     *
+     * 
      * @return the volumeGroupName value.
      */
     public String volumeGroupName() {
@@ -1161,7 +1226,7 @@ public final class VolumeProperties {
 
     /**
      * Get the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume group.
-     *
+     * 
      * @return the capacityPoolResourceId value.
      */
     public String capacityPoolResourceId() {
@@ -1170,7 +1235,7 @@ public final class VolumeProperties {
 
     /**
      * Set the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume group.
-     *
+     * 
      * @param capacityPoolResourceId the capacityPoolResourceId value to set.
      * @return the VolumeProperties object itself.
      */
@@ -1181,7 +1246,7 @@ public final class VolumeProperties {
 
     /**
      * Get the proximityPlacementGroup property: Proximity placement group associated with the volume.
-     *
+     * 
      * @return the proximityPlacementGroup value.
      */
     public String proximityPlacementGroup() {
@@ -1190,7 +1255,7 @@ public final class VolumeProperties {
 
     /**
      * Set the proximityPlacementGroup property: Proximity placement group associated with the volume.
-     *
+     * 
      * @param proximityPlacementGroup the proximityPlacementGroup value to set.
      * @return the VolumeProperties object itself.
      */
@@ -1201,7 +1266,7 @@ public final class VolumeProperties {
 
     /**
      * Get the t2Network property: T2 network information.
-     *
+     * 
      * @return the t2Network value.
      */
     public String t2Network() {
@@ -1211,7 +1276,7 @@ public final class VolumeProperties {
     /**
      * Get the volumeSpecName property: Volume spec name is the application specific designation or identifier for the
      * particular volume in a volume group for e.g. data, log.
-     *
+     * 
      * @return the volumeSpecName value.
      */
     public String volumeSpecName() {
@@ -1221,7 +1286,7 @@ public final class VolumeProperties {
     /**
      * Set the volumeSpecName property: Volume spec name is the application specific designation or identifier for the
      * particular volume in a volume group for e.g. data, log.
-     *
+     * 
      * @param volumeSpecName the volumeSpecName value to set.
      * @return the VolumeProperties object itself.
      */
@@ -1233,7 +1298,7 @@ public final class VolumeProperties {
     /**
      * Get the encrypted property: Specifies if the volume is encrypted or not. Only available on volumes created or
      * updated after 2022-01-01.
-     *
+     * 
      * @return the encrypted value.
      */
     public Boolean encrypted() {
@@ -1241,10 +1306,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the placementRules property: Volume placement rules
-     *
-     * <p>Application specific placement rules for the particular volume.
-     *
+     * Get the placementRules property: Application specific placement rules for the particular volume.
+     * 
      * @return the placementRules value.
      */
     public List<PlacementKeyValuePairs> placementRules() {
@@ -1252,10 +1315,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the placementRules property: Volume placement rules
-     *
-     * <p>Application specific placement rules for the particular volume.
-     *
+     * Set the placementRules property: Application specific placement rules for the particular volume.
+     * 
      * @param placementRules the placementRules value to set.
      * @return the VolumeProperties object itself.
      */
@@ -1266,7 +1327,7 @@ public final class VolumeProperties {
 
     /**
      * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
-     *
+     * 
      * @return the enableSubvolumes value.
      */
     public EnableSubvolumes enableSubvolumes() {
@@ -1275,7 +1336,7 @@ public final class VolumeProperties {
 
     /**
      * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
-     *
+     * 
      * @param enableSubvolumes the enableSubvolumes value to set.
      * @return the VolumeProperties object itself.
      */
@@ -1285,23 +1346,89 @@ public final class VolumeProperties {
     }
 
     /**
+     * Get the provisionedAvailabilityZone property: The availability zone where the volume is provisioned. This refers
+     * to the logical availability zone where the volume resides.
+     * 
+     * @return the provisionedAvailabilityZone value.
+     */
+    public String provisionedAvailabilityZone() {
+        return this.provisionedAvailabilityZone;
+    }
+
+    /**
+     * Get the isLargeVolume property: Specifies whether volume is a Large Volume or Regular Volume.
+     * 
+     * @return the isLargeVolume value.
+     */
+    public Boolean isLargeVolume() {
+        return this.isLargeVolume;
+    }
+
+    /**
+     * Set the isLargeVolume property: Specifies whether volume is a Large Volume or Regular Volume.
+     * 
+     * @param isLargeVolume the isLargeVolume value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withIsLargeVolume(Boolean isLargeVolume) {
+        this.isLargeVolume = isLargeVolume;
+        return this;
+    }
+
+    /**
+     * Get the originatingResourceId property: Id of the snapshot or backup that the volume is restored from.
+     * 
+     * @return the originatingResourceId value.
+     */
+    public String originatingResourceId() {
+        return this.originatingResourceId;
+    }
+
+    /**
+     * Get the inheritedSizeInBytes property: Space shared by short term clone volume with parent volume in bytes.
+     * 
+     * @return the inheritedSizeInBytes value.
+     */
+    public Long inheritedSizeInBytes() {
+        return this.inheritedSizeInBytes;
+    }
+
+    /**
+     * Get the language property: Language supported for volume.
+     * 
+     * @return the language value.
+     */
+    public VolumeLanguage language() {
+        return this.language;
+    }
+
+    /**
+     * Set the language property: Language supported for volume.
+     * 
+     * @param language the language value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withLanguage(VolumeLanguage language) {
+        this.language = language;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (creationToken() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property creationToken in model VolumeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property creationToken in model VolumeProperties"));
         }
         if (exportPolicy() != null) {
             exportPolicy().validate();
         }
         if (subnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property subnetId in model VolumeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property subnetId in model VolumeProperties"));
         }
         if (mountTargets() != null) {
             mountTargets().forEach(e -> e.validate());
@@ -1315,4 +1442,217 @@ public final class VolumeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VolumeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("creationToken", this.creationToken);
+        jsonWriter.writeLongField("usageThreshold", this.usageThreshold);
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeStringField("serviceLevel", this.serviceLevel == null ? null : this.serviceLevel.toString());
+        jsonWriter.writeJsonField("exportPolicy", this.exportPolicy);
+        jsonWriter.writeArrayField("protocolTypes", this.protocolTypes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("snapshotId", this.snapshotId);
+        jsonWriter.writeBooleanField("deleteBaseSnapshot", this.deleteBaseSnapshot);
+        jsonWriter.writeStringField("backupId", this.backupId);
+        jsonWriter.writeStringField("networkFeatures",
+            this.networkFeatures == null ? null : this.networkFeatures.toString());
+        jsonWriter.writeStringField("volumeType", this.volumeType);
+        jsonWriter.writeJsonField("dataProtection", this.dataProtection);
+        jsonWriter.writeStringField("acceptGrowCapacityPoolForShortTermCloneSplit",
+            this.acceptGrowCapacityPoolForShortTermCloneSplit == null
+                ? null
+                : this.acceptGrowCapacityPoolForShortTermCloneSplit.toString());
+        jsonWriter.writeBooleanField("isRestoring", this.isRestoring);
+        jsonWriter.writeBooleanField("snapshotDirectoryVisible", this.snapshotDirectoryVisible);
+        jsonWriter.writeBooleanField("kerberosEnabled", this.kerberosEnabled);
+        jsonWriter.writeStringField("securityStyle", this.securityStyle == null ? null : this.securityStyle.toString());
+        jsonWriter.writeBooleanField("smbEncryption", this.smbEncryption);
+        jsonWriter.writeStringField("smbAccessBasedEnumeration",
+            this.smbAccessBasedEnumeration == null ? null : this.smbAccessBasedEnumeration.toString());
+        jsonWriter.writeStringField("smbNonBrowsable",
+            this.smbNonBrowsable == null ? null : this.smbNonBrowsable.toString());
+        jsonWriter.writeBooleanField("smbContinuouslyAvailable", this.smbContinuouslyAvailable);
+        jsonWriter.writeNumberField("throughputMibps", this.throughputMibps);
+        jsonWriter.writeStringField("encryptionKeySource",
+            this.encryptionKeySource == null ? null : this.encryptionKeySource.toString());
+        jsonWriter.writeStringField("keyVaultPrivateEndpointResourceId", this.keyVaultPrivateEndpointResourceId);
+        jsonWriter.writeBooleanField("ldapEnabled", this.ldapEnabled);
+        jsonWriter.writeBooleanField("coolAccess", this.coolAccess);
+        jsonWriter.writeNumberField("coolnessPeriod", this.coolnessPeriod);
+        jsonWriter.writeStringField("coolAccessRetrievalPolicy",
+            this.coolAccessRetrievalPolicy == null ? null : this.coolAccessRetrievalPolicy.toString());
+        jsonWriter.writeStringField("unixPermissions", this.unixPermissions);
+        jsonWriter.writeStringField("avsDataStore", this.avsDataStore == null ? null : this.avsDataStore.toString());
+        jsonWriter.writeBooleanField("isDefaultQuotaEnabled", this.isDefaultQuotaEnabled);
+        jsonWriter.writeNumberField("defaultUserQuotaInKiBs", this.defaultUserQuotaInKiBs);
+        jsonWriter.writeNumberField("defaultGroupQuotaInKiBs", this.defaultGroupQuotaInKiBs);
+        jsonWriter.writeStringField("capacityPoolResourceId", this.capacityPoolResourceId);
+        jsonWriter.writeStringField("proximityPlacementGroup", this.proximityPlacementGroup);
+        jsonWriter.writeStringField("volumeSpecName", this.volumeSpecName);
+        jsonWriter.writeArrayField("placementRules", this.placementRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("enableSubvolumes",
+            this.enableSubvolumes == null ? null : this.enableSubvolumes.toString());
+        jsonWriter.writeBooleanField("isLargeVolume", this.isLargeVolume);
+        jsonWriter.writeStringField("language", this.language == null ? null : this.language.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VolumeProperties.
+     */
+    public static VolumeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeProperties deserializedVolumeProperties = new VolumeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("creationToken".equals(fieldName)) {
+                    deserializedVolumeProperties.creationToken = reader.getString();
+                } else if ("usageThreshold".equals(fieldName)) {
+                    deserializedVolumeProperties.usageThreshold = reader.getLong();
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedVolumeProperties.subnetId = reader.getString();
+                } else if ("fileSystemId".equals(fieldName)) {
+                    deserializedVolumeProperties.fileSystemId = reader.getString();
+                } else if ("serviceLevel".equals(fieldName)) {
+                    deserializedVolumeProperties.serviceLevel = ServiceLevel.fromString(reader.getString());
+                } else if ("exportPolicy".equals(fieldName)) {
+                    deserializedVolumeProperties.exportPolicy = VolumePropertiesExportPolicy.fromJson(reader);
+                } else if ("protocolTypes".equals(fieldName)) {
+                    List<String> protocolTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVolumeProperties.protocolTypes = protocolTypes;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVolumeProperties.provisioningState = reader.getString();
+                } else if ("snapshotId".equals(fieldName)) {
+                    deserializedVolumeProperties.snapshotId = reader.getString();
+                } else if ("deleteBaseSnapshot".equals(fieldName)) {
+                    deserializedVolumeProperties.deleteBaseSnapshot = reader.getNullable(JsonReader::getBoolean);
+                } else if ("backupId".equals(fieldName)) {
+                    deserializedVolumeProperties.backupId = reader.getString();
+                } else if ("baremetalTenantId".equals(fieldName)) {
+                    deserializedVolumeProperties.baremetalTenantId = reader.getString();
+                } else if ("networkFeatures".equals(fieldName)) {
+                    deserializedVolumeProperties.networkFeatures = NetworkFeatures.fromString(reader.getString());
+                } else if ("effectiveNetworkFeatures".equals(fieldName)) {
+                    deserializedVolumeProperties.effectiveNetworkFeatures
+                        = NetworkFeatures.fromString(reader.getString());
+                } else if ("networkSiblingSetId".equals(fieldName)) {
+                    deserializedVolumeProperties.networkSiblingSetId = reader.getString();
+                } else if ("storageToNetworkProximity".equals(fieldName)) {
+                    deserializedVolumeProperties.storageToNetworkProximity
+                        = VolumeStorageToNetworkProximity.fromString(reader.getString());
+                } else if ("mountTargets".equals(fieldName)) {
+                    List<MountTargetProperties> mountTargets
+                        = reader.readArray(reader1 -> MountTargetProperties.fromJson(reader1));
+                    deserializedVolumeProperties.mountTargets = mountTargets;
+                } else if ("volumeType".equals(fieldName)) {
+                    deserializedVolumeProperties.volumeType = reader.getString();
+                } else if ("dataProtection".equals(fieldName)) {
+                    deserializedVolumeProperties.dataProtection = VolumePropertiesDataProtection.fromJson(reader);
+                } else if ("acceptGrowCapacityPoolForShortTermCloneSplit".equals(fieldName)) {
+                    deserializedVolumeProperties.acceptGrowCapacityPoolForShortTermCloneSplit
+                        = AcceptGrowCapacityPoolForShortTermCloneSplit.fromString(reader.getString());
+                } else if ("isRestoring".equals(fieldName)) {
+                    deserializedVolumeProperties.isRestoring = reader.getNullable(JsonReader::getBoolean);
+                } else if ("snapshotDirectoryVisible".equals(fieldName)) {
+                    deserializedVolumeProperties.snapshotDirectoryVisible = reader.getNullable(JsonReader::getBoolean);
+                } else if ("kerberosEnabled".equals(fieldName)) {
+                    deserializedVolumeProperties.kerberosEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("securityStyle".equals(fieldName)) {
+                    deserializedVolumeProperties.securityStyle = SecurityStyle.fromString(reader.getString());
+                } else if ("smbEncryption".equals(fieldName)) {
+                    deserializedVolumeProperties.smbEncryption = reader.getNullable(JsonReader::getBoolean);
+                } else if ("smbAccessBasedEnumeration".equals(fieldName)) {
+                    deserializedVolumeProperties.smbAccessBasedEnumeration
+                        = SmbAccessBasedEnumeration.fromString(reader.getString());
+                } else if ("smbNonBrowsable".equals(fieldName)) {
+                    deserializedVolumeProperties.smbNonBrowsable = SmbNonBrowsable.fromString(reader.getString());
+                } else if ("smbContinuouslyAvailable".equals(fieldName)) {
+                    deserializedVolumeProperties.smbContinuouslyAvailable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("throughputMibps".equals(fieldName)) {
+                    deserializedVolumeProperties.throughputMibps = reader.getNullable(JsonReader::getFloat);
+                } else if ("actualThroughputMibps".equals(fieldName)) {
+                    deserializedVolumeProperties.actualThroughputMibps = reader.getNullable(JsonReader::getFloat);
+                } else if ("encryptionKeySource".equals(fieldName)) {
+                    deserializedVolumeProperties.encryptionKeySource
+                        = EncryptionKeySource.fromString(reader.getString());
+                } else if ("keyVaultPrivateEndpointResourceId".equals(fieldName)) {
+                    deserializedVolumeProperties.keyVaultPrivateEndpointResourceId = reader.getString();
+                } else if ("ldapEnabled".equals(fieldName)) {
+                    deserializedVolumeProperties.ldapEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("coolAccess".equals(fieldName)) {
+                    deserializedVolumeProperties.coolAccess = reader.getNullable(JsonReader::getBoolean);
+                } else if ("coolnessPeriod".equals(fieldName)) {
+                    deserializedVolumeProperties.coolnessPeriod = reader.getNullable(JsonReader::getInt);
+                } else if ("coolAccessRetrievalPolicy".equals(fieldName)) {
+                    deserializedVolumeProperties.coolAccessRetrievalPolicy
+                        = CoolAccessRetrievalPolicy.fromString(reader.getString());
+                } else if ("unixPermissions".equals(fieldName)) {
+                    deserializedVolumeProperties.unixPermissions = reader.getString();
+                } else if ("cloneProgress".equals(fieldName)) {
+                    deserializedVolumeProperties.cloneProgress = reader.getNullable(JsonReader::getInt);
+                } else if ("fileAccessLogs".equals(fieldName)) {
+                    deserializedVolumeProperties.fileAccessLogs = FileAccessLogs.fromString(reader.getString());
+                } else if ("avsDataStore".equals(fieldName)) {
+                    deserializedVolumeProperties.avsDataStore = AvsDataStore.fromString(reader.getString());
+                } else if ("dataStoreResourceId".equals(fieldName)) {
+                    List<String> dataStoreResourceId = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVolumeProperties.dataStoreResourceId = dataStoreResourceId;
+                } else if ("isDefaultQuotaEnabled".equals(fieldName)) {
+                    deserializedVolumeProperties.isDefaultQuotaEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("defaultUserQuotaInKiBs".equals(fieldName)) {
+                    deserializedVolumeProperties.defaultUserQuotaInKiBs = reader.getNullable(JsonReader::getLong);
+                } else if ("defaultGroupQuotaInKiBs".equals(fieldName)) {
+                    deserializedVolumeProperties.defaultGroupQuotaInKiBs = reader.getNullable(JsonReader::getLong);
+                } else if ("maximumNumberOfFiles".equals(fieldName)) {
+                    deserializedVolumeProperties.maximumNumberOfFiles = reader.getNullable(JsonReader::getLong);
+                } else if ("volumeGroupName".equals(fieldName)) {
+                    deserializedVolumeProperties.volumeGroupName = reader.getString();
+                } else if ("capacityPoolResourceId".equals(fieldName)) {
+                    deserializedVolumeProperties.capacityPoolResourceId = reader.getString();
+                } else if ("proximityPlacementGroup".equals(fieldName)) {
+                    deserializedVolumeProperties.proximityPlacementGroup = reader.getString();
+                } else if ("t2Network".equals(fieldName)) {
+                    deserializedVolumeProperties.t2Network = reader.getString();
+                } else if ("volumeSpecName".equals(fieldName)) {
+                    deserializedVolumeProperties.volumeSpecName = reader.getString();
+                } else if ("encrypted".equals(fieldName)) {
+                    deserializedVolumeProperties.encrypted = reader.getNullable(JsonReader::getBoolean);
+                } else if ("placementRules".equals(fieldName)) {
+                    List<PlacementKeyValuePairs> placementRules
+                        = reader.readArray(reader1 -> PlacementKeyValuePairs.fromJson(reader1));
+                    deserializedVolumeProperties.placementRules = placementRules;
+                } else if ("enableSubvolumes".equals(fieldName)) {
+                    deserializedVolumeProperties.enableSubvolumes = EnableSubvolumes.fromString(reader.getString());
+                } else if ("provisionedAvailabilityZone".equals(fieldName)) {
+                    deserializedVolumeProperties.provisionedAvailabilityZone = reader.getString();
+                } else if ("isLargeVolume".equals(fieldName)) {
+                    deserializedVolumeProperties.isLargeVolume = reader.getNullable(JsonReader::getBoolean);
+                } else if ("originatingResourceId".equals(fieldName)) {
+                    deserializedVolumeProperties.originatingResourceId = reader.getString();
+                } else if ("inheritedSizeInBytes".equals(fieldName)) {
+                    deserializedVolumeProperties.inheritedSizeInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("language".equals(fieldName)) {
+                    deserializedVolumeProperties.language = VolumeLanguage.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeProperties;
+        });
+    }
 }

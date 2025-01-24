@@ -21,11 +21,22 @@ public final class ResourcePoolsImpl implements ResourcePools {
 
     private final com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager;
 
-    public ResourcePoolsImpl(
-        ResourcePoolsClient innerClient,
+    public ResourcePoolsImpl(ResourcePoolsClient innerClient,
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<ResourcePool> getByResourceGroupWithResponse(String resourceGroupName, String resourcePoolName,
+        Context context) {
+        Response<ResourcePoolInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourcePoolName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ResourcePoolImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ResourcePool getByResourceGroup(String resourceGroupName, String resourcePoolName) {
@@ -35,25 +46,6 @@ public final class ResourcePoolsImpl implements ResourcePools {
         } else {
             return null;
         }
-    }
-
-    public Response<ResourcePool> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourcePoolName, Context context) {
-        Response<ResourcePoolInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourcePoolName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ResourcePoolImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public void delete(String resourceGroupName, String resourcePoolName, Boolean force) {
-        this.serviceClient().delete(resourceGroupName, resourcePoolName, force);
     }
 
     public void delete(String resourceGroupName, String resourcePoolName) {
@@ -66,97 +58,77 @@ public final class ResourcePoolsImpl implements ResourcePools {
 
     public PagedIterable<ResourcePool> list() {
         PagedIterable<ResourcePoolInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ResourcePoolImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourcePoolImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ResourcePool> list(Context context) {
         PagedIterable<ResourcePoolInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ResourcePoolImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourcePoolImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ResourcePool> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ResourcePoolInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ResourcePoolImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourcePoolImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ResourcePool> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ResourcePoolInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ResourcePoolImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourcePoolImpl(inner1, this.manager()));
     }
 
     public ResourcePool getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourcePoolName = Utils.getValueFromIdByName(id, "resourcePools");
+        String resourcePoolName = ResourceManagerUtils.getValueFromIdByName(id, "resourcePools");
         if (resourcePoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourcePools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcePools'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourcePoolName, Context.NONE).getValue();
     }
 
     public Response<ResourcePool> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourcePoolName = Utils.getValueFromIdByName(id, "resourcePools");
+        String resourcePoolName = ResourceManagerUtils.getValueFromIdByName(id, "resourcePools");
         if (resourcePoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourcePools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcePools'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourcePoolName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourcePoolName = Utils.getValueFromIdByName(id, "resourcePools");
+        String resourcePoolName = ResourceManagerUtils.getValueFromIdByName(id, "resourcePools");
         if (resourcePoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourcePools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcePools'.", id)));
         }
         Boolean localForce = null;
         this.delete(resourceGroupName, resourcePoolName, localForce, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Boolean force, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourcePoolName = Utils.getValueFromIdByName(id, "resourcePools");
+        String resourcePoolName = ResourceManagerUtils.getValueFromIdByName(id, "resourcePools");
         if (resourcePoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'resourcePools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcePools'.", id)));
         }
         this.delete(resourceGroupName, resourcePoolName, force, context);
     }

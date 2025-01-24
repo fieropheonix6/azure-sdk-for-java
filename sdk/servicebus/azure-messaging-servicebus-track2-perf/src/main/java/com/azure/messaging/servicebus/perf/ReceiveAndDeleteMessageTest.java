@@ -7,6 +7,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import reactor.core.publisher.Mono;
@@ -37,7 +38,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
     public Mono<Void> setupAsync() {
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
         return Mono.defer(() -> {
-            int total =  options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
+            int total = options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
 
             List<ServiceBusMessage> messages = new ArrayList<>();
             for (int i = 0; i < total; ++i) {
@@ -51,8 +52,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
 
     @Override
     public void run() {
-        IterableStream<ServiceBusReceivedMessage> messages = receiver
-            .receiveMessages(options.getMessagesToReceive());
+        IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(options.getMessagesToReceive());
 
         int count = 0;
         for (ServiceBusReceivedMessage message : messages) {
@@ -68,11 +68,10 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
 
     @Override
     public Mono<Void> runAsync() {
-        return receiverAsync
-            .receiveMessages()
-            .take(options.getMessagesToReceive())
-            .map(serviceBusReceivedMessageContext -> {
-                return serviceBusReceivedMessageContext;
+        return Mono.using(receiverBuilder::buildAsyncClient, serviceBusReceiverAsyncClient -> {
+            return serviceBusReceiverAsyncClient.receiveMessages().take(options.getMessagesToReceive()).map(message -> {
+                return message;
             }).then();
+        }, ServiceBusReceiverAsyncClient::close, true);
     }
 }

@@ -12,41 +12,36 @@ import com.azure.resourcemanager.dataprotection.fluent.ExportJobsOperationResult
 import com.azure.resourcemanager.dataprotection.fluent.models.ExportJobsResultInner;
 import com.azure.resourcemanager.dataprotection.models.ExportJobsOperationResults;
 import com.azure.resourcemanager.dataprotection.models.ExportJobsResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ExportJobsOperationResultsImpl implements ExportJobsOperationResults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportJobsOperationResultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExportJobsOperationResultsImpl.class);
 
     private final ExportJobsOperationResultsClient innerClient;
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public ExportJobsOperationResultsImpl(
-        ExportJobsOperationResultsClient innerClient,
+    public ExportJobsOperationResultsImpl(ExportJobsOperationResultsClient innerClient,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<ExportJobsResult> getWithResponse(String resourceGroupName, String vaultName, String operationId,
+        Context context) {
+        Response<ExportJobsResultInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, vaultName, operationId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ExportJobsResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ExportJobsResult get(String resourceGroupName, String vaultName, String operationId) {
         ExportJobsResultInner inner = this.serviceClient().get(resourceGroupName, vaultName, operationId);
         if (inner != null) {
             return new ExportJobsResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ExportJobsResult> getWithResponse(
-        String resourceGroupName, String vaultName, String operationId, Context context) {
-        Response<ExportJobsResultInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, vaultName, operationId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ExportJobsResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

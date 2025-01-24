@@ -7,46 +7,47 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.GlobalParameterSpecification;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Global parameters resource type. */
+/**
+ * Global parameters resource type.
+ */
 @Fluent
 public final class GlobalParameterResourceInner extends SubResource {
     /*
      * Properties of the global parameter.
      */
-    @JsonProperty(value = "properties", required = true)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, GlobalParameterSpecification> properties;
 
     /*
      * The resource name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Etag identifies change in the resource.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of GlobalParameterResourceInner class. */
+    /**
+     * Creates an instance of GlobalParameterResourceInner class.
+     */
     public GlobalParameterResourceInner() {
     }
 
     /**
      * Get the properties property: Properties of the global parameter.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, GlobalParameterSpecification> properties() {
@@ -55,7 +56,7 @@ public final class GlobalParameterResourceInner extends SubResource {
 
     /**
      * Set the properties property: Properties of the global parameter.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the GlobalParameterResourceInner object itself.
      */
@@ -66,7 +67,7 @@ public final class GlobalParameterResourceInner extends SubResource {
 
     /**
      * Get the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -75,7 +76,7 @@ public final class GlobalParameterResourceInner extends SubResource {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -84,14 +85,16 @@ public final class GlobalParameterResourceInner extends SubResource {
 
     /**
      * Get the etag property: Etag identifies change in the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GlobalParameterResourceInner withId(String id) {
         super.withId(id);
@@ -100,26 +103,70 @@ public final class GlobalParameterResourceInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model GlobalParameterResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model GlobalParameterResourceInner"));
         } else {
-            properties()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            properties().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GlobalParameterResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GlobalParameterResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GlobalParameterResourceInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GlobalParameterResourceInner.
+     */
+    public static GlobalParameterResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GlobalParameterResourceInner deserializedGlobalParameterResourceInner = new GlobalParameterResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGlobalParameterResourceInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, GlobalParameterSpecification> properties
+                        = reader.readMap(reader1 -> GlobalParameterSpecification.fromJson(reader1));
+                    deserializedGlobalParameterResourceInner.properties = properties;
+                } else if ("name".equals(fieldName)) {
+                    deserializedGlobalParameterResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGlobalParameterResourceInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedGlobalParameterResourceInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGlobalParameterResourceInner;
+        });
+    }
 }

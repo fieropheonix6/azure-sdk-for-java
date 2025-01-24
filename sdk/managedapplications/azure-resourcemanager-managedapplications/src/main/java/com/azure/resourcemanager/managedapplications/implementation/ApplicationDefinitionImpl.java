@@ -5,13 +5,19 @@
 package com.azure.resourcemanager.managedapplications.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managedapplications.fluent.models.ApplicationDefinitionInner;
-import com.azure.resourcemanager.managedapplications.models.ApplicationArtifact;
+import com.azure.resourcemanager.managedapplications.models.ApplicationAuthorization;
 import com.azure.resourcemanager.managedapplications.models.ApplicationDefinition;
+import com.azure.resourcemanager.managedapplications.models.ApplicationDefinitionArtifact;
+import com.azure.resourcemanager.managedapplications.models.ApplicationDefinitionPatchable;
+import com.azure.resourcemanager.managedapplications.models.ApplicationDeploymentPolicy;
 import com.azure.resourcemanager.managedapplications.models.ApplicationLockLevel;
-import com.azure.resourcemanager.managedapplications.models.ApplicationProviderAuthorization;
-import com.azure.resourcemanager.managedapplications.models.Identity;
+import com.azure.resourcemanager.managedapplications.models.ApplicationManagementPolicy;
+import com.azure.resourcemanager.managedapplications.models.ApplicationNotificationPolicy;
+import com.azure.resourcemanager.managedapplications.models.ApplicationPackageLockingPolicyDefinition;
+import com.azure.resourcemanager.managedapplications.models.ApplicationPolicy;
 import com.azure.resourcemanager.managedapplications.models.Sku;
 import java.util.Collections;
 import java.util.List;
@@ -56,8 +62,8 @@ public final class ApplicationDefinitionImpl
         return this.innerModel().sku();
     }
 
-    public Identity identity() {
-        return this.innerModel().identity();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ApplicationLockLevel lockLevel() {
@@ -68,12 +74,12 @@ public final class ApplicationDefinitionImpl
         return this.innerModel().displayName();
     }
 
-    public String isEnabled() {
+    public Boolean isEnabled() {
         return this.innerModel().isEnabled();
     }
 
-    public List<ApplicationProviderAuthorization> authorizations() {
-        List<ApplicationProviderAuthorization> inner = this.innerModel().authorizations();
+    public List<ApplicationAuthorization> authorizations() {
+        List<ApplicationAuthorization> inner = this.innerModel().authorizations();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {
@@ -81,8 +87,8 @@ public final class ApplicationDefinitionImpl
         }
     }
 
-    public List<ApplicationArtifact> artifacts() {
-        List<ApplicationArtifact> inner = this.innerModel().artifacts();
+    public List<ApplicationDefinitionArtifact> artifacts() {
+        List<ApplicationDefinitionArtifact> inner = this.innerModel().artifacts();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {
@@ -98,6 +104,10 @@ public final class ApplicationDefinitionImpl
         return this.innerModel().packageFileUri();
     }
 
+    public String storageAccountId() {
+        return this.innerModel().storageAccountId();
+    }
+
     public Object mainTemplate() {
         return this.innerModel().mainTemplate();
     }
@@ -106,12 +116,41 @@ public final class ApplicationDefinitionImpl
         return this.innerModel().createUiDefinition();
     }
 
+    public ApplicationNotificationPolicy notificationPolicy() {
+        return this.innerModel().notificationPolicy();
+    }
+
+    public ApplicationPackageLockingPolicyDefinition lockingPolicy() {
+        return this.innerModel().lockingPolicy();
+    }
+
+    public ApplicationDeploymentPolicy deploymentPolicy() {
+        return this.innerModel().deploymentPolicy();
+    }
+
+    public ApplicationManagementPolicy managementPolicy() {
+        return this.innerModel().managementPolicy();
+    }
+
+    public List<ApplicationPolicy> policies() {
+        List<ApplicationPolicy> inner = this.innerModel().policies();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ApplicationDefinitionInner innerModel() {
@@ -126,84 +165,79 @@ public final class ApplicationDefinitionImpl
 
     private String applicationDefinitionName;
 
+    private ApplicationDefinitionPatchable updateParameters;
+
     public ApplicationDefinitionImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
     }
 
     public ApplicationDefinition create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationDefinitions()
-                .createOrUpdate(resourceGroupName, applicationDefinitionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationDefinitions()
+            .createOrUpdateWithResponse(resourceGroupName, applicationDefinitionName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApplicationDefinition create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationDefinitions()
-                .createOrUpdate(resourceGroupName, applicationDefinitionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationDefinitions()
+            .createOrUpdateWithResponse(resourceGroupName, applicationDefinitionName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ApplicationDefinitionImpl(
-        String name, com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
+    ApplicationDefinitionImpl(String name,
+        com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
         this.innerObject = new ApplicationDefinitionInner();
         this.serviceManager = serviceManager;
         this.applicationDefinitionName = name;
     }
 
     public ApplicationDefinitionImpl update() {
+        this.updateParameters = new ApplicationDefinitionPatchable();
         return this;
     }
 
     public ApplicationDefinition apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationDefinitions()
-                .createOrUpdate(resourceGroupName, applicationDefinitionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationDefinitions()
+            .updateWithResponse(resourceGroupName, applicationDefinitionName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApplicationDefinition apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationDefinitions()
-                .createOrUpdate(resourceGroupName, applicationDefinitionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationDefinitions()
+            .updateWithResponse(resourceGroupName, applicationDefinitionName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    ApplicationDefinitionImpl(
-        ApplicationDefinitionInner innerObject,
+    ApplicationDefinitionImpl(ApplicationDefinitionInner innerObject,
         com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.applicationDefinitionName = Utils.getValueFromIdByName(innerObject.id(), "applicationDefinitions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.applicationDefinitionName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applicationDefinitions");
     }
 
     public ApplicationDefinition refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationDefinitions()
-                .getByResourceGroupWithResponse(resourceGroupName, applicationDefinitionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationDefinitions()
+            .getByResourceGroupWithResponse(resourceGroupName, applicationDefinitionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApplicationDefinition refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationDefinitions()
-                .getByResourceGroupWithResponse(resourceGroupName, applicationDefinitionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationDefinitions()
+            .getByResourceGroupWithResponse(resourceGroupName, applicationDefinitionName, context)
+            .getValue();
         return this;
     }
 
@@ -222,14 +256,14 @@ public final class ApplicationDefinitionImpl
         return this;
     }
 
-    public ApplicationDefinitionImpl withAuthorizations(List<ApplicationProviderAuthorization> authorizations) {
-        this.innerModel().withAuthorizations(authorizations);
-        return this;
-    }
-
     public ApplicationDefinitionImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateParameters.withTags(tags);
+            return this;
+        }
     }
 
     public ApplicationDefinitionImpl withManagedBy(String managedBy) {
@@ -242,22 +276,22 @@ public final class ApplicationDefinitionImpl
         return this;
     }
 
-    public ApplicationDefinitionImpl withIdentity(Identity identity) {
-        this.innerModel().withIdentity(identity);
-        return this;
-    }
-
     public ApplicationDefinitionImpl withDisplayName(String displayName) {
         this.innerModel().withDisplayName(displayName);
         return this;
     }
 
-    public ApplicationDefinitionImpl withIsEnabled(String isEnabled) {
+    public ApplicationDefinitionImpl withIsEnabled(Boolean isEnabled) {
         this.innerModel().withIsEnabled(isEnabled);
         return this;
     }
 
-    public ApplicationDefinitionImpl withArtifacts(List<ApplicationArtifact> artifacts) {
+    public ApplicationDefinitionImpl withAuthorizations(List<ApplicationAuthorization> authorizations) {
+        this.innerModel().withAuthorizations(authorizations);
+        return this;
+    }
+
+    public ApplicationDefinitionImpl withArtifacts(List<ApplicationDefinitionArtifact> artifacts) {
         this.innerModel().withArtifacts(artifacts);
         return this;
     }
@@ -272,6 +306,11 @@ public final class ApplicationDefinitionImpl
         return this;
     }
 
+    public ApplicationDefinitionImpl withStorageAccountId(String storageAccountId) {
+        this.innerModel().withStorageAccountId(storageAccountId);
+        return this;
+    }
+
     public ApplicationDefinitionImpl withMainTemplate(Object mainTemplate) {
         this.innerModel().withMainTemplate(mainTemplate);
         return this;
@@ -280,5 +319,34 @@ public final class ApplicationDefinitionImpl
     public ApplicationDefinitionImpl withCreateUiDefinition(Object createUiDefinition) {
         this.innerModel().withCreateUiDefinition(createUiDefinition);
         return this;
+    }
+
+    public ApplicationDefinitionImpl withNotificationPolicy(ApplicationNotificationPolicy notificationPolicy) {
+        this.innerModel().withNotificationPolicy(notificationPolicy);
+        return this;
+    }
+
+    public ApplicationDefinitionImpl withLockingPolicy(ApplicationPackageLockingPolicyDefinition lockingPolicy) {
+        this.innerModel().withLockingPolicy(lockingPolicy);
+        return this;
+    }
+
+    public ApplicationDefinitionImpl withDeploymentPolicy(ApplicationDeploymentPolicy deploymentPolicy) {
+        this.innerModel().withDeploymentPolicy(deploymentPolicy);
+        return this;
+    }
+
+    public ApplicationDefinitionImpl withManagementPolicy(ApplicationManagementPolicy managementPolicy) {
+        this.innerModel().withManagementPolicy(managementPolicy);
+        return this;
+    }
+
+    public ApplicationDefinitionImpl withPolicies(List<ApplicationPolicy> policies) {
+        this.innerModel().withPolicies(policies);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

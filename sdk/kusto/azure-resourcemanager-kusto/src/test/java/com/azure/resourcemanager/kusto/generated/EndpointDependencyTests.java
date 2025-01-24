@@ -9,34 +9,28 @@ import com.azure.resourcemanager.kusto.models.EndpointDependency;
 import com.azure.resourcemanager.kusto.models.EndpointDetail;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EndpointDependencyTests {
-    @Test
-    public void testDeserialize() {
-        EndpointDependency model =
-            BinaryData
-                .fromString(
-                    "{\"domainName\":\"ggxkallatmelwuip\",\"endpointDetails\":[{\"port\":834190026},{\"port\":120709025},{\"port\":154268521},{\"port\":1783583685}]}")
-                .toObject(EndpointDependency.class);
-        Assertions.assertEquals("ggxkallatmelwuip", model.domainName());
-        Assertions.assertEquals(834190026, model.endpointDetails().get(0).port());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        EndpointDependency model = BinaryData.fromString(
+            "{\"domainName\":\"l\",\"endpointDetails\":[{\"port\":1262930280,\"ipAddress\":\"vgbmhr\"},{\"port\":283160638,\"ipAddress\":\"myijejvegr\"},{\"port\":662218702,\"ipAddress\":\"aixexccbdreaxh\"},{\"port\":1486564388,\"ipAddress\":\"rrvqa\"}]}")
+            .toObject(EndpointDependency.class);
+        Assertions.assertEquals("l", model.domainName());
+        Assertions.assertEquals(1262930280, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("vgbmhr", model.endpointDetails().get(0).ipAddress());
     }
 
-    @Test
-    public void testSerialize() {
-        EndpointDependency model =
-            new EndpointDependency()
-                .withDomainName("ggxkallatmelwuip")
-                .withEndpointDetails(
-                    Arrays
-                        .asList(
-                            new EndpointDetail().withPort(834190026),
-                            new EndpointDetail().withPort(120709025),
-                            new EndpointDetail().withPort(154268521),
-                            new EndpointDetail().withPort(1783583685)));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        EndpointDependency model = new EndpointDependency().withDomainName("l")
+            .withEndpointDetails(Arrays.asList(new EndpointDetail().withPort(1262930280).withIpAddress("vgbmhr"),
+                new EndpointDetail().withPort(283160638).withIpAddress("myijejvegr"),
+                new EndpointDetail().withPort(662218702).withIpAddress("aixexccbdreaxh"),
+                new EndpointDetail().withPort(1486564388).withIpAddress("rrvqa")));
         model = BinaryData.fromObject(model).toObject(EndpointDependency.class);
-        Assertions.assertEquals("ggxkallatmelwuip", model.domainName());
-        Assertions.assertEquals(834190026, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("l", model.domainName());
+        Assertions.assertEquals(1262930280, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("vgbmhr", model.endpointDetails().get(0).ipAddress());
     }
 }

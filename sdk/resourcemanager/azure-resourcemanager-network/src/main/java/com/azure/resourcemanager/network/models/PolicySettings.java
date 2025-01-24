@@ -5,48 +5,87 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines contents of a web application firewall global configuration. */
+/**
+ * Defines contents of a web application firewall global configuration.
+ */
 @Fluent
-public final class PolicySettings {
+public final class PolicySettings implements JsonSerializable<PolicySettings> {
     /*
      * The state of the policy.
      */
-    @JsonProperty(value = "state")
     private WebApplicationFirewallEnabledState state;
 
     /*
      * The mode of the policy.
      */
-    @JsonProperty(value = "mode")
     private WebApplicationFirewallMode mode;
 
     /*
      * Whether to allow WAF to check request Body.
      */
-    @JsonProperty(value = "requestBodyCheck")
     private Boolean requestBodyCheck;
+
+    /*
+     * Max inspection limit in KB for request body inspection for WAF.
+     */
+    private Integer requestBodyInspectLimitInKB;
+
+    /*
+     * Whether allow WAF to enforce request body limits.
+     */
+    private Boolean requestBodyEnforcement;
 
     /*
      * Maximum request body size in Kb for WAF.
      */
-    @JsonProperty(value = "maxRequestBodySizeInKb")
     private Integer maxRequestBodySizeInKb;
+
+    /*
+     * Whether allow WAF to enforce file upload limits.
+     */
+    private Boolean fileUploadEnforcement;
 
     /*
      * Maximum file upload size in Mb for WAF.
      */
-    @JsonProperty(value = "fileUploadLimitInMb")
     private Integer fileUploadLimitInMb;
 
-    /** Creates an instance of PolicySettings class. */
+    /*
+     * If the action type is block, customer can override the response status code.
+     */
+    private Integer customBlockResponseStatusCode;
+
+    /*
+     * If the action type is block, customer can override the response body. The body must be specified in base64
+     * encoding.
+     */
+    private String customBlockResponseBody;
+
+    /*
+     * To scrub sensitive log fields
+     */
+    private PolicySettingsLogScrubbing logScrubbing;
+
+    /*
+     * Web Application Firewall JavaScript Challenge Cookie Expiration time in minutes.
+     */
+    private Integer jsChallengeCookieExpirationInMins;
+
+    /**
+     * Creates an instance of PolicySettings class.
+     */
     public PolicySettings() {
     }
 
     /**
      * Get the state property: The state of the policy.
-     *
+     * 
      * @return the state value.
      */
     public WebApplicationFirewallEnabledState state() {
@@ -55,7 +94,7 @@ public final class PolicySettings {
 
     /**
      * Set the state property: The state of the policy.
-     *
+     * 
      * @param state the state value to set.
      * @return the PolicySettings object itself.
      */
@@ -66,7 +105,7 @@ public final class PolicySettings {
 
     /**
      * Get the mode property: The mode of the policy.
-     *
+     * 
      * @return the mode value.
      */
     public WebApplicationFirewallMode mode() {
@@ -75,7 +114,7 @@ public final class PolicySettings {
 
     /**
      * Set the mode property: The mode of the policy.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the PolicySettings object itself.
      */
@@ -86,7 +125,7 @@ public final class PolicySettings {
 
     /**
      * Get the requestBodyCheck property: Whether to allow WAF to check request Body.
-     *
+     * 
      * @return the requestBodyCheck value.
      */
     public Boolean requestBodyCheck() {
@@ -95,7 +134,7 @@ public final class PolicySettings {
 
     /**
      * Set the requestBodyCheck property: Whether to allow WAF to check request Body.
-     *
+     * 
      * @param requestBodyCheck the requestBodyCheck value to set.
      * @return the PolicySettings object itself.
      */
@@ -105,8 +144,48 @@ public final class PolicySettings {
     }
 
     /**
+     * Get the requestBodyInspectLimitInKB property: Max inspection limit in KB for request body inspection for WAF.
+     * 
+     * @return the requestBodyInspectLimitInKB value.
+     */
+    public Integer requestBodyInspectLimitInKB() {
+        return this.requestBodyInspectLimitInKB;
+    }
+
+    /**
+     * Set the requestBodyInspectLimitInKB property: Max inspection limit in KB for request body inspection for WAF.
+     * 
+     * @param requestBodyInspectLimitInKB the requestBodyInspectLimitInKB value to set.
+     * @return the PolicySettings object itself.
+     */
+    public PolicySettings withRequestBodyInspectLimitInKB(Integer requestBodyInspectLimitInKB) {
+        this.requestBodyInspectLimitInKB = requestBodyInspectLimitInKB;
+        return this;
+    }
+
+    /**
+     * Get the requestBodyEnforcement property: Whether allow WAF to enforce request body limits.
+     * 
+     * @return the requestBodyEnforcement value.
+     */
+    public Boolean requestBodyEnforcement() {
+        return this.requestBodyEnforcement;
+    }
+
+    /**
+     * Set the requestBodyEnforcement property: Whether allow WAF to enforce request body limits.
+     * 
+     * @param requestBodyEnforcement the requestBodyEnforcement value to set.
+     * @return the PolicySettings object itself.
+     */
+    public PolicySettings withRequestBodyEnforcement(Boolean requestBodyEnforcement) {
+        this.requestBodyEnforcement = requestBodyEnforcement;
+        return this;
+    }
+
+    /**
      * Get the maxRequestBodySizeInKb property: Maximum request body size in Kb for WAF.
-     *
+     * 
      * @return the maxRequestBodySizeInKb value.
      */
     public Integer maxRequestBodySizeInKb() {
@@ -115,7 +194,7 @@ public final class PolicySettings {
 
     /**
      * Set the maxRequestBodySizeInKb property: Maximum request body size in Kb for WAF.
-     *
+     * 
      * @param maxRequestBodySizeInKb the maxRequestBodySizeInKb value to set.
      * @return the PolicySettings object itself.
      */
@@ -125,8 +204,28 @@ public final class PolicySettings {
     }
 
     /**
+     * Get the fileUploadEnforcement property: Whether allow WAF to enforce file upload limits.
+     * 
+     * @return the fileUploadEnforcement value.
+     */
+    public Boolean fileUploadEnforcement() {
+        return this.fileUploadEnforcement;
+    }
+
+    /**
+     * Set the fileUploadEnforcement property: Whether allow WAF to enforce file upload limits.
+     * 
+     * @param fileUploadEnforcement the fileUploadEnforcement value to set.
+     * @return the PolicySettings object itself.
+     */
+    public PolicySettings withFileUploadEnforcement(Boolean fileUploadEnforcement) {
+        this.fileUploadEnforcement = fileUploadEnforcement;
+        return this;
+    }
+
+    /**
      * Get the fileUploadLimitInMb property: Maximum file upload size in Mb for WAF.
-     *
+     * 
      * @return the fileUploadLimitInMb value.
      */
     public Integer fileUploadLimitInMb() {
@@ -135,7 +234,7 @@ public final class PolicySettings {
 
     /**
      * Set the fileUploadLimitInMb property: Maximum file upload size in Mb for WAF.
-     *
+     * 
      * @param fileUploadLimitInMb the fileUploadLimitInMb value to set.
      * @return the PolicySettings object itself.
      */
@@ -145,10 +244,170 @@ public final class PolicySettings {
     }
 
     /**
+     * Get the customBlockResponseStatusCode property: If the action type is block, customer can override the response
+     * status code.
+     * 
+     * @return the customBlockResponseStatusCode value.
+     */
+    public Integer customBlockResponseStatusCode() {
+        return this.customBlockResponseStatusCode;
+    }
+
+    /**
+     * Set the customBlockResponseStatusCode property: If the action type is block, customer can override the response
+     * status code.
+     * 
+     * @param customBlockResponseStatusCode the customBlockResponseStatusCode value to set.
+     * @return the PolicySettings object itself.
+     */
+    public PolicySettings withCustomBlockResponseStatusCode(Integer customBlockResponseStatusCode) {
+        this.customBlockResponseStatusCode = customBlockResponseStatusCode;
+        return this;
+    }
+
+    /**
+     * Get the customBlockResponseBody property: If the action type is block, customer can override the response body.
+     * The body must be specified in base64 encoding.
+     * 
+     * @return the customBlockResponseBody value.
+     */
+    public String customBlockResponseBody() {
+        return this.customBlockResponseBody;
+    }
+
+    /**
+     * Set the customBlockResponseBody property: If the action type is block, customer can override the response body.
+     * The body must be specified in base64 encoding.
+     * 
+     * @param customBlockResponseBody the customBlockResponseBody value to set.
+     * @return the PolicySettings object itself.
+     */
+    public PolicySettings withCustomBlockResponseBody(String customBlockResponseBody) {
+        this.customBlockResponseBody = customBlockResponseBody;
+        return this;
+    }
+
+    /**
+     * Get the logScrubbing property: To scrub sensitive log fields.
+     * 
+     * @return the logScrubbing value.
+     */
+    public PolicySettingsLogScrubbing logScrubbing() {
+        return this.logScrubbing;
+    }
+
+    /**
+     * Set the logScrubbing property: To scrub sensitive log fields.
+     * 
+     * @param logScrubbing the logScrubbing value to set.
+     * @return the PolicySettings object itself.
+     */
+    public PolicySettings withLogScrubbing(PolicySettingsLogScrubbing logScrubbing) {
+        this.logScrubbing = logScrubbing;
+        return this;
+    }
+
+    /**
+     * Get the jsChallengeCookieExpirationInMins property: Web Application Firewall JavaScript Challenge Cookie
+     * Expiration time in minutes.
+     * 
+     * @return the jsChallengeCookieExpirationInMins value.
+     */
+    public Integer jsChallengeCookieExpirationInMins() {
+        return this.jsChallengeCookieExpirationInMins;
+    }
+
+    /**
+     * Set the jsChallengeCookieExpirationInMins property: Web Application Firewall JavaScript Challenge Cookie
+     * Expiration time in minutes.
+     * 
+     * @param jsChallengeCookieExpirationInMins the jsChallengeCookieExpirationInMins value to set.
+     * @return the PolicySettings object itself.
+     */
+    public PolicySettings withJsChallengeCookieExpirationInMins(Integer jsChallengeCookieExpirationInMins) {
+        this.jsChallengeCookieExpirationInMins = jsChallengeCookieExpirationInMins;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (logScrubbing() != null) {
+            logScrubbing().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeBooleanField("requestBodyCheck", this.requestBodyCheck);
+        jsonWriter.writeNumberField("requestBodyInspectLimitInKB", this.requestBodyInspectLimitInKB);
+        jsonWriter.writeBooleanField("requestBodyEnforcement", this.requestBodyEnforcement);
+        jsonWriter.writeNumberField("maxRequestBodySizeInKb", this.maxRequestBodySizeInKb);
+        jsonWriter.writeBooleanField("fileUploadEnforcement", this.fileUploadEnforcement);
+        jsonWriter.writeNumberField("fileUploadLimitInMb", this.fileUploadLimitInMb);
+        jsonWriter.writeNumberField("customBlockResponseStatusCode", this.customBlockResponseStatusCode);
+        jsonWriter.writeStringField("customBlockResponseBody", this.customBlockResponseBody);
+        jsonWriter.writeJsonField("logScrubbing", this.logScrubbing);
+        jsonWriter.writeNumberField("jsChallengeCookieExpirationInMins", this.jsChallengeCookieExpirationInMins);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicySettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicySettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicySettings.
+     */
+    public static PolicySettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicySettings deserializedPolicySettings = new PolicySettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedPolicySettings.state
+                        = WebApplicationFirewallEnabledState.fromString(reader.getString());
+                } else if ("mode".equals(fieldName)) {
+                    deserializedPolicySettings.mode = WebApplicationFirewallMode.fromString(reader.getString());
+                } else if ("requestBodyCheck".equals(fieldName)) {
+                    deserializedPolicySettings.requestBodyCheck = reader.getNullable(JsonReader::getBoolean);
+                } else if ("requestBodyInspectLimitInKB".equals(fieldName)) {
+                    deserializedPolicySettings.requestBodyInspectLimitInKB = reader.getNullable(JsonReader::getInt);
+                } else if ("requestBodyEnforcement".equals(fieldName)) {
+                    deserializedPolicySettings.requestBodyEnforcement = reader.getNullable(JsonReader::getBoolean);
+                } else if ("maxRequestBodySizeInKb".equals(fieldName)) {
+                    deserializedPolicySettings.maxRequestBodySizeInKb = reader.getNullable(JsonReader::getInt);
+                } else if ("fileUploadEnforcement".equals(fieldName)) {
+                    deserializedPolicySettings.fileUploadEnforcement = reader.getNullable(JsonReader::getBoolean);
+                } else if ("fileUploadLimitInMb".equals(fieldName)) {
+                    deserializedPolicySettings.fileUploadLimitInMb = reader.getNullable(JsonReader::getInt);
+                } else if ("customBlockResponseStatusCode".equals(fieldName)) {
+                    deserializedPolicySettings.customBlockResponseStatusCode = reader.getNullable(JsonReader::getInt);
+                } else if ("customBlockResponseBody".equals(fieldName)) {
+                    deserializedPolicySettings.customBlockResponseBody = reader.getString();
+                } else if ("logScrubbing".equals(fieldName)) {
+                    deserializedPolicySettings.logScrubbing = PolicySettingsLogScrubbing.fromJson(reader);
+                } else if ("jsChallengeCookieExpirationInMins".equals(fieldName)) {
+                    deserializedPolicySettings.jsChallengeCookieExpirationInMins
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicySettings;
+        });
     }
 }

@@ -5,31 +5,54 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Configuration Deployment Type. */
+/**
+ * Configuration Deployment Type.
+ */
 public final class ConfigurationType extends ExpandableStringEnum<ConfigurationType> {
-    /** Static value SecurityAdmin for ConfigurationType. */
+    /**
+     * Static value SecurityAdmin for ConfigurationType.
+     */
     public static final ConfigurationType SECURITY_ADMIN = fromString("SecurityAdmin");
 
-    /** Static value Connectivity for ConfigurationType. */
+    /**
+     * Static value Connectivity for ConfigurationType.
+     */
     public static final ConfigurationType CONNECTIVITY = fromString("Connectivity");
 
     /**
+     * Static value SecurityUser for ConfigurationType.
+     */
+    public static final ConfigurationType SECURITY_USER = fromString("SecurityUser");
+
+    /**
+     * Static value Routing for ConfigurationType.
+     */
+    public static final ConfigurationType ROUTING = fromString("Routing");
+
+    /**
+     * Creates a new instance of ConfigurationType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConfigurationType() {
+    }
+
+    /**
      * Creates or finds a ConfigurationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConfigurationType.
      */
-    @JsonCreator
     public static ConfigurationType fromString(String name) {
         return fromString(name, ConfigurationType.class);
     }
 
     /**
      * Gets known ConfigurationType values.
-     *
+     * 
      * @return known ConfigurationType values.
      */
     public static Collection<ConfigurationType> values() {

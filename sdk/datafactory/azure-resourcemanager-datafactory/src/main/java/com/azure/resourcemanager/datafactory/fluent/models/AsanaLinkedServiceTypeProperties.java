@@ -6,32 +6,38 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Asana linked service type properties. */
+/**
+ * Asana linked service type properties.
+ */
 @Fluent
-public final class AsanaLinkedServiceTypeProperties {
+public final class AsanaLinkedServiceTypeProperties implements JsonSerializable<AsanaLinkedServiceTypeProperties> {
     /*
      * The api token for the Asana source.
      */
-    @JsonProperty(value = "apiToken", required = true)
     private SecretBase apiToken;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of AsanaLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of AsanaLinkedServiceTypeProperties class.
+     */
     public AsanaLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the apiToken property: The api token for the Asana source.
-     *
+     * 
      * @return the apiToken value.
      */
     public SecretBase apiToken() {
@@ -40,7 +46,7 @@ public final class AsanaLinkedServiceTypeProperties {
 
     /**
      * Set the apiToken property: The api token for the Asana source.
-     *
+     * 
      * @param apiToken the apiToken value to set.
      * @return the AsanaLinkedServiceTypeProperties object itself.
      */
@@ -51,41 +57,81 @@ public final class AsanaLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AsanaLinkedServiceTypeProperties object itself.
      */
-    public AsanaLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public AsanaLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (apiToken() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property apiToken in model AsanaLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property apiToken in model AsanaLinkedServiceTypeProperties"));
         } else {
             apiToken().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AsanaLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("apiToken", this.apiToken);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AsanaLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AsanaLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AsanaLinkedServiceTypeProperties.
+     */
+    public static AsanaLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AsanaLinkedServiceTypeProperties deserializedAsanaLinkedServiceTypeProperties
+                = new AsanaLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apiToken".equals(fieldName)) {
+                    deserializedAsanaLinkedServiceTypeProperties.apiToken = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedAsanaLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAsanaLinkedServiceTypeProperties;
+        });
+    }
 }

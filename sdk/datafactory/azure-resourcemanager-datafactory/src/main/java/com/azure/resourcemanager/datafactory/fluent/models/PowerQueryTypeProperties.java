@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.PowerQuerySource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Power Query data flow type properties. */
+/**
+ * Power Query data flow type properties.
+ */
 @Fluent
-public final class PowerQueryTypeProperties {
+public final class PowerQueryTypeProperties implements JsonSerializable<PowerQueryTypeProperties> {
     /*
      * List of sources in Power Query.
      */
-    @JsonProperty(value = "sources")
     private List<PowerQuerySource> sources;
 
     /*
      * Power query mashup script.
      */
-    @JsonProperty(value = "script")
     private String script;
 
     /*
      * Locale of the Power query mashup document.
      */
-    @JsonProperty(value = "documentLocale")
     private String documentLocale;
 
-    /** Creates an instance of PowerQueryTypeProperties class. */
+    /**
+     * Creates an instance of PowerQueryTypeProperties class.
+     */
     public PowerQueryTypeProperties() {
     }
 
     /**
      * Get the sources property: List of sources in Power Query.
-     *
+     * 
      * @return the sources value.
      */
     public List<PowerQuerySource> sources() {
@@ -45,7 +50,7 @@ public final class PowerQueryTypeProperties {
 
     /**
      * Set the sources property: List of sources in Power Query.
-     *
+     * 
      * @param sources the sources value to set.
      * @return the PowerQueryTypeProperties object itself.
      */
@@ -56,7 +61,7 @@ public final class PowerQueryTypeProperties {
 
     /**
      * Get the script property: Power query mashup script.
-     *
+     * 
      * @return the script value.
      */
     public String script() {
@@ -65,7 +70,7 @@ public final class PowerQueryTypeProperties {
 
     /**
      * Set the script property: Power query mashup script.
-     *
+     * 
      * @param script the script value to set.
      * @return the PowerQueryTypeProperties object itself.
      */
@@ -76,7 +81,7 @@ public final class PowerQueryTypeProperties {
 
     /**
      * Get the documentLocale property: Locale of the Power query mashup document.
-     *
+     * 
      * @return the documentLocale value.
      */
     public String documentLocale() {
@@ -85,7 +90,7 @@ public final class PowerQueryTypeProperties {
 
     /**
      * Set the documentLocale property: Locale of the Power query mashup document.
-     *
+     * 
      * @param documentLocale the documentLocale value to set.
      * @return the PowerQueryTypeProperties object itself.
      */
@@ -96,12 +101,55 @@ public final class PowerQueryTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sources() != null) {
             sources().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("sources", this.sources, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("script", this.script);
+        jsonWriter.writeStringField("documentLocale", this.documentLocale);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PowerQueryTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PowerQueryTypeProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PowerQueryTypeProperties.
+     */
+    public static PowerQueryTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PowerQueryTypeProperties deserializedPowerQueryTypeProperties = new PowerQueryTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sources".equals(fieldName)) {
+                    List<PowerQuerySource> sources = reader.readArray(reader1 -> PowerQuerySource.fromJson(reader1));
+                    deserializedPowerQueryTypeProperties.sources = sources;
+                } else if ("script".equals(fieldName)) {
+                    deserializedPowerQueryTypeProperties.script = reader.getString();
+                } else if ("documentLocale".equals(fieldName)) {
+                    deserializedPowerQueryTypeProperties.documentLocale = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPowerQueryTypeProperties;
+        });
     }
 }

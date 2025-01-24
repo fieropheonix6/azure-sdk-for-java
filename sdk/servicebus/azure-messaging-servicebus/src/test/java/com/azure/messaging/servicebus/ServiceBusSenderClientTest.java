@@ -5,18 +5,17 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -46,16 +45,6 @@ public class ServiceBusSenderClientTest {
     private static final Duration RETRY_TIMEOUT = Duration.ofSeconds(10);
     private static final String TEST_CONTENTS = "My message for service bus queue!";
     private static final BinaryData TEST_CONTENTS_BINARY = BinaryData.fromString(TEST_CONTENTS);
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void setup() {
@@ -90,11 +79,11 @@ public class ServiceBusSenderClientTest {
     /**
      * Verifies that the default batch is the same size as the message link.
      */
-    @Test
-    void createBatchDefault() {
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    void createBatchDefault(boolean isV2) {
         // Arrange
-        ServiceBusMessageBatch batch =  new ServiceBusMessageBatch(MAX_MESSAGE_LENGTH_BYTES, null, null,
-            null);
+        ServiceBusMessageBatch batch = new ServiceBusMessageBatch(isV2, MAX_MESSAGE_LENGTH_BYTES, null, null, null);
         when(asyncSender.createMessageBatch()).thenReturn(Mono.just(batch));
 
         //Act
@@ -127,14 +116,14 @@ public class ServiceBusSenderClientTest {
     /**
      * Verifies that the producer can create a batch with a given {@link CreateMessageBatchOptions#getMaximumSizeInBytes()}.
      */
-    @Test
-    void createsMessageBatchWithSize() {
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    void createsMessageBatchWithSize(boolean isV2) {
         // Arrange
         int batchSize = 1024;
 
         final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
-        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(batchSize, null, null,
-            null);
+        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(isV2, batchSize, null, null, null);
         when(asyncSender.createMessageBatch(options)).thenReturn(Mono.just(batch));
 
         // Act
@@ -152,8 +141,8 @@ public class ServiceBusSenderClientTest {
         // Arrange
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(),
-            contents);
+        final List<ServiceBusMessage> messages
+            = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(), contents);
 
         when(asyncSender.sendMessages(messages, transactionContext)).thenReturn(Mono.empty());
 
@@ -172,8 +161,8 @@ public class ServiceBusSenderClientTest {
         // Arrange
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(),
-            contents);
+        final List<ServiceBusMessage> messages
+            = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(), contents);
 
         when(asyncSender.sendMessages(messages)).thenReturn(Mono.empty());
 
@@ -191,8 +180,7 @@ public class ServiceBusSenderClientTest {
     void sendListMessageNullTransaction() {
         // Arrange
         final ServiceBusTransactionContext nullTransaction = null;
-        final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS_BINARY);
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS_BINARY);
         List<ServiceBusMessage> messages = new ArrayList<>();
         messages.add(testData);
         when(asyncSender.sendMessages(messages, transactionContext)).thenReturn(Mono.empty());
@@ -214,8 +202,7 @@ public class ServiceBusSenderClientTest {
     void sendSingleMessageNullTransaction() {
         // Arrange
         final ServiceBusTransactionContext nullTransaction = null;
-        final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS_BINARY);
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS_BINARY);
 
         when(asyncSender.sendMessage(testData, transactionContext)).thenReturn(Mono.empty());
 
@@ -235,8 +222,7 @@ public class ServiceBusSenderClientTest {
     @Test
     void sendSingleMessageWithTransaction() {
         // Arrange
-        final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS_BINARY);
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS_BINARY);
 
         when(asyncSender.sendMessage(testData, transactionContext)).thenReturn(Mono.empty());
 
@@ -253,8 +239,7 @@ public class ServiceBusSenderClientTest {
     @Test
     void sendSingleMessage() {
         // Arrange
-        final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS_BINARY);
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS_BINARY);
 
         when(asyncSender.sendMessage(testData)).thenReturn(Mono.empty());
 
@@ -271,8 +256,7 @@ public class ServiceBusSenderClientTest {
     @Test
     void scheduleMessage() {
         // Arrange
-        final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS_BINARY);
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS_BINARY);
         final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now();
         final long expected = 1;
 
@@ -293,12 +277,12 @@ public class ServiceBusSenderClientTest {
     @Test
     void scheduleMessageWithTransaction() {
         // Arrange
-        final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS_BINARY);
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS_BINARY);
         final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now();
         final long expected = 1;
 
-        when(asyncSender.scheduleMessage(testData, scheduledEnqueueTime, transactionContext)).thenReturn(Mono.just(expected));
+        when(asyncSender.scheduleMessage(testData, scheduledEnqueueTime, transactionContext))
+            .thenReturn(Mono.just(expected));
 
         // Act
         long actual = sender.scheduleMessage(testData, scheduledEnqueueTime, transactionContext);
@@ -315,8 +299,7 @@ public class ServiceBusSenderClientTest {
     void scheduleMessages() {
         // Arrange
         final long totalMessages = 2;
-        final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS_BINARY);
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS_BINARY);
         final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now();
         final List<ServiceBusMessage> testDataMessages = new ArrayList<>();
         testDataMessages.add(testData);
@@ -324,7 +307,8 @@ public class ServiceBusSenderClientTest {
 
         final long expected = 1;
 
-        when(asyncSender.scheduleMessages(testDataMessages, scheduledEnqueueTime)).thenReturn(Flux.just(expected, expected));
+        when(asyncSender.scheduleMessages(testDataMessages, scheduledEnqueueTime))
+            .thenReturn(Flux.just(expected, expected));
 
         // Act
         Iterable<Long> actualStream = sender.scheduleMessages(testDataMessages, scheduledEnqueueTime);
@@ -347,8 +331,7 @@ public class ServiceBusSenderClientTest {
     void scheduleMessagesWithTransaction() {
         // Arrange
         final long totalMessages = 2;
-        final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS_BINARY);
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS_BINARY);
         final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now();
         final List<ServiceBusMessage> testDataMessages = new ArrayList<>();
         testDataMessages.add(testData);
@@ -356,10 +339,12 @@ public class ServiceBusSenderClientTest {
 
         final long expected = 1;
 
-        when(asyncSender.scheduleMessages(testDataMessages, scheduledEnqueueTime, transactionContext)).thenReturn(Flux.just(expected, expected));
+        when(asyncSender.scheduleMessages(testDataMessages, scheduledEnqueueTime, transactionContext))
+            .thenReturn(Flux.just(expected, expected));
 
         // Act
-        Iterable<Long> actualStream = sender.scheduleMessages(testDataMessages, scheduledEnqueueTime, transactionContext);
+        Iterable<Long> actualStream
+            = sender.scheduleMessages(testDataMessages, scheduledEnqueueTime, transactionContext);
 
         // Assert
         AtomicInteger actualTotalMessages = new AtomicInteger();

@@ -18,31 +18,42 @@ import com.azure.resourcemanager.logic.models.SetTriggerStateActionDefinition;
 import com.azure.resourcemanager.logic.models.WorkflowTrigger;
 import com.azure.resourcemanager.logic.models.WorkflowTriggerCallbackUrl;
 import com.azure.resourcemanager.logic.models.WorkflowTriggers;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkflowTriggersImpl implements WorkflowTriggers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowTriggersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowTriggersImpl.class);
 
     private final WorkflowTriggersClient innerClient;
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    public WorkflowTriggersImpl(
-        WorkflowTriggersClient innerClient, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    public WorkflowTriggersImpl(WorkflowTriggersClient innerClient,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<WorkflowTrigger> list(String resourceGroupName, String workflowName) {
         PagedIterable<WorkflowTriggerInner> inner = this.serviceClient().list(resourceGroupName, workflowName);
-        return Utils.mapPage(inner, inner1 -> new WorkflowTriggerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkflowTriggerImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WorkflowTrigger> list(
-        String resourceGroupName, String workflowName, Integer top, String filter, Context context) {
-        PagedIterable<WorkflowTriggerInner> inner =
-            this.serviceClient().list(resourceGroupName, workflowName, top, filter, context);
-        return Utils.mapPage(inner, inner1 -> new WorkflowTriggerImpl(inner1, this.manager()));
+    public PagedIterable<WorkflowTrigger> list(String resourceGroupName, String workflowName, Integer top,
+        String filter, Context context) {
+        PagedIterable<WorkflowTriggerInner> inner
+            = this.serviceClient().list(resourceGroupName, workflowName, top, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkflowTriggerImpl(inner1, this.manager()));
+    }
+
+    public Response<WorkflowTrigger> getWithResponse(String resourceGroupName, String workflowName, String triggerName,
+        Context context) {
+        Response<WorkflowTriggerInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workflowName, triggerName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new WorkflowTriggerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public WorkflowTrigger get(String resourceGroupName, String workflowName, String triggerName) {
@@ -54,37 +65,34 @@ public final class WorkflowTriggersImpl implements WorkflowTriggers {
         }
     }
 
-    public Response<WorkflowTrigger> getWithResponse(
-        String resourceGroupName, String workflowName, String triggerName, Context context) {
-        Response<WorkflowTriggerInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workflowName, triggerName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new WorkflowTriggerImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> resetWithResponse(String resourceGroupName, String workflowName, String triggerName,
+        Context context) {
+        return this.serviceClient().resetWithResponse(resourceGroupName, workflowName, triggerName, context);
     }
 
     public void reset(String resourceGroupName, String workflowName, String triggerName) {
         this.serviceClient().reset(resourceGroupName, workflowName, triggerName);
     }
 
-    public Response<Void> resetWithResponse(
-        String resourceGroupName, String workflowName, String triggerName, Context context) {
-        return this.serviceClient().resetWithResponse(resourceGroupName, workflowName, triggerName, context);
+    public Response<Void> runWithResponse(String resourceGroupName, String workflowName, String triggerName,
+        Context context) {
+        return this.serviceClient().runWithResponse(resourceGroupName, workflowName, triggerName, context);
     }
 
     public void run(String resourceGroupName, String workflowName, String triggerName) {
         this.serviceClient().run(resourceGroupName, workflowName, triggerName);
     }
 
-    public Response<Void> runWithResponse(
-        String resourceGroupName, String workflowName, String triggerName, Context context) {
-        return this.serviceClient().runWithResponse(resourceGroupName, workflowName, triggerName, context);
+    public Response<JsonSchema> getSchemaJsonWithResponse(String resourceGroupName, String workflowName,
+        String triggerName, Context context) {
+        Response<JsonSchemaInner> inner
+            = this.serviceClient().getSchemaJsonWithResponse(resourceGroupName, workflowName, triggerName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new JsonSchemaImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public JsonSchema getSchemaJson(String resourceGroupName, String workflowName, String triggerName) {
@@ -96,58 +104,35 @@ public final class WorkflowTriggersImpl implements WorkflowTriggers {
         }
     }
 
-    public Response<JsonSchema> getSchemaJsonWithResponse(
-        String resourceGroupName, String workflowName, String triggerName, Context context) {
-        Response<JsonSchemaInner> inner =
-            this.serviceClient().getSchemaJsonWithResponse(resourceGroupName, workflowName, triggerName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new JsonSchemaImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public void setState(
-        String resourceGroupName, String workflowName, String triggerName, SetTriggerStateActionDefinition setState) {
-        this.serviceClient().setState(resourceGroupName, workflowName, triggerName, setState);
-    }
-
-    public Response<Void> setStateWithResponse(
-        String resourceGroupName,
-        String workflowName,
-        String triggerName,
-        SetTriggerStateActionDefinition setState,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> setStateWithResponse(String resourceGroupName, String workflowName, String triggerName,
+        SetTriggerStateActionDefinition setState, Context context) {
+        return this.serviceClient()
             .setStateWithResponse(resourceGroupName, workflowName, triggerName, setState, context);
     }
 
-    public WorkflowTriggerCallbackUrl listCallbackUrl(
-        String resourceGroupName, String workflowName, String triggerName) {
-        WorkflowTriggerCallbackUrlInner inner =
-            this.serviceClient().listCallbackUrl(resourceGroupName, workflowName, triggerName);
+    public void setState(String resourceGroupName, String workflowName, String triggerName,
+        SetTriggerStateActionDefinition setState) {
+        this.serviceClient().setState(resourceGroupName, workflowName, triggerName, setState);
+    }
+
+    public Response<WorkflowTriggerCallbackUrl> listCallbackUrlWithResponse(String resourceGroupName,
+        String workflowName, String triggerName, Context context) {
+        Response<WorkflowTriggerCallbackUrlInner> inner
+            = this.serviceClient().listCallbackUrlWithResponse(resourceGroupName, workflowName, triggerName, context);
         if (inner != null) {
-            return new WorkflowTriggerCallbackUrlImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new WorkflowTriggerCallbackUrlImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<WorkflowTriggerCallbackUrl> listCallbackUrlWithResponse(
-        String resourceGroupName, String workflowName, String triggerName, Context context) {
-        Response<WorkflowTriggerCallbackUrlInner> inner =
-            this.serviceClient().listCallbackUrlWithResponse(resourceGroupName, workflowName, triggerName, context);
+    public WorkflowTriggerCallbackUrl listCallbackUrl(String resourceGroupName, String workflowName,
+        String triggerName) {
+        WorkflowTriggerCallbackUrlInner inner
+            = this.serviceClient().listCallbackUrl(resourceGroupName, workflowName, triggerName);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new WorkflowTriggerCallbackUrlImpl(inner.getValue(), this.manager()));
+            return new WorkflowTriggerCallbackUrlImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.servicebus.propertie
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +31,7 @@ class AzureServiceBusPropertiesTest {
     }
 
     @Test
-    void defaultProfileCloudTypeIsAzure() {
+    void defaultProfileCloudTypeIsNull() {
         AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
 
         AzureServiceBusProperties.Producer producer = serviceBusProperties.buildProducerProperties();
@@ -44,17 +45,34 @@ class AzureServiceBusPropertiesTest {
     }
 
     @Test
-    void defaultDomainNameIsAzure() {
+    void defaultDomainNameIsNull() {
         AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
 
         AzureServiceBusProperties.Producer producer = serviceBusProperties.buildProducerProperties();
         AzureServiceBusProperties.Consumer consumer = serviceBusProperties.buildConsumerProperties();
         AzureServiceBusProperties.Processor processor = serviceBusProperties.buildProcessorProperties();
 
-        assertEquals("servicebus.windows.net", serviceBusProperties.getDomainName());
-        assertEquals("servicebus.windows.net", producer.getDomainName());
-        assertEquals("servicebus.windows.net", consumer.getDomainName());
-        assertEquals("servicebus.windows.net", processor.getDomainName());
+        assertNull(serviceBusProperties.getDomainName());
+        assertNull(producer.getDomainName());
+        assertNull(consumer.getDomainName());
+        assertNull(processor.getDomainName());
+    }
+
+    @Test
+    void getDomainNameFromCloud() {
+        AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
+        serviceBusProperties.getProfile().setCloudType(AZURE_CHINA);
+        assertEquals(AzureEnvironmentProperties.AZURE_CHINA.getServiceBusDomainName(),
+                serviceBusProperties.getDomainName());
+    }
+
+    @Test
+    void domainNameOverrideCloud() {
+        AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
+        serviceBusProperties.setDomainName(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName());
+        serviceBusProperties.getProfile().setCloudType(AZURE_CHINA);
+        assertEquals(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName(),
+                serviceBusProperties.getDomainName());
     }
 
     @Test
@@ -63,6 +81,8 @@ class AzureServiceBusPropertiesTest {
 
         serviceBusProperties.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
         serviceBusProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
+        String customEndpoint = "https://custom.endpoint.test";
+        serviceBusProperties.setCustomEndpointAddress(customEndpoint);
 
         AzureServiceBusProperties.Producer producer = serviceBusProperties.buildProducerProperties();
         AzureServiceBusProperties.Consumer consumer = serviceBusProperties.buildConsumerProperties();
@@ -72,16 +92,19 @@ class AzureServiceBusPropertiesTest {
         assertEquals(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
             producer.getProfile().getEnvironment().getActiveDirectoryEndpoint());
         assertEquals(AmqpTransportType.AMQP_WEB_SOCKETS, producer.getClient().getTransportType());
+        assertEquals(customEndpoint, producer.getCustomEndpointAddress());
 
         assertEquals(AZURE_US_GOVERNMENT, consumer.getProfile().getCloudType());
         assertEquals(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
             consumer.getProfile().getEnvironment().getActiveDirectoryEndpoint());
         assertEquals(AmqpTransportType.AMQP_WEB_SOCKETS, consumer.getClient().getTransportType());
+        assertEquals(customEndpoint, consumer.getCustomEndpointAddress());
 
         assertEquals(AZURE_US_GOVERNMENT, processor.getProfile().getCloudType());
         assertEquals(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
             processor.getProfile().getEnvironment().getActiveDirectoryEndpoint());
         assertEquals(AmqpTransportType.AMQP_WEB_SOCKETS, processor.getClient().getTransportType());
+        assertEquals(customEndpoint, processor.getCustomEndpointAddress());
     }
 
     @Test

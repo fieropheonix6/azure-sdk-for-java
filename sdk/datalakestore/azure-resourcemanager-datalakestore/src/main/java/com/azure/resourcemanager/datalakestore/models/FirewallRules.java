@@ -8,36 +8,53 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of FirewallRules. */
+/**
+ * Resource collection API of FirewallRules.
+ */
 public interface FirewallRules {
     /**
      * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule list information.
+     * @return data Lake Store firewall rule list information as paginated response with {@link PagedIterable}.
      */
     PagedIterable<FirewallRule> listByAccount(String resourceGroupName, String accountName);
 
     /**
      * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store firewall rule list information.
+     * @return data Lake Store firewall rule list information as paginated response with {@link PagedIterable}.
      */
     PagedIterable<FirewallRule> listByAccount(String resourceGroupName, String accountName, Context context);
 
     /**
      * Gets the specified Data Lake Store firewall rule.
-     *
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Store account.
+     * @param firewallRuleName The name of the firewall rule to retrieve.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Data Lake Store firewall rule along with {@link Response}.
+     */
+    Response<FirewallRule> getWithResponse(String resourceGroupName, String accountName, String firewallRuleName,
+        Context context);
+
+    /**
+     * Gets the specified Data Lake Store firewall rule.
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param firewallRuleName The name of the firewall rule to retrieve.
@@ -49,23 +66,23 @@ public interface FirewallRules {
     FirewallRule get(String resourceGroupName, String accountName, String firewallRuleName);
 
     /**
-     * Gets the specified Data Lake Store firewall rule.
-     *
+     * Deletes the specified firewall rule from the specified Data Lake Store account.
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
-     * @param firewallRuleName The name of the firewall rule to retrieve.
+     * @param firewallRuleName The name of the firewall rule to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store firewall rule.
+     * @return the {@link Response}.
      */
-    Response<FirewallRule> getWithResponse(
-        String resourceGroupName, String accountName, String firewallRuleName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String firewallRuleName,
+        Context context);
 
     /**
      * Deletes the specified firewall rule from the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param firewallRuleName The name of the firewall rule to delete.
@@ -76,46 +93,31 @@ public interface FirewallRules {
     void delete(String resourceGroupName, String accountName, String firewallRuleName);
 
     /**
-     * Deletes the specified firewall rule from the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Store account.
-     * @param firewallRuleName The name of the firewall rule to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String firewallRuleName, Context context);
-
-    /**
      * Gets the specified Data Lake Store firewall rule.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store firewall rule.
+     * @return the specified Data Lake Store firewall rule along with {@link Response}.
      */
     FirewallRule getById(String id);
 
     /**
      * Gets the specified Data Lake Store firewall rule.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store firewall rule.
+     * @return the specified Data Lake Store firewall rule along with {@link Response}.
      */
     Response<FirewallRule> getByIdWithResponse(String id, Context context);
 
     /**
      * Deletes the specified firewall rule from the specified Data Lake Store account.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,19 +127,19 @@ public interface FirewallRules {
 
     /**
      * Deletes the specified firewall rule from the specified Data Lake Store account.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new FirewallRule resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new FirewallRule definition.
      */

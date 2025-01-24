@@ -6,35 +6,49 @@ package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.healthcareapis.models.IotDestinationProperties;
 import com.azure.resourcemanager.healthcareapis.models.IotIdentityResolutionType;
 import com.azure.resourcemanager.healthcareapis.models.IotMappingProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.healthcareapis.models.ProvisioningState;
+import java.io.IOException;
 
-/** IoT Connector destination properties for an Azure FHIR service. */
+/**
+ * IoT Connector destination properties for an Azure FHIR service.
+ */
 @Fluent
 public final class IotFhirDestinationProperties extends IotDestinationProperties {
     /*
      * Determines how resource identity is resolved on the destination.
      */
-    @JsonProperty(value = "resourceIdentityResolutionType", required = true)
     private IotIdentityResolutionType resourceIdentityResolutionType;
 
     /*
      * Fully qualified resource id of the FHIR service to connect to.
      */
-    @JsonProperty(value = "fhirServiceResourceId", required = true)
     private String fhirServiceResourceId;
 
     /*
      * FHIR Mappings
      */
-    @JsonProperty(value = "fhirMapping", required = true)
     private IotMappingProperties fhirMapping;
+
+    /*
+     * The provisioning state.
+     */
+    private ProvisioningState provisioningState;
+
+    /**
+     * Creates an instance of IotFhirDestinationProperties class.
+     */
+    public IotFhirDestinationProperties() {
+    }
 
     /**
      * Get the resourceIdentityResolutionType property: Determines how resource identity is resolved on the destination.
-     *
+     * 
      * @return the resourceIdentityResolutionType value.
      */
     public IotIdentityResolutionType resourceIdentityResolutionType() {
@@ -43,19 +57,19 @@ public final class IotFhirDestinationProperties extends IotDestinationProperties
 
     /**
      * Set the resourceIdentityResolutionType property: Determines how resource identity is resolved on the destination.
-     *
+     * 
      * @param resourceIdentityResolutionType the resourceIdentityResolutionType value to set.
      * @return the IotFhirDestinationProperties object itself.
      */
-    public IotFhirDestinationProperties withResourceIdentityResolutionType(
-        IotIdentityResolutionType resourceIdentityResolutionType) {
+    public IotFhirDestinationProperties
+        withResourceIdentityResolutionType(IotIdentityResolutionType resourceIdentityResolutionType) {
         this.resourceIdentityResolutionType = resourceIdentityResolutionType;
         return this;
     }
 
     /**
      * Get the fhirServiceResourceId property: Fully qualified resource id of the FHIR service to connect to.
-     *
+     * 
      * @return the fhirServiceResourceId value.
      */
     public String fhirServiceResourceId() {
@@ -64,7 +78,7 @@ public final class IotFhirDestinationProperties extends IotDestinationProperties
 
     /**
      * Set the fhirServiceResourceId property: Fully qualified resource id of the FHIR service to connect to.
-     *
+     * 
      * @param fhirServiceResourceId the fhirServiceResourceId value to set.
      * @return the IotFhirDestinationProperties object itself.
      */
@@ -75,7 +89,7 @@ public final class IotFhirDestinationProperties extends IotDestinationProperties
 
     /**
      * Get the fhirMapping property: FHIR Mappings.
-     *
+     * 
      * @return the fhirMapping value.
      */
     public IotMappingProperties fhirMapping() {
@@ -84,7 +98,7 @@ public final class IotFhirDestinationProperties extends IotDestinationProperties
 
     /**
      * Set the fhirMapping property: FHIR Mappings.
-     *
+     * 
      * @param fhirMapping the fhirMapping value to set.
      * @return the IotFhirDestinationProperties object itself.
      */
@@ -94,35 +108,88 @@ public final class IotFhirDestinationProperties extends IotDestinationProperties
     }
 
     /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (resourceIdentityResolutionType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceIdentityResolutionType in model"
-                            + " IotFhirDestinationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceIdentityResolutionType in model IotFhirDestinationProperties"));
         }
         if (fhirServiceResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fhirServiceResourceId in model IotFhirDestinationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fhirServiceResourceId in model IotFhirDestinationProperties"));
         }
         if (fhirMapping() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fhirMapping in model IotFhirDestinationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fhirMapping in model IotFhirDestinationProperties"));
         } else {
             fhirMapping().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IotFhirDestinationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceIdentityResolutionType",
+            this.resourceIdentityResolutionType == null ? null : this.resourceIdentityResolutionType.toString());
+        jsonWriter.writeStringField("fhirServiceResourceId", this.fhirServiceResourceId);
+        jsonWriter.writeJsonField("fhirMapping", this.fhirMapping);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IotFhirDestinationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotFhirDestinationProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IotFhirDestinationProperties.
+     */
+    public static IotFhirDestinationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotFhirDestinationProperties deserializedIotFhirDestinationProperties = new IotFhirDestinationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedIotFhirDestinationProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("resourceIdentityResolutionType".equals(fieldName)) {
+                    deserializedIotFhirDestinationProperties.resourceIdentityResolutionType
+                        = IotIdentityResolutionType.fromString(reader.getString());
+                } else if ("fhirServiceResourceId".equals(fieldName)) {
+                    deserializedIotFhirDestinationProperties.fhirServiceResourceId = reader.getString();
+                } else if ("fhirMapping".equals(fieldName)) {
+                    deserializedIotFhirDestinationProperties.fhirMapping = IotMappingProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIotFhirDestinationProperties;
+        });
+    }
 }

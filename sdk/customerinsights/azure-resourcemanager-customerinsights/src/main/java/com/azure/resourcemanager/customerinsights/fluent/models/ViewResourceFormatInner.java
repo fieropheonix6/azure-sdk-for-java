@@ -5,163 +5,240 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The view resource format. */
-@JsonFlatten
+/**
+ * The view resource format.
+ */
 @Fluent
-public class ViewResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ViewResourceFormatInner.class);
+public final class ViewResourceFormatInner extends ProxyResource {
+    /*
+     * The view in Customer 360 web application.
+     */
+    private View innerProperties;
 
     /*
-     * Name of the view.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.viewName", access = JsonProperty.Access.WRITE_ONLY)
-    private String viewName;
+    private String type;
 
     /*
-     * the user ID.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.userId")
-    private String userId;
+    private String name;
 
     /*
-     * the hub name.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
+    private String id;
 
-    /*
-     * Localized display name for the view.
+    /**
+     * Creates an instance of ViewResourceFormatInner class.
      */
-    @JsonProperty(value = "properties.displayName")
-    private Map<String, String> displayName;
+    public ViewResourceFormatInner() {
+    }
 
-    /*
-     * View definition.
+    /**
+     * Get the innerProperties property: The view in Customer 360 web application.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.definition")
-    private String definition;
+    private View innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Date time when view was last modified.
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.changed", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime changed;
+    @Override
+    public String type() {
+        return this.type;
+    }
 
-    /*
-     * Date time when view was created.
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    @JsonProperty(value = "properties.created", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime created;
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the viewName property: Name of the view.
-     *
+     * 
      * @return the viewName value.
      */
     public String viewName() {
-        return this.viewName;
+        return this.innerProperties() == null ? null : this.innerProperties().viewName();
     }
 
     /**
      * Get the userId property: the user ID.
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
-        return this.userId;
+        return this.innerProperties() == null ? null : this.innerProperties().userId();
     }
 
     /**
      * Set the userId property: the user ID.
-     *
+     * 
      * @param userId the userId value to set.
      * @return the ViewResourceFormatInner object itself.
      */
     public ViewResourceFormatInner withUserId(String userId) {
-        this.userId = userId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new View();
+        }
+        this.innerProperties().withUserId(userId);
         return this;
     }
 
     /**
      * Get the tenantId property: the hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
      * Get the displayName property: Localized display name for the view.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
      * Set the displayName property: Localized display name for the view.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ViewResourceFormatInner object itself.
      */
     public ViewResourceFormatInner withDisplayName(Map<String, String> displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new View();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
     /**
      * Get the definition property: View definition.
-     *
+     * 
      * @return the definition value.
      */
     public String definition() {
-        return this.definition;
+        return this.innerProperties() == null ? null : this.innerProperties().definition();
     }
 
     /**
      * Set the definition property: View definition.
-     *
+     * 
      * @param definition the definition value to set.
      * @return the ViewResourceFormatInner object itself.
      */
     public ViewResourceFormatInner withDefinition(String definition) {
-        this.definition = definition;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new View();
+        }
+        this.innerProperties().withDefinition(definition);
         return this;
     }
 
     /**
      * Get the changed property: Date time when view was last modified.
-     *
+     * 
      * @return the changed value.
      */
     public OffsetDateTime changed() {
-        return this.changed;
+        return this.innerProperties() == null ? null : this.innerProperties().changed();
     }
 
     /**
      * Get the created property: Date time when view was created.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
-        return this.created;
+        return this.innerProperties() == null ? null : this.innerProperties().created();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ViewResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ViewResourceFormatInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ViewResourceFormatInner.
+     */
+    public static ViewResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ViewResourceFormatInner deserializedViewResourceFormatInner = new ViewResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedViewResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedViewResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedViewResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedViewResourceFormatInner.innerProperties = View.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedViewResourceFormatInner;
+        });
     }
 }

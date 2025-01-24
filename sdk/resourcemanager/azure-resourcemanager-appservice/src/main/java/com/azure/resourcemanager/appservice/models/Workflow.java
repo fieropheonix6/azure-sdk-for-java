@@ -5,29 +5,53 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.WorkflowProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The workflow type. */
+/**
+ * The workflow type.
+ */
 @Fluent
 public final class Workflow extends WorkflowResource {
     /*
      * The workflow properties.
      */
-    @JsonProperty(value = "properties")
     private WorkflowProperties innerProperties;
 
     /*
      * Managed service identity.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of Workflow class.
+     */
+    public Workflow() {
+    }
 
     /**
      * Get the innerProperties property: The workflow properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkflowProperties innerProperties() {
@@ -36,7 +60,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Get the identity property: Managed service identity.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -45,7 +69,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Set the identity property: Managed service identity.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the Workflow object itself.
      */
@@ -54,14 +78,48 @@ public final class Workflow extends WorkflowResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Workflow withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Workflow withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -70,7 +128,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Get the provisioningState property: Gets the provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkflowProvisioningState provisioningState() {
@@ -79,7 +137,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Get the createdTime property: Gets the created time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -88,7 +146,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Get the changedTime property: Gets the changed time.
-     *
+     * 
      * @return the changedTime value.
      */
     public OffsetDateTime changedTime() {
@@ -97,7 +155,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Get the state property: The state.
-     *
+     * 
      * @return the state value.
      */
     public WorkflowState state() {
@@ -106,7 +164,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Set the state property: The state.
-     *
+     * 
      * @param state the state value to set.
      * @return the Workflow object itself.
      */
@@ -120,7 +178,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Get the version property: Gets the version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -129,7 +187,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Get the accessEndpoint property: Gets the access endpoint.
-     *
+     * 
      * @return the accessEndpoint value.
      */
     public String accessEndpoint() {
@@ -138,7 +196,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Get the endpointsConfiguration property: The endpoints configuration.
-     *
+     * 
      * @return the endpointsConfiguration value.
      */
     public FlowEndpointsConfiguration endpointsConfiguration() {
@@ -147,7 +205,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Set the endpointsConfiguration property: The endpoints configuration.
-     *
+     * 
      * @param endpointsConfiguration the endpointsConfiguration value to set.
      * @return the Workflow object itself.
      */
@@ -161,7 +219,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Get the accessControl property: The access control configuration.
-     *
+     * 
      * @return the accessControl value.
      */
     public FlowAccessControlConfiguration accessControl() {
@@ -170,7 +228,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Set the accessControl property: The access control configuration.
-     *
+     * 
      * @param accessControl the accessControl value to set.
      * @return the Workflow object itself.
      */
@@ -184,7 +242,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Get the sku property: The sku.
-     *
+     * 
      * @return the sku value.
      */
     public WorkflowSku sku() {
@@ -193,7 +251,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Get the integrationAccount property: The integration account.
-     *
+     * 
      * @return the integrationAccount value.
      */
     public ResourceReference integrationAccount() {
@@ -202,7 +260,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Set the integrationAccount property: The integration account.
-     *
+     * 
      * @param integrationAccount the integrationAccount value to set.
      * @return the Workflow object itself.
      */
@@ -216,7 +274,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Get the integrationServiceEnvironment property: The integration service environment.
-     *
+     * 
      * @return the integrationServiceEnvironment value.
      */
     public ResourceReference integrationServiceEnvironment() {
@@ -225,7 +283,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Set the integrationServiceEnvironment property: The integration service environment.
-     *
+     * 
      * @param integrationServiceEnvironment the integrationServiceEnvironment value to set.
      * @return the Workflow object itself.
      */
@@ -239,7 +297,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Get the definition property: The definition.
-     *
+     * 
      * @return the definition value.
      */
     public Object definition() {
@@ -248,7 +306,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Set the definition property: The definition.
-     *
+     * 
      * @param definition the definition value to set.
      * @return the Workflow object itself.
      */
@@ -262,7 +320,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Get the parameters property: The parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, WorkflowParameter> parameters() {
@@ -271,7 +329,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Set the parameters property: The parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the Workflow object itself.
      */
@@ -285,7 +343,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Get the kind property: The workflow kind.
-     *
+     * 
      * @return the kind value.
      */
     public Kind kind() {
@@ -294,7 +352,7 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Set the kind property: The workflow kind.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the Workflow object itself.
      */
@@ -308,17 +366,69 @@ public final class Workflow extends WorkflowResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Workflow from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Workflow if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Workflow.
+     */
+    public static Workflow fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Workflow deserializedWorkflow = new Workflow();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWorkflow.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkflow.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkflow.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedWorkflow.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWorkflow.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkflow.innerProperties = WorkflowProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedWorkflow.identity = ManagedServiceIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflow;
+        });
     }
 }

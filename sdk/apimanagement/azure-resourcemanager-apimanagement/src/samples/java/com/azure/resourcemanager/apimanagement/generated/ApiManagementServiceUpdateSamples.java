@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.AdditionalLocation;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceResource;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceSkuProperties;
@@ -15,90 +14,83 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ApiManagementService Update. */
+/**
+ * Samples for ApiManagementService Update.
+ */
 public final class ApiManagementServiceUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateServiceDisableTls10.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementUpdateServiceDisableTls10.json
      */
     /**
      * Sample code: ApiManagementUpdateServiceDisableTls10.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementUpdateServiceDisableTls10(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        ApiManagementServiceResource resource =
-            manager
-                .apiManagementServices()
-                .getByResourceGroupWithResponse("rg1", "apimService1", Context.NONE)
-                .getValue();
-        resource
-            .update()
+    public static void
+        apiManagementUpdateServiceDisableTls10(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        ApiManagementServiceResource resource = manager.apiManagementServices()
+            .getByResourceGroupWithResponse("rg1", "apimService1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withCustomProperties(
                 mapOf("Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10", "false"))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateServiceToNewVnetAndAZs.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementUpdateServiceToNewVnetAndAZs.json
      */
     /**
      * Sample code: ApiManagementUpdateServiceToNewVnetAndAvailabilityZones.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementUpdateServiceToNewVnetAndAvailabilityZones(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        ApiManagementServiceResource resource =
-            manager
-                .apiManagementServices()
-                .getByResourceGroupWithResponse("rg1", "apimService1", Context.NONE)
-                .getValue();
-        resource
-            .update()
+        ApiManagementServiceResource resource = manager.apiManagementServices()
+            .getByResourceGroupWithResponse("rg1", "apimService1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.PREMIUM).withCapacity(3))
             .withZones(Arrays.asList("1", "2", "3"))
             .withPublicIpAddressId(
                 "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/publicip-apim-japan-east")
-            .withVirtualNetworkConfiguration(
-                new VirtualNetworkConfiguration()
-                    .withSubnetResourceId(
-                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-apim-japaneast/subnets/apim2"))
-            .withAdditionalLocations(
-                Arrays
-                    .asList(
-                        new AdditionalLocation()
-                            .withLocation("Australia East")
-                            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.PREMIUM).withCapacity(3))
-                            .withZones(Arrays.asList("1", "2", "3"))
-                            .withPublicIpAddressId(
-                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/apim-australia-east-publicip")
-                            .withVirtualNetworkConfiguration(
-                                new VirtualNetworkConfiguration()
-                                    .withSubnetResourceId(
-                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/apimaeavnet/subnets/default"))))
+            .withVirtualNetworkConfiguration(new VirtualNetworkConfiguration().withSubnetResourceId(
+                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-apim-japaneast/subnets/apim2"))
+            .withAdditionalLocations(Arrays.asList(new AdditionalLocation().withLocation("Australia East")
+                .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.PREMIUM).withCapacity(3))
+                .withZones(Arrays.asList("1", "2", "3"))
+                .withPublicIpAddressId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/apim-australia-east-publicip")
+                .withVirtualNetworkConfiguration(new VirtualNetworkConfiguration().withSubnetResourceId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/apimaeavnet/subnets/default"))))
             .withVirtualNetworkType(VirtualNetworkType.EXTERNAL)
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateServicePublisherDetails.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementUpdateServicePublisherDetails.json
      */
     /**
      * Sample code: ApiManagementUpdateServicePublisherDetails.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementUpdateServicePublisherDetails(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        ApiManagementServiceResource resource =
-            manager
-                .apiManagementServices()
-                .getByResourceGroupWithResponse("rg1", "apimService1", Context.NONE)
-                .getValue();
+        ApiManagementServiceResource resource = manager.apiManagementServices()
+            .getByResourceGroupWithResponse("rg1", "apimService1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withPublisherEmail("foobar@live.com").withPublisherName("Contoso Vnext").apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

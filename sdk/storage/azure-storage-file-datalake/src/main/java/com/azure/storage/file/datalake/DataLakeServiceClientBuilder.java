@@ -27,6 +27,7 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
@@ -36,6 +37,7 @@ import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
+import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 
 import java.net.MalformedURLException;
@@ -58,13 +60,10 @@ import java.util.Objects;
  * <li>the credential through {@code .credential()} or {@code .connectionString()}.
  * </ul>
  */
-@ServiceClientBuilder(serviceClients = {DataLakeServiceClient.class, DataLakeServiceAsyncClient.class})
-public class DataLakeServiceClientBuilder implements
-    TokenCredentialTrait<DataLakeServiceClientBuilder>,
-    AzureNamedKeyCredentialTrait<DataLakeServiceClientBuilder>,
-    AzureSasCredentialTrait<DataLakeServiceClientBuilder>,
-    HttpTrait<DataLakeServiceClientBuilder>,
-    ConfigurationTrait<DataLakeServiceClientBuilder>,
+@ServiceClientBuilder(serviceClients = { DataLakeServiceClient.class, DataLakeServiceAsyncClient.class })
+public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLakeServiceClientBuilder>,
+    AzureNamedKeyCredentialTrait<DataLakeServiceClientBuilder>, AzureSasCredentialTrait<DataLakeServiceClientBuilder>,
+    HttpTrait<DataLakeServiceClientBuilder>, ConfigurationTrait<DataLakeServiceClientBuilder>,
     EndpointTrait<DataLakeServiceClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(DataLakeServiceClientBuilder.class);
 
@@ -89,6 +88,7 @@ public class DataLakeServiceClientBuilder implements
     private Configuration configuration;
     private DataLakeServiceVersion version;
     private FileSystemEncryptionScopeOptions fileSystemEncryptionScopeOptions;
+    private DataLakeAudience audience;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link DataLakeServiceClient
@@ -100,37 +100,53 @@ public class DataLakeServiceClientBuilder implements
         blobServiceClientBuilder.addPolicy(BuilderHelper.getBlobUserAgentModificationPolicy());
     }
 
+    private DataLakeServiceVersion getServiceVersion() {
+        return version != null ? version : DataLakeServiceVersion.getLatest();
+    }
+
+    private HttpPipeline constructPipeline() {
+        return (httpPipeline != null)
+            ? httpPipeline
+            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, endpoint,
+                retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+                perRetryPolicies, configuration, audience, LOGGER);
+    }
+
     /**
+     * Creates a {@link DataLakeServiceClient} based on options set in the builder. Every time {@code buildClient()} is
+     * called, a new instance of {@link DataLakeServiceClient} is created.
+     *
      * @return a {@link DataLakeServiceClient} created from the configurations in this builder.
      * @throws IllegalStateException If multiple credentials have been specified.
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeServiceClient buildClient() {
-        return new DataLakeServiceClient(buildAsyncClient(), blobServiceClientBuilder.buildClient());
+        DataLakeServiceAsyncClient asyncClient = buildAsyncClient();
+        return new DataLakeServiceClient(asyncClient, blobServiceClientBuilder.buildClient(),
+            asyncClient.getHttpPipeline(), endpoint, getServiceVersion(), accountName, azureSasCredential,
+            tokenCredential != null);
     }
 
     /**
+     * Creates a {@link DataLakeServiceAsyncClient} based on options set in the builder. Every time
+     * {@code buildAsyncClient()} is called, a new instance of {@link DataLakeServiceAsyncClient} is created.
+     *
      * @return a {@link DataLakeServiceAsyncClient} created from the configurations in this builder.
      * @throws IllegalStateException If multiple credentials have been specified.
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeServiceAsyncClient buildAsyncClient() {
-        if (Objects.isNull(storageSharedKeyCredential) && Objects.isNull(tokenCredential)
+        if (Objects.isNull(storageSharedKeyCredential)
+            && Objects.isNull(tokenCredential)
             && Objects.isNull(azureSasCredential)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Data Lake Service Client cannot be accessed "
                 + "anonymously. Please provide a form of authentication"));
         }
-        DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
 
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
-
-        return new DataLakeServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName,
-            blobServiceClientBuilder.buildAsyncClient(), azureSasCredential);
+        return new DataLakeServiceAsyncClient(constructPipeline(), endpoint, getServiceVersion(), accountName,
+            blobServiceClientBuilder.buildAsyncClient(), azureSasCredential, tokenCredential != null);
     }
 
     /**
@@ -156,8 +172,8 @@ public class DataLakeServiceClientBuilder implements
                 this.sasToken(sasToken);
             }
         } catch (MalformedURLException ex) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("The Azure Storage endpoint url is malformed.", ex));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("The Azure Storage endpoint url is malformed.", ex));
         }
 
         return this;
@@ -219,8 +235,8 @@ public class DataLakeServiceClientBuilder implements
      */
     public DataLakeServiceClientBuilder sasToken(String sasToken) {
         blobServiceClientBuilder.sasToken(sasToken);
-        this.azureSasCredential = new AzureSasCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null."));
+        this.azureSasCredential
+            = new AzureSasCredential(Objects.requireNonNull(sasToken, "'sasToken' cannot be null."));
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -236,8 +252,7 @@ public class DataLakeServiceClientBuilder implements
     @Override
     public DataLakeServiceClientBuilder credential(AzureSasCredential credential) {
         blobServiceClientBuilder.credential(credential);
-        this.azureSasCredential = Objects.requireNonNull(credential,
-            "'credential' cannot be null.");
+        this.azureSasCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -252,13 +267,11 @@ public class DataLakeServiceClientBuilder implements
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      */
     public DataLakeServiceClientBuilder connectionString(String connectionString) {
-        StorageConnectionString storageConnectionString
-            = StorageConnectionString.create(connectionString, LOGGER);
+        StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, LOGGER);
         StorageEndpoint endpoint = storageConnectionString.getBlobEndpoint();
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException(
-                    "connectionString missing required settings to derive service endpoint."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("connectionString missing required settings to derive service endpoint."));
         }
         this.endpoint(endpoint.getPrimaryUri());
         if (storageConnectionString.getAccountName() != null) {
@@ -371,7 +384,6 @@ public class DataLakeServiceClientBuilder implements
 
     /**
      * Sets the request retry options for all the requests made through the client.
-     *
      * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      *
      * @param retryOptions {@link RequestRetryOptions}.
@@ -475,7 +487,6 @@ public class DataLakeServiceClientBuilder implements
         return this;
     }
 
-
     /**
      * Sets the {@link CustomerProvidedKey customer provided key} that is used to encrypt file contents on the server.
      *
@@ -499,7 +510,8 @@ public class DataLakeServiceClientBuilder implements
      * @param fileSystemEncryptionScopeOptions Encryption scope containing the encryption key information.
      * @return the updated DataLakeServiceClientBuilder object
      */
-    public DataLakeServiceClientBuilder fileSystemEncryptionScopeOptions(FileSystemEncryptionScopeOptions fileSystemEncryptionScopeOptions) {
+    public DataLakeServiceClientBuilder
+        fileSystemEncryptionScopeOptions(FileSystemEncryptionScopeOptions fileSystemEncryptionScopeOptions) {
         this.fileSystemEncryptionScopeOptions = fileSystemEncryptionScopeOptions;
         blobServiceClientBuilder
             .blobContainerEncryptionScope(Transforms.toBlobContainerEncryptionScope(fileSystemEncryptionScopeOptions));
@@ -514,6 +526,20 @@ public class DataLakeServiceClientBuilder implements
      */
     public DataLakeServiceClientBuilder encryptionScope(String encryptionScope) {
         blobServiceClientBuilder.encryptionScope(encryptionScope);
+        return this;
+    }
+
+    /**
+     * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered
+     * when using a shared key.
+     * @param audience {@link DataLakeAudience} to be used when requesting a token from Azure Active Directory (AAD).
+     * @return the updated DataLakeServiceClientBuilder object
+     */
+    public DataLakeServiceClientBuilder audience(DataLakeAudience audience) {
+        this.audience = audience;
+        if (audience != null) {
+            blobServiceClientBuilder.audience(BlobAudience.fromString(audience.toString()));
+        }
         return this;
     }
 }

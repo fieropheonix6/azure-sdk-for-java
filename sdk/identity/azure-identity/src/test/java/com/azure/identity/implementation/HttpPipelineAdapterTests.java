@@ -9,7 +9,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.util.BinaryData;
 import com.microsoft.aad.msal4j.HttpMethod;
 import com.microsoft.aad.msal4j.HttpRequest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 
@@ -40,7 +40,8 @@ public class HttpPipelineAdapterTests {
         pipelineAdapter.send(req);
     }
 
-    private HttpRequest mockForSendRequest(Mono<String> bodyResponseMono, String bodyResponse, HttpPipeline pipeline) throws MalformedURLException {
+    private HttpRequest mockForSendRequest(Mono<String> bodyResponseMono, String bodyResponse, HttpPipeline pipeline)
+        throws MalformedURLException {
 
         HttpRequest req = Mockito.mock(HttpRequest.class);
         HttpMethod method = HttpMethod.GET;

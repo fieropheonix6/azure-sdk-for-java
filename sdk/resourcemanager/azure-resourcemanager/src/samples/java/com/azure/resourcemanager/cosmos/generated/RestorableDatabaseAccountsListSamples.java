@@ -4,20 +4,25 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for RestorableDatabaseAccounts List. */
+/**
+ * Samples for RestorableDatabaseAccounts List.
+ */
 public final class RestorableDatabaseAccountsListSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBRestorableDatabaseAccountNoLocationList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
+     * CosmosDBRestorableDatabaseAccountNoLocationList.json
      */
     /**
      * Sample code: CosmosDBRestorableDatabaseAccountNoLocationList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBRestorableDatabaseAccountNoLocationList(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getRestorableDatabaseAccounts().list(Context.NONE);
+    public static void
+        cosmosDBRestorableDatabaseAccountNoLocationList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getRestorableDatabaseAccounts()
+            .list(com.azure.core.util.Context.NONE);
     }
 }

@@ -4,7 +4,6 @@
 package com.azure.communication.rooms.models;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 import com.azure.core.annotation.Immutable;
 
 /** The CommunicationRoom model. */
@@ -13,82 +12,86 @@ public final class CommunicationRoom {
     private final String roomId;
     private final OffsetDateTime validFrom;
     private final OffsetDateTime validUntil;
-    private final OffsetDateTime createdTime;
-    private final RoomJoinPolicy roomJoinPolicy;
-    private final List<RoomParticipant> participants;
+    private final OffsetDateTime createdAt;
+    private final Boolean isPstnDialOutEnabled;
 
     /**
      * The default constructor of CommunicationRoom.
      *
-     * @param roomId The Room Id.
-     * @param validFrom The starting time point of the room.
-     * @param validUntil The ending time point of the room.
-     * @param roomJoinPolicy The join policy of the room.
-     * @param createdTime The created time point of the room.
-     * @param participants The participants of the room.
+     * @param roomId Unique identifier of a room. This id is server generated.
+     * @param validFrom The timestamp from when the room is open for joining. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * @param validUntil The timestamp from when the room can no longer be joined. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * @param createdAt The timestamp when the room was created at the server. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    public CommunicationRoom(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil, RoomJoinPolicy roomJoinPolicy, OffsetDateTime createdTime,
-        List<RoomParticipant> participants) {
-        this.roomId = roomId;
-        this.validFrom = validFrom;
-        this.validUntil = validUntil;
-        this.roomJoinPolicy = roomJoinPolicy;
-        this.createdTime = createdTime;
-        this.participants = participants;
+    public CommunicationRoom(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil,
+        OffsetDateTime createdAt) {
+        this(roomId, validFrom, validUntil, createdAt, null);
     }
 
     /**
-     * Get the Room Id.
-     *
-     * @return Room Id.
-     */
+    * Overloaded constructor of CommunicationRoom.
+    *
+    * @param roomId Unique identifier of a room. This id is server generated.
+    * @param validFrom The timestamp from when the room is open for joining. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+    * @param validUntil The timestamp from when the room can no longer be joined. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+    * @param createdAt The timestamp when the room was created at the server. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+    * @param pstnDialOutEnabled Set this flag to true if, at the time of the call, dial out to a PSTN number is enabled in a particular room. By default, this flag is set to false.
+    */
+    public CommunicationRoom(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil,
+        OffsetDateTime createdAt, Boolean pstnDialOutEnabled) {
+        this.roomId = roomId;
+        this.validFrom = validFrom;
+        this.validUntil = validUntil;
+        this.createdAt = createdAt;
+        this.isPstnDialOutEnabled = pstnDialOutEnabled;
+    }
+
+    /**
+    * Get the id property: Unique identifier of a room. This id is server generated.
+    *
+    * @return the id value.
+    */
     public String getRoomId() {
         return this.roomId;
     }
 
     /**
-     * Get the participants of a room.
+     * Get the validFrom property: The timestamp from when the room is open for joining. The timestamp is in RFC3339
+     * format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
-     * @return The participants of the room.
-     */
-    public List<RoomParticipant> getParticipants() {
-        return this.participants;
-    }
-
-    /**
-     * Get the valid starting time point of a room.
-     *
-     * @return The starting time of the room.
+     * @return the validFrom value.
      */
     public OffsetDateTime getValidFrom() {
         return this.validFrom;
     }
 
     /**
-     * Get the ending time point of a room.
+     * Get the validUntil property: The timestamp from when the room can no longer be joined. The timestamp is in
+     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
-     * @return The end time of the room.
+     * @return the validUntil value.
      */
     public OffsetDateTime getValidUntil() {
         return this.validUntil;
     }
 
     /**
-     * Get the created time of the room.
+     * Get the createdAt property: The timestamp when the room was created at the server. The timestamp is in RFC3339
+     * format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
-     * @return The created time of the room.
+     * @return the createdAt value.
      */
-    public OffsetDateTime getCreatedTime() {
-        return this.createdTime;
+    public OffsetDateTime getCreatedAt() {
+        return this.createdAt;
     }
 
     /**
-     * Get the join policy.
+     * Get the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN number
+     * is enabled in a particular room. By default, this flag is set to false.
      *
-     * @return The join policy of the room.
+     * @return the pstnDialOutEnabled value.
      */
-    public RoomJoinPolicy getRoomJoinPolicy() {
-        return this.roomJoinPolicy;
+    public Boolean isPstnDialOutEnabled() {
+        return this.isPstnDialOutEnabled;
     }
 }
-

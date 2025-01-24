@@ -7,22 +7,20 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.LogSchedulePolicy;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class LogSchedulePolicyTests {
-    @Test
-    public void testDeserialize() {
-        LogSchedulePolicy model =
-            BinaryData
-                .fromString("{\"schedulePolicyType\":\"LogSchedulePolicy\",\"scheduleFrequencyInMins\":1075405640}")
-                .toObject(LogSchedulePolicy.class);
-        Assertions.assertEquals(1075405640, model.scheduleFrequencyInMins());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        LogSchedulePolicy model = BinaryData
+            .fromString("{\"schedulePolicyType\":\"LogSchedulePolicy\",\"scheduleFrequencyInMins\":650202313}")
+            .toObject(LogSchedulePolicy.class);
+        Assertions.assertEquals(650202313, model.scheduleFrequencyInMins());
     }
 
-    @Test
-    public void testSerialize() {
-        LogSchedulePolicy model = new LogSchedulePolicy().withScheduleFrequencyInMins(1075405640);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        LogSchedulePolicy model = new LogSchedulePolicy().withScheduleFrequencyInMins(650202313);
         model = BinaryData.fromObject(model).toObject(LogSchedulePolicy.class);
-        Assertions.assertEquals(1075405640, model.scheduleFrequencyInMins());
+        Assertions.assertEquals(650202313, model.scheduleFrequencyInMins());
     }
 }

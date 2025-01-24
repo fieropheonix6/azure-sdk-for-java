@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.models.WebhookAction;
 import com.azure.resourcemanager.containerregistry.models.WebhookStatus;
 import com.azure.resourcemanager.containerregistry.models.WebhookUpdateParameters;
@@ -12,37 +11,36 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Webhooks Update. */
+/**
+ * Samples for Webhooks Update.
+ */
 public final class WebhooksUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/WebhookUpdate.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/
+     * WebhookUpdate.json
      */
     /**
      * Sample code: WebhookUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void webhookUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
+        azure.containerRegistries()
             .manager()
             .serviceClient()
             .getWebhooks()
-            .update(
-                "myResourceGroup",
-                "myRegistry",
-                "myWebhook",
-                new WebhookUpdateParameters()
-                    .withTags(mapOf("key", "value"))
+            .update("myResourceGroup", "myRegistry", "myWebhook",
+                new WebhookUpdateParameters().withTags(mapOf("key", "fakeTokenPlaceholder"))
                     .withServiceUri("http://myservice.com")
-                    .withCustomHeaders(
-                        mapOf("Authorization", "Basic FakeCredentialPlaceHolder"))
+                    .withCustomHeaders(mapOf("Authorization", "fakeTokenPlaceholder"))
                     .withStatus(WebhookStatus.ENABLED)
                     .withScope("myRepository")
                     .withActions(Arrays.asList(WebhookAction.PUSH)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

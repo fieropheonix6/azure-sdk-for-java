@@ -5,51 +5,74 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.PowerQueryTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 
-/** Power Query data flow. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("WranglingDataFlow")
+/**
+ * Power Query data flow.
+ */
 @Fluent
 public final class WranglingDataFlow extends DataFlow {
     /*
+     * Type of data flow.
+     */
+    private String type = "WranglingDataFlow";
+
+    /*
      * PowerQuery data flow type properties.
      */
-    @JsonProperty(value = "typeProperties")
     private PowerQueryTypeProperties innerTypeProperties;
 
-    /** Creates an instance of WranglingDataFlow class. */
+    /**
+     * Creates an instance of WranglingDataFlow class.
+     */
     public WranglingDataFlow() {
     }
 
     /**
+     * Get the type property: Type of data flow.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: PowerQuery data flow type properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private PowerQueryTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WranglingDataFlow withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WranglingDataFlow withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WranglingDataFlow withFolder(DataFlowFolder folder) {
         super.withFolder(folder);
@@ -58,7 +81,7 @@ public final class WranglingDataFlow extends DataFlow {
 
     /**
      * Get the sources property: List of sources in Power Query.
-     *
+     * 
      * @return the sources value.
      */
     public List<PowerQuerySource> sources() {
@@ -67,7 +90,7 @@ public final class WranglingDataFlow extends DataFlow {
 
     /**
      * Set the sources property: List of sources in Power Query.
-     *
+     * 
      * @param sources the sources value to set.
      * @return the WranglingDataFlow object itself.
      */
@@ -81,7 +104,7 @@ public final class WranglingDataFlow extends DataFlow {
 
     /**
      * Get the script property: Power query mashup script.
-     *
+     * 
      * @return the script value.
      */
     public String script() {
@@ -90,7 +113,7 @@ public final class WranglingDataFlow extends DataFlow {
 
     /**
      * Set the script property: Power query mashup script.
-     *
+     * 
      * @param script the script value to set.
      * @return the WranglingDataFlow object itself.
      */
@@ -104,7 +127,7 @@ public final class WranglingDataFlow extends DataFlow {
 
     /**
      * Get the documentLocale property: Locale of the Power query mashup document.
-     *
+     * 
      * @return the documentLocale value.
      */
     public String documentLocale() {
@@ -113,7 +136,7 @@ public final class WranglingDataFlow extends DataFlow {
 
     /**
      * Set the documentLocale property: Locale of the Power query mashup document.
-     *
+     * 
      * @param documentLocale the documentLocale value to set.
      * @return the WranglingDataFlow object itself.
      */
@@ -127,14 +150,65 @@ public final class WranglingDataFlow extends DataFlow {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() != null) {
             innerTypeProperties().validate();
         }
+        if (folder() != null) {
+            folder().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("folder", folder());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WranglingDataFlow from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WranglingDataFlow if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WranglingDataFlow.
+     */
+    public static WranglingDataFlow fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WranglingDataFlow deserializedWranglingDataFlow = new WranglingDataFlow();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedWranglingDataFlow.withDescription(reader.getString());
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedWranglingDataFlow.withAnnotations(annotations);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedWranglingDataFlow.withFolder(DataFlowFolder.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedWranglingDataFlow.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedWranglingDataFlow.innerTypeProperties = PowerQueryTypeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWranglingDataFlow;
+        });
     }
 }

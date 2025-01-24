@@ -4,25 +4,27 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for StaticSites GetLinkedBackendForBuild. */
+/**
+ * Samples for StaticSites GetLinkedBackendForBuild.
+ */
 public final class StaticSitesGetLinkedBackendForBuildSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetLinkedBackendForStaticSiteBuild.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/GetLinkedBackendForStaticSiteBuild.
+     * json
      */
     /**
      * Sample code: Get details of the linked backend registered with a static site build by name.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getDetailsOfTheLinkedBackendRegisteredWithAStaticSiteBuildByName(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
+        azure.webApps()
             .manager()
             .serviceClient()
             .getStaticSites()
-            .getLinkedBackendForBuildWithResponse("rg", "testStaticSite0", "default", "testBackend", Context.NONE);
+            .getLinkedBackendForBuildWithResponse("rg", "testStaticSite0", "default", "testBackend",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -11,29 +11,28 @@ import com.azure.resourcemanager.subscription.fluent.TenantsClient;
 import com.azure.resourcemanager.subscription.fluent.models.TenantIdDescriptionInner;
 import com.azure.resourcemanager.subscription.models.TenantIdDescription;
 import com.azure.resourcemanager.subscription.models.Tenants;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TenantsImpl implements Tenants {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TenantsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TenantsImpl.class);
 
     private final TenantsClient innerClient;
 
     private final com.azure.resourcemanager.subscription.SubscriptionManager serviceManager;
 
-    public TenantsImpl(
-        TenantsClient innerClient, com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
+    public TenantsImpl(TenantsClient innerClient,
+        com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<TenantIdDescription> list() {
         PagedIterable<TenantIdDescriptionInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new TenantIdDescriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TenantIdDescriptionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<TenantIdDescription> list(Context context) {
         PagedIterable<TenantIdDescriptionInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new TenantIdDescriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TenantIdDescriptionImpl(inner1, this.manager()));
     }
 
     private TenantsClient serviceClient() {

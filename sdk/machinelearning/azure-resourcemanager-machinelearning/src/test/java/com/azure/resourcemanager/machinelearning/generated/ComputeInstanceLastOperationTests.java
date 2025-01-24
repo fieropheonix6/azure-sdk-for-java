@@ -11,34 +11,29 @@ import com.azure.resourcemanager.machinelearning.models.OperationStatus;
 import com.azure.resourcemanager.machinelearning.models.OperationTrigger;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ComputeInstanceLastOperationTests {
-    @Test
-    public void testDeserialize() {
-        ComputeInstanceLastOperation model =
-            BinaryData
-                .fromString(
-                    "{\"operationName\":\"Reimage\",\"operationTime\":\"2021-10-12T06:41:45Z\",\"operationStatus\":\"InProgress\",\"operationTrigger\":\"IdleShutdown\"}")
-                .toObject(ComputeInstanceLastOperation.class);
-        Assertions.assertEquals(OperationName.REIMAGE, model.operationName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T06:41:45Z"), model.operationTime());
-        Assertions.assertEquals(OperationStatus.IN_PROGRESS, model.operationStatus());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ComputeInstanceLastOperation model = BinaryData.fromString(
+            "{\"operationName\":\"Restart\",\"operationTime\":\"2021-12-02T04:09:17Z\",\"operationStatus\":\"StartFailed\",\"operationTrigger\":\"IdleShutdown\"}")
+            .toObject(ComputeInstanceLastOperation.class);
+        Assertions.assertEquals(OperationName.RESTART, model.operationName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-02T04:09:17Z"), model.operationTime());
+        Assertions.assertEquals(OperationStatus.START_FAILED, model.operationStatus());
         Assertions.assertEquals(OperationTrigger.IDLE_SHUTDOWN, model.operationTrigger());
     }
 
-    @Test
-    public void testSerialize() {
-        ComputeInstanceLastOperation model =
-            new ComputeInstanceLastOperation()
-                .withOperationName(OperationName.REIMAGE)
-                .withOperationTime(OffsetDateTime.parse("2021-10-12T06:41:45Z"))
-                .withOperationStatus(OperationStatus.IN_PROGRESS)
-                .withOperationTrigger(OperationTrigger.IDLE_SHUTDOWN);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ComputeInstanceLastOperation model = new ComputeInstanceLastOperation().withOperationName(OperationName.RESTART)
+            .withOperationTime(OffsetDateTime.parse("2021-12-02T04:09:17Z"))
+            .withOperationStatus(OperationStatus.START_FAILED)
+            .withOperationTrigger(OperationTrigger.IDLE_SHUTDOWN);
         model = BinaryData.fromObject(model).toObject(ComputeInstanceLastOperation.class);
-        Assertions.assertEquals(OperationName.REIMAGE, model.operationName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T06:41:45Z"), model.operationTime());
-        Assertions.assertEquals(OperationStatus.IN_PROGRESS, model.operationStatus());
+        Assertions.assertEquals(OperationName.RESTART, model.operationName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-02T04:09:17Z"), model.operationTime());
+        Assertions.assertEquals(OperationStatus.START_FAILED, model.operationStatus());
         Assertions.assertEquals(OperationTrigger.IDLE_SHUTDOWN, model.operationTrigger());
     }
 }

@@ -6,74 +6,122 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.HDInsightMapReduceActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** HDInsight MapReduce activity type. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("HDInsightMapReduce")
+/**
+ * HDInsight MapReduce activity type.
+ */
 @Fluent
 public final class HDInsightMapReduceActivity extends ExecutionActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "HDInsightMapReduce";
+
+    /*
      * HDInsight MapReduce activity properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
-    private HDInsightMapReduceActivityTypeProperties innerTypeProperties =
-        new HDInsightMapReduceActivityTypeProperties();
+    private HDInsightMapReduceActivityTypeProperties innerTypeProperties
+        = new HDInsightMapReduceActivityTypeProperties();
 
-    /** Creates an instance of HDInsightMapReduceActivity class. */
+    /**
+     * Creates an instance of HDInsightMapReduceActivity class.
+     */
     public HDInsightMapReduceActivity() {
     }
 
     /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: HDInsight MapReduce activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private HDInsightMapReduceActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightMapReduceActivity withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightMapReduceActivity withPolicy(ActivityPolicy policy) {
         super.withPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightMapReduceActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightMapReduceActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public HDInsightMapReduceActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public HDInsightMapReduceActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightMapReduceActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightMapReduceActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -82,7 +130,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Get the storageLinkedServices property: Storage linked service references.
-     *
+     * 
      * @return the storageLinkedServices value.
      */
     public List<LinkedServiceReference> storageLinkedServices() {
@@ -91,7 +139,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Set the storageLinkedServices property: Storage linked service references.
-     *
+     * 
      * @param storageLinkedServices the storageLinkedServices value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
@@ -105,7 +153,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Get the arguments property: User specified arguments to HDInsightActivity.
-     *
+     * 
      * @return the arguments value.
      */
     public List<Object> arguments() {
@@ -114,7 +162,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Set the arguments property: User specified arguments to HDInsightActivity.
-     *
+     * 
      * @param arguments the arguments value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
@@ -128,7 +176,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Get the getDebugInfo property: Debug info option.
-     *
+     * 
      * @return the getDebugInfo value.
      */
     public HDInsightActivityDebugInfoOption getDebugInfo() {
@@ -137,7 +185,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Set the getDebugInfo property: Debug info option.
-     *
+     * 
      * @param getDebugInfo the getDebugInfo value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
@@ -151,7 +199,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Get the className property: Class name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the className value.
      */
     public Object className() {
@@ -160,7 +208,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Set the className property: Class name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param className the className value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
@@ -174,7 +222,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Get the jarFilePath property: Jar path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the jarFilePath value.
      */
     public Object jarFilePath() {
@@ -183,7 +231,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Set the jarFilePath property: Jar path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param jarFilePath the jarFilePath value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
@@ -197,7 +245,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Get the jarLinkedService property: Jar linked service reference.
-     *
+     * 
      * @return the jarLinkedService value.
      */
     public LinkedServiceReference jarLinkedService() {
@@ -206,7 +254,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Set the jarLinkedService property: Jar linked service reference.
-     *
+     * 
      * @param jarLinkedService the jarLinkedService value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
@@ -220,7 +268,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Get the jarLibs property: Jar libs.
-     *
+     * 
      * @return the jarLibs value.
      */
     public List<Object> jarLibs() {
@@ -229,7 +277,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Set the jarLibs property: Jar libs.
-     *
+     * 
      * @param jarLibs the jarLibs value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
@@ -243,7 +291,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Get the defines property: Allows user to specify defines for the MapReduce job request.
-     *
+     * 
      * @return the defines value.
      */
     public Map<String, Object> defines() {
@@ -252,7 +300,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Set the defines property: Allows user to specify defines for the MapReduce job request.
-     *
+     * 
      * @param defines the defines value to set.
      * @return the HDInsightMapReduceActivity object itself.
      */
@@ -266,21 +314,118 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model HDInsightMapReduceActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model HDInsightMapReduceActivity"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property name in model HDInsightMapReduceActivity"));
+        }
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
+        if (userProperties() != null) {
+            userProperties().forEach(e -> e.validate());
+        }
+        if (linkedServiceName() != null) {
+            linkedServiceName().validate();
+        }
+        if (policy() != null) {
+            policy().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HDInsightMapReduceActivity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            onInactiveMarkAs() == null ? null : onInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", dependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", userProperties(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", linkedServiceName());
+        jsonWriter.writeJsonField("policy", policy());
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HDInsightMapReduceActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HDInsightMapReduceActivity if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HDInsightMapReduceActivity.
+     */
+    public static HDInsightMapReduceActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HDInsightMapReduceActivity deserializedHDInsightMapReduceActivity = new HDInsightMapReduceActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivity.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivity.withDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivity.withState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivity
+                        .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedHDInsightMapReduceActivity.withDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedHDInsightMapReduceActivity.withUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivity
+                        .withLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivity.withPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivity.innerTypeProperties
+                        = HDInsightMapReduceActivityTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivity.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedHDInsightMapReduceActivity.withAdditionalProperties(additionalProperties);
+
+            return deserializedHDInsightMapReduceActivity;
+        });
+    }
 }

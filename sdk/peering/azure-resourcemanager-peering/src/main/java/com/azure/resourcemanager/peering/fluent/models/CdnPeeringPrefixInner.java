@@ -5,98 +5,178 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The CDN peering prefix. */
-@JsonFlatten
+/**
+ * The CDN peering prefix.
+ */
 @Immutable
-public class CdnPeeringPrefixInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CdnPeeringPrefixInner.class);
+public final class CdnPeeringPrefixInner extends ProxyResource {
+    /*
+     * The properties that define a cdn peering prefix.
+     */
+    private CdnPeeringPrefixProperties innerProperties;
 
     /*
-     * The prefix.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.prefix", access = JsonProperty.Access.WRITE_ONLY)
-    private String prefix;
+    private String type;
 
     /*
-     * The Azure region.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.azureRegion", access = JsonProperty.Access.WRITE_ONLY)
-    private String azureRegion;
+    private String name;
 
     /*
-     * The Azure service.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.azureService", access = JsonProperty.Access.WRITE_ONLY)
-    private String azureService;
+    private String id;
 
-    /*
-     * The flag that indicates whether or not this is the primary region.
+    /**
+     * Creates an instance of CdnPeeringPrefixInner class.
      */
-    @JsonProperty(value = "properties.isPrimaryRegion", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isPrimaryRegion;
+    public CdnPeeringPrefixInner() {
+    }
 
-    /*
-     * The BGP Community
+    /**
+     * Get the innerProperties property: The properties that define a cdn peering prefix.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.bgpCommunity", access = JsonProperty.Access.WRITE_ONLY)
-    private String bgpCommunity;
+    private CdnPeeringPrefixProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the prefix property: The prefix.
-     *
+     * 
      * @return the prefix value.
      */
     public String prefix() {
-        return this.prefix;
+        return this.innerProperties() == null ? null : this.innerProperties().prefix();
     }
 
     /**
      * Get the azureRegion property: The Azure region.
-     *
+     * 
      * @return the azureRegion value.
      */
     public String azureRegion() {
-        return this.azureRegion;
+        return this.innerProperties() == null ? null : this.innerProperties().azureRegion();
     }
 
     /**
      * Get the azureService property: The Azure service.
-     *
+     * 
      * @return the azureService value.
      */
     public String azureService() {
-        return this.azureService;
+        return this.innerProperties() == null ? null : this.innerProperties().azureService();
     }
 
     /**
      * Get the isPrimaryRegion property: The flag that indicates whether or not this is the primary region.
-     *
+     * 
      * @return the isPrimaryRegion value.
      */
     public Boolean isPrimaryRegion() {
-        return this.isPrimaryRegion;
+        return this.innerProperties() == null ? null : this.innerProperties().isPrimaryRegion();
     }
 
     /**
      * Get the bgpCommunity property: The BGP Community.
-     *
+     * 
      * @return the bgpCommunity value.
      */
     public String bgpCommunity() {
-        return this.bgpCommunity;
+        return this.innerProperties() == null ? null : this.innerProperties().bgpCommunity();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CdnPeeringPrefixInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CdnPeeringPrefixInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CdnPeeringPrefixInner.
+     */
+    public static CdnPeeringPrefixInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CdnPeeringPrefixInner deserializedCdnPeeringPrefixInner = new CdnPeeringPrefixInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCdnPeeringPrefixInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCdnPeeringPrefixInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCdnPeeringPrefixInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCdnPeeringPrefixInner.innerProperties = CdnPeeringPrefixProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCdnPeeringPrefixInner;
+        });
     }
 }

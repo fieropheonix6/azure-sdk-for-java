@@ -5,20 +5,32 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 
-/** The AnalyzeTextsSubmitJobHeaders model. */
+/**
+ * The AnalyzeTextsSubmitJobHeaders model.
+ */
 @Fluent
 public final class AnalyzeTextsSubmitJobHeaders {
     /*
      * The Operation-Location property.
      */
-    @JsonProperty(value = "Operation-Location")
     private String operationLocation;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of AnalyzeTextsSubmitJobHeaders class.
+     * 
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public AnalyzeTextsSubmitJobHeaders(HttpHeaders rawHeaders) {
+        this.operationLocation = rawHeaders.getValue(HttpHeaderName.OPERATION_LOCATION);
+    }
 
     /**
      * Get the operationLocation property: The Operation-Location property.
-     *
+     * 
      * @return the operationLocation value.
      */
     public String getOperationLocation() {
@@ -27,7 +39,7 @@ public final class AnalyzeTextsSubmitJobHeaders {
 
     /**
      * Set the operationLocation property: The Operation-Location property.
-     *
+     * 
      * @param operationLocation the operationLocation value to set.
      * @return the AnalyzeTextsSubmitJobHeaders object itself.
      */

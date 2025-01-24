@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.appconfiguration.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for KeyValues Delete. */
+/**
+ * Samples for KeyValues Delete.
+ */
 public final class KeyValuesDeleteSamples {
     /*
-     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2022-05-01/examples/ConfigurationStoresDeleteKeyValue.json
+     * x-ms-original-file:
+     * specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2024-05-01/examples/
+     * ConfigurationStoresDeleteKeyValue.json
      */
     /**
      * Sample code: KeyValues_Delete.
-     *
+     * 
      * @param manager Entry point to AppConfigurationManager.
      */
     public static void keyValuesDelete(com.azure.resourcemanager.appconfiguration.AppConfigurationManager manager) {
-        manager.keyValues().delete("myResourceGroup", "contoso", "myKey$myLabel", Context.NONE);
+        manager.keyValues().delete("myResourceGroup", "contoso", "myKey$myLabel", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The instance view of the disk. */
+/**
+ * The instance view of the disk.
+ */
 @Fluent
-public final class DiskInstanceView {
+public final class DiskInstanceView implements JsonSerializable<DiskInstanceView> {
     /*
      * The disk name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Specifies the encryption settings for the OS Disk. <br><br> Minimum api-version: 2015-06-15
      */
-    @JsonProperty(value = "encryptionSettings")
     private List<DiskEncryptionSettings> encryptionSettings;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
-    /** Creates an instance of DiskInstanceView class. */
+    /**
+     * Creates an instance of DiskInstanceView class.
+     */
     public DiskInstanceView() {
     }
 
     /**
      * Get the name property: The disk name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +49,7 @@ public final class DiskInstanceView {
 
     /**
      * Set the name property: The disk name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DiskInstanceView object itself.
      */
@@ -56,7 +61,7 @@ public final class DiskInstanceView {
     /**
      * Get the encryptionSettings property: Specifies the encryption settings for the OS Disk. &lt;br&gt;&lt;br&gt;
      * Minimum api-version: 2015-06-15.
-     *
+     * 
      * @return the encryptionSettings value.
      */
     public List<DiskEncryptionSettings> encryptionSettings() {
@@ -66,7 +71,7 @@ public final class DiskInstanceView {
     /**
      * Set the encryptionSettings property: Specifies the encryption settings for the OS Disk. &lt;br&gt;&lt;br&gt;
      * Minimum api-version: 2015-06-15.
-     *
+     * 
      * @param encryptionSettings the encryptionSettings value to set.
      * @return the DiskInstanceView object itself.
      */
@@ -77,7 +82,7 @@ public final class DiskInstanceView {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<InstanceViewStatus> statuses() {
@@ -86,7 +91,7 @@ public final class DiskInstanceView {
 
     /**
      * Set the statuses property: The resource status information.
-     *
+     * 
      * @param statuses the statuses value to set.
      * @return the DiskInstanceView object itself.
      */
@@ -97,7 +102,7 @@ public final class DiskInstanceView {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -107,5 +112,52 @@ public final class DiskInstanceView {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("encryptionSettings", this.encryptionSettings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("statuses", this.statuses, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskInstanceView from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskInstanceView if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiskInstanceView.
+     */
+    public static DiskInstanceView fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskInstanceView deserializedDiskInstanceView = new DiskInstanceView();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDiskInstanceView.name = reader.getString();
+                } else if ("encryptionSettings".equals(fieldName)) {
+                    List<DiskEncryptionSettings> encryptionSettings
+                        = reader.readArray(reader1 -> DiskEncryptionSettings.fromJson(reader1));
+                    deserializedDiskInstanceView.encryptionSettings = encryptionSettings;
+                } else if ("statuses".equals(fieldName)) {
+                    List<InstanceViewStatus> statuses
+                        = reader.readArray(reader1 -> InstanceViewStatus.fromJson(reader1));
+                    deserializedDiskInstanceView.statuses = statuses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskInstanceView;
+        });
     }
 }

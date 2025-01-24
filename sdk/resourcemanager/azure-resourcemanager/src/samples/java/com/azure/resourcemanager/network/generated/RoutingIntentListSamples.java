@@ -4,19 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for RoutingIntent List. */
+/**
+ * Samples for RoutingIntent List.
+ */
 public final class RoutingIntentListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/RoutingIntentList.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/RoutingIntentList.json
      */
     /**
      * Sample code: RoutingIntentList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routingIntentList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getRoutingIntents().list("rg1", "virtualHub1", Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getRoutingIntents()
+            .list("rg1", "virtualHub1", com.azure.core.util.Context.NONE);
     }
 }

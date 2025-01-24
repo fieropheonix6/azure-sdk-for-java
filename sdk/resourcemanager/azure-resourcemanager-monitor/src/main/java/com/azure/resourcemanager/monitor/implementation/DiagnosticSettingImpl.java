@@ -12,12 +12,16 @@ import com.azure.resourcemanager.monitor.models.LogSettings;
 import com.azure.resourcemanager.monitor.models.MetricSettings;
 import com.azure.resourcemanager.monitor.models.RetentionPolicy;
 import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsResourceInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import reactor.core.publisher.Mono;
 
 /** The Azure metric definition entries are of type DiagnosticSetting. */
@@ -32,10 +36,11 @@ class DiagnosticSettingImpl
     private String resourceId;
     private TreeMap<String, MetricSettings> metricSet;
     private TreeMap<String, LogSettings> logSet;
+    private TreeMap<String, LogSettings> logCategoryGroupSet;
     private final MonitorManager myManager;
 
-    DiagnosticSettingImpl(
-        String name, DiagnosticSettingsResourceInner innerModel, final MonitorManager monitorManager) {
+    DiagnosticSettingImpl(String name, DiagnosticSettingsResourceInner innerModel,
+        final MonitorManager monitorManager) {
         super(name, innerModel);
         this.myManager = monitorManager;
         initializeSets();
@@ -121,16 +126,16 @@ class DiagnosticSettingImpl
     }
 
     @Override
-    public DiagnosticSettingImpl withLogsAndMetrics(
-        List<DiagnosticSettingsCategory> categories, Duration timeGrain, int retentionDays) {
+    public DiagnosticSettingImpl withLogsAndMetrics(List<DiagnosticSettingsCategory> categories, Duration timeGrain,
+        int retentionDays) {
         for (DiagnosticSettingsCategory dsc : categories) {
             if (dsc.type() == CategoryType.METRICS) {
                 this.withMetric(dsc.name(), timeGrain, retentionDays);
             } else if (dsc.type() == CategoryType.LOGS) {
                 this.withLog(dsc.name(), retentionDays);
             } else {
-                throw logger.logExceptionAsError(
-                    new UnsupportedOperationException(dsc.type().toString() + " is unsupported."));
+                throw logger
+                    .logExceptionAsError(new UnsupportedOperationException(dsc.type().toString() + " is unsupported."));
             }
         }
         return this;
@@ -218,19 +223,24 @@ class DiagnosticSettingImpl
 
     @Override
     public Mono<DiagnosticSetting> createResourceAsync() {
-        this.innerModel().withLogs(new ArrayList<>(logSet.values()));
+        this.innerModel()
+            .withLogs(new ArrayList<>(Stream.concat(logSet.values().stream(), logCategoryGroupSet.values().stream())
+                .distinct()
+                .collect(Collectors.toList())));
         this.innerModel().withMetrics(new ArrayList<>(metricSet.values()));
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getDiagnosticSettingsOperations()
-            .createOrUpdateAsync(this.resourceId, this.name(), this.innerModel())
+            .createOrUpdateAsync(ResourceUtils.encodeResourceId(this.resourceId), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<DiagnosticSettingsResourceInner> getInnerAsync() {
-        return this.manager().serviceClient().getDiagnosticSettingsOperations().getAsync(this.resourceId, this.name());
+        return this.manager()
+            .serviceClient()
+            .getDiagnosticSettingsOperations()
+            .getAsync(ResourceUtils.encodeResourceId(this.resourceId), this.name());
     }
 
     @Override
@@ -240,18 +250,20 @@ class DiagnosticSettingImpl
         this.metricSet.clear();
         this.logSet.clear();
         if (!isInCreateMode()) {
-            this.resourceId =
-                inner
-                    .id()
-                    .substring(
-                        0,
-                        this.innerModel().id().length()
-                            - (DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI + this.innerModel().name()).length());
+            this.resourceId = inner.id()
+                .substring(0, this.innerModel().id().length()
+                    - (DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI + this.innerModel().name()).length());
             for (MetricSettings ms : this.metrics()) {
-                this.metricSet.put(ms.category(), ms);
+                if (ms.category() != null) {
+                    this.metricSet.put(ms.category(), ms);
+                }
             }
             for (LogSettings ls : this.logs()) {
-                this.logSet.put(ls.category(), ls);
+                if (ls.category() != null) {
+                    this.logSet.put(ls.category(), ls);
+                } else if (ls.categoryGroup() != null) {
+                    this.logCategoryGroupSet.put(ls.categoryGroup(), ls);
+                }
             }
         }
     }
@@ -262,6 +274,9 @@ class DiagnosticSettingImpl
         }
         if (this.logSet == null) {
             this.logSet = new TreeMap<>();
+        }
+        if (this.logCategoryGroupSet == null) {
+            this.logCategoryGroupSet = new TreeMap<>();
         }
     }
 }

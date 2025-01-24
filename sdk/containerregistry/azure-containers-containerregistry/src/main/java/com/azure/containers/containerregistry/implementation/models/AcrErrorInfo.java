@@ -5,32 +5,41 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Error information. */
+/**
+ * Error information.
+ */
 @Fluent
-public final class AcrErrorInfo {
+public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
     /*
      * Error code
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * Error message
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Error details
      */
-    @JsonProperty(value = "detail")
     private Object detail;
 
     /**
+     * Creates an instance of AcrErrorInfo class.
+     */
+    public AcrErrorInfo() {
+    }
+
+    /**
      * Get the code property: Error code.
-     *
+     * 
      * @return the code value.
      */
     public String getCode() {
@@ -39,7 +48,7 @@ public final class AcrErrorInfo {
 
     /**
      * Set the code property: Error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the AcrErrorInfo object itself.
      */
@@ -50,7 +59,7 @@ public final class AcrErrorInfo {
 
     /**
      * Get the message property: Error message.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -59,7 +68,7 @@ public final class AcrErrorInfo {
 
     /**
      * Set the message property: Error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the AcrErrorInfo object itself.
      */
@@ -70,7 +79,7 @@ public final class AcrErrorInfo {
 
     /**
      * Get the detail property: Error details.
-     *
+     * 
      * @return the detail value.
      */
     public Object getDetail() {
@@ -79,12 +88,54 @@ public final class AcrErrorInfo {
 
     /**
      * Set the detail property: Error details.
-     *
+     * 
      * @param detail the detail value to set.
      * @return the AcrErrorInfo object itself.
      */
     public AcrErrorInfo setDetail(Object detail) {
         this.detail = detail;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeUntypedField("detail", this.detail);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcrErrorInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcrErrorInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcrErrorInfo.
+     */
+    public static AcrErrorInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcrErrorInfo deserializedAcrErrorInfo = new AcrErrorInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedAcrErrorInfo.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedAcrErrorInfo.message = reader.getString();
+                } else if ("detail".equals(fieldName)) {
+                    deserializedAcrErrorInfo.detail = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcrErrorInfo;
+        });
     }
 }

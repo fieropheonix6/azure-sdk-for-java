@@ -5,51 +5,54 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VpnLinkBgpSettings;
 import com.azure.resourcemanager.network.models.VpnLinkProviderProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Parameters for VpnSite. */
+/**
+ * Parameters for VpnSite.
+ */
 @Fluent
-public final class VpnSiteLinkProperties {
+public final class VpnSiteLinkProperties implements JsonSerializable<VpnSiteLinkProperties> {
     /*
      * The link provider properties.
      */
-    @JsonProperty(value = "linkProperties")
     private VpnLinkProviderProperties linkProperties;
 
     /*
      * The ip-address for the vpn-site-link.
      */
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /*
      * FQDN of vpn-site-link.
      */
-    @JsonProperty(value = "fqdn")
     private String fqdn;
 
     /*
      * The set of bgp properties.
      */
-    @JsonProperty(value = "bgpProperties")
     private VpnLinkBgpSettings bgpProperties;
 
     /*
      * The provisioning state of the VPN site link resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of VpnSiteLinkProperties class. */
+    /**
+     * Creates an instance of VpnSiteLinkProperties class.
+     */
     public VpnSiteLinkProperties() {
     }
 
     /**
      * Get the linkProperties property: The link provider properties.
-     *
+     * 
      * @return the linkProperties value.
      */
     public VpnLinkProviderProperties linkProperties() {
@@ -58,7 +61,7 @@ public final class VpnSiteLinkProperties {
 
     /**
      * Set the linkProperties property: The link provider properties.
-     *
+     * 
      * @param linkProperties the linkProperties value to set.
      * @return the VpnSiteLinkProperties object itself.
      */
@@ -69,7 +72,7 @@ public final class VpnSiteLinkProperties {
 
     /**
      * Get the ipAddress property: The ip-address for the vpn-site-link.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -78,7 +81,7 @@ public final class VpnSiteLinkProperties {
 
     /**
      * Set the ipAddress property: The ip-address for the vpn-site-link.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the VpnSiteLinkProperties object itself.
      */
@@ -89,7 +92,7 @@ public final class VpnSiteLinkProperties {
 
     /**
      * Get the fqdn property: FQDN of vpn-site-link.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -98,7 +101,7 @@ public final class VpnSiteLinkProperties {
 
     /**
      * Set the fqdn property: FQDN of vpn-site-link.
-     *
+     * 
      * @param fqdn the fqdn value to set.
      * @return the VpnSiteLinkProperties object itself.
      */
@@ -109,7 +112,7 @@ public final class VpnSiteLinkProperties {
 
     /**
      * Get the bgpProperties property: The set of bgp properties.
-     *
+     * 
      * @return the bgpProperties value.
      */
     public VpnLinkBgpSettings bgpProperties() {
@@ -118,7 +121,7 @@ public final class VpnSiteLinkProperties {
 
     /**
      * Set the bgpProperties property: The set of bgp properties.
-     *
+     * 
      * @param bgpProperties the bgpProperties value to set.
      * @return the VpnSiteLinkProperties object itself.
      */
@@ -129,7 +132,7 @@ public final class VpnSiteLinkProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the VPN site link resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -138,7 +141,7 @@ public final class VpnSiteLinkProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -148,5 +151,53 @@ public final class VpnSiteLinkProperties {
         if (bgpProperties() != null) {
             bgpProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkProperties", this.linkProperties);
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeStringField("fqdn", this.fqdn);
+        jsonWriter.writeJsonField("bgpProperties", this.bgpProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnSiteLinkProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnSiteLinkProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VpnSiteLinkProperties.
+     */
+    public static VpnSiteLinkProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnSiteLinkProperties deserializedVpnSiteLinkProperties = new VpnSiteLinkProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkProperties".equals(fieldName)) {
+                    deserializedVpnSiteLinkProperties.linkProperties = VpnLinkProviderProperties.fromJson(reader);
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedVpnSiteLinkProperties.ipAddress = reader.getString();
+                } else if ("fqdn".equals(fieldName)) {
+                    deserializedVpnSiteLinkProperties.fqdn = reader.getString();
+                } else if ("bgpProperties".equals(fieldName)) {
+                    deserializedVpnSiteLinkProperties.bgpProperties = VpnLinkBgpSettings.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVpnSiteLinkProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnSiteLinkProperties;
+        });
     }
 }

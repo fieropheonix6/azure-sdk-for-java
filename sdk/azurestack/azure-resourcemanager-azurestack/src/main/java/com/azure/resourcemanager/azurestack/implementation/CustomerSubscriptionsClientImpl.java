@@ -28,31 +28,33 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestack.fluent.CustomerSubscriptionsClient;
 import com.azure.resourcemanager.azurestack.fluent.models.CustomerSubscriptionInner;
 import com.azure.resourcemanager.azurestack.models.CustomerSubscriptionList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CustomerSubscriptionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CustomerSubscriptionsClient.
+ */
 public final class CustomerSubscriptionsClientImpl implements CustomerSubscriptionsClient {
-    private final ClientLogger logger = new ClientLogger(CustomerSubscriptionsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CustomerSubscriptionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureStackManagementClientImpl client;
 
     /**
      * Initializes an instance of CustomerSubscriptionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CustomerSubscriptionsClientImpl(AzureStackManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(CustomerSubscriptionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(CustomerSubscriptionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,106 +64,78 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureStackManagement")
-    private interface CustomerSubscriptionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack"
-                + "/registrations/{registrationName}/customerSubscriptions")
-        @ExpectedResponses({200})
+    public interface CustomerSubscriptionsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}/customerSubscriptions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomerSubscriptionList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroup") String resourceGroup,
-            @PathParam("registrationName") String registrationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CustomerSubscriptionList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroup") String resourceGroup,
+            @PathParam("registrationName") String registrationName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack"
-                + "/registrations/{registrationName}/customerSubscriptions/{customerSubscriptionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}/customerSubscriptions/{customerSubscriptionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomerSubscriptionInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroup") String resourceGroup,
+        Mono<Response<CustomerSubscriptionInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroup") String resourceGroup,
             @PathParam("registrationName") String registrationName,
             @PathParam("customerSubscriptionName") String customerSubscriptionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack"
-                + "/registrations/{registrationName}/customerSubscriptions/{customerSubscriptionName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}/customerSubscriptions/{customerSubscriptionName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroup") String resourceGroup,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroup") String resourceGroup,
             @PathParam("registrationName") String registrationName,
             @PathParam("customerSubscriptionName") String customerSubscriptionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack"
-                + "/registrations/{registrationName}/customerSubscriptions/{customerSubscriptionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}/customerSubscriptions/{customerSubscriptionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomerSubscriptionInner>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroup") String resourceGroup,
+        Mono<Response<CustomerSubscriptionInner>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroup") String resourceGroup,
             @PathParam("registrationName") String registrationName,
             @PathParam("customerSubscriptionName") String customerSubscriptionName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CustomerSubscriptionInner customerCreationParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomerSubscriptionList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomerSubscriptionInner>> listSinglePageAsync(
-        String resourceGroup, String registrationName) {
+    private Mono<PagedResponse<CustomerSubscriptionInner>> listSinglePageAsync(String resourceGroup,
+        String registrationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
@@ -172,54 +146,35 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroup,
-                            registrationName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<CustomerSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroup, registrationName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<CustomerSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomerSubscriptionInner>> listSinglePageAsync(
-        String resourceGroup, String registrationName, Context context) {
+    private Mono<PagedResponse<CustomerSubscriptionInner>> listSinglePageAsync(String resourceGroup,
+        String registrationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
@@ -231,69 +186,55 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroup,
-                registrationName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroup, registrationName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomerSubscriptionInner> listAsync(String resourceGroup, String registrationName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroup, registrationName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroup, registrationName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CustomerSubscriptionInner> listAsync(
-        String resourceGroup, String registrationName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroup, registrationName, context),
+    private PagedFlux<CustomerSubscriptionInner> listAsync(String resourceGroup, String registrationName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroup, registrationName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomerSubscriptionInner> list(String resourceGroup, String registrationName) {
@@ -302,46 +243,42 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
 
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CustomerSubscriptionInner> list(
-        String resourceGroup, String registrationName, Context context) {
+    public PagedIterable<CustomerSubscriptionInner> list(String resourceGroup, String registrationName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroup, registrationName, context));
     }
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
+     * @return customer subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CustomerSubscriptionInner>> getWithResponseAsync(
-        String resourceGroup, String registrationName, String customerSubscriptionName) {
+    private Mono<Response<CustomerSubscriptionInner>> getWithResponseAsync(String resourceGroup,
+        String registrationName, String customerSubscriptionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
@@ -351,30 +288,20 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
                 .error(new IllegalArgumentException("Parameter registrationName is required and cannot be null."));
         }
         if (customerSubscriptionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter customerSubscriptionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter customerSubscriptionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroup,
-                            registrationName,
-                            customerSubscriptionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroup,
+                    registrationName, customerSubscriptionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
@@ -382,22 +309,18 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
+     * @return customer subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CustomerSubscriptionInner>> getWithResponseAsync(
-        String resourceGroup, String registrationName, String customerSubscriptionName, Context context) {
+    private Mono<Response<CustomerSubscriptionInner>> getWithResponseAsync(String resourceGroup,
+        String registrationName, String customerSubscriptionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
@@ -407,69 +330,36 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
                 .error(new IllegalArgumentException("Parameter registrationName is required and cannot be null."));
         }
         if (customerSubscriptionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter customerSubscriptionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter customerSubscriptionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroup,
-                registrationName,
-                customerSubscriptionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroup, registrationName,
+            customerSubscriptionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
+     * @return customer subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CustomerSubscriptionInner> getAsync(
-        String resourceGroup, String registrationName, String customerSubscriptionName) {
+    private Mono<CustomerSubscriptionInner> getAsync(String resourceGroup, String registrationName,
+        String customerSubscriptionName) {
         return getWithResponseAsync(resourceGroup, registrationName, customerSubscriptionName)
-            .flatMap(
-                (Response<CustomerSubscriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Returns the specified product.
-     *
-     * @param resourceGroup Name of the resource group.
-     * @param registrationName Name of the Azure Stack registration.
-     * @param customerSubscriptionName Name of the product.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomerSubscriptionInner get(
-        String resourceGroup, String registrationName, String customerSubscriptionName) {
-        return getAsync(resourceGroup, registrationName, customerSubscriptionName).block();
-    }
-
-    /**
-     * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
@@ -477,39 +367,52 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
+     * @return customer subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CustomerSubscriptionInner> getWithResponse(
-        String resourceGroup, String registrationName, String customerSubscriptionName, Context context) {
+    public Response<CustomerSubscriptionInner> getWithResponse(String resourceGroup, String registrationName,
+        String customerSubscriptionName, Context context) {
         return getWithResponseAsync(resourceGroup, registrationName, customerSubscriptionName, context).block();
     }
 
     /**
-     * Deletes a customer subscription under a registration.
-     *
+     * Returns the specified product.
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return customer subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroup, String registrationName, String customerSubscriptionName) {
+    public CustomerSubscriptionInner get(String resourceGroup, String registrationName,
+        String customerSubscriptionName) {
+        return getWithResponse(resourceGroup, registrationName, customerSubscriptionName, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes a customer subscription under a registration.
+     * 
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param customerSubscriptionName Name of the product.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroup, String registrationName,
+        String customerSubscriptionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
@@ -519,30 +422,20 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
                 .error(new IllegalArgumentException("Parameter registrationName is required and cannot be null."));
         }
         if (customerSubscriptionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter customerSubscriptionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter customerSubscriptionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroup,
-                            registrationName,
-                            customerSubscriptionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroup,
+                    registrationName, customerSubscriptionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a customer subscription under a registration.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
@@ -550,22 +443,18 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroup, String registrationName, String customerSubscriptionName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroup, String registrationName,
+        String customerSubscriptionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
@@ -575,44 +464,53 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
                 .error(new IllegalArgumentException("Parameter registrationName is required and cannot be null."));
         }
         if (customerSubscriptionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter customerSubscriptionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter customerSubscriptionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroup,
-                registrationName,
-                customerSubscriptionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroup,
+            registrationName, customerSubscriptionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a customer subscription under a registration.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroup, String registrationName, String customerSubscriptionName) {
         return deleteWithResponseAsync(resourceGroup, registrationName, customerSubscriptionName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes a customer subscription under a registration.
-     *
+     * 
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param customerSubscriptionName Name of the product.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroup, String registrationName,
+        String customerSubscriptionName, Context context) {
+        return deleteWithResponseAsync(resourceGroup, registrationName, customerSubscriptionName, context).block();
+    }
+
+    /**
+     * Deletes a customer subscription under a registration.
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
@@ -622,30 +520,12 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroup, String registrationName, String customerSubscriptionName) {
-        deleteAsync(resourceGroup, registrationName, customerSubscriptionName).block();
-    }
-
-    /**
-     * Deletes a customer subscription under a registration.
-     *
-     * @param resourceGroup Name of the resource group.
-     * @param registrationName Name of the Azure Stack registration.
-     * @param customerSubscriptionName Name of the product.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroup, String registrationName, String customerSubscriptionName, Context context) {
-        return deleteWithResponseAsync(resourceGroup, registrationName, customerSubscriptionName, context).block();
+        deleteWithResponse(resourceGroup, registrationName, customerSubscriptionName, Context.NONE);
     }
 
     /**
      * Creates a new customer subscription under a registration.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
@@ -653,25 +533,19 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
+     * @return customer subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CustomerSubscriptionInner>> createWithResponseAsync(
-        String resourceGroup,
-        String registrationName,
-        String customerSubscriptionName,
+    private Mono<Response<CustomerSubscriptionInner>> createWithResponseAsync(String resourceGroup,
+        String registrationName, String customerSubscriptionName,
         CustomerSubscriptionInner customerCreationParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
@@ -681,39 +555,26 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
                 .error(new IllegalArgumentException("Parameter registrationName is required and cannot be null."));
         }
         if (customerSubscriptionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter customerSubscriptionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter customerSubscriptionName is required and cannot be null."));
         }
         if (customerCreationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter customerCreationParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter customerCreationParameters is required and cannot be null."));
         } else {
             customerCreationParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroup,
-                            registrationName,
-                            customerSubscriptionName,
-                            this.client.getApiVersion(),
-                            customerCreationParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroup, registrationName, customerSubscriptionName, this.client.getApiVersion(),
+                customerCreationParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new customer subscription under a registration.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
@@ -722,26 +583,19 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
+     * @return customer subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CustomerSubscriptionInner>> createWithResponseAsync(
-        String resourceGroup,
-        String registrationName,
-        String customerSubscriptionName,
-        CustomerSubscriptionInner customerCreationParameters,
+    private Mono<Response<CustomerSubscriptionInner>> createWithResponseAsync(String resourceGroup,
+        String registrationName, String customerSubscriptionName, CustomerSubscriptionInner customerCreationParameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroup == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceGroup is required and cannot be null."));
@@ -751,36 +605,25 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
                 .error(new IllegalArgumentException("Parameter registrationName is required and cannot be null."));
         }
         if (customerSubscriptionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter customerSubscriptionName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter customerSubscriptionName is required and cannot be null."));
         }
         if (customerCreationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter customerCreationParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter customerCreationParameters is required and cannot be null."));
         } else {
             customerCreationParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroup,
-                registrationName,
-                customerSubscriptionName,
-                this.client.getApiVersion(),
-                customerCreationParameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroup,
+            registrationName, customerSubscriptionName, this.client.getApiVersion(), customerCreationParameters, accept,
+            context);
     }
 
     /**
      * Creates a new customer subscription under a registration.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
@@ -788,51 +631,18 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
+     * @return customer subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CustomerSubscriptionInner> createAsync(
-        String resourceGroup,
-        String registrationName,
-        String customerSubscriptionName,
-        CustomerSubscriptionInner customerCreationParameters) {
-        return createWithResponseAsync(
-                resourceGroup, registrationName, customerSubscriptionName, customerCreationParameters)
-            .flatMap(
-                (Response<CustomerSubscriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    private Mono<CustomerSubscriptionInner> createAsync(String resourceGroup, String registrationName,
+        String customerSubscriptionName, CustomerSubscriptionInner customerCreationParameters) {
+        return createWithResponseAsync(resourceGroup, registrationName, customerSubscriptionName,
+            customerCreationParameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a new customer subscription under a registration.
-     *
-     * @param resourceGroup Name of the resource group.
-     * @param registrationName Name of the Azure Stack registration.
-     * @param customerSubscriptionName Name of the product.
-     * @param customerCreationParameters Parameters use to create a customer subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return customer subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomerSubscriptionInner create(
-        String resourceGroup,
-        String registrationName,
-        String customerSubscriptionName,
-        CustomerSubscriptionInner customerCreationParameters) {
-        return createAsync(resourceGroup, registrationName, customerSubscriptionName, customerCreationParameters)
-            .block();
-    }
-
-    /**
-     * Creates a new customer subscription under a registration.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
@@ -841,28 +651,43 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return customer subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CustomerSubscriptionInner> createWithResponse(String resourceGroup, String registrationName,
+        String customerSubscriptionName, CustomerSubscriptionInner customerCreationParameters, Context context) {
+        return createWithResponseAsync(resourceGroup, registrationName, customerSubscriptionName,
+            customerCreationParameters, context).block();
+    }
+
+    /**
+     * Creates a new customer subscription under a registration.
+     * 
+     * @param resourceGroup Name of the resource group.
+     * @param registrationName Name of the Azure Stack registration.
+     * @param customerSubscriptionName Name of the product.
+     * @param customerCreationParameters Parameters use to create a customer subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CustomerSubscriptionInner> createWithResponse(
-        String resourceGroup,
-        String registrationName,
-        String customerSubscriptionName,
-        CustomerSubscriptionInner customerCreationParameters,
-        Context context) {
-        return createWithResponseAsync(
-                resourceGroup, registrationName, customerSubscriptionName, customerCreationParameters, context)
-            .block();
+    public CustomerSubscriptionInner create(String resourceGroup, String registrationName,
+        String customerSubscriptionName, CustomerSubscriptionInner customerCreationParameters) {
+        return createWithResponse(resourceGroup, registrationName, customerSubscriptionName, customerCreationParameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomerSubscriptionInner>> listNextSinglePageAsync(String nextLink) {
@@ -870,35 +695,26 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CustomerSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<CustomerSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pageable list of customer subscriptions.
+     * @return pageable list of customer subscriptions along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomerSubscriptionInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -906,23 +722,13 @@ public final class CustomerSubscriptionsClientImpl implements CustomerSubscripti
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

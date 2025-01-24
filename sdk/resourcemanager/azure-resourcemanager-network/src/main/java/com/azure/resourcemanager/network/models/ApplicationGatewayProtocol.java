@@ -5,37 +5,54 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Application Gateway protocol. */
+/**
+ * Application Gateway protocol.
+ */
 public final class ApplicationGatewayProtocol extends ExpandableStringEnum<ApplicationGatewayProtocol> {
-    /** Static value Http for ApplicationGatewayProtocol. */
+    /**
+     * Static value Http for ApplicationGatewayProtocol.
+     */
     public static final ApplicationGatewayProtocol HTTP = fromString("Http");
 
-    /** Static value Https for ApplicationGatewayProtocol. */
+    /**
+     * Static value Https for ApplicationGatewayProtocol.
+     */
     public static final ApplicationGatewayProtocol HTTPS = fromString("Https");
 
-    /** Static value Tcp for ApplicationGatewayProtocol. */
+    /**
+     * Static value Tcp for ApplicationGatewayProtocol.
+     */
     public static final ApplicationGatewayProtocol TCP = fromString("Tcp");
 
-    /** Static value Tls for ApplicationGatewayProtocol. */
+    /**
+     * Static value Tls for ApplicationGatewayProtocol.
+     */
     public static final ApplicationGatewayProtocol TLS = fromString("Tls");
 
     /**
+     * Creates a new instance of ApplicationGatewayProtocol value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewayProtocol() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewayProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApplicationGatewayProtocol.
      */
-    @JsonCreator
     public static ApplicationGatewayProtocol fromString(String name) {
         return fromString(name, ApplicationGatewayProtocol.class);
     }
 
     /**
      * Gets known ApplicationGatewayProtocol values.
-     *
+     * 
      * @return known ApplicationGatewayProtocol values.
      */
     public static Collection<ApplicationGatewayProtocol> values() {

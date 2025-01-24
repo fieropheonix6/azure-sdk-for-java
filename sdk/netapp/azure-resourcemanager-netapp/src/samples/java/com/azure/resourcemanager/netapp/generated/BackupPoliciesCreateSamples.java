@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-/** Samples for BackupPolicies Create. */
+/**
+ * Samples for BackupPolicies Create.
+ */
 public final class BackupPoliciesCreateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/BackupPolicies_Create.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/BackupPolicies_Create.
+     * json
      */
     /**
      * Sample code: BackupPolicies_Create.
-     *
+     * 
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void backupPoliciesCreate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager
-            .backupPolicies()
+        manager.backupPolicies()
             .define("backupPolicyName")
             .withRegion("westus")
             .withExistingNetAppAccount("myRG", "account1")

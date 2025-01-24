@@ -7,24 +7,21 @@ package com.azure.resourcemanager.webpubsub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.SignalRServiceUsageName;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SignalRServiceUsageNameTests {
-    @Test
-    public void testDeserialize() {
-        SignalRServiceUsageName model =
-            BinaryData
-                .fromString("{\"value\":\"s\",\"localizedValue\":\"gbquxigj\"}")
-                .toObject(SignalRServiceUsageName.class);
-        Assertions.assertEquals("s", model.value());
-        Assertions.assertEquals("gbquxigj", model.localizedValue());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SignalRServiceUsageName model = BinaryData.fromString("{\"value\":\"qsl\",\"localizedValue\":\"yvxyqjp\"}")
+            .toObject(SignalRServiceUsageName.class);
+        Assertions.assertEquals("qsl", model.value());
+        Assertions.assertEquals("yvxyqjp", model.localizedValue());
     }
 
-    @Test
-    public void testSerialize() {
-        SignalRServiceUsageName model = new SignalRServiceUsageName().withValue("s").withLocalizedValue("gbquxigj");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SignalRServiceUsageName model = new SignalRServiceUsageName().withValue("qsl").withLocalizedValue("yvxyqjp");
         model = BinaryData.fromObject(model).toObject(SignalRServiceUsageName.class);
-        Assertions.assertEquals("s", model.value());
-        Assertions.assertEquals("gbquxigj", model.localizedValue());
+        Assertions.assertEquals("qsl", model.value());
+        Assertions.assertEquals("yvxyqjp", model.localizedValue());
     }
 }

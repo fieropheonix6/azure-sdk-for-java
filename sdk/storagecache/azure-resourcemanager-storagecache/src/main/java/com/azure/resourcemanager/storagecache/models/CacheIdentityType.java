@@ -4,24 +4,33 @@
 
 package com.azure.resourcemanager.storagecache.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for CacheIdentityType. */
+/**
+ * The type of identity used for the cache.
+ */
 public enum CacheIdentityType {
-    /** Enum value SystemAssigned. */
+    /**
+     * Enum value SystemAssigned.
+     */
     SYSTEM_ASSIGNED("SystemAssigned"),
 
-    /** Enum value UserAssigned. */
+    /**
+     * Enum value UserAssigned.
+     */
     USER_ASSIGNED("UserAssigned"),
 
-    /** Enum value SystemAssigned, UserAssigned. */
+    /**
+     * Enum value SystemAssigned, UserAssigned.
+     */
     SYSTEM_ASSIGNED_USER_ASSIGNED("SystemAssigned, UserAssigned"),
 
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None");
 
-    /** The actual serialized value for a CacheIdentityType instance. */
+    /**
+     * The actual serialized value for a CacheIdentityType instance.
+     */
     private final String value;
 
     CacheIdentityType(String value) {
@@ -30,12 +39,14 @@ public enum CacheIdentityType {
 
     /**
      * Parses a serialized value to a CacheIdentityType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed CacheIdentityType object, or null if unable to parse.
      */
-    @JsonCreator
     public static CacheIdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CacheIdentityType[] items = CacheIdentityType.values();
         for (CacheIdentityType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,7 +56,9 @@ public enum CacheIdentityType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

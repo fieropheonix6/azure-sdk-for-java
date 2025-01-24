@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Azure reachability report details for a given provider location. */
+/**
+ * Azure reachability report details for a given provider location.
+ */
 @Fluent
-public final class AzureReachabilityReportItem {
+public final class AzureReachabilityReportItem implements JsonSerializable<AzureReachabilityReportItem> {
     /*
      * The Internet service provider.
      */
-    @JsonProperty(value = "provider")
     private String provider;
 
     /*
      * The Azure region.
      */
-    @JsonProperty(value = "azureLocation")
     private String azureLocation;
 
     /*
      * List of latency details for each of the time series.
      */
-    @JsonProperty(value = "latencies")
     private List<AzureReachabilityReportLatencyInfo> latencies;
 
-    /** Creates an instance of AzureReachabilityReportItem class. */
+    /**
+     * Creates an instance of AzureReachabilityReportItem class.
+     */
     public AzureReachabilityReportItem() {
     }
 
     /**
      * Get the provider property: The Internet service provider.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -44,7 +49,7 @@ public final class AzureReachabilityReportItem {
 
     /**
      * Set the provider property: The Internet service provider.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the AzureReachabilityReportItem object itself.
      */
@@ -55,7 +60,7 @@ public final class AzureReachabilityReportItem {
 
     /**
      * Get the azureLocation property: The Azure region.
-     *
+     * 
      * @return the azureLocation value.
      */
     public String azureLocation() {
@@ -64,7 +69,7 @@ public final class AzureReachabilityReportItem {
 
     /**
      * Set the azureLocation property: The Azure region.
-     *
+     * 
      * @param azureLocation the azureLocation value to set.
      * @return the AzureReachabilityReportItem object itself.
      */
@@ -75,7 +80,7 @@ public final class AzureReachabilityReportItem {
 
     /**
      * Get the latencies property: List of latency details for each of the time series.
-     *
+     * 
      * @return the latencies value.
      */
     public List<AzureReachabilityReportLatencyInfo> latencies() {
@@ -84,7 +89,7 @@ public final class AzureReachabilityReportItem {
 
     /**
      * Set the latencies property: List of latency details for each of the time series.
-     *
+     * 
      * @param latencies the latencies value to set.
      * @return the AzureReachabilityReportItem object itself.
      */
@@ -95,12 +100,56 @@ public final class AzureReachabilityReportItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (latencies() != null) {
             latencies().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provider", this.provider);
+        jsonWriter.writeStringField("azureLocation", this.azureLocation);
+        jsonWriter.writeArrayField("latencies", this.latencies, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureReachabilityReportItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureReachabilityReportItem if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureReachabilityReportItem.
+     */
+    public static AzureReachabilityReportItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureReachabilityReportItem deserializedAzureReachabilityReportItem = new AzureReachabilityReportItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedAzureReachabilityReportItem.provider = reader.getString();
+                } else if ("azureLocation".equals(fieldName)) {
+                    deserializedAzureReachabilityReportItem.azureLocation = reader.getString();
+                } else if ("latencies".equals(fieldName)) {
+                    List<AzureReachabilityReportLatencyInfo> latencies
+                        = reader.readArray(reader1 -> AzureReachabilityReportLatencyInfo.fromJson(reader1));
+                    deserializedAzureReachabilityReportItem.latencies = latencies;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureReachabilityReportItem;
+        });
     }
 }

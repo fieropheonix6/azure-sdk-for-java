@@ -12,15 +12,14 @@ public final class RenamedSubscriptionIdImpl implements RenamedSubscriptionId {
 
     private final com.azure.resourcemanager.subscription.SubscriptionManager serviceManager;
 
-    RenamedSubscriptionIdImpl(
-        RenamedSubscriptionIdInner innerObject,
+    RenamedSubscriptionIdImpl(RenamedSubscriptionIdInner innerObject,
         com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
 
-    public String value() {
-        return this.innerModel().value();
+    public String subscriptionId() {
+        return this.innerModel().subscriptionId();
     }
 
     public RenamedSubscriptionIdInner innerModel() {

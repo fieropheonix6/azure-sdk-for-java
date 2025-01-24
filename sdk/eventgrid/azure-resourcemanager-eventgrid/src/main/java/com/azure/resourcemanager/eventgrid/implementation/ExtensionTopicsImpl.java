@@ -20,29 +20,26 @@ public final class ExtensionTopicsImpl implements ExtensionTopics {
 
     private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    public ExtensionTopicsImpl(
-        ExtensionTopicsClient innerClient, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+    public ExtensionTopicsImpl(ExtensionTopicsClient innerClient,
+        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<ExtensionTopic> getWithResponse(String scope, Context context) {
+        Response<ExtensionTopicInner> inner = this.serviceClient().getWithResponse(scope, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ExtensionTopicImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ExtensionTopic get(String scope) {
         ExtensionTopicInner inner = this.serviceClient().get(scope);
         if (inner != null) {
             return new ExtensionTopicImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ExtensionTopic> getWithResponse(String scope, Context context) {
-        Response<ExtensionTopicInner> inner = this.serviceClient().getWithResponse(scope, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ExtensionTopicImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

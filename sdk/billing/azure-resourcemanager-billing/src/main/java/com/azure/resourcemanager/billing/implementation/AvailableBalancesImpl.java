@@ -12,23 +12,33 @@ import com.azure.resourcemanager.billing.fluent.AvailableBalancesClient;
 import com.azure.resourcemanager.billing.fluent.models.AvailableBalanceInner;
 import com.azure.resourcemanager.billing.models.AvailableBalance;
 import com.azure.resourcemanager.billing.models.AvailableBalances;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AvailableBalancesImpl implements AvailableBalances {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableBalancesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AvailableBalancesImpl.class);
 
     private final AvailableBalancesClient innerClient;
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    public AvailableBalancesImpl(
-        AvailableBalancesClient innerClient, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    public AvailableBalancesImpl(AvailableBalancesClient innerClient,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public AvailableBalance get(String billingAccountName, String billingProfileName) {
-        AvailableBalanceInner inner = this.serviceClient().get(billingAccountName, billingProfileName);
+    public Response<AvailableBalance> getByBillingAccountWithResponse(String billingAccountName, Context context) {
+        Response<AvailableBalanceInner> inner
+            = this.serviceClient().getByBillingAccountWithResponse(billingAccountName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AvailableBalanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AvailableBalance getByBillingAccount(String billingAccountName) {
+        AvailableBalanceInner inner = this.serviceClient().getByBillingAccount(billingAccountName);
         if (inner != null) {
             return new AvailableBalanceImpl(inner, this.manager());
         } else {
@@ -36,16 +46,22 @@ public final class AvailableBalancesImpl implements AvailableBalances {
         }
     }
 
-    public Response<AvailableBalance> getWithResponse(
-        String billingAccountName, String billingProfileName, Context context) {
-        Response<AvailableBalanceInner> inner =
-            this.serviceClient().getWithResponse(billingAccountName, billingProfileName, context);
+    public Response<AvailableBalance> getByBillingProfileWithResponse(String billingAccountName,
+        String billingProfileName, Context context) {
+        Response<AvailableBalanceInner> inner
+            = this.serviceClient().getByBillingProfileWithResponse(billingAccountName, billingProfileName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AvailableBalanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AvailableBalance getByBillingProfile(String billingAccountName, String billingProfileName) {
+        AvailableBalanceInner inner = this.serviceClient().getByBillingProfile(billingAccountName, billingProfileName);
+        if (inner != null) {
+            return new AvailableBalanceImpl(inner, this.manager());
         } else {
             return null;
         }

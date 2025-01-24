@@ -4,42 +4,42 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for LoadBalancers GetByResourceGroup. */
+/**
+ * Samples for LoadBalancers GetByResourceGroup.
+ */
 public final class LoadBalancersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/LoadBalancerGet.json
      */
     /**
      * Sample code: Get load balancer.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getLoadBalancer(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getLoadBalancers()
-            .getByResourceGroupWithResponse("rg1", "lb", null, Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "lb", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerGetInboundNatRulePortMapping.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * LoadBalancerGetInboundNatRulePortMapping.json
      */
     /**
      * Sample code: Get load balancer with inbound NAT rule port mapping.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getLoadBalancerWithInboundNATRulePortMapping(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+    public static void
+        getLoadBalancerWithInboundNATRulePortMapping(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
             .manager()
             .serviceClient()
             .getLoadBalancers()
-            .getByResourceGroupWithResponse("rg1", "lb", null, Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "lb", null, com.azure.core.util.Context.NONE);
     }
 }

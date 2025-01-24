@@ -5,32 +5,89 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateInner;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateOrderPatchResourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** ARM resource for a certificate order that is purchased through Azure. */
+/**
+ * ARM resource for a certificate order that is purchased through Azure.
+ */
 @Fluent
 public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyResource {
     /*
      * AppServiceCertificateOrderPatchResource resource specific properties
      */
-    @JsonProperty(value = "properties")
     private AppServiceCertificateOrderPatchResourceProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AppServiceCertificateOrderPatchResource class.
+     */
+    public AppServiceCertificateOrderPatchResource() {
+    }
 
     /**
      * Get the innerProperties property: AppServiceCertificateOrderPatchResource resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AppServiceCertificateOrderPatchResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AppServiceCertificateOrderPatchResource withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +96,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Get the certificates property: State of the Key Vault secret.
-     *
+     * 
      * @return the certificates value.
      */
     public Map<String, AppServiceCertificateInner> certificates() {
@@ -48,12 +105,12 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Set the certificates property: State of the Key Vault secret.
-     *
+     * 
      * @param certificates the certificates value to set.
      * @return the AppServiceCertificateOrderPatchResource object itself.
      */
-    public AppServiceCertificateOrderPatchResource withCertificates(
-        Map<String, AppServiceCertificateInner> certificates) {
+    public AppServiceCertificateOrderPatchResource
+        withCertificates(Map<String, AppServiceCertificateInner> certificates) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AppServiceCertificateOrderPatchResourceProperties();
         }
@@ -63,7 +120,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Get the distinguishedName property: Certificate distinguished name.
-     *
+     * 
      * @return the distinguishedName value.
      */
     public String distinguishedName() {
@@ -72,7 +129,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Set the distinguishedName property: Certificate distinguished name.
-     *
+     * 
      * @param distinguishedName the distinguishedName value to set.
      * @return the AppServiceCertificateOrderPatchResource object itself.
      */
@@ -86,7 +143,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Get the domainVerificationToken property: Domain verification token.
-     *
+     * 
      * @return the domainVerificationToken value.
      */
     public String domainVerificationToken() {
@@ -95,7 +152,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Get the validityInYears property: Duration in years (must be 1).
-     *
+     * 
      * @return the validityInYears value.
      */
     public Integer validityInYears() {
@@ -104,7 +161,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Set the validityInYears property: Duration in years (must be 1).
-     *
+     * 
      * @param validityInYears the validityInYears value to set.
      * @return the AppServiceCertificateOrderPatchResource object itself.
      */
@@ -118,7 +175,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Get the keySize property: Certificate key size.
-     *
+     * 
      * @return the keySize value.
      */
     public Integer keySize() {
@@ -127,7 +184,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Set the keySize property: Certificate key size.
-     *
+     * 
      * @param keySize the keySize value to set.
      * @return the AppServiceCertificateOrderPatchResource object itself.
      */
@@ -141,7 +198,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Get the productType property: Certificate product type.
-     *
+     * 
      * @return the productType value.
      */
     public CertificateProductType productType() {
@@ -150,7 +207,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Set the productType property: Certificate product type.
-     *
+     * 
      * @param productType the productType value to set.
      * @return the AppServiceCertificateOrderPatchResource object itself.
      */
@@ -165,7 +222,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
     /**
      * Get the autoRenew property: &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically renewed when
      * it expires; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the autoRenew value.
      */
     public Boolean autoRenew() {
@@ -175,7 +232,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
     /**
      * Set the autoRenew property: &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically renewed when
      * it expires; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param autoRenew the autoRenew value to set.
      * @return the AppServiceCertificateOrderPatchResource object itself.
      */
@@ -189,7 +246,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Get the provisioningState property: Status of certificate order.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -198,7 +255,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Get the status property: Current order status.
-     *
+     * 
      * @return the status value.
      */
     public CertificateOrderStatus status() {
@@ -207,7 +264,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Get the signedCertificate property: Signed certificate.
-     *
+     * 
      * @return the signedCertificate value.
      */
     public CertificateDetails signedCertificate() {
@@ -216,7 +273,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Get the csr property: Last CSR that was created for this order.
-     *
+     * 
      * @return the csr value.
      */
     public String csr() {
@@ -225,7 +282,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Set the csr property: Last CSR that was created for this order.
-     *
+     * 
      * @param csr the csr value to set.
      * @return the AppServiceCertificateOrderPatchResource object itself.
      */
@@ -239,7 +296,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Get the intermediate property: Intermediate certificate.
-     *
+     * 
      * @return the intermediate value.
      */
     public CertificateDetails intermediate() {
@@ -248,7 +305,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Get the root property: Root certificate.
-     *
+     * 
      * @return the root value.
      */
     public CertificateDetails root() {
@@ -257,7 +314,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Get the serialNumber property: Current serial number of the certificate.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -266,7 +323,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Get the lastCertificateIssuanceTime property: Certificate last issuance time.
-     *
+     * 
      * @return the lastCertificateIssuanceTime value.
      */
     public OffsetDateTime lastCertificateIssuanceTime() {
@@ -275,7 +332,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Get the expirationTime property: Certificate expiration time.
-     *
+     * 
      * @return the expirationTime value.
      */
     public OffsetDateTime expirationTime() {
@@ -285,7 +342,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
     /**
      * Get the isPrivateKeyExternal property: &lt;code&gt;true&lt;/code&gt; if private key is external; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isPrivateKeyExternal value.
      */
     public Boolean isPrivateKeyExternal() {
@@ -295,7 +352,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
     /**
      * Get the appServiceCertificateNotRenewableReasons property: Reasons why App Service Certificate is not renewable
      * at the current moment.
-     *
+     * 
      * @return the appServiceCertificateNotRenewableReasons value.
      */
     public List<ResourceNotRenewableReason> appServiceCertificateNotRenewableReasons() {
@@ -306,7 +363,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Get the nextAutoRenewalTimestamp property: Time stamp when the certificate would be auto renewed next.
-     *
+     * 
      * @return the nextAutoRenewalTimestamp value.
      */
     public OffsetDateTime nextAutoRenewalTimestamp() {
@@ -315,7 +372,7 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Get the contact property: Contact info.
-     *
+     * 
      * @return the contact value.
      */
     public CertificateOrderContact contact() {
@@ -324,14 +381,61 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppServiceCertificateOrderPatchResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppServiceCertificateOrderPatchResource if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AppServiceCertificateOrderPatchResource.
+     */
+    public static AppServiceCertificateOrderPatchResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppServiceCertificateOrderPatchResource deserializedAppServiceCertificateOrderPatchResource
+                = new AppServiceCertificateOrderPatchResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderPatchResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderPatchResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderPatchResource.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderPatchResource.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAppServiceCertificateOrderPatchResource.innerProperties
+                        = AppServiceCertificateOrderPatchResourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppServiceCertificateOrderPatchResource;
+        });
     }
 }

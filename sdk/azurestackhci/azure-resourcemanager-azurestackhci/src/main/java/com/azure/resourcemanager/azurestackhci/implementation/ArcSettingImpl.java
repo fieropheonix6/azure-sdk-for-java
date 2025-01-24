@@ -12,6 +12,7 @@ import com.azure.resourcemanager.azurestackhci.models.ArcIdentityResponse;
 import com.azure.resourcemanager.azurestackhci.models.ArcSetting;
 import com.azure.resourcemanager.azurestackhci.models.ArcSettingAggregateState;
 import com.azure.resourcemanager.azurestackhci.models.ArcSettingsPatch;
+import com.azure.resourcemanager.azurestackhci.models.DefaultExtensionDetails;
 import com.azure.resourcemanager.azurestackhci.models.PasswordCredential;
 import com.azure.resourcemanager.azurestackhci.models.PerNodeState;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
@@ -81,6 +82,15 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition, 
         return this.innerModel().connectivityProperties();
     }
 
+    public List<DefaultExtensionDetails> defaultExtensions() {
+        List<DefaultExtensionDetails> inner = this.innerModel().defaultExtensions();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -108,22 +118,18 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition, 
     }
 
     public ArcSetting create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getArcSettings()
-                .createWithResponse(resourceGroupName, clusterName, arcSettingName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArcSettings()
+            .createWithResponse(resourceGroupName, clusterName, arcSettingName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ArcSetting create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getArcSettings()
-                .createWithResponse(resourceGroupName, clusterName, arcSettingName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArcSettings()
+            .createWithResponse(resourceGroupName, clusterName, arcSettingName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -139,62 +145,53 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition, 
     }
 
     public ArcSetting apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getArcSettings()
-                .updateWithResponse(resourceGroupName, clusterName, arcSettingName, updateArcSetting, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArcSettings()
+            .updateWithResponse(resourceGroupName, clusterName, arcSettingName, updateArcSetting, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ArcSetting apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getArcSettings()
-                .updateWithResponse(resourceGroupName, clusterName, arcSettingName, updateArcSetting, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArcSettings()
+            .updateWithResponse(resourceGroupName, clusterName, arcSettingName, updateArcSetting, context)
+            .getValue();
         return this;
     }
 
-    ArcSettingImpl(
-        ArcSettingInner innerObject, com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
+    ArcSettingImpl(ArcSettingInner innerObject,
+        com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.arcSettingName = Utils.getValueFromIdByName(innerObject.id(), "arcSettings");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.arcSettingName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "arcSettings");
     }
 
     public ArcSetting refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getArcSettings()
-                .getWithResponse(resourceGroupName, clusterName, arcSettingName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArcSettings()
+            .getWithResponse(resourceGroupName, clusterName, arcSettingName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ArcSetting refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getArcSettings()
-                .getWithResponse(resourceGroupName, clusterName, arcSettingName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArcSettings()
+            .getWithResponse(resourceGroupName, clusterName, arcSettingName, context)
+            .getValue();
         return this;
+    }
+
+    public Response<PasswordCredential> generatePasswordWithResponse(Context context) {
+        return serviceManager.arcSettings()
+            .generatePasswordWithResponse(resourceGroupName, clusterName, arcSettingName, context);
     }
 
     public PasswordCredential generatePassword() {
         return serviceManager.arcSettings().generatePassword(resourceGroupName, clusterName, arcSettingName);
-    }
-
-    public Response<PasswordCredential> generatePasswordWithResponse(Context context) {
-        return serviceManager
-            .arcSettings()
-            .generatePasswordWithResponse(resourceGroupName, clusterName, arcSettingName, context);
     }
 
     public ArcIdentityResponse createIdentity() {
@@ -203,6 +200,24 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition, 
 
     public ArcIdentityResponse createIdentity(Context context) {
         return serviceManager.arcSettings().createIdentity(resourceGroupName, clusterName, arcSettingName, context);
+    }
+
+    public Response<ArcSetting> consentAndInstallDefaultExtensionsWithResponse(Context context) {
+        return serviceManager.arcSettings()
+            .consentAndInstallDefaultExtensionsWithResponse(resourceGroupName, clusterName, arcSettingName, context);
+    }
+
+    public ArcSetting consentAndInstallDefaultExtensions() {
+        return serviceManager.arcSettings()
+            .consentAndInstallDefaultExtensions(resourceGroupName, clusterName, arcSettingName);
+    }
+
+    public void initializeDisableProcess() {
+        serviceManager.arcSettings().initializeDisableProcess(resourceGroupName, clusterName, arcSettingName);
+    }
+
+    public void initializeDisableProcess(Context context) {
+        serviceManager.arcSettings().initializeDisableProcess(resourceGroupName, clusterName, arcSettingName, context);
     }
 
     public ArcSettingImpl withArcInstanceResourceGroup(String arcInstanceResourceGroup) {

@@ -76,6 +76,75 @@ public final class DataLakeStoreAccountImpl
         return this.innerModel().identity();
     }
 
+    public String defaultGroup() {
+        return this.innerModel().defaultGroup();
+    }
+
+    public EncryptionConfig encryptionConfig() {
+        return this.innerModel().encryptionConfig();
+    }
+
+    public EncryptionState encryptionState() {
+        return this.innerModel().encryptionState();
+    }
+
+    public EncryptionProvisioningState encryptionProvisioningState() {
+        return this.innerModel().encryptionProvisioningState();
+    }
+
+    public List<FirewallRule> firewallRules() {
+        List<FirewallRuleInner> inner = this.innerModel().firewallRules();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new FirewallRuleImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<VirtualNetworkRule> virtualNetworkRules() {
+        List<VirtualNetworkRuleInner> inner = this.innerModel().virtualNetworkRules();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new VirtualNetworkRuleImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public FirewallState firewallState() {
+        return this.innerModel().firewallState();
+    }
+
+    public FirewallAllowAzureIpsState firewallAllowAzureIps() {
+        return this.innerModel().firewallAllowAzureIps();
+    }
+
+    public List<TrustedIdProvider> trustedIdProviders() {
+        List<TrustedIdProviderInner> inner = this.innerModel().trustedIdProviders();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new TrustedIdProviderImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public TrustedIdProviderState trustedIdProviderState() {
+        return this.innerModel().trustedIdProviderState();
+    }
+
+    public TierType newTier() {
+        return this.innerModel().newTier();
+    }
+
+    public TierType currentTier() {
+        return this.innerModel().currentTier();
+    }
+
     public UUID accountId() {
         return this.innerModel().accountId();
     }
@@ -100,90 +169,16 @@ public final class DataLakeStoreAccountImpl
         return this.innerModel().endpoint();
     }
 
-    public String defaultGroup() {
-        return this.innerModel().defaultGroup();
-    }
-
-    public EncryptionConfig encryptionConfig() {
-        return this.innerModel().encryptionConfig();
-    }
-
-    public EncryptionState encryptionState() {
-        return this.innerModel().encryptionState();
-    }
-
-    public EncryptionProvisioningState encryptionProvisioningState() {
-        return this.innerModel().encryptionProvisioningState();
-    }
-
-    public List<FirewallRule> firewallRules() {
-        List<FirewallRuleInner> inner = this.innerModel().firewallRules();
-        if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new FirewallRuleImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public List<VirtualNetworkRule> virtualNetworkRules() {
-        List<VirtualNetworkRuleInner> inner = this.innerModel().virtualNetworkRules();
-        if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new VirtualNetworkRuleImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public FirewallState firewallState() {
-        return this.innerModel().firewallState();
-    }
-
-    public FirewallAllowAzureIpsState firewallAllowAzureIps() {
-        return this.innerModel().firewallAllowAzureIps();
-    }
-
-    public List<TrustedIdProvider> trustedIdProviders() {
-        List<TrustedIdProviderInner> inner = this.innerModel().trustedIdProviders();
-        if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new TrustedIdProviderImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public TrustedIdProviderState trustedIdProviderState() {
-        return this.innerModel().trustedIdProviderState();
-    }
-
-    public TierType newTier() {
-        return this.innerModel().newTier();
-    }
-
-    public TierType currentTier() {
-        return this.innerModel().currentTier();
-    }
-
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public DataLakeStoreAccountInner innerModel() {
@@ -208,20 +203,16 @@ public final class DataLakeStoreAccountImpl
     }
 
     public DataLakeStoreAccount create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .create(resourceGroupName, accountName, createParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .create(resourceGroupName, accountName, createParameters, Context.NONE);
         return this;
     }
 
     public DataLakeStoreAccount create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .create(resourceGroupName, accountName, createParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .create(resourceGroupName, accountName, createParameters, context);
         return this;
     }
 
@@ -238,58 +229,49 @@ public final class DataLakeStoreAccountImpl
     }
 
     public DataLakeStoreAccount apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .update(resourceGroupName, accountName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .update(resourceGroupName, accountName, updateParameters, Context.NONE);
         return this;
     }
 
     public DataLakeStoreAccount apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .update(resourceGroupName, accountName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .update(resourceGroupName, accountName, updateParameters, context);
         return this;
     }
 
-    DataLakeStoreAccountImpl(
-        DataLakeStoreAccountInner innerObject,
+    DataLakeStoreAccountImpl(DataLakeStoreAccountInner innerObject,
         com.azure.resourcemanager.datalakestore.DataLakeStoreManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "accounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
     }
 
     public DataLakeStoreAccount refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DataLakeStoreAccount refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
+            .getValue();
         return this;
-    }
-
-    public void enableKeyVault() {
-        serviceManager.accounts().enableKeyVault(resourceGroupName, accountName);
     }
 
     public Response<Void> enableKeyVaultWithResponse(Context context) {
         return serviceManager.accounts().enableKeyVaultWithResponse(resourceGroupName, accountName, context);
+    }
+
+    public void enableKeyVault() {
+        serviceManager.accounts().enableKeyVault(resourceGroupName, accountName);
     }
 
     public DataLakeStoreAccountImpl withRegion(Region location) {
@@ -342,8 +324,8 @@ public final class DataLakeStoreAccountImpl
         return this;
     }
 
-    public DataLakeStoreAccountImpl withVirtualNetworkRules(
-        List<CreateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules) {
+    public DataLakeStoreAccountImpl
+        withVirtualNetworkRules(List<CreateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules) {
         this.createParameters.withVirtualNetworkRules(virtualNetworkRules);
         return this;
     }
@@ -368,8 +350,8 @@ public final class DataLakeStoreAccountImpl
         }
     }
 
-    public DataLakeStoreAccountImpl withTrustedIdProviders(
-        List<CreateTrustedIdProviderWithAccountParameters> trustedIdProviders) {
+    public DataLakeStoreAccountImpl
+        withTrustedIdProviders(List<CreateTrustedIdProviderWithAccountParameters> trustedIdProviders) {
         this.createParameters.withTrustedIdProviders(trustedIdProviders);
         return this;
     }
@@ -399,20 +381,20 @@ public final class DataLakeStoreAccountImpl
         return this;
     }
 
-    public DataLakeStoreAccountImpl withFirewallRulesForUpdate(
-        List<UpdateFirewallRuleWithAccountParameters> firewallRules) {
+    public DataLakeStoreAccountImpl
+        withFirewallRulesForUpdate(List<UpdateFirewallRuleWithAccountParameters> firewallRules) {
         this.updateParameters.withFirewallRules(firewallRules);
         return this;
     }
 
-    public DataLakeStoreAccountImpl withVirtualNetworkRulesForUpdate(
-        List<UpdateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules) {
+    public DataLakeStoreAccountImpl
+        withVirtualNetworkRulesForUpdate(List<UpdateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules) {
         this.updateParameters.withVirtualNetworkRules(virtualNetworkRules);
         return this;
     }
 
-    public DataLakeStoreAccountImpl withTrustedIdProvidersForUpdate(
-        List<UpdateTrustedIdProviderWithAccountParameters> trustedIdProviders) {
+    public DataLakeStoreAccountImpl
+        withTrustedIdProvidersForUpdate(List<UpdateTrustedIdProviderWithAccountParameters> trustedIdProviders) {
         this.updateParameters.withTrustedIdProviders(trustedIdProviders);
         return this;
     }

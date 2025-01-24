@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.deviceupdate.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Location model. */
+/**
+ * The Location model.
+ */
 @Fluent
-public final class Location {
+public final class Location implements JsonSerializable<Location> {
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Whether the location is primary or failover
      */
-    @JsonProperty(value = "role")
     private Role role;
 
     /**
+     * Creates an instance of Location class.
+     */
+    public Location() {
+    }
+
+    /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -33,7 +43,7 @@ public final class Location {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the Location object itself.
      */
@@ -44,7 +54,7 @@ public final class Location {
 
     /**
      * Get the role property: Whether the location is primary or failover.
-     *
+     * 
      * @return the role value.
      */
     public Role role() {
@@ -53,7 +63,7 @@ public final class Location {
 
     /**
      * Set the role property: Whether the location is primary or failover.
-     *
+     * 
      * @param role the role value to set.
      * @return the Location object itself.
      */
@@ -64,9 +74,48 @@ public final class Location {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Location from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Location if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Location.
+     */
+    public static Location fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Location deserializedLocation = new Location();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedLocation.name = reader.getString();
+                } else if ("role".equals(fieldName)) {
+                    deserializedLocation.role = Role.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLocation;
+        });
     }
 }

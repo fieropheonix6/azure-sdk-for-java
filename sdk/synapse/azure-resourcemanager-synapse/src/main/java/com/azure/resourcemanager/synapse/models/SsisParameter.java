@@ -5,86 +5,86 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Ssis parameter. */
+/**
+ * Ssis parameter.
+ */
 @Fluent
-public final class SsisParameter {
+public final class SsisParameter implements JsonSerializable<SsisParameter> {
     /*
      * Parameter id.
      */
-    @JsonProperty(value = "id")
     private Long id;
 
     /*
      * Parameter name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Parameter description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Parameter type.
      */
-    @JsonProperty(value = "dataType")
     private String dataType;
 
     /*
      * Whether parameter is required.
      */
-    @JsonProperty(value = "required")
     private Boolean required;
 
     /*
      * Whether parameter is sensitive.
      */
-    @JsonProperty(value = "sensitive")
     private Boolean sensitive;
 
     /*
      * Design default value of parameter.
      */
-    @JsonProperty(value = "designDefaultValue")
     private String designDefaultValue;
 
     /*
      * Default value of parameter.
      */
-    @JsonProperty(value = "defaultValue")
     private String defaultValue;
 
     /*
      * Default sensitive value of parameter.
      */
-    @JsonProperty(value = "sensitiveDefaultValue")
     private String sensitiveDefaultValue;
 
     /*
      * Parameter value type.
      */
-    @JsonProperty(value = "valueType")
     private String valueType;
 
     /*
      * Parameter value set.
      */
-    @JsonProperty(value = "valueSet")
     private Boolean valueSet;
 
     /*
      * Parameter reference variable.
      */
-    @JsonProperty(value = "variable")
     private String variable;
 
     /**
+     * Creates an instance of SsisParameter class.
+     */
+    public SsisParameter() {
+    }
+
+    /**
      * Get the id property: Parameter id.
-     *
+     * 
      * @return the id value.
      */
     public Long id() {
@@ -93,7 +93,7 @@ public final class SsisParameter {
 
     /**
      * Set the id property: Parameter id.
-     *
+     * 
      * @param id the id value to set.
      * @return the SsisParameter object itself.
      */
@@ -104,7 +104,7 @@ public final class SsisParameter {
 
     /**
      * Get the name property: Parameter name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -113,7 +113,7 @@ public final class SsisParameter {
 
     /**
      * Set the name property: Parameter name.
-     *
+     * 
      * @param name the name value to set.
      * @return the SsisParameter object itself.
      */
@@ -124,7 +124,7 @@ public final class SsisParameter {
 
     /**
      * Get the description property: Parameter description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -133,7 +133,7 @@ public final class SsisParameter {
 
     /**
      * Set the description property: Parameter description.
-     *
+     * 
      * @param description the description value to set.
      * @return the SsisParameter object itself.
      */
@@ -144,7 +144,7 @@ public final class SsisParameter {
 
     /**
      * Get the dataType property: Parameter type.
-     *
+     * 
      * @return the dataType value.
      */
     public String dataType() {
@@ -153,7 +153,7 @@ public final class SsisParameter {
 
     /**
      * Set the dataType property: Parameter type.
-     *
+     * 
      * @param dataType the dataType value to set.
      * @return the SsisParameter object itself.
      */
@@ -164,7 +164,7 @@ public final class SsisParameter {
 
     /**
      * Get the required property: Whether parameter is required.
-     *
+     * 
      * @return the required value.
      */
     public Boolean required() {
@@ -173,7 +173,7 @@ public final class SsisParameter {
 
     /**
      * Set the required property: Whether parameter is required.
-     *
+     * 
      * @param required the required value to set.
      * @return the SsisParameter object itself.
      */
@@ -184,7 +184,7 @@ public final class SsisParameter {
 
     /**
      * Get the sensitive property: Whether parameter is sensitive.
-     *
+     * 
      * @return the sensitive value.
      */
     public Boolean sensitive() {
@@ -193,7 +193,7 @@ public final class SsisParameter {
 
     /**
      * Set the sensitive property: Whether parameter is sensitive.
-     *
+     * 
      * @param sensitive the sensitive value to set.
      * @return the SsisParameter object itself.
      */
@@ -204,7 +204,7 @@ public final class SsisParameter {
 
     /**
      * Get the designDefaultValue property: Design default value of parameter.
-     *
+     * 
      * @return the designDefaultValue value.
      */
     public String designDefaultValue() {
@@ -213,7 +213,7 @@ public final class SsisParameter {
 
     /**
      * Set the designDefaultValue property: Design default value of parameter.
-     *
+     * 
      * @param designDefaultValue the designDefaultValue value to set.
      * @return the SsisParameter object itself.
      */
@@ -224,7 +224,7 @@ public final class SsisParameter {
 
     /**
      * Get the defaultValue property: Default value of parameter.
-     *
+     * 
      * @return the defaultValue value.
      */
     public String defaultValue() {
@@ -233,7 +233,7 @@ public final class SsisParameter {
 
     /**
      * Set the defaultValue property: Default value of parameter.
-     *
+     * 
      * @param defaultValue the defaultValue value to set.
      * @return the SsisParameter object itself.
      */
@@ -244,7 +244,7 @@ public final class SsisParameter {
 
     /**
      * Get the sensitiveDefaultValue property: Default sensitive value of parameter.
-     *
+     * 
      * @return the sensitiveDefaultValue value.
      */
     public String sensitiveDefaultValue() {
@@ -253,7 +253,7 @@ public final class SsisParameter {
 
     /**
      * Set the sensitiveDefaultValue property: Default sensitive value of parameter.
-     *
+     * 
      * @param sensitiveDefaultValue the sensitiveDefaultValue value to set.
      * @return the SsisParameter object itself.
      */
@@ -264,7 +264,7 @@ public final class SsisParameter {
 
     /**
      * Get the valueType property: Parameter value type.
-     *
+     * 
      * @return the valueType value.
      */
     public String valueType() {
@@ -273,7 +273,7 @@ public final class SsisParameter {
 
     /**
      * Set the valueType property: Parameter value type.
-     *
+     * 
      * @param valueType the valueType value to set.
      * @return the SsisParameter object itself.
      */
@@ -284,7 +284,7 @@ public final class SsisParameter {
 
     /**
      * Get the valueSet property: Parameter value set.
-     *
+     * 
      * @return the valueSet value.
      */
     public Boolean valueSet() {
@@ -293,7 +293,7 @@ public final class SsisParameter {
 
     /**
      * Set the valueSet property: Parameter value set.
-     *
+     * 
      * @param valueSet the valueSet value to set.
      * @return the SsisParameter object itself.
      */
@@ -304,7 +304,7 @@ public final class SsisParameter {
 
     /**
      * Get the variable property: Parameter reference variable.
-     *
+     * 
      * @return the variable value.
      */
     public String variable() {
@@ -313,7 +313,7 @@ public final class SsisParameter {
 
     /**
      * Set the variable property: Parameter reference variable.
-     *
+     * 
      * @param variable the variable value to set.
      * @return the SsisParameter object itself.
      */
@@ -324,9 +324,78 @@ public final class SsisParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("dataType", this.dataType);
+        jsonWriter.writeBooleanField("required", this.required);
+        jsonWriter.writeBooleanField("sensitive", this.sensitive);
+        jsonWriter.writeStringField("designDefaultValue", this.designDefaultValue);
+        jsonWriter.writeStringField("defaultValue", this.defaultValue);
+        jsonWriter.writeStringField("sensitiveDefaultValue", this.sensitiveDefaultValue);
+        jsonWriter.writeStringField("valueType", this.valueType);
+        jsonWriter.writeBooleanField("valueSet", this.valueSet);
+        jsonWriter.writeStringField("variable", this.variable);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsisParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsisParameter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsisParameter.
+     */
+    public static SsisParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsisParameter deserializedSsisParameter = new SsisParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSsisParameter.id = reader.getNullable(JsonReader::getLong);
+                } else if ("name".equals(fieldName)) {
+                    deserializedSsisParameter.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSsisParameter.description = reader.getString();
+                } else if ("dataType".equals(fieldName)) {
+                    deserializedSsisParameter.dataType = reader.getString();
+                } else if ("required".equals(fieldName)) {
+                    deserializedSsisParameter.required = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sensitive".equals(fieldName)) {
+                    deserializedSsisParameter.sensitive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("designDefaultValue".equals(fieldName)) {
+                    deserializedSsisParameter.designDefaultValue = reader.getString();
+                } else if ("defaultValue".equals(fieldName)) {
+                    deserializedSsisParameter.defaultValue = reader.getString();
+                } else if ("sensitiveDefaultValue".equals(fieldName)) {
+                    deserializedSsisParameter.sensitiveDefaultValue = reader.getString();
+                } else if ("valueType".equals(fieldName)) {
+                    deserializedSsisParameter.valueType = reader.getString();
+                } else if ("valueSet".equals(fieldName)) {
+                    deserializedSsisParameter.valueSet = reader.getNullable(JsonReader::getBoolean);
+                } else if ("variable".equals(fieldName)) {
+                    deserializedSsisParameter.variable = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsisParameter;
+        });
     }
 }

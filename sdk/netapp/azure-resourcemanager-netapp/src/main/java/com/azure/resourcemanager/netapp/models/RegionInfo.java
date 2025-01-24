@@ -7,29 +7,28 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.resourcemanager.netapp.fluent.models.RegionInfoInner;
 import java.util.List;
 
-/** An immutable client-side representation of RegionInfo. */
+/**
+ * An immutable client-side representation of RegionInfo.
+ */
 public interface RegionInfo {
     /**
-     * Gets the storageToNetworkProximity property: Storage to Network Proximity
-     *
-     * <p>Provides storage to network proximity information in the region.
-     *
+     * Gets the storageToNetworkProximity property: Provides storage to network proximity information in the region.
+     * 
      * @return the storageToNetworkProximity value.
      */
     RegionStorageToNetworkProximity storageToNetworkProximity();
 
     /**
-     * Gets the availabilityZoneMappings property: Logical availability zone mappings.
-     *
-     * <p>Provides logical availability zone mappings for the subscription for a region.
-     *
+     * Gets the availabilityZoneMappings property: Provides logical availability zone mappings for the subscription for
+     * a region.
+     * 
      * @return the availabilityZoneMappings value.
      */
     List<RegionInfoAvailabilityZoneMappingsItem> availabilityZoneMappings();
 
     /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.RegionInfoInner object.
-     *
+     * 
      * @return the inner object.
      */
     RegionInfoInner innerModel();

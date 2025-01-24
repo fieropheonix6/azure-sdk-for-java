@@ -6,46 +6,50 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.Access;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RouteFilterRuleType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Route Filter Rule Resource. */
+/**
+ * Route Filter Rule Resource.
+ */
 @Fluent
-public final class RouteFilterRulePropertiesFormat {
+public final class RouteFilterRulePropertiesFormat implements JsonSerializable<RouteFilterRulePropertiesFormat> {
     /*
      * The access type of the rule.
      */
-    @JsonProperty(value = "access", required = true)
     private Access access;
 
     /*
      * The rule type of the rule.
      */
-    @JsonProperty(value = "routeFilterRuleType", required = true)
     private RouteFilterRuleType routeFilterRuleType;
 
     /*
      * The collection for bgp community values to filter on. e.g. ['12076:5010','12076:5020'].
      */
-    @JsonProperty(value = "communities", required = true)
     private List<String> communities;
 
     /*
      * The provisioning state of the route filter rule resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of RouteFilterRulePropertiesFormat class. */
+    /**
+     * Creates an instance of RouteFilterRulePropertiesFormat class.
+     */
     public RouteFilterRulePropertiesFormat() {
     }
 
     /**
      * Get the access property: The access type of the rule.
-     *
+     * 
      * @return the access value.
      */
     public Access access() {
@@ -54,7 +58,7 @@ public final class RouteFilterRulePropertiesFormat {
 
     /**
      * Set the access property: The access type of the rule.
-     *
+     * 
      * @param access the access value to set.
      * @return the RouteFilterRulePropertiesFormat object itself.
      */
@@ -65,7 +69,7 @@ public final class RouteFilterRulePropertiesFormat {
 
     /**
      * Get the routeFilterRuleType property: The rule type of the rule.
-     *
+     * 
      * @return the routeFilterRuleType value.
      */
     public RouteFilterRuleType routeFilterRuleType() {
@@ -74,7 +78,7 @@ public final class RouteFilterRulePropertiesFormat {
 
     /**
      * Set the routeFilterRuleType property: The rule type of the rule.
-     *
+     * 
      * @param routeFilterRuleType the routeFilterRuleType value to set.
      * @return the RouteFilterRulePropertiesFormat object itself.
      */
@@ -86,7 +90,7 @@ public final class RouteFilterRulePropertiesFormat {
     /**
      * Get the communities property: The collection for bgp community values to filter on. e.g.
      * ['12076:5010','12076:5020'].
-     *
+     * 
      * @return the communities value.
      */
     public List<String> communities() {
@@ -96,7 +100,7 @@ public final class RouteFilterRulePropertiesFormat {
     /**
      * Set the communities property: The collection for bgp community values to filter on. e.g.
      * ['12076:5010','12076:5020'].
-     *
+     * 
      * @param communities the communities value to set.
      * @return the RouteFilterRulePropertiesFormat object itself.
      */
@@ -107,7 +111,7 @@ public final class RouteFilterRulePropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the route filter rule resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -116,29 +120,76 @@ public final class RouteFilterRulePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (access() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property access in model RouteFilterRulePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property access in model RouteFilterRulePropertiesFormat"));
         }
         if (routeFilterRuleType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property routeFilterRuleType in model RouteFilterRulePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property routeFilterRuleType in model RouteFilterRulePropertiesFormat"));
         }
         if (communities() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property communities in model RouteFilterRulePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property communities in model RouteFilterRulePropertiesFormat"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RouteFilterRulePropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("access", this.access == null ? null : this.access.toString());
+        jsonWriter.writeStringField("routeFilterRuleType",
+            this.routeFilterRuleType == null ? null : this.routeFilterRuleType.toString());
+        jsonWriter.writeArrayField("communities", this.communities, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteFilterRulePropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteFilterRulePropertiesFormat if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RouteFilterRulePropertiesFormat.
+     */
+    public static RouteFilterRulePropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteFilterRulePropertiesFormat deserializedRouteFilterRulePropertiesFormat
+                = new RouteFilterRulePropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("access".equals(fieldName)) {
+                    deserializedRouteFilterRulePropertiesFormat.access = Access.fromString(reader.getString());
+                } else if ("routeFilterRuleType".equals(fieldName)) {
+                    deserializedRouteFilterRulePropertiesFormat.routeFilterRuleType
+                        = RouteFilterRuleType.fromString(reader.getString());
+                } else if ("communities".equals(fieldName)) {
+                    List<String> communities = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRouteFilterRulePropertiesFormat.communities = communities;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRouteFilterRulePropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteFilterRulePropertiesFormat;
+        });
+    }
 }

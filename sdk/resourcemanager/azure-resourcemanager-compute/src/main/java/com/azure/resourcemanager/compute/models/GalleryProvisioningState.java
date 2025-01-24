@@ -5,47 +5,66 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * The current state of the gallery or gallery artifact.
- *
- * <p>The provisioning state, which only appears in the response.
+ * 
+ * The provisioning state, which only appears in the response.
  */
 public final class GalleryProvisioningState extends ExpandableStringEnum<GalleryProvisioningState> {
-    /** Static value Creating for GalleryProvisioningState. */
+    /**
+     * Static value Creating for GalleryProvisioningState.
+     */
     public static final GalleryProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for GalleryProvisioningState. */
+    /**
+     * Static value Updating for GalleryProvisioningState.
+     */
     public static final GalleryProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Failed for GalleryProvisioningState. */
+    /**
+     * Static value Failed for GalleryProvisioningState.
+     */
     public static final GalleryProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Succeeded for GalleryProvisioningState. */
+    /**
+     * Static value Succeeded for GalleryProvisioningState.
+     */
     public static final GalleryProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Deleting for GalleryProvisioningState. */
+    /**
+     * Static value Deleting for GalleryProvisioningState.
+     */
     public static final GalleryProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Migrating for GalleryProvisioningState. */
+    /**
+     * Static value Migrating for GalleryProvisioningState.
+     */
     public static final GalleryProvisioningState MIGRATING = fromString("Migrating");
 
     /**
+     * Creates a new instance of GalleryProvisioningState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GalleryProvisioningState() {
+    }
+
+    /**
      * Creates or finds a GalleryProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GalleryProvisioningState.
      */
-    @JsonCreator
     public static GalleryProvisioningState fromString(String name) {
         return fromString(name, GalleryProvisioningState.class);
     }
 
     /**
      * Gets known GalleryProvisioningState values.
-     *
+     * 
      * @return known GalleryProvisioningState values.
      */
     public static Collection<GalleryProvisioningState> values() {

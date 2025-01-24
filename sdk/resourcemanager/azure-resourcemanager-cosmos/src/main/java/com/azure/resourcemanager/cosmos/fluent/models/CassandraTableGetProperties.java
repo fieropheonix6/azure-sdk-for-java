@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.CassandraTableGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.CassandraTableGetPropertiesResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of an Azure Cosmos DB Cassandra table. */
+/**
+ * The properties of an Azure Cosmos DB Cassandra table.
+ */
 @Fluent
-public final class CassandraTableGetProperties {
+public final class CassandraTableGetProperties implements JsonSerializable<CassandraTableGetProperties> {
     /*
      * The resource property.
      */
-    @JsonProperty(value = "resource")
     private CassandraTableGetPropertiesResource resource;
 
     /*
      * The options property.
      */
-    @JsonProperty(value = "options")
     private CassandraTableGetPropertiesOptions options;
 
     /**
+     * Creates an instance of CassandraTableGetProperties class.
+     */
+    public CassandraTableGetProperties() {
+    }
+
+    /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public CassandraTableGetPropertiesResource resource() {
@@ -35,7 +45,7 @@ public final class CassandraTableGetProperties {
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the CassandraTableGetProperties object itself.
      */
@@ -46,7 +56,7 @@ public final class CassandraTableGetProperties {
 
     /**
      * Get the options property: The options property.
-     *
+     * 
      * @return the options value.
      */
     public CassandraTableGetPropertiesOptions options() {
@@ -55,7 +65,7 @@ public final class CassandraTableGetProperties {
 
     /**
      * Set the options property: The options property.
-     *
+     * 
      * @param options the options value to set.
      * @return the CassandraTableGetProperties object itself.
      */
@@ -66,7 +76,7 @@ public final class CassandraTableGetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -76,5 +86,46 @@ public final class CassandraTableGetProperties {
         if (options() != null) {
             options().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resource", this.resource);
+        jsonWriter.writeJsonField("options", this.options);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CassandraTableGetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CassandraTableGetProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CassandraTableGetProperties.
+     */
+    public static CassandraTableGetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CassandraTableGetProperties deserializedCassandraTableGetProperties = new CassandraTableGetProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resource".equals(fieldName)) {
+                    deserializedCassandraTableGetProperties.resource
+                        = CassandraTableGetPropertiesResource.fromJson(reader);
+                } else if ("options".equals(fieldName)) {
+                    deserializedCassandraTableGetProperties.options
+                        = CassandraTableGetPropertiesOptions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCassandraTableGetProperties;
+        });
     }
 }

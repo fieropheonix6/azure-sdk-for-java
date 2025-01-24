@@ -6,29 +6,36 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the server certificate details using common name. */
+/**
+ * Describes the server certificate details using common name.
+ */
 @Fluent
-public final class ServerCertificateCommonName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerCertificateCommonName.class);
-
+public final class ServerCertificateCommonName implements JsonSerializable<ServerCertificateCommonName> {
     /*
      * The common name of the server certificate.
      */
-    @JsonProperty(value = "certificateCommonName", required = true)
     private String certificateCommonName;
 
     /*
      * The issuer thumbprint of the server certificate.
      */
-    @JsonProperty(value = "certificateIssuerThumbprint", required = true)
     private String certificateIssuerThumbprint;
 
     /**
+     * Creates an instance of ServerCertificateCommonName class.
+     */
+    public ServerCertificateCommonName() {
+    }
+
+    /**
      * Get the certificateCommonName property: The common name of the server certificate.
-     *
+     * 
      * @return the certificateCommonName value.
      */
     public String certificateCommonName() {
@@ -37,7 +44,7 @@ public final class ServerCertificateCommonName {
 
     /**
      * Set the certificateCommonName property: The common name of the server certificate.
-     *
+     * 
      * @param certificateCommonName the certificateCommonName value to set.
      * @return the ServerCertificateCommonName object itself.
      */
@@ -48,7 +55,7 @@ public final class ServerCertificateCommonName {
 
     /**
      * Get the certificateIssuerThumbprint property: The issuer thumbprint of the server certificate.
-     *
+     * 
      * @return the certificateIssuerThumbprint value.
      */
     public String certificateIssuerThumbprint() {
@@ -57,7 +64,7 @@ public final class ServerCertificateCommonName {
 
     /**
      * Set the certificateIssuerThumbprint property: The issuer thumbprint of the server certificate.
-     *
+     * 
      * @param certificateIssuerThumbprint the certificateIssuerThumbprint value to set.
      * @return the ServerCertificateCommonName object itself.
      */
@@ -68,21 +75,61 @@ public final class ServerCertificateCommonName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (certificateCommonName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property certificateCommonName in model ServerCertificateCommonName"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property certificateCommonName in model ServerCertificateCommonName"));
         }
         if (certificateIssuerThumbprint() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property certificateIssuerThumbprint in model ServerCertificateCommonName"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property certificateIssuerThumbprint in model ServerCertificateCommonName"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServerCertificateCommonName.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("certificateCommonName", this.certificateCommonName);
+        jsonWriter.writeStringField("certificateIssuerThumbprint", this.certificateIssuerThumbprint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerCertificateCommonName from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerCertificateCommonName if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerCertificateCommonName.
+     */
+    public static ServerCertificateCommonName fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerCertificateCommonName deserializedServerCertificateCommonName = new ServerCertificateCommonName();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("certificateCommonName".equals(fieldName)) {
+                    deserializedServerCertificateCommonName.certificateCommonName = reader.getString();
+                } else if ("certificateIssuerThumbprint".equals(fieldName)) {
+                    deserializedServerCertificateCommonName.certificateIssuerThumbprint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerCertificateCommonName;
+        });
     }
 }

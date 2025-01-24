@@ -9,40 +9,36 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.AzureResourceProt
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureResourceProtectionIntentTests {
-    @Test
-    public void testDeserialize() {
-        AzureResourceProtectionIntent model =
-            BinaryData
-                .fromString(
-                    "{\"protectionIntentItemType\":\"AzureResourceItem\",\"friendlyName\":\"toaukhfkvcisiz\",\"backupManagementType\":\"AzureSql\",\"sourceResourceId\":\"dsxjwuivedw\",\"itemId\":\"yeew\",\"policyId\":\"iqbps\",\"protectionState\":\"NotProtected\"}")
-                .toObject(AzureResourceProtectionIntent.class);
-        Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
-        Assertions.assertEquals("dsxjwuivedw", model.sourceResourceId());
-        Assertions.assertEquals("yeew", model.itemId());
-        Assertions.assertEquals("iqbps", model.policyId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureResourceProtectionIntent model = BinaryData.fromString(
+            "{\"protectionIntentItemType\":\"AzureResourceItem\",\"friendlyName\":\"pvn\",\"backupManagementType\":\"Invalid\",\"sourceResourceId\":\"txkyctwwgzwxjlm\",\"itemId\":\"vogygzyvneez\",\"policyId\":\"fg\",\"protectionState\":\"NotProtected\"}")
+            .toObject(AzureResourceProtectionIntent.class);
+        Assertions.assertEquals(BackupManagementType.INVALID, model.backupManagementType());
+        Assertions.assertEquals("txkyctwwgzwxjlm", model.sourceResourceId());
+        Assertions.assertEquals("vogygzyvneez", model.itemId());
+        Assertions.assertEquals("fg", model.policyId());
         Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.protectionState());
-        Assertions.assertEquals("toaukhfkvcisiz", model.friendlyName());
+        Assertions.assertEquals("pvn", model.friendlyName());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureResourceProtectionIntent model =
-            new AzureResourceProtectionIntent()
-                .withBackupManagementType(BackupManagementType.AZURE_SQL)
-                .withSourceResourceId("dsxjwuivedw")
-                .withItemId("yeew")
-                .withPolicyId("iqbps")
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureResourceProtectionIntent model
+            = new AzureResourceProtectionIntent().withBackupManagementType(BackupManagementType.INVALID)
+                .withSourceResourceId("txkyctwwgzwxjlm")
+                .withItemId("vogygzyvneez")
+                .withPolicyId("fg")
                 .withProtectionState(ProtectionStatus.NOT_PROTECTED)
-                .withFriendlyName("toaukhfkvcisiz");
+                .withFriendlyName("pvn");
         model = BinaryData.fromObject(model).toObject(AzureResourceProtectionIntent.class);
-        Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
-        Assertions.assertEquals("dsxjwuivedw", model.sourceResourceId());
-        Assertions.assertEquals("yeew", model.itemId());
-        Assertions.assertEquals("iqbps", model.policyId());
+        Assertions.assertEquals(BackupManagementType.INVALID, model.backupManagementType());
+        Assertions.assertEquals("txkyctwwgzwxjlm", model.sourceResourceId());
+        Assertions.assertEquals("vogygzyvneez", model.itemId());
+        Assertions.assertEquals("fg", model.policyId());
         Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.protectionState());
-        Assertions.assertEquals("toaukhfkvcisiz", model.friendlyName());
+        Assertions.assertEquals("pvn", model.friendlyName());
     }
 }

@@ -11,38 +11,29 @@ import com.azure.resourcemanager.hdinsight.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterIdentityTests {
-    @Test
-    public void testDeserialize() {
-        ClusterIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"u\",\"tenantId\":\"a\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"tthzrvqd\":{\"principalId\":\"vvtpgvdfgio\",\"clientId\":\"ftutqxlngxlefgu\",\"tenantId\":\"xkrxdqmi\"},\"nyktzlcuiy\":{\"principalId\":\"bhj\",\"clientId\":\"igeho\",\"tenantId\":\"bowsk\"},\"ocpecfvmmco\":{\"principalId\":\"qyw\",\"clientId\":\"drvyn\",\"tenantId\":\"gpphrcgyn\"}}}")
-                .toObject(ClusterIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
-        Assertions.assertEquals("xkrxdqmi", model.userAssignedIdentities().get("tthzrvqd").tenantId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ClusterIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"wpr\",\"tenantId\":\"lve\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"tjrip\":{\"principalId\":\"mkh\",\"clientId\":\"obbc\",\"tenantId\":\"s\"},\"t\":{\"principalId\":\"bpbewtghfgb\",\"clientId\":\"gw\",\"tenantId\":\"vlvqhjkbegi\"},\"rknftguvriuhprwm\":{\"principalId\":\"xiebwwaloayqcg\",\"clientId\":\"tzjuzgwyzmhtxo\",\"tenantId\":\"mtsavjcbpwxqp\"}}}")
+            .toObject(ClusterIdentity.class);
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals("s", model.userAssignedIdentities().get("tjrip").tenantId());
     }
 
-    @Test
-    public void testSerialize() {
-        ClusterIdentity model =
-            new ClusterIdentity()
-                .withType(ResourceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "tthzrvqd",
-                        new UserAssignedIdentity().withTenantId("xkrxdqmi"),
-                        "nyktzlcuiy",
-                        new UserAssignedIdentity().withTenantId("bowsk"),
-                        "ocpecfvmmco",
-                        new UserAssignedIdentity().withTenantId("gpphrcgyn")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ClusterIdentity model = new ClusterIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("tjrip", new UserAssignedIdentity().withTenantId("s"), "t",
+                new UserAssignedIdentity().withTenantId("vlvqhjkbegi"), "rknftguvriuhprwm",
+                new UserAssignedIdentity().withTenantId("mtsavjcbpwxqp")));
         model = BinaryData.fromObject(model).toObject(ClusterIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
-        Assertions.assertEquals("xkrxdqmi", model.userAssignedIdentities().get("tthzrvqd").tenantId());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals("s", model.userAssignedIdentities().get("tjrip").tenantId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -5,61 +5,62 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Response for the ListServiceTags API service call. */
+/**
+ * Response for the ListServiceTags API service call.
+ */
 @Immutable
-public final class ServiceTagsListResultInner {
+public final class ServiceTagsListResultInner implements JsonSerializable<ServiceTagsListResultInner> {
     /*
      * The name of the cloud.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The ID of the cloud.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The azure resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The iteration number.
      */
-    @JsonProperty(value = "changeNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String changeNumber;
 
     /*
      * The name of the cloud.
      */
-    @JsonProperty(value = "cloud", access = JsonProperty.Access.WRITE_ONLY)
     private String cloud;
 
     /*
      * The list of service tag information resources.
      */
-    @JsonProperty(value = "values", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServiceTagInformationInner> values;
 
     /*
      * The URL to get next page of service tag information resources.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ServiceTagsListResultInner class. */
+    /**
+     * Creates an instance of ServiceTagsListResultInner class.
+     */
     public ServiceTagsListResultInner() {
     }
 
     /**
      * Get the name property: The name of the cloud.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,7 +69,7 @@ public final class ServiceTagsListResultInner {
 
     /**
      * Get the id property: The ID of the cloud.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -77,7 +78,7 @@ public final class ServiceTagsListResultInner {
 
     /**
      * Get the type property: The azure resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -86,7 +87,7 @@ public final class ServiceTagsListResultInner {
 
     /**
      * Get the changeNumber property: The iteration number.
-     *
+     * 
      * @return the changeNumber value.
      */
     public String changeNumber() {
@@ -95,7 +96,7 @@ public final class ServiceTagsListResultInner {
 
     /**
      * Get the cloud property: The name of the cloud.
-     *
+     * 
      * @return the cloud value.
      */
     public String cloud() {
@@ -104,7 +105,7 @@ public final class ServiceTagsListResultInner {
 
     /**
      * Get the values property: The list of service tag information resources.
-     *
+     * 
      * @return the values value.
      */
     public List<ServiceTagInformationInner> values() {
@@ -113,7 +114,7 @@ public final class ServiceTagsListResultInner {
 
     /**
      * Get the nextLink property: The URL to get next page of service tag information resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -122,12 +123,61 @@ public final class ServiceTagsListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (values() != null) {
             values().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceTagsListResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceTagsListResultInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceTagsListResultInner.
+     */
+    public static ServiceTagsListResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceTagsListResultInner deserializedServiceTagsListResultInner = new ServiceTagsListResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedServiceTagsListResultInner.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedServiceTagsListResultInner.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServiceTagsListResultInner.type = reader.getString();
+                } else if ("changeNumber".equals(fieldName)) {
+                    deserializedServiceTagsListResultInner.changeNumber = reader.getString();
+                } else if ("cloud".equals(fieldName)) {
+                    deserializedServiceTagsListResultInner.cloud = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    List<ServiceTagInformationInner> values
+                        = reader.readArray(reader1 -> ServiceTagInformationInner.fromJson(reader1));
+                    deserializedServiceTagsListResultInner.values = values;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedServiceTagsListResultInner.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceTagsListResultInner;
+        });
     }
 }

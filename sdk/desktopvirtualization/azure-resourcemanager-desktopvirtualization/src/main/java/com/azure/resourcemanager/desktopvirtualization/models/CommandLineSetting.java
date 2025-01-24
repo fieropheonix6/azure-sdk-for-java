@@ -5,34 +5,50 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CommandLineSetting. */
+/**
+ * Specifies whether this published application can be launched with command line arguments provided by the client,
+ * command line arguments specified at publish time, or no command line arguments at all.
+ */
 public final class CommandLineSetting extends ExpandableStringEnum<CommandLineSetting> {
-    /** Static value DoNotAllow for CommandLineSetting. */
+    /**
+     * Static value DoNotAllow for CommandLineSetting.
+     */
     public static final CommandLineSetting DO_NOT_ALLOW = fromString("DoNotAllow");
 
-    /** Static value Allow for CommandLineSetting. */
+    /**
+     * Static value Allow for CommandLineSetting.
+     */
     public static final CommandLineSetting ALLOW = fromString("Allow");
 
-    /** Static value Require for CommandLineSetting. */
+    /**
+     * Static value Require for CommandLineSetting.
+     */
     public static final CommandLineSetting REQUIRE = fromString("Require");
 
     /**
+     * Creates a new instance of CommandLineSetting value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CommandLineSetting() {
+    }
+
+    /**
      * Creates or finds a CommandLineSetting from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CommandLineSetting.
      */
-    @JsonCreator
     public static CommandLineSetting fromString(String name) {
         return fromString(name, CommandLineSetting.class);
     }
 
     /**
      * Gets known CommandLineSetting values.
-     *
+     * 
      * @return known CommandLineSetting values.
      */
     public static Collection<CommandLineSetting> values() {

@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AccountFilters. */
+/**
+ * Resource collection API of AccountFilters.
+ */
 public interface AccountFilters {
     /**
      * List Account Filters
-     *
-     * <p>List Account Filters in the Media Services account.
-     *
+     * 
+     * List Account Filters in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,9 +28,9 @@ public interface AccountFilters {
 
     /**
      * List Account Filters
-     *
-     * <p>List Account Filters in the Media Services account.
-     *
+     * 
+     * List Account Filters in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
@@ -41,9 +43,26 @@ public interface AccountFilters {
 
     /**
      * Get an Account Filter.
-     *
-     * <p>Get the details of an Account Filter in the Media Services account.
-     *
+     * 
+     * Get the details of an Account Filter in the Media Services account.
+     * 
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param filterName The Account Filter name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of an Account Filter in the Media Services account along with {@link Response}.
+     */
+    Response<AccountFilter> getWithResponse(String resourceGroupName, String accountName, String filterName,
+        Context context);
+
+    /**
+     * Get an Account Filter.
+     * 
+     * Get the details of an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -55,41 +74,10 @@ public interface AccountFilters {
     AccountFilter get(String resourceGroupName, String accountName, String filterName);
 
     /**
-     * Get an Account Filter.
-     *
-     * <p>Get the details of an Account Filter in the Media Services account.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param filterName The Account Filter name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of an Account Filter in the Media Services account along with {@link Response}.
-     */
-    Response<AccountFilter> getWithResponse(
-        String resourceGroupName, String accountName, String filterName, Context context);
-
-    /**
      * Delete an Account Filter.
-     *
-     * <p>Deletes an Account Filter in the Media Services account.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param filterName The Account Filter name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String accountName, String filterName);
-
-    /**
-     * Delete an Account Filter.
-     *
-     * <p>Deletes an Account Filter in the Media Services account.
-     *
+     * 
+     * Deletes an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -102,10 +90,24 @@ public interface AccountFilters {
     Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String filterName, Context context);
 
     /**
+     * Delete an Account Filter.
+     * 
+     * Deletes an Account Filter in the Media Services account.
+     * 
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param filterName The Account Filter name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String accountName, String filterName);
+
+    /**
      * Get an Account Filter.
-     *
-     * <p>Get the details of an Account Filter in the Media Services account.
-     *
+     * 
+     * Get the details of an Account Filter in the Media Services account.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -116,9 +118,9 @@ public interface AccountFilters {
 
     /**
      * Get an Account Filter.
-     *
-     * <p>Get the details of an Account Filter in the Media Services account.
-     *
+     * 
+     * Get the details of an Account Filter in the Media Services account.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -130,9 +132,9 @@ public interface AccountFilters {
 
     /**
      * Delete an Account Filter.
-     *
-     * <p>Deletes an Account Filter in the Media Services account.
-     *
+     * 
+     * Deletes an Account Filter in the Media Services account.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -142,9 +144,9 @@ public interface AccountFilters {
 
     /**
      * Delete an Account Filter.
-     *
-     * <p>Deletes an Account Filter in the Media Services account.
-     *
+     * 
+     * Deletes an Account Filter in the Media Services account.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -156,7 +158,7 @@ public interface AccountFilters {
 
     /**
      * Begins definition for a new AccountFilter resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new AccountFilter definition.
      */

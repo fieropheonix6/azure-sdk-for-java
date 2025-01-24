@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,10 +16,12 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "type",
     defaultImpl = Authentication.class)
 @JsonTypeName("Authentication")
-@JsonSubTypes({@JsonSubTypes.Type(name = "Sas", value = SasAuthentication.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "Sas", value = SasAuthentication.class) })
 @Immutable
 public class Authentication {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Authentication.class);
+    /** Creates an instance of Authentication class. */
+    public Authentication() {
+    }
 
     /**
      * Validates the instance.

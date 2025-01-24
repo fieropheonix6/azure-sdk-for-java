@@ -5,27 +5,29 @@
 package com.azure.resourcemanager.costmanagement.implementation;
 
 import com.azure.resourcemanager.costmanagement.fluent.models.ExportExecutionListResultInner;
-import com.azure.resourcemanager.costmanagement.models.ExportExecution;
+import com.azure.resourcemanager.costmanagement.fluent.models.ExportRunInner;
 import com.azure.resourcemanager.costmanagement.models.ExportExecutionListResult;
+import com.azure.resourcemanager.costmanagement.models.ExportRun;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class ExportExecutionListResultImpl implements ExportExecutionListResult {
     private ExportExecutionListResultInner innerObject;
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    ExportExecutionListResultImpl(
-        ExportExecutionListResultInner innerObject,
+    ExportExecutionListResultImpl(ExportExecutionListResultInner innerObject,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
 
-    public List<ExportExecution> value() {
-        List<ExportExecution> inner = this.innerModel().value();
+    public List<ExportRun> value() {
+        List<ExportRunInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections.unmodifiableList(inner);
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new ExportRunImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

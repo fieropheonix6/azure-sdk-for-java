@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.administration;
 
+import com.azure.analytics.purview.administration.implementation.ResourceSetRulesImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -17,125 +18,129 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
-/** Initializes a new instance of the synchronous PurviewAccountClient type. */
+/**
+ * Initializes a new instance of the synchronous PurviewAccountClient type.
+ */
 @ServiceClient(builder = ResourceSetRulesClientBuilder.class)
 public final class ResourceSetRulesClient {
-    @Generated private final ResourceSetRulesAsyncClient client;
+    @Generated
+    private final ResourceSetRulesImpl serviceClient;
 
     /**
      * Initializes an instance of ResourceSetRulesClient class.
-     *
-     * @param client the async client.
+     * 
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    ResourceSetRulesClient(ResourceSetRulesAsyncClient client) {
-        this.client = client;
+    ResourceSetRulesClient(ResourceSetRulesImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
      * Get a resource set config service model.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     advancedResourceSet: {
-     *         modifiedAt: OffsetDateTime
-     *         resourceSetProcessing: String(Default/Advanced)
+     *     advancedResourceSet (Optional): {
+     *         modifiedAt: OffsetDateTime (Optional)
+     *         resourceSetProcessing: String(Default/Advanced) (Optional)
      *     }
-     *     name: String
-     *     pathPatternConfig: {
-     *         acceptedPatterns: [
-     *             {
-     *                 createdBy: String
-     *                 filterType: String(Pattern/Regex)
-     *                 lastUpdatedTimestamp: Long
-     *                 modifiedBy: String
-     *                 name: String
-     *                 path: String
+     *     name: String (Optional)
+     *     pathPatternConfig (Optional): {
+     *         acceptedPatterns (Optional): [
+     *              (Optional){
+     *                 createdBy: String (Optional)
+     *                 filterType: String(Pattern/Regex) (Optional)
+     *                 lastUpdatedTimestamp: Long (Optional)
+     *                 modifiedBy: String (Optional)
+     *                 name: String (Required)
+     *                 path: String (Required)
      *             }
      *         ]
-     *         complexReplacers: [
-     *             {
-     *                 createdBy: String
-     *                 description: String
-     *                 disabled: Boolean
-     *                 disableRecursiveReplacerApplication: Boolean
-     *                 lastUpdatedTimestamp: Long
-     *                 modifiedBy: String
-     *                 name: String
-     *                 typeName: String
+     *         complexReplacers (Optional): [
+     *              (Optional){
+     *                 createdBy: String (Optional)
+     *                 description: String (Optional)
+     *                 disabled: Boolean (Optional)
+     *                 disableRecursiveReplacerApplication: Boolean (Optional)
+     *                 lastUpdatedTimestamp: Long (Optional)
+     *                 modifiedBy: String (Optional)
+     *                 name: String (Optional)
+     *                 typeName: String (Optional)
      *             }
      *         ]
-     *         createdBy: String
-     *         enableDefaultPatterns: boolean
-     *         lastUpdatedTimestamp: Long
-     *         modifiedBy: String
-     *         normalizationRules: [
-     *             {
-     *                 description: String
-     *                 disabled: Boolean
-     *                 dynamicReplacement: Boolean
-     *                 entityTypes: [
-     *                     String
+     *         createdBy: String (Required)
+     *         enableDefaultPatterns: boolean (Required)
+     *         lastUpdatedTimestamp: Long (Optional)
+     *         modifiedBy: String (Optional)
+     *         normalizationRules (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 disabled: Boolean (Optional)
+     *                 dynamicReplacement: Boolean (Optional)
+     *                 entityTypes (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 lastUpdatedTimestamp: Long
-     *                 name: String
-     *                 regex: {
-     *                     maxDigits: Integer
-     *                     maxLetters: Integer
-     *                     minDashes: Integer
-     *                     minDigits: Integer
-     *                     minDigitsOrLetters: Integer
-     *                     minDots: Integer
-     *                     minHex: Integer
-     *                     minLetters: Integer
-     *                     minUnderscores: Integer
-     *                     options: Integer
-     *                     regexStr: String
+     *                 lastUpdatedTimestamp: Long (Optional)
+     *                 name: String (Optional)
+     *                 regex (Optional): {
+     *                     maxDigits: Integer (Optional)
+     *                     maxLetters: Integer (Optional)
+     *                     minDashes: Integer (Optional)
+     *                     minDigits: Integer (Optional)
+     *                     minDigitsOrLetters: Integer (Optional)
+     *                     minDots: Integer (Optional)
+     *                     minHex: Integer (Optional)
+     *                     minLetters: Integer (Optional)
+     *                     minUnderscores: Integer (Optional)
+     *                     options: Integer (Optional)
+     *                     regexStr: String (Optional)
      *                 }
-     *                 replaceWith: String
-     *                 version: Double
+     *                 replaceWith: String (Optional)
+     *                 version: Double (Optional)
      *             }
      *         ]
-     *         regexReplacers: [
-     *             {
-     *                 condition: String
-     *                 createdBy: String
-     *                 description: String
-     *                 disabled: boolean
-     *                 disableRecursiveReplacerApplication: Boolean
-     *                 doNotReplaceRegex: (recursive schema, see doNotReplaceRegex above)
-     *                 lastUpdatedTimestamp: Long
-     *                 modifiedBy: String
-     *                 name: String
-     *                 regex: (recursive schema, see regex above)
-     *                 replaceWith: String
+     *         regexReplacers (Optional): [
+     *              (Optional){
+     *                 condition: String (Optional)
+     *                 createdBy: String (Optional)
+     *                 description: String (Optional)
+     *                 disabled: boolean (Required)
+     *                 disableRecursiveReplacerApplication: Boolean (Optional)
+     *                 doNotReplaceRegex (Optional): (recursive schema, see doNotReplaceRegex above)
+     *                 lastUpdatedTimestamp: Long (Optional)
+     *                 modifiedBy: String (Optional)
+     *                 name: String (Required)
+     *                 regex (Optional): (recursive schema, see regex above)
+     *                 replaceWith: String (Optional)
      *             }
      *         ]
-     *         rejectedPatterns: [
+     *         rejectedPatterns (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         scopedRules: [
-     *             {
-     *                 bindingUrl: String
-     *                 rules: [
-     *                     {
-     *                         displayName: String
-     *                         isResourceSet: Boolean
-     *                         lastUpdatedTimestamp: Long
-     *                         name: String
-     *                         qualifiedName: String
+     *         scopedRules (Optional): [
+     *              (Optional){
+     *                 bindingUrl: String (Required)
+     *                 rules (Optional): [
+     *                      (Optional){
+     *                         displayName: String (Optional)
+     *                         isResourceSet: Boolean (Optional)
+     *                         lastUpdatedTimestamp: Long (Optional)
+     *                         name: String (Optional)
+     *                         qualifiedName: String (Required)
      *                     }
      *                 ]
-     *                 storeType: String
+     *                 storeType: String (Required)
      *             }
      *         ]
-     *         version: Integer
+     *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -146,215 +151,218 @@ public final class ResourceSetRulesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getResourceSetRuleWithResponse(RequestOptions requestOptions) {
-        return this.client.getResourceSetRuleWithResponse(requestOptions).block();
+        return this.serviceClient.getResourceSetRuleWithResponse(requestOptions);
     }
 
     /**
      * Creates or updates an resource set config.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     advancedResourceSet: {
-     *         modifiedAt: OffsetDateTime
-     *         resourceSetProcessing: String(Default/Advanced)
+     *     advancedResourceSet (Optional): {
+     *         modifiedAt: OffsetDateTime (Optional)
+     *         resourceSetProcessing: String(Default/Advanced) (Optional)
      *     }
-     *     name: String
-     *     pathPatternConfig: {
-     *         acceptedPatterns: [
-     *             {
-     *                 createdBy: String
-     *                 filterType: String(Pattern/Regex)
-     *                 lastUpdatedTimestamp: Long
-     *                 modifiedBy: String
-     *                 name: String
-     *                 path: String
+     *     name: String (Optional)
+     *     pathPatternConfig (Optional): {
+     *         acceptedPatterns (Optional): [
+     *              (Optional){
+     *                 createdBy: String (Optional)
+     *                 filterType: String(Pattern/Regex) (Optional)
+     *                 lastUpdatedTimestamp: Long (Optional)
+     *                 modifiedBy: String (Optional)
+     *                 name: String (Required)
+     *                 path: String (Required)
      *             }
      *         ]
-     *         complexReplacers: [
-     *             {
-     *                 createdBy: String
-     *                 description: String
-     *                 disabled: Boolean
-     *                 disableRecursiveReplacerApplication: Boolean
-     *                 lastUpdatedTimestamp: Long
-     *                 modifiedBy: String
-     *                 name: String
-     *                 typeName: String
+     *         complexReplacers (Optional): [
+     *              (Optional){
+     *                 createdBy: String (Optional)
+     *                 description: String (Optional)
+     *                 disabled: Boolean (Optional)
+     *                 disableRecursiveReplacerApplication: Boolean (Optional)
+     *                 lastUpdatedTimestamp: Long (Optional)
+     *                 modifiedBy: String (Optional)
+     *                 name: String (Optional)
+     *                 typeName: String (Optional)
      *             }
      *         ]
-     *         createdBy: String
-     *         enableDefaultPatterns: boolean
-     *         lastUpdatedTimestamp: Long
-     *         modifiedBy: String
-     *         normalizationRules: [
-     *             {
-     *                 description: String
-     *                 disabled: Boolean
-     *                 dynamicReplacement: Boolean
-     *                 entityTypes: [
-     *                     String
+     *         createdBy: String (Required)
+     *         enableDefaultPatterns: boolean (Required)
+     *         lastUpdatedTimestamp: Long (Optional)
+     *         modifiedBy: String (Optional)
+     *         normalizationRules (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 disabled: Boolean (Optional)
+     *                 dynamicReplacement: Boolean (Optional)
+     *                 entityTypes (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 lastUpdatedTimestamp: Long
-     *                 name: String
-     *                 regex: {
-     *                     maxDigits: Integer
-     *                     maxLetters: Integer
-     *                     minDashes: Integer
-     *                     minDigits: Integer
-     *                     minDigitsOrLetters: Integer
-     *                     minDots: Integer
-     *                     minHex: Integer
-     *                     minLetters: Integer
-     *                     minUnderscores: Integer
-     *                     options: Integer
-     *                     regexStr: String
+     *                 lastUpdatedTimestamp: Long (Optional)
+     *                 name: String (Optional)
+     *                 regex (Optional): {
+     *                     maxDigits: Integer (Optional)
+     *                     maxLetters: Integer (Optional)
+     *                     minDashes: Integer (Optional)
+     *                     minDigits: Integer (Optional)
+     *                     minDigitsOrLetters: Integer (Optional)
+     *                     minDots: Integer (Optional)
+     *                     minHex: Integer (Optional)
+     *                     minLetters: Integer (Optional)
+     *                     minUnderscores: Integer (Optional)
+     *                     options: Integer (Optional)
+     *                     regexStr: String (Optional)
      *                 }
-     *                 replaceWith: String
-     *                 version: Double
+     *                 replaceWith: String (Optional)
+     *                 version: Double (Optional)
      *             }
      *         ]
-     *         regexReplacers: [
-     *             {
-     *                 condition: String
-     *                 createdBy: String
-     *                 description: String
-     *                 disabled: boolean
-     *                 disableRecursiveReplacerApplication: Boolean
-     *                 doNotReplaceRegex: (recursive schema, see doNotReplaceRegex above)
-     *                 lastUpdatedTimestamp: Long
-     *                 modifiedBy: String
-     *                 name: String
-     *                 regex: (recursive schema, see regex above)
-     *                 replaceWith: String
+     *         regexReplacers (Optional): [
+     *              (Optional){
+     *                 condition: String (Optional)
+     *                 createdBy: String (Optional)
+     *                 description: String (Optional)
+     *                 disabled: boolean (Required)
+     *                 disableRecursiveReplacerApplication: Boolean (Optional)
+     *                 doNotReplaceRegex (Optional): (recursive schema, see doNotReplaceRegex above)
+     *                 lastUpdatedTimestamp: Long (Optional)
+     *                 modifiedBy: String (Optional)
+     *                 name: String (Required)
+     *                 regex (Optional): (recursive schema, see regex above)
+     *                 replaceWith: String (Optional)
      *             }
      *         ]
-     *         rejectedPatterns: [
+     *         rejectedPatterns (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         scopedRules: [
-     *             {
-     *                 bindingUrl: String
-     *                 rules: [
-     *                     {
-     *                         displayName: String
-     *                         isResourceSet: Boolean
-     *                         lastUpdatedTimestamp: Long
-     *                         name: String
-     *                         qualifiedName: String
+     *         scopedRules (Optional): [
+     *              (Optional){
+     *                 bindingUrl: String (Required)
+     *                 rules (Optional): [
+     *                      (Optional){
+     *                         displayName: String (Optional)
+     *                         isResourceSet: Boolean (Optional)
+     *                         lastUpdatedTimestamp: Long (Optional)
+     *                         name: String (Optional)
+     *                         qualifiedName: String (Required)
      *                     }
      *                 ]
-     *                 storeType: String
+     *                 storeType: String (Required)
      *             }
      *         ]
-     *         version: Integer
+     *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     advancedResourceSet: {
-     *         modifiedAt: OffsetDateTime
-     *         resourceSetProcessing: String(Default/Advanced)
+     *     advancedResourceSet (Optional): {
+     *         modifiedAt: OffsetDateTime (Optional)
+     *         resourceSetProcessing: String(Default/Advanced) (Optional)
      *     }
-     *     name: String
-     *     pathPatternConfig: {
-     *         acceptedPatterns: [
-     *             {
-     *                 createdBy: String
-     *                 filterType: String(Pattern/Regex)
-     *                 lastUpdatedTimestamp: Long
-     *                 modifiedBy: String
-     *                 name: String
-     *                 path: String
+     *     name: String (Optional)
+     *     pathPatternConfig (Optional): {
+     *         acceptedPatterns (Optional): [
+     *              (Optional){
+     *                 createdBy: String (Optional)
+     *                 filterType: String(Pattern/Regex) (Optional)
+     *                 lastUpdatedTimestamp: Long (Optional)
+     *                 modifiedBy: String (Optional)
+     *                 name: String (Required)
+     *                 path: String (Required)
      *             }
      *         ]
-     *         complexReplacers: [
-     *             {
-     *                 createdBy: String
-     *                 description: String
-     *                 disabled: Boolean
-     *                 disableRecursiveReplacerApplication: Boolean
-     *                 lastUpdatedTimestamp: Long
-     *                 modifiedBy: String
-     *                 name: String
-     *                 typeName: String
+     *         complexReplacers (Optional): [
+     *              (Optional){
+     *                 createdBy: String (Optional)
+     *                 description: String (Optional)
+     *                 disabled: Boolean (Optional)
+     *                 disableRecursiveReplacerApplication: Boolean (Optional)
+     *                 lastUpdatedTimestamp: Long (Optional)
+     *                 modifiedBy: String (Optional)
+     *                 name: String (Optional)
+     *                 typeName: String (Optional)
      *             }
      *         ]
-     *         createdBy: String
-     *         enableDefaultPatterns: boolean
-     *         lastUpdatedTimestamp: Long
-     *         modifiedBy: String
-     *         normalizationRules: [
-     *             {
-     *                 description: String
-     *                 disabled: Boolean
-     *                 dynamicReplacement: Boolean
-     *                 entityTypes: [
-     *                     String
+     *         createdBy: String (Required)
+     *         enableDefaultPatterns: boolean (Required)
+     *         lastUpdatedTimestamp: Long (Optional)
+     *         modifiedBy: String (Optional)
+     *         normalizationRules (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 disabled: Boolean (Optional)
+     *                 dynamicReplacement: Boolean (Optional)
+     *                 entityTypes (Optional): [
+     *                     String (Optional)
      *                 ]
-     *                 lastUpdatedTimestamp: Long
-     *                 name: String
-     *                 regex: {
-     *                     maxDigits: Integer
-     *                     maxLetters: Integer
-     *                     minDashes: Integer
-     *                     minDigits: Integer
-     *                     minDigitsOrLetters: Integer
-     *                     minDots: Integer
-     *                     minHex: Integer
-     *                     minLetters: Integer
-     *                     minUnderscores: Integer
-     *                     options: Integer
-     *                     regexStr: String
+     *                 lastUpdatedTimestamp: Long (Optional)
+     *                 name: String (Optional)
+     *                 regex (Optional): {
+     *                     maxDigits: Integer (Optional)
+     *                     maxLetters: Integer (Optional)
+     *                     minDashes: Integer (Optional)
+     *                     minDigits: Integer (Optional)
+     *                     minDigitsOrLetters: Integer (Optional)
+     *                     minDots: Integer (Optional)
+     *                     minHex: Integer (Optional)
+     *                     minLetters: Integer (Optional)
+     *                     minUnderscores: Integer (Optional)
+     *                     options: Integer (Optional)
+     *                     regexStr: String (Optional)
      *                 }
-     *                 replaceWith: String
-     *                 version: Double
+     *                 replaceWith: String (Optional)
+     *                 version: Double (Optional)
      *             }
      *         ]
-     *         regexReplacers: [
-     *             {
-     *                 condition: String
-     *                 createdBy: String
-     *                 description: String
-     *                 disabled: boolean
-     *                 disableRecursiveReplacerApplication: Boolean
-     *                 doNotReplaceRegex: (recursive schema, see doNotReplaceRegex above)
-     *                 lastUpdatedTimestamp: Long
-     *                 modifiedBy: String
-     *                 name: String
-     *                 regex: (recursive schema, see regex above)
-     *                 replaceWith: String
+     *         regexReplacers (Optional): [
+     *              (Optional){
+     *                 condition: String (Optional)
+     *                 createdBy: String (Optional)
+     *                 description: String (Optional)
+     *                 disabled: boolean (Required)
+     *                 disableRecursiveReplacerApplication: Boolean (Optional)
+     *                 doNotReplaceRegex (Optional): (recursive schema, see doNotReplaceRegex above)
+     *                 lastUpdatedTimestamp: Long (Optional)
+     *                 modifiedBy: String (Optional)
+     *                 name: String (Required)
+     *                 regex (Optional): (recursive schema, see regex above)
+     *                 replaceWith: String (Optional)
      *             }
      *         ]
-     *         rejectedPatterns: [
+     *         rejectedPatterns (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         scopedRules: [
-     *             {
-     *                 bindingUrl: String
-     *                 rules: [
-     *                     {
-     *                         displayName: String
-     *                         isResourceSet: Boolean
-     *                         lastUpdatedTimestamp: Long
-     *                         name: String
-     *                         qualifiedName: String
+     *         scopedRules (Optional): [
+     *              (Optional){
+     *                 bindingUrl: String (Required)
+     *                 rules (Optional): [
+     *                      (Optional){
+     *                         displayName: String (Optional)
+     *                         isResourceSet: Boolean (Optional)
+     *                         lastUpdatedTimestamp: Long (Optional)
+     *                         name: String (Optional)
+     *                         qualifiedName: String (Required)
      *                     }
      *                 ]
-     *                 storeType: String
+     *                 storeType: String (Required)
      *             }
      *         ]
-     *         version: Integer
+     *         version: Integer (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * @param resourceSetRuleConfig ResourceSetRuleConfig implementation class.
+     * }
+     * </pre>
+     * 
+     * @param resourceSetRuleConfig The resourceSetRuleConfig parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -364,14 +372,14 @@ public final class ResourceSetRulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateResourceSetRuleWithResponse(
-            BinaryData resourceSetRuleConfig, RequestOptions requestOptions) {
-        return this.client.createOrUpdateResourceSetRuleWithResponse(resourceSetRuleConfig, requestOptions).block();
+    public Response<BinaryData> createOrUpdateResourceSetRuleWithResponse(BinaryData resourceSetRuleConfig,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateResourceSetRuleWithResponse(resourceSetRuleConfig, requestOptions);
     }
 
     /**
      * Deletes a ResourceSetRuleConfig resource.
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -382,127 +390,121 @@ public final class ResourceSetRulesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteResourceSetRuleWithResponse(RequestOptions requestOptions) {
-        return this.client.deleteResourceSetRuleWithResponse(requestOptions).block();
+        return this.serviceClient.deleteResourceSetRuleWithResponse(requestOptions);
     }
 
     /**
      * Get a resource set config service model.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
      * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     count: Long
-     *     nextLink: String
-     *     value: [
-     *         {
-     *             advancedResourceSet: {
-     *                 modifiedAt: OffsetDateTime
-     *                 resourceSetProcessing: String(Default/Advanced)
+     *     advancedResourceSet (Optional): {
+     *         modifiedAt: OffsetDateTime (Optional)
+     *         resourceSetProcessing: String(Default/Advanced) (Optional)
+     *     }
+     *     name: String (Optional)
+     *     pathPatternConfig (Optional): {
+     *         acceptedPatterns (Optional): [
+     *              (Optional){
+     *                 createdBy: String (Optional)
+     *                 filterType: String(Pattern/Regex) (Optional)
+     *                 lastUpdatedTimestamp: Long (Optional)
+     *                 modifiedBy: String (Optional)
+     *                 name: String (Required)
+     *                 path: String (Required)
      *             }
-     *             name: String
-     *             pathPatternConfig: {
-     *                 acceptedPatterns: [
-     *                     {
-     *                         createdBy: String
-     *                         filterType: String(Pattern/Regex)
-     *                         lastUpdatedTimestamp: Long
-     *                         modifiedBy: String
-     *                         name: String
-     *                         path: String
-     *                     }
-     *                 ]
-     *                 complexReplacers: [
-     *                     {
-     *                         createdBy: String
-     *                         description: String
-     *                         disabled: Boolean
-     *                         disableRecursiveReplacerApplication: Boolean
-     *                         lastUpdatedTimestamp: Long
-     *                         modifiedBy: String
-     *                         name: String
-     *                         typeName: String
-     *                     }
-     *                 ]
-     *                 createdBy: String
-     *                 enableDefaultPatterns: boolean
-     *                 lastUpdatedTimestamp: Long
-     *                 modifiedBy: String
-     *                 normalizationRules: [
-     *                     {
-     *                         description: String
-     *                         disabled: Boolean
-     *                         dynamicReplacement: Boolean
-     *                         entityTypes: [
-     *                             String
-     *                         ]
-     *                         lastUpdatedTimestamp: Long
-     *                         name: String
-     *                         regex: {
-     *                             maxDigits: Integer
-     *                             maxLetters: Integer
-     *                             minDashes: Integer
-     *                             minDigits: Integer
-     *                             minDigitsOrLetters: Integer
-     *                             minDots: Integer
-     *                             minHex: Integer
-     *                             minLetters: Integer
-     *                             minUnderscores: Integer
-     *                             options: Integer
-     *                             regexStr: String
-     *                         }
-     *                         replaceWith: String
-     *                         version: Double
-     *                     }
-     *                 ]
-     *                 regexReplacers: [
-     *                     {
-     *                         condition: String
-     *                         createdBy: String
-     *                         description: String
-     *                         disabled: boolean
-     *                         disableRecursiveReplacerApplication: Boolean
-     *                         doNotReplaceRegex: (recursive schema, see doNotReplaceRegex above)
-     *                         lastUpdatedTimestamp: Long
-     *                         modifiedBy: String
-     *                         name: String
-     *                         regex: (recursive schema, see regex above)
-     *                         replaceWith: String
-     *                     }
-     *                 ]
-     *                 rejectedPatterns: [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 scopedRules: [
-     *                     {
-     *                         bindingUrl: String
-     *                         rules: [
-     *                             {
-     *                                 displayName: String
-     *                                 isResourceSet: Boolean
-     *                                 lastUpdatedTimestamp: Long
-     *                                 name: String
-     *                                 qualifiedName: String
-     *                             }
-     *                         ]
-     *                         storeType: String
-     *                     }
-     *                 ]
-     *                 version: Integer
+     *         ]
+     *         complexReplacers (Optional): [
+     *              (Optional){
+     *                 createdBy: String (Optional)
+     *                 description: String (Optional)
+     *                 disabled: Boolean (Optional)
+     *                 disableRecursiveReplacerApplication: Boolean (Optional)
+     *                 lastUpdatedTimestamp: Long (Optional)
+     *                 modifiedBy: String (Optional)
+     *                 name: String (Optional)
+     *                 typeName: String (Optional)
      *             }
-     *         }
-     *     ]
+     *         ]
+     *         createdBy: String (Required)
+     *         enableDefaultPatterns: boolean (Required)
+     *         lastUpdatedTimestamp: Long (Optional)
+     *         modifiedBy: String (Optional)
+     *         normalizationRules (Optional): [
+     *              (Optional){
+     *                 description: String (Optional)
+     *                 disabled: Boolean (Optional)
+     *                 dynamicReplacement: Boolean (Optional)
+     *                 entityTypes (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 lastUpdatedTimestamp: Long (Optional)
+     *                 name: String (Optional)
+     *                 regex (Optional): {
+     *                     maxDigits: Integer (Optional)
+     *                     maxLetters: Integer (Optional)
+     *                     minDashes: Integer (Optional)
+     *                     minDigits: Integer (Optional)
+     *                     minDigitsOrLetters: Integer (Optional)
+     *                     minDots: Integer (Optional)
+     *                     minHex: Integer (Optional)
+     *                     minLetters: Integer (Optional)
+     *                     minUnderscores: Integer (Optional)
+     *                     options: Integer (Optional)
+     *                     regexStr: String (Optional)
+     *                 }
+     *                 replaceWith: String (Optional)
+     *                 version: Double (Optional)
+     *             }
+     *         ]
+     *         regexReplacers (Optional): [
+     *              (Optional){
+     *                 condition: String (Optional)
+     *                 createdBy: String (Optional)
+     *                 description: String (Optional)
+     *                 disabled: boolean (Required)
+     *                 disableRecursiveReplacerApplication: Boolean (Optional)
+     *                 doNotReplaceRegex (Optional): (recursive schema, see doNotReplaceRegex above)
+     *                 lastUpdatedTimestamp: Long (Optional)
+     *                 modifiedBy: String (Optional)
+     *                 name: String (Required)
+     *                 regex (Optional): (recursive schema, see regex above)
+     *                 replaceWith: String (Optional)
+     *             }
+     *         ]
+     *         rejectedPatterns (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         scopedRules (Optional): [
+     *              (Optional){
+     *                 bindingUrl: String (Required)
+     *                 rules (Optional): [
+     *                      (Optional){
+     *                         displayName: String (Optional)
+     *                         isResourceSet: Boolean (Optional)
+     *                         lastUpdatedTimestamp: Long (Optional)
+     *                         name: String (Optional)
+     *                         qualifiedName: String (Required)
+     *                     }
+     *                 ]
+     *                 storeType: String (Required)
+     *             }
+     *         ]
+     *         version: Integer (Optional)
+     *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -513,6 +515,6 @@ public final class ResourceSetRulesClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listResourceSetRules(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listResourceSetRules(requestOptions));
+        return this.serviceClient.listResourceSetRules(requestOptions);
     }
 }

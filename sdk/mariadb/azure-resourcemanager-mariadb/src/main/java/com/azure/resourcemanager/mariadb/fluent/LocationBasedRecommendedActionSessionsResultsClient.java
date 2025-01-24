@@ -17,27 +17,27 @@ import com.azure.resourcemanager.mariadb.fluent.models.RecommendationActionInner
 public interface LocationBasedRecommendedActionSessionsResultsClient {
     /**
      * Recommendation action session operation result.
-     *
+     * 
      * @param locationName The name of the location.
      * @param operationId The operation identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recommendation actions.
+     * @return a list of recommendation actions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RecommendationActionInner> list(String locationName, String operationId);
 
     /**
      * Recommendation action session operation result.
-     *
+     * 
      * @param locationName The name of the location.
      * @param operationId The operation identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recommendation actions.
+     * @return a list of recommendation actions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RecommendationActionInner> list(String locationName, String operationId, Context context);

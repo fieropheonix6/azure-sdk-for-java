@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** followupFlagStatus. */
+/**
+ * followupFlagStatus.
+ */
 public final class MicrosoftGraphFollowupFlagStatus extends ExpandableStringEnum<MicrosoftGraphFollowupFlagStatus> {
-    /** Static value notFlagged for MicrosoftGraphFollowupFlagStatus. */
+    /**
+     * Static value notFlagged for MicrosoftGraphFollowupFlagStatus.
+     */
     public static final MicrosoftGraphFollowupFlagStatus NOT_FLAGGED = fromString("notFlagged");
 
-    /** Static value complete for MicrosoftGraphFollowupFlagStatus. */
+    /**
+     * Static value complete for MicrosoftGraphFollowupFlagStatus.
+     */
     public static final MicrosoftGraphFollowupFlagStatus COMPLETE = fromString("complete");
 
-    /** Static value flagged for MicrosoftGraphFollowupFlagStatus. */
+    /**
+     * Static value flagged for MicrosoftGraphFollowupFlagStatus.
+     */
     public static final MicrosoftGraphFollowupFlagStatus FLAGGED = fromString("flagged");
 
     /**
+     * Creates a new instance of MicrosoftGraphFollowupFlagStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphFollowupFlagStatus() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphFollowupFlagStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphFollowupFlagStatus.
      */
-    @JsonCreator
     public static MicrosoftGraphFollowupFlagStatus fromString(String name) {
         return fromString(name, MicrosoftGraphFollowupFlagStatus.class);
     }
 
     /**
      * Gets known MicrosoftGraphFollowupFlagStatus values.
-     *
+     * 
      * @return known MicrosoftGraphFollowupFlagStatus values.
      */
     public static Collection<MicrosoftGraphFollowupFlagStatus> values() {

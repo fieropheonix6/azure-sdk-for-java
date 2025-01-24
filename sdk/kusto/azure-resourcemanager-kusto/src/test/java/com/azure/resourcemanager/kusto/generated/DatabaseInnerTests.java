@@ -7,23 +7,20 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.DatabaseInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DatabaseInnerTests {
-    @Test
-    public void testDeserialize() {
-        DatabaseInner model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"Database\",\"location\":\"hvljuahaquh\",\"id\":\"dhmdua\",\"name\":\"aex\",\"type\":\"pvfadmwsrcr\"}")
-                .toObject(DatabaseInner.class);
-        Assertions.assertEquals("hvljuahaquh", model.location());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DatabaseInner model = BinaryData.fromString(
+            "{\"kind\":\"Database\",\"location\":\"btkuwhh\",\"id\":\"hykojoxafnndlpic\",\"name\":\"koymkcd\",\"type\":\"h\"}")
+            .toObject(DatabaseInner.class);
+        Assertions.assertEquals("btkuwhh", model.location());
     }
 
-    @Test
-    public void testSerialize() {
-        DatabaseInner model = new DatabaseInner().withLocation("hvljuahaquh");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DatabaseInner model = new DatabaseInner().withLocation("btkuwhh");
         model = BinaryData.fromObject(model).toObject(DatabaseInner.class);
-        Assertions.assertEquals("hvljuahaquh", model.location());
+        Assertions.assertEquals("btkuwhh", model.location());
     }
 }

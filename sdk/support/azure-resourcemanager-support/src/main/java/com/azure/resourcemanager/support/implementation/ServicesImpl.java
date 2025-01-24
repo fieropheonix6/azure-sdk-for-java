@@ -13,10 +13,9 @@ import com.azure.resourcemanager.support.fluent.ServicesClient;
 import com.azure.resourcemanager.support.fluent.models.ServiceInner;
 import com.azure.resourcemanager.support.models.Service;
 import com.azure.resourcemanager.support.models.Services;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ServicesImpl implements Services {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServicesImpl.class);
 
     private final ServicesClient innerClient;
 
@@ -29,31 +28,28 @@ public final class ServicesImpl implements Services {
 
     public PagedIterable<Service> list() {
         PagedIterable<ServiceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServiceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Service> list(Context context) {
         PagedIterable<ServiceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServiceImpl(inner1, this.manager()));
+    }
+
+    public Response<Service> getWithResponse(String serviceName, Context context) {
+        Response<ServiceInner> inner = this.serviceClient().getWithResponse(serviceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ServiceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Service get(String serviceName) {
         ServiceInner inner = this.serviceClient().get(serviceName);
         if (inner != null) {
             return new ServiceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<Service> getWithResponse(String serviceName, Context context) {
-        Response<ServiceInner> inner = this.serviceClient().getWithResponse(serviceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ServiceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

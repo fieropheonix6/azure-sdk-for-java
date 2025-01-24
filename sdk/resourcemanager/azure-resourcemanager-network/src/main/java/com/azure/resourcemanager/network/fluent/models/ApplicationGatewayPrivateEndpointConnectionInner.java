@@ -6,44 +6,47 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Private Endpoint connection on an application gateway. */
+/**
+ * Private Endpoint connection on an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayPrivateEndpointConnectionInner extends SubResource {
     /*
      * Properties of the application gateway private endpoint connection.
      */
-    @JsonProperty(value = "properties")
     private ApplicationGatewayPrivateEndpointConnectionPropertiesInner innerProperties;
 
     /*
      * Name of the private endpoint connection on an application gateway.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ApplicationGatewayPrivateEndpointConnectionInner class. */
+    /**
+     * Creates an instance of ApplicationGatewayPrivateEndpointConnectionInner class.
+     */
     public ApplicationGatewayPrivateEndpointConnectionInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway private endpoint connection.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayPrivateEndpointConnectionPropertiesInner innerProperties() {
@@ -52,7 +55,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionInner extends SubR
 
     /**
      * Get the name property: Name of the private endpoint connection on an application gateway.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +64,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionInner extends SubR
 
     /**
      * Set the name property: Name of the private endpoint connection on an application gateway.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayPrivateEndpointConnectionInner object itself.
      */
@@ -72,7 +75,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionInner extends SubR
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -81,14 +84,16 @@ public final class ApplicationGatewayPrivateEndpointConnectionInner extends SubR
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayPrivateEndpointConnectionInner withId(String id) {
         super.withId(id);
@@ -97,7 +102,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionInner extends SubR
 
     /**
      * Get the privateEndpoint property: The resource of private end point.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public PrivateEndpointInner privateEndpoint() {
@@ -107,7 +112,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionInner extends SubR
     /**
      * Get the privateLinkServiceConnectionState property: A collection of information about the state of the connection
      * between service consumer and provider.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
@@ -117,12 +122,12 @@ public final class ApplicationGatewayPrivateEndpointConnectionInner extends SubR
     /**
      * Set the privateLinkServiceConnectionState property: A collection of information about the state of the connection
      * between service consumer and provider.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the ApplicationGatewayPrivateEndpointConnectionInner object itself.
      */
-    public ApplicationGatewayPrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public ApplicationGatewayPrivateEndpointConnectionInner
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayPrivateEndpointConnectionPropertiesInner();
         }
@@ -133,7 +138,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionInner extends SubR
     /**
      * Get the provisioningState property: The provisioning state of the application gateway private endpoint connection
      * resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -142,7 +147,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionInner extends SubR
 
     /**
      * Get the linkIdentifier property: The consumer link id.
-     *
+     * 
      * @return the linkIdentifier value.
      */
     public String linkIdentifier() {
@@ -151,12 +156,60 @@ public final class ApplicationGatewayPrivateEndpointConnectionInner extends SubR
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayPrivateEndpointConnectionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayPrivateEndpointConnectionInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayPrivateEndpointConnectionInner.
+     */
+    public static ApplicationGatewayPrivateEndpointConnectionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayPrivateEndpointConnectionInner deserializedApplicationGatewayPrivateEndpointConnectionInner
+                = new ApplicationGatewayPrivateEndpointConnectionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateEndpointConnectionInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateEndpointConnectionInner.innerProperties
+                        = ApplicationGatewayPrivateEndpointConnectionPropertiesInner.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateEndpointConnectionInner.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateEndpointConnectionInner.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateEndpointConnectionInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayPrivateEndpointConnectionInner;
+        });
     }
 }

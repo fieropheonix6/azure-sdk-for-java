@@ -5,54 +5,58 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotPolicyProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Snapshot policy Details for create and update. */
+/**
+ * Snapshot policy Details for create and update.
+ */
 @Fluent
-public final class SnapshotPolicyPatch {
+public final class SnapshotPolicyPatch implements JsonSerializable<SnapshotPolicyPatch> {
     /*
      * Resource location
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Resource Id
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Resource name
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Resource tags
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Snapshot Policy properties
      */
-    @JsonProperty(value = "properties")
     private SnapshotPolicyProperties innerProperties;
 
     /**
+     * Creates an instance of SnapshotPolicyPatch class.
+     */
+    public SnapshotPolicyPatch() {
+    }
+
+    /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -61,7 +65,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Set the location property: Resource location.
-     *
+     * 
      * @param location the location value to set.
      * @return the SnapshotPolicyPatch object itself.
      */
@@ -72,7 +76,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -81,7 +85,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -90,7 +94,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -99,7 +103,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -108,7 +112,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the SnapshotPolicyPatch object itself.
      */
@@ -119,7 +123,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the innerProperties property: Snapshot Policy properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SnapshotPolicyProperties innerProperties() {
@@ -128,7 +132,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the hourlySchedule property: Schedule for hourly snapshots.
-     *
+     * 
      * @return the hourlySchedule value.
      */
     public HourlySchedule hourlySchedule() {
@@ -137,7 +141,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Set the hourlySchedule property: Schedule for hourly snapshots.
-     *
+     * 
      * @param hourlySchedule the hourlySchedule value to set.
      * @return the SnapshotPolicyPatch object itself.
      */
@@ -151,7 +155,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the dailySchedule property: Schedule for daily snapshots.
-     *
+     * 
      * @return the dailySchedule value.
      */
     public DailySchedule dailySchedule() {
@@ -160,7 +164,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Set the dailySchedule property: Schedule for daily snapshots.
-     *
+     * 
      * @param dailySchedule the dailySchedule value to set.
      * @return the SnapshotPolicyPatch object itself.
      */
@@ -174,7 +178,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the weeklySchedule property: Schedule for weekly snapshots.
-     *
+     * 
      * @return the weeklySchedule value.
      */
     public WeeklySchedule weeklySchedule() {
@@ -183,7 +187,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Set the weeklySchedule property: Schedule for weekly snapshots.
-     *
+     * 
      * @param weeklySchedule the weeklySchedule value to set.
      * @return the SnapshotPolicyPatch object itself.
      */
@@ -197,7 +201,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the monthlySchedule property: Schedule for monthly snapshots.
-     *
+     * 
      * @return the monthlySchedule value.
      */
     public MonthlySchedule monthlySchedule() {
@@ -206,7 +210,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Set the monthlySchedule property: Schedule for monthly snapshots.
-     *
+     * 
      * @param monthlySchedule the monthlySchedule value to set.
      * @return the SnapshotPolicyPatch object itself.
      */
@@ -220,7 +224,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the enabled property: The property to decide policy is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -229,7 +233,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Set the enabled property: The property to decide policy is enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the SnapshotPolicyPatch object itself.
      */
@@ -243,7 +247,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -252,12 +256,61 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnapshotPolicyPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnapshotPolicyPatch if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SnapshotPolicyPatch.
+     */
+    public static SnapshotPolicyPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnapshotPolicyPatch deserializedSnapshotPolicyPatch = new SnapshotPolicyPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedSnapshotPolicyPatch.location = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedSnapshotPolicyPatch.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSnapshotPolicyPatch.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSnapshotPolicyPatch.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSnapshotPolicyPatch.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSnapshotPolicyPatch.innerProperties = SnapshotPolicyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnapshotPolicyPatch;
+        });
     }
 }

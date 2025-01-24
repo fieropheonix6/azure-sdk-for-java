@@ -5,32 +5,52 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectivityCheckProtocol. */
+/**
+ * The request's protocol. Specific protocol configuration can be available based on this selection. The specified
+ * destination address must be coherent with this value.
+ */
 public final class ConnectivityCheckProtocol extends ExpandableStringEnum<ConnectivityCheckProtocol> {
-    /** Static value TCP for ConnectivityCheckProtocol. */
+    /**
+     * Static value TCP for ConnectivityCheckProtocol.
+     */
     public static final ConnectivityCheckProtocol TCP = fromString("TCP");
 
-    /** Static value HTTP for ConnectivityCheckProtocol. */
+    /**
+     * Static value HTTP for ConnectivityCheckProtocol.
+     */
     public static final ConnectivityCheckProtocol HTTP = fromString("HTTP");
 
-    /** Static value HTTPS for ConnectivityCheckProtocol. */
+    /**
+     * Static value HTTPS for ConnectivityCheckProtocol.
+     */
     public static final ConnectivityCheckProtocol HTTPS = fromString("HTTPS");
 
     /**
+     * Creates a new instance of ConnectivityCheckProtocol value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectivityCheckProtocol() {
+    }
+
+    /**
      * Creates or finds a ConnectivityCheckProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConnectivityCheckProtocol.
      */
-    @JsonCreator
     public static ConnectivityCheckProtocol fromString(String name) {
         return fromString(name, ConnectivityCheckProtocol.class);
     }
 
-    /** @return known ConnectivityCheckProtocol values. */
+    /**
+     * Gets known ConnectivityCheckProtocol values.
+     * 
+     * @return known ConnectivityCheckProtocol values.
+     */
     public static Collection<ConnectivityCheckProtocol> values() {
         return values(ConnectivityCheckProtocol.class);
     }

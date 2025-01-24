@@ -6,32 +6,39 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the notification target properties. */
+/**
+ * Describes the notification target properties.
+ */
 @Fluent
-public final class NotificationTarget {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationTarget.class);
-
+public final class NotificationTarget implements JsonSerializable<NotificationTarget> {
     /*
-     * The notification channel indicates the type of receivers subscribed to
-     * the notification, either user or subscription.
+     * The notification channel indicates the type of receivers subscribed to the notification, either user or
+     * subscription.
      */
-    @JsonProperty(value = "notificationChannel", required = true)
     private NotificationChannel notificationChannel;
 
     /*
      * List of targets that subscribe to the notification.
      */
-    @JsonProperty(value = "receivers", required = true)
     private List<String> receivers;
+
+    /**
+     * Creates an instance of NotificationTarget class.
+     */
+    public NotificationTarget() {
+    }
 
     /**
      * Get the notificationChannel property: The notification channel indicates the type of receivers subscribed to the
      * notification, either user or subscription.
-     *
+     * 
      * @return the notificationChannel value.
      */
     public NotificationChannel notificationChannel() {
@@ -41,7 +48,7 @@ public final class NotificationTarget {
     /**
      * Set the notificationChannel property: The notification channel indicates the type of receivers subscribed to the
      * notification, either user or subscription.
-     *
+     * 
      * @param notificationChannel the notificationChannel value to set.
      * @return the NotificationTarget object itself.
      */
@@ -52,7 +59,7 @@ public final class NotificationTarget {
 
     /**
      * Get the receivers property: List of targets that subscribe to the notification.
-     *
+     * 
      * @return the receivers value.
      */
     public List<String> receivers() {
@@ -61,7 +68,7 @@ public final class NotificationTarget {
 
     /**
      * Set the receivers property: List of targets that subscribe to the notification.
-     *
+     * 
      * @param receivers the receivers value to set.
      * @return the NotificationTarget object itself.
      */
@@ -72,20 +79,63 @@ public final class NotificationTarget {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (notificationChannel() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property notificationChannel in model NotificationTarget"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property notificationChannel in model NotificationTarget"));
         }
         if (receivers() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property receivers in model NotificationTarget"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property receivers in model NotificationTarget"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NotificationTarget.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("notificationChannel",
+            this.notificationChannel == null ? null : this.notificationChannel.toString());
+        jsonWriter.writeArrayField("receivers", this.receivers, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotificationTarget from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotificationTarget if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NotificationTarget.
+     */
+    public static NotificationTarget fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotificationTarget deserializedNotificationTarget = new NotificationTarget();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("notificationChannel".equals(fieldName)) {
+                    deserializedNotificationTarget.notificationChannel
+                        = NotificationChannel.fromString(reader.getString());
+                } else if ("receivers".equals(fieldName)) {
+                    List<String> receivers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNotificationTarget.receivers = receivers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotificationTarget;
+        });
     }
 }

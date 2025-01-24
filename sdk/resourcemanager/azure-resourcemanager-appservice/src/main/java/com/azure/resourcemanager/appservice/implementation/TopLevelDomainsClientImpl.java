@@ -35,22 +35,28 @@ import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption
 import com.azure.resourcemanager.appservice.models.TopLevelDomainCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TopLevelDomainsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TopLevelDomainsClient.
+ */
 public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TopLevelDomainsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final WebSiteManagementClientImpl client;
 
     /**
      * Initializes an instance of TopLevelDomainsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TopLevelDomainsClientImpl(WebSiteManagementClientImpl client) {
-        this.service =
-            RestProxy.create(TopLevelDomainsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(TopLevelDomainsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,158 +66,115 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
-    private interface TopLevelDomainsService {
-        @Headers({"Content-Type: application/json"})
+    public interface TopLevelDomainsService {
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<TopLevelDomainCollection>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TopLevelDomainCollection>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains/{name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<TopLevelDomainInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TopLevelDomainInner>> get(@HostParam("$host") String endpoint, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains/{name}"
-                + "/listAgreements")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains/{name}/listAgreements")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<TldLegalAgreementCollection>> listAgreements(
-            @HostParam("$host") String endpoint,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<TldLegalAgreementCollection>> listAgreements(@HostParam("$host") String endpoint,
+            @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") TopLevelDomainAgreementOption agreementOption,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<TopLevelDomainCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<TldLegalAgreementCollection>> listAgreementsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
+     * Get all top-level domains supported for registration.
+     * 
      * Description for Get all top-level domains supported for registration.
-     *
+     * 
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Top-level domains along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of Top-level domains along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopLevelDomainInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<TopLevelDomainInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<TopLevelDomainInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Get all top-level domains supported for registration.
+     * 
      * Description for Get all top-level domains supported for registration.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Top-level domains along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of Top-level domains along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopLevelDomainInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
+     * Get all top-level domains supported for registration.
+     * 
      * Description for Get all top-level domains supported for registration.
-     *
+     * 
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Top-level domains as paginated response with {@link PagedFlux}.
@@ -222,8 +185,10 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
+     * Get all top-level domains supported for registration.
+     * 
      * Description for Get all top-level domains supported for registration.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -232,13 +197,15 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TopLevelDomainInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
+     * Get all top-level domains supported for registration.
+     * 
      * Description for Get all top-level domains supported for registration.
-     *
+     * 
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Top-level domains as paginated response with {@link PagedIterable}.
@@ -249,8 +216,10 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
+     * Get all top-level domains supported for registration.
+     * 
      * Description for Get all top-level domains supported for registration.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -263,8 +232,10 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
+     * Get details of a top-level domain.
+     * 
      * Description for Get details of a top-level domain.
-     *
+     * 
      * @param name Name of the top-level domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -274,38 +245,28 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TopLevelDomainInner>> getWithResponseAsync(String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), name, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Get details of a top-level domain.
+     * 
      * Description for Get details of a top-level domain.
-     *
+     * 
      * @param name Name of the top-level domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -316,35 +277,27 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TopLevelDomainInner>> getWithResponseAsync(String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), name, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
+     * Get details of a top-level domain.
+     * 
      * Description for Get details of a top-level domain.
-     *
+     * 
      * @param name Name of the top-level domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -353,34 +306,14 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TopLevelDomainInner> getAsync(String name) {
-        return getWithResponseAsync(name)
-            .flatMap(
-                (Response<TopLevelDomainInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
+     * Get details of a top-level domain.
+     * 
      * Description for Get details of a top-level domain.
-     *
-     * @param name Name of the top-level domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a top level domain object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TopLevelDomainInner get(String name) {
-        return getAsync(name).block();
-    }
-
-    /**
-     * Description for Get details of a top-level domain.
-     *
+     * 
      * @param name Name of the top-level domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -394,33 +327,47 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
+     * Get details of a top-level domain.
+     * 
+     * Description for Get details of a top-level domain.
+     * 
+     * @param name Name of the top-level domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a top level domain object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TopLevelDomainInner get(String name) {
+        return getWithResponse(name, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * 
      * Description for Gets all legal agreements that user needs to accept before purchasing a domain.
-     *
+     * 
      * @param name Name of the top-level domain.
      * @param agreementOption Domain agreement options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of top-level domain legal agreements along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TldLegalAgreementInner>> listAgreementsSinglePageAsync(
-        String name, TopLevelDomainAgreementOption agreementOption) {
+    private Mono<PagedResponse<TldLegalAgreementInner>> listAgreementsSinglePageAsync(String name,
+        TopLevelDomainAgreementOption agreementOption) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (agreementOption == null) {
             return Mono
@@ -430,32 +377,18 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAgreements(
-                            this.client.getEndpoint(),
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            agreementOption,
-                            accept,
-                            context))
-            .<PagedResponse<TldLegalAgreementInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listAgreements(this.client.getEndpoint(), name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), agreementOption, accept, context))
+            .<PagedResponse<TldLegalAgreementInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * 
      * Description for Gets all legal agreements that user needs to accept before purchasing a domain.
-     *
+     * 
      * @param name Name of the top-level domain.
      * @param agreementOption Domain agreement options.
      * @param context The context to associate with this operation.
@@ -463,25 +396,21 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of top-level domain legal agreements along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TldLegalAgreementInner>> listAgreementsSinglePageAsync(
-        String name, TopLevelDomainAgreementOption agreementOption, Context context) {
+    private Mono<PagedResponse<TldLegalAgreementInner>> listAgreementsSinglePageAsync(String name,
+        TopLevelDomainAgreementOption agreementOption, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (name == null) {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (agreementOption == null) {
             return Mono
@@ -492,28 +421,17 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listAgreements(
-                this.client.getEndpoint(),
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                agreementOption,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listAgreements(this.client.getEndpoint(), name, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), agreementOption, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * 
      * Description for Gets all legal agreements that user needs to accept before purchasing a domain.
-     *
+     * 
      * @param name Name of the top-level domain.
      * @param agreementOption Domain agreement options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -522,16 +440,17 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
      * @return collection of top-level domain legal agreements as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TldLegalAgreementInner> listAgreementsAsync(
-        String name, TopLevelDomainAgreementOption agreementOption) {
-        return new PagedFlux<>(
-            () -> listAgreementsSinglePageAsync(name, agreementOption),
+    public PagedFlux<TldLegalAgreementInner> listAgreementsAsync(String name,
+        TopLevelDomainAgreementOption agreementOption) {
+        return new PagedFlux<>(() -> listAgreementsSinglePageAsync(name, agreementOption),
             nextLink -> listAgreementsNextSinglePageAsync(nextLink));
     }
 
     /**
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * 
      * Description for Gets all legal agreements that user needs to accept before purchasing a domain.
-     *
+     * 
      * @param name Name of the top-level domain.
      * @param agreementOption Domain agreement options.
      * @param context The context to associate with this operation.
@@ -541,16 +460,17 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
      * @return collection of top-level domain legal agreements as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TldLegalAgreementInner> listAgreementsAsync(
-        String name, TopLevelDomainAgreementOption agreementOption, Context context) {
-        return new PagedFlux<>(
-            () -> listAgreementsSinglePageAsync(name, agreementOption, context),
+    private PagedFlux<TldLegalAgreementInner> listAgreementsAsync(String name,
+        TopLevelDomainAgreementOption agreementOption, Context context) {
+        return new PagedFlux<>(() -> listAgreementsSinglePageAsync(name, agreementOption, context),
             nextLink -> listAgreementsNextSinglePageAsync(nextLink, context));
     }
 
     /**
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * 
      * Description for Gets all legal agreements that user needs to accept before purchasing a domain.
-     *
+     * 
      * @param name Name of the top-level domain.
      * @param agreementOption Domain agreement options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -559,14 +479,16 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
      * @return collection of top-level domain legal agreements as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TldLegalAgreementInner> listAgreements(
-        String name, TopLevelDomainAgreementOption agreementOption) {
+    public PagedIterable<TldLegalAgreementInner> listAgreements(String name,
+        TopLevelDomainAgreementOption agreementOption) {
         return new PagedIterable<>(listAgreementsAsync(name, agreementOption));
     }
 
     /**
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * 
      * Description for Gets all legal agreements that user needs to accept before purchasing a domain.
-     *
+     * 
      * @param name Name of the top-level domain.
      * @param agreementOption Domain agreement options.
      * @param context The context to associate with this operation.
@@ -576,20 +498,20 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
      * @return collection of top-level domain legal agreements as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TldLegalAgreementInner> listAgreements(
-        String name, TopLevelDomainAgreementOption agreementOption, Context context) {
+    public PagedIterable<TldLegalAgreementInner> listAgreements(String name,
+        TopLevelDomainAgreementOption agreementOption, Context context) {
         return new PagedIterable<>(listAgreementsAsync(name, agreementOption, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Top-level domains along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of Top-level domains along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopLevelDomainInner>> listNextSinglePageAsync(String nextLink) {
@@ -597,36 +519,26 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<TopLevelDomainInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<TopLevelDomainInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Top-level domains along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of Top-level domains along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopLevelDomainInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -634,35 +546,25 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of top-level domain legal agreements along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TldLegalAgreementInner>> listAgreementsNextSinglePageAsync(String nextLink) {
@@ -670,61 +572,42 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAgreementsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<TldLegalAgreementInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<TldLegalAgreementInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of top-level domain legal agreements along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TldLegalAgreementInner>> listAgreementsNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<TldLegalAgreementInner>> listAgreementsNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAgreementsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAgreementsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

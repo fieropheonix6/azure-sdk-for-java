@@ -8,28 +8,24 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.UnlockDeleteRequest;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UnlockDeleteRequestTests {
-    @Test
-    public void testDeserialize() {
-        UnlockDeleteRequest model =
-            BinaryData
-                .fromString(
-                    "{\"resourceGuardOperationRequests\":[\"bycnunvjsrtkf\",\"wnopqgikyzirtx\",\"yuxzejntpsewgi\"],\"resourceToBeDeleted\":\"l\"}")
-                .toObject(UnlockDeleteRequest.class);
-        Assertions.assertEquals("bycnunvjsrtkf", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("l", model.resourceToBeDeleted());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        UnlockDeleteRequest model = BinaryData.fromString(
+            "{\"resourceGuardOperationRequests\":[\"qqmtedltmmji\",\"yeozphvwauyqncy\"],\"resourceToBeDeleted\":\"p\"}")
+            .toObject(UnlockDeleteRequest.class);
+        Assertions.assertEquals("qqmtedltmmji", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("p", model.resourceToBeDeleted());
     }
 
-    @Test
-    public void testSerialize() {
-        UnlockDeleteRequest model =
-            new UnlockDeleteRequest()
-                .withResourceGuardOperationRequests(Arrays.asList("bycnunvjsrtkf", "wnopqgikyzirtx", "yuxzejntpsewgi"))
-                .withResourceToBeDeleted("l");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        UnlockDeleteRequest model = new UnlockDeleteRequest()
+            .withResourceGuardOperationRequests(Arrays.asList("qqmtedltmmji", "yeozphvwauyqncy"))
+            .withResourceToBeDeleted("p");
         model = BinaryData.fromObject(model).toObject(UnlockDeleteRequest.class);
-        Assertions.assertEquals("bycnunvjsrtkf", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("l", model.resourceToBeDeleted());
+        Assertions.assertEquals("qqmtedltmmji", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("p", model.resourceToBeDeleted());
     }
 }

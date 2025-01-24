@@ -4,15 +4,18 @@
 
 package com.azure.resourcemanager.hybridcompute.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ResourceIdentityType. */
+/**
+ * The identity type.
+ */
 public enum ResourceIdentityType {
-    /** Enum value SystemAssigned. */
+    /**
+     * Enum value SystemAssigned.
+     */
     SYSTEM_ASSIGNED("SystemAssigned");
 
-    /** The actual serialized value for a ResourceIdentityType instance. */
+    /**
+     * The actual serialized value for a ResourceIdentityType instance.
+     */
     private final String value;
 
     ResourceIdentityType(String value) {
@@ -21,12 +24,14 @@ public enum ResourceIdentityType {
 
     /**
      * Parses a serialized value to a ResourceIdentityType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ResourceIdentityType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ResourceIdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ResourceIdentityType[] items = ResourceIdentityType.values();
         for (ResourceIdentityType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,7 +41,9 @@ public enum ResourceIdentityType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

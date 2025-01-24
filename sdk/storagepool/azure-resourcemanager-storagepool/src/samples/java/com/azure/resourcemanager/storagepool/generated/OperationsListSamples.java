@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.storagepool.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/Operations_List.json
+     * x-ms-original-file:
+     * specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/Operations_List.json
      */
     /**
      * Sample code: List operations.
-     *
+     * 
      * @param manager Entry point to StoragePoolManager.
      */
     public static void listOperations(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

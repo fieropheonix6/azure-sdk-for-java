@@ -4,68 +4,51 @@
 
 package com.azure.resourcemanager.datalakestore.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Data Lake Store firewall rule information. */
-@JsonFlatten
-@Immutable
-public class FirewallRuleInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallRuleInner.class);
-
+/**
+ * Data Lake Store firewall rule information.
+ */
+@Fluent
+public final class FirewallRuleInner extends SubResource {
     /*
-     * The start IP address for the firewall rule. This can be either ipv4 or
-     * ipv6. Start and End should be in the same protocol.
+     * The firewall rule properties.
      */
-    @JsonProperty(value = "properties.startIpAddress", access = JsonProperty.Access.WRITE_ONLY)
-    private String startIpAddress;
-
-    /*
-     * The end IP address for the firewall rule. This can be either ipv4 or
-     * ipv6. Start and End should be in the same protocol.
-     */
-    @JsonProperty(value = "properties.endIpAddress", access = JsonProperty.Access.WRITE_ONLY)
-    private String endIpAddress;
+    private FirewallRuleProperties innerProperties;
 
     /*
      * The resource name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
-     * Get the startIpAddress property: The start IP address for the firewall rule. This can be either ipv4 or ipv6.
-     * Start and End should be in the same protocol.
-     *
-     * @return the startIpAddress value.
+     * Creates an instance of FirewallRuleInner class.
      */
-    public String startIpAddress() {
-        return this.startIpAddress;
+    public FirewallRuleInner() {
     }
 
     /**
-     * Get the endIpAddress property: The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start
-     * and End should be in the same protocol.
-     *
-     * @return the endIpAddress value.
+     * Get the innerProperties property: The firewall rule properties.
+     * 
+     * @return the innerProperties value.
      */
-    public String endIpAddress() {
-        return this.endIpAddress;
+    private FirewallRuleProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
      * Get the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -74,14 +57,16 @@ public class FirewallRuleInner extends SubResource {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FirewallRuleInner withId(String id) {
         super.withId(id);
@@ -89,10 +74,75 @@ public class FirewallRuleInner extends SubResource {
     }
 
     /**
+     * Get the startIpAddress property: The start IP address for the firewall rule. This can be either ipv4 or ipv6.
+     * Start and End should be in the same protocol.
+     * 
+     * @return the startIpAddress value.
+     */
+    public String startIpAddress() {
+        return this.innerProperties() == null ? null : this.innerProperties().startIpAddress();
+    }
+
+    /**
+     * Get the endIpAddress property: The end IP address for the firewall rule. This can be either ipv4 or ipv6. Start
+     * and End should be in the same protocol.
+     * 
+     * @return the endIpAddress value.
+     */
+    public String endIpAddress() {
+        return this.innerProperties() == null ? null : this.innerProperties().endIpAddress();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallRuleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallRuleInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallRuleInner.
+     */
+    public static FirewallRuleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallRuleInner deserializedFirewallRuleInner = new FirewallRuleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFirewallRuleInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFirewallRuleInner.innerProperties = FirewallRuleProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedFirewallRuleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFirewallRuleInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallRuleInner;
+        });
     }
 }

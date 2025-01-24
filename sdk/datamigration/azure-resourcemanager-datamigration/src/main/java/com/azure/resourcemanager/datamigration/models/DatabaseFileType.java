@@ -5,38 +5,61 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DatabaseFileType. */
+/**
+ * An enumeration of SQL Server database file types.
+ */
 public final class DatabaseFileType extends ExpandableStringEnum<DatabaseFileType> {
-    /** Static value Rows for DatabaseFileType. */
+    /**
+     * Static value Rows for DatabaseFileType.
+     */
     public static final DatabaseFileType ROWS = fromString("Rows");
 
-    /** Static value Log for DatabaseFileType. */
+    /**
+     * Static value Log for DatabaseFileType.
+     */
     public static final DatabaseFileType LOG = fromString("Log");
 
-    /** Static value Filestream for DatabaseFileType. */
+    /**
+     * Static value Filestream for DatabaseFileType.
+     */
     public static final DatabaseFileType FILESTREAM = fromString("Filestream");
 
-    /** Static value NotSupported for DatabaseFileType. */
+    /**
+     * Static value NotSupported for DatabaseFileType.
+     */
     public static final DatabaseFileType NOT_SUPPORTED = fromString("NotSupported");
 
-    /** Static value Fulltext for DatabaseFileType. */
+    /**
+     * Static value Fulltext for DatabaseFileType.
+     */
     public static final DatabaseFileType FULLTEXT = fromString("Fulltext");
 
     /**
+     * Creates a new instance of DatabaseFileType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabaseFileType() {
+    }
+
+    /**
      * Creates or finds a DatabaseFileType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DatabaseFileType.
      */
-    @JsonCreator
     public static DatabaseFileType fromString(String name) {
         return fromString(name, DatabaseFileType.class);
     }
 
-    /** @return known DatabaseFileType values. */
+    /**
+     * Gets known DatabaseFileType values.
+     * 
+     * @return known DatabaseFileType values.
+     */
     public static Collection<DatabaseFileType> values() {
         return values(DatabaseFileType.class);
     }

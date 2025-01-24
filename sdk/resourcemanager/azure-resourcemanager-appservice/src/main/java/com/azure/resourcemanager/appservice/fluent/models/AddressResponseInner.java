@@ -5,30 +5,87 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.VirtualIpMapping;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes main public IP address and any extra virtual IPs. */
+/**
+ * Describes main public IP address and any extra virtual IPs.
+ */
 @Fluent
 public final class AddressResponseInner extends ProxyOnlyResource {
     /*
      * AddressResponse resource specific properties
      */
-    @JsonProperty(value = "properties")
     private AddressResponseProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AddressResponseInner class.
+     */
+    public AddressResponseInner() {
+    }
 
     /**
      * Get the innerProperties property: AddressResponse resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AddressResponseProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AddressResponseInner withKind(String kind) {
         super.withKind(kind);
@@ -37,7 +94,7 @@ public final class AddressResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the serviceIpAddress property: Main public virtual IP.
-     *
+     * 
      * @return the serviceIpAddress value.
      */
     public String serviceIpAddress() {
@@ -46,7 +103,7 @@ public final class AddressResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the serviceIpAddress property: Main public virtual IP.
-     *
+     * 
      * @param serviceIpAddress the serviceIpAddress value to set.
      * @return the AddressResponseInner object itself.
      */
@@ -61,7 +118,7 @@ public final class AddressResponseInner extends ProxyOnlyResource {
     /**
      * Get the internalIpAddress property: Virtual Network internal IP address of the App Service Environment if it is
      * in internal load-balancing mode.
-     *
+     * 
      * @return the internalIpAddress value.
      */
     public String internalIpAddress() {
@@ -71,7 +128,7 @@ public final class AddressResponseInner extends ProxyOnlyResource {
     /**
      * Set the internalIpAddress property: Virtual Network internal IP address of the App Service Environment if it is
      * in internal load-balancing mode.
-     *
+     * 
      * @param internalIpAddress the internalIpAddress value to set.
      * @return the AddressResponseInner object itself.
      */
@@ -85,7 +142,7 @@ public final class AddressResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the outboundIpAddresses property: IP addresses appearing on outbound connections.
-     *
+     * 
      * @return the outboundIpAddresses value.
      */
     public List<String> outboundIpAddresses() {
@@ -94,7 +151,7 @@ public final class AddressResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the outboundIpAddresses property: IP addresses appearing on outbound connections.
-     *
+     * 
      * @param outboundIpAddresses the outboundIpAddresses value to set.
      * @return the AddressResponseInner object itself.
      */
@@ -108,7 +165,7 @@ public final class AddressResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the vipMappings property: Additional virtual IPs.
-     *
+     * 
      * @return the vipMappings value.
      */
     public List<VirtualIpMapping> vipMappings() {
@@ -117,7 +174,7 @@ public final class AddressResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the vipMappings property: Additional virtual IPs.
-     *
+     * 
      * @param vipMappings the vipMappings value to set.
      * @return the AddressResponseInner object itself.
      */
@@ -131,14 +188,59 @@ public final class AddressResponseInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddressResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddressResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AddressResponseInner.
+     */
+    public static AddressResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddressResponseInner deserializedAddressResponseInner = new AddressResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAddressResponseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAddressResponseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAddressResponseInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAddressResponseInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAddressResponseInner.innerProperties = AddressResponseProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddressResponseInner;
+        });
     }
 }

@@ -6,21 +6,36 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.ApplicationPackageInner;
-import org.junit.jupiter.api.Test;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 
 public final class ApplicationPackageInnerTests {
-    @Test
-    public void testDeserialize() {
-        ApplicationPackageInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"state\":\"Active\",\"format\":\"nsez\",\"storageUrl\":\"tbzsgfyccs\",\"storageUrlExpiry\":\"2021-01-11T19:46:12Z\",\"lastActivationTime\":\"2021-01-16T10:20:52Z\"},\"etag\":\"z\",\"id\":\"eiachboosflnr\",\"name\":\"sfqpteehz\",\"type\":\"vypyqrimzinpv\"}")
-                .toObject(ApplicationPackageInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ApplicationPackageInner model = BinaryData.fromString(
+            "{\"properties\":{\"state\":\"Active\",\"format\":\"uqktap\",\"storageUrl\":\"wgcu\",\"storageUrlExpiry\":\"2021-09-03T10:30:33Z\",\"lastActivationTime\":\"2021-10-20T23:01:02Z\"},\"etag\":\"dosvqwhbmdgbbjf\",\"tags\":{\"q\":\"mbmbexppbh\",\"algbquxigjyjg\":\"rolfpfp\",\"lnerkujysvleju\":\"jaoyfhrtx\"},\"id\":\"fqawrlyxw\",\"name\":\"kcprbnw\",\"type\":\"xgjvtbv\"}")
+            .toObject(ApplicationPackageInner.class);
+        Assertions.assertEquals("mbmbexppbh", model.tags().get("q"));
     }
 
-    @Test
-    public void testSerialize() {
-        ApplicationPackageInner model = new ApplicationPackageInner();
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ApplicationPackageInner model = new ApplicationPackageInner()
+            .withTags(mapOf("q", "mbmbexppbh", "algbquxigjyjg", "rolfpfp", "lnerkujysvleju", "jaoyfhrtx"));
         model = BinaryData.fromObject(model).toObject(ApplicationPackageInner.class);
+        Assertions.assertEquals("mbmbexppbh", model.tags().get("q"));
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

@@ -20,31 +20,27 @@ public final class OperationStatusesImpl implements OperationStatuses {
 
     private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public OperationStatusesImpl(
-        OperationStatusesClient innerClient,
+    public OperationStatusesImpl(OperationStatusesClient innerClient,
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<OperationStatus> getWithResponse(String location, String asyncOperationId, Context context) {
+        Response<OperationStatusInner> inner
+            = this.serviceClient().getWithResponse(location, asyncOperationId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OperationStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public OperationStatus get(String location, String asyncOperationId) {
         OperationStatusInner inner = this.serviceClient().get(location, asyncOperationId);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<OperationStatus> getWithResponse(String location, String asyncOperationId, Context context) {
-        Response<OperationStatusInner> inner =
-            this.serviceClient().getWithResponse(location, asyncOperationId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.search.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for IdentityType. */
+/**
+ * The identity type.
+ */
 public enum IdentityType {
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None"),
 
-    /** Enum value SystemAssigned. */
+    /**
+     * Enum value SystemAssigned.
+     */
     SYSTEM_ASSIGNED("SystemAssigned");
 
-    /** The actual serialized value for a IdentityType instance. */
+    /**
+     * The actual serialized value for a IdentityType instance.
+     */
     private final String value;
 
     IdentityType(String value) {
@@ -24,12 +29,14 @@ public enum IdentityType {
 
     /**
      * Parses a serialized value to a IdentityType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed IdentityType object, or null if unable to parse.
      */
-    @JsonCreator
     public static IdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         IdentityType[] items = IdentityType.values();
         for (IdentityType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum IdentityType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

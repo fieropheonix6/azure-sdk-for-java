@@ -4,79 +4,106 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.GalleryExpandParams;
 import com.azure.resourcemanager.compute.models.SelectPermissions;
 
-/** Samples for Galleries GetByResourceGroup. */
+/**
+ * Samples for Galleries GetByResourceGroup.
+ */
 public final class GalleriesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/CommunityGallery_Get.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
+     * CommunityGallery_Get.json
      */
     /**
      * Sample code: Get a community gallery.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getACommunityGallery(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getGalleries()
-            .getByResourceGroupWithResponse("myResourceGroup", "myGalleryName", null, null, Context.NONE);
+            .getByResourceGroupWithResponse("myResourceGroup", "myGalleryName", null, null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_Get_WithSelectPermissions.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
+     * Gallery_Get_WithSelectPermissions.json
      */
     /**
      * Sample code: Get a gallery with select permissions.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAGalleryWithSelectPermissions(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getGalleries()
-            .getByResourceGroupWithResponse(
-                "myResourceGroup", "myGalleryName", SelectPermissions.PERMISSIONS, null, Context.NONE);
+            .getByResourceGroupWithResponse("myResourceGroup", "myGalleryName", SelectPermissions.PERMISSIONS, null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_Get.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
+     * Gallery_Get.json
      */
     /**
      * Sample code: Get a gallery.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAGallery(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getGalleries()
-            .getByResourceGroupWithResponse("myResourceGroup", "myGalleryName", null, null, Context.NONE);
+            .getByResourceGroupWithResponse("myResourceGroup", "myGalleryName", null, null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/Gallery_Get_WithExpandSharingProfileGroups.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
+     * Gallery_Get_WithExpandSharingProfileGroups.json
      */
     /**
      * Sample code: Get a gallery with expand sharingProfile groups.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAGalleryWithExpandSharingProfileGroups(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getGalleries()
-            .getByResourceGroupWithResponse(
-                "myResourceGroup", "myGalleryName", null, GalleryExpandParams.SHARING_PROFILE_GROUPS, Context.NONE);
+            .getByResourceGroupWithResponse("myResourceGroup", "myGalleryName", null,
+                GalleryExpandParams.SHARING_PROFILE_GROUPS, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
+     * Gallery_Get_WithManagedIdentity.json
+     */
+    /**
+     * Sample code: Get a gallery with system-assigned and user-assigned managed identities.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getAGalleryWithSystemAssignedAndUserAssignedManagedIdentities(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleries()
+            .getByResourceGroupWithResponse("myResourceGroup", "myGalleryName", null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

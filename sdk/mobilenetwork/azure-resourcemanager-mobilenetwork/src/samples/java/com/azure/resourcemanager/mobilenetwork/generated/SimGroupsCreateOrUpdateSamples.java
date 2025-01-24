@@ -5,29 +5,51 @@
 package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.resourcemanager.mobilenetwork.models.KeyVaultKey;
+import com.azure.resourcemanager.mobilenetwork.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.mobilenetwork.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.mobilenetwork.models.MobileNetworkResourceId;
+import com.azure.resourcemanager.mobilenetwork.models.UserAssignedIdentity;
+import java.util.HashMap;
+import java.util.Map;
 
-/** Samples for SimGroups CreateOrUpdate. */
+/**
+ * Samples for SimGroups CreateOrUpdate.
+ */
 public final class SimGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimGroupCreate.json
+     * x-ms-original-file:
+     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimGroupCreate.
+     * json
      */
     /**
      * Sample code: Create SIM group.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createSIMGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager
-            .simGroups()
+        manager.simGroups()
             .define("testSimGroup")
             .withRegion("eastus")
             .withExistingResourceGroup("rg1")
-            .withEncryptionKey(new KeyVaultKey().withKeyUrl("https://contosovault.vault.azure.net/keys/azureKey"))
-            .withMobileNetwork(
-                new MobileNetworkResourceId()
-                    .withId(
-                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity",
+                    new UserAssignedIdentity())))
+            .withEncryptionKey(new KeyVaultKey().withKeyUrl("fakeTokenPlaceholder"))
+            .withMobileNetwork(new MobileNetworkResourceId().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"))
             .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

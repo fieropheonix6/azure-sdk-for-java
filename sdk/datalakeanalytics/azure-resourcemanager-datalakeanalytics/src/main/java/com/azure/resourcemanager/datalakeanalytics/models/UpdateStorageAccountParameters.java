@@ -5,77 +5,133 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datalakeanalytics.fluent.models.UpdateStorageAccountProperties;
+import java.io.IOException;
 
-/** The parameters used to update an Azure Storage account. */
-@JsonFlatten
+/**
+ * The parameters used to update an Azure Storage account.
+ */
 @Fluent
-public class UpdateStorageAccountParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateStorageAccountParameters.class);
-
+public final class UpdateStorageAccountParameters implements JsonSerializable<UpdateStorageAccountParameters> {
     /*
-     * The updated access key associated with this Azure Storage account that
-     * will be used to connect to it.
+     * The Azure Storage account properties to use when updating an Azure Storage account.
      */
-    @JsonProperty(value = "properties.accessKey")
-    private String accessKey;
+    private UpdateStorageAccountProperties innerProperties;
 
-    /*
-     * The optional suffix for the storage account.
+    /**
+     * Creates an instance of UpdateStorageAccountParameters class.
      */
-    @JsonProperty(value = "properties.suffix")
-    private String suffix;
+    public UpdateStorageAccountParameters() {
+    }
+
+    /**
+     * Get the innerProperties property: The Azure Storage account properties to use when updating an Azure Storage
+     * account.
+     * 
+     * @return the innerProperties value.
+     */
+    private UpdateStorageAccountProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the accessKey property: The updated access key associated with this Azure Storage account that will be used
      * to connect to it.
-     *
+     * 
      * @return the accessKey value.
      */
     public String accessKey() {
-        return this.accessKey;
+        return this.innerProperties() == null ? null : this.innerProperties().accessKey();
     }
 
     /**
      * Set the accessKey property: The updated access key associated with this Azure Storage account that will be used
      * to connect to it.
-     *
+     * 
      * @param accessKey the accessKey value to set.
      * @return the UpdateStorageAccountParameters object itself.
      */
     public UpdateStorageAccountParameters withAccessKey(String accessKey) {
-        this.accessKey = accessKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateStorageAccountProperties();
+        }
+        this.innerProperties().withAccessKey(accessKey);
         return this;
     }
 
     /**
      * Get the suffix property: The optional suffix for the storage account.
-     *
+     * 
      * @return the suffix value.
      */
     public String suffix() {
-        return this.suffix;
+        return this.innerProperties() == null ? null : this.innerProperties().suffix();
     }
 
     /**
      * Set the suffix property: The optional suffix for the storage account.
-     *
+     * 
      * @param suffix the suffix value to set.
      * @return the UpdateStorageAccountParameters object itself.
      */
     public UpdateStorageAccountParameters withSuffix(String suffix) {
-        this.suffix = suffix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateStorageAccountProperties();
+        }
+        this.innerProperties().withSuffix(suffix);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateStorageAccountParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateStorageAccountParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateStorageAccountParameters.
+     */
+    public static UpdateStorageAccountParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateStorageAccountParameters deserializedUpdateStorageAccountParameters
+                = new UpdateStorageAccountParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedUpdateStorageAccountParameters.innerProperties
+                        = UpdateStorageAccountProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateStorageAccountParameters;
+        });
     }
 }

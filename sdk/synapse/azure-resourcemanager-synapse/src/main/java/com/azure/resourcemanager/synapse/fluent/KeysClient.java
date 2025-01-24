@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.KeyInner;
 
-/** An instance of this class provides access to all the operations defined in KeysClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KeysClient.
+ */
 public interface KeysClient {
     /**
      * Returns a list of keys in a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface KeysClient {
 
     /**
      * Returns a list of keys in a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -42,21 +44,7 @@ public interface KeysClient {
 
     /**
      * Gets a workspace key.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param keyName The name of the workspace key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    KeyInner get(String resourceGroupName, String workspaceName, String keyName);
-
-    /**
-     * Gets a workspace key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
@@ -70,8 +58,39 @@ public interface KeysClient {
     Response<KeyInner> getWithResponse(String resourceGroupName, String workspaceName, String keyName, Context context);
 
     /**
+     * Gets a workspace key.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param keyName The name of the workspace key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workspace key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    KeyInner get(String resourceGroupName, String workspaceName, String keyName);
+
+    /**
      * Creates or updates a workspace key.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param keyName The name of the workspace key.
+     * @param keyProperties Key put request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workspace key along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<KeyInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String keyName,
+        KeyInner keyProperties, Context context);
+
+    /**
+     * Creates or updates a workspace key.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
@@ -85,12 +104,11 @@ public interface KeysClient {
     KeyInner createOrUpdate(String resourceGroupName, String workspaceName, String keyName, KeyInner keyProperties);
 
     /**
-     * Creates or updates a workspace key.
-     *
+     * Deletes a workspace key.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
-     * @param keyProperties Key put request properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -98,12 +116,12 @@ public interface KeysClient {
      * @return a workspace key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<KeyInner> createOrUpdateWithResponse(
-        String resourceGroupName, String workspaceName, String keyName, KeyInner keyProperties, Context context);
+    Response<KeyInner> deleteWithResponse(String resourceGroupName, String workspaceName, String keyName,
+        Context context);
 
     /**
      * Deletes a workspace key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
@@ -114,20 +132,4 @@ public interface KeysClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     KeyInner delete(String resourceGroupName, String workspaceName, String keyName);
-
-    /**
-     * Deletes a workspace key.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param keyName The name of the workspace key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace key along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<KeyInner> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String keyName, Context context);
 }

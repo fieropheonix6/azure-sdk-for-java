@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.azurearcdata.fluent.SqlManagedInstancesClient;
@@ -41,24 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlManagedInstancesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlManagedInstancesClient.
+ */
 public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesClient {
-    private final ClientLogger logger = new ClientLogger(SqlManagedInstancesClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlManagedInstancesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureArcDataManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlManagedInstancesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlManagedInstancesClientImpl(AzureArcDataManagementClientImpl client) {
-        this.service =
-            RestProxy.create(SqlManagedInstancesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SqlManagedInstancesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,208 +71,145 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureArcDataManageme")
-    private interface SqlManagedInstancesService {
-        @Headers({"Content-Type: application/json"})
+    public interface SqlManagedInstancesService {
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.AzureArcData/sqlManagedInstances")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlManagedInstanceListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SqlManagedInstanceListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData"
-                + "/sqlManagedInstances")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlManagedInstances")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlManagedInstanceListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SqlManagedInstanceListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData"
-                + "/sqlManagedInstances/{sqlManagedInstanceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlManagedInstances/{sqlManagedInstanceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlManagedInstanceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SqlManagedInstanceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sqlManagedInstanceName") String sqlManagedInstanceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData"
-                + "/sqlManagedInstances/{sqlManagedInstanceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlManagedInstances/{sqlManagedInstanceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sqlManagedInstanceName") String sqlManagedInstanceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SqlManagedInstanceInner sqlManagedInstance,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData"
-                + "/sqlManagedInstances/{sqlManagedInstanceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlManagedInstances/{sqlManagedInstanceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("sqlManagedInstanceName") String sqlManagedInstanceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData/sqlManagedInstances/{sqlManagedInstanceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SqlManagedInstanceInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sqlManagedInstanceName") String sqlManagedInstanceName,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SqlManagedInstanceUpdate parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData"
-                + "/sqlManagedInstances/{sqlManagedInstanceName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlManagedInstanceInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("sqlManagedInstanceName") String sqlManagedInstanceName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SqlManagedInstanceUpdate parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SqlManagedInstanceListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SqlManagedInstanceListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List sqlManagedInstance resources in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlManagedInstanceInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<SqlManagedInstanceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<SqlManagedInstanceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List sqlManagedInstance resources in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlManagedInstanceInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List sqlManagedInstance resources in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SqlManagedInstanceInner> listAsync() {
@@ -278,25 +218,25 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
 
     /**
      * List sqlManagedInstance resources in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SqlManagedInstanceInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List sqlManagedInstance resources in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlManagedInstanceInner> list() {
@@ -305,12 +245,12 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
 
     /**
      * List sqlManagedInstance resources in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlManagedInstanceInner> list(Context context) {
@@ -318,27 +258,26 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
     }
 
     /**
+     * List sqlManagedInstance resources in the resource group
+     * 
      * Gets all sqlManagedInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all sqlManagedInstances in a resource group.
+     * @return all sqlManagedInstances in a resource group along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlManagedInstanceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -346,52 +285,36 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<SqlManagedInstanceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<SqlManagedInstanceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * List sqlManagedInstance resources in the resource group
+     * 
      * Gets all sqlManagedInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all sqlManagedInstances in a resource group.
+     * @return all sqlManagedInstances in a resource group along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlManagedInstanceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<SqlManagedInstanceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -400,65 +323,57 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
+     * List sqlManagedInstance resources in the resource group
+     * 
      * Gets all sqlManagedInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all sqlManagedInstances in a resource group.
+     * @return all sqlManagedInstances in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SqlManagedInstanceInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
+     * List sqlManagedInstance resources in the resource group
+     * 
      * Gets all sqlManagedInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all sqlManagedInstances in a resource group.
+     * @return all sqlManagedInstances in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SqlManagedInstanceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
+     * List sqlManagedInstance resources in the resource group
+     * 
      * Gets all sqlManagedInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all sqlManagedInstances in a resource group.
+     * @return all sqlManagedInstances in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlManagedInstanceInner> listByResourceGroup(String resourceGroupName) {
@@ -466,14 +381,16 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
     }
 
     /**
+     * List sqlManagedInstance resources in the resource group
+     * 
      * Gets all sqlManagedInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all sqlManagedInstances in a resource group.
+     * @return all sqlManagedInstances in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlManagedInstanceInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -482,129 +399,114 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
 
     /**
      * Retrieves a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlManagedInstanceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String sqlManagedInstanceName) {
+    private Mono<Response<SqlManagedInstanceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String sqlManagedInstanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sqlManagedInstanceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sqlManagedInstanceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sqlManagedInstanceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            sqlManagedInstanceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, sqlManagedInstanceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlManagedInstanceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String sqlManagedInstanceName, Context context) {
+    private Mono<Response<SqlManagedInstanceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String sqlManagedInstanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sqlManagedInstanceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sqlManagedInstanceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sqlManagedInstanceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                sqlManagedInstanceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            sqlManagedInstanceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Retrieves a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlManagedInstanceInner> getByResourceGroupAsync(
-        String resourceGroupName, String sqlManagedInstanceName) {
+    private Mono<SqlManagedInstanceInner> getByResourceGroupAsync(String resourceGroupName,
+        String sqlManagedInstanceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, sqlManagedInstanceName)
-            .flatMap(
-                (Response<SqlManagedInstanceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves a SQL Managed Instance resource.
-     *
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SqlManagedInstance along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SqlManagedInstanceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String sqlManagedInstanceName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, sqlManagedInstanceName, context).block();
+    }
+
+    /**
+     * Retrieves a SQL Managed Instance resource.
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -614,60 +516,38 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SqlManagedInstanceInner getByResourceGroup(String resourceGroupName, String sqlManagedInstanceName) {
-        return getByResourceGroupAsync(resourceGroupName, sqlManagedInstanceName).block();
-    }
-
-    /**
-     * Retrieves a SQL Managed Instance resource.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName Name of SQL Managed Instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlManagedInstanceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String sqlManagedInstanceName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, sqlManagedInstanceName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, sqlManagedInstanceName, Context.NONE).getValue();
     }
 
     /**
      * Creates or replaces a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of SQL Managed Instances.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String sqlManagedInstanceName, SqlManagedInstanceInner sqlManagedInstance) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String sqlManagedInstanceName, SqlManagedInstanceInner sqlManagedInstance) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sqlManagedInstanceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sqlManagedInstanceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sqlManagedInstanceName is required and cannot be null."));
         }
         if (sqlManagedInstance == null) {
             return Mono
@@ -678,23 +558,14 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            sqlManagedInstanceName,
-                            this.client.getApiVersion(),
-                            sqlManagedInstance,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    sqlManagedInstanceName, this.client.getApiVersion(), sqlManagedInstance, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or replaces a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of SQL Managed Instances.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
@@ -702,34 +573,26 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String sqlManagedInstanceName,
-        SqlManagedInstanceInner sqlManagedInstance,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String sqlManagedInstanceName, SqlManagedInstanceInner sqlManagedInstance, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sqlManagedInstanceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sqlManagedInstanceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sqlManagedInstanceName is required and cannot be null."));
         }
         if (sqlManagedInstance == null) {
             return Mono
@@ -739,47 +602,34 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                sqlManagedInstanceName,
-                this.client.getApiVersion(),
-                sqlManagedInstance,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            sqlManagedInstanceName, this.client.getApiVersion(), sqlManagedInstance, accept, context);
     }
 
     /**
      * Creates or replaces a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of SQL Managed Instances.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return the {@link PollerFlux} for polling of a SqlManagedInstance.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlManagedInstanceInner>, SqlManagedInstanceInner> beginCreateAsync(
         String resourceGroupName, String sqlManagedInstanceName, SqlManagedInstanceInner sqlManagedInstance) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, sqlManagedInstanceName, sqlManagedInstance);
-        return this
-            .client
-            .<SqlManagedInstanceInner, SqlManagedInstanceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SqlManagedInstanceInner.class,
-                SqlManagedInstanceInner.class,
-                Context.NONE);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, sqlManagedInstanceName, sqlManagedInstance);
+        return this.client.<SqlManagedInstanceInner, SqlManagedInstanceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SqlManagedInstanceInner.class, SqlManagedInstanceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or replaces a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of SQL Managed Instances.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
@@ -787,47 +637,39 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return the {@link PollerFlux} for polling of a SqlManagedInstance.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlManagedInstanceInner>, SqlManagedInstanceInner> beginCreateAsync(
-        String resourceGroupName,
-        String sqlManagedInstanceName,
-        SqlManagedInstanceInner sqlManagedInstance,
+        String resourceGroupName, String sqlManagedInstanceName, SqlManagedInstanceInner sqlManagedInstance,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, sqlManagedInstanceName, sqlManagedInstance, context);
-        return this
-            .client
-            .<SqlManagedInstanceInner, SqlManagedInstanceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SqlManagedInstanceInner.class,
-                SqlManagedInstanceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, sqlManagedInstanceName, sqlManagedInstance, context);
+        return this.client.<SqlManagedInstanceInner, SqlManagedInstanceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SqlManagedInstanceInner.class, SqlManagedInstanceInner.class, context);
     }
 
     /**
      * Creates or replaces a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of SQL Managed Instances.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return the {@link SyncPoller} for polling of a SqlManagedInstance.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlManagedInstanceInner>, SqlManagedInstanceInner> beginCreate(
         String resourceGroupName, String sqlManagedInstanceName, SqlManagedInstanceInner sqlManagedInstance) {
-        return beginCreateAsync(resourceGroupName, sqlManagedInstanceName, sqlManagedInstance).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, sqlManagedInstanceName, sqlManagedInstance).getSyncPoller();
     }
 
     /**
      * Creates or replaces a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of SQL Managed Instances.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
@@ -835,39 +677,37 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return the {@link SyncPoller} for polling of a SqlManagedInstance.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlManagedInstanceInner>, SqlManagedInstanceInner> beginCreate(
-        String resourceGroupName,
-        String sqlManagedInstanceName,
-        SqlManagedInstanceInner sqlManagedInstance,
+        String resourceGroupName, String sqlManagedInstanceName, SqlManagedInstanceInner sqlManagedInstance,
         Context context) {
-        return beginCreateAsync(resourceGroupName, sqlManagedInstanceName, sqlManagedInstance, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, sqlManagedInstanceName, sqlManagedInstance, context)
+            .getSyncPoller();
     }
 
     /**
      * Creates or replaces a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of SQL Managed Instances.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlManagedInstanceInner> createAsync(
-        String resourceGroupName, String sqlManagedInstanceName, SqlManagedInstanceInner sqlManagedInstance) {
-        return beginCreateAsync(resourceGroupName, sqlManagedInstanceName, sqlManagedInstance)
-            .last()
+    private Mono<SqlManagedInstanceInner> createAsync(String resourceGroupName, String sqlManagedInstanceName,
+        SqlManagedInstanceInner sqlManagedInstance) {
+        return beginCreateAsync(resourceGroupName, sqlManagedInstanceName, sqlManagedInstance).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or replaces a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of SQL Managed Instances.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
@@ -875,22 +715,18 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlManagedInstanceInner> createAsync(
-        String resourceGroupName,
-        String sqlManagedInstanceName,
-        SqlManagedInstanceInner sqlManagedInstance,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, sqlManagedInstanceName, sqlManagedInstance, context)
-            .last()
+    private Mono<SqlManagedInstanceInner> createAsync(String resourceGroupName, String sqlManagedInstanceName,
+        SqlManagedInstanceInner sqlManagedInstance, Context context) {
+        return beginCreateAsync(resourceGroupName, sqlManagedInstanceName, sqlManagedInstance, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or replaces a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of SQL Managed Instances.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
@@ -900,14 +736,14 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @return a SqlManagedInstance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlManagedInstanceInner create(
-        String resourceGroupName, String sqlManagedInstanceName, SqlManagedInstanceInner sqlManagedInstance) {
+    public SqlManagedInstanceInner create(String resourceGroupName, String sqlManagedInstanceName,
+        SqlManagedInstanceInner sqlManagedInstance) {
         return createAsync(resourceGroupName, sqlManagedInstanceName, sqlManagedInstance).block();
     }
 
     /**
      * Creates or replaces a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of SQL Managed Instances.
      * @param sqlManagedInstance The SQL Managed Instance to be created or updated.
@@ -918,223 +754,190 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @return a SqlManagedInstance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlManagedInstanceInner create(
-        String resourceGroupName,
-        String sqlManagedInstanceName,
-        SqlManagedInstanceInner sqlManagedInstance,
-        Context context) {
+    public SqlManagedInstanceInner create(String resourceGroupName, String sqlManagedInstanceName,
+        SqlManagedInstanceInner sqlManagedInstance, Context context) {
         return createAsync(resourceGroupName, sqlManagedInstanceName, sqlManagedInstance, context).block();
     }
 
     /**
      * Deletes a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of Sql Managed Instances.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String sqlManagedInstanceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String sqlManagedInstanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sqlManagedInstanceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sqlManagedInstanceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sqlManagedInstanceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            sqlManagedInstanceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, sqlManagedInstanceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of Sql Managed Instances.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String sqlManagedInstanceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String sqlManagedInstanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sqlManagedInstanceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sqlManagedInstanceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sqlManagedInstanceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                sqlManagedInstanceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            sqlManagedInstanceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of Sql Managed Instances.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String sqlManagedInstanceName) {
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String sqlManagedInstanceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, sqlManagedInstanceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of Sql Managed Instances.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String sqlManagedInstanceName, Context context) {
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String sqlManagedInstanceName,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, sqlManagedInstanceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, sqlManagedInstanceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of Sql Managed Instances.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sqlManagedInstanceName) {
-        return beginDeleteAsync(resourceGroupName, sqlManagedInstanceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, sqlManagedInstanceName).getSyncPoller();
     }
 
     /**
      * Deletes a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of Sql Managed Instances.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String sqlManagedInstanceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, sqlManagedInstanceName, context).getSyncPoller();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sqlManagedInstanceName,
+        Context context) {
+        return this.beginDeleteAsync(resourceGroupName, sqlManagedInstanceName, context).getSyncPoller();
     }
 
     /**
      * Deletes a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of Sql Managed Instances.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String sqlManagedInstanceName) {
-        return beginDeleteAsync(resourceGroupName, sqlManagedInstanceName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, sqlManagedInstanceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of Sql Managed Instances.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String sqlManagedInstanceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, sqlManagedInstanceName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, sqlManagedInstanceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of Sql Managed Instances.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1148,7 +951,7 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
 
     /**
      * Deletes a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of Sql Managed Instances.
      * @param context The context to associate with this operation.
@@ -1163,38 +966,33 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
 
     /**
      * Updates a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName Name of sqlManagedInstance.
      * @param parameters The SQL Managed Instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlManagedInstanceInner>> updateWithResponseAsync(
-        String resourceGroupName, String sqlManagedInstanceName, SqlManagedInstanceUpdate parameters) {
+    private Mono<Response<SqlManagedInstanceInner>> updateWithResponseAsync(String resourceGroupName,
+        String sqlManagedInstanceName, SqlManagedInstanceUpdate parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sqlManagedInstanceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sqlManagedInstanceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sqlManagedInstanceName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1203,24 +1001,14 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            sqlManagedInstanceName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, sqlManagedInstanceName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName Name of sqlManagedInstance.
      * @param parameters The SQL Managed Instance.
@@ -1228,31 +1016,26 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlManagedInstanceInner>> updateWithResponseAsync(
-        String resourceGroupName, String sqlManagedInstanceName, SqlManagedInstanceUpdate parameters, Context context) {
+    private Mono<Response<SqlManagedInstanceInner>> updateWithResponseAsync(String resourceGroupName,
+        String sqlManagedInstanceName, SqlManagedInstanceUpdate parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sqlManagedInstanceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sqlManagedInstanceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sqlManagedInstanceName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1261,63 +1044,31 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                sqlManagedInstanceName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            sqlManagedInstanceName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Updates a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName Name of sqlManagedInstance.
      * @param parameters The SQL Managed Instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlManagedInstanceInner> updateAsync(
-        String resourceGroupName, String sqlManagedInstanceName, SqlManagedInstanceUpdate parameters) {
+    private Mono<SqlManagedInstanceInner> updateAsync(String resourceGroupName, String sqlManagedInstanceName,
+        SqlManagedInstanceUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, sqlManagedInstanceName, parameters)
-            .flatMap(
-                (Response<SqlManagedInstanceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates a SQL Managed Instance resource.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName Name of sqlManagedInstance.
-     * @param parameters The SQL Managed Instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlManagedInstanceInner update(
-        String resourceGroupName, String sqlManagedInstanceName, SqlManagedInstanceUpdate parameters) {
-        return updateAsync(resourceGroupName, sqlManagedInstanceName, parameters).block();
-    }
-
-    /**
-     * Updates a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName Name of sqlManagedInstance.
      * @param parameters The SQL Managed Instance.
@@ -1325,22 +1076,39 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlManagedInstanceInner> updateWithResponse(
-        String resourceGroupName, String sqlManagedInstanceName, SqlManagedInstanceUpdate parameters, Context context) {
+    public Response<SqlManagedInstanceInner> updateWithResponse(String resourceGroupName, String sqlManagedInstanceName,
+        SqlManagedInstanceUpdate parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, sqlManagedInstanceName, parameters, context).block();
     }
 
     /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * Updates a SQL Managed Instance resource.
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param sqlManagedInstanceName Name of sqlManagedInstance.
+     * @param parameters The SQL Managed Instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a SqlManagedInstance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SqlManagedInstanceInner update(String resourceGroupName, String sqlManagedInstanceName,
+        SqlManagedInstanceUpdate parameters) {
+        return updateWithResponse(resourceGroupName, sqlManagedInstanceName, parameters, Context.NONE).getValue();
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of SqlManagedInstance along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlManagedInstanceInner>> listNextSinglePageAsync(String nextLink) {
@@ -1348,35 +1116,25 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SqlManagedInstanceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SqlManagedInstanceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlManagedInstanceInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1384,34 +1142,24 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlManagedInstanceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1419,61 +1167,42 @@ public final class SqlManagedInstancesClientImpl implements SqlManagedInstancesC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SqlManagedInstanceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SqlManagedInstanceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlManagedInstanceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SqlManagedInstanceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

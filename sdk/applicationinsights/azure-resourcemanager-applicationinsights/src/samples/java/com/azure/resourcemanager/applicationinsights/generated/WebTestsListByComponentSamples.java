@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for WebTests ListByComponent. */
+/**
+ * Samples for WebTests ListByComponent.
+ */
 public final class WebTestsListByComponentSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2015-05-01/examples/WebTestListByComponent.json
+     * x-ms-original-file:
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/
+     * WebTestListByComponent.json
      */
     /**
      * Sample code: webTestListByComponent.
-     *
+     * 
      * @param manager Entry point to ApplicationInsightsManager.
      */
-    public static void webTestListByComponent(
-        com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.webTests().listByComponent("my-component", "my-resource-group", Context.NONE);
+    public static void
+        webTestListByComponent(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
+        manager.webTests().listByComponent("my-component", "my-resource-group", com.azure.core.util.Context.NONE);
     }
 }

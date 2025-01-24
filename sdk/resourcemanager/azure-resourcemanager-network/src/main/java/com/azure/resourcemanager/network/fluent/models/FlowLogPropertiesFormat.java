@@ -6,70 +6,76 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.FlowLogFormatParameters;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
 import com.azure.resourcemanager.network.models.TrafficAnalyticsProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Parameters that define the configuration of flow log. */
+/**
+ * Parameters that define the configuration of flow log.
+ */
 @Fluent
-public final class FlowLogPropertiesFormat {
+public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPropertiesFormat> {
     /*
      * ID of network security group to which flow log will be applied.
      */
-    @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;
 
     /*
      * Guid of network security group to which flow log will be applied.
      */
-    @JsonProperty(value = "targetResourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String targetResourceGuid;
 
     /*
      * ID of the storage account which is used to store the flow log.
      */
-    @JsonProperty(value = "storageId", required = true)
     private String storageId;
+
+    /*
+     * Optional field to filter network traffic logs based on SrcIP, SrcPort, DstIP, DstPort, Protocol, Encryption,
+     * Direction and Action. If not specified, all network traffic will be logged.
+     */
+    private String enabledFilteringCriteria;
 
     /*
      * Flag to enable/disable flow logging.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Parameters that define the retention policy for flow log.
      */
-    @JsonProperty(value = "retentionPolicy")
     private RetentionPolicyParameters retentionPolicy;
 
     /*
      * Parameters that define the flow log format.
      */
-    @JsonProperty(value = "format")
     private FlowLogFormatParameters format;
 
     /*
      * Parameters that define the configuration of traffic analytics.
      */
-    @JsonProperty(value = "flowAnalyticsConfiguration")
     private TrafficAnalyticsProperties flowAnalyticsConfiguration;
 
     /*
      * The provisioning state of the flow log.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of FlowLogPropertiesFormat class. */
+    /**
+     * Creates an instance of FlowLogPropertiesFormat class.
+     */
     public FlowLogPropertiesFormat() {
     }
 
     /**
      * Get the targetResourceId property: ID of network security group to which flow log will be applied.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -78,7 +84,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Set the targetResourceId property: ID of network security group to which flow log will be applied.
-     *
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the FlowLogPropertiesFormat object itself.
      */
@@ -89,7 +95,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Get the targetResourceGuid property: Guid of network security group to which flow log will be applied.
-     *
+     * 
      * @return the targetResourceGuid value.
      */
     public String targetResourceGuid() {
@@ -98,7 +104,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Get the storageId property: ID of the storage account which is used to store the flow log.
-     *
+     * 
      * @return the storageId value.
      */
     public String storageId() {
@@ -107,7 +113,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Set the storageId property: ID of the storage account which is used to store the flow log.
-     *
+     * 
      * @param storageId the storageId value to set.
      * @return the FlowLogPropertiesFormat object itself.
      */
@@ -117,8 +123,30 @@ public final class FlowLogPropertiesFormat {
     }
 
     /**
+     * Get the enabledFilteringCriteria property: Optional field to filter network traffic logs based on SrcIP, SrcPort,
+     * DstIP, DstPort, Protocol, Encryption, Direction and Action. If not specified, all network traffic will be logged.
+     * 
+     * @return the enabledFilteringCriteria value.
+     */
+    public String enabledFilteringCriteria() {
+        return this.enabledFilteringCriteria;
+    }
+
+    /**
+     * Set the enabledFilteringCriteria property: Optional field to filter network traffic logs based on SrcIP, SrcPort,
+     * DstIP, DstPort, Protocol, Encryption, Direction and Action. If not specified, all network traffic will be logged.
+     * 
+     * @param enabledFilteringCriteria the enabledFilteringCriteria value to set.
+     * @return the FlowLogPropertiesFormat object itself.
+     */
+    public FlowLogPropertiesFormat withEnabledFilteringCriteria(String enabledFilteringCriteria) {
+        this.enabledFilteringCriteria = enabledFilteringCriteria;
+        return this;
+    }
+
+    /**
      * Get the enabled property: Flag to enable/disable flow logging.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -127,7 +155,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Set the enabled property: Flag to enable/disable flow logging.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the FlowLogPropertiesFormat object itself.
      */
@@ -138,7 +166,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Get the retentionPolicy property: Parameters that define the retention policy for flow log.
-     *
+     * 
      * @return the retentionPolicy value.
      */
     public RetentionPolicyParameters retentionPolicy() {
@@ -147,7 +175,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Set the retentionPolicy property: Parameters that define the retention policy for flow log.
-     *
+     * 
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the FlowLogPropertiesFormat object itself.
      */
@@ -158,7 +186,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Get the format property: Parameters that define the flow log format.
-     *
+     * 
      * @return the format value.
      */
     public FlowLogFormatParameters format() {
@@ -167,7 +195,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Set the format property: Parameters that define the flow log format.
-     *
+     * 
      * @param format the format value to set.
      * @return the FlowLogPropertiesFormat object itself.
      */
@@ -178,7 +206,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Get the flowAnalyticsConfiguration property: Parameters that define the configuration of traffic analytics.
-     *
+     * 
      * @return the flowAnalyticsConfiguration value.
      */
     public TrafficAnalyticsProperties flowAnalyticsConfiguration() {
@@ -187,19 +215,19 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Set the flowAnalyticsConfiguration property: Parameters that define the configuration of traffic analytics.
-     *
+     * 
      * @param flowAnalyticsConfiguration the flowAnalyticsConfiguration value to set.
      * @return the FlowLogPropertiesFormat object itself.
      */
-    public FlowLogPropertiesFormat withFlowAnalyticsConfiguration(
-        TrafficAnalyticsProperties flowAnalyticsConfiguration) {
+    public FlowLogPropertiesFormat
+        withFlowAnalyticsConfiguration(TrafficAnalyticsProperties flowAnalyticsConfiguration) {
         this.flowAnalyticsConfiguration = flowAnalyticsConfiguration;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the flow log.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -208,21 +236,19 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceId in model FlowLogPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetResourceId in model FlowLogPropertiesFormat"));
         }
         if (storageId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageId in model FlowLogPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageId in model FlowLogPropertiesFormat"));
         }
         if (retentionPolicy() != null) {
             retentionPolicy().validate();
@@ -236,4 +262,65 @@ public final class FlowLogPropertiesFormat {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FlowLogPropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetResourceId", this.targetResourceId);
+        jsonWriter.writeStringField("storageId", this.storageId);
+        jsonWriter.writeStringField("enabledFilteringCriteria", this.enabledFilteringCriteria);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
+        jsonWriter.writeJsonField("format", this.format);
+        jsonWriter.writeJsonField("flowAnalyticsConfiguration", this.flowAnalyticsConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FlowLogPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FlowLogPropertiesFormat if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FlowLogPropertiesFormat.
+     */
+    public static FlowLogPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FlowLogPropertiesFormat deserializedFlowLogPropertiesFormat = new FlowLogPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceId".equals(fieldName)) {
+                    deserializedFlowLogPropertiesFormat.targetResourceId = reader.getString();
+                } else if ("storageId".equals(fieldName)) {
+                    deserializedFlowLogPropertiesFormat.storageId = reader.getString();
+                } else if ("targetResourceGuid".equals(fieldName)) {
+                    deserializedFlowLogPropertiesFormat.targetResourceGuid = reader.getString();
+                } else if ("enabledFilteringCriteria".equals(fieldName)) {
+                    deserializedFlowLogPropertiesFormat.enabledFilteringCriteria = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedFlowLogPropertiesFormat.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("retentionPolicy".equals(fieldName)) {
+                    deserializedFlowLogPropertiesFormat.retentionPolicy = RetentionPolicyParameters.fromJson(reader);
+                } else if ("format".equals(fieldName)) {
+                    deserializedFlowLogPropertiesFormat.format = FlowLogFormatParameters.fromJson(reader);
+                } else if ("flowAnalyticsConfiguration".equals(fieldName)) {
+                    deserializedFlowLogPropertiesFormat.flowAnalyticsConfiguration
+                        = TrafficAnalyticsProperties.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedFlowLogPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFlowLogPropertiesFormat;
+        });
+    }
 }

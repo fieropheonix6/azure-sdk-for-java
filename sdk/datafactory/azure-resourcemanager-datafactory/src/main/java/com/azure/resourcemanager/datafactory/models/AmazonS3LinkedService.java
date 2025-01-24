@@ -6,59 +6,94 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.AmazonS3LinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for Amazon S3. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AmazonS3")
+/**
+ * Linked service for Amazon S3.
+ */
 @Fluent
 public final class AmazonS3LinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "AmazonS3";
+
+    /*
      * Amazon S3 linked service properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private AmazonS3LinkedServiceTypeProperties innerTypeProperties = new AmazonS3LinkedServiceTypeProperties();
 
-    /** Creates an instance of AmazonS3LinkedService class. */
+    /**
+     * Creates an instance of AmazonS3LinkedService class.
+     */
     public AmazonS3LinkedService() {
     }
 
     /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Amazon S3 linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private AmazonS3LinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AmazonS3LinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonS3LinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonS3LinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonS3LinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonS3LinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -68,7 +103,7 @@ public final class AmazonS3LinkedService extends LinkedService {
     /**
      * Get the authenticationType property: The authentication type of S3. Allowed value: AccessKey (default) or
      * TemporarySecurityCredentials. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the authenticationType value.
      */
     public Object authenticationType() {
@@ -78,7 +113,7 @@ public final class AmazonS3LinkedService extends LinkedService {
     /**
      * Set the authenticationType property: The authentication type of S3. Allowed value: AccessKey (default) or
      * TemporarySecurityCredentials. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the AmazonS3LinkedService object itself.
      */
@@ -93,7 +128,7 @@ public final class AmazonS3LinkedService extends LinkedService {
     /**
      * Get the accessKeyId property: The access key identifier of the Amazon S3 Identity and Access Management (IAM)
      * user. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the accessKeyId value.
      */
     public Object accessKeyId() {
@@ -103,7 +138,7 @@ public final class AmazonS3LinkedService extends LinkedService {
     /**
      * Set the accessKeyId property: The access key identifier of the Amazon S3 Identity and Access Management (IAM)
      * user. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param accessKeyId the accessKeyId value to set.
      * @return the AmazonS3LinkedService object itself.
      */
@@ -118,7 +153,7 @@ public final class AmazonS3LinkedService extends LinkedService {
     /**
      * Get the secretAccessKey property: The secret access key of the Amazon S3 Identity and Access Management (IAM)
      * user.
-     *
+     * 
      * @return the secretAccessKey value.
      */
     public SecretBase secretAccessKey() {
@@ -128,7 +163,7 @@ public final class AmazonS3LinkedService extends LinkedService {
     /**
      * Set the secretAccessKey property: The secret access key of the Amazon S3 Identity and Access Management (IAM)
      * user.
-     *
+     * 
      * @param secretAccessKey the secretAccessKey value to set.
      * @return the AmazonS3LinkedService object itself.
      */
@@ -144,7 +179,7 @@ public final class AmazonS3LinkedService extends LinkedService {
      * Get the serviceUrl property: This value specifies the endpoint to access with the S3 Connector. This is an
      * optional property; change it only if you want to try a different service endpoint or want to switch between https
      * and http. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the serviceUrl value.
      */
     public Object serviceUrl() {
@@ -155,7 +190,7 @@ public final class AmazonS3LinkedService extends LinkedService {
      * Set the serviceUrl property: This value specifies the endpoint to access with the S3 Connector. This is an
      * optional property; change it only if you want to try a different service endpoint or want to switch between https
      * and http. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param serviceUrl the serviceUrl value to set.
      * @return the AmazonS3LinkedService object itself.
      */
@@ -169,7 +204,7 @@ public final class AmazonS3LinkedService extends LinkedService {
 
     /**
      * Get the sessionToken property: The session token for the S3 temporary security credential.
-     *
+     * 
      * @return the sessionToken value.
      */
     public SecretBase sessionToken() {
@@ -178,7 +213,7 @@ public final class AmazonS3LinkedService extends LinkedService {
 
     /**
      * Set the sessionToken property: The session token for the S3 temporary security credential.
-     *
+     * 
      * @param sessionToken the sessionToken value to set.
      * @return the AmazonS3LinkedService object itself.
      */
@@ -192,22 +227,22 @@ public final class AmazonS3LinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AmazonS3LinkedService object itself.
      */
-    public AmazonS3LinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AmazonS3LinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AmazonS3LinkedServiceTypeProperties();
         }
@@ -217,21 +252,99 @@ public final class AmazonS3LinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model AmazonS3LinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model AmazonS3LinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AmazonS3LinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmazonS3LinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmazonS3LinkedService if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AmazonS3LinkedService.
+     */
+    public static AmazonS3LinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmazonS3LinkedService deserializedAmazonS3LinkedService = new AmazonS3LinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedAmazonS3LinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedAmazonS3LinkedService.withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedAmazonS3LinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedAmazonS3LinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedAmazonS3LinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedAmazonS3LinkedService.innerTypeProperties
+                        = AmazonS3LinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedAmazonS3LinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAmazonS3LinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedAmazonS3LinkedService;
+        });
+    }
 }

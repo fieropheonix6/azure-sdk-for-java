@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScopeType. */
+/**
+ * The scope where the default account is set.
+ */
 public final class ScopeType extends ExpandableStringEnum<ScopeType> {
-    /** Static value Tenant for ScopeType. */
+    /**
+     * Static value Tenant for ScopeType.
+     */
     public static final ScopeType TENANT = fromString("Tenant");
 
-    /** Static value Subscription for ScopeType. */
+    /**
+     * Static value Subscription for ScopeType.
+     */
     public static final ScopeType SUBSCRIPTION = fromString("Subscription");
 
     /**
+     * Creates a new instance of ScopeType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScopeType() {
+    }
+
+    /**
      * Creates or finds a ScopeType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScopeType.
      */
-    @JsonCreator
     public static ScopeType fromString(String name) {
         return fromString(name, ScopeType.class);
     }
 
-    /** @return known ScopeType values. */
+    /**
+     * Gets known ScopeType values.
+     * 
+     * @return known ScopeType values.
+     */
     public static Collection<ScopeType> values() {
         return values(ScopeType.class);
     }

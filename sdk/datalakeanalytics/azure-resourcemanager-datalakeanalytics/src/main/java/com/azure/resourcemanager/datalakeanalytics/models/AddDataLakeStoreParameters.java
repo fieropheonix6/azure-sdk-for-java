@@ -5,48 +5,107 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datalakeanalytics.fluent.models.AddDataLakeStoreProperties;
+import java.io.IOException;
 
-/** The parameters used to add a new Data Lake Store account. */
-@JsonFlatten
+/**
+ * The parameters used to add a new Data Lake Store account.
+ */
 @Fluent
-public class AddDataLakeStoreParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddDataLakeStoreParameters.class);
-
+public final class AddDataLakeStoreParameters implements JsonSerializable<AddDataLakeStoreParameters> {
     /*
-     * The optional suffix for the Data Lake Store account.
+     * The Data Lake Store account properties to use when adding a new Data Lake Store account.
      */
-    @JsonProperty(value = "properties.suffix")
-    private String suffix;
+    private AddDataLakeStoreProperties innerProperties;
+
+    /**
+     * Creates an instance of AddDataLakeStoreParameters class.
+     */
+    public AddDataLakeStoreParameters() {
+    }
+
+    /**
+     * Get the innerProperties property: The Data Lake Store account properties to use when adding a new Data Lake Store
+     * account.
+     * 
+     * @return the innerProperties value.
+     */
+    private AddDataLakeStoreProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the suffix property: The optional suffix for the Data Lake Store account.
-     *
+     * 
      * @return the suffix value.
      */
     public String suffix() {
-        return this.suffix;
+        return this.innerProperties() == null ? null : this.innerProperties().suffix();
     }
 
     /**
      * Set the suffix property: The optional suffix for the Data Lake Store account.
-     *
+     * 
      * @param suffix the suffix value to set.
      * @return the AddDataLakeStoreParameters object itself.
      */
     public AddDataLakeStoreParameters withSuffix(String suffix) {
-        this.suffix = suffix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AddDataLakeStoreProperties();
+        }
+        this.innerProperties().withSuffix(suffix);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddDataLakeStoreParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddDataLakeStoreParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AddDataLakeStoreParameters.
+     */
+    public static AddDataLakeStoreParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddDataLakeStoreParameters deserializedAddDataLakeStoreParameters = new AddDataLakeStoreParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAddDataLakeStoreParameters.innerProperties
+                        = AddDataLakeStoreProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddDataLakeStoreParameters;
+        });
     }
 }

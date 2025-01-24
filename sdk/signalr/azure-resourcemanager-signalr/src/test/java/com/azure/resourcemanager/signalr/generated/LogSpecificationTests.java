@@ -7,24 +7,21 @@ package com.azure.resourcemanager.signalr.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.models.LogSpecification;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class LogSpecificationTests {
-    @Test
-    public void testDeserialize() {
-        LogSpecification model =
-            BinaryData
-                .fromString("{\"name\":\"iksqr\",\"displayName\":\"ssainqpjwnzll\"}")
-                .toObject(LogSpecification.class);
-        Assertions.assertEquals("iksqr", model.name());
-        Assertions.assertEquals("ssainqpjwnzll", model.displayName());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        LogSpecification model = BinaryData.fromString("{\"name\":\"twmcynpwlb\",\"displayName\":\"pgacftadehxnlty\"}")
+            .toObject(LogSpecification.class);
+        Assertions.assertEquals("twmcynpwlb", model.name());
+        Assertions.assertEquals("pgacftadehxnlty", model.displayName());
     }
 
-    @Test
-    public void testSerialize() {
-        LogSpecification model = new LogSpecification().withName("iksqr").withDisplayName("ssainqpjwnzll");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        LogSpecification model = new LogSpecification().withName("twmcynpwlb").withDisplayName("pgacftadehxnlty");
         model = BinaryData.fromObject(model).toObject(LogSpecification.class);
-        Assertions.assertEquals("iksqr", model.name());
-        Assertions.assertEquals("ssainqpjwnzll", model.displayName());
+        Assertions.assertEquals("twmcynpwlb", model.name());
+        Assertions.assertEquals("pgacftadehxnlty", model.displayName());
     }
 }

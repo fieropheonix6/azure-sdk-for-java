@@ -6,27 +6,37 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.MySqlMigrationType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** MigrateMySqlRequest resource specific properties. */
+/**
+ * MigrateMySqlRequest resource specific properties.
+ */
 @Fluent
-public final class MigrateMySqlRequestProperties {
+public final class MigrateMySqlRequestProperties implements JsonSerializable<MigrateMySqlRequestProperties> {
     /*
      * Connection string to the remote MySQL database.
      */
-    @JsonProperty(value = "connectionString", required = true)
     private String connectionString;
 
     /*
      * The type of migration operation to be done
      */
-    @JsonProperty(value = "migrationType", required = true)
     private MySqlMigrationType migrationType;
 
     /**
+     * Creates an instance of MigrateMySqlRequestProperties class.
+     */
+    public MigrateMySqlRequestProperties() {
+    }
+
+    /**
      * Get the connectionString property: Connection string to the remote MySQL database.
-     *
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -35,7 +45,7 @@ public final class MigrateMySqlRequestProperties {
 
     /**
      * Set the connectionString property: Connection string to the remote MySQL database.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the MigrateMySqlRequestProperties object itself.
      */
@@ -46,7 +56,7 @@ public final class MigrateMySqlRequestProperties {
 
     /**
      * Get the migrationType property: The type of migration operation to be done.
-     *
+     * 
      * @return the migrationType value.
      */
     public MySqlMigrationType migrationType() {
@@ -55,7 +65,7 @@ public final class MigrateMySqlRequestProperties {
 
     /**
      * Set the migrationType property: The type of migration operation to be done.
-     *
+     * 
      * @param migrationType the migrationType value to set.
      * @return the MigrateMySqlRequestProperties object itself.
      */
@@ -66,23 +76,63 @@ public final class MigrateMySqlRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connectionString() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property connectionString in model MigrateMySqlRequestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectionString in model MigrateMySqlRequestProperties"));
         }
         if (migrationType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property migrationType in model MigrateMySqlRequestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property migrationType in model MigrateMySqlRequestProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MigrateMySqlRequestProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("connectionString", this.connectionString);
+        jsonWriter.writeStringField("migrationType", this.migrationType == null ? null : this.migrationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateMySqlRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateMySqlRequestProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MigrateMySqlRequestProperties.
+     */
+    public static MigrateMySqlRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateMySqlRequestProperties deserializedMigrateMySqlRequestProperties
+                = new MigrateMySqlRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionString".equals(fieldName)) {
+                    deserializedMigrateMySqlRequestProperties.connectionString = reader.getString();
+                } else if ("migrationType".equals(fieldName)) {
+                    deserializedMigrateMySqlRequestProperties.migrationType
+                        = MySqlMigrationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateMySqlRequestProperties;
+        });
+    }
 }

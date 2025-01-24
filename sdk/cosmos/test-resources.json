@@ -5,7 +5,7 @@
     "baseName": {
       "type": "string"
     },
-    "enableMultipleWriteLocations" : {
+    "enableMultipleWriteLocations": {
       "type": "bool",
       "metadata": {
         "description": "Flag to enable or disable multiple write locations on CosmosDB Account"
@@ -23,10 +23,17 @@
         "description": "Enable multiple regions, default value is false"
       },
       "defaultValue": false
+    },
+    "enablePartitionMerge": {
+      "type": "bool",
+      "metadata": {
+        "description": "Enable partition merge, default value is false"
+      },
+      "defaultValue": false
     }
   },
   "variables": {
-    "apiVersion": "2020-04-01",
+    "apiVersion": "2022-08-15",
     "accountName": "[toLower(parameters('baseName'))]",
     "newAccountName": "[toLower(concat(parameters('baseName'), '2'))]",
     "resourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]",
@@ -37,8 +44,9 @@
         "provisioningState": "Succeeded",
         "failoverPriority": 0,
         "isZoneRedundant": false
-      }],
-      "multiRegionConfiguration": [
+      }
+    ],
+    "multiRegionConfiguration": [
       {
         "locationName": "West Central US",
         "provisioningState": "Succeeded",
@@ -53,7 +61,6 @@
       }
     ],
     "locationsConfiguration": "[if(parameters('enableMultipleRegions'), variables('multiRegionConfiguration'), variables('singleRegionConfiguration'))]"
-
   },
   "resources": [
     {
@@ -66,6 +73,7 @@
         "publicNetworkAccess": "Enabled",
         "enableAutomaticFailover": false,
         "enableMultipleWriteLocations": "[parameters('enableMultipleWriteLocations')]",
+        "enablePartitionMerge": "[parameters('enablePartitionMerge')]",
         "isVirtualNetworkFilterEnabled": false,
         "virtualNetworkRules": [],
         "disableKeyBasedMetadataWriteAccess": false,
@@ -78,7 +86,11 @@
           "maxStalenessPrefix": 100
         },
         "locations": "[variables('locationsConfiguration')]",
-        "capabilities": [],
+        "capabilities": [
+          {
+            "name": "EnableNoSQLVectorSearch"
+          }
+        ],
         "ipRules": []
       }
     },
@@ -92,6 +104,7 @@
         "publicNetworkAccess": "Enabled",
         "enableAutomaticFailover": false,
         "enableMultipleWriteLocations": "[parameters('enableMultipleWriteLocations')]",
+        "enablePartitionMerge": "[parameters('enablePartitionMerge')]",
         "isVirtualNetworkFilterEnabled": false,
         "virtualNetworkRules": [],
         "disableKeyBasedMetadataWriteAccess": false,
@@ -104,7 +117,11 @@
           "maxStalenessPrefix": 100
         },
         "locations": "[variables('locationsConfiguration')]",
-        "capabilities": [],
+        "capabilities": [
+          {
+            "name": "EnableNoSQLVectorSearch"
+          }
+        ],
         "ipRules": []
       }
     }

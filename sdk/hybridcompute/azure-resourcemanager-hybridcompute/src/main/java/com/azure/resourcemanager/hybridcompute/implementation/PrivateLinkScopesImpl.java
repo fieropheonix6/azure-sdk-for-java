@@ -15,17 +15,15 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.PrivateLinkScopeVal
 import com.azure.resourcemanager.hybridcompute.models.HybridComputePrivateLinkScope;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkScopeValidationDetails;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkScopes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkScopesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkScopesImpl.class);
 
     private final PrivateLinkScopesClient innerClient;
 
     private final com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager;
 
-    public PrivateLinkScopesImpl(
-        PrivateLinkScopesClient innerClient,
+    public PrivateLinkScopesImpl(PrivateLinkScopesClient innerClient,
         com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -33,24 +31,28 @@ public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
 
     public PagedIterable<HybridComputePrivateLinkScope> list() {
         PagedIterable<HybridComputePrivateLinkScopeInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new HybridComputePrivateLinkScopeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new HybridComputePrivateLinkScopeImpl(inner1, this.manager()));
     }
 
     public PagedIterable<HybridComputePrivateLinkScope> list(Context context) {
         PagedIterable<HybridComputePrivateLinkScopeInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new HybridComputePrivateLinkScopeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new HybridComputePrivateLinkScopeImpl(inner1, this.manager()));
     }
 
     public PagedIterable<HybridComputePrivateLinkScope> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<HybridComputePrivateLinkScopeInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new HybridComputePrivateLinkScopeImpl(inner1, this.manager()));
+        PagedIterable<HybridComputePrivateLinkScopeInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new HybridComputePrivateLinkScopeImpl(inner1, this.manager()));
     }
 
     public PagedIterable<HybridComputePrivateLinkScope> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<HybridComputePrivateLinkScopeInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new HybridComputePrivateLinkScopeImpl(inner1, this.manager()));
+        PagedIterable<HybridComputePrivateLinkScopeInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new HybridComputePrivateLinkScopeImpl(inner1, this.manager()));
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String scopeName) {
@@ -61,9 +63,21 @@ public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
         this.serviceClient().delete(resourceGroupName, scopeName, context);
     }
 
+    public Response<HybridComputePrivateLinkScope> getByResourceGroupWithResponse(String resourceGroupName,
+        String scopeName, Context context) {
+        Response<HybridComputePrivateLinkScopeInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, scopeName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new HybridComputePrivateLinkScopeImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public HybridComputePrivateLinkScope getByResourceGroup(String resourceGroupName, String scopeName) {
-        HybridComputePrivateLinkScopeInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, scopeName);
+        HybridComputePrivateLinkScopeInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, scopeName);
         if (inner != null) {
             return new HybridComputePrivateLinkScopeImpl(inner, this.manager());
         } else {
@@ -71,24 +85,21 @@ public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
         }
     }
 
-    public Response<HybridComputePrivateLinkScope> getByResourceGroupWithResponse(
-        String resourceGroupName, String scopeName, Context context) {
-        Response<HybridComputePrivateLinkScopeInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, scopeName, context);
+    public Response<PrivateLinkScopeValidationDetails> getValidationDetailsWithResponse(String location,
+        String privateLinkScopeId, Context context) {
+        Response<PrivateLinkScopeValidationDetailsInner> inner
+            = this.serviceClient().getValidationDetailsWithResponse(location, privateLinkScopeId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new HybridComputePrivateLinkScopeImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PrivateLinkScopeValidationDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
     public PrivateLinkScopeValidationDetails getValidationDetails(String location, String privateLinkScopeId) {
-        PrivateLinkScopeValidationDetailsInner inner =
-            this.serviceClient().getValidationDetails(location, privateLinkScopeId);
+        PrivateLinkScopeValidationDetailsInner inner
+            = this.serviceClient().getValidationDetails(location, privateLinkScopeId);
         if (inner != null) {
             return new PrivateLinkScopeValidationDetailsImpl(inner, this.manager());
         } else {
@@ -96,127 +107,81 @@ public final class PrivateLinkScopesImpl implements PrivateLinkScopes {
         }
     }
 
-    public Response<PrivateLinkScopeValidationDetails> getValidationDetailsWithResponse(
-        String location, String privateLinkScopeId, Context context) {
-        Response<PrivateLinkScopeValidationDetailsInner> inner =
-            this.serviceClient().getValidationDetailsWithResponse(location, privateLinkScopeId, context);
+    public Response<PrivateLinkScopeValidationDetails>
+        getValidationDetailsForMachineWithResponse(String resourceGroupName, String machineName, Context context) {
+        Response<PrivateLinkScopeValidationDetailsInner> inner
+            = this.serviceClient().getValidationDetailsForMachineWithResponse(resourceGroupName, machineName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrivateLinkScopeValidationDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PrivateLinkScopeValidationDetails getValidationDetailsForMachine(
-        String resourceGroupName, String machineName) {
-        PrivateLinkScopeValidationDetailsInner inner =
-            this.serviceClient().getValidationDetailsForMachine(resourceGroupName, machineName);
+    public PrivateLinkScopeValidationDetails getValidationDetailsForMachine(String resourceGroupName,
+        String machineName) {
+        PrivateLinkScopeValidationDetailsInner inner
+            = this.serviceClient().getValidationDetailsForMachine(resourceGroupName, machineName);
         if (inner != null) {
             return new PrivateLinkScopeValidationDetailsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<PrivateLinkScopeValidationDetails> getValidationDetailsForMachineWithResponse(
-        String resourceGroupName, String machineName, Context context) {
-        Response<PrivateLinkScopeValidationDetailsInner> inner =
-            this.serviceClient().getValidationDetailsForMachineWithResponse(resourceGroupName, machineName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PrivateLinkScopeValidationDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
     public HybridComputePrivateLinkScope getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String scopeName = Utils.getValueFromIdByName(id, "privateLinkScopes");
+        String scopeName = ResourceManagerUtils.getValueFromIdByName(id, "privateLinkScopes");
         if (scopeName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'privateLinkScopes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateLinkScopes'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, scopeName, Context.NONE).getValue();
     }
 
     public Response<HybridComputePrivateLinkScope> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String scopeName = Utils.getValueFromIdByName(id, "privateLinkScopes");
+        String scopeName = ResourceManagerUtils.getValueFromIdByName(id, "privateLinkScopes");
         if (scopeName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'privateLinkScopes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateLinkScopes'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, scopeName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String scopeName = Utils.getValueFromIdByName(id, "privateLinkScopes");
+        String scopeName = ResourceManagerUtils.getValueFromIdByName(id, "privateLinkScopes");
         if (scopeName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'privateLinkScopes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateLinkScopes'.", id)));
         }
         this.delete(resourceGroupName, scopeName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String scopeName = Utils.getValueFromIdByName(id, "privateLinkScopes");
+        String scopeName = ResourceManagerUtils.getValueFromIdByName(id, "privateLinkScopes");
         if (scopeName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'privateLinkScopes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateLinkScopes'.", id)));
         }
         this.delete(resourceGroupName, scopeName, context);
     }

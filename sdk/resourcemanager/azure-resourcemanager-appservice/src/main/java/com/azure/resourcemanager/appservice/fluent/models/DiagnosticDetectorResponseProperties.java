@@ -5,68 +5,75 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.DetectorAbnormalTimePeriod;
 import com.azure.resourcemanager.appservice.models.DiagnosticMetricSet;
 import com.azure.resourcemanager.appservice.models.NameValuePair;
 import com.azure.resourcemanager.appservice.models.ResponseMetadata;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** DiagnosticDetectorResponse resource specific properties. */
+/**
+ * DiagnosticDetectorResponse resource specific properties.
+ */
 @Fluent
-public final class DiagnosticDetectorResponseProperties {
+public final class DiagnosticDetectorResponseProperties
+    implements JsonSerializable<DiagnosticDetectorResponseProperties> {
     /*
      * Start time of the period
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * End time of the period
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Flag representing Issue was detected.
      */
-    @JsonProperty(value = "issueDetected")
     private Boolean issueDetected;
 
     /*
      * Detector's definition
      */
-    @JsonProperty(value = "detectorDefinition")
     private DetectorDefinition detectorDefinition;
 
     /*
      * Metrics provided by the detector
      */
-    @JsonProperty(value = "metrics")
     private List<DiagnosticMetricSet> metrics;
 
     /*
      * List of Correlated events found by the detector
      */
-    @JsonProperty(value = "abnormalTimePeriods")
     private List<DetectorAbnormalTimePeriod> abnormalTimePeriods;
 
     /*
      * Additional Data that detector wants to send.
      */
-    @JsonProperty(value = "data")
     private List<List<NameValuePair>> data;
 
     /*
      * Meta Data
      */
-    @JsonProperty(value = "responseMetaData")
     private ResponseMetadata responseMetadata;
 
     /**
+     * Creates an instance of DiagnosticDetectorResponseProperties class.
+     */
+    public DiagnosticDetectorResponseProperties() {
+    }
+
+    /**
      * Get the startTime property: Start time of the period.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -75,7 +82,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Set the startTime property: Start time of the period.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the DiagnosticDetectorResponseProperties object itself.
      */
@@ -86,7 +93,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Get the endTime property: End time of the period.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -95,7 +102,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Set the endTime property: End time of the period.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the DiagnosticDetectorResponseProperties object itself.
      */
@@ -106,7 +113,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Get the issueDetected property: Flag representing Issue was detected.
-     *
+     * 
      * @return the issueDetected value.
      */
     public Boolean issueDetected() {
@@ -115,7 +122,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Set the issueDetected property: Flag representing Issue was detected.
-     *
+     * 
      * @param issueDetected the issueDetected value to set.
      * @return the DiagnosticDetectorResponseProperties object itself.
      */
@@ -126,7 +133,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Get the detectorDefinition property: Detector's definition.
-     *
+     * 
      * @return the detectorDefinition value.
      */
     public DetectorDefinition detectorDefinition() {
@@ -135,7 +142,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Set the detectorDefinition property: Detector's definition.
-     *
+     * 
      * @param detectorDefinition the detectorDefinition value to set.
      * @return the DiagnosticDetectorResponseProperties object itself.
      */
@@ -146,7 +153,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Get the metrics property: Metrics provided by the detector.
-     *
+     * 
      * @return the metrics value.
      */
     public List<DiagnosticMetricSet> metrics() {
@@ -155,7 +162,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Set the metrics property: Metrics provided by the detector.
-     *
+     * 
      * @param metrics the metrics value to set.
      * @return the DiagnosticDetectorResponseProperties object itself.
      */
@@ -166,7 +173,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Get the abnormalTimePeriods property: List of Correlated events found by the detector.
-     *
+     * 
      * @return the abnormalTimePeriods value.
      */
     public List<DetectorAbnormalTimePeriod> abnormalTimePeriods() {
@@ -175,19 +182,19 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Set the abnormalTimePeriods property: List of Correlated events found by the detector.
-     *
+     * 
      * @param abnormalTimePeriods the abnormalTimePeriods value to set.
      * @return the DiagnosticDetectorResponseProperties object itself.
      */
-    public DiagnosticDetectorResponseProperties withAbnormalTimePeriods(
-        List<DetectorAbnormalTimePeriod> abnormalTimePeriods) {
+    public DiagnosticDetectorResponseProperties
+        withAbnormalTimePeriods(List<DetectorAbnormalTimePeriod> abnormalTimePeriods) {
         this.abnormalTimePeriods = abnormalTimePeriods;
         return this;
     }
 
     /**
      * Get the data property: Additional Data that detector wants to send.
-     *
+     * 
      * @return the data value.
      */
     public List<List<NameValuePair>> data() {
@@ -196,7 +203,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Set the data property: Additional Data that detector wants to send.
-     *
+     * 
      * @param data the data value to set.
      * @return the DiagnosticDetectorResponseProperties object itself.
      */
@@ -207,7 +214,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Get the responseMetadata property: Meta Data.
-     *
+     * 
      * @return the responseMetadata value.
      */
     public ResponseMetadata responseMetadata() {
@@ -216,7 +223,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Set the responseMetadata property: Meta Data.
-     *
+     * 
      * @param responseMetadata the responseMetadata value to set.
      * @return the DiagnosticDetectorResponseProperties object itself.
      */
@@ -227,7 +234,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -246,5 +253,78 @@ public final class DiagnosticDetectorResponseProperties {
         if (responseMetadata() != null) {
             responseMetadata().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeBooleanField("issueDetected", this.issueDetected);
+        jsonWriter.writeJsonField("detectorDefinition", this.detectorDefinition);
+        jsonWriter.writeArrayField("metrics", this.metrics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("abnormalTimePeriods", this.abnormalTimePeriods,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("data", this.data,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1)));
+        jsonWriter.writeJsonField("responseMetaData", this.responseMetadata);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnosticDetectorResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnosticDetectorResponseProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiagnosticDetectorResponseProperties.
+     */
+    public static DiagnosticDetectorResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnosticDetectorResponseProperties deserializedDiagnosticDetectorResponseProperties
+                = new DiagnosticDetectorResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedDiagnosticDetectorResponseProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedDiagnosticDetectorResponseProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("issueDetected".equals(fieldName)) {
+                    deserializedDiagnosticDetectorResponseProperties.issueDetected
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("detectorDefinition".equals(fieldName)) {
+                    deserializedDiagnosticDetectorResponseProperties.detectorDefinition
+                        = DetectorDefinition.fromJson(reader);
+                } else if ("metrics".equals(fieldName)) {
+                    List<DiagnosticMetricSet> metrics
+                        = reader.readArray(reader1 -> DiagnosticMetricSet.fromJson(reader1));
+                    deserializedDiagnosticDetectorResponseProperties.metrics = metrics;
+                } else if ("abnormalTimePeriods".equals(fieldName)) {
+                    List<DetectorAbnormalTimePeriod> abnormalTimePeriods
+                        = reader.readArray(reader1 -> DetectorAbnormalTimePeriod.fromJson(reader1));
+                    deserializedDiagnosticDetectorResponseProperties.abnormalTimePeriods = abnormalTimePeriods;
+                } else if ("data".equals(fieldName)) {
+                    List<List<NameValuePair>> data
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> NameValuePair.fromJson(reader2)));
+                    deserializedDiagnosticDetectorResponseProperties.data = data;
+                } else if ("responseMetaData".equals(fieldName)) {
+                    deserializedDiagnosticDetectorResponseProperties.responseMetadata
+                        = ResponseMetadata.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnosticDetectorResponseProperties;
+        });
     }
 }

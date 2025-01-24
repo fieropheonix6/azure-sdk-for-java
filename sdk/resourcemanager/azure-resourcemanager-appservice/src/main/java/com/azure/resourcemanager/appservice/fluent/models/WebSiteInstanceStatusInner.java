@@ -5,31 +5,88 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ContainerInfo;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.SiteRuntimeState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The WebSiteInstanceStatus model. */
+/**
+ * The WebSiteInstanceStatus model.
+ */
 @Fluent
 public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
     /*
      * WebSiteInstanceStatus resource specific properties
      */
-    @JsonProperty(value = "properties")
     private WebSiteInstanceStatusProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of WebSiteInstanceStatusInner class.
+     */
+    public WebSiteInstanceStatusInner() {
+    }
 
     /**
      * Get the innerProperties property: WebSiteInstanceStatus resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WebSiteInstanceStatusProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebSiteInstanceStatusInner withKind(String kind) {
         super.withKind(kind);
@@ -38,7 +95,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the state property: The state property.
-     *
+     * 
      * @return the state value.
      */
     public SiteRuntimeState state() {
@@ -47,7 +104,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Set the state property: The state property.
-     *
+     * 
      * @param state the state value to set.
      * @return the WebSiteInstanceStatusInner object itself.
      */
@@ -61,7 +118,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the statusUrl property: Link to the GetStatusApi in Kudu.
-     *
+     * 
      * @return the statusUrl value.
      */
     public String statusUrl() {
@@ -70,7 +127,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Set the statusUrl property: Link to the GetStatusApi in Kudu.
-     *
+     * 
      * @param statusUrl the statusUrl value to set.
      * @return the WebSiteInstanceStatusInner object itself.
      */
@@ -84,7 +141,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the detectorUrl property: Link to the Diagnose and Solve Portal.
-     *
+     * 
      * @return the detectorUrl value.
      */
     public String detectorUrl() {
@@ -93,7 +150,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Set the detectorUrl property: Link to the Diagnose and Solve Portal.
-     *
+     * 
      * @param detectorUrl the detectorUrl value to set.
      * @return the WebSiteInstanceStatusInner object itself.
      */
@@ -107,7 +164,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the consoleUrl property: Link to the console to web app instance.
-     *
+     * 
      * @return the consoleUrl value.
      */
     public String consoleUrl() {
@@ -116,7 +173,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Set the consoleUrl property: Link to the console to web app instance.
-     *
+     * 
      * @param consoleUrl the consoleUrl value to set.
      * @return the WebSiteInstanceStatusInner object itself.
      */
@@ -130,7 +187,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the healthCheckUrl property: Link to the console to web app instance.
-     *
+     * 
      * @return the healthCheckUrl value.
      */
     public String healthCheckUrl() {
@@ -139,7 +196,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Set the healthCheckUrl property: Link to the console to web app instance.
-     *
+     * 
      * @param healthCheckUrl the healthCheckUrl value to set.
      * @return the WebSiteInstanceStatusInner object itself.
      */
@@ -153,7 +210,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the containers property: Dictionary of &lt;ContainerInfo&gt;.
-     *
+     * 
      * @return the containers value.
      */
     public Map<String, ContainerInfo> containers() {
@@ -162,7 +219,7 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
 
     /**
      * Set the containers property: Dictionary of &lt;ContainerInfo&gt;.
-     *
+     * 
      * @param containers the containers value to set.
      * @return the WebSiteInstanceStatusInner object itself.
      */
@@ -175,15 +232,84 @@ public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the physicalZone property: The physical zone that the instance is in.
+     * 
+     * @return the physicalZone value.
+     */
+    public String physicalZone() {
+        return this.innerProperties() == null ? null : this.innerProperties().physicalZone();
+    }
+
+    /**
+     * Set the physicalZone property: The physical zone that the instance is in.
+     * 
+     * @param physicalZone the physicalZone value to set.
+     * @return the WebSiteInstanceStatusInner object itself.
+     */
+    public WebSiteInstanceStatusInner withPhysicalZone(String physicalZone) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebSiteInstanceStatusProperties();
+        }
+        this.innerProperties().withPhysicalZone(physicalZone);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebSiteInstanceStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebSiteInstanceStatusInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebSiteInstanceStatusInner.
+     */
+    public static WebSiteInstanceStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebSiteInstanceStatusInner deserializedWebSiteInstanceStatusInner = new WebSiteInstanceStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWebSiteInstanceStatusInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWebSiteInstanceStatusInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWebSiteInstanceStatusInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedWebSiteInstanceStatusInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWebSiteInstanceStatusInner.innerProperties
+                        = WebSiteInstanceStatusProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebSiteInstanceStatusInner;
+        });
     }
 }

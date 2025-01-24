@@ -8,25 +8,22 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.BatchRetrySettings;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BatchRetrySettingsTests {
-    @Test
-    public void testDeserialize() {
-        BatchRetrySettings model =
-            BinaryData
-                .fromString("{\"maxRetries\":80770684,\"timeout\":\"PT155H21M58S\"}")
-                .toObject(BatchRetrySettings.class);
-        Assertions.assertEquals(80770684, model.maxRetries());
-        Assertions.assertEquals(Duration.parse("PT155H21M58S"), model.timeout());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        BatchRetrySettings model = BinaryData.fromString("{\"maxRetries\":1662564263,\"timeout\":\"PT208H49M32S\"}")
+            .toObject(BatchRetrySettings.class);
+        Assertions.assertEquals(1662564263, model.maxRetries());
+        Assertions.assertEquals(Duration.parse("PT208H49M32S"), model.timeout());
     }
 
-    @Test
-    public void testSerialize() {
-        BatchRetrySettings model =
-            new BatchRetrySettings().withMaxRetries(80770684).withTimeout(Duration.parse("PT155H21M58S"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        BatchRetrySettings model
+            = new BatchRetrySettings().withMaxRetries(1662564263).withTimeout(Duration.parse("PT208H49M32S"));
         model = BinaryData.fromObject(model).toObject(BatchRetrySettings.class);
-        Assertions.assertEquals(80770684, model.maxRetries());
-        Assertions.assertEquals(Duration.parse("PT155H21M58S"), model.timeout());
+        Assertions.assertEquals(1662564263, model.maxRetries());
+        Assertions.assertEquals(Duration.parse("PT208H49M32S"), model.timeout());
     }
 }

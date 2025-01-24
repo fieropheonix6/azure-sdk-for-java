@@ -13,25 +13,36 @@ import com.azure.resourcemanager.customerinsights.fluent.models.ImageDefinitionI
 import com.azure.resourcemanager.customerinsights.models.GetImageUploadUrlInput;
 import com.azure.resourcemanager.customerinsights.models.ImageDefinition;
 import com.azure.resourcemanager.customerinsights.models.Images;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ImagesImpl implements Images {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImagesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ImagesImpl.class);
 
     private final ImagesClient innerClient;
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
 
-    public ImagesImpl(
-        ImagesClient innerClient, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
+    public ImagesImpl(ImagesClient innerClient,
+        com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public ImageDefinition getUploadUrlForEntityType(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters) {
-        ImageDefinitionInner inner =
-            this.serviceClient().getUploadUrlForEntityType(resourceGroupName, hubName, parameters);
+    public Response<ImageDefinition> getUploadUrlForEntityTypeWithResponse(String resourceGroupName, String hubName,
+        GetImageUploadUrlInput parameters, Context context) {
+        Response<ImageDefinitionInner> inner = this.serviceClient()
+            .getUploadUrlForEntityTypeWithResponse(resourceGroupName, hubName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ImageDefinitionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ImageDefinition getUploadUrlForEntityType(String resourceGroupName, String hubName,
+        GetImageUploadUrlInput parameters) {
+        ImageDefinitionInner inner
+            = this.serviceClient().getUploadUrlForEntityType(resourceGroupName, hubName, parameters);
         if (inner != null) {
             return new ImageDefinitionImpl(inner, this.manager());
         } else {
@@ -39,41 +50,23 @@ public final class ImagesImpl implements Images {
         }
     }
 
-    public Response<ImageDefinition> getUploadUrlForEntityTypeWithResponse(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters, Context context) {
-        Response<ImageDefinitionInner> inner =
-            this.serviceClient().getUploadUrlForEntityTypeWithResponse(resourceGroupName, hubName, parameters, context);
+    public Response<ImageDefinition> getUploadUrlForDataWithResponse(String resourceGroupName, String hubName,
+        GetImageUploadUrlInput parameters, Context context) {
+        Response<ImageDefinitionInner> inner
+            = this.serviceClient().getUploadUrlForDataWithResponse(resourceGroupName, hubName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ImageDefinitionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ImageDefinition getUploadUrlForData(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters) {
+    public ImageDefinition getUploadUrlForData(String resourceGroupName, String hubName,
+        GetImageUploadUrlInput parameters) {
         ImageDefinitionInner inner = this.serviceClient().getUploadUrlForData(resourceGroupName, hubName, parameters);
         if (inner != null) {
             return new ImageDefinitionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ImageDefinition> getUploadUrlForDataWithResponse(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters, Context context) {
-        Response<ImageDefinitionInner> inner =
-            this.serviceClient().getUploadUrlForDataWithResponse(resourceGroupName, hubName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ImageDefinitionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

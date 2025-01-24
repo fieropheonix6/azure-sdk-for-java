@@ -10,49 +10,54 @@ import com.azure.resourcemanager.kusto.models.OperationDisplay;
 import com.azure.resourcemanager.kusto.models.OperationListResult;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationListResultTests {
-    @Test
-    public void testDeserialize() {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"tujitcjedft\",\"display\":{\"provider\":\"ezkojvdcp\",\"operation\":\"oqouicybxarzgszu\",\"resource\":\"x\",\"description\":\"q\"},\"origin\":\"idoamciodhkha\"}],\"nextLink\":\"hnzbonl\"}")
-                .toObject(OperationListResult.class);
-        Assertions.assertEquals("tujitcjedft", model.value().get(0).name());
-        Assertions.assertEquals("ezkojvdcp", model.value().get(0).display().provider());
-        Assertions.assertEquals("oqouicybxarzgszu", model.value().get(0).display().operation());
-        Assertions.assertEquals("x", model.value().get(0).display().resource());
-        Assertions.assertEquals("q", model.value().get(0).display().description());
-        Assertions.assertEquals("idoamciodhkha", model.value().get(0).origin());
-        Assertions.assertEquals("hnzbonl", model.nextLink());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"cyyysfgdot\",\"display\":{\"provider\":\"iipuipwoqonm\",\"operation\":\"jeknizshq\",\"resource\":\"impevf\",\"description\":\"b\"},\"origin\":\"rilbywdx\",\"properties\":\"dataicc\"},{\"name\":\"wfscjfn\",\"display\":{\"provider\":\"zqujizdvoqytiby\",\"operation\":\"bblgyavut\",\"resource\":\"hjoxo\",\"description\":\"msksbp\"},\"origin\":\"lqol\",\"properties\":\"datakcgxxlxsffgcvi\"},{\"name\":\"zdwlvwlyoupfgfb\",\"display\":{\"provider\":\"bdyhgkfminsgowz\",\"operation\":\"tsttktlahbq\",\"resource\":\"tx\",\"description\":\"zukxitmmqtgqq\"},\"origin\":\"hrnxrxc\",\"properties\":\"datauisavokq\"}],\"nextLink\":\"fvazivjlfrqttba\"}")
+            .toObject(OperationListResult.class);
+        Assertions.assertEquals("cyyysfgdot", model.value().get(0).name());
+        Assertions.assertEquals("iipuipwoqonm", model.value().get(0).display().provider());
+        Assertions.assertEquals("jeknizshq", model.value().get(0).display().operation());
+        Assertions.assertEquals("impevf", model.value().get(0).display().resource());
+        Assertions.assertEquals("b", model.value().get(0).display().description());
+        Assertions.assertEquals("rilbywdx", model.value().get(0).origin());
+        Assertions.assertEquals("fvazivjlfrqttba", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
-        OperationListResult model =
-            new OperationListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new OperationInner()
-                                .withName("tujitcjedft")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("ezkojvdcp")
-                                        .withOperation("oqouicybxarzgszu")
-                                        .withResource("x")
-                                        .withDescription("q"))
-                                .withOrigin("idoamciodhkha")))
-                .withNextLink("hnzbonl");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OperationListResult model = new OperationListResult().withValue(Arrays.asList(
+            new OperationInner().withName("cyyysfgdot")
+                .withDisplay(new OperationDisplay().withProvider("iipuipwoqonm")
+                    .withOperation("jeknizshq")
+                    .withResource("impevf")
+                    .withDescription("b"))
+                .withOrigin("rilbywdx")
+                .withProperties("dataicc"),
+            new OperationInner().withName("wfscjfn")
+                .withDisplay(new OperationDisplay().withProvider("zqujizdvoqytiby")
+                    .withOperation("bblgyavut")
+                    .withResource("hjoxo")
+                    .withDescription("msksbp"))
+                .withOrigin("lqol")
+                .withProperties("datakcgxxlxsffgcvi"),
+            new OperationInner().withName("zdwlvwlyoupfgfb")
+                .withDisplay(new OperationDisplay().withProvider("bdyhgkfminsgowz")
+                    .withOperation("tsttktlahbq")
+                    .withResource("tx")
+                    .withDescription("zukxitmmqtgqq"))
+                .withOrigin("hrnxrxc")
+                .withProperties("datauisavokq")))
+            .withNextLink("fvazivjlfrqttba");
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
-        Assertions.assertEquals("tujitcjedft", model.value().get(0).name());
-        Assertions.assertEquals("ezkojvdcp", model.value().get(0).display().provider());
-        Assertions.assertEquals("oqouicybxarzgszu", model.value().get(0).display().operation());
-        Assertions.assertEquals("x", model.value().get(0).display().resource());
-        Assertions.assertEquals("q", model.value().get(0).display().description());
-        Assertions.assertEquals("idoamciodhkha", model.value().get(0).origin());
-        Assertions.assertEquals("hnzbonl", model.nextLink());
+        Assertions.assertEquals("cyyysfgdot", model.value().get(0).name());
+        Assertions.assertEquals("iipuipwoqonm", model.value().get(0).display().provider());
+        Assertions.assertEquals("jeknizshq", model.value().get(0).display().operation());
+        Assertions.assertEquals("impevf", model.value().get(0).display().resource());
+        Assertions.assertEquals("b", model.value().get(0).display().description());
+        Assertions.assertEquals("rilbywdx", model.value().get(0).origin());
+        Assertions.assertEquals("fvazivjlfrqttba", model.nextLink());
     }
 }

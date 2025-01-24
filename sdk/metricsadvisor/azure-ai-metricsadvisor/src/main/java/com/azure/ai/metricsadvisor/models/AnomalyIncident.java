@@ -24,6 +24,12 @@ public final class AnomalyIncident {
     private Double valueOfRootNode;
     private Double expectedValueOfRootNode;
 
+    /**
+     * Creates a new instance of the {@link AnomalyIncident} class.
+     */
+    public AnomalyIncident() {
+    }
+
     static {
         IncidentHelper.setAccessor(new IncidentHelper.IncidentAccessor() {
             @Override
@@ -82,6 +88,7 @@ public final class AnomalyIncident {
             }
         });
     }
+
     /**
      * Gets the incident id.
      *

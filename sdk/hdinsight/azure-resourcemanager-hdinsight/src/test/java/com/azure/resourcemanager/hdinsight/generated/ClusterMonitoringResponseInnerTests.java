@@ -7,25 +7,23 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.fluent.models.ClusterMonitoringResponseInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterMonitoringResponseInnerTests {
-    @Test
-    public void testDeserialize() {
-        ClusterMonitoringResponseInner model =
-            BinaryData
-                .fromString("{\"clusterMonitoringEnabled\":true,\"workspaceId\":\"imejzanl\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ClusterMonitoringResponseInner model
+            = BinaryData.fromString("{\"clusterMonitoringEnabled\":false,\"workspaceId\":\"fpubjibwwi\"}")
                 .toObject(ClusterMonitoringResponseInner.class);
-        Assertions.assertEquals(true, model.clusterMonitoringEnabled());
-        Assertions.assertEquals("imejzanl", model.workspaceId());
+        Assertions.assertEquals(false, model.clusterMonitoringEnabled());
+        Assertions.assertEquals("fpubjibwwi", model.workspaceId());
     }
 
-    @Test
-    public void testSerialize() {
-        ClusterMonitoringResponseInner model =
-            new ClusterMonitoringResponseInner().withClusterMonitoringEnabled(true).withWorkspaceId("imejzanl");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ClusterMonitoringResponseInner model
+            = new ClusterMonitoringResponseInner().withClusterMonitoringEnabled(false).withWorkspaceId("fpubjibwwi");
         model = BinaryData.fromObject(model).toObject(ClusterMonitoringResponseInner.class);
-        Assertions.assertEquals(true, model.clusterMonitoringEnabled());
-        Assertions.assertEquals("imejzanl", model.workspaceId());
+        Assertions.assertEquals(false, model.clusterMonitoringEnabled());
+        Assertions.assertEquals("fpubjibwwi", model.workspaceId());
     }
 }

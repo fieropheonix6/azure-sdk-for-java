@@ -6,69 +6,69 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetStorageFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Amazon S3 dataset properties. */
+/**
+ * Amazon S3 dataset properties.
+ */
 @Fluent
-public final class AmazonS3DatasetTypeProperties {
+public final class AmazonS3DatasetTypeProperties implements JsonSerializable<AmazonS3DatasetTypeProperties> {
     /*
      * The name of the Amazon S3 bucket. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "bucketName", required = true)
     private Object bucketName;
 
     /*
      * The key of the Amazon S3 object. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "key")
     private Object key;
 
     /*
      * The prefix filter for the S3 object name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "prefix")
     private Object prefix;
 
     /*
      * The version for the S3 object. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "version")
     private Object version;
 
     /*
      * The start of S3 object's modified datetime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
      * The end of S3 object's modified datetime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
 
     /*
      * The format of files.
      */
-    @JsonProperty(value = "format")
     private DatasetStorageFormat format;
 
     /*
      * The data compression method used for the Amazon S3 object.
      */
-    @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
-    /** Creates an instance of AmazonS3DatasetTypeProperties class. */
+    /**
+     * Creates an instance of AmazonS3DatasetTypeProperties class.
+     */
     public AmazonS3DatasetTypeProperties() {
     }
 
     /**
      * Get the bucketName property: The name of the Amazon S3 bucket. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the bucketName value.
      */
     public Object bucketName() {
@@ -78,7 +78,7 @@ public final class AmazonS3DatasetTypeProperties {
     /**
      * Set the bucketName property: The name of the Amazon S3 bucket. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param bucketName the bucketName value to set.
      * @return the AmazonS3DatasetTypeProperties object itself.
      */
@@ -89,7 +89,7 @@ public final class AmazonS3DatasetTypeProperties {
 
     /**
      * Get the key property: The key of the Amazon S3 object. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the key value.
      */
     public Object key() {
@@ -98,7 +98,7 @@ public final class AmazonS3DatasetTypeProperties {
 
     /**
      * Set the key property: The key of the Amazon S3 object. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param key the key value to set.
      * @return the AmazonS3DatasetTypeProperties object itself.
      */
@@ -110,7 +110,7 @@ public final class AmazonS3DatasetTypeProperties {
     /**
      * Get the prefix property: The prefix filter for the S3 object name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the prefix value.
      */
     public Object prefix() {
@@ -120,7 +120,7 @@ public final class AmazonS3DatasetTypeProperties {
     /**
      * Set the prefix property: The prefix filter for the S3 object name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param prefix the prefix value to set.
      * @return the AmazonS3DatasetTypeProperties object itself.
      */
@@ -131,7 +131,7 @@ public final class AmazonS3DatasetTypeProperties {
 
     /**
      * Get the version property: The version for the S3 object. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the version value.
      */
     public Object version() {
@@ -140,7 +140,7 @@ public final class AmazonS3DatasetTypeProperties {
 
     /**
      * Set the version property: The version for the S3 object. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param version the version value to set.
      * @return the AmazonS3DatasetTypeProperties object itself.
      */
@@ -152,7 +152,7 @@ public final class AmazonS3DatasetTypeProperties {
     /**
      * Get the modifiedDatetimeStart property: The start of S3 object's modified datetime. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the modifiedDatetimeStart value.
      */
     public Object modifiedDatetimeStart() {
@@ -162,7 +162,7 @@ public final class AmazonS3DatasetTypeProperties {
     /**
      * Set the modifiedDatetimeStart property: The start of S3 object's modified datetime. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
      * @return the AmazonS3DatasetTypeProperties object itself.
      */
@@ -174,7 +174,7 @@ public final class AmazonS3DatasetTypeProperties {
     /**
      * Get the modifiedDatetimeEnd property: The end of S3 object's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the modifiedDatetimeEnd value.
      */
     public Object modifiedDatetimeEnd() {
@@ -184,7 +184,7 @@ public final class AmazonS3DatasetTypeProperties {
     /**
      * Set the modifiedDatetimeEnd property: The end of S3 object's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
      * @return the AmazonS3DatasetTypeProperties object itself.
      */
@@ -195,7 +195,7 @@ public final class AmazonS3DatasetTypeProperties {
 
     /**
      * Get the format property: The format of files.
-     *
+     * 
      * @return the format value.
      */
     public DatasetStorageFormat format() {
@@ -204,7 +204,7 @@ public final class AmazonS3DatasetTypeProperties {
 
     /**
      * Set the format property: The format of files.
-     *
+     * 
      * @param format the format value to set.
      * @return the AmazonS3DatasetTypeProperties object itself.
      */
@@ -215,7 +215,7 @@ public final class AmazonS3DatasetTypeProperties {
 
     /**
      * Get the compression property: The data compression method used for the Amazon S3 object.
-     *
+     * 
      * @return the compression value.
      */
     public DatasetCompression compression() {
@@ -224,7 +224,7 @@ public final class AmazonS3DatasetTypeProperties {
 
     /**
      * Set the compression property: The data compression method used for the Amazon S3 object.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the AmazonS3DatasetTypeProperties object itself.
      */
@@ -235,15 +235,14 @@ public final class AmazonS3DatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (bucketName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property bucketName in model AmazonS3DatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property bucketName in model AmazonS3DatasetTypeProperties"));
         }
         if (format() != null) {
             format().validate();
@@ -254,4 +253,63 @@ public final class AmazonS3DatasetTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AmazonS3DatasetTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("bucketName", this.bucketName);
+        jsonWriter.writeUntypedField("key", this.key);
+        jsonWriter.writeUntypedField("prefix", this.prefix);
+        jsonWriter.writeUntypedField("version", this.version);
+        jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
+        jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        jsonWriter.writeJsonField("format", this.format);
+        jsonWriter.writeJsonField("compression", this.compression);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmazonS3DatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmazonS3DatasetTypeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AmazonS3DatasetTypeProperties.
+     */
+    public static AmazonS3DatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmazonS3DatasetTypeProperties deserializedAmazonS3DatasetTypeProperties
+                = new AmazonS3DatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("bucketName".equals(fieldName)) {
+                    deserializedAmazonS3DatasetTypeProperties.bucketName = reader.readUntyped();
+                } else if ("key".equals(fieldName)) {
+                    deserializedAmazonS3DatasetTypeProperties.key = reader.readUntyped();
+                } else if ("prefix".equals(fieldName)) {
+                    deserializedAmazonS3DatasetTypeProperties.prefix = reader.readUntyped();
+                } else if ("version".equals(fieldName)) {
+                    deserializedAmazonS3DatasetTypeProperties.version = reader.readUntyped();
+                } else if ("modifiedDatetimeStart".equals(fieldName)) {
+                    deserializedAmazonS3DatasetTypeProperties.modifiedDatetimeStart = reader.readUntyped();
+                } else if ("modifiedDatetimeEnd".equals(fieldName)) {
+                    deserializedAmazonS3DatasetTypeProperties.modifiedDatetimeEnd = reader.readUntyped();
+                } else if ("format".equals(fieldName)) {
+                    deserializedAmazonS3DatasetTypeProperties.format = DatasetStorageFormat.fromJson(reader);
+                } else if ("compression".equals(fieldName)) {
+                    deserializedAmazonS3DatasetTypeProperties.compression = DatasetCompression.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmazonS3DatasetTypeProperties;
+        });
+    }
 }

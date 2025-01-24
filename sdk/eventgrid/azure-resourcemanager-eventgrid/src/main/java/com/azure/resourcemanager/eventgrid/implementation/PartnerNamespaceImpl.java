@@ -19,6 +19,7 @@ import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceUpdateParamete
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicRoutingMode;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
+import com.azure.resourcemanager.eventgrid.models.TlsVersion;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -62,12 +63,9 @@ public final class PartnerNamespaceImpl
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -79,6 +77,10 @@ public final class PartnerNamespaceImpl
 
     public String partnerRegistrationFullyQualifiedId() {
         return this.innerModel().partnerRegistrationFullyQualifiedId();
+    }
+
+    public TlsVersion minimumTlsVersionAllowed() {
+        return this.innerModel().minimumTlsVersionAllowed();
     }
 
     public String endpoint() {
@@ -138,20 +140,16 @@ public final class PartnerNamespaceImpl
     }
 
     public PartnerNamespace create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPartnerNamespaces()
-                .createOrUpdate(resourceGroupName, partnerNamespaceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPartnerNamespaces()
+            .createOrUpdate(resourceGroupName, partnerNamespaceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PartnerNamespace create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPartnerNamespaces()
-                .createOrUpdate(resourceGroupName, partnerNamespaceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPartnerNamespaces()
+            .createOrUpdate(resourceGroupName, partnerNamespaceName, this.innerModel(), context);
         return this;
     }
 
@@ -167,72 +165,61 @@ public final class PartnerNamespaceImpl
     }
 
     public PartnerNamespace apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPartnerNamespaces()
-                .update(resourceGroupName, partnerNamespaceName, updatePartnerNamespaceUpdateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPartnerNamespaces()
+            .update(resourceGroupName, partnerNamespaceName, updatePartnerNamespaceUpdateParameters, Context.NONE);
         return this;
     }
 
     public PartnerNamespace apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPartnerNamespaces()
-                .update(resourceGroupName, partnerNamespaceName, updatePartnerNamespaceUpdateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPartnerNamespaces()
+            .update(resourceGroupName, partnerNamespaceName, updatePartnerNamespaceUpdateParameters, context);
         return this;
     }
 
-    PartnerNamespaceImpl(
-        PartnerNamespaceInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+    PartnerNamespaceImpl(PartnerNamespaceInner innerObject,
+        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.partnerNamespaceName = Utils.getValueFromIdByName(innerObject.id(), "partnerNamespaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.partnerNamespaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "partnerNamespaces");
     }
 
     public PartnerNamespace refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPartnerNamespaces()
-                .getByResourceGroupWithResponse(resourceGroupName, partnerNamespaceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPartnerNamespaces()
+            .getByResourceGroupWithResponse(resourceGroupName, partnerNamespaceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PartnerNamespace refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPartnerNamespaces()
-                .getByResourceGroupWithResponse(resourceGroupName, partnerNamespaceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPartnerNamespaces()
+            .getByResourceGroupWithResponse(resourceGroupName, partnerNamespaceName, context)
+            .getValue();
         return this;
+    }
+
+    public Response<PartnerNamespaceSharedAccessKeys> listSharedAccessKeysWithResponse(Context context) {
+        return serviceManager.partnerNamespaces()
+            .listSharedAccessKeysWithResponse(resourceGroupName, partnerNamespaceName, context);
     }
 
     public PartnerNamespaceSharedAccessKeys listSharedAccessKeys() {
         return serviceManager.partnerNamespaces().listSharedAccessKeys(resourceGroupName, partnerNamespaceName);
     }
 
-    public Response<PartnerNamespaceSharedAccessKeys> listSharedAccessKeysWithResponse(Context context) {
-        return serviceManager
-            .partnerNamespaces()
-            .listSharedAccessKeysWithResponse(resourceGroupName, partnerNamespaceName, context);
+    public Response<PartnerNamespaceSharedAccessKeys>
+        regenerateKeyWithResponse(PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest, Context context) {
+        return serviceManager.partnerNamespaces()
+            .regenerateKeyWithResponse(resourceGroupName, partnerNamespaceName, regenerateKeyRequest, context);
     }
 
     public PartnerNamespaceSharedAccessKeys regenerateKey(PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest) {
-        return serviceManager
-            .partnerNamespaces()
+        return serviceManager.partnerNamespaces()
             .regenerateKey(resourceGroupName, partnerNamespaceName, regenerateKeyRequest);
-    }
-
-    public Response<PartnerNamespaceSharedAccessKeys> regenerateKeyWithResponse(
-        PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest, Context context) {
-        return serviceManager
-            .partnerNamespaces()
-            .regenerateKeyWithResponse(resourceGroupName, partnerNamespaceName, regenerateKeyRequest, context);
     }
 
     public PartnerNamespaceImpl withRegion(Region location) {
@@ -258,6 +245,16 @@ public final class PartnerNamespaceImpl
     public PartnerNamespaceImpl withPartnerRegistrationFullyQualifiedId(String partnerRegistrationFullyQualifiedId) {
         this.innerModel().withPartnerRegistrationFullyQualifiedId(partnerRegistrationFullyQualifiedId);
         return this;
+    }
+
+    public PartnerNamespaceImpl withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed) {
+        if (isInCreateMode()) {
+            this.innerModel().withMinimumTlsVersionAllowed(minimumTlsVersionAllowed);
+            return this;
+        } else {
+            this.updatePartnerNamespaceUpdateParameters.withMinimumTlsVersionAllowed(minimumTlsVersionAllowed);
+            return this;
+        }
     }
 
     public PartnerNamespaceImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {

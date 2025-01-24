@@ -5,32 +5,46 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Lists actions the user can take based on the current availabilityState of the resource. */
+/**
+ * Lists actions the user can take based on the current availabilityState of the resource.
+ */
 @Fluent
-public final class RecommendedAction {
+public final class RecommendedAction implements JsonSerializable<RecommendedAction> {
     /*
      * Recommended action.
      */
-    @JsonProperty(value = "action")
     private String action;
 
     /*
      * Link to the action
      */
-    @JsonProperty(value = "actionUrl")
     private String actionUrl;
 
     /*
-     * Substring of action, it describes which text should host the action url.
+     * the comment for the Action
      */
-    @JsonProperty(value = "actionUrlText")
+    private String actionUrlComment;
+
+    /*
+     * Substring of action, it describes which text should host the action URL.
+     */
     private String actionUrlText;
 
     /**
+     * Creates an instance of RecommendedAction class.
+     */
+    public RecommendedAction() {
+    }
+
+    /**
      * Get the action property: Recommended action.
-     *
+     * 
      * @return the action value.
      */
     public String action() {
@@ -39,7 +53,7 @@ public final class RecommendedAction {
 
     /**
      * Set the action property: Recommended action.
-     *
+     * 
      * @param action the action value to set.
      * @return the RecommendedAction object itself.
      */
@@ -50,7 +64,7 @@ public final class RecommendedAction {
 
     /**
      * Get the actionUrl property: Link to the action.
-     *
+     * 
      * @return the actionUrl value.
      */
     public String actionUrl() {
@@ -59,7 +73,7 @@ public final class RecommendedAction {
 
     /**
      * Set the actionUrl property: Link to the action.
-     *
+     * 
      * @param actionUrl the actionUrl value to set.
      * @return the RecommendedAction object itself.
      */
@@ -69,8 +83,28 @@ public final class RecommendedAction {
     }
 
     /**
-     * Get the actionUrlText property: Substring of action, it describes which text should host the action url.
-     *
+     * Get the actionUrlComment property: the comment for the Action.
+     * 
+     * @return the actionUrlComment value.
+     */
+    public String actionUrlComment() {
+        return this.actionUrlComment;
+    }
+
+    /**
+     * Set the actionUrlComment property: the comment for the Action.
+     * 
+     * @param actionUrlComment the actionUrlComment value to set.
+     * @return the RecommendedAction object itself.
+     */
+    public RecommendedAction withActionUrlComment(String actionUrlComment) {
+        this.actionUrlComment = actionUrlComment;
+        return this;
+    }
+
+    /**
+     * Get the actionUrlText property: Substring of action, it describes which text should host the action URL.
+     * 
      * @return the actionUrlText value.
      */
     public String actionUrlText() {
@@ -78,8 +112,8 @@ public final class RecommendedAction {
     }
 
     /**
-     * Set the actionUrlText property: Substring of action, it describes which text should host the action url.
-     *
+     * Set the actionUrlText property: Substring of action, it describes which text should host the action URL.
+     * 
      * @param actionUrlText the actionUrlText value to set.
      * @return the RecommendedAction object itself.
      */
@@ -90,9 +124,54 @@ public final class RecommendedAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("action", this.action);
+        jsonWriter.writeStringField("actionUrl", this.actionUrl);
+        jsonWriter.writeStringField("_ActionUrl.Comment", this.actionUrlComment);
+        jsonWriter.writeStringField("actionUrlText", this.actionUrlText);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecommendedAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecommendedAction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecommendedAction.
+     */
+    public static RecommendedAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecommendedAction deserializedRecommendedAction = new RecommendedAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("action".equals(fieldName)) {
+                    deserializedRecommendedAction.action = reader.getString();
+                } else if ("actionUrl".equals(fieldName)) {
+                    deserializedRecommendedAction.actionUrl = reader.getString();
+                } else if ("_ActionUrl.Comment".equals(fieldName)) {
+                    deserializedRecommendedAction.actionUrlComment = reader.getString();
+                } else if ("actionUrlText".equals(fieldName)) {
+                    deserializedRecommendedAction.actionUrlText = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecommendedAction;
+        });
     }
 }

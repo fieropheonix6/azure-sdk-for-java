@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.azurestackhci.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Clusters Delete. */
+/**
+ * Samples for Clusters Delete.
+ */
 public final class ClustersDeleteSamples {
     /*
-     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/DeleteCluster.json
+     * x-ms-original-file:
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
+     * DeleteCluster.json
      */
     /**
      * Sample code: Delete cluster.
-     *
+     * 
      * @param manager Entry point to AzureStackHciManager.
      */
     public static void deleteCluster(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
-        manager.clusters().delete("test-rg", "myCluster", Context.NONE);
+        manager.clusters().delete("test-rg", "myCluster", com.azure.core.util.Context.NONE);
     }
 }

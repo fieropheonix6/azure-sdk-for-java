@@ -4,22 +4,25 @@
 
 package com.azure.resourcemanager.hdinsight.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.models.UpdateGatewaySettingsParameters;
 
-/** Samples for Clusters UpdateGatewaySettings. */
+/**
+ * Samples for Clusters UpdateGatewaySettings.
+ */
 public final class ClustersUpdateGatewaySettingsSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/HDI_Clusters_UpdateGatewaySettings_Enable.json
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * HDI_Clusters_UpdateGatewaySettings_Enable.json
      */
     /**
      * Sample code: Enable HTTP connectivity.
-     *
+     * 
      * @param manager Entry point to HDInsightManager.
      */
     public static void enableHTTPConnectivity(com.azure.resourcemanager.hdinsight.HDInsightManager manager) {
-        manager
-            .clusters()
-            .updateGatewaySettings("rg1", "cluster1", new UpdateGatewaySettingsParameters(), Context.NONE);
+        manager.clusters()
+            .updateGatewaySettings("rg1", "cluster1", new UpdateGatewaySettingsParameters(),
+                com.azure.core.util.Context.NONE);
     }
 }

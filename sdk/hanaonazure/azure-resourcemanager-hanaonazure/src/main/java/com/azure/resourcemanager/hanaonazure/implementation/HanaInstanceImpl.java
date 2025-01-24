@@ -96,6 +96,10 @@ public final class HanaInstanceImpl implements HanaInstance, HanaInstance.Defini
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public HanaInstanceInner innerModel() {
         return this.innerObject;
     }
@@ -116,20 +120,16 @@ public final class HanaInstanceImpl implements HanaInstance, HanaInstance.Defini
     }
 
     public HanaInstance create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHanaInstances()
-                .create(resourceGroupName, hanaInstanceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getHanaInstances()
+            .create(resourceGroupName, hanaInstanceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public HanaInstance create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHanaInstances()
-                .create(resourceGroupName, hanaInstanceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getHanaInstances()
+            .create(resourceGroupName, hanaInstanceName, this.innerModel(), context);
         return this;
     }
 
@@ -145,49 +145,41 @@ public final class HanaInstanceImpl implements HanaInstance, HanaInstance.Defini
     }
 
     public HanaInstance apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHanaInstances()
-                .updateWithResponse(resourceGroupName, hanaInstanceName, updateTagsParameter, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHanaInstances()
+            .updateWithResponse(resourceGroupName, hanaInstanceName, updateTagsParameter, Context.NONE)
+            .getValue();
         return this;
     }
 
     public HanaInstance apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHanaInstances()
-                .updateWithResponse(resourceGroupName, hanaInstanceName, updateTagsParameter, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHanaInstances()
+            .updateWithResponse(resourceGroupName, hanaInstanceName, updateTagsParameter, context)
+            .getValue();
         return this;
     }
 
     HanaInstanceImpl(HanaInstanceInner innerObject, com.azure.resourcemanager.hanaonazure.HanaManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hanaInstanceName = Utils.getValueFromIdByName(innerObject.id(), "hanaInstances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.hanaInstanceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hanaInstances");
     }
 
     public HanaInstance refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHanaInstances()
-                .getByResourceGroupWithResponse(resourceGroupName, hanaInstanceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHanaInstances()
+            .getByResourceGroupWithResponse(resourceGroupName, hanaInstanceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public HanaInstance refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHanaInstances()
-                .getByResourceGroupWithResponse(resourceGroupName, hanaInstanceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHanaInstances()
+            .getByResourceGroupWithResponse(resourceGroupName, hanaInstanceName, context)
+            .getValue();
         return this;
     }
 
@@ -255,33 +247,8 @@ public final class HanaInstanceImpl implements HanaInstance, HanaInstance.Defini
         return this;
     }
 
-    public HanaInstanceImpl withHanaInstanceId(String hanaInstanceId) {
-        this.innerModel().withHanaInstanceId(hanaInstanceId);
-        return this;
-    }
-
-    public HanaInstanceImpl withPowerState(HanaInstancePowerStateEnum powerState) {
-        this.innerModel().withPowerState(powerState);
-        return this;
-    }
-
-    public HanaInstanceImpl withProximityPlacementGroup(String proximityPlacementGroup) {
-        this.innerModel().withProximityPlacementGroup(proximityPlacementGroup);
-        return this;
-    }
-
-    public HanaInstanceImpl withHwRevision(String hwRevision) {
-        this.innerModel().withHwRevision(hwRevision);
-        return this;
-    }
-
     public HanaInstanceImpl withPartnerNodeId(String partnerNodeId) {
         this.innerModel().withPartnerNodeId(partnerNodeId);
-        return this;
-    }
-
-    public HanaInstanceImpl withProvisioningState(HanaProvisioningStatesEnum provisioningState) {
-        this.innerModel().withProvisioningState(provisioningState);
         return this;
     }
 

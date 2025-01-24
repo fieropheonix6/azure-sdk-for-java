@@ -3,13 +3,6 @@
 
 package com.azure.maps.route;
 
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -20,6 +13,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.TypeReference;
@@ -27,10 +21,10 @@ import com.azure.maps.route.implementation.RoutesImpl;
 import com.azure.maps.route.implementation.helpers.Utility;
 import com.azure.maps.route.implementation.models.BatchRequest;
 import com.azure.maps.route.implementation.models.BatchRequestItem;
+import com.azure.maps.route.implementation.models.ErrorResponseException;
 import com.azure.maps.route.implementation.models.JsonFormat;
 import com.azure.maps.route.implementation.models.ResponseFormat;
 import com.azure.maps.route.implementation.models.RouteMatrixQueryPrivate;
-import com.azure.maps.route.implementation.models.ErrorResponseException;
 import com.azure.maps.route.models.RouteDirections;
 import com.azure.maps.route.models.RouteDirectionsBatchResult;
 import com.azure.maps.route.models.RouteDirectionsOptions;
@@ -40,8 +34,17 @@ import com.azure.maps.route.models.RouteMatrixQuery;
 import com.azure.maps.route.models.RouteMatrixResult;
 import com.azure.maps.route.models.RouteRangeOptions;
 import com.azure.maps.route.models.RouteRangeResult;
-
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import static com.azure.core.util.FluxUtil.withContext;
+import static java.util.Collections.singletonList;
 
 /**
  * Initializes a new instance of the asynchronous RouteAsyncClient type.
@@ -89,15 +92,16 @@ public final class MapsRouteAsyncClient {
     private static final String POLLING_BATCH_HEADER_KEY = "BatchId";
 
     // instance fields
-    private final DefaultPollingStrategy<RouteDirectionsBatchResult,
-        RouteDirectionsBatchResult> forwardStrategy;
-    private final DefaultPollingStrategy<RouteMatrixResult, RouteMatrixResult>
-        routeMatrixStrategy;
+    private final DefaultPollingStrategy<RouteDirectionsBatchResult, RouteDirectionsBatchResult> forwardStrategy;
+    private final DefaultPollingStrategy<RouteMatrixResult, RouteMatrixResult> routeMatrixStrategy;
     private final RoutesImpl serviceClient;
 
     // static class
-    static class RouteDirectionsBatchReference extends TypeReference<RouteDirectionsBatchResult> { };
-    static class RouteMatrixReference extends TypeReference<RouteMatrixResult> { };
+    static class RouteDirectionsBatchReference extends TypeReference<RouteDirectionsBatchResult> {
+    };
+
+    static class RouteMatrixReference extends TypeReference<RouteMatrixResult> {
+    };
 
     /**
      * Initializes an instance of Routes client.
@@ -119,14 +123,14 @@ public final class MapsRouteAsyncClient {
      *
      * &#47;&#47; origins
      * GeoPointCollection origins3 = new GeoPointCollection&#40;Arrays.asList&#40;
-     *     new GeoPoint&#40;52.36006, 4.85106&#41;,
-     *     new GeoPoint&#40;52.36187, 4.85056&#41;
+     *     new GeoPoint&#40;4.85106, 52.36006&#41;,
+     *     new GeoPoint&#40;4.85056, 52.36187&#41;
      * &#41;&#41;;
      *
      * &#47;&#47; destinations
      * GeoPointCollection destinations3 = new GeoPointCollection&#40;Arrays.asList&#40;
-     *     new GeoPoint&#40;52.36241, 4.85003&#41;,
-     *     new GeoPoint&#40;52.50931, 13.42937&#41;
+     *     new GeoPoint&#40;4.85003, 52.36241&#41;,
+     *     new GeoPoint&#40;13.42937, 52.50931&#41;
      * &#41;&#41;;
      *
      * matrixQuery3.setDestinations&#40;destinations3&#41;;
@@ -144,8 +148,7 @@ public final class MapsRouteAsyncClient {
      * @return this object is returned from a successful Route Matrix call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RouteMatrixResult, RouteMatrixResult> beginGetRouteMatrix(
-            RouteMatrixOptions options) {
+    public PollerFlux<RouteMatrixResult, RouteMatrixResult> beginGetRouteMatrix(RouteMatrixOptions options) {
         return this.beginGetRouteMatrix(options, null);
     }
 
@@ -158,14 +161,14 @@ public final class MapsRouteAsyncClient {
      *
      * &#47;&#47; origins
      * GeoPointCollection origins3 = new GeoPointCollection&#40;Arrays.asList&#40;
-     *     new GeoPoint&#40;52.36006, 4.85106&#41;,
-     *     new GeoPoint&#40;52.36187, 4.85056&#41;
+     *     new GeoPoint&#40;4.85106, 52.36006&#41;,
+     *     new GeoPoint&#40;4.85056, 52.36187&#41;
      * &#41;&#41;;
      *
      * &#47;&#47; destinations
      * GeoPointCollection destinations3 = new GeoPointCollection&#40;Arrays.asList&#40;
-     *     new GeoPoint&#40;52.36241, 4.85003&#41;,
-     *     new GeoPoint&#40;52.50931, 13.42937&#41;
+     *     new GeoPoint&#40;4.85003, 52.36241&#41;,
+     *     new GeoPoint&#40;13.42937, 52.50931&#41;
      * &#41;&#41;;
      *
      * matrixQuery3.setDestinations&#40;destinations3&#41;;
@@ -183,8 +186,7 @@ public final class MapsRouteAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Matrix call.
      */
-    PollerFlux<RouteMatrixResult, RouteMatrixResult> beginGetRouteMatrix(
-            RouteMatrixOptions options, Context context) {
+    PollerFlux<RouteMatrixResult, RouteMatrixResult> beginGetRouteMatrix(RouteMatrixOptions options, Context context) {
         // if it's a small batch, then let's wait for results and avoid polling
         RouteMatrixQuery query = options.getRouteMatrixQuery();
         RouteMatrixQueryPrivate privateQuery = Utility.toRouteMatrixQueryPrivate(query);
@@ -192,39 +194,22 @@ public final class MapsRouteAsyncClient {
         final int destSize = privateQuery.getDestinations().getCoordinates().size();
         boolean waitForResults = (originSize * destSize <= ROUTE_MATRIX_SMALL_SIZE);
 
-        return createPollerFlux(
-            () ->
-                this.serviceClient.requestRouteMatrixWithResponseAsync(
-                    JsonFormat.JSON,
-                    privateQuery,
-                    waitForResults,
-                    options.getComputeTravelTime(),
-                    options.getFilterSectionType(),
-                    options.getArriveAt(),
-                    options.getDepartAt(),
-                    options.getVehicleAxleWeight(),
-                    options.getVehicleLength(),
-                    options.getVehicleHeight(),
-                    options.getVehicleWidth(),
-                    options.getVehicleMaxSpeed(),
-                    options.getVehicleWeight(),
-                    options.getWindingness(),
-                    options.getInclineLevel(),
-                    options.getTravelMode(),
-                    options.getAvoid(),
-                    options.getUseTrafficData(),
-                    options.getRouteType(),
-                    options.getVehicleLoadType(),
-                    context).flatMap(response -> {
-                        return Mono.just(Utility.createRouteMatrixResponse(response)).onErrorMap(throwable -> {
-                            if (!(throwable instanceof ErrorResponseException)) {
-                                return throwable;
-                            }
-                            ErrorResponseException exception = (ErrorResponseException) throwable;
-                            return new HttpResponseException(exception.getMessage(), exception.getResponse());
-                        });
-                    }),
-            this.routeMatrixStrategy);
+        return createPollerFlux(() -> this.serviceClient
+            .requestRouteMatrixNoCustomHeadersWithResponseAsync(JsonFormat.JSON, privateQuery, waitForResults,
+                options.getComputeTravelTime(),
+                (options.getFilterSectionType() == null) ? null : singletonList(options.getFilterSectionType()),
+                options.getArriveAt(), options.getDepartAt(), options.getVehicleAxleWeight(),
+                options.getVehicleLength(), options.getVehicleHeight(), options.getVehicleWidth(),
+                options.getVehicleMaxSpeed(), options.getVehicleWeight(), options.getWindingness(),
+                options.getInclineLevel(), options.getTravelMode(), options.getAvoid(), options.getUseTrafficData(),
+                options.getRouteType(), options.getVehicleLoadType(), context)
+            .flatMap(response -> Mono.just(Utility.createRouteMatrixResponse(response)).onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            })), this.routeMatrixStrategy);
     }
 
     /**
@@ -252,17 +237,16 @@ public final class MapsRouteAsyncClient {
      * @return this object is returned from a successful Route Matrix call.
      */
     PollerFlux<RouteMatrixResult, RouteMatrixResult> beginGetRouteMatrix(String matrixId, Context context) {
+        // TO DO Add null check and print if origin and destination multiply less than the max limit
         return createPollerFlux(
-            () -> this.serviceClient.getRouteMatrixWithResponseAsync(matrixId, context)
-                    .flatMap(response -> {
-                        return Mono.just(Utility.createRouteMatrixResponse(response)).onErrorMap(throwable -> {
-                            if (!(throwable instanceof ErrorResponseException)) {
-                                return throwable;
-                            }
-                            ErrorResponseException exception = (ErrorResponseException) throwable;
-                            return new HttpResponseException(exception.getMessage(), exception.getResponse());
-                        });
-                    }),
+            () -> this.serviceClient.getRouteMatrixNoCustomHeadersWithResponseAsync(matrixId, context)
+                .flatMap(response -> Mono.just(Utility.createRouteMatrixResponse(response)).onErrorMap(throwable -> {
+                    if (!(throwable instanceof ErrorResponseException)) {
+                        return throwable;
+                    }
+                    ErrorResponseException exception = (ErrorResponseException) throwable;
+                    return new HttpResponseException(exception.getMessage(), exception.getResponse());
+                })),
             this.routeMatrixStrategy);
     }
 
@@ -287,12 +271,8 @@ public final class MapsRouteAsyncClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouteDirections> getRouteDirections(
-            RouteDirectionsOptions options) {
-        Mono<Response<RouteDirections>> result = this.getRouteDirectionsWithResponse(options);
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+    public Mono<RouteDirections> getRouteDirections(RouteDirectionsOptions options) {
+        return getRouteDirectionsWithResponse(options).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -316,9 +296,8 @@ public final class MapsRouteAsyncClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouteDirections>> getRouteDirectionsWithResponse(
-            RouteDirectionsOptions options) {
-        return this.getRouteDirectionsWithContextWithResponse(options, null);
+    public Mono<Response<RouteDirections>> getRouteDirectionsWithResponse(RouteDirectionsOptions options) {
+        return withContext(context -> getRouteDirectionsWithContextWithResponse(options, context));
     }
 
     /**
@@ -342,59 +321,32 @@ public final class MapsRouteAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions call.
      */
-    Mono<Response<RouteDirections>> getRouteDirectionsWithContextWithResponse(
-            RouteDirectionsOptions options, Context context) {
-        return this.serviceClient.getRouteDirectionsWithResponseAsync(
-                ResponseFormat.JSON,
-                Utility.toRouteQueryString(options.getRoutePoints()),
-                options.getMaxAlternatives(),
-                options.getAlternativeType(),
-                options.getMinDeviationDistance(),
-                options.getArriveAt(),
-                options.getDepartAt(),
-                options.getMinDeviationTime(),
-                options.getInstructionsType(),
-                options.getLanguage(),
-                options.getComputeBestWaypointOrder(),
-                options.getRouteRepresentationForBestOrder(),
-                options.getComputeTravelTime(),
-                options.getVehicleHeading(),
-                options.getReport(),
-                options.getFilterSectionType(),
-                options.getVehicleAxleWeight(),
-                options.getVehicleWidth(),
-                options.getVehicleHeight(),
-                options.getVehicleLength(),
-                options.getVehicleMaxSpeed(),
-                options.getVehicleWeight(),
-                options.isCommercialVehicle(),
-                options.getWindingness(),
-                options.getInclineLevel(),
-                options.getTravelMode(),
-                options.getAvoidRouteTypes(),
-                options.isGetUseTrafficData(),
-                options.getRouteType(),
-                options.getVehicleLoadType(),
-                options.getVehicleEngineType(),
-                options.getConstantSpeedConsumptionInLitersPerHundredKm(),
-                options.getCurrentFuelInLiters(),
-                options.getAuxiliaryPowerInLitersPerHour(),
-                options.getFuelEnergyDensityInMegajoulesPerLiter(),
-                options.getAccelerationEfficiency(),
-                options.getDecelerationEfficiency(),
-                options.getUphillEfficiency(),
-                options.getDownhillEfficiency(),
-                options.getConstantSpeedConsumptionInKwHPerHundredKm(),
-                options.getCurrentChargeInKwH(),
-                options.getMaxChargeInKwH(),
-                options.getAuxiliaryPowerInKw(),
-                context).onErrorMap(throwable -> {
-                    if (!(throwable instanceof ErrorResponseException)) {
-                        return throwable;
-                    }
-                    ErrorResponseException exception = (ErrorResponseException) throwable;
-                    return new HttpResponseException(exception.getMessage(), exception.getResponse());
-                });
+    Mono<Response<RouteDirections>> getRouteDirectionsWithContextWithResponse(RouteDirectionsOptions options,
+        Context context) {
+        return this.serviceClient.getRouteDirectionsWithResponseAsync(ResponseFormat.JSON,
+            Utility.toRouteQueryString(options.getRoutePoints()), options.getMaxAlternatives(),
+            options.getAlternativeType(), options.getMinDeviationDistance(), options.getArriveAt(),
+            options.getDepartAt(), options.getMinDeviationTime(), options.getInstructionsType(), options.getLanguage(),
+            options.getComputeBestWaypointOrder(), options.getRouteRepresentationForBestOrder(),
+            options.getComputeTravelTime(), options.getVehicleHeading(), options.getReport(),
+            (options.getFilterSectionType() == null) ? null : singletonList(options.getFilterSectionType()),
+            options.getVehicleAxleWeight(), options.getVehicleWidth(), options.getVehicleHeight(),
+            options.getVehicleLength(), options.getVehicleMaxSpeed(), options.getVehicleWeight(),
+            options.isCommercialVehicle(), options.getWindingness(), options.getInclineLevel(), options.getTravelMode(),
+            options.getAvoidRouteTypes(), options.isGetUseTrafficData(), options.getRouteType(),
+            options.getVehicleLoadType(), options.getVehicleEngineType(),
+            options.getConstantSpeedConsumptionInLitersPerHundredKm(), options.getCurrentFuelInLiters(),
+            options.getAuxiliaryPowerInLitersPerHour(), options.getFuelEnergyDensityInMegajoulesPerLiter(),
+            options.getAccelerationEfficiency(), options.getDecelerationEfficiency(), options.getUphillEfficiency(),
+            options.getDownhillEfficiency(), options.getConstantSpeedConsumptionInKwHPerHundredKm(),
+            options.getCurrentChargeInKwH(), options.getMaxChargeInKwH(), options.getAuxiliaryPowerInKw(), context)
+            .onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            });
     }
 
     /**
@@ -448,14 +400,9 @@ public final class MapsRouteAsyncClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouteDirections> getRouteDirections(
-            RouteDirectionsOptions options,
-            RouteDirectionsParameters parameters) {
-        Mono<Response<RouteDirections>> result =
-            this.getRouteDirectionsWithResponse(options, parameters);
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+    public Mono<RouteDirections> getRouteDirections(RouteDirectionsOptions options,
+        RouteDirectionsParameters parameters) {
+        return getRouteDirectionsWithResponse(options, parameters).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -509,10 +456,9 @@ public final class MapsRouteAsyncClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouteDirections>> getRouteDirectionsWithResponse(
-            RouteDirectionsOptions options,
-            RouteDirectionsParameters parameters) {
-        return this.getRouteDirectionsWithParametersWithResponse(options, parameters, null);
+    public Mono<Response<RouteDirections>> getRouteDirectionsWithResponse(RouteDirectionsOptions options,
+        RouteDirectionsParameters parameters) {
+        return withContext(context -> getRouteDirectionsWithParametersWithResponse(options, parameters, context));
     }
 
     /**
@@ -566,62 +512,32 @@ public final class MapsRouteAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions call.
      */
-    Mono<Response<RouteDirections>> getRouteDirectionsWithParametersWithResponse(
-            RouteDirectionsOptions options,
-            RouteDirectionsParameters parameters,
-            Context context) {
-        return this.serviceClient.getRouteDirectionsWithAdditionalParametersWithResponseAsync(
-                ResponseFormat.JSON,
-                Utility.toRouteQueryString(options.getRoutePoints()),
-                Utility.toRouteDirectionParametersPrivate(parameters),
-                options.getMaxAlternatives(),
-                options.getAlternativeType(),
-                options.getMinDeviationDistance(),
-                options.getMinDeviationTime(),
-                options.getInstructionsType(),
-                options.getLanguage(),
-                options.getComputeBestWaypointOrder(),
-                options.getRouteRepresentationForBestOrder(),
-                options.getComputeTravelTime(),
-                options.getVehicleHeading(),
-                options.getReport(),
-                options.getFilterSectionType(),
-                options.getArriveAt(),
-                options.getDepartAt(),
-                options.getVehicleAxleWeight(),
-                options.getVehicleLength(),
-                options.getVehicleHeight(),
-                options.getVehicleWidth(),
-                options.getVehicleMaxSpeed(),
-                options.getVehicleWeight(),
-                options.isCommercialVehicle(),
-                options.getWindingness(),
-                options.getInclineLevel(),
-                options.getTravelMode(),
-                options.getAvoidRouteTypes(),
-                options.isGetUseTrafficData(),
-                options.getRouteType(),
-                options.getVehicleLoadType(),
-                options.getVehicleEngineType(),
-                options.getConstantSpeedConsumptionInLitersPerHundredKm(),
-                options.getCurrentFuelInLiters(),
-                options.getAuxiliaryPowerInLitersPerHour(),
-                options.getFuelEnergyDensityInMegajoulesPerLiter(),
-                options.getAccelerationEfficiency(),
-                options.getDecelerationEfficiency(),
-                options.getUphillEfficiency(),
-                options.getDownhillEfficiency(),
-                options.getConstantSpeedConsumptionInKwHPerHundredKm(),
-                options.getCurrentChargeInKwH(),
-                options.getMaxChargeInKwH(),
-                options.getAuxiliaryPowerInKw(),
-                context).onErrorMap(throwable -> {
-                    if (!(throwable instanceof ErrorResponseException)) {
-                        return throwable;
-                    }
-                    ErrorResponseException exception = (ErrorResponseException) throwable;
-                    return new HttpResponseException(exception.getMessage(), exception.getResponse());
-                });
+    Mono<Response<RouteDirections>> getRouteDirectionsWithParametersWithResponse(RouteDirectionsOptions options,
+        RouteDirectionsParameters parameters, Context context) {
+        return this.serviceClient.getRouteDirectionsWithAdditionalParametersWithResponseAsync(ResponseFormat.JSON,
+            Utility.toRouteQueryString(options.getRoutePoints()), Utility.toRouteDirectionParametersPrivate(parameters),
+            options.getMaxAlternatives(), options.getAlternativeType(), options.getMinDeviationDistance(),
+            options.getMinDeviationTime(), options.getInstructionsType(), options.getLanguage(),
+            options.getComputeBestWaypointOrder(), options.getRouteRepresentationForBestOrder(),
+            options.getComputeTravelTime(), options.getVehicleHeading(), options.getReport(),
+            (options.getFilterSectionType() == null) ? null : singletonList(options.getFilterSectionType()),
+            options.getArriveAt(), options.getDepartAt(), options.getVehicleAxleWeight(), options.getVehicleLength(),
+            options.getVehicleHeight(), options.getVehicleWidth(), options.getVehicleMaxSpeed(),
+            options.getVehicleWeight(), options.isCommercialVehicle(), options.getWindingness(),
+            options.getInclineLevel(), options.getTravelMode(), options.getAvoidRouteTypes(),
+            options.isGetUseTrafficData(), options.getRouteType(), options.getVehicleLoadType(),
+            options.getVehicleEngineType(), options.getConstantSpeedConsumptionInLitersPerHundredKm(),
+            options.getCurrentFuelInLiters(), options.getAuxiliaryPowerInLitersPerHour(),
+            options.getFuelEnergyDensityInMegajoulesPerLiter(), options.getAccelerationEfficiency(),
+            options.getDecelerationEfficiency(), options.getUphillEfficiency(), options.getDownhillEfficiency(),
+            options.getConstantSpeedConsumptionInKwHPerHundredKm(), options.getCurrentChargeInKwH(),
+            options.getMaxChargeInKwH(), options.getAuxiliaryPowerInKw(), context).onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            });
     }
 
     /**
@@ -629,7 +545,7 @@ public final class MapsRouteAsyncClient {
      * <!-- src_embed com.azure.maps.search.async.route_range -->
      * <pre>
      * System.out.println&#40;&quot;Get route range&quot;&#41;;
-     * RouteRangeOptions rangeOptions2 = new RouteRangeOptions&#40;new GeoPosition&#40;5.86605, 50.97452&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
+     * RouteRangeOptions rangeOptions2 = new RouteRangeOptions&#40;new GeoPosition&#40;50.97452, 5.86605&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
      * asyncClient.getRouteRange&#40;rangeOptions2&#41;.block&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.async.route_range -->
@@ -642,10 +558,7 @@ public final class MapsRouteAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouteRangeResult> getRouteRange(RouteRangeOptions options) {
-        Mono<Response<RouteRangeResult>> result = this.getRouteRangeWithResponse(options);
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+        return getRouteRangeWithResponse(options).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -653,7 +566,7 @@ public final class MapsRouteAsyncClient {
      * <!-- src_embed com.azure.maps.search.async.route_range -->
      * <pre>
      * System.out.println&#40;&quot;Get route range&quot;&#41;;
-     * RouteRangeOptions rangeOptions2 = new RouteRangeOptions&#40;new GeoPosition&#40;5.86605, 50.97452&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
+     * RouteRangeOptions rangeOptions2 = new RouteRangeOptions&#40;new GeoPosition&#40;50.97452, 5.86605&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
      * asyncClient.getRouteRange&#40;rangeOptions2&#41;.block&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.async.route_range -->
@@ -666,7 +579,7 @@ public final class MapsRouteAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RouteRangeResult>> getRouteRangeWithResponse(RouteRangeOptions options) {
-        return this.getRouteRangeWithResponse(options, null);
+        return withContext(context -> getRouteRangeWithResponse(options, context));
     }
 
     /**
@@ -674,7 +587,7 @@ public final class MapsRouteAsyncClient {
      * <!-- src_embed com.azure.maps.search.async.route_range -->
      * <pre>
      * System.out.println&#40;&quot;Get route range&quot;&#41;;
-     * RouteRangeOptions rangeOptions2 = new RouteRangeOptions&#40;new GeoPosition&#40;5.86605, 50.97452&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
+     * RouteRangeOptions rangeOptions2 = new RouteRangeOptions&#40;new GeoPosition&#40;50.97452, 5.86605&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
      * asyncClient.getRouteRange&#40;rangeOptions2&#41;.block&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.async.route_range -->
@@ -686,54 +599,31 @@ public final class MapsRouteAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Range call.
      */
-    Mono<Response<RouteRangeResult>> getRouteRangeWithResponse(
-            RouteRangeOptions options, Context context) {
+    Mono<Response<RouteRangeResult>> getRouteRangeWithResponse(RouteRangeOptions options, Context context) {
         GeoPosition startingPoint = options.getStartingPoint();
-        List<Double> startingPointCoordinates = Arrays.asList(
-            startingPoint.getLongitude(), startingPoint.getLatitude());
+        List<Double> startingPointCoordinates
+            = Arrays.asList(startingPoint.getLongitude(), startingPoint.getLatitude());
 
-        return this.serviceClient.getRouteRangeWithResponseAsync(
-                ResponseFormat.JSON,
-                startingPointCoordinates,
-                options.getFuelBudgetInLiters(),
-                options.getEnergyBudgetInKwH(),
-                (double) options.getTimeBudgetInSec().getSeconds(),
-                options.getDistanceBudgetInMeters(),
-                options.getDepartAt(),
-                options.getRouteType(),
-                options.isGetUseTrafficData(),
-                options.getAvoidRouteTypes(),
-                options.getTravelMode(),
-                options.getInclineLevel(),
-                options.getWindingness(),
-                options.getVehicleAxleWeight(),
-                options.getVehicleWidth(),
-                options.getVehicleHeight(),
-                options.getVehicleLength(),
-                options.getVehicleMaxSpeed(),
-                options.getVehicleWeight(),
-                options.isCommercialVehicle(),
-                options.getVehicleLoadType(),
-                options.getVehicleEngineType(),
-                options.getConstantSpeedConsumptionInKwHPerHundredKm(),
-                options.getCurrentFuelInLiters(),
-                options.getAuxiliaryPowerInLitersPerHour(),
-                options.getFuelEnergyDensityInMegajoulesPerLiter(),
-                options.getAccelerationEfficiency(),
-                options.getDecelerationEfficiency(),
-                options.getUphillEfficiency(),
-                options.getDownhillEfficiency(),
-                options.getConstantSpeedConsumptionInKwHPerHundredKm(),
-                options.getCurrentChargeInKwH(),
-                options.getMaxChargeInKwH(),
-                options.getAuxiliaryPowerInKw(),
-                context).onErrorMap(throwable -> {
-                    if (!(throwable instanceof ErrorResponseException)) {
-                        return throwable;
-                    }
-                    ErrorResponseException exception = (ErrorResponseException) throwable;
-                    return new HttpResponseException(exception.getMessage(), exception.getResponse());
-                });
+        return this.serviceClient.getRouteRangeWithResponseAsync(ResponseFormat.JSON, startingPointCoordinates,
+            options.getFuelBudgetInLiters(), options.getEnergyBudgetInKwH(),
+            (double) options.getTimeBudgetInSec().getSeconds(), options.getDistanceBudgetInMeters(),
+            options.getDepartAt(), options.getRouteType(), options.isGetUseTrafficData(), options.getAvoidRouteTypes(),
+            options.getTravelMode(), options.getInclineLevel(), options.getWindingness(),
+            options.getVehicleAxleWeight(), options.getVehicleWidth(), options.getVehicleHeight(),
+            options.getVehicleLength(), options.getVehicleMaxSpeed(), options.getVehicleWeight(),
+            options.isCommercialVehicle(), options.getVehicleLoadType(), options.getVehicleEngineType(),
+            options.getConstantSpeedConsumptionInKwHPerHundredKm(), options.getCurrentFuelInLiters(),
+            options.getAuxiliaryPowerInLitersPerHour(), options.getFuelEnergyDensityInMegajoulesPerLiter(),
+            options.getAccelerationEfficiency(), options.getDecelerationEfficiency(), options.getUphillEfficiency(),
+            options.getDownhillEfficiency(), options.getConstantSpeedConsumptionInKwHPerHundredKm(),
+            options.getCurrentChargeInKwH(), options.getMaxChargeInKwH(), options.getAuxiliaryPowerInKw(), context)
+            .onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            });
     }
 
     /**
@@ -777,7 +667,8 @@ public final class MapsRouteAsyncClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginRequestRouteDirectionsBatch(List<RouteDirectionsOptions> optionsList) {
+    public PollerFlux<RouteDirectionsBatchResult, RouteDirectionsBatchResult>
+        beginRequestRouteDirectionsBatch(List<RouteDirectionsOptions> optionsList) {
         return this.beginRequestRouteDirectionsBatch(optionsList, null);
     }
 
@@ -823,42 +714,38 @@ public final class MapsRouteAsyncClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginRequestRouteDirectionsBatch(List<RouteDirectionsOptions> optionsList, Context context) {
+    PollerFlux<RouteDirectionsBatchResult, RouteDirectionsBatchResult>
+        beginRequestRouteDirectionsBatch(List<RouteDirectionsOptions> optionsList, Context context) {
         Objects.requireNonNull(optionsList, "'optionsList' is a required parameter.");
 
         // convert list to batch request
-        List<BatchRequestItem> items = optionsList.stream()
-            .map(item -> Utility.toRouteDirectionsBatchItem(item))
-            .collect(Collectors.toList());
+        List<BatchRequestItem> items
+            = optionsList.stream().map(Utility::toRouteDirectionsBatchItem).collect(Collectors.toList());
         BatchRequest batchRequest = new BatchRequest().setBatchItems(items);
 
         if (batchRequest.getBatchItems().size() <= ROUTE_DIRECTIONS_SMALL_SIZE) {
-            return createDirectionsPollerFlux(
-                () -> this.serviceClient
-                        .requestRouteDirectionsBatchSyncWithResponseAsync(JsonFormat.JSON, batchRequest, context)
-                    .flatMap(response -> {
-                        return Mono.just(Utility.createRouteDirectionsResponse(response)).onErrorMap(throwable -> {
-                            if (!(throwable instanceof ErrorResponseException)) {
-                                return throwable;
-                            }
-                            ErrorResponseException exception = (ErrorResponseException) throwable;
-                            return new HttpResponseException(exception.getMessage(), exception.getResponse());
-                        });
-                    }),
+            return createDirectionsPollerFlux(() -> this.serviceClient
+                .requestRouteDirectionsBatchSyncWithResponseAsync(JsonFormat.JSON, batchRequest, context)
+                .flatMap(
+                    response -> Mono.just(Utility.createRouteDirectionsResponse(response)).onErrorMap(throwable -> {
+                        if (!(throwable instanceof ErrorResponseException)) {
+                            return throwable;
+                        }
+                        ErrorResponseException exception = (ErrorResponseException) throwable;
+                        return new HttpResponseException(exception.getMessage(), exception.getResponse());
+                    })),
                 this.forwardStrategy);
         } else {
-            return createDirectionsPollerFlux(
-                () -> this.serviceClient
-                        .requestRouteDirectionsBatchWithResponseAsync(JsonFormat.JSON, batchRequest, context)
-                    .flatMap(response -> {
-                        return Mono.just(Utility.createRouteDirectionsResponse(response)).onErrorMap(throwable -> {
-                            if (!(throwable instanceof ErrorResponseException)) {
-                                return throwable;
-                            }
-                            ErrorResponseException exception = (ErrorResponseException) throwable;
-                            return new HttpResponseException(exception.getMessage(), exception.getResponse());
-                        });
-                    }),
+            return createDirectionsPollerFlux(() -> this.serviceClient
+                .requestRouteDirectionsBatchNoCustomHeadersWithResponseAsync(JsonFormat.JSON, batchRequest, context)
+                .flatMap(
+                    response -> Mono.just(Utility.createRouteDirectionsResponse(response)).onErrorMap(throwable -> {
+                        if (!(throwable instanceof ErrorResponseException)) {
+                            return throwable;
+                        }
+                        ErrorResponseException exception = (ErrorResponseException) throwable;
+                        return new HttpResponseException(exception.getMessage(), exception.getResponse());
+                    })),
                 this.forwardStrategy);
         }
     }
@@ -873,8 +760,8 @@ public final class MapsRouteAsyncClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginGetRouteDirectionsBatch(
-            String batchId) {
+    public PollerFlux<RouteDirectionsBatchResult, RouteDirectionsBatchResult>
+        beginGetRouteDirectionsBatch(String batchId) {
         return this.beginGetRouteDirectionsBatch(batchId, null);
     }
 
@@ -888,85 +775,66 @@ public final class MapsRouteAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Route Directions call.
      */
-    PollerFlux<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginGetRouteDirectionsBatch(
-            String batchId, Context context) {
-        return createDirectionsPollerFlux(
-            () -> this.serviceClient.getRouteDirectionsBatchWithResponseAsync(batchId, context)
-                    .flatMap(response -> {
-                        return Mono.just(Utility.createRouteDirectionsResponse(response)).onErrorMap(throwable -> {
-                            if (!(throwable instanceof ErrorResponseException)) {
-                                return throwable;
-                            }
-                            ErrorResponseException exception = (ErrorResponseException) throwable;
-                            return new HttpResponseException(exception.getMessage(), exception.getResponse());
-                        });
-                    }),
-            this.forwardStrategy);
+    PollerFlux<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginGetRouteDirectionsBatch(String batchId,
+        Context context) {
+        return createDirectionsPollerFlux(() -> this.serviceClient
+            .getRouteDirectionsBatchNoCustomHeadersWithResponseAsync(batchId, context)
+            .flatMap(response -> Mono.just(Utility.createRouteDirectionsResponse(response)).onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            })), this.forwardStrategy);
     }
 
     // private utility methods
     private PollerFlux<RouteMatrixResult, RouteMatrixResult> createPollerFlux(
-            Supplier<Mono<? extends Response<?>>> initialOperation,
-            DefaultPollingStrategy<RouteMatrixResult, RouteMatrixResult> strategy) {
+        Supplier<Mono<? extends Response<?>>> initialOperation,
+        DefaultPollingStrategy<RouteMatrixResult, RouteMatrixResult> strategy) {
 
         // type reference
         RouteMatrixReference typeReference = new RouteMatrixReference();
 
         // Create poller instance
-        return PollerFlux.create(
-            Duration.ofSeconds(POLLING_FREQUENCY),
-            context -> initialOperation.get()
-                .flatMap(response -> strategy.canPoll(response).flatMap(canPoll -> {
-                    if (!canPoll) {
-                        return Mono.error(new IllegalStateException(
-                            "Cannot poll with strategy " + strategy.getClass().getSimpleName()));
-                    }
-                    context.setData(POLLING_BATCH_HEADER_KEY, Utility.getBatchId(response.getHeaders()));
-                    return strategy.onInitialResponse(response, context, typeReference);
-                })),
-            context -> strategy.poll(context, typeReference),
-            strategy::cancel,
-            context -> {
-                return strategy
-                    .getResult(context, typeReference)
-                        .flatMap(result -> {
-                            final String matrixId = context.getData(POLLING_BATCH_HEADER_KEY);
-                            result.setMatrixId(matrixId);
-                            return Mono.just(result);
-                        });
-            });
+        return PollerFlux.create(Duration.ofSeconds(POLLING_FREQUENCY),
+            context -> initialOperation.get().flatMap(response -> strategy.canPoll(response).flatMap(canPoll -> {
+                if (!canPoll) {
+                    return Mono.error(
+                        new IllegalStateException("Cannot poll with strategy " + strategy.getClass().getSimpleName()));
+                }
+                context.setData(POLLING_BATCH_HEADER_KEY, Utility.getBatchId(response.getHeaders()));
+                return strategy.onInitialResponse(response, context, typeReference);
+            })), context -> strategy.poll(context, typeReference), strategy::cancel,
+            context -> strategy.getResult(context, typeReference).flatMap(result -> {
+                final String matrixId = context.getData(POLLING_BATCH_HEADER_KEY);
+                result.setMatrixId(matrixId);
+                return Mono.just(result);
+            }));
     }
 
     private PollerFlux<RouteDirectionsBatchResult, RouteDirectionsBatchResult> createDirectionsPollerFlux(
-            Supplier<Mono<? extends Response<?>>> initialOperation,
-            DefaultPollingStrategy<RouteDirectionsBatchResult, RouteDirectionsBatchResult> strategy) {
+        Supplier<Mono<? extends Response<?>>> initialOperation,
+        DefaultPollingStrategy<RouteDirectionsBatchResult, RouteDirectionsBatchResult> strategy) {
 
         // batch directions type reference
         RouteDirectionsBatchReference typeReference = new RouteDirectionsBatchReference();
 
         // Create poller instance
-        return PollerFlux.create(
-            Duration.ofSeconds(POLLING_FREQUENCY),
-            context -> initialOperation.get()
-                .flatMap(response -> strategy.canPoll(response).flatMap(canPoll -> {
-                    if (!canPoll) {
-                        return Mono.error(new IllegalStateException(
-                            "Cannot poll with strategy " + strategy.getClass().getSimpleName()));
-                    }
-                    context.setData(POLLING_BATCH_HEADER_KEY, Utility.getBatchId(response.getHeaders()));
-                    return strategy.onInitialResponse(response, context, typeReference);
-                })),
-            context -> strategy.poll(context, typeReference),
-            strategy::cancel,
-            context -> {
-                return strategy
-                    .getResult(context, typeReference)
-                        .flatMap(result -> {
-                            final String batchId = context.getData(POLLING_BATCH_HEADER_KEY);
-                            result.setBatchId(batchId);
-                            return Mono.just(result);
-                        });
-            });
+        return PollerFlux.create(Duration.ofSeconds(POLLING_FREQUENCY),
+            context -> initialOperation.get().flatMap(response -> strategy.canPoll(response).flatMap(canPoll -> {
+                if (!canPoll) {
+                    return Mono.error(
+                        new IllegalStateException("Cannot poll with strategy " + strategy.getClass().getSimpleName()));
+                }
+                context.setData(POLLING_BATCH_HEADER_KEY, Utility.getBatchId(response.getHeaders()));
+                return strategy.onInitialResponse(response, context, typeReference);
+            })), context -> strategy.poll(context, typeReference), strategy::cancel,
+            context -> strategy.getResult(context, typeReference).flatMap(result -> {
+                final String batchId = context.getData(POLLING_BATCH_HEADER_KEY);
+                result.setBatchId(batchId);
+                return Mono.just(result);
+            }));
     }
 
 }

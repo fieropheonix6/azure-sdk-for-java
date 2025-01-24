@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.azurestackhci.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** ArcIdentity details. */
+/**
+ * ArcIdentity details.
+ */
 @Immutable
-public final class ArcIdentityResponseInner {
+public final class ArcIdentityResponseInner implements JsonSerializable<ArcIdentityResponseInner> {
     /*
      * ArcIdentity properties.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private ArcIdentityResponseProperties innerProperties;
 
     /**
+     * Creates an instance of ArcIdentityResponseInner class.
+     */
+    public ArcIdentityResponseInner() {
+    }
+
+    /**
      * Get the innerProperties property: ArcIdentity properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ArcIdentityResponseProperties innerProperties() {
@@ -27,7 +38,7 @@ public final class ArcIdentityResponseInner {
 
     /**
      * Get the arcApplicationClientId property: The arcApplicationClientId property.
-     *
+     * 
      * @return the arcApplicationClientId value.
      */
     public String arcApplicationClientId() {
@@ -36,7 +47,7 @@ public final class ArcIdentityResponseInner {
 
     /**
      * Set the arcApplicationClientId property: The arcApplicationClientId property.
-     *
+     * 
      * @param arcApplicationClientId the arcApplicationClientId value to set.
      * @return the ArcIdentityResponseInner object itself.
      */
@@ -50,7 +61,7 @@ public final class ArcIdentityResponseInner {
 
     /**
      * Get the arcApplicationTenantId property: The arcApplicationTenantId property.
-     *
+     * 
      * @return the arcApplicationTenantId value.
      */
     public String arcApplicationTenantId() {
@@ -59,7 +70,7 @@ public final class ArcIdentityResponseInner {
 
     /**
      * Set the arcApplicationTenantId property: The arcApplicationTenantId property.
-     *
+     * 
      * @param arcApplicationTenantId the arcApplicationTenantId value to set.
      * @return the ArcIdentityResponseInner object itself.
      */
@@ -73,7 +84,7 @@ public final class ArcIdentityResponseInner {
 
     /**
      * Get the arcServicePrincipalObjectId property: The arcServicePrincipalObjectId property.
-     *
+     * 
      * @return the arcServicePrincipalObjectId value.
      */
     public String arcServicePrincipalObjectId() {
@@ -82,7 +93,7 @@ public final class ArcIdentityResponseInner {
 
     /**
      * Set the arcServicePrincipalObjectId property: The arcServicePrincipalObjectId property.
-     *
+     * 
      * @param arcServicePrincipalObjectId the arcServicePrincipalObjectId value to set.
      * @return the ArcIdentityResponseInner object itself.
      */
@@ -96,7 +107,7 @@ public final class ArcIdentityResponseInner {
 
     /**
      * Get the arcApplicationObjectId property: The arcApplicationObjectId property.
-     *
+     * 
      * @return the arcApplicationObjectId value.
      */
     public String arcApplicationObjectId() {
@@ -105,7 +116,7 @@ public final class ArcIdentityResponseInner {
 
     /**
      * Set the arcApplicationObjectId property: The arcApplicationObjectId property.
-     *
+     * 
      * @param arcApplicationObjectId the arcApplicationObjectId value to set.
      * @return the ArcIdentityResponseInner object itself.
      */
@@ -119,12 +130,48 @@ public final class ArcIdentityResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArcIdentityResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArcIdentityResponseInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArcIdentityResponseInner.
+     */
+    public static ArcIdentityResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArcIdentityResponseInner deserializedArcIdentityResponseInner = new ArcIdentityResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedArcIdentityResponseInner.innerProperties
+                        = ArcIdentityResponseProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArcIdentityResponseInner;
+        });
     }
 }

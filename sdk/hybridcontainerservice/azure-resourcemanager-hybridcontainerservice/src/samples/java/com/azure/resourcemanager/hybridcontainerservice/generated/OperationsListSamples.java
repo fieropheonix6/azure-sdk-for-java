@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/ListOperations.json
+     * x-ms-original-file:
+     * specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/
+     * ListOperations.json
      */
     /**
      * Sample code: ListOperations.
-     *
+     * 
      * @param manager Entry point to HybridContainerServiceManager.
      */
-    public static void listOperations(
-        com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.operations().list(Context.NONE);
+    public static void
+        listOperations(com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

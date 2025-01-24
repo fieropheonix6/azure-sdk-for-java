@@ -8,31 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.OutputDeliveryMode;
 import com.azure.resourcemanager.machinelearning.models.TritonModelJobOutput;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TritonModelJobOutputTests {
-    @Test
-    public void testDeserialize() {
-        TritonModelJobOutput model =
-            BinaryData
-                .fromString(
-                    "{\"jobOutputType\":\"triton_model\",\"mode\":\"ReadWriteMount\",\"uri\":\"vkolrupjovmo\",\"description\":\"ayeb\"}")
-                .toObject(TritonModelJobOutput.class);
-        Assertions.assertEquals("ayeb", model.description());
-        Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
-        Assertions.assertEquals("vkolrupjovmo", model.uri());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        TritonModelJobOutput model = BinaryData.fromString(
+            "{\"jobOutputType\":\"triton_model\",\"uri\":\"ljknnkynkstdtfwh\",\"mode\":\"Upload\",\"description\":\"fxaqjyihjcwwv\"}")
+            .toObject(TritonModelJobOutput.class);
+        Assertions.assertEquals("fxaqjyihjcwwv", model.description());
+        Assertions.assertEquals("ljknnkynkstdtfwh", model.uri());
+        Assertions.assertEquals(OutputDeliveryMode.UPLOAD, model.mode());
     }
 
-    @Test
-    public void testSerialize() {
-        TritonModelJobOutput model =
-            new TritonModelJobOutput()
-                .withDescription("ayeb")
-                .withMode(OutputDeliveryMode.READ_WRITE_MOUNT)
-                .withUri("vkolrupjovmo");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        TritonModelJobOutput model = new TritonModelJobOutput().withDescription("fxaqjyihjcwwv")
+            .withUri("ljknnkynkstdtfwh")
+            .withMode(OutputDeliveryMode.UPLOAD);
         model = BinaryData.fromObject(model).toObject(TritonModelJobOutput.class);
-        Assertions.assertEquals("ayeb", model.description());
-        Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
-        Assertions.assertEquals("vkolrupjovmo", model.uri());
+        Assertions.assertEquals("fxaqjyihjcwwv", model.description());
+        Assertions.assertEquals("ljknnkynkstdtfwh", model.uri());
+        Assertions.assertEquals(OutputDeliveryMode.UPLOAD, model.mode());
     }
 }

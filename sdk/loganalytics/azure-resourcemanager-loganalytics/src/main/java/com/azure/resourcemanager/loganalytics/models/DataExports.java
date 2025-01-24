@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DataExports. */
+/**
+ * Resource collection API of DataExports.
+ */
 public interface DataExports {
     /**
      * Lists the data export instances within a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface DataExports {
 
     /**
      * Lists the data export instances within a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -37,7 +39,22 @@ public interface DataExports {
 
     /**
      * Gets a data export instance.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param dataExportName The data export rule name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a data export instance along with {@link Response}.
+     */
+    Response<DataExport> getWithResponse(String resourceGroupName, String workspaceName, String dataExportName,
+        Context context);
+
+    /**
+     * Gets a data export instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -49,8 +66,8 @@ public interface DataExports {
     DataExport get(String resourceGroupName, String workspaceName, String dataExportName);
 
     /**
-     * Gets a data export instance.
-     *
+     * Deletes the specified data export in a given workspace..
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -58,14 +75,14 @@ public interface DataExports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data export instance along with {@link Response}.
+     * @return the {@link Response}.
      */
-    Response<DataExport> getWithResponse(
-        String resourceGroupName, String workspaceName, String dataExportName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String dataExportName,
+        Context context);
 
     /**
      * Deletes the specified data export in a given workspace..
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
@@ -76,23 +93,8 @@ public interface DataExports {
     void delete(String resourceGroupName, String workspaceName, String dataExportName);
 
     /**
-     * Deletes the specified data export in a given workspace..
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataExportName The data export rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String dataExportName, Context context);
-
-    /**
      * Gets a data export instance.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -103,7 +105,7 @@ public interface DataExports {
 
     /**
      * Gets a data export instance.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,7 +117,7 @@ public interface DataExports {
 
     /**
      * Deletes the specified data export in a given workspace..
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,7 +127,7 @@ public interface DataExports {
 
     /**
      * Deletes the specified data export in a given workspace..
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +139,7 @@ public interface DataExports {
 
     /**
      * Begins definition for a new DataExport resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DataExport definition.
      */

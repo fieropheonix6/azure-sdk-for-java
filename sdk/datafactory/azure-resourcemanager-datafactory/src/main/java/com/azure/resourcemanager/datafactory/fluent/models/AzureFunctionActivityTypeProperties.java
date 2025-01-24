@@ -6,23 +6,29 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.AzureFunctionActivityMethod;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.Map;
 
-/** Azure Function activity type properties. */
+/**
+ * Azure Function activity type properties.
+ */
 @Fluent
-public final class AzureFunctionActivityTypeProperties {
+public final class AzureFunctionActivityTypeProperties
+    implements JsonSerializable<AzureFunctionActivityTypeProperties> {
     /*
      * Rest API method for target endpoint.
      */
-    @JsonProperty(value = "method", required = true)
     private AzureFunctionActivityMethod method;
 
     /*
      * Name of the Function that the Azure Function Activity will call. Type: string (or Expression with resultType
      * string)
      */
-    @JsonProperty(value = "functionName", required = true)
     private Object functionName;
 
     /*
@@ -30,23 +36,23 @@ public final class AzureFunctionActivityTypeProperties {
      * "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "headers")
-    private Object headers;
+    private Map<String, Object> headers;
 
     /*
      * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
      * method Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "body")
     private Object body;
 
-    /** Creates an instance of AzureFunctionActivityTypeProperties class. */
+    /**
+     * Creates an instance of AzureFunctionActivityTypeProperties class.
+     */
     public AzureFunctionActivityTypeProperties() {
     }
 
     /**
      * Get the method property: Rest API method for target endpoint.
-     *
+     * 
      * @return the method value.
      */
     public AzureFunctionActivityMethod method() {
@@ -55,7 +61,7 @@ public final class AzureFunctionActivityTypeProperties {
 
     /**
      * Set the method property: Rest API method for target endpoint.
-     *
+     * 
      * @param method the method value to set.
      * @return the AzureFunctionActivityTypeProperties object itself.
      */
@@ -67,7 +73,7 @@ public final class AzureFunctionActivityTypeProperties {
     /**
      * Get the functionName property: Name of the Function that the Azure Function Activity will call. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the functionName value.
      */
     public Object functionName() {
@@ -77,7 +83,7 @@ public final class AzureFunctionActivityTypeProperties {
     /**
      * Set the functionName property: Name of the Function that the Azure Function Activity will call. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param functionName the functionName value to set.
      * @return the AzureFunctionActivityTypeProperties object itself.
      */
@@ -90,10 +96,10 @@ public final class AzureFunctionActivityTypeProperties {
      * Get the headers property: Represents the headers that will be sent to the request. For example, to set the
      * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the headers value.
      */
-    public Object headers() {
+    public Map<String, Object> headers() {
         return this.headers;
     }
 
@@ -101,11 +107,11 @@ public final class AzureFunctionActivityTypeProperties {
      * Set the headers property: Represents the headers that will be sent to the request. For example, to set the
      * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param headers the headers value to set.
      * @return the AzureFunctionActivityTypeProperties object itself.
      */
-    public AzureFunctionActivityTypeProperties withHeaders(Object headers) {
+    public AzureFunctionActivityTypeProperties withHeaders(Map<String, Object> headers) {
         this.headers = headers;
         return this;
     }
@@ -113,7 +119,7 @@ public final class AzureFunctionActivityTypeProperties {
     /**
      * Get the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
      * not allowed for GET method Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the body value.
      */
     public Object body() {
@@ -123,7 +129,7 @@ public final class AzureFunctionActivityTypeProperties {
     /**
      * Set the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
      * not allowed for GET method Type: string (or Expression with resultType string).
-     *
+     * 
      * @param body the body value to set.
      * @return the AzureFunctionActivityTypeProperties object itself.
      */
@@ -134,23 +140,70 @@ public final class AzureFunctionActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (method() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property method in model AzureFunctionActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property method in model AzureFunctionActivityTypeProperties"));
         }
         if (functionName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property functionName in model AzureFunctionActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property functionName in model AzureFunctionActivityTypeProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureFunctionActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("method", this.method == null ? null : this.method.toString());
+        jsonWriter.writeUntypedField("functionName", this.functionName);
+        jsonWriter.writeMapField("headers", this.headers, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeUntypedField("body", this.body);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFunctionActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFunctionActivityTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureFunctionActivityTypeProperties.
+     */
+    public static AzureFunctionActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFunctionActivityTypeProperties deserializedAzureFunctionActivityTypeProperties
+                = new AzureFunctionActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("method".equals(fieldName)) {
+                    deserializedAzureFunctionActivityTypeProperties.method
+                        = AzureFunctionActivityMethod.fromString(reader.getString());
+                } else if ("functionName".equals(fieldName)) {
+                    deserializedAzureFunctionActivityTypeProperties.functionName = reader.readUntyped();
+                } else if ("headers".equals(fieldName)) {
+                    Map<String, Object> headers = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedAzureFunctionActivityTypeProperties.headers = headers;
+                } else if ("body".equals(fieldName)) {
+                    deserializedAzureFunctionActivityTypeProperties.body = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFunctionActivityTypeProperties;
+        });
+    }
 }

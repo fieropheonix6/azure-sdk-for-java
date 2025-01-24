@@ -5,285 +5,365 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Represents a Query Statistic. */
-@JsonFlatten
+/**
+ * Represents a Query Statistic.
+ */
 @Fluent
-public class QueryStatisticInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryStatisticInner.class);
+public final class QueryStatisticInner extends ProxyResource {
+    /*
+     * The properties of a query statistic.
+     */
+    private QueryStatisticProperties innerProperties;
 
     /*
-     * Database query identifier.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.queryId")
-    private String queryId;
+    private String type;
 
     /*
-     * Observation start time.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.startTime")
-    private OffsetDateTime startTime;
+    private String name;
 
     /*
-     * Observation end time.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.endTime")
-    private OffsetDateTime endTime;
+    private String id;
 
-    /*
-     * Aggregation function name.
+    /**
+     * Creates an instance of QueryStatisticInner class.
      */
-    @JsonProperty(value = "properties.aggregationFunction")
-    private String aggregationFunction;
+    public QueryStatisticInner() {
+    }
 
-    /*
-     * The list of database names.
+    /**
+     * Get the innerProperties property: The properties of a query statistic.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.databaseNames")
-    private List<String> databaseNames;
+    private QueryStatisticProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Number of query executions in this time interval.
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.queryExecutionCount")
-    private Long queryExecutionCount;
+    @Override
+    public String type() {
+        return this.type;
+    }
 
-    /*
-     * Metric name.
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    @JsonProperty(value = "properties.metricName")
-    private String metricName;
+    @Override
+    public String name() {
+        return this.name;
+    }
 
-    /*
-     * Metric display name.
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    @JsonProperty(value = "properties.metricDisplayName")
-    private String metricDisplayName;
-
-    /*
-     * Metric value.
-     */
-    @JsonProperty(value = "properties.metricValue")
-    private Double metricValue;
-
-    /*
-     * Metric value unit.
-     */
-    @JsonProperty(value = "properties.metricValueUnit")
-    private String metricValueUnit;
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the queryId property: Database query identifier.
-     *
+     * 
      * @return the queryId value.
      */
     public String queryId() {
-        return this.queryId;
+        return this.innerProperties() == null ? null : this.innerProperties().queryId();
     }
 
     /**
      * Set the queryId property: Database query identifier.
-     *
+     * 
      * @param queryId the queryId value to set.
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withQueryId(String queryId) {
-        this.queryId = queryId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new QueryStatisticProperties();
+        }
+        this.innerProperties().withQueryId(queryId);
         return this;
     }
 
     /**
      * Get the startTime property: Observation start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
      * Set the startTime property: Observation start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new QueryStatisticProperties();
+        }
+        this.innerProperties().withStartTime(startTime);
         return this;
     }
 
     /**
      * Get the endTime property: Observation end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
-        return this.endTime;
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
     }
 
     /**
      * Set the endTime property: Observation end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withEndTime(OffsetDateTime endTime) {
-        this.endTime = endTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new QueryStatisticProperties();
+        }
+        this.innerProperties().withEndTime(endTime);
         return this;
     }
 
     /**
      * Get the aggregationFunction property: Aggregation function name.
-     *
+     * 
      * @return the aggregationFunction value.
      */
     public String aggregationFunction() {
-        return this.aggregationFunction;
+        return this.innerProperties() == null ? null : this.innerProperties().aggregationFunction();
     }
 
     /**
      * Set the aggregationFunction property: Aggregation function name.
-     *
+     * 
      * @param aggregationFunction the aggregationFunction value to set.
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withAggregationFunction(String aggregationFunction) {
-        this.aggregationFunction = aggregationFunction;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new QueryStatisticProperties();
+        }
+        this.innerProperties().withAggregationFunction(aggregationFunction);
         return this;
     }
 
     /**
      * Get the databaseNames property: The list of database names.
-     *
+     * 
      * @return the databaseNames value.
      */
     public List<String> databaseNames() {
-        return this.databaseNames;
+        return this.innerProperties() == null ? null : this.innerProperties().databaseNames();
     }
 
     /**
      * Set the databaseNames property: The list of database names.
-     *
+     * 
      * @param databaseNames the databaseNames value to set.
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withDatabaseNames(List<String> databaseNames) {
-        this.databaseNames = databaseNames;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new QueryStatisticProperties();
+        }
+        this.innerProperties().withDatabaseNames(databaseNames);
         return this;
     }
 
     /**
      * Get the queryExecutionCount property: Number of query executions in this time interval.
-     *
+     * 
      * @return the queryExecutionCount value.
      */
     public Long queryExecutionCount() {
-        return this.queryExecutionCount;
+        return this.innerProperties() == null ? null : this.innerProperties().queryExecutionCount();
     }
 
     /**
      * Set the queryExecutionCount property: Number of query executions in this time interval.
-     *
+     * 
      * @param queryExecutionCount the queryExecutionCount value to set.
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withQueryExecutionCount(Long queryExecutionCount) {
-        this.queryExecutionCount = queryExecutionCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new QueryStatisticProperties();
+        }
+        this.innerProperties().withQueryExecutionCount(queryExecutionCount);
         return this;
     }
 
     /**
      * Get the metricName property: Metric name.
-     *
+     * 
      * @return the metricName value.
      */
     public String metricName() {
-        return this.metricName;
+        return this.innerProperties() == null ? null : this.innerProperties().metricName();
     }
 
     /**
      * Set the metricName property: Metric name.
-     *
+     * 
      * @param metricName the metricName value to set.
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withMetricName(String metricName) {
-        this.metricName = metricName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new QueryStatisticProperties();
+        }
+        this.innerProperties().withMetricName(metricName);
         return this;
     }
 
     /**
      * Get the metricDisplayName property: Metric display name.
-     *
+     * 
      * @return the metricDisplayName value.
      */
     public String metricDisplayName() {
-        return this.metricDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().metricDisplayName();
     }
 
     /**
      * Set the metricDisplayName property: Metric display name.
-     *
+     * 
      * @param metricDisplayName the metricDisplayName value to set.
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withMetricDisplayName(String metricDisplayName) {
-        this.metricDisplayName = metricDisplayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new QueryStatisticProperties();
+        }
+        this.innerProperties().withMetricDisplayName(metricDisplayName);
         return this;
     }
 
     /**
      * Get the metricValue property: Metric value.
-     *
+     * 
      * @return the metricValue value.
      */
     public Double metricValue() {
-        return this.metricValue;
+        return this.innerProperties() == null ? null : this.innerProperties().metricValue();
     }
 
     /**
      * Set the metricValue property: Metric value.
-     *
+     * 
      * @param metricValue the metricValue value to set.
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withMetricValue(Double metricValue) {
-        this.metricValue = metricValue;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new QueryStatisticProperties();
+        }
+        this.innerProperties().withMetricValue(metricValue);
         return this;
     }
 
     /**
      * Get the metricValueUnit property: Metric value unit.
-     *
+     * 
      * @return the metricValueUnit value.
      */
     public String metricValueUnit() {
-        return this.metricValueUnit;
+        return this.innerProperties() == null ? null : this.innerProperties().metricValueUnit();
     }
 
     /**
      * Set the metricValueUnit property: Metric value unit.
-     *
+     * 
      * @param metricValueUnit the metricValueUnit value to set.
      * @return the QueryStatisticInner object itself.
      */
     public QueryStatisticInner withMetricValueUnit(String metricValueUnit) {
-        this.metricValueUnit = metricValueUnit;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new QueryStatisticProperties();
+        }
+        this.innerProperties().withMetricValueUnit(metricValueUnit);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryStatisticInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryStatisticInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the QueryStatisticInner.
+     */
+    public static QueryStatisticInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryStatisticInner deserializedQueryStatisticInner = new QueryStatisticInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedQueryStatisticInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedQueryStatisticInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedQueryStatisticInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedQueryStatisticInner.innerProperties = QueryStatisticProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryStatisticInner;
+        });
     }
 }

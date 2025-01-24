@@ -6,56 +6,59 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Cassandra linked service properties. */
+/**
+ * Cassandra linked service properties.
+ */
 @Fluent
-public final class CassandraLinkedServiceTypeProperties {
+public final class CassandraLinkedServiceTypeProperties
+    implements JsonSerializable<CassandraLinkedServiceTypeProperties> {
     /*
      * Host name for connection. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "host", required = true)
     private Object host;
 
     /*
      * AuthenticationType to be used for connection. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "authenticationType")
     private Object authenticationType;
 
     /*
      * The port for the connection. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "port")
     private Object port;
 
     /*
      * Username for authentication. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "username")
     private Object username;
 
     /*
      * Password for authentication.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of CassandraLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of CassandraLinkedServiceTypeProperties class.
+     */
     public CassandraLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the host property: Host name for connection. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the host value.
      */
     public Object host() {
@@ -64,7 +67,7 @@ public final class CassandraLinkedServiceTypeProperties {
 
     /**
      * Set the host property: Host name for connection. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param host the host value to set.
      * @return the CassandraLinkedServiceTypeProperties object itself.
      */
@@ -76,7 +79,7 @@ public final class CassandraLinkedServiceTypeProperties {
     /**
      * Get the authenticationType property: AuthenticationType to be used for connection. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the authenticationType value.
      */
     public Object authenticationType() {
@@ -86,7 +89,7 @@ public final class CassandraLinkedServiceTypeProperties {
     /**
      * Set the authenticationType property: AuthenticationType to be used for connection. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the CassandraLinkedServiceTypeProperties object itself.
      */
@@ -97,7 +100,7 @@ public final class CassandraLinkedServiceTypeProperties {
 
     /**
      * Get the port property: The port for the connection. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @return the port value.
      */
     public Object port() {
@@ -106,7 +109,7 @@ public final class CassandraLinkedServiceTypeProperties {
 
     /**
      * Set the port property: The port for the connection. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @param port the port value to set.
      * @return the CassandraLinkedServiceTypeProperties object itself.
      */
@@ -117,7 +120,7 @@ public final class CassandraLinkedServiceTypeProperties {
 
     /**
      * Get the username property: Username for authentication. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -126,7 +129,7 @@ public final class CassandraLinkedServiceTypeProperties {
 
     /**
      * Set the username property: Username for authentication. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param username the username value to set.
      * @return the CassandraLinkedServiceTypeProperties object itself.
      */
@@ -137,7 +140,7 @@ public final class CassandraLinkedServiceTypeProperties {
 
     /**
      * Get the password property: Password for authentication.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -146,7 +149,7 @@ public final class CassandraLinkedServiceTypeProperties {
 
     /**
      * Set the password property: Password for authentication.
-     *
+     * 
      * @param password the password value to set.
      * @return the CassandraLinkedServiceTypeProperties object itself.
      */
@@ -157,37 +160,36 @@ public final class CassandraLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the CassandraLinkedServiceTypeProperties object itself.
      */
-    public CassandraLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public CassandraLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (host() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property host in model CassandraLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property host in model CassandraLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();
@@ -195,4 +197,57 @@ public final class CassandraLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CassandraLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("host", this.host);
+        jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+        jsonWriter.writeUntypedField("port", this.port);
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CassandraLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CassandraLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CassandraLinkedServiceTypeProperties.
+     */
+    public static CassandraLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CassandraLinkedServiceTypeProperties deserializedCassandraLinkedServiceTypeProperties
+                = new CassandraLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("host".equals(fieldName)) {
+                    deserializedCassandraLinkedServiceTypeProperties.host = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedCassandraLinkedServiceTypeProperties.authenticationType = reader.readUntyped();
+                } else if ("port".equals(fieldName)) {
+                    deserializedCassandraLinkedServiceTypeProperties.port = reader.readUntyped();
+                } else if ("username".equals(fieldName)) {
+                    deserializedCassandraLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedCassandraLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedCassandraLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCassandraLinkedServiceTypeProperties;
+        });
+    }
 }

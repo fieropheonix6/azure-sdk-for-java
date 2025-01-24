@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The track property condition operation. */
+/**
+ * The track property condition operation.
+ */
 public final class FilterTrackPropertyCompareOperation
     extends ExpandableStringEnum<FilterTrackPropertyCompareOperation> {
-    /** Static value Equal for FilterTrackPropertyCompareOperation. */
+    /**
+     * Static value Equal for FilterTrackPropertyCompareOperation.
+     */
     public static final FilterTrackPropertyCompareOperation EQUAL = fromString("Equal");
 
-    /** Static value NotEqual for FilterTrackPropertyCompareOperation. */
+    /**
+     * Static value NotEqual for FilterTrackPropertyCompareOperation.
+     */
     public static final FilterTrackPropertyCompareOperation NOT_EQUAL = fromString("NotEqual");
 
     /**
+     * Creates a new instance of FilterTrackPropertyCompareOperation value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FilterTrackPropertyCompareOperation() {
+    }
+
+    /**
      * Creates or finds a FilterTrackPropertyCompareOperation from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FilterTrackPropertyCompareOperation.
      */
-    @JsonCreator
     public static FilterTrackPropertyCompareOperation fromString(String name) {
         return fromString(name, FilterTrackPropertyCompareOperation.class);
     }
 
     /**
      * Gets known FilterTrackPropertyCompareOperation values.
-     *
+     * 
      * @return known FilterTrackPropertyCompareOperation values.
      */
     public static Collection<FilterTrackPropertyCompareOperation> values() {

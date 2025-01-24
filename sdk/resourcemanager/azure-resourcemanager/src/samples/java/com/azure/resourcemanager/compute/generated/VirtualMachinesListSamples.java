@@ -4,36 +4,43 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualMachines List. */
+/**
+ * Samples for VirtualMachines List.
+ */
 public final class VirtualMachinesListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachines_ListAll_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineExamples/VirtualMachine_ListAll_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachines_ListAll_MinimumSet_Gen.
-     *
+     * Sample code: VirtualMachine_ListAll_MinimumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachinesListAllMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().list(null, null, Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachines_ListAll_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: VirtualMachines_ListAll_MaximumSet_Gen.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void virtualMachinesListAllMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void virtualMachineListAllMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .list("aaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .list(null, null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineExamples/VirtualMachine_ListAll_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: VirtualMachine_ListAll_MaximumSet_Gen.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void virtualMachineListAllMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .list("aaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -6,35 +6,41 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Definition of the link mapping of prediction. */
+/**
+ * Definition of the link mapping of prediction.
+ */
 @Fluent
-public final class PredictionMappings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PredictionMappings.class);
-
+public final class PredictionMappings implements JsonSerializable<PredictionMappings> {
     /*
      * The score of the link mapping.
      */
-    @JsonProperty(value = "score", required = true)
     private String score;
 
     /*
      * The grade of the link mapping.
      */
-    @JsonProperty(value = "grade", required = true)
     private String grade;
 
     /*
      * The reason of the link mapping.
      */
-    @JsonProperty(value = "reason", required = true)
     private String reason;
 
     /**
+     * Creates an instance of PredictionMappings class.
+     */
+    public PredictionMappings() {
+    }
+
+    /**
      * Get the score property: The score of the link mapping.
-     *
+     * 
      * @return the score value.
      */
     public String score() {
@@ -43,7 +49,7 @@ public final class PredictionMappings {
 
     /**
      * Set the score property: The score of the link mapping.
-     *
+     * 
      * @param score the score value to set.
      * @return the PredictionMappings object itself.
      */
@@ -54,7 +60,7 @@ public final class PredictionMappings {
 
     /**
      * Get the grade property: The grade of the link mapping.
-     *
+     * 
      * @return the grade value.
      */
     public String grade() {
@@ -63,7 +69,7 @@ public final class PredictionMappings {
 
     /**
      * Set the grade property: The grade of the link mapping.
-     *
+     * 
      * @param grade the grade value to set.
      * @return the PredictionMappings object itself.
      */
@@ -74,7 +80,7 @@ public final class PredictionMappings {
 
     /**
      * Get the reason property: The reason of the link mapping.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -83,7 +89,7 @@ public final class PredictionMappings {
 
     /**
      * Set the reason property: The reason of the link mapping.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the PredictionMappings object itself.
      */
@@ -94,24 +100,66 @@ public final class PredictionMappings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (score() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property score in model PredictionMappings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property score in model PredictionMappings"));
         }
         if (grade() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property grade in model PredictionMappings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property grade in model PredictionMappings"));
         }
         if (reason() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property reason in model PredictionMappings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property reason in model PredictionMappings"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PredictionMappings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("score", this.score);
+        jsonWriter.writeStringField("grade", this.grade);
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PredictionMappings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PredictionMappings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PredictionMappings.
+     */
+    public static PredictionMappings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PredictionMappings deserializedPredictionMappings = new PredictionMappings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("score".equals(fieldName)) {
+                    deserializedPredictionMappings.score = reader.getString();
+                } else if ("grade".equals(fieldName)) {
+                    deserializedPredictionMappings.grade = reader.getString();
+                } else if ("reason".equals(fieldName)) {
+                    deserializedPredictionMappings.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPredictionMappings;
+        });
     }
 }

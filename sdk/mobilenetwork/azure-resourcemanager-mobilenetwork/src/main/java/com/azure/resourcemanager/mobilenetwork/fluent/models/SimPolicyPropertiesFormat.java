@@ -6,60 +6,72 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mobilenetwork.models.Ambr;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
+import com.azure.resourcemanager.mobilenetwork.models.SiteProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SliceConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SliceResourceId;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
-/** SIM policy properties. */
+/**
+ * SIM policy properties. Must be created in the same location as its parent mobile network.
+ */
 @Fluent
-public final class SimPolicyPropertiesFormat {
+public final class SimPolicyPropertiesFormat implements JsonSerializable<SimPolicyPropertiesFormat> {
     /*
      * The provisioning state of the SIM policy resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
-     * Aggregate maximum bit rate across all non-GBR QoS flows of all PDU
-     * sessions of a given UE. See 3GPP TS23.501 section 5.7.2.6 for a full
-     * description of the UE-AMBR.
+     * A dictionary of sites to the provisioning state of this SIM policy on that site.
      */
-    @JsonProperty(value = "ueAmbr", required = true)
+    private Map<String, SiteProvisioningState> siteProvisioningState;
+
+    /*
+     * Aggregate maximum bit rate across all non-GBR QoS flows of all PDU sessions of a given UE. See 3GPP TS23.501
+     * section 5.7.2.6 for a full description of the UE-AMBR.
+     */
     private Ambr ueAmbr;
 
     /*
-     * The default slice to use if the UE does not explicitly specify it. This
-     * slice must exist in the `sliceConfigurations` map.
+     * The default slice to use if the UE does not explicitly specify it. This slice must exist in the
+     * `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
      */
-    @JsonProperty(value = "defaultSlice", required = true)
     private SliceResourceId defaultSlice;
 
     /*
-     * RAT/Frequency Selection Priority Index, defined in 3GPP TS 36.413. This
-     * is an optional setting and by default is unspecified.
+     * RAT/Frequency Selection Priority Index, defined in 3GPP TS 36.413. This is an optional setting and by default is
+     * unspecified.
      */
-    @JsonProperty(value = "rfspIndex")
     private Integer rfspIndex;
 
     /*
-     * Interval for the UE periodic registration update procedure, in seconds.
+     * UE periodic registration update timer (5G) or UE periodic tracking area update timer (4G), in seconds.
      */
-    @JsonProperty(value = "registrationTimer")
     private Integer registrationTimer;
 
     /*
-     * The allowed slices and the settings to use for them. The list must not
-     * contain duplicate items and must contain at least one item.
+     * The allowed slices and the settings to use for them. The list must not contain duplicate items and must contain
+     * at least one item.
      */
-    @JsonProperty(value = "sliceConfigurations", required = true)
     private List<SliceConfiguration> sliceConfigurations;
 
     /**
+     * Creates an instance of SimPolicyPropertiesFormat class.
+     */
+    public SimPolicyPropertiesFormat() {
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the SIM policy resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -67,9 +79,19 @@ public final class SimPolicyPropertiesFormat {
     }
 
     /**
+     * Get the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM policy on
+     * that site.
+     * 
+     * @return the siteProvisioningState value.
+     */
+    public Map<String, SiteProvisioningState> siteProvisioningState() {
+        return this.siteProvisioningState;
+    }
+
+    /**
      * Get the ueAmbr property: Aggregate maximum bit rate across all non-GBR QoS flows of all PDU sessions of a given
      * UE. See 3GPP TS23.501 section 5.7.2.6 for a full description of the UE-AMBR.
-     *
+     * 
      * @return the ueAmbr value.
      */
     public Ambr ueAmbr() {
@@ -79,7 +101,7 @@ public final class SimPolicyPropertiesFormat {
     /**
      * Set the ueAmbr property: Aggregate maximum bit rate across all non-GBR QoS flows of all PDU sessions of a given
      * UE. See 3GPP TS23.501 section 5.7.2.6 for a full description of the UE-AMBR.
-     *
+     * 
      * @param ueAmbr the ueAmbr value to set.
      * @return the SimPolicyPropertiesFormat object itself.
      */
@@ -90,8 +112,8 @@ public final class SimPolicyPropertiesFormat {
 
     /**
      * Get the defaultSlice property: The default slice to use if the UE does not explicitly specify it. This slice must
-     * exist in the `sliceConfigurations` map.
-     *
+     * exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
+     * 
      * @return the defaultSlice value.
      */
     public SliceResourceId defaultSlice() {
@@ -100,8 +122,8 @@ public final class SimPolicyPropertiesFormat {
 
     /**
      * Set the defaultSlice property: The default slice to use if the UE does not explicitly specify it. This slice must
-     * exist in the `sliceConfigurations` map.
-     *
+     * exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
+     * 
      * @param defaultSlice the defaultSlice value to set.
      * @return the SimPolicyPropertiesFormat object itself.
      */
@@ -113,7 +135,7 @@ public final class SimPolicyPropertiesFormat {
     /**
      * Get the rfspIndex property: RAT/Frequency Selection Priority Index, defined in 3GPP TS 36.413. This is an
      * optional setting and by default is unspecified.
-     *
+     * 
      * @return the rfspIndex value.
      */
     public Integer rfspIndex() {
@@ -123,7 +145,7 @@ public final class SimPolicyPropertiesFormat {
     /**
      * Set the rfspIndex property: RAT/Frequency Selection Priority Index, defined in 3GPP TS 36.413. This is an
      * optional setting and by default is unspecified.
-     *
+     * 
      * @param rfspIndex the rfspIndex value to set.
      * @return the SimPolicyPropertiesFormat object itself.
      */
@@ -133,8 +155,9 @@ public final class SimPolicyPropertiesFormat {
     }
 
     /**
-     * Get the registrationTimer property: Interval for the UE periodic registration update procedure, in seconds.
-     *
+     * Get the registrationTimer property: UE periodic registration update timer (5G) or UE periodic tracking area
+     * update timer (4G), in seconds.
+     * 
      * @return the registrationTimer value.
      */
     public Integer registrationTimer() {
@@ -142,8 +165,9 @@ public final class SimPolicyPropertiesFormat {
     }
 
     /**
-     * Set the registrationTimer property: Interval for the UE periodic registration update procedure, in seconds.
-     *
+     * Set the registrationTimer property: UE periodic registration update timer (5G) or UE periodic tracking area
+     * update timer (4G), in seconds.
+     * 
      * @param registrationTimer the registrationTimer value to set.
      * @return the SimPolicyPropertiesFormat object itself.
      */
@@ -155,7 +179,7 @@ public final class SimPolicyPropertiesFormat {
     /**
      * Get the sliceConfigurations property: The allowed slices and the settings to use for them. The list must not
      * contain duplicate items and must contain at least one item.
-     *
+     * 
      * @return the sliceConfigurations value.
      */
     public List<SliceConfiguration> sliceConfigurations() {
@@ -165,7 +189,7 @@ public final class SimPolicyPropertiesFormat {
     /**
      * Set the sliceConfigurations property: The allowed slices and the settings to use for them. The list must not
      * contain duplicate items and must contain at least one item.
-     *
+     * 
      * @param sliceConfigurations the sliceConfigurations value to set.
      * @return the SimPolicyPropertiesFormat object itself.
      */
@@ -176,35 +200,91 @@ public final class SimPolicyPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ueAmbr() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ueAmbr in model SimPolicyPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ueAmbr in model SimPolicyPropertiesFormat"));
         } else {
             ueAmbr().validate();
         }
         if (defaultSlice() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property defaultSlice in model SimPolicyPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property defaultSlice in model SimPolicyPropertiesFormat"));
         } else {
             defaultSlice().validate();
         }
         if (sliceConfigurations() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sliceConfigurations in model SimPolicyPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sliceConfigurations in model SimPolicyPropertiesFormat"));
         } else {
             sliceConfigurations().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SimPolicyPropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("ueAmbr", this.ueAmbr);
+        jsonWriter.writeJsonField("defaultSlice", this.defaultSlice);
+        jsonWriter.writeArrayField("sliceConfigurations", this.sliceConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("rfspIndex", this.rfspIndex);
+        jsonWriter.writeNumberField("registrationTimer", this.registrationTimer);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SimPolicyPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SimPolicyPropertiesFormat if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SimPolicyPropertiesFormat.
+     */
+    public static SimPolicyPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SimPolicyPropertiesFormat deserializedSimPolicyPropertiesFormat = new SimPolicyPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ueAmbr".equals(fieldName)) {
+                    deserializedSimPolicyPropertiesFormat.ueAmbr = Ambr.fromJson(reader);
+                } else if ("defaultSlice".equals(fieldName)) {
+                    deserializedSimPolicyPropertiesFormat.defaultSlice = SliceResourceId.fromJson(reader);
+                } else if ("sliceConfigurations".equals(fieldName)) {
+                    List<SliceConfiguration> sliceConfigurations
+                        = reader.readArray(reader1 -> SliceConfiguration.fromJson(reader1));
+                    deserializedSimPolicyPropertiesFormat.sliceConfigurations = sliceConfigurations;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSimPolicyPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("siteProvisioningState".equals(fieldName)) {
+                    Map<String, SiteProvisioningState> siteProvisioningState
+                        = reader.readMap(reader1 -> SiteProvisioningState.fromString(reader1.getString()));
+                    deserializedSimPolicyPropertiesFormat.siteProvisioningState = siteProvisioningState;
+                } else if ("rfspIndex".equals(fieldName)) {
+                    deserializedSimPolicyPropertiesFormat.rfspIndex = reader.getNullable(JsonReader::getInt);
+                } else if ("registrationTimer".equals(fieldName)) {
+                    deserializedSimPolicyPropertiesFormat.registrationTimer = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSimPolicyPropertiesFormat;
+        });
+    }
 }

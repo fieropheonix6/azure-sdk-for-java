@@ -4,31 +4,44 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-/** Bounding polygon on a specific page of the input. */
-@Fluent
-public final class BoundingRegion {
+/**
+ * Bounding polygon on a specific page of the input.
+ */
+@Immutable
+public final class BoundingRegion implements JsonSerializable<BoundingRegion> {
     /*
      * 1-based page number of page containing the bounding region.
      */
-    @JsonProperty(value = "pageNumber", required = true)
-    private int pageNumber;
+    private final int pageNumber;
 
     /*
      * Bounding polygon on the page, or the entire page if not specified.
      */
-    @JsonProperty(value = "polygon", required = true)
-    private List<Float> polygon;
+    private final List<Float> polygon;
 
-    /** Creates an instance of BoundingRegion class. */
-    public BoundingRegion() {}
+    /**
+     * Creates an instance of BoundingRegion class.
+     * 
+     * @param pageNumber the pageNumber value to set.
+     * @param polygon the polygon value to set.
+     */
+    public BoundingRegion(int pageNumber, List<Float> polygon) {
+        this.pageNumber = pageNumber;
+        this.polygon = polygon;
+    }
 
     /**
      * Get the pageNumber property: 1-based page number of page containing the bounding region.
-     *
+     * 
      * @return the pageNumber value.
      */
     public int getPageNumber() {
@@ -36,19 +49,8 @@ public final class BoundingRegion {
     }
 
     /**
-     * Set the pageNumber property: 1-based page number of page containing the bounding region.
-     *
-     * @param pageNumber the pageNumber value to set.
-     * @return the BoundingRegion object itself.
-     */
-    public BoundingRegion setPageNumber(int pageNumber) {
-        this.pageNumber = pageNumber;
-        return this;
-    }
-
-    /**
      * Get the polygon property: Bounding polygon on the page, or the entire page if not specified.
-     *
+     * 
      * @return the polygon value.
      */
     public List<Float> getPolygon() {
@@ -56,13 +58,58 @@ public final class BoundingRegion {
     }
 
     /**
-     * Set the polygon property: Bounding polygon on the page, or the entire page if not specified.
-     *
-     * @param polygon the polygon value to set.
-     * @return the BoundingRegion object itself.
+     * {@inheritDoc}
      */
-    public BoundingRegion setPolygon(List<Float> polygon) {
-        this.polygon = polygon;
-        return this;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("pageNumber", this.pageNumber);
+        jsonWriter.writeArrayField("polygon", this.polygon, (writer, element) -> writer.writeFloat(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BoundingRegion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BoundingRegion if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BoundingRegion.
+     */
+    public static BoundingRegion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean pageNumberFound = false;
+            int pageNumber = 0;
+            boolean polygonFound = false;
+            List<Float> polygon = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pageNumber".equals(fieldName)) {
+                    pageNumber = reader.getInt();
+                    pageNumberFound = true;
+                } else if ("polygon".equals(fieldName)) {
+                    polygon = reader.readArray(reader1 -> reader1.getFloat());
+                    polygonFound = true;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (pageNumberFound && polygonFound) {
+                return new BoundingRegion(pageNumber, polygon);
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!pageNumberFound) {
+                missingProperties.add("pageNumber");
+            }
+            if (!polygonFound) {
+                missingProperties.add("polygon");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

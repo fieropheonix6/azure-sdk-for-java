@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.customerinsights.fluent.InteractionsClient;
@@ -40,24 +39,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in InteractionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in InteractionsClient.
+ */
 public final class InteractionsClientImpl implements InteractionsClient {
-    private final ClientLogger logger = new ClientLogger(InteractionsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final InteractionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CustomerInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of InteractionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     InteractionsClientImpl(CustomerInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(InteractionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(InteractionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,87 +70,59 @@ public final class InteractionsClientImpl implements InteractionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CustomerInsightsMana")
-    private interface InteractionsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/interactions/{interactionName}")
-        @ExpectedResponses({200, 202})
+    public interface InteractionsService {
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/interactions/{interactionName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
-            @PathParam("interactionName") String interactionName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
+            @PathParam("interactionName") String interactionName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") InteractionResourceFormatInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/interactions/{interactionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/interactions/{interactionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InteractionResourceFormatInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
-            @PathParam("interactionName") String interactionName,
-            @QueryParam("locale-code") String localeCode,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<InteractionResourceFormatInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
+            @PathParam("interactionName") String interactionName, @QueryParam("locale-code") String localeCode,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/interactions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/interactions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InteractionListResult>> listByHub(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
-            @QueryParam("locale-code") String localeCode,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<InteractionListResult>> listByHub(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
+            @QueryParam("locale-code") String localeCode, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/interactions/{interactionName}/suggestRelationshipLinks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/interactions/{interactionName}/suggestRelationshipLinks")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SuggestRelationshipLinksResponseInner>> suggestRelationshipLinks(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
-            @PathParam("interactionName") String interactionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("hubName") String hubName, @PathParam("interactionName") String interactionName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<InteractionListResult>> listByHubNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates an interaction or updates an existing interaction within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -155,16 +130,14 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the interaction resource format.
+     * @return the interaction resource format along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String hubName, String interactionName, InteractionResourceFormatInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String hubName,
+        String interactionName, InteractionResourceFormatInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -178,10 +151,8 @@ public final class InteractionsClientImpl implements InteractionsClient {
                 .error(new IllegalArgumentException("Parameter interactionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -190,25 +161,15 @@ public final class InteractionsClientImpl implements InteractionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            interactionName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, hubName,
+                interactionName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates an interaction or updates an existing interaction within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -217,20 +178,14 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the interaction resource format.
+     * @return the interaction resource format along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String hubName,
-        String interactionName,
-        InteractionResourceFormatInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String hubName,
+        String interactionName, InteractionResourceFormatInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -244,10 +199,8 @@ public final class InteractionsClientImpl implements InteractionsClient {
                 .error(new IllegalArgumentException("Parameter interactionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -256,22 +209,13 @@ public final class InteractionsClientImpl implements InteractionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                interactionName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, hubName, interactionName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates an interaction or updates an existing interaction within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -279,30 +223,22 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the interaction resource format.
+     * @return the {@link PollerFlux} for polling of the interaction resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<InteractionResourceFormatInner>, InteractionResourceFormatInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String hubName,
-            String interactionName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String hubName, String interactionName,
             InteractionResourceFormatInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, hubName, interactionName, parameters);
-        return this
-            .client
-            .<InteractionResourceFormatInner, InteractionResourceFormatInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                InteractionResourceFormatInner.class,
-                InteractionResourceFormatInner.class,
-                Context.NONE);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, hubName, interactionName, parameters);
+        return this.client.<InteractionResourceFormatInner, InteractionResourceFormatInner>getLroResult(mono,
+            this.client.getHttpPipeline(), InteractionResourceFormatInner.class, InteractionResourceFormatInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates an interaction or updates an existing interaction within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -311,32 +247,23 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the interaction resource format.
+     * @return the {@link PollerFlux} for polling of the interaction resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<InteractionResourceFormatInner>, InteractionResourceFormatInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String hubName,
-            String interactionName,
-            InteractionResourceFormatInner parameters,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String hubName, String interactionName,
+            InteractionResourceFormatInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, hubName, interactionName, parameters, context);
-        return this
-            .client
-            .<InteractionResourceFormatInner, InteractionResourceFormatInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                InteractionResourceFormatInner.class,
-                InteractionResourceFormatInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, hubName, interactionName, parameters, context);
+        return this.client.<InteractionResourceFormatInner, InteractionResourceFormatInner>getLroResult(mono,
+            this.client.getHttpPipeline(), InteractionResourceFormatInner.class, InteractionResourceFormatInner.class,
+            context);
     }
 
     /**
      * Creates an interaction or updates an existing interaction within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -344,17 +271,17 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the interaction resource format.
+     * @return the {@link SyncPoller} for polling of the interaction resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InteractionResourceFormatInner>, InteractionResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName, String hubName, String interactionName, InteractionResourceFormatInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, interactionName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, hubName, interactionName, parameters).getSyncPoller();
     }
 
     /**
      * Creates an interaction or updates an existing interaction within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -363,22 +290,19 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the interaction resource format.
+     * @return the {@link SyncPoller} for polling of the interaction resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InteractionResourceFormatInner>, InteractionResourceFormatInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String interactionName,
-        InteractionResourceFormatInner parameters,
+        String resourceGroupName, String hubName, String interactionName, InteractionResourceFormatInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, interactionName, parameters, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, hubName, interactionName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates an interaction or updates an existing interaction within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -386,19 +310,18 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the interaction resource format.
+     * @return the interaction resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InteractionResourceFormatInner> createOrUpdateAsync(
-        String resourceGroupName, String hubName, String interactionName, InteractionResourceFormatInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, interactionName, parameters)
-            .last()
+    private Mono<InteractionResourceFormatInner> createOrUpdateAsync(String resourceGroupName, String hubName,
+        String interactionName, InteractionResourceFormatInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, hubName, interactionName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates an interaction or updates an existing interaction within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -407,23 +330,18 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the interaction resource format.
+     * @return the interaction resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InteractionResourceFormatInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String hubName,
-        String interactionName,
-        InteractionResourceFormatInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, interactionName, parameters, context)
-            .last()
+    private Mono<InteractionResourceFormatInner> createOrUpdateAsync(String resourceGroupName, String hubName,
+        String interactionName, InteractionResourceFormatInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, hubName, interactionName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates an interaction or updates an existing interaction within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -434,14 +352,14 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @return the interaction resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InteractionResourceFormatInner createOrUpdate(
-        String resourceGroupName, String hubName, String interactionName, InteractionResourceFormatInner parameters) {
+    public InteractionResourceFormatInner createOrUpdate(String resourceGroupName, String hubName,
+        String interactionName, InteractionResourceFormatInner parameters) {
         return createOrUpdateAsync(resourceGroupName, hubName, interactionName, parameters).block();
     }
 
     /**
      * Creates an interaction or updates an existing interaction within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -453,18 +371,14 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @return the interaction resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InteractionResourceFormatInner createOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String interactionName,
-        InteractionResourceFormatInner parameters,
-        Context context) {
+    public InteractionResourceFormatInner createOrUpdate(String resourceGroupName, String hubName,
+        String interactionName, InteractionResourceFormatInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, hubName, interactionName, parameters, context).block();
     }
 
     /**
      * Gets information about the specified interaction.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -472,16 +386,15 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified interaction.
+     * @return information about the specified interaction along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<InteractionResourceFormatInner>> getWithResponseAsync(
-        String resourceGroupName, String hubName, String interactionName, String localeCode) {
+    private Mono<Response<InteractionResourceFormatInner>> getWithResponseAsync(String resourceGroupName,
+        String hubName, String interactionName, String localeCode) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -495,32 +408,19 @@ public final class InteractionsClientImpl implements InteractionsClient {
                 .error(new IllegalArgumentException("Parameter interactionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            interactionName,
-                            localeCode,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, hubName, interactionName,
+                localeCode, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about the specified interaction.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -529,16 +429,15 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified interaction.
+     * @return information about the specified interaction along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<InteractionResourceFormatInner>> getWithResponseAsync(
-        String resourceGroupName, String hubName, String interactionName, String localeCode, Context context) {
+    private Mono<Response<InteractionResourceFormatInner>> getWithResponseAsync(String resourceGroupName,
+        String hubName, String interactionName, String localeCode, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -552,81 +451,56 @@ public final class InteractionsClientImpl implements InteractionsClient {
                 .error(new IllegalArgumentException("Parameter interactionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                interactionName,
-                localeCode,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, hubName, interactionName, localeCode,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets information about the specified interaction.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param interactionName The name of the interaction.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified interaction on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<InteractionResourceFormatInner> getAsync(String resourceGroupName, String hubName,
+        String interactionName) {
+        final String localeCode = null;
+        return getWithResponseAsync(resourceGroupName, hubName, interactionName, localeCode)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets information about the specified interaction.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
      * @param localeCode Locale of interaction to retrieve, default is en-us.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified interaction.
+     * @return information about the specified interaction along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InteractionResourceFormatInner> getAsync(
-        String resourceGroupName, String hubName, String interactionName, String localeCode) {
-        return getWithResponseAsync(resourceGroupName, hubName, interactionName, localeCode)
-            .flatMap(
-                (Response<InteractionResourceFormatInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Response<InteractionResourceFormatInner> getWithResponse(String resourceGroupName, String hubName,
+        String interactionName, String localeCode, Context context) {
+        return getWithResponseAsync(resourceGroupName, hubName, interactionName, localeCode, context).block();
     }
 
     /**
      * Gets information about the specified interaction.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param interactionName The name of the interaction.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified interaction.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InteractionResourceFormatInner> getAsync(
-        String resourceGroupName, String hubName, String interactionName) {
-        final String localeCode = null;
-        return getWithResponseAsync(resourceGroupName, hubName, interactionName, localeCode)
-            .flatMap(
-                (Response<InteractionResourceFormatInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets information about the specified interaction.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -638,47 +512,26 @@ public final class InteractionsClientImpl implements InteractionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InteractionResourceFormatInner get(String resourceGroupName, String hubName, String interactionName) {
         final String localeCode = null;
-        return getAsync(resourceGroupName, hubName, interactionName, localeCode).block();
-    }
-
-    /**
-     * Gets information about the specified interaction.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param interactionName The name of the interaction.
-     * @param localeCode Locale of interaction to retrieve, default is en-us.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified interaction.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<InteractionResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String interactionName, String localeCode, Context context) {
-        return getWithResponseAsync(resourceGroupName, hubName, interactionName, localeCode, context).block();
+        return getWithResponse(resourceGroupName, hubName, interactionName, localeCode, Context.NONE).getValue();
     }
 
     /**
      * Gets all interactions in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param localeCode Locale of interaction to retrieve, default is en-us.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interactions in the hub.
+     * @return all interactions in the hub along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InteractionResourceFormatInner>> listByHubSinglePageAsync(
-        String resourceGroupName, String hubName, String localeCode) {
+    private Mono<PagedResponse<InteractionResourceFormatInner>> listByHubSinglePageAsync(String resourceGroupName,
+        String hubName, String localeCode) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -688,40 +541,21 @@ public final class InteractionsClientImpl implements InteractionsClient {
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByHub(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            localeCode,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<InteractionResourceFormatInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByHub(this.client.getEndpoint(), resourceGroupName, hubName, localeCode,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<InteractionResourceFormatInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all interactions in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param localeCode Locale of interaction to retrieve, default is en-us.
@@ -729,16 +563,14 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interactions in the hub.
+     * @return all interactions in the hub along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InteractionResourceFormatInner>> listByHubSinglePageAsync(
-        String resourceGroupName, String hubName, String localeCode, Context context) {
+    private Mono<PagedResponse<InteractionResourceFormatInner>> listByHubSinglePageAsync(String resourceGroupName,
+        String hubName, String localeCode, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -748,74 +580,56 @@ public final class InteractionsClientImpl implements InteractionsClient {
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByHub(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                localeCode,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByHub(this.client.getEndpoint(), resourceGroupName, hubName, localeCode, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all interactions in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param localeCode Locale of interaction to retrieve, default is en-us.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interactions in the hub.
+     * @return all interactions in the hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<InteractionResourceFormatInner> listByHubAsync(
-        String resourceGroupName, String hubName, String localeCode) {
-        return new PagedFlux<>(
-            () -> listByHubSinglePageAsync(resourceGroupName, hubName, localeCode),
+    private PagedFlux<InteractionResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName,
+        String localeCode) {
+        return new PagedFlux<>(() -> listByHubSinglePageAsync(resourceGroupName, hubName, localeCode),
             nextLink -> listByHubNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all interactions in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interactions in the hub.
+     * @return all interactions in the hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InteractionResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName) {
         final String localeCode = null;
-        return new PagedFlux<>(
-            () -> listByHubSinglePageAsync(resourceGroupName, hubName, localeCode),
+        return new PagedFlux<>(() -> listByHubSinglePageAsync(resourceGroupName, hubName, localeCode),
             nextLink -> listByHubNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all interactions in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param localeCode Locale of interaction to retrieve, default is en-us.
@@ -823,25 +637,24 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interactions in the hub.
+     * @return all interactions in the hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<InteractionResourceFormatInner> listByHubAsync(
-        String resourceGroupName, String hubName, String localeCode, Context context) {
-        return new PagedFlux<>(
-            () -> listByHubSinglePageAsync(resourceGroupName, hubName, localeCode, context),
+    private PagedFlux<InteractionResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName,
+        String localeCode, Context context) {
+        return new PagedFlux<>(() -> listByHubSinglePageAsync(resourceGroupName, hubName, localeCode, context),
             nextLink -> listByHubNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all interactions in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interactions in the hub.
+     * @return all interactions in the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InteractionResourceFormatInner> listByHub(String resourceGroupName, String hubName) {
@@ -851,7 +664,7 @@ public final class InteractionsClientImpl implements InteractionsClient {
 
     /**
      * Gets all interactions in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param localeCode Locale of interaction to retrieve, default is en-us.
@@ -859,33 +672,32 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interactions in the hub.
+     * @return all interactions in the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<InteractionResourceFormatInner> listByHub(
-        String resourceGroupName, String hubName, String localeCode, Context context) {
+    public PagedIterable<InteractionResourceFormatInner> listByHub(String resourceGroupName, String hubName,
+        String localeCode, Context context) {
         return new PagedIterable<>(listByHubAsync(resourceGroupName, hubName, localeCode, context));
     }
 
     /**
      * Suggests relationships to create relationship links.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of suggest relationship links operation.
+     * @return the response of suggest relationship links operation along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SuggestRelationshipLinksResponseInner>> suggestRelationshipLinksWithResponseAsync(
-        String resourceGroupName, String hubName, String interactionName) {
+    private Mono<Response<SuggestRelationshipLinksResponseInner>>
+        suggestRelationshipLinksWithResponseAsync(String resourceGroupName, String hubName, String interactionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -899,31 +711,20 @@ public final class InteractionsClientImpl implements InteractionsClient {
                 .error(new IllegalArgumentException("Parameter interactionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .suggestRelationshipLinks(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            interactionName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+                context -> service.suggestRelationshipLinks(this.client.getEndpoint(), resourceGroupName, hubName,
+                    interactionName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Suggests relationships to create relationship links.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -931,16 +732,15 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of suggest relationship links operation.
+     * @return the response of suggest relationship links operation along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SuggestRelationshipLinksResponseInner>> suggestRelationshipLinksWithResponseAsync(
         String resourceGroupName, String hubName, String interactionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -954,70 +754,36 @@ public final class InteractionsClientImpl implements InteractionsClient {
                 .error(new IllegalArgumentException("Parameter interactionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .suggestRelationshipLinks(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                interactionName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.suggestRelationshipLinks(this.client.getEndpoint(), resourceGroupName, hubName, interactionName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Suggests relationships to create relationship links.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of suggest relationship links operation.
+     * @return the response of suggest relationship links operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SuggestRelationshipLinksResponseInner> suggestRelationshipLinksAsync(
-        String resourceGroupName, String hubName, String interactionName) {
+    private Mono<SuggestRelationshipLinksResponseInner> suggestRelationshipLinksAsync(String resourceGroupName,
+        String hubName, String interactionName) {
         return suggestRelationshipLinksWithResponseAsync(resourceGroupName, hubName, interactionName)
-            .flatMap(
-                (Response<SuggestRelationshipLinksResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Suggests relationships to create relationship links.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param interactionName The name of the interaction.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of suggest relationship links operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SuggestRelationshipLinksResponseInner suggestRelationshipLinks(
-        String resourceGroupName, String hubName, String interactionName) {
-        return suggestRelationshipLinksAsync(resourceGroupName, hubName, interactionName).block();
-    }
-
-    /**
-     * Suggests relationships to create relationship links.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param interactionName The name of the interaction.
@@ -1025,7 +791,7 @@ public final class InteractionsClientImpl implements InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of suggest relationship links operation.
+     * @return the response of suggest relationship links operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SuggestRelationshipLinksResponseInner> suggestRelationshipLinksWithResponse(
@@ -1034,13 +800,32 @@ public final class InteractionsClientImpl implements InteractionsClient {
     }
 
     /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * Suggests relationships to create relationship links.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param interactionName The name of the interaction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list interaction operation.
+     * @return the response of suggest relationship links operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SuggestRelationshipLinksResponseInner suggestRelationshipLinks(String resourceGroupName, String hubName,
+        String interactionName) {
+        return suggestRelationshipLinksWithResponse(resourceGroupName, hubName, interactionName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of list interaction operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InteractionResourceFormatInner>> listByHubNextSinglePageAsync(String nextLink) {
@@ -1048,60 +833,42 @@ public final class InteractionsClientImpl implements InteractionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByHubNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<InteractionResourceFormatInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<InteractionResourceFormatInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list interaction operation.
+     * @return the response of list interaction operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InteractionResourceFormatInner>> listByHubNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<InteractionResourceFormatInner>> listByHubNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByHubNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByHubNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

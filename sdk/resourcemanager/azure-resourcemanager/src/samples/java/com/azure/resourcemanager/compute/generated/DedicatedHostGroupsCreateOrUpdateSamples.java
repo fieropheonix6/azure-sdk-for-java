@@ -4,70 +4,68 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.DedicatedHostGroupInner;
 import com.azure.resourcemanager.compute.models.DedicatedHostGroupPropertiesAdditionalCapabilities;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DedicatedHostGroups CreateOrUpdate. */
+/**
+ * Samples for DedicatedHostGroups CreateOrUpdate.
+ */
 public final class DedicatedHostGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a dedicated host group.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateADedicatedHostGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getDedicatedHostGroups()
-            .createOrUpdateWithResponse(
-                "myResourceGroup",
-                "myDedicatedHostGroup",
-                new DedicatedHostGroupInner()
-                    .withLocation("westus")
+            .createOrUpdateWithResponse("myResourceGroup", "myDedicatedHostGroup",
+                new DedicatedHostGroupInner().withLocation("westus")
                     .withTags(mapOf("department", "finance"))
                     .withZones(Arrays.asList("1"))
                     .withPlatformFaultDomainCount(3)
                     .withSupportAutomaticPlacement(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate_WithUltraSSD.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate_WithUltraSSD.json
      */
     /**
      * Sample code: Create or update a dedicated host group with Ultra SSD support.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createOrUpdateADedicatedHostGroupWithUltraSSDSupport(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void
+        createOrUpdateADedicatedHostGroupWithUltraSSDSupport(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getDedicatedHostGroups()
-            .createOrUpdateWithResponse(
-                "myResourceGroup",
-                "myDedicatedHostGroup",
-                new DedicatedHostGroupInner()
-                    .withLocation("westus")
+            .createOrUpdateWithResponse("myResourceGroup", "myDedicatedHostGroup",
+                new DedicatedHostGroupInner().withLocation("westus")
                     .withTags(mapOf("department", "finance"))
                     .withZones(Arrays.asList("1"))
                     .withPlatformFaultDomainCount(3)
                     .withSupportAutomaticPlacement(true)
                     .withAdditionalCapabilities(
                         new DedicatedHostGroupPropertiesAdditionalCapabilities().withUltraSsdEnabled(true)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

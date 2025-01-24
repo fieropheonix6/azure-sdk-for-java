@@ -7,34 +7,30 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.ManagedPrivateEndpointInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ManagedPrivateEndpointInnerTests {
-    @Test
-    public void testDeserialize() {
-        ManagedPrivateEndpointInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"privateLinkResourceId\":\"lfphsdyhtozfikd\",\"privateLinkResourceRegion\":\"wq\",\"groupId\":\"uvxzxclvi\",\"requestMessage\":\"hqzonosggbhcoh\",\"provisioningState\":\"Failed\"},\"id\":\"jnkaljutiiswacff\",\"name\":\"dkzzewkfvhqcrail\",\"type\":\"pnppfuf\"}")
-                .toObject(ManagedPrivateEndpointInner.class);
-        Assertions.assertEquals("lfphsdyhtozfikd", model.privateLinkResourceId());
-        Assertions.assertEquals("wq", model.privateLinkResourceRegion());
-        Assertions.assertEquals("uvxzxclvi", model.groupId());
-        Assertions.assertEquals("hqzonosggbhcoh", model.requestMessage());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ManagedPrivateEndpointInner model = BinaryData.fromString(
+            "{\"properties\":{\"privateLinkResourceId\":\"cslfaoqzpiyylha\",\"privateLinkResourceRegion\":\"swhccsphk\",\"groupId\":\"ivwitqscywugg\",\"requestMessage\":\"luhczbw\",\"provisioningState\":\"Deleting\"},\"id\":\"i\",\"name\":\"sbrgz\",\"type\":\"wmsweypqwd\"}")
+            .toObject(ManagedPrivateEndpointInner.class);
+        Assertions.assertEquals("cslfaoqzpiyylha", model.privateLinkResourceId());
+        Assertions.assertEquals("swhccsphk", model.privateLinkResourceRegion());
+        Assertions.assertEquals("ivwitqscywugg", model.groupId());
+        Assertions.assertEquals("luhczbw", model.requestMessage());
     }
 
-    @Test
-    public void testSerialize() {
-        ManagedPrivateEndpointInner model =
-            new ManagedPrivateEndpointInner()
-                .withPrivateLinkResourceId("lfphsdyhtozfikd")
-                .withPrivateLinkResourceRegion("wq")
-                .withGroupId("uvxzxclvi")
-                .withRequestMessage("hqzonosggbhcoh");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ManagedPrivateEndpointInner model
+            = new ManagedPrivateEndpointInner().withPrivateLinkResourceId("cslfaoqzpiyylha")
+                .withPrivateLinkResourceRegion("swhccsphk")
+                .withGroupId("ivwitqscywugg")
+                .withRequestMessage("luhczbw");
         model = BinaryData.fromObject(model).toObject(ManagedPrivateEndpointInner.class);
-        Assertions.assertEquals("lfphsdyhtozfikd", model.privateLinkResourceId());
-        Assertions.assertEquals("wq", model.privateLinkResourceRegion());
-        Assertions.assertEquals("uvxzxclvi", model.groupId());
-        Assertions.assertEquals("hqzonosggbhcoh", model.requestMessage());
+        Assertions.assertEquals("cslfaoqzpiyylha", model.privateLinkResourceId());
+        Assertions.assertEquals("swhccsphk", model.privateLinkResourceRegion());
+        Assertions.assertEquals("ivwitqscywugg", model.groupId());
+        Assertions.assertEquals("luhczbw", model.requestMessage());
     }
 }

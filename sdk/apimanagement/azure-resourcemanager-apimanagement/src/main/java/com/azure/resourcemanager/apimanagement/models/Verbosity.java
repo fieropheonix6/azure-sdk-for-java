@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Verbosity. */
+/**
+ * The verbosity level applied to traces emitted by trace policies.
+ */
 public final class Verbosity extends ExpandableStringEnum<Verbosity> {
-    /** Static value verbose for Verbosity. */
+    /**
+     * Static value verbose for Verbosity.
+     */
     public static final Verbosity VERBOSE = fromString("verbose");
 
-    /** Static value information for Verbosity. */
+    /**
+     * Static value information for Verbosity.
+     */
     public static final Verbosity INFORMATION = fromString("information");
 
-    /** Static value error for Verbosity. */
+    /**
+     * Static value error for Verbosity.
+     */
     public static final Verbosity ERROR = fromString("error");
 
     /**
+     * Creates a new instance of Verbosity value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Verbosity() {
+    }
+
+    /**
      * Creates or finds a Verbosity from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Verbosity.
      */
-    @JsonCreator
     public static Verbosity fromString(String name) {
         return fromString(name, Verbosity.class);
     }
 
-    /** @return known Verbosity values. */
+    /**
+     * Gets known Verbosity values.
+     * 
+     * @return known Verbosity values.
+     */
     public static Collection<Verbosity> values() {
         return values(Verbosity.class);
     }

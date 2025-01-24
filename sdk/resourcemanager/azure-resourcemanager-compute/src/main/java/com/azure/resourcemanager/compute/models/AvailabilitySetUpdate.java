@@ -6,8 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.AvailabilitySetProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -20,22 +23,22 @@ public final class AvailabilitySetUpdate extends UpdateResource {
     /*
      * The instance view of a resource.
      */
-    @JsonProperty(value = "properties")
     private AvailabilitySetProperties innerProperties;
 
     /*
      * Sku of the availability set
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
-    /** Creates an instance of AvailabilitySetUpdate class. */
+    /**
+     * Creates an instance of AvailabilitySetUpdate class.
+     */
     public AvailabilitySetUpdate() {
     }
 
     /**
      * Get the innerProperties property: The instance view of a resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AvailabilitySetProperties innerProperties() {
@@ -44,7 +47,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Get the sku property: Sku of the availability set.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -53,7 +56,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Set the sku property: Sku of the availability set.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AvailabilitySetUpdate object itself.
      */
@@ -62,7 +65,9 @@ public final class AvailabilitySetUpdate extends UpdateResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AvailabilitySetUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -71,7 +76,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Get the platformUpdateDomainCount property: Update Domain count.
-     *
+     * 
      * @return the platformUpdateDomainCount value.
      */
     public Integer platformUpdateDomainCount() {
@@ -80,7 +85,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Set the platformUpdateDomainCount property: Update Domain count.
-     *
+     * 
      * @param platformUpdateDomainCount the platformUpdateDomainCount value to set.
      * @return the AvailabilitySetUpdate object itself.
      */
@@ -94,7 +99,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Get the platformFaultDomainCount property: Fault Domain count.
-     *
+     * 
      * @return the platformFaultDomainCount value.
      */
     public Integer platformFaultDomainCount() {
@@ -103,7 +108,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Set the platformFaultDomainCount property: Fault Domain count.
-     *
+     * 
      * @param platformFaultDomainCount the platformFaultDomainCount value to set.
      * @return the AvailabilitySetUpdate object itself.
      */
@@ -117,7 +122,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Get the virtualMachines property: A list of references to all virtual machines in the availability set.
-     *
+     * 
      * @return the virtualMachines value.
      */
     public List<SubResource> virtualMachines() {
@@ -126,7 +131,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Set the virtualMachines property: A list of references to all virtual machines in the availability set.
-     *
+     * 
      * @param virtualMachines the virtualMachines value to set.
      * @return the AvailabilitySetUpdate object itself.
      */
@@ -140,8 +145,8 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Get the proximityPlacementGroup property: Specifies information about the proximity placement group that the
-     * availability set should be assigned to. &lt;br&gt;&lt;br&gt;Minimum api-version: 2018-04-01.
-     *
+     * availability set should be assigned to. Minimum api-version: 2018-04-01.
+     * 
      * @return the proximityPlacementGroup value.
      */
     public SubResource proximityPlacementGroup() {
@@ -150,8 +155,8 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Set the proximityPlacementGroup property: Specifies information about the proximity placement group that the
-     * availability set should be assigned to. &lt;br&gt;&lt;br&gt;Minimum api-version: 2018-04-01.
-     *
+     * availability set should be assigned to. Minimum api-version: 2018-04-01.
+     * 
      * @param proximityPlacementGroup the proximityPlacementGroup value to set.
      * @return the AvailabilitySetUpdate object itself.
      */
@@ -165,7 +170,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<InstanceViewStatus> statuses() {
@@ -173,18 +178,85 @@ public final class AvailabilitySetUpdate extends UpdateResource {
     }
 
     /**
+     * Get the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the availability set.
+     * 
+     * @return the scheduledEventsPolicy value.
+     */
+    public ScheduledEventsPolicy scheduledEventsPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().scheduledEventsPolicy();
+    }
+
+    /**
+     * Set the scheduledEventsPolicy property: Specifies Redeploy, Reboot and ScheduledEventsAdditionalPublishingTargets
+     * Scheduled Event related configurations for the availability set.
+     * 
+     * @param scheduledEventsPolicy the scheduledEventsPolicy value to set.
+     * @return the AvailabilitySetUpdate object itself.
+     */
+    public AvailabilitySetUpdate withScheduledEventsPolicy(ScheduledEventsPolicy scheduledEventsPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailabilitySetProperties();
+        }
+        this.innerProperties().withScheduledEventsPolicy(scheduledEventsPolicy);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailabilitySetUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailabilitySetUpdate if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailabilitySetUpdate.
+     */
+    public static AvailabilitySetUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailabilitySetUpdate deserializedAvailabilitySetUpdate = new AvailabilitySetUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAvailabilitySetUpdate.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAvailabilitySetUpdate.innerProperties = AvailabilitySetProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedAvailabilitySetUpdate.sku = Sku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailabilitySetUpdate;
+        });
     }
 }

@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Power query sink. */
+/**
+ * Power query sink.
+ */
 @Fluent
 public final class PowerQuerySink extends DataFlowSink {
     /*
      * sink script.
      */
-    @JsonProperty(value = "script")
     private String script;
 
-    /** Creates an instance of PowerQuerySink class. */
+    /**
+     * Creates an instance of PowerQuerySink class.
+     */
     public PowerQuerySink() {
     }
 
     /**
      * Get the script property: sink script.
-     *
+     * 
      * @return the script value.
      */
     public String script() {
@@ -31,7 +38,7 @@ public final class PowerQuerySink extends DataFlowSink {
 
     /**
      * Set the script property: sink script.
-     *
+     * 
      * @param script the script value to set.
      * @return the PowerQuerySink object itself.
      */
@@ -40,49 +47,63 @@ public final class PowerQuerySink extends DataFlowSink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PowerQuerySink withSchemaLinkedService(LinkedServiceReference schemaLinkedService) {
         super.withSchemaLinkedService(schemaLinkedService);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PowerQuerySink withRejectedDataLinkedService(LinkedServiceReference rejectedDataLinkedService) {
         super.withRejectedDataLinkedService(rejectedDataLinkedService);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PowerQuerySink withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PowerQuerySink withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PowerQuerySink withDataset(DatasetReference dataset) {
         super.withDataset(dataset);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PowerQuerySink withLinkedService(LinkedServiceReference linkedService) {
         super.withLinkedService(linkedService);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PowerQuerySink withFlowlet(DataFlowReference flowlet) {
         super.withFlowlet(flowlet);
@@ -91,11 +112,89 @@ public final class PowerQuerySink extends DataFlowSink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model PowerQuerySink"));
+        }
+        if (dataset() != null) {
+            dataset().validate();
+        }
+        if (linkedService() != null) {
+            linkedService().validate();
+        }
+        if (flowlet() != null) {
+            flowlet().validate();
+        }
+        if (schemaLinkedService() != null) {
+            schemaLinkedService().validate();
+        }
+        if (rejectedDataLinkedService() != null) {
+            rejectedDataLinkedService().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PowerQuerySink.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeJsonField("dataset", dataset());
+        jsonWriter.writeJsonField("linkedService", linkedService());
+        jsonWriter.writeJsonField("flowlet", flowlet());
+        jsonWriter.writeJsonField("schemaLinkedService", schemaLinkedService());
+        jsonWriter.writeJsonField("rejectedDataLinkedService", rejectedDataLinkedService());
+        jsonWriter.writeStringField("script", this.script);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PowerQuerySink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PowerQuerySink if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PowerQuerySink.
+     */
+    public static PowerQuerySink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PowerQuerySink deserializedPowerQuerySink = new PowerQuerySink();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPowerQuerySink.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedPowerQuerySink.withDescription(reader.getString());
+                } else if ("dataset".equals(fieldName)) {
+                    deserializedPowerQuerySink.withDataset(DatasetReference.fromJson(reader));
+                } else if ("linkedService".equals(fieldName)) {
+                    deserializedPowerQuerySink.withLinkedService(LinkedServiceReference.fromJson(reader));
+                } else if ("flowlet".equals(fieldName)) {
+                    deserializedPowerQuerySink.withFlowlet(DataFlowReference.fromJson(reader));
+                } else if ("schemaLinkedService".equals(fieldName)) {
+                    deserializedPowerQuerySink.withSchemaLinkedService(LinkedServiceReference.fromJson(reader));
+                } else if ("rejectedDataLinkedService".equals(fieldName)) {
+                    deserializedPowerQuerySink.withRejectedDataLinkedService(LinkedServiceReference.fromJson(reader));
+                } else if ("script".equals(fieldName)) {
+                    deserializedPowerQuerySink.script = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPowerQuerySink;
+        });
     }
 }

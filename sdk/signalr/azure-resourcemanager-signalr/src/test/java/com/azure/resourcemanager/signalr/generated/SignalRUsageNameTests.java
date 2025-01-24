@@ -7,22 +7,21 @@ package com.azure.resourcemanager.signalr.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.models.SignalRUsageName;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SignalRUsageNameTests {
-    @Test
-    public void testDeserialize() {
-        SignalRUsageName model =
-            BinaryData.fromString("{\"value\":\"s\",\"localizedValue\":\"gbquxigj\"}").toObject(SignalRUsageName.class);
-        Assertions.assertEquals("s", model.value());
-        Assertions.assertEquals("gbquxigj", model.localizedValue());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SignalRUsageName model = BinaryData.fromString("{\"value\":\"qsl\",\"localizedValue\":\"yvxyqjp\"}")
+            .toObject(SignalRUsageName.class);
+        Assertions.assertEquals("qsl", model.value());
+        Assertions.assertEquals("yvxyqjp", model.localizedValue());
     }
 
-    @Test
-    public void testSerialize() {
-        SignalRUsageName model = new SignalRUsageName().withValue("s").withLocalizedValue("gbquxigj");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SignalRUsageName model = new SignalRUsageName().withValue("qsl").withLocalizedValue("yvxyqjp");
         model = BinaryData.fromObject(model).toObject(SignalRUsageName.class);
-        Assertions.assertEquals("s", model.value());
-        Assertions.assertEquals("gbquxigj", model.localizedValue());
+        Assertions.assertEquals("qsl", model.value());
+        Assertions.assertEquals("yvxyqjp", model.localizedValue());
     }
 }

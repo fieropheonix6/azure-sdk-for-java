@@ -9,33 +9,25 @@ import com.azure.resourcemanager.webpubsub.models.ResourceLogCategory;
 import com.azure.resourcemanager.webpubsub.models.ResourceLogConfiguration;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceLogConfigurationTests {
-    @Test
-    public void testDeserialize() {
-        ResourceLogConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"categories\":[{\"name\":\"qmhjjdhtld\",\"enabled\":\"yzxuutkncw\"},{\"name\":\"wsvlxotogtwrupqs\",\"enabled\":\"nmic\"},{\"name\":\"vce\",\"enabled\":\"eil\"},{\"name\":\"notyfjfcnjbkcn\",\"enabled\":\"hbttkphyw\"}]}")
-                .toObject(ResourceLogConfiguration.class);
-        Assertions.assertEquals("qmhjjdhtld", model.categories().get(0).name());
-        Assertions.assertEquals("yzxuutkncw", model.categories().get(0).enabled());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ResourceLogConfiguration model = BinaryData.fromString(
+            "{\"categories\":[{\"name\":\"wpusdsttwvogv\",\"enabled\":\"ejdcngqqmoakuf\"},{\"name\":\"jzrwrdgrtw\",\"enabled\":\"nuuzkopbm\"},{\"name\":\"rfdwoyu\",\"enabled\":\"ziuiefozbhdm\"}]}")
+            .toObject(ResourceLogConfiguration.class);
+        Assertions.assertEquals("wpusdsttwvogv", model.categories().get(0).name());
+        Assertions.assertEquals("ejdcngqqmoakuf", model.categories().get(0).enabled());
     }
 
-    @Test
-    public void testSerialize() {
-        ResourceLogConfiguration model =
-            new ResourceLogConfiguration()
-                .withCategories(
-                    Arrays
-                        .asList(
-                            new ResourceLogCategory().withName("qmhjjdhtld").withEnabled("yzxuutkncw"),
-                            new ResourceLogCategory().withName("wsvlxotogtwrupqs").withEnabled("nmic"),
-                            new ResourceLogCategory().withName("vce").withEnabled("eil"),
-                            new ResourceLogCategory().withName("notyfjfcnjbkcn").withEnabled("hbttkphyw")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ResourceLogConfiguration model = new ResourceLogConfiguration().withCategories(
+            Arrays.asList(new ResourceLogCategory().withName("wpusdsttwvogv").withEnabled("ejdcngqqmoakuf"),
+                new ResourceLogCategory().withName("jzrwrdgrtw").withEnabled("nuuzkopbm"),
+                new ResourceLogCategory().withName("rfdwoyu").withEnabled("ziuiefozbhdm")));
         model = BinaryData.fromObject(model).toObject(ResourceLogConfiguration.class);
-        Assertions.assertEquals("qmhjjdhtld", model.categories().get(0).name());
-        Assertions.assertEquals("yzxuutkncw", model.categories().get(0).enabled());
+        Assertions.assertEquals("wpusdsttwvogv", model.categories().get(0).name());
+        Assertions.assertEquals("ejdcngqqmoakuf", model.categories().get(0).enabled());
     }
 }

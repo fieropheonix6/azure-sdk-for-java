@@ -4,57 +4,51 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.models.Capacity;
 import com.azure.resourcemanager.loganalytics.models.Cluster;
 import com.azure.resourcemanager.loganalytics.models.ClusterSku;
 import com.azure.resourcemanager.loganalytics.models.ClusterSkuNameEnum;
-import com.azure.resourcemanager.loganalytics.models.Identity;
-import com.azure.resourcemanager.loganalytics.models.IdentityType;
 import com.azure.resourcemanager.loganalytics.models.KeyVaultProperties;
-import com.azure.resourcemanager.loganalytics.models.UserIdentityProperties;
+import com.azure.resourcemanager.loganalytics.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.loganalytics.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.loganalytics.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Clusters Update. */
+/**
+ * Samples for Clusters Update.
+ */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/ClustersUpdate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * ClustersUpdate.json
      */
     /**
      * Sample code: ClustersPatch.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void clustersPatch(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        Cluster resource =
-            manager
-                .clusters()
-                .getByResourceGroupWithResponse("oiautorest6685", "oiautorest6685", Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Cluster resource = manager.clusters()
+            .getByResourceGroupWithResponse("oiautorest6685", "oiautorest6685", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("tag1", "val1"))
-            .withIdentity(
-                new Identity()
-                    .withType(IdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/00000000-0000-0000-0000-00000000000/resourcegroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity",
-                            new UserIdentityProperties())))
-            .withSku(
-                new ClusterSku()
-                    .withCapacity(Capacity.ONE_ZERO_ZERO_ZERO)
-                    .withName(ClusterSkuNameEnum.CAPACITY_RESERVATION))
-            .withKeyVaultProperties(
-                new KeyVaultProperties()
-                    .withKeyVaultUri("https://aztest2170.vault.azure.net")
-                    .withKeyName("aztest2170cert")
-                    .withKeyVersion("654ft6c4e63845cbb50fd6fg51540429")
-                    .withKeyRsaSize(1024))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity",
+                    new UserAssignedIdentity())))
+            .withSku(new ClusterSku().withCapacity(Capacity.ONE_ZERO_ZERO_ZERO)
+                .withName(ClusterSkuNameEnum.CAPACITY_RESERVATION))
+            .withKeyVaultProperties(new KeyVaultProperties().withKeyVaultUri("fakeTokenPlaceholder")
+                .withKeyName("fakeTokenPlaceholder")
+                .withKeyVersion("fakeTokenPlaceholder")
+                .withKeyRsaSize(1024))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

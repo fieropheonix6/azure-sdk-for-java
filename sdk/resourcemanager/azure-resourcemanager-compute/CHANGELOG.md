@@ -1,6 +1,6 @@
 # Release History
 
-## 2.21.0-beta.1 (Unreleased)
+## 2.48.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,257 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.47.0 (2025-01-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of CloudserviceRP to `2024-11-04`.
+
+## 2.46.0 (2024-12-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of GalleryRP to `2024-03-03`.
+
+## 2.45.0 (2024-11-28)
+
+### Features Added
+
+- Supported `capacityReservationGroupId` and `withCapacityReservationGroup` methods for `VirtualMachine`.
+- Supported enabling write accelerator for OS disk and data disks in `VirtualMachine` class.
+
+## 2.44.0 (2024-10-25)
+
+### Features Added
+
+- Supported creating `GalleryImageVersion` from source virtual machine by specifying `withSourceVirtualMachine`.
+
+### Bugs Fixed
+
+- Fixed a bug that VM state not refreshed after calling `VirtualMachine.deallocate`.
+
+## 2.43.0 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.42.0 (2024-08-23)
+
+### Features Added
+
+- Supported enabling ultra SSD in `VirtualMachine` class.
+
+### Bugs Fixed
+
+- Fixed a bug that `ClassCastException` occurs for some Virtual Machines with extensions.
+
+### Other Changes
+
+- Replaced `Jackson` with `azure-json` for serialization/deserialization.
+
+#### Dependency Updates
+
+- Updated `api-version` of ComputeRP to `2024-07-01`.
+
+## 2.41.0 (2024-07-25)
+
+### Breaking Changes
+
+- Changed type from `List<VirtualMachineExtensionInner>` to `List<String>` of `excludeExtensions` property in `SecurityPostureReference` class.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of DiskRP to `2024-03-02`.
+
+## 2.40.0 (2024-06-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.39.0 (2024-05-24)
+
+### Features Added
+
+- Supported disabling public network access in `Disk` via `disablePublicNetworkAccess()`, for private link feature.
+- Supported disabling public network access in `Snapshot` via `disablePublicNetworkAccess()`, for private link feature.
+
+## 2.38.0 (2024-04-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of ComputeRP to `2024-03-01`.
+
+## 2.37.0 (2024-03-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.36.0 (2024-02-29)
+
+### Features Added
+
+- Supported `withNetworkInterfacesDeleteOptions(DeleteOptions)` and `withDataDisksDeleteOptions(DeleteOptions)` for `VirtualMachine`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of GalleryRP to `2023-07-03`.
+
+## 2.35.0 (2024-01-26)
+
+### Features Added
+
+- Supported `WINDOWS_DESKTOP_10_PRO` in `KnownWindowsVirtualMachineImage`.
+- Added `withEncryptionAtHost` in `VirtualMachine`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-10-02`.
+
+## 2.34.0 (2023-12-22)
+
+### Features Added
+
+- Supported `userData` for `VirtualMachine` in create and update.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-09-01`.
+
+## 2.33.0 (2023-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.32.0 (2023-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.31.0 (2023-09-28)
+
+### Features Added
+
+- Supported `listByVirtualMachineScaleSet` for `VirtualMachines`.
+
+### Bugs Fixed
+
+- Fixed a bug that `VirtualMachineCustomImages.getById()` returns `HyperVGenerationTypes.V1` for all instances. ([#36619](https://github.com/Azure/azure-sdk-for-java/issues/36619))
+
+## 2.30.0 (2023-08-25)
+
+### Features Added
+
+- Supported updating delete options for OS disk, data disks and network interfaces attached to `VirtualMachine`.
+
+### Bugs Fixed
+
+- Fixed bug that create proximity placement group with `VirtualMachineScaleSet` fails. ([#36417](https://github.com/Azure/azure-sdk-for-java/issues/36417))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-07-01`.
+
+## 2.29.0 (2023-07-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.28.0 (2023-06-25)
+
+### Features Added
+
+- Supported `withLogicalSectorSizeInBytes` in `Disk`.
+- Supported `PREMIUM_V2_LRS` in `DiskSkuTypes`.
+
+## 2.27.0 (2023-05-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.26.0 (2023-04-21)
+
+### Features Added
+
+- Supported `timeCreated()` in `VirtualMachineScaleSetVM` and `VirtualMachine`.
+
+### Breaking Changes
+
+- Changed type from `ApiEntityReference` to `DiskRestorePointAttributes` of `diskRestorePoint` property in `RestorePointSourceVMDataDisk` and `RestorePointSourceVmosDisk` class.
+- Removed some setters in `RestorePointSourceMetadata`, `RestorePointSourceVmosDisk`, `RestorePointSourceVmosDisk` class. It should not affect customer, as these properties are read-only.
+- Removed `id` property from classes. It should not affect customer, as these properties does not exist in runtime.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-03-01`.
+
+## 2.25.0 (2023-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.24.0 (2023-02-17)
+
+### Bugs Fixed
+
+- Fixed wrong javadocs of `withSsh()` in `VirtualMachine` and `VirtualMachineScaleSet`.
+- Fixed a bug that scaling up scale sets results in outdated models for existing VMs.
+
+## 2.23.0 (2023-01-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-11-01`.
+
+## 2.22.0 (2022-12-23)
+
+### Features Added
+
+- Supported `withHibernationSupport` method in `Disk` to support hibernation for the OS on the disk.
 
 ## 2.21.0 (2022-11-24)
 

@@ -18,6 +18,12 @@ public final class DataFeedRollupSettings {
     private DataFeedAutoRollUpMethod dataFeedAutoRollUpMethod;
 
     /**
+     * Create a new instance of DataFeedRollupSettings.
+     */
+    public DataFeedRollupSettings() {
+    }
+
+    /**
      * Get the rollup type that should be used for the data feed.
      *
      * @return the dataFeedRollupType value.
@@ -90,8 +96,7 @@ public final class DataFeedRollupSettings {
      *
      * @return the DataFeedRollupSettings object itself.
      */
-    public DataFeedRollupSettings setAutoRollup(DataFeedAutoRollUpMethod rollUpMethod,
-        List<String> groupByColumnNames,
+    public DataFeedRollupSettings setAutoRollup(DataFeedAutoRollUpMethod rollUpMethod, List<String> groupByColumnNames,
         String rollupIdentificationValue) {
         this.autoRollupGroupByColumnNames = groupByColumnNames;
         this.rollupIdentificationValue = rollupIdentificationValue;

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** BGP settings details for a link. */
+/**
+ * BGP settings details for a link.
+ */
 @Fluent
-public final class VpnLinkBgpSettings {
+public final class VpnLinkBgpSettings implements JsonSerializable<VpnLinkBgpSettings> {
     /*
      * The BGP speaker's ASN.
      */
-    @JsonProperty(value = "asn")
     private Long asn;
 
     /*
      * The BGP peering address and BGP identifier of this BGP speaker.
      */
-    @JsonProperty(value = "bgpPeeringAddress")
     private String bgpPeeringAddress;
 
-    /** Creates an instance of VpnLinkBgpSettings class. */
+    /**
+     * Creates an instance of VpnLinkBgpSettings class.
+     */
     public VpnLinkBgpSettings() {
     }
 
     /**
      * Get the asn property: The BGP speaker's ASN.
-     *
+     * 
      * @return the asn value.
      */
     public Long asn() {
@@ -37,7 +43,7 @@ public final class VpnLinkBgpSettings {
 
     /**
      * Set the asn property: The BGP speaker's ASN.
-     *
+     * 
      * @param asn the asn value to set.
      * @return the VpnLinkBgpSettings object itself.
      */
@@ -48,7 +54,7 @@ public final class VpnLinkBgpSettings {
 
     /**
      * Get the bgpPeeringAddress property: The BGP peering address and BGP identifier of this BGP speaker.
-     *
+     * 
      * @return the bgpPeeringAddress value.
      */
     public String bgpPeeringAddress() {
@@ -57,7 +63,7 @@ public final class VpnLinkBgpSettings {
 
     /**
      * Set the bgpPeeringAddress property: The BGP peering address and BGP identifier of this BGP speaker.
-     *
+     * 
      * @param bgpPeeringAddress the bgpPeeringAddress value to set.
      * @return the VpnLinkBgpSettings object itself.
      */
@@ -68,9 +74,48 @@ public final class VpnLinkBgpSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("asn", this.asn);
+        jsonWriter.writeStringField("bgpPeeringAddress", this.bgpPeeringAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnLinkBgpSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnLinkBgpSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VpnLinkBgpSettings.
+     */
+    public static VpnLinkBgpSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnLinkBgpSettings deserializedVpnLinkBgpSettings = new VpnLinkBgpSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("asn".equals(fieldName)) {
+                    deserializedVpnLinkBgpSettings.asn = reader.getNullable(JsonReader::getLong);
+                } else if ("bgpPeeringAddress".equals(fieldName)) {
+                    deserializedVpnLinkBgpSettings.bgpPeeringAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnLinkBgpSettings;
+        });
     }
 }

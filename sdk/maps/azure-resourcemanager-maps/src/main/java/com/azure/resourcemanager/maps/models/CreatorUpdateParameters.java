@@ -5,47 +5,42 @@
 package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.maps.fluent.models.CreatorProperties;
+import java.io.IOException;
 import java.util.Map;
 
-/** Parameters used to update an existing Creator resource. */
-@JsonFlatten
+/**
+ * Parameters used to update an existing Creator resource.
+ */
 @Fluent
-public class CreatorUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreatorUpdateParameters.class);
-
+public final class CreatorUpdateParameters implements JsonSerializable<CreatorUpdateParameters> {
     /*
-     * Gets or sets a list of key value pairs that describe the resource. These
-     * tags can be used in viewing and grouping this resource (across resource
-     * groups). A maximum of 15 tags can be provided for a resource. Each tag
-     * must have a key no greater than 128 characters and value no greater than
-     * 256 characters.
+     * Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping
+     * this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a
+     * key no greater than 128 characters and value no greater than 256 characters.
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /*
-     * The state of the resource provisioning, terminal states: Succeeded,
-     * Failed, Canceled
+     * Creator resource properties.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private CreatorProperties innerProperties;
 
-    /*
-     * The storage units to be allocated. Integer values from 1 to 100,
-     * inclusive.
+    /**
+     * Creates an instance of CreatorUpdateParameters class.
      */
-    @JsonProperty(value = "properties.storageUnits")
-    private Integer storageUnits;
+    public CreatorUpdateParameters() {
+    }
 
     /**
      * Get the tags property: Gets or sets a list of key value pairs that describe the resource. These tags can be used
      * in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a
      * resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -56,7 +51,7 @@ public class CreatorUpdateParameters {
      * Set the tags property: Gets or sets a list of key value pairs that describe the resource. These tags can be used
      * in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a
      * resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the CreatorUpdateParameters object itself.
      */
@@ -66,40 +61,95 @@ public class CreatorUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Creator resource properties.
+     * 
+     * @return the innerProperties value.
+     */
+    private CreatorProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the provisioningState property: The state of the resource provisioning, terminal states: Succeeded, Failed,
      * Canceled.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
      * Get the storageUnits property: The storage units to be allocated. Integer values from 1 to 100, inclusive.
-     *
+     * 
      * @return the storageUnits value.
      */
     public Integer storageUnits() {
-        return this.storageUnits;
+        return this.innerProperties() == null ? null : this.innerProperties().storageUnits();
     }
 
     /**
      * Set the storageUnits property: The storage units to be allocated. Integer values from 1 to 100, inclusive.
-     *
+     * 
      * @param storageUnits the storageUnits value to set.
      * @return the CreatorUpdateParameters object itself.
      */
     public CreatorUpdateParameters withStorageUnits(Integer storageUnits) {
-        this.storageUnits = storageUnits;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreatorProperties();
+        }
+        this.innerProperties().withStorageUnits(storageUnits);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreatorUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreatorUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CreatorUpdateParameters.
+     */
+    public static CreatorUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreatorUpdateParameters deserializedCreatorUpdateParameters = new CreatorUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCreatorUpdateParameters.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCreatorUpdateParameters.innerProperties = CreatorProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreatorUpdateParameters;
+        });
     }
 }

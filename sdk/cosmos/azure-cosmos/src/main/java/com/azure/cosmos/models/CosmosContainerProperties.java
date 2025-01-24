@@ -7,9 +7,11 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.util.Beta;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,8 +57,8 @@ public final class CosmosContainerProperties {
         documentCollection.setPartitionKey(partitionKeyDefinition);
     }
 
-    CosmosContainerProperties(String json) {
-        this.documentCollection = new DocumentCollection(json);
+    CosmosContainerProperties(ObjectNode jsonNode) {
+        this.documentCollection = new DocumentCollection(jsonNode);
     }
 
     // Converting container to CosmosContainerProperties
@@ -126,7 +128,7 @@ public final class CosmosContainerProperties {
     public CosmosContainerProperties setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
         this.documentCollection.setPartitionKey(partitionKeyDefinition);
         if (this.getClientEncryptionPolicy() != null) {
-            this.getClientEncryptionPolicy().validatePartitionKeyPathsAreNotEncrypted(this.getPartitionKeyPathTokensList());
+            this.getClientEncryptionPolicy().validatePartitionKeyPathsIfEncrypted(this.getPartitionKeyPathTokensList());
         }
 
         return this;
@@ -175,6 +177,29 @@ public final class CosmosContainerProperties {
         warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosContainerProperties setChangeFeedPolicy(ChangeFeedPolicy value) {
         this.documentCollection.setChangeFeedPolicy(value);
+        return this;
+    }
+
+
+    /**
+     * Gets the computedProperties for this container in the Azure Cosmos DB service.
+     *
+     * @return the computedProperties.
+     */
+    public Collection<ComputedProperty> getComputedProperties() {
+        return this.documentCollection.getComputedProperties();
+    }
+
+    /**
+     * Sets the computedProperties for this container in the Azure Cosmos DB service.
+     * For more information on how to use computed properties visit
+     * <a href="https://learn.microsoft.com/azure/cosmos-db/nosql/query/computed-properties">Computed Properties in Azure Cosmos DB</a>
+     *
+     * @param computedProperties the computedProperties.
+     * @return the CosmosContainerProperties.
+     */
+    public CosmosContainerProperties setComputedProperties(Collection<ComputedProperty> computedProperties) {
+        this.documentCollection.setComputedProperties(computedProperties);
         return this;
     }
 
@@ -315,10 +340,56 @@ public final class CosmosContainerProperties {
      */
     public CosmosContainerProperties setClientEncryptionPolicy(ClientEncryptionPolicy value) {
         if (value != null) {
-            value.validatePartitionKeyPathsAreNotEncrypted(this.getPartitionKeyPathTokensList());
+            value.validatePartitionKeyPathsIfEncrypted(this.getPartitionKeyPathTokensList());
         }
 
         this.documentCollection.setClientEncryptionPolicy(value);
+        return this;
+    }
+
+    /**
+     * Gets the Vector Embedding Policy containing paths for embeddings along with path-specific settings for the item
+     * used in performing vector search on the items in a collection in the Azure CosmosDB database service.
+     *
+     * @return the Vector Embedding Policy.
+     */
+    public CosmosVectorEmbeddingPolicy getVectorEmbeddingPolicy() {
+        return this.documentCollection.getVectorEmbeddingPolicy();
+    }
+
+    /**
+     * Sets the Vector Embedding Policy containing paths for embeddings along with path-specific settings for the item
+     * used in performing vector search on the items in a collection in the Azure CosmosDB database service.
+     *
+     * @param value the Vector Embedding Policy.
+     * @return the CosmosContainerProperties.
+     */
+    public CosmosContainerProperties setVectorEmbeddingPolicy(CosmosVectorEmbeddingPolicy value) {
+        this.documentCollection.setVectorEmbeddingPolicy(value);
+        return this;
+    }
+
+    /**
+     * Gets the Full Text Policy containing paths for full text search and the language specification for each path.
+     * It also contains the default language to be used.
+     *
+     * @return the FullTextPolicy
+     */
+    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosFullTextPolicy getFullTextPolicy() {
+        return this.documentCollection.getFullTextPolicy();
+    }
+
+    /**
+     * Gets the Full Text Policy containing paths for full text search and the language specification for each path.
+     * It also contains the default language to be used.
+     *
+     * @param value the FullTextPolicy.
+     * @return the CosmosContainerProperties.
+     */
+    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosContainerProperties setFullTextPolicy(CosmosFullTextPolicy value) {
+        this.documentCollection.setFullTextPolicy(value);
         return this;
     }
 
@@ -362,6 +433,11 @@ public final class CosmosContainerProperties {
     static void initialize() {
         ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.setCosmosContainerPropertiesAccessor(
             new ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.CosmosContainerPropertiesAccessor() {
+                @Override
+                public CosmosContainerProperties create(DocumentCollection documentCollection) {
+                    return new CosmosContainerProperties(documentCollection);
+                }
+
                 @Override
                 public String getSelfLink(CosmosContainerProperties cosmosContainerProperties) {
                     return cosmosContainerProperties.getSelfLink();

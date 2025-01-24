@@ -26,22 +26,28 @@ import com.azure.resourcemanager.recoveryservices.fluent.models.OperationResourc
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesManagementClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(RecoveryServicesManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,44 +57,32 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesMana")
-    private interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/operationStatus/{operationId}")
-        @ExpectedResponses({200})
+    public interface ResourceProvidersService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/operationStatus/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationResourceInner>> getOperationStatus(
-            @HostParam("$host") String endpoint,
+        Mono<Response<OperationResourceInner>> getOperationStatus(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/operationResults/{operationId}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/operationResults/{operationId}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VaultInner>> getOperationResult(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VaultInner>> getOperationResult(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the operation status for a resource.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -97,19 +91,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the operation status for a resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationResourceInner>> getOperationStatusWithResponseAsync(
-        String resourceGroupName, String vaultName, String operationId) {
+    private Mono<Response<OperationResourceInner>> getOperationStatusWithResponseAsync(String resourceGroupName,
+        String vaultName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -124,24 +114,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getOperationStatus(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            operationId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getOperationStatus(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, vaultName, operationId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the operation status for a resource.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
@@ -151,19 +132,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the operation status for a resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationResourceInner>> getOperationStatusWithResponseAsync(
-        String resourceGroupName, String vaultName, String operationId, Context context) {
+    private Mono<Response<OperationResourceInner>> getOperationStatusWithResponseAsync(String resourceGroupName,
+        String vaultName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -177,22 +154,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getOperationStatus(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                operationId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getOperationStatus(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            vaultName, operationId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the operation status for a resource.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,32 +170,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the operation status for a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationResourceInner> getOperationStatusAsync(
-        String resourceGroupName, String vaultName, String operationId) {
+    private Mono<OperationResourceInner> getOperationStatusAsync(String resourceGroupName, String vaultName,
+        String operationId) {
         return getOperationStatusWithResponseAsync(resourceGroupName, vaultName, operationId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the operation status for a resource.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @param operationId The operationId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation status for a resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationResourceInner getOperationStatus(String resourceGroupName, String vaultName, String operationId) {
-        return getOperationStatusAsync(resourceGroupName, vaultName, operationId).block();
-    }
-
-    /**
-     * Gets the operation status for a resource.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
@@ -236,15 +189,31 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the operation status for a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationResourceInner> getOperationStatusWithResponse(
-        String resourceGroupName, String vaultName, String operationId, Context context) {
+    public Response<OperationResourceInner> getOperationStatusWithResponse(String resourceGroupName, String vaultName,
+        String operationId, Context context) {
         return getOperationStatusWithResponseAsync(resourceGroupName, vaultName, operationId, context).block();
     }
 
     /**
+     * Gets the operation status for a resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @param operationId The operationId parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation status for a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationResourceInner getOperationStatus(String resourceGroupName, String vaultName, String operationId) {
+        return getOperationStatusWithResponse(resourceGroupName, vaultName, operationId, Context.NONE).getValue();
+    }
+
+    /**
      * Gets the operation result for a resource.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -253,19 +222,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the operation result for a resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VaultInner>> getOperationResultWithResponseAsync(
-        String resourceGroupName, String vaultName, String operationId) {
+    private Mono<Response<VaultInner>> getOperationResultWithResponseAsync(String resourceGroupName, String vaultName,
+        String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -280,24 +245,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getOperationResult(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            operationId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getOperationResult(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, vaultName, operationId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the operation result for a resource.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
@@ -307,19 +263,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the operation result for a resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VaultInner>> getOperationResultWithResponseAsync(
-        String resourceGroupName, String vaultName, String operationId, Context context) {
+    private Mono<Response<VaultInner>> getOperationResultWithResponseAsync(String resourceGroupName, String vaultName,
+        String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -333,22 +285,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getOperationResult(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                operationId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getOperationResult(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            vaultName, operationId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the operation result for a resource.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -364,24 +308,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Gets the operation result for a resource.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @param operationId The operationId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result for a resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VaultInner getOperationResult(String resourceGroupName, String vaultName, String operationId) {
-        return getOperationResultAsync(resourceGroupName, vaultName, operationId).block();
-    }
-
-    /**
-     * Gets the operation result for a resource.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
@@ -391,8 +319,24 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the operation result for a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VaultInner> getOperationResultWithResponse(
-        String resourceGroupName, String vaultName, String operationId, Context context) {
+    public Response<VaultInner> getOperationResultWithResponse(String resourceGroupName, String vaultName,
+        String operationId, Context context) {
         return getOperationResultWithResponseAsync(resourceGroupName, vaultName, operationId, context).block();
+    }
+
+    /**
+     * Gets the operation result for a resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @param operationId The operationId parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation result for a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VaultInner getOperationResult(String resourceGroupName, String vaultName, String operationId) {
+        return getOperationResultWithResponse(resourceGroupName, vaultName, operationId, Context.NONE).getValue();
     }
 }

@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for OperationOrigin. */
+/**
+ * The origin of operation.
+ */
 public enum OperationOrigin {
-    /** Enum value user. */
+    /**
+     * Enum value user.
+     */
     USER("user"),
 
-    /** Enum value system. */
+    /**
+     * Enum value system.
+     */
     SYSTEM("system"),
 
-    /** Enum value user,system. */
+    /**
+     * Enum value user,system.
+     */
     USER_SYSTEM("user,system");
 
-    /** The actual serialized value for a OperationOrigin instance. */
+    /**
+     * The actual serialized value for a OperationOrigin instance.
+     */
     private final String value;
 
     OperationOrigin(String value) {
@@ -27,12 +34,14 @@ public enum OperationOrigin {
 
     /**
      * Parses a serialized value to a OperationOrigin instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed OperationOrigin object, or null if unable to parse.
      */
-    @JsonCreator
     public static OperationOrigin fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         OperationOrigin[] items = OperationOrigin.values();
         for (OperationOrigin item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +51,9 @@ public enum OperationOrigin {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

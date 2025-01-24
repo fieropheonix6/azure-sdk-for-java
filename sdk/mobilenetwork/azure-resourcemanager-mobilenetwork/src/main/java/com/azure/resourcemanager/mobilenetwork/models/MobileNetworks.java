@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of MobileNetworks. */
+/**
+ * Resource collection API of MobileNetworks.
+ */
 public interface MobileNetworks {
     /**
      * Deletes the specified mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface MobileNetworks {
 
     /**
      * Deletes the specified mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
@@ -35,7 +37,21 @@ public interface MobileNetworks {
 
     /**
      * Gets information about the specified mobile network.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified mobile network along with {@link Response}.
+     */
+    Response<MobileNetwork> getByResourceGroupWithResponse(String resourceGroupName, String mobileNetworkName,
+        Context context);
+
+    /**
+     * Gets information about the specified mobile network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,22 +62,8 @@ public interface MobileNetworks {
     MobileNetwork getByResourceGroup(String resourceGroupName, String mobileNetworkName);
 
     /**
-     * Gets information about the specified mobile network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified mobile network along with {@link Response}.
-     */
-    Response<MobileNetwork> getByResourceGroupWithResponse(
-        String resourceGroupName, String mobileNetworkName, Context context);
-
-    /**
      * Lists all the mobile networks in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for mobile networks API service call as paginated response with {@link PagedIterable}.
@@ -70,7 +72,7 @@ public interface MobileNetworks {
 
     /**
      * Lists all the mobile networks in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -81,7 +83,7 @@ public interface MobileNetworks {
 
     /**
      * Lists all the mobile networks in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -92,7 +94,7 @@ public interface MobileNetworks {
 
     /**
      * Lists all the mobile networks in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -103,33 +105,33 @@ public interface MobileNetworks {
     PagedIterable<MobileNetwork> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Lists the IDs of all provisioned SIMs in a mobile network.
-     *
+     * Gets all the SIM groups assigned to a mobile network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list SIM IDs API service call.
+     * @return all the SIM groups assigned to a mobile network as paginated response with {@link PagedIterable}.
      */
-    SimIdListResult listSimIds(String resourceGroupName, String mobileNetworkName);
+    PagedIterable<SimGroup> listSimGroups(String resourceGroupName, String mobileNetworkName);
 
     /**
-     * Lists the IDs of all provisioned SIMs in a mobile network.
-     *
+     * Gets all the SIM groups assigned to a mobile network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list SIM IDs API service call.
+     * @return all the SIM groups assigned to a mobile network as paginated response with {@link PagedIterable}.
      */
-    SimIdListResult listSimIds(String resourceGroupName, String mobileNetworkName, Context context);
+    PagedIterable<SimGroup> listSimGroups(String resourceGroupName, String mobileNetworkName, Context context);
 
     /**
      * Gets information about the specified mobile network.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -140,7 +142,7 @@ public interface MobileNetworks {
 
     /**
      * Gets information about the specified mobile network.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -152,7 +154,7 @@ public interface MobileNetworks {
 
     /**
      * Deletes the specified mobile network.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -162,7 +164,7 @@ public interface MobileNetworks {
 
     /**
      * Deletes the specified mobile network.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,7 +175,7 @@ public interface MobileNetworks {
 
     /**
      * Begins definition for a new MobileNetwork resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new MobileNetwork definition.
      */

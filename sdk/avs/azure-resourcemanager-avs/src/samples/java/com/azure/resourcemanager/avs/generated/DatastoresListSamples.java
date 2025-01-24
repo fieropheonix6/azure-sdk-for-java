@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Datastores List. */
+/**
+ * Samples for Datastores List.
+ */
 public final class DatastoresListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Datastores_List.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Datastores_List.json
      */
     /**
      * Sample code: Datastores_List.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void datastoresList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.datastores().list("group1", "cloud1", "cluster1", Context.NONE);
+        manager.datastores().list("group1", "cloud1", "cluster1", com.azure.core.util.Context.NONE);
     }
 }

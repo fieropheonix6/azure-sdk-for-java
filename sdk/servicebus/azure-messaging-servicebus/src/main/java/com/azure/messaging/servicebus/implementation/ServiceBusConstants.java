@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedLong;
 
@@ -21,8 +22,10 @@ public class ServiceBusConstants {
     // for more information on Azure resource provider namespaces.
     public static final String AZ_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
 
-    public static final String SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME = "ServiceBusSupplementaryAuthorization";
-    public static final String SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME = "ServiceBusDlqSupplementaryAuthorization";
+    public static final HttpHeaderName SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME
+        = HttpHeaderName.fromString("ServiceBusSupplementaryAuthorization");
+    public static final HttpHeaderName SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME
+        = HttpHeaderName.fromString("ServiceBusDlqSupplementaryAuthorization");
 
     /**
      * Represents the maximum ttl for a message or entity.
@@ -105,7 +108,6 @@ public class ServiceBusConstants {
      */
     public static final String DISPOSITION_STATUS_KEY = "dispositionStatus";
 
-
     /**
      * Amqp symbol name.
      */
@@ -134,4 +136,19 @@ public class ServiceBusConstants {
     public static final Long TICK_PER_SECOND = 10_000_000L;
     public static final Long NANO_PER_SECOND = 1000_000_000L;
     public static final Long TIME_LENGTH_DELTA = NANO_PER_SECOND / TICK_PER_SECOND;
+
+    /**
+     * Constant for a recommendation message if there is a mismatch between thread pool size, cores and Service Bus Processor concurrency.
+     */
+    public static final String CORES_VS_CONCURRENCY_MESSAGE
+        = "The application uses thread pool with {} threads on {} cores, "
+            + "which may not be enough to support the requested Service Bus Processor concurrency of {} "
+            + "and may cause service to stall. Please review the troubleshooting guidelines "
+            + "https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-messaging-service-bus-overview#concurrency-in-servicebusprocessorclient "
+            + "for cores allocation and thread pool tuning.";
+    /**
+     * Constant for the ideal concurrency per core, as described in the troubleshooting guideline.
+     */
+    public static final int CONCURRENCY_PER_CORE = 30;
+
 }

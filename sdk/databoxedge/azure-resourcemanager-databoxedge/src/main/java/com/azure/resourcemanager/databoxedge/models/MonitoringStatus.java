@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MonitoringStatus. */
+/**
+ * Current monitoring status of the share.
+ */
 public final class MonitoringStatus extends ExpandableStringEnum<MonitoringStatus> {
-    /** Static value Enabled for MonitoringStatus. */
+    /**
+     * Static value Enabled for MonitoringStatus.
+     */
     public static final MonitoringStatus ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for MonitoringStatus. */
+    /**
+     * Static value Disabled for MonitoringStatus.
+     */
     public static final MonitoringStatus DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of MonitoringStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MonitoringStatus() {
+    }
+
+    /**
      * Creates or finds a MonitoringStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MonitoringStatus.
      */
-    @JsonCreator
     public static MonitoringStatus fromString(String name) {
         return fromString(name, MonitoringStatus.class);
     }
 
-    /** @return known MonitoringStatus values. */
+    /**
+     * Gets known MonitoringStatus values.
+     * 
+     * @return known MonitoringStatus values.
+     */
     public static Collection<MonitoringStatus> values() {
         return values(MonitoringStatus.class);
     }

@@ -6,10 +6,14 @@ package com.azure.monitor.ingestion.implementation;
 
 import com.azure.core.util.ServiceVersion;
 
-/** Service version of IngestionUsingDataCollectionRulesClient. */
+/**
+ * Service version of IngestionUsingDataCollectionRulesClient.
+ */
 public enum IngestionUsingDataCollectionRulesServiceVersion implements ServiceVersion {
-    /** Enum value 2021-11-01-preview. */
-    V2021_11_01_PREVIEW("2021-11-01-preview");
+    /**
+     * Enum value 2023-01-01.
+     */
+    V2023_01_01("2023-01-01");
 
     private final String version;
 
@@ -17,7 +21,9 @@ public enum IngestionUsingDataCollectionRulesServiceVersion implements ServiceVe
         this.version = version;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getVersion() {
         return this.version;
@@ -25,10 +31,10 @@ public enum IngestionUsingDataCollectionRulesServiceVersion implements ServiceVe
 
     /**
      * Gets the latest service version supported by this client library.
-     *
+     * 
      * @return The latest {@link IngestionUsingDataCollectionRulesServiceVersion}.
      */
     public static IngestionUsingDataCollectionRulesServiceVersion getLatest() {
-        return V2021_11_01_PREVIEW;
+        return V2023_01_01;
     }
 }

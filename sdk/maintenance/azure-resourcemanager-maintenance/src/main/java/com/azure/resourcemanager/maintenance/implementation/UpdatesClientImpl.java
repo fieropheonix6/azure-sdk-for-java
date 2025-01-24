@@ -25,25 +25,28 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maintenance.fluent.UpdatesClient;
 import com.azure.resourcemanager.maintenance.fluent.models.UpdateInner;
 import com.azure.resourcemanager.maintenance.models.ListUpdatesResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in UpdatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UpdatesClient.
+ */
 public final class UpdatesClientImpl implements UpdatesClient {
-    private final ClientLogger logger = new ClientLogger(UpdatesClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final UpdatesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MaintenanceManagementClientImpl client;
 
     /**
      * Initializes an instance of UpdatesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     UpdatesClientImpl(MaintenanceManagementClientImpl client) {
@@ -57,48 +60,35 @@ public final class UpdatesClientImpl implements UpdatesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MaintenanceManagemen")
-    private interface UpdatesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}"
-                + "/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers"
-                + "/Microsoft.Maintenance/updates")
-        @ExpectedResponses({200})
+    public interface UpdatesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/updates")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListUpdatesResult>> listParent(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ListUpdatesResult>> listParent(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("providerName") String providerName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("providerName") String providerName,
             @PathParam("resourceParentType") String resourceParentType,
-            @PathParam("resourceParentName") String resourceParentName,
-            @PathParam("resourceType") String resourceType,
-            @PathParam("resourceName") String resourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceParentName") String resourceParentName, @PathParam("resourceType") String resourceType,
+            @PathParam("resourceName") String resourceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}"
-                + "/{resourceName}/providers/Microsoft.Maintenance/updates")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/updates")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListUpdatesResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ListUpdatesResult>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("providerName") String providerName,
-            @PathParam("resourceType") String resourceType,
-            @PathParam("resourceName") String resourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("providerName") String providerName,
+            @PathParam("resourceType") String resourceType, @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
+     * Get Updates to resource
+     * 
      * Get updates to resources.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
@@ -108,27 +98,18 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UpdateInner>> listParentSinglePageAsync(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName) {
+    private Mono<PagedResponse<UpdateInner>> listParentSinglePageAsync(String resourceGroupName, String providerName,
+        String resourceParentType, String resourceParentName, String resourceType, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -153,31 +134,19 @@ public final class UpdatesClientImpl implements UpdatesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listParent(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            providerName,
-                            resourceParentType,
-                            resourceParentName,
-                            resourceType,
-                            resourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<UpdateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listParent(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName,
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<UpdateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Get Updates to resource
+     * 
      * Get updates to resources.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
@@ -188,28 +157,19 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UpdateInner>> listParentSinglePageAsync(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName,
+    private Mono<PagedResponse<UpdateInner>> listParentSinglePageAsync(String resourceGroupName, String providerName,
+        String resourceParentType, String resourceParentName, String resourceType, String resourceName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -235,27 +195,18 @@ public final class UpdatesClientImpl implements UpdatesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listParent(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                providerName,
-                resourceParentType,
-                resourceParentName,
-                resourceType,
-                resourceName,
-                this.client.getApiVersion(),
-                accept,
+            .listParent(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, providerName,
+                resourceParentType, resourceParentName, resourceType, resourceName, this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
+     * Get Updates to resource
+     * 
      * Get updates to resources.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
@@ -265,30 +216,20 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UpdateInner> listParentAsync(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName) {
-        return new PagedFlux<>(
-            () ->
-                listParentSinglePageAsync(
-                    resourceGroupName,
-                    providerName,
-                    resourceParentType,
-                    resourceParentName,
-                    resourceType,
-                    resourceName));
+    private PagedFlux<UpdateInner> listParentAsync(String resourceGroupName, String providerName,
+        String resourceParentType, String resourceParentName, String resourceType, String resourceName) {
+        return new PagedFlux<>(() -> listParentSinglePageAsync(resourceGroupName, providerName, resourceParentType,
+            resourceParentName, resourceType, resourceName));
     }
 
     /**
+     * Get Updates to resource
+     * 
      * Get updates to resources.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
@@ -299,32 +240,21 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UpdateInner> listParentAsync(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName,
+    private PagedFlux<UpdateInner> listParentAsync(String resourceGroupName, String providerName,
+        String resourceParentType, String resourceParentName, String resourceType, String resourceName,
         Context context) {
-        return new PagedFlux<>(
-            () ->
-                listParentSinglePageAsync(
-                    resourceGroupName,
-                    providerName,
-                    resourceParentType,
-                    resourceParentName,
-                    resourceType,
-                    resourceName,
-                    context));
+        return new PagedFlux<>(() -> listParentSinglePageAsync(resourceGroupName, providerName, resourceParentType,
+            resourceParentName, resourceType, resourceName, context));
     }
 
     /**
+     * Get Updates to resource
+     * 
      * Get updates to resources.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
@@ -334,24 +264,20 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UpdateInner> listParent(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName) {
-        return new PagedIterable<>(
-            listParentAsync(
-                resourceGroupName, providerName, resourceParentType, resourceParentName, resourceType, resourceName));
+    public PagedIterable<UpdateInner> listParent(String resourceGroupName, String providerName,
+        String resourceParentType, String resourceParentName, String resourceType, String resourceName) {
+        return new PagedIterable<>(listParentAsync(resourceGroupName, providerName, resourceParentType,
+            resourceParentName, resourceType, resourceName));
     }
 
     /**
+     * Get Updates to resource
+     * 
      * Get updates to resources.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
@@ -362,31 +288,21 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UpdateInner> listParent(
-        String resourceGroupName,
-        String providerName,
-        String resourceParentType,
-        String resourceParentName,
-        String resourceType,
-        String resourceName,
+    public PagedIterable<UpdateInner> listParent(String resourceGroupName, String providerName,
+        String resourceParentType, String resourceParentName, String resourceType, String resourceName,
         Context context) {
-        return new PagedIterable<>(
-            listParentAsync(
-                resourceGroupName,
-                providerName,
-                resourceParentType,
-                resourceParentName,
-                resourceType,
-                resourceName,
-                context));
+        return new PagedIterable<>(listParentAsync(resourceGroupName, providerName, resourceParentType,
+            resourceParentName, resourceType, resourceName, context));
     }
 
     /**
+     * Get Updates to resource
+     * 
      * Get updates to resources.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceType Resource type.
@@ -394,22 +310,18 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UpdateInner>> listSinglePageAsync(
-        String resourceGroupName, String providerName, String resourceType, String resourceName) {
+    private Mono<PagedResponse<UpdateInner>> listSinglePageAsync(String resourceGroupName, String providerName,
+        String resourceType, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -427,28 +339,18 @@ public final class UpdatesClientImpl implements UpdatesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            providerName,
-                            resourceType,
-                            resourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<UpdateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+                context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    providerName, resourceType, resourceName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<UpdateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Get Updates to resource
+     * 
      * Get updates to resources.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceType Resource type.
@@ -457,22 +359,18 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UpdateInner>> listSinglePageAsync(
-        String resourceGroupName, String providerName, String resourceType, String resourceName, Context context) {
+    private Mono<PagedResponse<UpdateInner>> listSinglePageAsync(String resourceGroupName, String providerName,
+        String resourceType, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -490,25 +388,17 @@ public final class UpdatesClientImpl implements UpdatesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                providerName,
-                resourceType,
-                resourceName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, providerName,
+                resourceType, resourceName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
+     * Get Updates to resource
+     * 
      * Get updates to resources.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceType Resource type.
@@ -516,17 +406,19 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UpdateInner> listAsync(
-        String resourceGroupName, String providerName, String resourceType, String resourceName) {
+    private PagedFlux<UpdateInner> listAsync(String resourceGroupName, String providerName, String resourceType,
+        String resourceName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, providerName, resourceType, resourceName));
     }
 
     /**
+     * Get Updates to resource
+     * 
      * Get updates to resources.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceType Resource type.
@@ -535,18 +427,20 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UpdateInner> listAsync(
-        String resourceGroupName, String providerName, String resourceType, String resourceName, Context context) {
+    private PagedFlux<UpdateInner> listAsync(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, providerName, resourceType, resourceName, context));
     }
 
     /**
+     * Get Updates to resource
+     * 
      * Get updates to resources.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceType Resource type.
@@ -554,17 +448,19 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UpdateInner> list(
-        String resourceGroupName, String providerName, String resourceType, String resourceName) {
+    public PagedIterable<UpdateInner> list(String resourceGroupName, String providerName, String resourceType,
+        String resourceName) {
         return new PagedIterable<>(listAsync(resourceGroupName, providerName, resourceType, resourceName));
     }
 
     /**
+     * Get Updates to resource
+     * 
      * Get updates to resources.
-     *
+     * 
      * @param resourceGroupName Resource group name.
      * @param providerName Resource provider name.
      * @param resourceType Resource type.
@@ -573,11 +469,11 @@ public final class UpdatesClientImpl implements UpdatesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return updates to resources.
+     * @return updates to resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UpdateInner> list(
-        String resourceGroupName, String providerName, String resourceType, String resourceName, Context context) {
+    public PagedIterable<UpdateInner> list(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, providerName, resourceType, resourceName, context));
     }
 }

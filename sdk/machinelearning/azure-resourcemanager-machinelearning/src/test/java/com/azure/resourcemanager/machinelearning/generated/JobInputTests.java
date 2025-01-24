@@ -7,20 +7,19 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.JobInput;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class JobInputTests {
-    @Test
-    public void testDeserialize() {
-        JobInput model =
-            BinaryData.fromString("{\"jobInputType\":\"JobInput\",\"description\":\"pjby\"}").toObject(JobInput.class);
-        Assertions.assertEquals("pjby", model.description());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        JobInput model
+            = BinaryData.fromString("{\"jobInputType\":\"JobInput\",\"description\":\"c\"}").toObject(JobInput.class);
+        Assertions.assertEquals("c", model.description());
     }
 
-    @Test
-    public void testSerialize() {
-        JobInput model = new JobInput().withDescription("pjby");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        JobInput model = new JobInput().withDescription("c");
         model = BinaryData.fromObject(model).toObject(JobInput.class);
-        Assertions.assertEquals("pjby", model.description());
+        Assertions.assertEquals("c", model.description());
     }
 }

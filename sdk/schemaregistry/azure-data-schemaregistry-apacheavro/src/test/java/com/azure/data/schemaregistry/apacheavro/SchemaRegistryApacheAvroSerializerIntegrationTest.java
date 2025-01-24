@@ -3,14 +3,10 @@
 
 package com.azure.data.schemaregistry.apacheavro;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.models.MessageContent;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
@@ -31,13 +27,10 @@ import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.avro.Schema;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.UUID;
@@ -45,70 +38,58 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests end to end experience of the schema registry class.
  */
-public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase {
-    static final String SCHEMA_REGISTRY_ENDPOINT = "SCHEMA_REGISTRY_ENDPOINT";
+public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestProxyTestBase {
+    static final String SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE
+        = "SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE";
     static final String SCHEMA_REGISTRY_GROUP = "SCHEMA_REGISTRY_GROUP";
-    static final String SCHEMA_REGISTRY_EVENT_HUB_NAME = "SCHEMA_REGISTRY_EVENT_HUB_NAME";
+    static final String SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME = "SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME";
+    static final String SCHEMA_REGISTRY_AVRO_EVENT_HUB_CONNECTION_STRING
+        = "SCHEMA_REGISTRY_AVRO_EVENT_HUB_CONNECTION_STRING";
 
     // When we regenerate recordings, make sure that the schema group matches what we are persisting.
-    static final String PLAYBACK_TEST_GROUP = "mygroup";
+    static final String PLAYBACK_TEST_GROUP = "azsdk_java_group";
     static final String PLAYBACK_ENDPOINT = "https://foo.servicebus.windows.net";
 
-    private TokenCredential tokenCredential;
     private String schemaGroup;
     private SchemaRegistryClientBuilder builder;
-    private String endpoint;
     private String eventHubName;
+    private String connectionString;
 
     @Override
     protected void beforeTest() {
+        String endpoint;
+        TokenCredential tokenCredential;
         if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = mock(TokenCredential.class);
+            tokenCredential = new MockTokenCredential();
             schemaGroup = PLAYBACK_TEST_GROUP;
-
-            // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
-            when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
-                return Mono.fromCallable(() -> {
-                    return new AccessToken("foo", OffsetDateTime.now().plusMinutes(20));
-                });
-            });
 
             endpoint = PLAYBACK_ENDPOINT;
             eventHubName = "javaeventhub";
+            connectionString = "foo-bar";
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
-            endpoint = System.getenv(SCHEMA_REGISTRY_ENDPOINT);
-            eventHubName = System.getenv(SCHEMA_REGISTRY_EVENT_HUB_NAME);
+            endpoint = System.getenv(SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE);
+            eventHubName = System.getenv(SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME);
             schemaGroup = System.getenv(SCHEMA_REGISTRY_GROUP);
+            connectionString = System.getenv(SCHEMA_REGISTRY_AVRO_EVENT_HUB_CONNECTION_STRING);
 
             assertNotNull(eventHubName, "'eventHubName' cannot be null in LIVE/RECORD mode.");
             assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
             assertNotNull(schemaGroup, "'schemaGroup' cannot be null in LIVE/RECORD mode.");
+            assertNotNull(connectionString, "'connectionString' cannot be null in LIVE/RECORD mode.");
         }
 
-        builder = new SchemaRegistryClientBuilder()
-            .credential(tokenCredential)
-            .fullyQualifiedNamespace(endpoint);
+        builder = new SchemaRegistryClientBuilder().credential(tokenCredential).fullyQualifiedNamespace(endpoint);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
-        } else {
-            builder.addPolicy(new RetryPolicy())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .addPolicy(interceptorManager.getRecordPolicy());
+        } else if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
-    }
-
-    @Override
-    protected void afterTest() {
-        Mockito.framework().clearInlineMock(this);
     }
 
     /**
@@ -118,11 +99,11 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
     public void registerAndGetSchema() {
         // Arrange
         final SchemaRegistryClient registryClient = builder.buildClient();
-        final SchemaRegistryApacheAvroSerializer encoder = new SchemaRegistryApacheAvroSerializerBuilder()
-            .schemaGroup(schemaGroup)
-            .schemaRegistryClient(builder.buildAsyncClient())
-            .avroSpecificReader(true)
-            .buildSerializer();
+        final SchemaRegistryApacheAvroSerializer encoder
+            = new SchemaRegistryApacheAvroSerializerBuilder().schemaGroup(schemaGroup)
+                .schemaRegistryClient(builder.buildAsyncClient())
+                .avroSpecificReader(true)
+                .buildSerializer();
 
         final PlayingCard playingCard = PlayingCard.newBuilder()
             .setCardValue(1)
@@ -138,9 +119,7 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
         allCards.add(playingCard);
         allCards.add(playingCard2);
 
-        final HandOfCards cards = HandOfCards.newBuilder()
-            .setCards(allCards)
-            .build();
+        final HandOfCards cards = HandOfCards.newBuilder().setCards(allCards).build();
 
         // Register a schema first.
         final Schema handOfCardsSchema = HandOfCards.SCHEMA$;
@@ -150,15 +129,14 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
         assertNotNull(schemaProperties);
 
         // Act & Assert
-        final MessageContent encodedMessage = encoder.serialize(cards,
-            TypeReference.createInstance(MessageContent.class));
+        final MessageContent encodedMessage
+            = encoder.serialize(cards, TypeReference.createInstance(MessageContent.class));
         assertNotNull(encodedMessage);
 
         final byte[] outputArray = encodedMessage.getBodyAsBinaryData().toBytes();
         assertTrue(outputArray.length > 0, "There should have been contents in array.");
 
-        final HandOfCards actual = encoder.deserialize(encodedMessage,
-            TypeReference.createInstance(HandOfCards.class));
+        final HandOfCards actual = encoder.deserialize(encodedMessage, TypeReference.createInstance(HandOfCards.class));
 
         assertNotNull(actual);
         assertNotNull(actual.getCards());
@@ -174,12 +152,12 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
             "Cannot run this test in playback mode because it uses AMQP and Event Hubs calls.");
 
         // Arrange
-        final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
-            .schemaGroup(schemaGroup)
-            .schemaRegistryClient(builder.buildAsyncClient())
-            .autoRegisterSchemas(true)
-            .avroSpecificReader(true)
-            .buildSerializer();
+        final SchemaRegistryApacheAvroSerializer serializer
+            = new SchemaRegistryApacheAvroSerializerBuilder().schemaGroup(schemaGroup)
+                .schemaRegistryClient(builder.buildAsyncClient())
+                .autoRegisterSchemas(true)
+                .avroSpecificReader(true)
+                .buildSerializer();
 
         final PlayingCard playingCard = PlayingCard.newBuilder()
             .setCardValue(1)
@@ -195,16 +173,15 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
         EventHubProducerClient producer = null;
         EventHubConsumerAsyncClient consumer = null;
         try {
-            producer = new EventHubClientBuilder()
-                .credential(endpoint, eventHubName, tokenCredential)
-                .buildProducerClient();
-            consumer = new EventHubClientBuilder()
-                .credential(endpoint, eventHubName, tokenCredential)
+            producer
+                = new EventHubClientBuilder().connectionString(connectionString, eventHubName).buildProducerClient();
+            consumer = new EventHubClientBuilder().connectionString(connectionString, eventHubName)
                 .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
                 .buildAsyncConsumerClient();
 
             final PartitionProperties partitionProperties = producer.getPartitionProperties(partitionId);
-            final EventPosition last = EventPosition.fromSequenceNumber(partitionProperties.getLastEnqueuedSequenceNumber());
+            final EventPosition last
+                = EventPosition.fromSequenceNumber(partitionProperties.getLastEnqueuedSequenceNumber());
 
             producer.send(Collections.singleton(event), new SendOptions().setPartitionId(partitionId));
 
@@ -233,25 +210,23 @@ public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase 
     @Test
     public void autoRegisterSchema() {
         // Arrange
-        final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
-            .schemaGroup(schemaGroup)
-            .schemaRegistryClient(builder.buildAsyncClient())
-            .avroSpecificReader(true)
-            .autoRegisterSchemas(true)
-            .buildSerializer();
+        final SchemaRegistryApacheAvroSerializer serializer
+            = new SchemaRegistryApacheAvroSerializerBuilder().schemaGroup(schemaGroup)
+                .schemaRegistryClient(builder.buildAsyncClient())
+                .avroSpecificReader(true)
+                .autoRegisterSchemas(true)
+                .buildSerializer();
 
-        final Person person = Person.newBuilder()
-            .setFavouriteColour("Blue")
-            .setFavouriteNumber(10)
-            .setName("Joe")
-            .build();
+        final Person person
+            = Person.newBuilder().setFavouriteColour("Blue").setFavouriteNumber(10).setName("Joe").build();
 
         // Act
         final MessageContent message = serializer.serialize(person, TypeReference.createInstance(MessageContent.class));
         assertNotNull(message);
 
         // Should use the cached version of the schema.
-        final MessageContent message2 = serializer.serialize(person, TypeReference.createInstance(MessageContent.class));
+        final MessageContent message2
+            = serializer.serialize(person, TypeReference.createInstance(MessageContent.class));
         assertNotNull(message2);
 
         // This should also use the cached version.

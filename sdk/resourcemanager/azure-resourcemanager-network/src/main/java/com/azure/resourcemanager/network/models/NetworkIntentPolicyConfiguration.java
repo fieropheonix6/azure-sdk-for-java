@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of NetworkIntentPolicyConfiguration for PrepareNetworkPoliciesRequest. */
+/**
+ * Details of NetworkIntentPolicyConfiguration for PrepareNetworkPoliciesRequest.
+ */
 @Fluent
-public final class NetworkIntentPolicyConfiguration {
+public final class NetworkIntentPolicyConfiguration implements JsonSerializable<NetworkIntentPolicyConfiguration> {
     /*
      * The name of the Network Intent Policy for storing in target subscription.
      */
-    @JsonProperty(value = "networkIntentPolicyName")
     private String networkIntentPolicyName;
 
     /*
      * Source network intent policy.
      */
-    @JsonProperty(value = "sourceNetworkIntentPolicy")
     private NetworkIntentPolicy sourceNetworkIntentPolicy;
 
-    /** Creates an instance of NetworkIntentPolicyConfiguration class. */
+    /**
+     * Creates an instance of NetworkIntentPolicyConfiguration class.
+     */
     public NetworkIntentPolicyConfiguration() {
     }
 
     /**
      * Get the networkIntentPolicyName property: The name of the Network Intent Policy for storing in target
      * subscription.
-     *
+     * 
      * @return the networkIntentPolicyName value.
      */
     public String networkIntentPolicyName() {
@@ -39,7 +45,7 @@ public final class NetworkIntentPolicyConfiguration {
     /**
      * Set the networkIntentPolicyName property: The name of the Network Intent Policy for storing in target
      * subscription.
-     *
+     * 
      * @param networkIntentPolicyName the networkIntentPolicyName value to set.
      * @return the NetworkIntentPolicyConfiguration object itself.
      */
@@ -50,7 +56,7 @@ public final class NetworkIntentPolicyConfiguration {
 
     /**
      * Get the sourceNetworkIntentPolicy property: Source network intent policy.
-     *
+     * 
      * @return the sourceNetworkIntentPolicy value.
      */
     public NetworkIntentPolicy sourceNetworkIntentPolicy() {
@@ -59,24 +65,65 @@ public final class NetworkIntentPolicyConfiguration {
 
     /**
      * Set the sourceNetworkIntentPolicy property: Source network intent policy.
-     *
+     * 
      * @param sourceNetworkIntentPolicy the sourceNetworkIntentPolicy value to set.
      * @return the NetworkIntentPolicyConfiguration object itself.
      */
-    public NetworkIntentPolicyConfiguration withSourceNetworkIntentPolicy(
-        NetworkIntentPolicy sourceNetworkIntentPolicy) {
+    public NetworkIntentPolicyConfiguration
+        withSourceNetworkIntentPolicy(NetworkIntentPolicy sourceNetworkIntentPolicy) {
         this.sourceNetworkIntentPolicy = sourceNetworkIntentPolicy;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceNetworkIntentPolicy() != null) {
             sourceNetworkIntentPolicy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("networkIntentPolicyName", this.networkIntentPolicyName);
+        jsonWriter.writeJsonField("sourceNetworkIntentPolicy", this.sourceNetworkIntentPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkIntentPolicyConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkIntentPolicyConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkIntentPolicyConfiguration.
+     */
+    public static NetworkIntentPolicyConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkIntentPolicyConfiguration deserializedNetworkIntentPolicyConfiguration
+                = new NetworkIntentPolicyConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkIntentPolicyName".equals(fieldName)) {
+                    deserializedNetworkIntentPolicyConfiguration.networkIntentPolicyName = reader.getString();
+                } else if ("sourceNetworkIntentPolicy".equals(fieldName)) {
+                    deserializedNetworkIntentPolicyConfiguration.sourceNetworkIntentPolicy
+                        = NetworkIntentPolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkIntentPolicyConfiguration;
+        });
     }
 }

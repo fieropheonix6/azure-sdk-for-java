@@ -5,41 +5,66 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServerHAState. */
+/**
+ * A state of a HA server that is visible to user.
+ */
 public final class ServerHAState extends ExpandableStringEnum<ServerHAState> {
-    /** Static value NotEnabled for ServerHAState. */
+    /**
+     * Static value NotEnabled for ServerHAState.
+     */
     public static final ServerHAState NOT_ENABLED = fromString("NotEnabled");
 
-    /** Static value CreatingStandby for ServerHAState. */
+    /**
+     * Static value CreatingStandby for ServerHAState.
+     */
     public static final ServerHAState CREATING_STANDBY = fromString("CreatingStandby");
 
-    /** Static value ReplicatingData for ServerHAState. */
+    /**
+     * Static value ReplicatingData for ServerHAState.
+     */
     public static final ServerHAState REPLICATING_DATA = fromString("ReplicatingData");
 
-    /** Static value FailingOver for ServerHAState. */
+    /**
+     * Static value FailingOver for ServerHAState.
+     */
     public static final ServerHAState FAILING_OVER = fromString("FailingOver");
 
-    /** Static value Healthy for ServerHAState. */
+    /**
+     * Static value Healthy for ServerHAState.
+     */
     public static final ServerHAState HEALTHY = fromString("Healthy");
 
-    /** Static value RemovingStandby for ServerHAState. */
+    /**
+     * Static value RemovingStandby for ServerHAState.
+     */
     public static final ServerHAState REMOVING_STANDBY = fromString("RemovingStandby");
 
     /**
+     * Creates a new instance of ServerHAState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServerHAState() {
+    }
+
+    /**
      * Creates or finds a ServerHAState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServerHAState.
      */
-    @JsonCreator
     public static ServerHAState fromString(String name) {
         return fromString(name, ServerHAState.class);
     }
 
-    /** @return known ServerHAState values. */
+    /**
+     * Gets known ServerHAState values.
+     * 
+     * @return known ServerHAState values.
+     */
     public static Collection<ServerHAState> values() {
         return values(ServerHAState.class);
     }

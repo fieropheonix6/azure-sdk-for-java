@@ -5,73 +5,81 @@
 package com.azure.resourcemanager.azurestackhci.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azurestackhci.models.ArcSettingAggregateState;
+import com.azure.resourcemanager.azurestackhci.models.DefaultExtensionDetails;
 import com.azure.resourcemanager.azurestackhci.models.PerNodeState;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** ArcSetting properties. */
+/**
+ * ArcSetting properties.
+ */
 @Fluent
-public final class ArcSettingProperties {
+public final class ArcSettingProperties implements JsonSerializable<ArcSettingProperties> {
     /*
      * Provisioning state of the ArcSetting proxy resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
-     * The resource group that hosts the Arc agents, ie. Hybrid Compute Machine
-     * resources.
+     * The resource group that hosts the Arc agents, ie. Hybrid Compute Machine resources.
      */
-    @JsonProperty(value = "arcInstanceResourceGroup")
     private String arcInstanceResourceGroup;
 
     /*
      * App id of arc AAD identity.
      */
-    @JsonProperty(value = "arcApplicationClientId")
     private String arcApplicationClientId;
 
     /*
      * Tenant id of arc AAD identity.
      */
-    @JsonProperty(value = "arcApplicationTenantId")
     private String arcApplicationTenantId;
 
     /*
      * Object id of arc AAD service principal.
      */
-    @JsonProperty(value = "arcServicePrincipalObjectId")
     private String arcServicePrincipalObjectId;
 
     /*
      * Object id of arc AAD identity.
      */
-    @JsonProperty(value = "arcApplicationObjectId")
     private String arcApplicationObjectId;
 
     /*
      * Aggregate state of Arc agent across the nodes in this HCI cluster.
      */
-    @JsonProperty(value = "aggregateState", access = JsonProperty.Access.WRITE_ONLY)
     private ArcSettingAggregateState aggregateState;
 
     /*
      * State of Arc agent in each of the nodes.
      */
-    @JsonProperty(value = "perNodeDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<PerNodeState> perNodeDetails;
 
     /*
      * contains connectivity related configuration for ARC resources
      */
-    @JsonProperty(value = "connectivityProperties")
     private Object connectivityProperties;
+
+    /*
+     * Properties for each of the default extensions category
+     */
+    private List<DefaultExtensionDetails> defaultExtensions;
+
+    /**
+     * Creates an instance of ArcSettingProperties class.
+     */
+    public ArcSettingProperties() {
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the ArcSetting proxy resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -81,7 +89,7 @@ public final class ArcSettingProperties {
     /**
      * Get the arcInstanceResourceGroup property: The resource group that hosts the Arc agents, ie. Hybrid Compute
      * Machine resources.
-     *
+     * 
      * @return the arcInstanceResourceGroup value.
      */
     public String arcInstanceResourceGroup() {
@@ -91,7 +99,7 @@ public final class ArcSettingProperties {
     /**
      * Set the arcInstanceResourceGroup property: The resource group that hosts the Arc agents, ie. Hybrid Compute
      * Machine resources.
-     *
+     * 
      * @param arcInstanceResourceGroup the arcInstanceResourceGroup value to set.
      * @return the ArcSettingProperties object itself.
      */
@@ -102,7 +110,7 @@ public final class ArcSettingProperties {
 
     /**
      * Get the arcApplicationClientId property: App id of arc AAD identity.
-     *
+     * 
      * @return the arcApplicationClientId value.
      */
     public String arcApplicationClientId() {
@@ -111,7 +119,7 @@ public final class ArcSettingProperties {
 
     /**
      * Set the arcApplicationClientId property: App id of arc AAD identity.
-     *
+     * 
      * @param arcApplicationClientId the arcApplicationClientId value to set.
      * @return the ArcSettingProperties object itself.
      */
@@ -122,7 +130,7 @@ public final class ArcSettingProperties {
 
     /**
      * Get the arcApplicationTenantId property: Tenant id of arc AAD identity.
-     *
+     * 
      * @return the arcApplicationTenantId value.
      */
     public String arcApplicationTenantId() {
@@ -131,7 +139,7 @@ public final class ArcSettingProperties {
 
     /**
      * Set the arcApplicationTenantId property: Tenant id of arc AAD identity.
-     *
+     * 
      * @param arcApplicationTenantId the arcApplicationTenantId value to set.
      * @return the ArcSettingProperties object itself.
      */
@@ -142,7 +150,7 @@ public final class ArcSettingProperties {
 
     /**
      * Get the arcServicePrincipalObjectId property: Object id of arc AAD service principal.
-     *
+     * 
      * @return the arcServicePrincipalObjectId value.
      */
     public String arcServicePrincipalObjectId() {
@@ -151,7 +159,7 @@ public final class ArcSettingProperties {
 
     /**
      * Set the arcServicePrincipalObjectId property: Object id of arc AAD service principal.
-     *
+     * 
      * @param arcServicePrincipalObjectId the arcServicePrincipalObjectId value to set.
      * @return the ArcSettingProperties object itself.
      */
@@ -162,7 +170,7 @@ public final class ArcSettingProperties {
 
     /**
      * Get the arcApplicationObjectId property: Object id of arc AAD identity.
-     *
+     * 
      * @return the arcApplicationObjectId value.
      */
     public String arcApplicationObjectId() {
@@ -171,7 +179,7 @@ public final class ArcSettingProperties {
 
     /**
      * Set the arcApplicationObjectId property: Object id of arc AAD identity.
-     *
+     * 
      * @param arcApplicationObjectId the arcApplicationObjectId value to set.
      * @return the ArcSettingProperties object itself.
      */
@@ -182,7 +190,7 @@ public final class ArcSettingProperties {
 
     /**
      * Get the aggregateState property: Aggregate state of Arc agent across the nodes in this HCI cluster.
-     *
+     * 
      * @return the aggregateState value.
      */
     public ArcSettingAggregateState aggregateState() {
@@ -191,7 +199,7 @@ public final class ArcSettingProperties {
 
     /**
      * Get the perNodeDetails property: State of Arc agent in each of the nodes.
-     *
+     * 
      * @return the perNodeDetails value.
      */
     public List<PerNodeState> perNodeDetails() {
@@ -200,7 +208,7 @@ public final class ArcSettingProperties {
 
     /**
      * Get the connectivityProperties property: contains connectivity related configuration for ARC resources.
-     *
+     * 
      * @return the connectivityProperties value.
      */
     public Object connectivityProperties() {
@@ -209,7 +217,7 @@ public final class ArcSettingProperties {
 
     /**
      * Set the connectivityProperties property: contains connectivity related configuration for ARC resources.
-     *
+     * 
      * @param connectivityProperties the connectivityProperties value to set.
      * @return the ArcSettingProperties object itself.
      */
@@ -219,13 +227,89 @@ public final class ArcSettingProperties {
     }
 
     /**
+     * Get the defaultExtensions property: Properties for each of the default extensions category.
+     * 
+     * @return the defaultExtensions value.
+     */
+    public List<DefaultExtensionDetails> defaultExtensions() {
+        return this.defaultExtensions;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (perNodeDetails() != null) {
             perNodeDetails().forEach(e -> e.validate());
         }
+        if (defaultExtensions() != null) {
+            defaultExtensions().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("arcInstanceResourceGroup", this.arcInstanceResourceGroup);
+        jsonWriter.writeStringField("arcApplicationClientId", this.arcApplicationClientId);
+        jsonWriter.writeStringField("arcApplicationTenantId", this.arcApplicationTenantId);
+        jsonWriter.writeStringField("arcServicePrincipalObjectId", this.arcServicePrincipalObjectId);
+        jsonWriter.writeStringField("arcApplicationObjectId", this.arcApplicationObjectId);
+        jsonWriter.writeUntypedField("connectivityProperties", this.connectivityProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArcSettingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArcSettingProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArcSettingProperties.
+     */
+    public static ArcSettingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArcSettingProperties deserializedArcSettingProperties = new ArcSettingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedArcSettingProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("arcInstanceResourceGroup".equals(fieldName)) {
+                    deserializedArcSettingProperties.arcInstanceResourceGroup = reader.getString();
+                } else if ("arcApplicationClientId".equals(fieldName)) {
+                    deserializedArcSettingProperties.arcApplicationClientId = reader.getString();
+                } else if ("arcApplicationTenantId".equals(fieldName)) {
+                    deserializedArcSettingProperties.arcApplicationTenantId = reader.getString();
+                } else if ("arcServicePrincipalObjectId".equals(fieldName)) {
+                    deserializedArcSettingProperties.arcServicePrincipalObjectId = reader.getString();
+                } else if ("arcApplicationObjectId".equals(fieldName)) {
+                    deserializedArcSettingProperties.arcApplicationObjectId = reader.getString();
+                } else if ("aggregateState".equals(fieldName)) {
+                    deserializedArcSettingProperties.aggregateState
+                        = ArcSettingAggregateState.fromString(reader.getString());
+                } else if ("perNodeDetails".equals(fieldName)) {
+                    List<PerNodeState> perNodeDetails = reader.readArray(reader1 -> PerNodeState.fromJson(reader1));
+                    deserializedArcSettingProperties.perNodeDetails = perNodeDetails;
+                } else if ("connectivityProperties".equals(fieldName)) {
+                    deserializedArcSettingProperties.connectivityProperties = reader.readUntyped();
+                } else if ("defaultExtensions".equals(fieldName)) {
+                    List<DefaultExtensionDetails> defaultExtensions
+                        = reader.readArray(reader1 -> DefaultExtensionDetails.fromJson(reader1));
+                    deserializedArcSettingProperties.defaultExtensions = defaultExtensions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArcSettingProperties;
+        });
     }
 }

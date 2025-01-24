@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.azurestackhci.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ArcSettings Delete. */
+/**
+ * Samples for ArcSettings Delete.
+ */
 public final class ArcSettingsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/DeleteArcSetting.json
+     * x-ms-original-file:
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
+     * DeleteArcSetting.json
      */
     /**
      * Sample code: Delete ArcSetting.
-     *
+     * 
      * @param manager Entry point to AzureStackHciManager.
      */
     public static void deleteArcSetting(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
-        manager.arcSettings().delete("test-rg", "myCluster", "default", Context.NONE);
+        manager.arcSettings().delete("test-rg", "myCluster", "default", com.azure.core.util.Context.NONE);
     }
 }

@@ -15,19 +15,28 @@ import com.azure.resourcemanager.datalakestore.fluent.models.UsageInner;
 import com.azure.resourcemanager.datalakestore.models.CapabilityInformation;
 import com.azure.resourcemanager.datalakestore.models.Locations;
 import com.azure.resourcemanager.datalakestore.models.Usage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LocationsImpl implements Locations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LocationsImpl.class);
 
     private final LocationsClient innerClient;
 
     private final com.azure.resourcemanager.datalakestore.DataLakeStoreManager serviceManager;
 
-    public LocationsImpl(
-        LocationsClient innerClient, com.azure.resourcemanager.datalakestore.DataLakeStoreManager serviceManager) {
+    public LocationsImpl(LocationsClient innerClient,
+        com.azure.resourcemanager.datalakestore.DataLakeStoreManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<CapabilityInformation> getCapabilityWithResponse(String location, Context context) {
+        Response<CapabilityInformationInner> inner = this.serviceClient().getCapabilityWithResponse(location, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CapabilityInformationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CapabilityInformation getCapability(String location) {
@@ -39,27 +48,14 @@ public final class LocationsImpl implements Locations {
         }
     }
 
-    public Response<CapabilityInformation> getCapabilityWithResponse(String location, Context context) {
-        Response<CapabilityInformationInner> inner = this.serviceClient().getCapabilityWithResponse(location, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CapabilityInformationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<Usage> getUsage(String location) {
         PagedIterable<UsageInner> inner = this.serviceClient().getUsage(location);
-        return Utils.mapPage(inner, inner1 -> new UsageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UsageImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Usage> getUsage(String location, Context context) {
         PagedIterable<UsageInner> inner = this.serviceClient().getUsage(location, context);
-        return Utils.mapPage(inner, inner1 -> new UsageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UsageImpl(inner1, this.manager()));
     }
 
     private LocationsClient serviceClient() {

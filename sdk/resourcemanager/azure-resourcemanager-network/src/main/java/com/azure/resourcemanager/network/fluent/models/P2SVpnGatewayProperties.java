@@ -6,70 +6,70 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.P2SConnectionConfiguration;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VpnClientConnectionHealth;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Parameters for P2SVpnGateway. */
+/**
+ * Parameters for P2SVpnGateway.
+ */
 @Fluent
-public final class P2SVpnGatewayProperties {
+public final class P2SVpnGatewayProperties implements JsonSerializable<P2SVpnGatewayProperties> {
     /*
      * The VirtualHub to which the gateway belongs.
      */
-    @JsonProperty(value = "virtualHub")
     private SubResource virtualHub;
 
     /*
      * List of all p2s connection configurations of the gateway.
      */
-    @JsonProperty(value = "p2SConnectionConfigurations")
     private List<P2SConnectionConfiguration> p2SConnectionConfigurations;
 
     /*
      * The provisioning state of the P2S VPN gateway resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The scale unit for this p2s vpn gateway.
      */
-    @JsonProperty(value = "vpnGatewayScaleUnit")
     private Integer vpnGatewayScaleUnit;
 
     /*
      * The VpnServerConfiguration to which the p2sVpnGateway is attached to.
      */
-    @JsonProperty(value = "vpnServerConfiguration")
     private SubResource vpnServerConfiguration;
 
     /*
      * All P2S VPN clients' connection health status.
      */
-    @JsonProperty(value = "vpnClientConnectionHealth", access = JsonProperty.Access.WRITE_ONLY)
     private VpnClientConnectionHealth vpnClientConnectionHealth;
 
     /*
      * List of all customer specified DNS servers IP addresses.
      */
-    @JsonProperty(value = "customDnsServers")
     private List<String> customDnsServers;
 
     /*
      * Enable Routing Preference property for the Public IP Interface of the P2SVpnGateway.
      */
-    @JsonProperty(value = "isRoutingPreferenceInternet")
     private Boolean isRoutingPreferenceInternet;
 
-    /** Creates an instance of P2SVpnGatewayProperties class. */
+    /**
+     * Creates an instance of P2SVpnGatewayProperties class.
+     */
     public P2SVpnGatewayProperties() {
     }
 
     /**
      * Get the virtualHub property: The VirtualHub to which the gateway belongs.
-     *
+     * 
      * @return the virtualHub value.
      */
     public SubResource virtualHub() {
@@ -78,7 +78,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Set the virtualHub property: The VirtualHub to which the gateway belongs.
-     *
+     * 
      * @param virtualHub the virtualHub value to set.
      * @return the P2SVpnGatewayProperties object itself.
      */
@@ -89,7 +89,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Get the p2SConnectionConfigurations property: List of all p2s connection configurations of the gateway.
-     *
+     * 
      * @return the p2SConnectionConfigurations value.
      */
     public List<P2SConnectionConfiguration> p2SConnectionConfigurations() {
@@ -98,19 +98,19 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Set the p2SConnectionConfigurations property: List of all p2s connection configurations of the gateway.
-     *
+     * 
      * @param p2SConnectionConfigurations the p2SConnectionConfigurations value to set.
      * @return the P2SVpnGatewayProperties object itself.
      */
-    public P2SVpnGatewayProperties withP2SConnectionConfigurations(
-        List<P2SConnectionConfiguration> p2SConnectionConfigurations) {
+    public P2SVpnGatewayProperties
+        withP2SConnectionConfigurations(List<P2SConnectionConfiguration> p2SConnectionConfigurations) {
         this.p2SConnectionConfigurations = p2SConnectionConfigurations;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the P2S VPN gateway resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -119,7 +119,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Get the vpnGatewayScaleUnit property: The scale unit for this p2s vpn gateway.
-     *
+     * 
      * @return the vpnGatewayScaleUnit value.
      */
     public Integer vpnGatewayScaleUnit() {
@@ -128,7 +128,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Set the vpnGatewayScaleUnit property: The scale unit for this p2s vpn gateway.
-     *
+     * 
      * @param vpnGatewayScaleUnit the vpnGatewayScaleUnit value to set.
      * @return the P2SVpnGatewayProperties object itself.
      */
@@ -139,7 +139,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Get the vpnServerConfiguration property: The VpnServerConfiguration to which the p2sVpnGateway is attached to.
-     *
+     * 
      * @return the vpnServerConfiguration value.
      */
     public SubResource vpnServerConfiguration() {
@@ -148,7 +148,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Set the vpnServerConfiguration property: The VpnServerConfiguration to which the p2sVpnGateway is attached to.
-     *
+     * 
      * @param vpnServerConfiguration the vpnServerConfiguration value to set.
      * @return the P2SVpnGatewayProperties object itself.
      */
@@ -159,7 +159,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Get the vpnClientConnectionHealth property: All P2S VPN clients' connection health status.
-     *
+     * 
      * @return the vpnClientConnectionHealth value.
      */
     public VpnClientConnectionHealth vpnClientConnectionHealth() {
@@ -168,7 +168,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Get the customDnsServers property: List of all customer specified DNS servers IP addresses.
-     *
+     * 
      * @return the customDnsServers value.
      */
     public List<String> customDnsServers() {
@@ -177,7 +177,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Set the customDnsServers property: List of all customer specified DNS servers IP addresses.
-     *
+     * 
      * @param customDnsServers the customDnsServers value to set.
      * @return the P2SVpnGatewayProperties object itself.
      */
@@ -189,7 +189,7 @@ public final class P2SVpnGatewayProperties {
     /**
      * Get the isRoutingPreferenceInternet property: Enable Routing Preference property for the Public IP Interface of
      * the P2SVpnGateway.
-     *
+     * 
      * @return the isRoutingPreferenceInternet value.
      */
     public Boolean isRoutingPreferenceInternet() {
@@ -199,7 +199,7 @@ public final class P2SVpnGatewayProperties {
     /**
      * Set the isRoutingPreferenceInternet property: Enable Routing Preference property for the Public IP Interface of
      * the P2SVpnGateway.
-     *
+     * 
      * @param isRoutingPreferenceInternet the isRoutingPreferenceInternet value to set.
      * @return the P2SVpnGatewayProperties object itself.
      */
@@ -210,7 +210,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -220,5 +220,68 @@ public final class P2SVpnGatewayProperties {
         if (vpnClientConnectionHealth() != null) {
             vpnClientConnectionHealth().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("virtualHub", this.virtualHub);
+        jsonWriter.writeArrayField("p2SConnectionConfigurations", this.p2SConnectionConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("vpnGatewayScaleUnit", this.vpnGatewayScaleUnit);
+        jsonWriter.writeJsonField("vpnServerConfiguration", this.vpnServerConfiguration);
+        jsonWriter.writeArrayField("customDnsServers", this.customDnsServers,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isRoutingPreferenceInternet", this.isRoutingPreferenceInternet);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of P2SVpnGatewayProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of P2SVpnGatewayProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the P2SVpnGatewayProperties.
+     */
+    public static P2SVpnGatewayProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            P2SVpnGatewayProperties deserializedP2SVpnGatewayProperties = new P2SVpnGatewayProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualHub".equals(fieldName)) {
+                    deserializedP2SVpnGatewayProperties.virtualHub = SubResource.fromJson(reader);
+                } else if ("p2SConnectionConfigurations".equals(fieldName)) {
+                    List<P2SConnectionConfiguration> p2SConnectionConfigurations
+                        = reader.readArray(reader1 -> P2SConnectionConfiguration.fromJson(reader1));
+                    deserializedP2SVpnGatewayProperties.p2SConnectionConfigurations = p2SConnectionConfigurations;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedP2SVpnGatewayProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("vpnGatewayScaleUnit".equals(fieldName)) {
+                    deserializedP2SVpnGatewayProperties.vpnGatewayScaleUnit = reader.getNullable(JsonReader::getInt);
+                } else if ("vpnServerConfiguration".equals(fieldName)) {
+                    deserializedP2SVpnGatewayProperties.vpnServerConfiguration = SubResource.fromJson(reader);
+                } else if ("vpnClientConnectionHealth".equals(fieldName)) {
+                    deserializedP2SVpnGatewayProperties.vpnClientConnectionHealth
+                        = VpnClientConnectionHealth.fromJson(reader);
+                } else if ("customDnsServers".equals(fieldName)) {
+                    List<String> customDnsServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedP2SVpnGatewayProperties.customDnsServers = customDnsServers;
+                } else if ("isRoutingPreferenceInternet".equals(fieldName)) {
+                    deserializedP2SVpnGatewayProperties.isRoutingPreferenceInternet
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedP2SVpnGatewayProperties;
+        });
     }
 }

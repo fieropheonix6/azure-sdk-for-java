@@ -4,20 +4,21 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ConnectedEnvironments ListByResourceGroup. */
+/**
+ * Samples for ConnectedEnvironments ListByResourceGroup.
+ */
 public final class ConnectedEnvironmentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ConnectedEnvironments_ListByResourceGroup.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
+     * ConnectedEnvironments_ListByResourceGroup.json
      */
     /**
      * Sample code: List environments by resource group.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
-    public static void listEnvironmentsByResourceGroup(
-        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.connectedEnvironments().listByResourceGroup("examplerg", Context.NONE);
+    public static void
+        listEnvironmentsByResourceGroup(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+        manager.connectedEnvironments().listByResourceGroup("examplerg", com.azure.core.util.Context.NONE);
     }
 }

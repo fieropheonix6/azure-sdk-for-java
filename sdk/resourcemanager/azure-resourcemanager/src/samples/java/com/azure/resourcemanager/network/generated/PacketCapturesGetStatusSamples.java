@@ -4,19 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for PacketCaptures GetStatus. */
+/**
+ * Samples for PacketCaptures GetStatus.
+ */
 public final class PacketCapturesGetStatusSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkWatcherPacketCaptureQueryStatus.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * NetworkWatcherPacketCaptureQueryStatus.json
      */
     /**
      * Sample code: Query packet capture status.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void queryPacketCaptureStatus(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPacketCaptures().getStatus("rg1", "nw1", "pc1", Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPacketCaptures()
+            .getStatus("rg1", "nw1", "pc1", com.azure.core.util.Context.NONE);
     }
 }

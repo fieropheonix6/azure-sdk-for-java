@@ -1,0 +1,23 @@
+trigger: none
+
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - eng/pipelines/native-image-live-tests.yml
+      - eng/scrips/Install-GraalVM-JDK.ps1
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-native-tests.yml
+  parameters:
+    ServiceDirectory: appconfiguration
+    Artifacts:
+    - name: azure-data-appconfiguration
+      groupId: com.azure
+      safeName: azuredataappconfiguration
+    TimeoutInMinutes: 90
+    SupportedClouds: 'Public'
+    TestGoals: 'verify'
+    TestOptions: '-DskipSpringITs=false'

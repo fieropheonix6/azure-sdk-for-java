@@ -5,91 +5,189 @@
 package com.azure.resourcemanager.advisor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The details of the snoozed or dismissed rule; for example, the duration, name, and GUID associated with the rule. */
-@JsonFlatten
+/**
+ * The details of the snoozed or dismissed rule; for example, the duration, name, and GUID associated with the rule.
+ */
 @Fluent
-public class SuppressionContractInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SuppressionContractInner.class);
+public final class SuppressionContractInner extends ProxyResource {
+    /*
+     * The properties of the suppression.
+     */
+    private SuppressionProperties innerProperties;
 
     /*
-     * The GUID of the suppression.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.suppressionId")
-    private String suppressionId;
+    private String type;
 
     /*
-     * The duration for which the suppression is valid.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.ttl")
-    private String ttl;
+    private String name;
 
     /*
-     * Gets or sets the expiration time stamp.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.expirationTimeStamp", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime expirationTimestamp;
+    private String id;
+
+    /**
+     * Creates an instance of SuppressionContractInner class.
+     */
+    public SuppressionContractInner() {
+    }
+
+    /**
+     * Get the innerProperties property: The properties of the suppression.
+     * 
+     * @return the innerProperties value.
+     */
+    private SuppressionProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the suppressionId property: The GUID of the suppression.
-     *
+     * 
      * @return the suppressionId value.
      */
     public String suppressionId() {
-        return this.suppressionId;
+        return this.innerProperties() == null ? null : this.innerProperties().suppressionId();
     }
 
     /**
      * Set the suppressionId property: The GUID of the suppression.
-     *
+     * 
      * @param suppressionId the suppressionId value to set.
      * @return the SuppressionContractInner object itself.
      */
     public SuppressionContractInner withSuppressionId(String suppressionId) {
-        this.suppressionId = suppressionId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SuppressionProperties();
+        }
+        this.innerProperties().withSuppressionId(suppressionId);
         return this;
     }
 
     /**
      * Get the ttl property: The duration for which the suppression is valid.
-     *
+     * 
      * @return the ttl value.
      */
     public String ttl() {
-        return this.ttl;
+        return this.innerProperties() == null ? null : this.innerProperties().ttl();
     }
 
     /**
      * Set the ttl property: The duration for which the suppression is valid.
-     *
+     * 
      * @param ttl the ttl value to set.
      * @return the SuppressionContractInner object itself.
      */
     public SuppressionContractInner withTtl(String ttl) {
-        this.ttl = ttl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SuppressionProperties();
+        }
+        this.innerProperties().withTtl(ttl);
         return this;
     }
 
     /**
      * Get the expirationTimestamp property: Gets or sets the expiration time stamp.
-     *
+     * 
      * @return the expirationTimestamp value.
      */
     public OffsetDateTime expirationTimestamp() {
-        return this.expirationTimestamp;
+        return this.innerProperties() == null ? null : this.innerProperties().expirationTimestamp();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SuppressionContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SuppressionContractInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SuppressionContractInner.
+     */
+    public static SuppressionContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SuppressionContractInner deserializedSuppressionContractInner = new SuppressionContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSuppressionContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSuppressionContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSuppressionContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSuppressionContractInner.innerProperties = SuppressionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSuppressionContractInner;
+        });
     }
 }

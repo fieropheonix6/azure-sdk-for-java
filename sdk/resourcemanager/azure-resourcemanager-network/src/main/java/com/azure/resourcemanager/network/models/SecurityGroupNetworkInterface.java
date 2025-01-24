@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Network interface and all its associated security rules. */
+/**
+ * Network interface and all its associated security rules.
+ */
 @Fluent
-public final class SecurityGroupNetworkInterface {
+public final class SecurityGroupNetworkInterface implements JsonSerializable<SecurityGroupNetworkInterface> {
     /*
      * ID of the network interface.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * All security rules associated with the network interface.
      */
-    @JsonProperty(value = "securityRuleAssociations")
     private SecurityRuleAssociations securityRuleAssociations;
 
-    /** Creates an instance of SecurityGroupNetworkInterface class. */
+    /**
+     * Creates an instance of SecurityGroupNetworkInterface class.
+     */
     public SecurityGroupNetworkInterface() {
     }
 
     /**
      * Get the id property: ID of the network interface.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -37,7 +43,7 @@ public final class SecurityGroupNetworkInterface {
 
     /**
      * Set the id property: ID of the network interface.
-     *
+     * 
      * @param id the id value to set.
      * @return the SecurityGroupNetworkInterface object itself.
      */
@@ -48,7 +54,7 @@ public final class SecurityGroupNetworkInterface {
 
     /**
      * Get the securityRuleAssociations property: All security rules associated with the network interface.
-     *
+     * 
      * @return the securityRuleAssociations value.
      */
     public SecurityRuleAssociations securityRuleAssociations() {
@@ -57,24 +63,65 @@ public final class SecurityGroupNetworkInterface {
 
     /**
      * Set the securityRuleAssociations property: All security rules associated with the network interface.
-     *
+     * 
      * @param securityRuleAssociations the securityRuleAssociations value to set.
      * @return the SecurityGroupNetworkInterface object itself.
      */
-    public SecurityGroupNetworkInterface withSecurityRuleAssociations(
-        SecurityRuleAssociations securityRuleAssociations) {
+    public SecurityGroupNetworkInterface
+        withSecurityRuleAssociations(SecurityRuleAssociations securityRuleAssociations) {
         this.securityRuleAssociations = securityRuleAssociations;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (securityRuleAssociations() != null) {
             securityRuleAssociations().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("securityRuleAssociations", this.securityRuleAssociations);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityGroupNetworkInterface from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityGroupNetworkInterface if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityGroupNetworkInterface.
+     */
+    public static SecurityGroupNetworkInterface fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityGroupNetworkInterface deserializedSecurityGroupNetworkInterface
+                = new SecurityGroupNetworkInterface();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSecurityGroupNetworkInterface.id = reader.getString();
+                } else if ("securityRuleAssociations".equals(fieldName)) {
+                    deserializedSecurityGroupNetworkInterface.securityRuleAssociations
+                        = SecurityRuleAssociations.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityGroupNetworkInterface;
+        });
     }
 }

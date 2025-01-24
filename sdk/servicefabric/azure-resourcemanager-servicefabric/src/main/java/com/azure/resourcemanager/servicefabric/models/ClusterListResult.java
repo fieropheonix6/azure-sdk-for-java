@@ -4,29 +4,124 @@
 
 package com.azure.resourcemanager.servicefabric.models;
 
-import com.azure.resourcemanager.servicefabric.fluent.models.ClusterListResultInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.servicefabric.fluent.models.ClusterInner;
+import java.io.IOException;
 import java.util.List;
 
-/** An immutable client-side representation of ClusterListResult. */
-public interface ClusterListResult {
+/**
+ * Cluster list results.
+ */
+@Fluent
+public final class ClusterListResult implements JsonSerializable<ClusterListResult> {
+    /*
+     * The value property.
+     */
+    private List<ClusterInner> value;
+
+    /*
+     * The URL to use for getting the next set of results.
+     */
+    private String nextLink;
+
     /**
-     * Gets the value property: The value property.
-     *
+     * Creates an instance of ClusterListResult class.
+     */
+    public ClusterListResult() {
+    }
+
+    /**
+     * Get the value property: The value property.
+     * 
      * @return the value value.
      */
-    List<Cluster> value();
+    public List<ClusterInner> value() {
+        return this.value;
+    }
 
     /**
-     * Gets the nextLink property: The URL to use for getting the next set of results.
-     *
+     * Set the value property: The value property.
+     * 
+     * @param value the value value to set.
+     * @return the ClusterListResult object itself.
+     */
+    public ClusterListResult withValue(List<ClusterInner> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: The URL to use for getting the next set of results.
+     * 
      * @return the nextLink value.
      */
-    String nextLink();
+    public String nextLink() {
+        return this.nextLink;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.servicefabric.fluent.models.ClusterListResultInner object.
-     *
-     * @return the inner object.
+     * Set the nextLink property: The URL to use for getting the next set of results.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the ClusterListResult object itself.
      */
-    ClusterListResultInner innerModel();
+    public ClusterListResult withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterListResult.
+     */
+    public static ClusterListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterListResult deserializedClusterListResult = new ClusterListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ClusterInner> value = reader.readArray(reader1 -> ClusterInner.fromJson(reader1));
+                    deserializedClusterListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedClusterListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterListResult;
+        });
+    }
 }

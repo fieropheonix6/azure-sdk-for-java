@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.nginx.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The NginxNetworkProfile model. */
+/**
+ * The NginxNetworkProfile model.
+ */
 @Fluent
-public final class NginxNetworkProfile {
+public final class NginxNetworkProfile implements JsonSerializable<NginxNetworkProfile> {
     /*
      * The frontEndIPConfiguration property.
      */
-    @JsonProperty(value = "frontEndIPConfiguration")
     private NginxFrontendIpConfiguration frontEndIpConfiguration;
 
     /*
      * The networkInterfaceConfiguration property.
      */
-    @JsonProperty(value = "networkInterfaceConfiguration")
     private NginxNetworkInterfaceConfiguration networkInterfaceConfiguration;
 
-    /** Creates an instance of NginxNetworkProfile class. */
+    /**
+     * Creates an instance of NginxNetworkProfile class.
+     */
     public NginxNetworkProfile() {
     }
 
     /**
      * Get the frontEndIpConfiguration property: The frontEndIPConfiguration property.
-     *
+     * 
      * @return the frontEndIpConfiguration value.
      */
     public NginxFrontendIpConfiguration frontEndIpConfiguration() {
@@ -37,7 +43,7 @@ public final class NginxNetworkProfile {
 
     /**
      * Set the frontEndIpConfiguration property: The frontEndIPConfiguration property.
-     *
+     * 
      * @param frontEndIpConfiguration the frontEndIpConfiguration value to set.
      * @return the NginxNetworkProfile object itself.
      */
@@ -48,7 +54,7 @@ public final class NginxNetworkProfile {
 
     /**
      * Get the networkInterfaceConfiguration property: The networkInterfaceConfiguration property.
-     *
+     * 
      * @return the networkInterfaceConfiguration value.
      */
     public NginxNetworkInterfaceConfiguration networkInterfaceConfiguration() {
@@ -57,19 +63,19 @@ public final class NginxNetworkProfile {
 
     /**
      * Set the networkInterfaceConfiguration property: The networkInterfaceConfiguration property.
-     *
+     * 
      * @param networkInterfaceConfiguration the networkInterfaceConfiguration value to set.
      * @return the NginxNetworkProfile object itself.
      */
-    public NginxNetworkProfile withNetworkInterfaceConfiguration(
-        NginxNetworkInterfaceConfiguration networkInterfaceConfiguration) {
+    public NginxNetworkProfile
+        withNetworkInterfaceConfiguration(NginxNetworkInterfaceConfiguration networkInterfaceConfiguration) {
         this.networkInterfaceConfiguration = networkInterfaceConfiguration;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -79,5 +85,46 @@ public final class NginxNetworkProfile {
         if (networkInterfaceConfiguration() != null) {
             networkInterfaceConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("frontEndIPConfiguration", this.frontEndIpConfiguration);
+        jsonWriter.writeJsonField("networkInterfaceConfiguration", this.networkInterfaceConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NginxNetworkProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NginxNetworkProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NginxNetworkProfile.
+     */
+    public static NginxNetworkProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NginxNetworkProfile deserializedNginxNetworkProfile = new NginxNetworkProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("frontEndIPConfiguration".equals(fieldName)) {
+                    deserializedNginxNetworkProfile.frontEndIpConfiguration
+                        = NginxFrontendIpConfiguration.fromJson(reader);
+                } else if ("networkInterfaceConfiguration".equals(fieldName)) {
+                    deserializedNginxNetworkProfile.networkInterfaceConfiguration
+                        = NginxNetworkInterfaceConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNginxNetworkProfile;
+        });
     }
 }

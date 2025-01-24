@@ -12,11 +12,29 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.mariadb.fluent.models.WaitStatisticInner;
 import com.azure.resourcemanager.mariadb.models.WaitStatisticsInput;
 
-/** An instance of this class provides access to all the operations defined in WaitStatisticsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WaitStatisticsClient.
+ */
 public interface WaitStatisticsClient {
     /**
      * Retrieve wait statistics for specified identifier.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param waitStatisticsId The Wait Statistic identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a Wait Statistic along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<WaitStatisticInner> getWithResponse(String resourceGroupName, String serverName, String waitStatisticsId,
+        Context context);
+
+    /**
+     * Retrieve wait statistics for specified identifier.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param waitStatisticsId The Wait Statistic identifier.
@@ -29,39 +47,23 @@ public interface WaitStatisticsClient {
     WaitStatisticInner get(String resourceGroupName, String serverName, String waitStatisticsId);
 
     /**
-     * Retrieve wait statistics for specified identifier.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param waitStatisticsId The Wait Statistic identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Wait Statistic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WaitStatisticInner> getWithResponse(
-        String resourceGroupName, String serverName, String waitStatisticsId, Context context);
-
-    /**
      * Retrieve wait statistics for specified aggregation window.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for retrieving wait statistics.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of wait statistics.
+     * @return a list of wait statistics as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WaitStatisticInner> listByServer(
-        String resourceGroupName, String serverName, WaitStatisticsInput parameters);
+    PagedIterable<WaitStatisticInner> listByServer(String resourceGroupName, String serverName,
+        WaitStatisticsInput parameters);
 
     /**
      * Retrieve wait statistics for specified aggregation window.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for retrieving wait statistics.
@@ -69,9 +71,9 @@ public interface WaitStatisticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of wait statistics.
+     * @return a list of wait statistics as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WaitStatisticInner> listByServer(
-        String resourceGroupName, String serverName, WaitStatisticsInput parameters, Context context);
+    PagedIterable<WaitStatisticInner> listByServer(String resourceGroupName, String serverName,
+        WaitStatisticsInput parameters, Context context);
 }

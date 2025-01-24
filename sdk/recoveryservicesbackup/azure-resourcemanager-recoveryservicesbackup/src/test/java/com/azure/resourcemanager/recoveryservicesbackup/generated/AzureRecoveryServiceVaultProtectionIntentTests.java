@@ -9,37 +9,33 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.AzureRecoveryServ
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureRecoveryServiceVaultProtectionIntentTests {
-    @Test
-    public void testDeserialize() {
-        AzureRecoveryServiceVaultProtectionIntent model =
-            BinaryData
-                .fromString(
-                    "{\"protectionIntentItemType\":\"RecoveryServiceVaultItem\",\"backupManagementType\":\"AzureStorage\",\"sourceResourceId\":\"gxhnpomyqwcabv\",\"itemId\":\"ilee\",\"policyId\":\"swlpaugmrmfj\",\"protectionState\":\"Protecting\"}")
-                .toObject(AzureRecoveryServiceVaultProtectionIntent.class);
-        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE, model.backupManagementType());
-        Assertions.assertEquals("gxhnpomyqwcabv", model.sourceResourceId());
-        Assertions.assertEquals("ilee", model.itemId());
-        Assertions.assertEquals("swlpaugmrmfj", model.policyId());
-        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.protectionState());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureRecoveryServiceVaultProtectionIntent model = BinaryData.fromString(
+            "{\"protectionIntentItemType\":\"RecoveryServiceVaultItem\",\"backupManagementType\":\"MAB\",\"sourceResourceId\":\"ttuiaclkiexhajl\",\"itemId\":\"t\",\"policyId\":\"qfyuttd\",\"protectionState\":\"NotProtected\"}")
+            .toObject(AzureRecoveryServiceVaultProtectionIntent.class);
+        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
+        Assertions.assertEquals("ttuiaclkiexhajl", model.sourceResourceId());
+        Assertions.assertEquals("t", model.itemId());
+        Assertions.assertEquals("qfyuttd", model.policyId());
+        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.protectionState());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureRecoveryServiceVaultProtectionIntent model =
-            new AzureRecoveryServiceVaultProtectionIntent()
-                .withBackupManagementType(BackupManagementType.AZURE_STORAGE)
-                .withSourceResourceId("gxhnpomyqwcabv")
-                .withItemId("ilee")
-                .withPolicyId("swlpaugmrmfj")
-                .withProtectionState(ProtectionStatus.PROTECTING);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureRecoveryServiceVaultProtectionIntent model
+            = new AzureRecoveryServiceVaultProtectionIntent().withBackupManagementType(BackupManagementType.MAB)
+                .withSourceResourceId("ttuiaclkiexhajl")
+                .withItemId("t")
+                .withPolicyId("qfyuttd")
+                .withProtectionState(ProtectionStatus.NOT_PROTECTED);
         model = BinaryData.fromObject(model).toObject(AzureRecoveryServiceVaultProtectionIntent.class);
-        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE, model.backupManagementType());
-        Assertions.assertEquals("gxhnpomyqwcabv", model.sourceResourceId());
-        Assertions.assertEquals("ilee", model.itemId());
-        Assertions.assertEquals("swlpaugmrmfj", model.policyId());
-        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.protectionState());
+        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
+        Assertions.assertEquals("ttuiaclkiexhajl", model.sourceResourceId());
+        Assertions.assertEquals("t", model.itemId());
+        Assertions.assertEquals("qfyuttd", model.policyId());
+        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.protectionState());
     }
 }

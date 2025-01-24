@@ -4,18 +4,28 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The storage account type for use in creating data disks. */
+/**
+ * The storage account type for use in creating data disks or OS disk.
+ */
 public enum StorageAccountType {
-    /** Enum value Standard_LRS. */
+    /**
+     * Enum value Standard_LRS.
+     */
     STANDARD_LRS("Standard_LRS"),
 
-    /** Enum value Premium_LRS. */
-    PREMIUM_LRS("Premium_LRS");
+    /**
+     * Enum value Premium_LRS.
+     */
+    PREMIUM_LRS("Premium_LRS"),
 
-    /** The actual serialized value for a StorageAccountType instance. */
+    /**
+     * Enum value StandardSSD_LRS.
+     */
+    STANDARD_SSD_LRS("StandardSSD_LRS");
+
+    /**
+     * The actual serialized value for a StorageAccountType instance.
+     */
     private final String value;
 
     StorageAccountType(String value) {
@@ -24,11 +34,10 @@ public enum StorageAccountType {
 
     /**
      * Parses a serialized value to a StorageAccountType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed StorageAccountType object, or null if unable to parse.
      */
-    @JsonCreator
     public static StorageAccountType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +51,9 @@ public enum StorageAccountType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

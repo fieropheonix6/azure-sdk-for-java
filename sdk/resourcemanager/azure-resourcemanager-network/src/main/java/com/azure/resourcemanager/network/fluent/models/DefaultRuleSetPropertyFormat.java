@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** the default web application firewall rule set. */
+/**
+ * the default web application firewall rule set.
+ */
 @Fluent
-public final class DefaultRuleSetPropertyFormat {
+public final class DefaultRuleSetPropertyFormat implements JsonSerializable<DefaultRuleSetPropertyFormat> {
     /*
      * The type of the web application firewall rule set.
      */
-    @JsonProperty(value = "ruleSetType")
     private String ruleSetType;
 
     /*
      * The version of the web application firewall rule set type.
      */
-    @JsonProperty(value = "ruleSetVersion")
     private String ruleSetVersion;
 
-    /** Creates an instance of DefaultRuleSetPropertyFormat class. */
+    /**
+     * Creates an instance of DefaultRuleSetPropertyFormat class.
+     */
     public DefaultRuleSetPropertyFormat() {
     }
 
     /**
      * Get the ruleSetType property: The type of the web application firewall rule set.
-     *
+     * 
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -37,7 +43,7 @@ public final class DefaultRuleSetPropertyFormat {
 
     /**
      * Set the ruleSetType property: The type of the web application firewall rule set.
-     *
+     * 
      * @param ruleSetType the ruleSetType value to set.
      * @return the DefaultRuleSetPropertyFormat object itself.
      */
@@ -48,7 +54,7 @@ public final class DefaultRuleSetPropertyFormat {
 
     /**
      * Get the ruleSetVersion property: The version of the web application firewall rule set type.
-     *
+     * 
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -57,7 +63,7 @@ public final class DefaultRuleSetPropertyFormat {
 
     /**
      * Set the ruleSetVersion property: The version of the web application firewall rule set type.
-     *
+     * 
      * @param ruleSetVersion the ruleSetVersion value to set.
      * @return the DefaultRuleSetPropertyFormat object itself.
      */
@@ -68,9 +74,48 @@ public final class DefaultRuleSetPropertyFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ruleSetType", this.ruleSetType);
+        jsonWriter.writeStringField("ruleSetVersion", this.ruleSetVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefaultRuleSetPropertyFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefaultRuleSetPropertyFormat if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefaultRuleSetPropertyFormat.
+     */
+    public static DefaultRuleSetPropertyFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefaultRuleSetPropertyFormat deserializedDefaultRuleSetPropertyFormat = new DefaultRuleSetPropertyFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ruleSetType".equals(fieldName)) {
+                    deserializedDefaultRuleSetPropertyFormat.ruleSetType = reader.getString();
+                } else if ("ruleSetVersion".equals(fieldName)) {
+                    deserializedDefaultRuleSetPropertyFormat.ruleSetVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefaultRuleSetPropertyFormat;
+        });
     }
 }

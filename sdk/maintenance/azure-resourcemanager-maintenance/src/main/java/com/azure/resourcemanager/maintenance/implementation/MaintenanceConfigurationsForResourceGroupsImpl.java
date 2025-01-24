@@ -11,34 +11,31 @@ import com.azure.resourcemanager.maintenance.fluent.MaintenanceConfigurationsFor
 import com.azure.resourcemanager.maintenance.fluent.models.MaintenanceConfigurationInner;
 import com.azure.resourcemanager.maintenance.models.MaintenanceConfiguration;
 import com.azure.resourcemanager.maintenance.models.MaintenanceConfigurationsForResourceGroups;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MaintenanceConfigurationsForResourceGroupsImpl
     implements MaintenanceConfigurationsForResourceGroups {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MaintenanceConfigurationsForResourceGroupsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MaintenanceConfigurationsForResourceGroupsImpl.class);
 
     private final MaintenanceConfigurationsForResourceGroupsClient innerClient;
 
     private final com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager;
 
-    public MaintenanceConfigurationsForResourceGroupsImpl(
-        MaintenanceConfigurationsForResourceGroupsClient innerClient,
+    public MaintenanceConfigurationsForResourceGroupsImpl(MaintenanceConfigurationsForResourceGroupsClient innerClient,
         com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<MaintenanceConfiguration> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<MaintenanceConfigurationInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
+        PagedIterable<MaintenanceConfigurationInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<MaintenanceConfiguration> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<MaintenanceConfigurationInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
+        PagedIterable<MaintenanceConfigurationInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
     }
 
     private MaintenanceConfigurationsForResourceGroupsClient serviceClient() {

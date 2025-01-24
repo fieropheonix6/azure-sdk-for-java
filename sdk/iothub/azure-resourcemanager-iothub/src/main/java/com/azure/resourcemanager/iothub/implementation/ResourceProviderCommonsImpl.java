@@ -20,30 +20,27 @@ public final class ResourceProviderCommonsImpl implements ResourceProviderCommon
 
     private final com.azure.resourcemanager.iothub.IotHubManager serviceManager;
 
-    public ResourceProviderCommonsImpl(
-        ResourceProviderCommonsClient innerClient, com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
+    public ResourceProviderCommonsImpl(ResourceProviderCommonsClient innerClient,
+        com.azure.resourcemanager.iothub.IotHubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<UserSubscriptionQuotaListResult> getSubscriptionQuotaWithResponse(Context context) {
+        Response<UserSubscriptionQuotaListResultInner> inner
+            = this.serviceClient().getSubscriptionQuotaWithResponse(context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new UserSubscriptionQuotaListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public UserSubscriptionQuotaListResult getSubscriptionQuota() {
         UserSubscriptionQuotaListResultInner inner = this.serviceClient().getSubscriptionQuota();
         if (inner != null) {
             return new UserSubscriptionQuotaListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<UserSubscriptionQuotaListResult> getSubscriptionQuotaWithResponse(Context context) {
-        Response<UserSubscriptionQuotaListResultInner> inner =
-            this.serviceClient().getSubscriptionQuotaWithResponse(context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new UserSubscriptionQuotaListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

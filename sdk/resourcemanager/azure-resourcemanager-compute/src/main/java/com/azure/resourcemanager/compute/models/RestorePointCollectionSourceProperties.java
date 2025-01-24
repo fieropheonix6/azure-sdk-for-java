@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of the source resource that this restore point collection is created from. */
+/**
+ * The properties of the source resource that this restore point collection is created from.
+ */
 @Fluent
-public final class RestorePointCollectionSourceProperties {
+public final class RestorePointCollectionSourceProperties
+    implements JsonSerializable<RestorePointCollectionSourceProperties> {
     /*
      * Location of the source resource used to create this restore point collection.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * Resource Id of the source resource used to create this restore point collection
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of RestorePointCollectionSourceProperties class. */
+    /**
+     * Creates an instance of RestorePointCollectionSourceProperties class.
+     */
     public RestorePointCollectionSourceProperties() {
     }
 
     /**
      * Get the location property: Location of the source resource used to create this restore point collection.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -37,7 +44,7 @@ public final class RestorePointCollectionSourceProperties {
 
     /**
      * Get the id property: Resource Id of the source resource used to create this restore point collection.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -46,7 +53,7 @@ public final class RestorePointCollectionSourceProperties {
 
     /**
      * Set the id property: Resource Id of the source resource used to create this restore point collection.
-     *
+     * 
      * @param id the id value to set.
      * @return the RestorePointCollectionSourceProperties object itself.
      */
@@ -57,9 +64,48 @@ public final class RestorePointCollectionSourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorePointCollectionSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorePointCollectionSourceProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorePointCollectionSourceProperties.
+     */
+    public static RestorePointCollectionSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorePointCollectionSourceProperties deserializedRestorePointCollectionSourceProperties
+                = new RestorePointCollectionSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedRestorePointCollectionSourceProperties.location = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedRestorePointCollectionSourceProperties.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorePointCollectionSourceProperties;
+        });
     }
 }

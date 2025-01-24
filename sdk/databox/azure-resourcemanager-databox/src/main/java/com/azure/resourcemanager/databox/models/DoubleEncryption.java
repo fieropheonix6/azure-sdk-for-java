@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.databox.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for DoubleEncryption. */
+/**
+ * Defines secondary layer of software-based encryption enablement.
+ */
 public enum DoubleEncryption {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled");
 
-    /** The actual serialized value for a DoubleEncryption instance. */
+    /**
+     * The actual serialized value for a DoubleEncryption instance.
+     */
     private final String value;
 
     DoubleEncryption(String value) {
@@ -24,12 +29,14 @@ public enum DoubleEncryption {
 
     /**
      * Parses a serialized value to a DoubleEncryption instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DoubleEncryption object, or null if unable to parse.
      */
-    @JsonCreator
     public static DoubleEncryption fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DoubleEncryption[] items = DoubleEncryption.values();
         for (DoubleEncryption item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum DoubleEncryption {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

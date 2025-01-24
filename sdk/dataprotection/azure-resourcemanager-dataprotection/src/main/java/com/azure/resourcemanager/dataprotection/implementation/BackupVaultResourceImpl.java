@@ -11,6 +11,7 @@ import com.azure.resourcemanager.dataprotection.fluent.models.BackupVaultResourc
 import com.azure.resourcemanager.dataprotection.models.BackupVault;
 import com.azure.resourcemanager.dataprotection.models.BackupVaultResource;
 import com.azure.resourcemanager.dataprotection.models.DppIdentityDetails;
+import com.azure.resourcemanager.dataprotection.models.PatchBackupVaultInput;
 import com.azure.resourcemanager.dataprotection.models.PatchResourceRequestInput;
 import java.util.Collections;
 import java.util.Map;
@@ -50,12 +51,12 @@ public final class BackupVaultResourceImpl
         return this.innerModel().etag();
     }
 
-    public DppIdentityDetails identity() {
-        return this.innerModel().identity();
-    }
-
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public DppIdentityDetails identity() {
+        return this.innerModel().identity();
     }
 
     public BackupVault properties() {
@@ -70,6 +71,10 @@ public final class BackupVaultResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public BackupVaultResourceInner innerModel() {
         return this.innerObject;
     }
@@ -78,9 +83,9 @@ public final class BackupVaultResourceImpl
         return this.serviceManager;
     }
 
-    private String vaultName;
-
     private String resourceGroupName;
+
+    private String vaultName;
 
     private PatchResourceRequestInput updateParameters;
 
@@ -90,25 +95,21 @@ public final class BackupVaultResourceImpl
     }
 
     public BackupVaultResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupVaults()
-                .createOrUpdate(vaultName, resourceGroupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getBackupVaults()
+            .createOrUpdate(resourceGroupName, vaultName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public BackupVaultResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupVaults()
-                .createOrUpdate(vaultName, resourceGroupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getBackupVaults()
+            .createOrUpdate(resourceGroupName, vaultName, this.innerModel(), context);
         return this;
     }
 
-    BackupVaultResourceImpl(
-        String name, com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
+    BackupVaultResourceImpl(String name,
+        com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = new BackupVaultResourceInner();
         this.serviceManager = serviceManager;
         this.vaultName = name;
@@ -120,49 +121,40 @@ public final class BackupVaultResourceImpl
     }
 
     public BackupVaultResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupVaults()
-                .update(vaultName, resourceGroupName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getBackupVaults()
+            .update(resourceGroupName, vaultName, updateParameters, Context.NONE);
         return this;
     }
 
     public BackupVaultResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupVaults()
-                .update(vaultName, resourceGroupName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getBackupVaults()
+            .update(resourceGroupName, vaultName, updateParameters, context);
         return this;
     }
 
-    BackupVaultResourceImpl(
-        BackupVaultResourceInner innerObject,
+    BackupVaultResourceImpl(BackupVaultResourceInner innerObject,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.vaultName = Utils.getValueFromIdByName(innerObject.id(), "backupVaults");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupVaults");
     }
 
     public BackupVaultResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupVaults()
-                .getByResourceGroupWithResponse(resourceGroupName, vaultName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBackupVaults()
+            .getByResourceGroupWithResponse(resourceGroupName, vaultName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public BackupVaultResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupVaults()
-                .getByResourceGroupWithResponse(resourceGroupName, vaultName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBackupVaults()
+            .getByResourceGroupWithResponse(resourceGroupName, vaultName, context)
+            .getValue();
         return this;
     }
 
@@ -204,6 +196,11 @@ public final class BackupVaultResourceImpl
             this.updateParameters.withIdentity(identity);
             return this;
         }
+    }
+
+    public BackupVaultResourceImpl withProperties(PatchBackupVaultInput properties) {
+        this.updateParameters.withProperties(properties);
+        return this;
     }
 
     private boolean isInCreateMode() {

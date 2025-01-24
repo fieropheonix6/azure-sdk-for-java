@@ -4,18 +4,23 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for Association. */
+/**
+ * Describes if the entity is the subject of the text or if it describes someone else.
+ */
 public enum Association {
-    /** Enum value subject. */
+    /**
+     * Enum value subject.
+     */
     SUBJECT("subject"),
 
-    /** Enum value other. */
+    /**
+     * Enum value other.
+     */
     OTHER("other");
 
-    /** The actual serialized value for a Association instance. */
+    /**
+     * The actual serialized value for a Association instance.
+     */
     private final String value;
 
     Association(String value) {
@@ -24,11 +29,10 @@ public enum Association {
 
     /**
      * Parses a serialized value to a Association instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed Association object, or null if unable to parse.
      */
-    @JsonCreator
     public static Association fromString(String value) {
         if (value == null) {
             return null;
@@ -42,7 +46,9 @@ public enum Association {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

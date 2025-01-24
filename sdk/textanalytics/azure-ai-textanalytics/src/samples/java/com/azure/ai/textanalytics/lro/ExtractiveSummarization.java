@@ -5,26 +5,23 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
-import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
-import com.azure.ai.textanalytics.models.ExtractSummaryAction;
-import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
-import com.azure.ai.textanalytics.models.ExtractSummaryResult;
-import com.azure.ai.textanalytics.models.SummarySentence;
-import com.azure.ai.textanalytics.models.SummarySentencesOrder;
-import com.azure.ai.textanalytics.models.TextAnalyticsActions;
-import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryOptions;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryResult;
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentence;
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentencesOrder;
+import com.azure.ai.textanalytics.util.ExtractiveSummaryPagedIterable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.util.ArrayList;
 import java.util.List;
 /**
- * Sample demonstrates how to synchronously execute an "Extractive Summarization" action in a batch of documents.
+ * Sample demonstrates how to synchronously execute an "Extractive Summarization" in a batch of documents.
  */
 public class ExtractiveSummarization {
     /**
-     * Main method to invoke this demo about how to analyze an "Extractive Summarization" action.
+     * Main method to invoke this demo about how to analyze an "Extractive Summarization".
      *
      * @param args Unused arguments to the program.
      */
@@ -55,37 +52,24 @@ public class ExtractiveSummarization {
                 + "foundational component of this aspiration, if grounded with external knowledge sources in "
                 + "the downstream AI tasks.");
 
-        SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
-            client.beginAnalyzeActions(documents,
-                new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                    .setExtractSummaryActions(
-                        new ExtractSummaryAction().setMaxSentenceCount(4).setOrderBy(SummarySentencesOrder.RANK)),
+        SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedIterable> syncPoller =
+            client.beginExtractSummary(documents,
                 "en",
-                new AnalyzeActionsOptions());
-
+                new ExtractiveSummaryOptions().setMaxSentenceCount(4).setOrderBy(ExtractiveSummarySentencesOrder.RANK));
         syncPoller.waitForCompletion();
-
-        syncPoller.getFinalResult().forEach(actionsResult -> {
-            System.out.println("Extractive Summarization action results:");
-            for (ExtractSummaryActionResult actionResult : actionsResult.getExtractSummaryResults()) {
-                if (!actionResult.isError()) {
-                    for (ExtractSummaryResult documentResult : actionResult.getDocumentsResults()) {
-                        if (!documentResult.isError()) {
-                            System.out.println("\tExtracted summary sentences:");
-                            for (SummarySentence summarySentence : documentResult.getSentences()) {
-                                System.out.printf(
-                                    "\t\t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n",
-                                    summarySentence.getText(), summarySentence.getLength(),
-                                    summarySentence.getOffset(), summarySentence.getRankScore());
-                            }
-                        } else {
-                            System.out.printf("\tCannot extract summary sentences. Error: %s%n",
-                                documentResult.getError().getMessage());
-                        }
+        syncPoller.getFinalResult().forEach(resultCollection -> {
+            for (ExtractiveSummaryResult documentResult : resultCollection) {
+                if (!documentResult.isError()) {
+                    System.out.println("\tExtracted summary sentences:");
+                    for (ExtractiveSummarySentence extractiveSummarySentence : documentResult.getSentences()) {
+                        System.out.printf(
+                            "\t\t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n",
+                            extractiveSummarySentence.getText(), extractiveSummarySentence.getLength(),
+                            extractiveSummarySentence.getOffset(), extractiveSummarySentence.getRankScore());
                     }
                 } else {
-                    System.out.printf("\tCannot execute Extractive Summarization action. Error: %s%n",
-                        actionResult.getError().getMessage());
+                    System.out.printf("\tCannot extract summary sentences. Error: %s%n",
+                        documentResult.getError().getMessage());
                 }
             }
         });

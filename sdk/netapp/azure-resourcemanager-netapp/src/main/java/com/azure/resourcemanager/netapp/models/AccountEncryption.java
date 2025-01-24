@@ -5,33 +5,42 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Encryption settings. */
+/**
+ * Encryption settings.
+ */
 @Fluent
-public final class AccountEncryption {
+public final class AccountEncryption implements JsonSerializable<AccountEncryption> {
     /*
-     * The encryption keySource (provider). Possible values (case-insensitive):  Microsoft.NetApp, Microsoft.KeyVault
+     * The encryption keySource (provider). Possible values (case-insensitive): Microsoft.NetApp, Microsoft.KeyVault
      */
-    @JsonProperty(value = "keySource")
     private KeySource keySource;
 
     /*
      * Properties provided by KeVault. Applicable if keySource is 'Microsoft.KeyVault'.
      */
-    @JsonProperty(value = "keyVaultProperties")
     private KeyVaultProperties keyVaultProperties;
 
     /*
      * Identity used to authenticate to KeyVault. Applicable if keySource is 'Microsoft.KeyVault'.
      */
-    @JsonProperty(value = "identity")
     private EncryptionIdentity identity;
+
+    /**
+     * Creates an instance of AccountEncryption class.
+     */
+    public AccountEncryption() {
+    }
 
     /**
      * Get the keySource property: The encryption keySource (provider). Possible values (case-insensitive):
      * Microsoft.NetApp, Microsoft.KeyVault.
-     *
+     * 
      * @return the keySource value.
      */
     public KeySource keySource() {
@@ -41,7 +50,7 @@ public final class AccountEncryption {
     /**
      * Set the keySource property: The encryption keySource (provider). Possible values (case-insensitive):
      * Microsoft.NetApp, Microsoft.KeyVault.
-     *
+     * 
      * @param keySource the keySource value to set.
      * @return the AccountEncryption object itself.
      */
@@ -53,7 +62,7 @@ public final class AccountEncryption {
     /**
      * Get the keyVaultProperties property: Properties provided by KeVault. Applicable if keySource is
      * 'Microsoft.KeyVault'.
-     *
+     * 
      * @return the keyVaultProperties value.
      */
     public KeyVaultProperties keyVaultProperties() {
@@ -63,7 +72,7 @@ public final class AccountEncryption {
     /**
      * Set the keyVaultProperties property: Properties provided by KeVault. Applicable if keySource is
      * 'Microsoft.KeyVault'.
-     *
+     * 
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the AccountEncryption object itself.
      */
@@ -75,7 +84,7 @@ public final class AccountEncryption {
     /**
      * Get the identity property: Identity used to authenticate to KeyVault. Applicable if keySource is
      * 'Microsoft.KeyVault'.
-     *
+     * 
      * @return the identity value.
      */
     public EncryptionIdentity identity() {
@@ -85,7 +94,7 @@ public final class AccountEncryption {
     /**
      * Set the identity property: Identity used to authenticate to KeyVault. Applicable if keySource is
      * 'Microsoft.KeyVault'.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the AccountEncryption object itself.
      */
@@ -96,7 +105,7 @@ public final class AccountEncryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -106,5 +115,47 @@ public final class AccountEncryption {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keySource", this.keySource == null ? null : this.keySource.toString());
+        jsonWriter.writeJsonField("keyVaultProperties", this.keyVaultProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountEncryption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountEncryption if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountEncryption.
+     */
+    public static AccountEncryption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountEncryption deserializedAccountEncryption = new AccountEncryption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keySource".equals(fieldName)) {
+                    deserializedAccountEncryption.keySource = KeySource.fromString(reader.getString());
+                } else if ("keyVaultProperties".equals(fieldName)) {
+                    deserializedAccountEncryption.keyVaultProperties = KeyVaultProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedAccountEncryption.identity = EncryptionIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountEncryption;
+        });
     }
 }

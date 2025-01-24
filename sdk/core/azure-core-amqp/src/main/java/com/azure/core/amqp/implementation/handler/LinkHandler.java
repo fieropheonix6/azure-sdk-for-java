@@ -53,8 +53,7 @@ abstract class LinkHandler extends Handler {
         final Link link = event.getLink();
         final ErrorCondition condition = link.getCondition();
 
-        addErrorCondition(logger.atVerbose(), condition)
-            .addKeyValue(LINK_NAME_KEY, link.getName())
+        addErrorCondition(logger.atVerbose(), condition).addKeyValue(LINK_NAME_KEY, link.getName())
             .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log("onLinkLocalClose");
     }
@@ -71,9 +70,7 @@ abstract class LinkHandler extends Handler {
 
     @Override
     public void onLinkFinal(Event event) {
-        final String linkName = event != null && event.getLink() != null
-            ? event.getLink().getName()
-            : NOT_APPLICABLE;
+        final String linkName = event != null && event.getLink() != null ? event.getLink().getName() : NOT_APPLICABLE;
         logger.atInfo()
             .addKeyValue(LINK_NAME_KEY, linkName)
             .addKeyValue(ENTITY_PATH_KEY, entityPath)
@@ -85,6 +82,10 @@ abstract class LinkHandler extends Handler {
     }
 
     public AmqpErrorContext getErrorContext(Link link) {
+        return getErrorContext(getHostname(), entityPath, link);
+    }
+
+    static AmqpErrorContext getErrorContext(String hostName, String entityPath, Link link) {
         final String referenceId;
         if (link.getRemoteProperties() != null && link.getRemoteProperties().containsKey(TRACKING_ID_PROPERTY)) {
             referenceId = link.getRemoteProperties().get(TRACKING_ID_PROPERTY).toString();
@@ -92,15 +93,14 @@ abstract class LinkHandler extends Handler {
             referenceId = link.getName();
         }
 
-        return new LinkErrorContext(getHostname(), entityPath, referenceId, link.getCredit());
+        return new LinkErrorContext(hostName, entityPath, referenceId, link.getCredit());
     }
 
     private void handleRemoteLinkClosed(final String eventName, final Event event) {
         final Link link = event.getLink();
         final ErrorCondition condition = link.getRemoteCondition();
 
-        addErrorCondition(logger.atInfo(), condition)
-            .addKeyValue(LINK_NAME_KEY, link.getName())
+        addErrorCondition(logger.atInfo(), condition).addKeyValue(LINK_NAME_KEY, link.getName())
             .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log(eventName);
 

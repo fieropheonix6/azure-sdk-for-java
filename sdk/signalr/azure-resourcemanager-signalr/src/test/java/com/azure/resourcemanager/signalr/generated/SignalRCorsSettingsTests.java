@@ -8,24 +8,20 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.models.SignalRCorsSettings;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SignalRCorsSettingsTests {
-    @Test
-    public void testDeserialize() {
-        SignalRCorsSettings model =
-            BinaryData
-                .fromString("{\"allowedOrigins\":[\"gzva\",\"apj\",\"zhpvgqzcjrvxd\",\"zlmwlxkvugfhz\"]}")
-                .toObject(SignalRCorsSettings.class);
-        Assertions.assertEquals("gzva", model.allowedOrigins().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SignalRCorsSettings model = BinaryData.fromString("{\"allowedOrigins\":[\"fiakpjpqqm\",\"edltmmjihyeozp\"]}")
+            .toObject(SignalRCorsSettings.class);
+        Assertions.assertEquals("fiakpjpqqm", model.allowedOrigins().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        SignalRCorsSettings model =
-            new SignalRCorsSettings()
-                .withAllowedOrigins(Arrays.asList("gzva", "apj", "zhpvgqzcjrvxd", "zlmwlxkvugfhz"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SignalRCorsSettings model
+            = new SignalRCorsSettings().withAllowedOrigins(Arrays.asList("fiakpjpqqm", "edltmmjihyeozp"));
         model = BinaryData.fromObject(model).toObject(SignalRCorsSettings.class);
-        Assertions.assertEquals("gzva", model.allowedOrigins().get(0));
+        Assertions.assertEquals("fiakpjpqqm", model.allowedOrigins().get(0));
     }
 }

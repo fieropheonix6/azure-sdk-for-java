@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Stop packet capture parameters. */
+/**
+ * Stop packet capture parameters.
+ */
 @Fluent
-public final class VpnGatewayPacketCaptureStopParameters {
+public final class VpnGatewayPacketCaptureStopParameters
+    implements JsonSerializable<VpnGatewayPacketCaptureStopParameters> {
     /*
      * SAS url for packet capture on vpn gateway.
      */
-    @JsonProperty(value = "sasUrl")
     private String sasUrl;
 
-    /** Creates an instance of VpnGatewayPacketCaptureStopParameters class. */
+    /**
+     * Creates an instance of VpnGatewayPacketCaptureStopParameters class.
+     */
     public VpnGatewayPacketCaptureStopParameters() {
     }
 
     /**
      * Get the sasUrl property: SAS url for packet capture on vpn gateway.
-     *
+     * 
      * @return the sasUrl value.
      */
     public String sasUrl() {
@@ -31,7 +39,7 @@ public final class VpnGatewayPacketCaptureStopParameters {
 
     /**
      * Set the sasUrl property: SAS url for packet capture on vpn gateway.
-     *
+     * 
      * @param sasUrl the sasUrl value to set.
      * @return the VpnGatewayPacketCaptureStopParameters object itself.
      */
@@ -42,9 +50,46 @@ public final class VpnGatewayPacketCaptureStopParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sasUrl", this.sasUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnGatewayPacketCaptureStopParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnGatewayPacketCaptureStopParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VpnGatewayPacketCaptureStopParameters.
+     */
+    public static VpnGatewayPacketCaptureStopParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnGatewayPacketCaptureStopParameters deserializedVpnGatewayPacketCaptureStopParameters
+                = new VpnGatewayPacketCaptureStopParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sasUrl".equals(fieldName)) {
+                    deserializedVpnGatewayPacketCaptureStopParameters.sasUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnGatewayPacketCaptureStopParameters;
+        });
     }
 }

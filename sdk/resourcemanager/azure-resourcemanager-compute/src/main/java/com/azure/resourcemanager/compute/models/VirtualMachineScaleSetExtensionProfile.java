@@ -5,34 +5,41 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes a virtual machine scale set extension profile. */
+/**
+ * Describes a virtual machine scale set extension profile.
+ */
 @Fluent
-public final class VirtualMachineScaleSetExtensionProfile {
+public final class VirtualMachineScaleSetExtensionProfile
+    implements JsonSerializable<VirtualMachineScaleSetExtensionProfile> {
     /*
      * The virtual machine scale set child extension resources.
      */
-    @JsonProperty(value = "extensions")
     private List<VirtualMachineScaleSetExtensionInner> extensions;
 
     /*
      * Specifies the time alloted for all extensions to start. The time duration should be between 15 minutes and 120
      * minutes (inclusive) and should be specified in ISO 8601 format. The default value is 90 minutes (PT1H30M).
-     * <br><br> Minimum api-version: 2020-06-01
+     * Minimum api-version: 2020-06-01.
      */
-    @JsonProperty(value = "extensionsTimeBudget")
     private String extensionsTimeBudget;
 
-    /** Creates an instance of VirtualMachineScaleSetExtensionProfile class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetExtensionProfile class.
+     */
     public VirtualMachineScaleSetExtensionProfile() {
     }
 
     /**
      * Get the extensions property: The virtual machine scale set child extension resources.
-     *
+     * 
      * @return the extensions value.
      */
     public List<VirtualMachineScaleSetExtensionInner> extensions() {
@@ -41,12 +48,12 @@ public final class VirtualMachineScaleSetExtensionProfile {
 
     /**
      * Set the extensions property: The virtual machine scale set child extension resources.
-     *
+     * 
      * @param extensions the extensions value to set.
      * @return the VirtualMachineScaleSetExtensionProfile object itself.
      */
-    public VirtualMachineScaleSetExtensionProfile withExtensions(
-        List<VirtualMachineScaleSetExtensionInner> extensions) {
+    public VirtualMachineScaleSetExtensionProfile
+        withExtensions(List<VirtualMachineScaleSetExtensionInner> extensions) {
         this.extensions = extensions;
         return this;
     }
@@ -54,8 +61,8 @@ public final class VirtualMachineScaleSetExtensionProfile {
     /**
      * Get the extensionsTimeBudget property: Specifies the time alloted for all extensions to start. The time duration
      * should be between 15 minutes and 120 minutes (inclusive) and should be specified in ISO 8601 format. The default
-     * value is 90 minutes (PT1H30M). &lt;br&gt;&lt;br&gt; Minimum api-version: 2020-06-01.
-     *
+     * value is 90 minutes (PT1H30M). Minimum api-version: 2020-06-01.
+     * 
      * @return the extensionsTimeBudget value.
      */
     public String extensionsTimeBudget() {
@@ -65,8 +72,8 @@ public final class VirtualMachineScaleSetExtensionProfile {
     /**
      * Set the extensionsTimeBudget property: Specifies the time alloted for all extensions to start. The time duration
      * should be between 15 minutes and 120 minutes (inclusive) and should be specified in ISO 8601 format. The default
-     * value is 90 minutes (PT1H30M). &lt;br&gt;&lt;br&gt; Minimum api-version: 2020-06-01.
-     *
+     * value is 90 minutes (PT1H30M). Minimum api-version: 2020-06-01.
+     * 
      * @param extensionsTimeBudget the extensionsTimeBudget value to set.
      * @return the VirtualMachineScaleSetExtensionProfile object itself.
      */
@@ -77,12 +84,54 @@ public final class VirtualMachineScaleSetExtensionProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (extensions() != null) {
             extensions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("extensionsTimeBudget", this.extensionsTimeBudget);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetExtensionProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetExtensionProfile if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetExtensionProfile.
+     */
+    public static VirtualMachineScaleSetExtensionProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetExtensionProfile deserializedVirtualMachineScaleSetExtensionProfile
+                = new VirtualMachineScaleSetExtensionProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("extensions".equals(fieldName)) {
+                    List<VirtualMachineScaleSetExtensionInner> extensions
+                        = reader.readArray(reader1 -> VirtualMachineScaleSetExtensionInner.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetExtensionProfile.extensions = extensions;
+                } else if ("extensionsTimeBudget".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionProfile.extensionsTimeBudget = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetExtensionProfile;
+        });
     }
 }

@@ -5,59 +5,61 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Salesforce Service Cloud linked service properties. */
+/**
+ * Salesforce Service Cloud linked service properties.
+ */
 @Fluent
-public final class SalesforceServiceCloudLinkedServiceTypeProperties {
+public final class SalesforceServiceCloudLinkedServiceTypeProperties
+    implements JsonSerializable<SalesforceServiceCloudLinkedServiceTypeProperties> {
     /*
      * The URL of Salesforce Service Cloud instance. Default is 'https://login.salesforce.com'. To copy data from
      * sandbox, specify 'https://test.salesforce.com'. To copy data from custom domain, specify, for example,
      * 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "environmentUrl")
     private Object environmentUrl;
 
     /*
      * The username for Basic authentication of the Salesforce instance. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "username")
     private Object username;
 
     /*
      * The password for Basic authentication of the Salesforce instance.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * The security token is optional to remotely access Salesforce instance.
      */
-    @JsonProperty(value = "securityToken")
     private SecretBase securityToken;
 
     /*
      * The Salesforce API version used in ADF. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "apiVersion")
     private Object apiVersion;
 
     /*
      * Extended properties appended to the connection string. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "extendedProperties")
     private Object extendedProperties;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of SalesforceServiceCloudLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of SalesforceServiceCloudLinkedServiceTypeProperties class.
+     */
     public SalesforceServiceCloudLinkedServiceTypeProperties() {
     }
 
@@ -66,7 +68,7 @@ public final class SalesforceServiceCloudLinkedServiceTypeProperties {
      * 'https://login.salesforce.com'. To copy data from sandbox, specify 'https://test.salesforce.com'. To copy data
      * from custom domain, specify, for example, 'https://[domain].my.salesforce.com'. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the environmentUrl value.
      */
     public Object environmentUrl() {
@@ -78,7 +80,7 @@ public final class SalesforceServiceCloudLinkedServiceTypeProperties {
      * 'https://login.salesforce.com'. To copy data from sandbox, specify 'https://test.salesforce.com'. To copy data
      * from custom domain, specify, for example, 'https://[domain].my.salesforce.com'. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param environmentUrl the environmentUrl value to set.
      * @return the SalesforceServiceCloudLinkedServiceTypeProperties object itself.
      */
@@ -90,7 +92,7 @@ public final class SalesforceServiceCloudLinkedServiceTypeProperties {
     /**
      * Get the username property: The username for Basic authentication of the Salesforce instance. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -100,7 +102,7 @@ public final class SalesforceServiceCloudLinkedServiceTypeProperties {
     /**
      * Set the username property: The username for Basic authentication of the Salesforce instance. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param username the username value to set.
      * @return the SalesforceServiceCloudLinkedServiceTypeProperties object itself.
      */
@@ -111,7 +113,7 @@ public final class SalesforceServiceCloudLinkedServiceTypeProperties {
 
     /**
      * Get the password property: The password for Basic authentication of the Salesforce instance.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -120,7 +122,7 @@ public final class SalesforceServiceCloudLinkedServiceTypeProperties {
 
     /**
      * Set the password property: The password for Basic authentication of the Salesforce instance.
-     *
+     * 
      * @param password the password value to set.
      * @return the SalesforceServiceCloudLinkedServiceTypeProperties object itself.
      */
@@ -131,7 +133,7 @@ public final class SalesforceServiceCloudLinkedServiceTypeProperties {
 
     /**
      * Get the securityToken property: The security token is optional to remotely access Salesforce instance.
-     *
+     * 
      * @return the securityToken value.
      */
     public SecretBase securityToken() {
@@ -140,7 +142,7 @@ public final class SalesforceServiceCloudLinkedServiceTypeProperties {
 
     /**
      * Set the securityToken property: The security token is optional to remotely access Salesforce instance.
-     *
+     * 
      * @param securityToken the securityToken value to set.
      * @return the SalesforceServiceCloudLinkedServiceTypeProperties object itself.
      */
@@ -152,7 +154,7 @@ public final class SalesforceServiceCloudLinkedServiceTypeProperties {
     /**
      * Get the apiVersion property: The Salesforce API version used in ADF. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the apiVersion value.
      */
     public Object apiVersion() {
@@ -162,7 +164,7 @@ public final class SalesforceServiceCloudLinkedServiceTypeProperties {
     /**
      * Set the apiVersion property: The Salesforce API version used in ADF. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param apiVersion the apiVersion value to set.
      * @return the SalesforceServiceCloudLinkedServiceTypeProperties object itself.
      */
@@ -174,7 +176,7 @@ public final class SalesforceServiceCloudLinkedServiceTypeProperties {
     /**
      * Get the extendedProperties property: Extended properties appended to the connection string. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the extendedProperties value.
      */
     public Object extendedProperties() {
@@ -184,7 +186,7 @@ public final class SalesforceServiceCloudLinkedServiceTypeProperties {
     /**
      * Set the extendedProperties property: Extended properties appended to the connection string. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param extendedProperties the extendedProperties value to set.
      * @return the SalesforceServiceCloudLinkedServiceTypeProperties object itself.
      */
@@ -195,29 +197,29 @@ public final class SalesforceServiceCloudLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SalesforceServiceCloudLinkedServiceTypeProperties object itself.
      */
-    public SalesforceServiceCloudLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public SalesforceServiceCloudLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -227,5 +229,64 @@ public final class SalesforceServiceCloudLinkedServiceTypeProperties {
         if (securityToken() != null) {
             securityToken().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("environmentUrl", this.environmentUrl);
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeJsonField("securityToken", this.securityToken);
+        jsonWriter.writeUntypedField("apiVersion", this.apiVersion);
+        jsonWriter.writeUntypedField("extendedProperties", this.extendedProperties);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SalesforceServiceCloudLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SalesforceServiceCloudLinkedServiceTypeProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SalesforceServiceCloudLinkedServiceTypeProperties.
+     */
+    public static SalesforceServiceCloudLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SalesforceServiceCloudLinkedServiceTypeProperties deserializedSalesforceServiceCloudLinkedServiceTypeProperties
+                = new SalesforceServiceCloudLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("environmentUrl".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudLinkedServiceTypeProperties.environmentUrl = reader.readUntyped();
+                } else if ("username".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudLinkedServiceTypeProperties.password
+                        = SecretBase.fromJson(reader);
+                } else if ("securityToken".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudLinkedServiceTypeProperties.securityToken
+                        = SecretBase.fromJson(reader);
+                } else if ("apiVersion".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudLinkedServiceTypeProperties.apiVersion = reader.readUntyped();
+                } else if ("extendedProperties".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudLinkedServiceTypeProperties.extendedProperties
+                        = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudLinkedServiceTypeProperties.encryptedCredential
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSalesforceServiceCloudLinkedServiceTypeProperties;
+        });
     }
 }

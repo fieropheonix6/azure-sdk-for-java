@@ -6,19 +6,17 @@ package com.azure.resourcemanager.webpubsub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.UserAssignedIdentityProperty;
-import org.junit.jupiter.api.Test;
 
 public final class UserAssignedIdentityPropertyTests {
-    @Test
-    public void testDeserialize() {
-        UserAssignedIdentityProperty model =
-            BinaryData
-                .fromString("{\"principalId\":\"vbvmeu\",\"clientId\":\"ivyhzceuojgjrwju\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        UserAssignedIdentityProperty model
+            = BinaryData.fromString("{\"principalId\":\"kghv\",\"clientId\":\"dzwmkrefajpj\"}")
                 .toObject(UserAssignedIdentityProperty.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UserAssignedIdentityProperty model = new UserAssignedIdentityProperty();
         model = BinaryData.fromObject(model).toObject(UserAssignedIdentityProperty.class);
     }

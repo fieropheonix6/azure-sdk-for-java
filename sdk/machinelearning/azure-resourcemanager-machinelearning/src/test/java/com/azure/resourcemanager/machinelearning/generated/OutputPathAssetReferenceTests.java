@@ -7,24 +7,22 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.OutputPathAssetReference;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OutputPathAssetReferenceTests {
-    @Test
-    public void testDeserialize() {
-        OutputPathAssetReference model =
-            BinaryData
-                .fromString("{\"referenceType\":\"OutputPath\",\"jobId\":\"h\",\"path\":\"mexznlwkb\"}")
-                .toObject(OutputPathAssetReference.class);
-        Assertions.assertEquals("h", model.jobId());
-        Assertions.assertEquals("mexznlwkb", model.path());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OutputPathAssetReference model = BinaryData
+            .fromString("{\"referenceType\":\"OutputPath\",\"path\":\"mxq\",\"jobId\":\"vznjqswshesgcsqo\"}")
+            .toObject(OutputPathAssetReference.class);
+        Assertions.assertEquals("mxq", model.path());
+        Assertions.assertEquals("vznjqswshesgcsqo", model.jobId());
     }
 
-    @Test
-    public void testSerialize() {
-        OutputPathAssetReference model = new OutputPathAssetReference().withJobId("h").withPath("mexznlwkb");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OutputPathAssetReference model = new OutputPathAssetReference().withPath("mxq").withJobId("vznjqswshesgcsqo");
         model = BinaryData.fromObject(model).toObject(OutputPathAssetReference.class);
-        Assertions.assertEquals("h", model.jobId());
-        Assertions.assertEquals("mexznlwkb", model.path());
+        Assertions.assertEquals("mxq", model.path());
+        Assertions.assertEquals("vznjqswshesgcsqo", model.jobId());
     }
 }

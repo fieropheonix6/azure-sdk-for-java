@@ -5,35 +5,44 @@
 package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.healthcareapis.models.IotEventHubIngestionEndpointConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.IotMappingProperties;
 import com.azure.resourcemanager.healthcareapis.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** IoT Connector properties. */
+/**
+ * IoT Connector properties.
+ */
 @Fluent
-public final class IotConnectorProperties {
+public final class IotConnectorProperties implements JsonSerializable<IotConnectorProperties> {
     /*
      * The provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Source configuration.
      */
-    @JsonProperty(value = "ingestionEndpointConfiguration")
     private IotEventHubIngestionEndpointConfiguration ingestionEndpointConfiguration;
 
     /*
      * Device Mappings.
      */
-    @JsonProperty(value = "deviceMapping")
     private IotMappingProperties deviceMapping;
 
     /**
+     * Creates an instance of IotConnectorProperties class.
+     */
+    public IotConnectorProperties() {
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -42,7 +51,7 @@ public final class IotConnectorProperties {
 
     /**
      * Get the ingestionEndpointConfiguration property: Source configuration.
-     *
+     * 
      * @return the ingestionEndpointConfiguration value.
      */
     public IotEventHubIngestionEndpointConfiguration ingestionEndpointConfiguration() {
@@ -51,19 +60,19 @@ public final class IotConnectorProperties {
 
     /**
      * Set the ingestionEndpointConfiguration property: Source configuration.
-     *
+     * 
      * @param ingestionEndpointConfiguration the ingestionEndpointConfiguration value to set.
      * @return the IotConnectorProperties object itself.
      */
-    public IotConnectorProperties withIngestionEndpointConfiguration(
-        IotEventHubIngestionEndpointConfiguration ingestionEndpointConfiguration) {
+    public IotConnectorProperties
+        withIngestionEndpointConfiguration(IotEventHubIngestionEndpointConfiguration ingestionEndpointConfiguration) {
         this.ingestionEndpointConfiguration = ingestionEndpointConfiguration;
         return this;
     }
 
     /**
      * Get the deviceMapping property: Device Mappings.
-     *
+     * 
      * @return the deviceMapping value.
      */
     public IotMappingProperties deviceMapping() {
@@ -72,7 +81,7 @@ public final class IotConnectorProperties {
 
     /**
      * Set the deviceMapping property: Device Mappings.
-     *
+     * 
      * @param deviceMapping the deviceMapping value to set.
      * @return the IotConnectorProperties object itself.
      */
@@ -83,7 +92,7 @@ public final class IotConnectorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -93,5 +102,48 @@ public final class IotConnectorProperties {
         if (deviceMapping() != null) {
             deviceMapping().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("ingestionEndpointConfiguration", this.ingestionEndpointConfiguration);
+        jsonWriter.writeJsonField("deviceMapping", this.deviceMapping);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IotConnectorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotConnectorProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IotConnectorProperties.
+     */
+    public static IotConnectorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotConnectorProperties deserializedIotConnectorProperties = new IotConnectorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedIotConnectorProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("ingestionEndpointConfiguration".equals(fieldName)) {
+                    deserializedIotConnectorProperties.ingestionEndpointConfiguration
+                        = IotEventHubIngestionEndpointConfiguration.fromJson(reader);
+                } else if ("deviceMapping".equals(fieldName)) {
+                    deserializedIotConnectorProperties.deviceMapping = IotMappingProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIotConnectorProperties;
+        });
     }
 }

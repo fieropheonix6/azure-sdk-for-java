@@ -8,14 +8,16 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of VolumeGroups. */
+/**
+ * Resource collection API of VolumeGroups.
+ */
 public interface VolumeGroups {
     /**
      * Describe all volume groups
-     *
-     * <p>List all volume groups for given account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all volume groups for given account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -26,10 +28,10 @@ public interface VolumeGroups {
 
     /**
      * Describe all volume groups
-     *
-     * <p>List all volume groups for given account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all volume groups for given account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,10 +43,27 @@ public interface VolumeGroups {
 
     /**
      * Describe a Volume Group
-     *
-     * <p>Get details of the specified volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get details of the specified volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param volumeGroupName The name of the volumeGroup.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified volume group along with {@link Response}.
+     */
+    Response<VolumeGroupDetails> getWithResponse(String resourceGroupName, String accountName, String volumeGroupName,
+        Context context);
+
+    /**
+     * Describe a Volume Group
+     * 
+     * Get details of the specified volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,28 +74,11 @@ public interface VolumeGroups {
     VolumeGroupDetails get(String resourceGroupName, String accountName, String volumeGroupName);
 
     /**
-     * Describe a Volume Group
-     *
-     * <p>Get details of the specified volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param volumeGroupName The name of the volumeGroup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified volume group along with {@link Response}.
-     */
-    Response<VolumeGroupDetails> getWithResponse(
-        String resourceGroupName, String accountName, String volumeGroupName, Context context);
-
-    /**
      * Delete a volume group
-     *
-     * <p>Delete the specified volume group only if there are no volumes under volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete the specified volume group only if there are no volumes under volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,10 +89,10 @@ public interface VolumeGroups {
 
     /**
      * Delete a volume group
-     *
-     * <p>Delete the specified volume group only if there are no volumes under volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete the specified volume group only if there are no volumes under volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param context The context to associate with this operation.
@@ -102,9 +104,9 @@ public interface VolumeGroups {
 
     /**
      * Describe a Volume Group
-     *
-     * <p>Get details of the specified volume group.
-     *
+     * 
+     * Get details of the specified volume group.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,9 +117,9 @@ public interface VolumeGroups {
 
     /**
      * Describe a Volume Group
-     *
-     * <p>Get details of the specified volume group.
-     *
+     * 
+     * Get details of the specified volume group.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,9 +131,9 @@ public interface VolumeGroups {
 
     /**
      * Delete a volume group
-     *
-     * <p>Delete the specified volume group only if there are no volumes under volume group.
-     *
+     * 
+     * Delete the specified volume group only if there are no volumes under volume group.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -141,9 +143,9 @@ public interface VolumeGroups {
 
     /**
      * Delete a volume group
-     *
-     * <p>Delete the specified volume group only if there are no volumes under volume group.
-     *
+     * 
+     * Delete the specified volume group only if there are no volumes under volume group.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -154,7 +156,7 @@ public interface VolumeGroups {
 
     /**
      * Begins definition for a new VolumeGroupDetails resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new VolumeGroupDetails definition.
      */

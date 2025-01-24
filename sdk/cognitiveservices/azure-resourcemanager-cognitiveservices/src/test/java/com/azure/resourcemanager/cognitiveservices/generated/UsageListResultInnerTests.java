@@ -12,59 +12,65 @@ import com.azure.resourcemanager.cognitiveservices.models.UnitType;
 import com.azure.resourcemanager.cognitiveservices.models.Usage;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UsageListResultInnerTests {
-    @Test
-    public void testDeserialize() {
-        UsageListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"unit\":\"CountPerSecond\",\"name\":{\"value\":\"anyktzlcuiywg\",\"localizedValue\":\"wgndrvynhzgpp\"},\"quotaPeriod\":\"cgyncocpecf\",\"limit\":21.537221408230444,\"currentValue\":22.03047256463684,\"nextResetTime\":\"xlzevgbmqjqabcy\",\"status\":\"Unknown\"},{\"unit\":\"Count\",\"name\":{\"value\":\"zuvccfwnfnbacfio\",\"localizedValue\":\"ebxetqgtzxdp\"},\"quotaPeriod\":\"bqqwxrj\",\"limit\":7.9074598312850135,\"currentValue\":52.081645304185756,\"nextResetTime\":\"ubisnjampmng\",\"status\":\"Blocked\"}]}")
-                .toObject(UsageListResultInner.class);
-        Assertions.assertEquals(UnitType.COUNT_PER_SECOND, model.value().get(0).unit());
-        Assertions.assertEquals("anyktzlcuiywg", model.value().get(0).name().value());
-        Assertions.assertEquals("wgndrvynhzgpp", model.value().get(0).name().localizedValue());
-        Assertions.assertEquals("cgyncocpecf", model.value().get(0).quotaPeriod());
-        Assertions.assertEquals(21.537221408230444D, model.value().get(0).limit());
-        Assertions.assertEquals(22.03047256463684D, model.value().get(0).currentValue());
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.value().get(0).nextResetTime());
-        Assertions.assertEquals(QuotaUsageStatus.UNKNOWN, model.value().get(0).status());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        UsageListResultInner model = BinaryData.fromString(
+            "{\"nextLink\":\"mohctb\",\"value\":[{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"ndnvo\",\"localizedValue\":\"ujjugwdkcglh\"},\"quotaPeriod\":\"azjdyggd\",\"limit\":92.2174087854439,\"currentValue\":3.8497339257224095,\"nextResetTime\":\"ofqweykhmenevfye\",\"status\":\"Blocked\"},{\"unit\":\"Bytes\",\"name\":{\"value\":\"i\",\"localizedValue\":\"yvdcsitynnaa\"},\"quotaPeriod\":\"ectehf\",\"limit\":43.32844185113748,\"currentValue\":61.13135450146281,\"nextResetTime\":\"vhezrkgqhcj\",\"status\":\"Unknown\"},{\"unit\":\"Milliseconds\",\"name\":{\"value\":\"kqsleyyvxy\",\"localizedValue\":\"pkc\"},\"quotaPeriod\":\"tpngjcrcczsqpjh\",\"limit\":15.683771184024254,\"currentValue\":5.670664395942426,\"nextResetTime\":\"sounqecanoaeu\",\"status\":\"Included\"},{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"rpmopjmc\",\"localizedValue\":\"tuo\"},\"quotaPeriod\":\"hfuiuaodsfc\",\"limit\":36.548139076292394,\"currentValue\":48.52450589513511,\"nextResetTime\":\"ozmyzydagfu\",\"status\":\"Included\"}]}")
+            .toObject(UsageListResultInner.class);
+        Assertions.assertEquals("mohctb", model.nextLink());
+        Assertions.assertEquals(UnitType.BYTES_PER_SECOND, model.value().get(0).unit());
+        Assertions.assertEquals("ndnvo", model.value().get(0).name().value());
+        Assertions.assertEquals("ujjugwdkcglh", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("azjdyggd", model.value().get(0).quotaPeriod());
+        Assertions.assertEquals(92.2174087854439D, model.value().get(0).limit());
+        Assertions.assertEquals(3.8497339257224095D, model.value().get(0).currentValue());
+        Assertions.assertEquals("ofqweykhmenevfye", model.value().get(0).nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.BLOCKED, model.value().get(0).status());
     }
 
-    @Test
-    public void testSerialize() {
-        UsageListResultInner model =
-            new UsageListResultInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new Usage()
-                                .withUnit(UnitType.COUNT_PER_SECOND)
-                                .withName(
-                                    new MetricName().withValue("anyktzlcuiywg").withLocalizedValue("wgndrvynhzgpp"))
-                                .withQuotaPeriod("cgyncocpecf")
-                                .withLimit(21.537221408230444D)
-                                .withCurrentValue(22.03047256463684D)
-                                .withNextResetTime("xlzevgbmqjqabcy")
-                                .withStatus(QuotaUsageStatus.UNKNOWN),
-                            new Usage()
-                                .withUnit(UnitType.COUNT)
-                                .withName(
-                                    new MetricName().withValue("zuvccfwnfnbacfio").withLocalizedValue("ebxetqgtzxdp"))
-                                .withQuotaPeriod("bqqwxrj")
-                                .withLimit(7.9074598312850135D)
-                                .withCurrentValue(52.081645304185756D)
-                                .withNextResetTime("ubisnjampmng")
-                                .withStatus(QuotaUsageStatus.BLOCKED)));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        UsageListResultInner model = new UsageListResultInner().withNextLink("mohctb")
+            .withValue(Arrays.asList(
+                new Usage().withUnit(UnitType.BYTES_PER_SECOND)
+                    .withName(new MetricName().withValue("ndnvo").withLocalizedValue("ujjugwdkcglh"))
+                    .withQuotaPeriod("azjdyggd")
+                    .withLimit(92.2174087854439D)
+                    .withCurrentValue(3.8497339257224095D)
+                    .withNextResetTime("ofqweykhmenevfye")
+                    .withStatus(QuotaUsageStatus.BLOCKED),
+                new Usage().withUnit(UnitType.BYTES)
+                    .withName(new MetricName().withValue("i").withLocalizedValue("yvdcsitynnaa"))
+                    .withQuotaPeriod("ectehf")
+                    .withLimit(43.32844185113748D)
+                    .withCurrentValue(61.13135450146281D)
+                    .withNextResetTime("vhezrkgqhcj")
+                    .withStatus(QuotaUsageStatus.UNKNOWN),
+                new Usage().withUnit(UnitType.MILLISECONDS)
+                    .withName(new MetricName().withValue("kqsleyyvxy").withLocalizedValue("pkc"))
+                    .withQuotaPeriod("tpngjcrcczsqpjh")
+                    .withLimit(15.683771184024254D)
+                    .withCurrentValue(5.670664395942426D)
+                    .withNextResetTime("sounqecanoaeu")
+                    .withStatus(QuotaUsageStatus.INCLUDED),
+                new Usage().withUnit(UnitType.BYTES_PER_SECOND)
+                    .withName(new MetricName().withValue("rpmopjmc").withLocalizedValue("tuo"))
+                    .withQuotaPeriod("hfuiuaodsfc")
+                    .withLimit(36.548139076292394D)
+                    .withCurrentValue(48.52450589513511D)
+                    .withNextResetTime("ozmyzydagfu")
+                    .withStatus(QuotaUsageStatus.INCLUDED)));
         model = BinaryData.fromObject(model).toObject(UsageListResultInner.class);
-        Assertions.assertEquals(UnitType.COUNT_PER_SECOND, model.value().get(0).unit());
-        Assertions.assertEquals("anyktzlcuiywg", model.value().get(0).name().value());
-        Assertions.assertEquals("wgndrvynhzgpp", model.value().get(0).name().localizedValue());
-        Assertions.assertEquals("cgyncocpecf", model.value().get(0).quotaPeriod());
-        Assertions.assertEquals(21.537221408230444D, model.value().get(0).limit());
-        Assertions.assertEquals(22.03047256463684D, model.value().get(0).currentValue());
-        Assertions.assertEquals("xlzevgbmqjqabcy", model.value().get(0).nextResetTime());
-        Assertions.assertEquals(QuotaUsageStatus.UNKNOWN, model.value().get(0).status());
+        Assertions.assertEquals("mohctb", model.nextLink());
+        Assertions.assertEquals(UnitType.BYTES_PER_SECOND, model.value().get(0).unit());
+        Assertions.assertEquals("ndnvo", model.value().get(0).name().value());
+        Assertions.assertEquals("ujjugwdkcglh", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("azjdyggd", model.value().get(0).quotaPeriod());
+        Assertions.assertEquals(92.2174087854439D, model.value().get(0).limit());
+        Assertions.assertEquals(3.8497339257224095D, model.value().get(0).currentValue());
+        Assertions.assertEquals("ofqweykhmenevfye", model.value().get(0).nextResetTime());
+        Assertions.assertEquals(QuotaUsageStatus.BLOCKED, model.value().get(0).status());
     }
 }

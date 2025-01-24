@@ -5,22 +5,38 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of Backups. */
+/**
+ * List of Backups.
+ */
 @Fluent
-public final class BackupsList {
+public final class BackupsList implements JsonSerializable<BackupsList> {
     /*
      * A list of Backups
      */
-    @JsonProperty(value = "value")
     private List<BackupInner> value;
+
+    /*
+     * URL to get the next set of results.
+     */
+    private String nextLink;
+
+    /**
+     * Creates an instance of BackupsList class.
+     */
+    public BackupsList() {
+    }
 
     /**
      * Get the value property: A list of Backups.
-     *
+     * 
      * @return the value value.
      */
     public List<BackupInner> value() {
@@ -29,7 +45,7 @@ public final class BackupsList {
 
     /**
      * Set the value property: A list of Backups.
-     *
+     * 
      * @param value the value value to set.
      * @return the BackupsList object itself.
      */
@@ -39,13 +55,73 @@ public final class BackupsList {
     }
 
     /**
+     * Get the nextLink property: URL to get the next set of results.
+     * 
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: URL to get the next set of results.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the BackupsList object itself.
+     */
+    public BackupsList withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupsList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupsList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupsList.
+     */
+    public static BackupsList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupsList deserializedBackupsList = new BackupsList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<BackupInner> value = reader.readArray(reader1 -> BackupInner.fromJson(reader1));
+                    deserializedBackupsList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedBackupsList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupsList;
+        });
     }
 }

@@ -63,6 +63,10 @@ public final class ApplicationTypeResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ApplicationTypeResourceInner innerModel() {
         return this.innerObject;
     }
@@ -84,29 +88,24 @@ public final class ApplicationTypeResourceImpl
     }
 
     public ApplicationTypeResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationTypes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, clusterName, applicationTypeName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationTypes()
+            .createOrUpdateWithResponse(resourceGroupName, clusterName, applicationTypeName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApplicationTypeResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationTypes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, clusterName, applicationTypeName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationTypes()
+            .createOrUpdateWithResponse(resourceGroupName, clusterName, applicationTypeName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ApplicationTypeResourceImpl(
-        String name, com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
+    ApplicationTypeResourceImpl(String name,
+        com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerObject = new ApplicationTypeResourceInner();
         this.serviceManager = serviceManager;
         this.applicationTypeName = name;
@@ -117,54 +116,44 @@ public final class ApplicationTypeResourceImpl
     }
 
     public ApplicationTypeResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationTypes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, clusterName, applicationTypeName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationTypes()
+            .createOrUpdateWithResponse(resourceGroupName, clusterName, applicationTypeName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApplicationTypeResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationTypes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, clusterName, applicationTypeName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationTypes()
+            .createOrUpdateWithResponse(resourceGroupName, clusterName, applicationTypeName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ApplicationTypeResourceImpl(
-        ApplicationTypeResourceInner innerObject,
+    ApplicationTypeResourceImpl(ApplicationTypeResourceInner innerObject,
         com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.applicationTypeName = Utils.getValueFromIdByName(innerObject.id(), "applicationTypes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.applicationTypeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applicationTypes");
     }
 
     public ApplicationTypeResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationTypes()
-                .getWithResponse(resourceGroupName, clusterName, applicationTypeName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationTypes()
+            .getWithResponse(resourceGroupName, clusterName, applicationTypeName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApplicationTypeResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationTypes()
-                .getWithResponse(resourceGroupName, clusterName, applicationTypeName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationTypes()
+            .getWithResponse(resourceGroupName, clusterName, applicationTypeName, context)
+            .getValue();
         return this;
     }
 

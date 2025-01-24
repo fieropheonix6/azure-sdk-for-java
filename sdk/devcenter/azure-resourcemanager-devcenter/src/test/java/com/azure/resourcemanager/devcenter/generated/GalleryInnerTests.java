@@ -7,23 +7,20 @@ package com.azure.resourcemanager.devcenter.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.GalleryInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class GalleryInnerTests {
-    @Test
-    public void testDeserialize() {
-        GalleryInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Creating\",\"galleryResourceId\":\"kajionpim\"},\"id\":\"gstxgcp\",\"name\":\"dg\",\"type\":\"aajrm\"}")
-                .toObject(GalleryInner.class);
-        Assertions.assertEquals("kajionpim", model.galleryResourceId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        GalleryInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"galleryResourceId\":\"vf\"},\"id\":\"kymuctqhjfbebr\",\"name\":\"cxerf\",\"type\":\"wutttxfvjrbi\"}")
+            .toObject(GalleryInner.class);
+        Assertions.assertEquals("vf", model.galleryResourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        GalleryInner model = new GalleryInner().withGalleryResourceId("kajionpim");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        GalleryInner model = new GalleryInner().withGalleryResourceId("vf");
         model = BinaryData.fromObject(model).toObject(GalleryInner.class);
-        Assertions.assertEquals("kajionpim", model.galleryResourceId());
+        Assertions.assertEquals("vf", model.galleryResourceId());
     }
 }

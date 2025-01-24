@@ -6,35 +6,40 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies the frontend IP to be used for the load balancer. Only IPv4 frontend IP address is supported. Each load
  * balancer configuration must have exactly one frontend IP configuration.
  */
 @Fluent
-public final class LoadBalancerFrontendIpConfiguration {
+public final class LoadBalancerFrontendIpConfiguration
+    implements JsonSerializable<LoadBalancerFrontendIpConfiguration> {
     /*
      * The name of the resource that is unique within the set of frontend IP configurations used by the load balancer.
      * This name can be used to access the resource.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Properties of load balancer frontend ip configuration.
      */
-    @JsonProperty(value = "properties", required = true)
     private LoadBalancerFrontendIpConfigurationProperties properties;
 
-    /** Creates an instance of LoadBalancerFrontendIpConfiguration class. */
+    /**
+     * Creates an instance of LoadBalancerFrontendIpConfiguration class.
+     */
     public LoadBalancerFrontendIpConfiguration() {
     }
 
     /**
      * Get the name property: The name of the resource that is unique within the set of frontend IP configurations used
      * by the load balancer. This name can be used to access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +49,7 @@ public final class LoadBalancerFrontendIpConfiguration {
     /**
      * Set the name property: The name of the resource that is unique within the set of frontend IP configurations used
      * by the load balancer. This name can be used to access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the LoadBalancerFrontendIpConfiguration object itself.
      */
@@ -55,7 +60,7 @@ public final class LoadBalancerFrontendIpConfiguration {
 
     /**
      * Get the properties property: Properties of load balancer frontend ip configuration.
-     *
+     * 
      * @return the properties value.
      */
     public LoadBalancerFrontendIpConfigurationProperties properties() {
@@ -64,37 +69,77 @@ public final class LoadBalancerFrontendIpConfiguration {
 
     /**
      * Set the properties property: Properties of load balancer frontend ip configuration.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the LoadBalancerFrontendIpConfiguration object itself.
      */
-    public LoadBalancerFrontendIpConfiguration withProperties(
-        LoadBalancerFrontendIpConfigurationProperties properties) {
+    public LoadBalancerFrontendIpConfiguration
+        withProperties(LoadBalancerFrontendIpConfigurationProperties properties) {
         this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model LoadBalancerFrontendIpConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model LoadBalancerFrontendIpConfiguration"));
         }
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model LoadBalancerFrontendIpConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model LoadBalancerFrontendIpConfiguration"));
         } else {
             properties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LoadBalancerFrontendIpConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LoadBalancerFrontendIpConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LoadBalancerFrontendIpConfiguration if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LoadBalancerFrontendIpConfiguration.
+     */
+    public static LoadBalancerFrontendIpConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoadBalancerFrontendIpConfiguration deserializedLoadBalancerFrontendIpConfiguration
+                = new LoadBalancerFrontendIpConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedLoadBalancerFrontendIpConfiguration.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLoadBalancerFrontendIpConfiguration.properties
+                        = LoadBalancerFrontendIpConfigurationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLoadBalancerFrontendIpConfiguration;
+        });
+    }
 }

@@ -3,38 +3,42 @@
 
 package com.azure.storage.file.datalake.perf;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.NullOutputStream;
 import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.storage.StoragePerfUtils;
 import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.perf.core.DirectoryTest;
 import reactor.core.publisher.Mono;
 
 import java.io.OutputStream;
-import java.util.UUID;
 
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
 public class ReadFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
-    private static final int BUFFER_SIZE = 16 * 1024 * 1024;
-    private static final OutputStream DEV_NULL = new NullOutputStream();
-    private static final String FILE_NAME = "perfstress-filev11-" + UUID.randomUUID().toString();
+    private static final String FILE_NAME = "perfstress-filev11-" + CoreUtils.randomUuid();
 
     protected final DataLakeFileClient dataLakeFileClient;
     protected final DataLakeFileAsyncClient dataLakeFileAsyncClient;
 
-    private final byte[] buffer = new byte[BUFFER_SIZE];
+    private final OutputStream devNull = new NullOutputStream();
+
+    private final int bufferSize;
+    private final byte[] buffer;
 
     public ReadFileDatalakeTest(PerfStressOptions options) {
         super(options);
         dataLakeFileClient = dataLakeDirectoryClient.getFileClient(FILE_NAME);
         dataLakeFileAsyncClient = dataLakeDirectoryAsyncClient.getFileAsyncClient(FILE_NAME);
+
+        this.bufferSize = StoragePerfUtils.getDynamicDownloadBufferSize(options.getSize());
+        this.buffer = new byte[bufferSize];
     }
 
     // Required resource setup goes here, upload the file to be downloaded during tests.
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(dataLakeFileAsyncClient.create())
+        return super.globalSetupAsync().then(dataLakeFileAsyncClient.create())
             .then(dataLakeFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null, true))
             .then();
     }
@@ -42,28 +46,25 @@ public class ReadFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
     // Perform the API call to be tested here
     @Override
     public void run() {
-        dataLakeFileClient.read(DEV_NULL);
+        dataLakeFileClient.read(devNull);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return dataLakeFileAsyncClient.read()
-            .map(b -> {
-                int readCount = 0;
-                int remaining = b.remaining();
-                while (readCount < remaining) {
-                    int expectedReadCount = Math.min(remaining - readCount, BUFFER_SIZE);
-                    b.get(buffer, 0, expectedReadCount);
-                    readCount += expectedReadCount;
-                }
-                return 1;
-            }).then();
+        return dataLakeFileAsyncClient.read().map(b -> {
+            int readCount = 0;
+            int remaining = b.remaining();
+            while (readCount < remaining) {
+                int expectedReadCount = Math.min(remaining - readCount, bufferSize);
+                b.get(buffer, 0, expectedReadCount);
+                readCount += expectedReadCount;
+            }
+            return 1;
+        }).then();
     }
 
     // Required resource setup goes here, upload the file to be downloaded during tests.
     public Mono<Void> globalCleanupAsync() {
-        return dataLakeFileAsyncClient.delete()
-            .then(super.globalCleanupAsync())
-            .then();
+        return dataLakeFileAsyncClient.delete().then(super.globalCleanupAsync()).then();
     }
 }

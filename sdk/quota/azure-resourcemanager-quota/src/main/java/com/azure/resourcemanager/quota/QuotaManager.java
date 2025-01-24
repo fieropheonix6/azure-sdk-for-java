@@ -10,23 +10,39 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.quota.fluent.AzureQuotaExtensionApi;
 import com.azure.resourcemanager.quota.implementation.AzureQuotaExtensionApiBuilder;
+import com.azure.resourcemanager.quota.implementation.GroupQuotaLimitsImpl;
+import com.azure.resourcemanager.quota.implementation.GroupQuotaLimitsRequestsImpl;
+import com.azure.resourcemanager.quota.implementation.GroupQuotaSubscriptionAllocationRequestsImpl;
+import com.azure.resourcemanager.quota.implementation.GroupQuotaSubscriptionAllocationsImpl;
+import com.azure.resourcemanager.quota.implementation.GroupQuotaSubscriptionRequestsImpl;
+import com.azure.resourcemanager.quota.implementation.GroupQuotaSubscriptionsImpl;
+import com.azure.resourcemanager.quota.implementation.GroupQuotasImpl;
 import com.azure.resourcemanager.quota.implementation.QuotaOperationsImpl;
 import com.azure.resourcemanager.quota.implementation.QuotaRequestStatusImpl;
 import com.azure.resourcemanager.quota.implementation.QuotasImpl;
 import com.azure.resourcemanager.quota.implementation.UsagesImpl;
+import com.azure.resourcemanager.quota.models.GroupQuotaLimits;
+import com.azure.resourcemanager.quota.models.GroupQuotaLimitsRequests;
+import com.azure.resourcemanager.quota.models.GroupQuotaSubscriptionAllocationRequests;
+import com.azure.resourcemanager.quota.models.GroupQuotaSubscriptionAllocations;
+import com.azure.resourcemanager.quota.models.GroupQuotaSubscriptionRequests;
+import com.azure.resourcemanager.quota.models.GroupQuotaSubscriptions;
+import com.azure.resourcemanager.quota.models.GroupQuotas;
 import com.azure.resourcemanager.quota.models.QuotaOperations;
 import com.azure.resourcemanager.quota.models.QuotaRequestStatus;
 import com.azure.resourcemanager.quota.models.Quotas;
@@ -38,8 +54,25 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to QuotaManager. Microsoft Azure Quota Resource Provider. */
+/**
+ * Entry point to QuotaManager.
+ * Microsoft Azure Quota Resource Provider. This Swagger is for Azure Group Quota using GroupQuota Entity.
+ */
 public final class QuotaManager {
+    private GroupQuotas groupQuotas;
+
+    private GroupQuotaSubscriptions groupQuotaSubscriptions;
+
+    private GroupQuotaSubscriptionRequests groupQuotaSubscriptionRequests;
+
+    private GroupQuotaLimitsRequests groupQuotaLimitsRequests;
+
+    private GroupQuotaLimits groupQuotaLimits;
+
+    private GroupQuotaSubscriptionAllocationRequests groupQuotaSubscriptionAllocationRequests;
+
+    private GroupQuotaSubscriptionAllocations groupQuotaSubscriptionAllocations;
+
     private Usages usages;
 
     private Quotas quotas;
@@ -53,17 +86,16 @@ public final class QuotaManager {
     private QuotaManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new AzureQuotaExtensionApiBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new AzureQuotaExtensionApiBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of quota service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the quota service API instance.
@@ -75,23 +107,39 @@ public final class QuotaManager {
     }
 
     /**
+     * Creates an instance of quota service API entry point.
+     * 
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the quota service API instance.
+     */
+    public static QuotaManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new QuotaManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create QuotaManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new QuotaManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -153,15 +201,30 @@ public final class QuotaManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -178,15 +241,13 @@ public final class QuotaManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.quota")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.1.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -201,41 +262,129 @@ public final class QuotaManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new QuotaManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
-    /** @return Resource collection API of Usages. */
+    /**
+     * Gets the resource collection API of GroupQuotas.
+     * 
+     * @return Resource collection API of GroupQuotas.
+     */
+    public GroupQuotas groupQuotas() {
+        if (this.groupQuotas == null) {
+            this.groupQuotas = new GroupQuotasImpl(clientObject.getGroupQuotas(), this);
+        }
+        return groupQuotas;
+    }
+
+    /**
+     * Gets the resource collection API of GroupQuotaSubscriptions.
+     * 
+     * @return Resource collection API of GroupQuotaSubscriptions.
+     */
+    public GroupQuotaSubscriptions groupQuotaSubscriptions() {
+        if (this.groupQuotaSubscriptions == null) {
+            this.groupQuotaSubscriptions
+                = new GroupQuotaSubscriptionsImpl(clientObject.getGroupQuotaSubscriptions(), this);
+        }
+        return groupQuotaSubscriptions;
+    }
+
+    /**
+     * Gets the resource collection API of GroupQuotaSubscriptionRequests.
+     * 
+     * @return Resource collection API of GroupQuotaSubscriptionRequests.
+     */
+    public GroupQuotaSubscriptionRequests groupQuotaSubscriptionRequests() {
+        if (this.groupQuotaSubscriptionRequests == null) {
+            this.groupQuotaSubscriptionRequests
+                = new GroupQuotaSubscriptionRequestsImpl(clientObject.getGroupQuotaSubscriptionRequests(), this);
+        }
+        return groupQuotaSubscriptionRequests;
+    }
+
+    /**
+     * Gets the resource collection API of GroupQuotaLimitsRequests.
+     * 
+     * @return Resource collection API of GroupQuotaLimitsRequests.
+     */
+    public GroupQuotaLimitsRequests groupQuotaLimitsRequests() {
+        if (this.groupQuotaLimitsRequests == null) {
+            this.groupQuotaLimitsRequests
+                = new GroupQuotaLimitsRequestsImpl(clientObject.getGroupQuotaLimitsRequests(), this);
+        }
+        return groupQuotaLimitsRequests;
+    }
+
+    /**
+     * Gets the resource collection API of GroupQuotaLimits.
+     * 
+     * @return Resource collection API of GroupQuotaLimits.
+     */
+    public GroupQuotaLimits groupQuotaLimits() {
+        if (this.groupQuotaLimits == null) {
+            this.groupQuotaLimits = new GroupQuotaLimitsImpl(clientObject.getGroupQuotaLimits(), this);
+        }
+        return groupQuotaLimits;
+    }
+
+    /**
+     * Gets the resource collection API of GroupQuotaSubscriptionAllocationRequests.
+     * 
+     * @return Resource collection API of GroupQuotaSubscriptionAllocationRequests.
+     */
+    public GroupQuotaSubscriptionAllocationRequests groupQuotaSubscriptionAllocationRequests() {
+        if (this.groupQuotaSubscriptionAllocationRequests == null) {
+            this.groupQuotaSubscriptionAllocationRequests = new GroupQuotaSubscriptionAllocationRequestsImpl(
+                clientObject.getGroupQuotaSubscriptionAllocationRequests(), this);
+        }
+        return groupQuotaSubscriptionAllocationRequests;
+    }
+
+    /**
+     * Gets the resource collection API of GroupQuotaSubscriptionAllocations.
+     * 
+     * @return Resource collection API of GroupQuotaSubscriptionAllocations.
+     */
+    public GroupQuotaSubscriptionAllocations groupQuotaSubscriptionAllocations() {
+        if (this.groupQuotaSubscriptionAllocations == null) {
+            this.groupQuotaSubscriptionAllocations
+                = new GroupQuotaSubscriptionAllocationsImpl(clientObject.getGroupQuotaSubscriptionAllocations(), this);
+        }
+        return groupQuotaSubscriptionAllocations;
+    }
+
+    /**
+     * Gets the resource collection API of Usages.
+     * 
+     * @return Resource collection API of Usages.
+     */
     public Usages usages() {
         if (this.usages == null) {
             this.usages = new UsagesImpl(clientObject.getUsages(), this);
@@ -243,7 +392,11 @@ public final class QuotaManager {
         return usages;
     }
 
-    /** @return Resource collection API of Quotas. */
+    /**
+     * Gets the resource collection API of Quotas. It manages CurrentQuotaLimitBase.
+     * 
+     * @return Resource collection API of Quotas.
+     */
     public Quotas quotas() {
         if (this.quotas == null) {
             this.quotas = new QuotasImpl(clientObject.getQuotas(), this);
@@ -251,7 +404,11 @@ public final class QuotaManager {
         return quotas;
     }
 
-    /** @return Resource collection API of QuotaRequestStatus. */
+    /**
+     * Gets the resource collection API of QuotaRequestStatus.
+     * 
+     * @return Resource collection API of QuotaRequestStatus.
+     */
     public QuotaRequestStatus quotaRequestStatus() {
         if (this.quotaRequestStatus == null) {
             this.quotaRequestStatus = new QuotaRequestStatusImpl(clientObject.getQuotaRequestStatus(), this);
@@ -259,7 +416,11 @@ public final class QuotaManager {
         return quotaRequestStatus;
     }
 
-    /** @return Resource collection API of QuotaOperations. */
+    /**
+     * Gets the resource collection API of QuotaOperations.
+     * 
+     * @return Resource collection API of QuotaOperations.
+     */
     public QuotaOperations quotaOperations() {
         if (this.quotaOperations == null) {
             this.quotaOperations = new QuotaOperationsImpl(clientObject.getQuotaOperations(), this);
@@ -268,8 +429,10 @@ public final class QuotaManager {
     }
 
     /**
-     * @return Wrapped service client AzureQuotaExtensionApi providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client AzureQuotaExtensionApi providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client AzureQuotaExtensionApi.
      */
     public AzureQuotaExtensionApi serviceClient() {
         return this.clientObject;

@@ -5,68 +5,69 @@
 package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Terms properties for Marketplace and Confluent. */
+/**
+ * Terms properties for Marketplace and Confluent.
+ */
 @Fluent
-public final class ConfluentAgreementProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfluentAgreementProperties.class);
-
+public final class ConfluentAgreementProperties implements JsonSerializable<ConfluentAgreementProperties> {
     /*
      * Publisher identifier string.
      */
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
      * Product identifier string.
      */
-    @JsonProperty(value = "product")
     private String product;
 
     /*
      * Plan identifier string.
      */
-    @JsonProperty(value = "plan")
     private String plan;
 
     /*
      * Link to HTML with Microsoft and Publisher terms.
      */
-    @JsonProperty(value = "licenseTextLink")
     private String licenseTextLink;
 
     /*
      * Link to the privacy policy of the publisher.
      */
-    @JsonProperty(value = "privacyPolicyLink")
     private String privacyPolicyLink;
 
     /*
-     * Date and time in UTC of when the terms were accepted. This is empty if
-     * Accepted is false.
+     * Date and time in UTC of when the terms were accepted. This is empty if Accepted is false.
      */
-    @JsonProperty(value = "retrieveDatetime")
     private OffsetDateTime retrieveDatetime;
 
     /*
      * Terms signature.
      */
-    @JsonProperty(value = "signature")
     private String signature;
 
     /*
      * If any version of the terms have been accepted, otherwise false.
      */
-    @JsonProperty(value = "accepted")
     private Boolean accepted;
 
     /**
+     * Creates an instance of ConfluentAgreementProperties class.
+     */
+    public ConfluentAgreementProperties() {
+    }
+
+    /**
      * Get the publisher property: Publisher identifier string.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -75,7 +76,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Set the publisher property: Publisher identifier string.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the ConfluentAgreementProperties object itself.
      */
@@ -86,7 +87,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Get the product property: Product identifier string.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -95,7 +96,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Set the product property: Product identifier string.
-     *
+     * 
      * @param product the product value to set.
      * @return the ConfluentAgreementProperties object itself.
      */
@@ -106,7 +107,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Get the plan property: Plan identifier string.
-     *
+     * 
      * @return the plan value.
      */
     public String plan() {
@@ -115,7 +116,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Set the plan property: Plan identifier string.
-     *
+     * 
      * @param plan the plan value to set.
      * @return the ConfluentAgreementProperties object itself.
      */
@@ -126,7 +127,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Get the licenseTextLink property: Link to HTML with Microsoft and Publisher terms.
-     *
+     * 
      * @return the licenseTextLink value.
      */
     public String licenseTextLink() {
@@ -135,7 +136,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Set the licenseTextLink property: Link to HTML with Microsoft and Publisher terms.
-     *
+     * 
      * @param licenseTextLink the licenseTextLink value to set.
      * @return the ConfluentAgreementProperties object itself.
      */
@@ -146,7 +147,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Get the privacyPolicyLink property: Link to the privacy policy of the publisher.
-     *
+     * 
      * @return the privacyPolicyLink value.
      */
     public String privacyPolicyLink() {
@@ -155,7 +156,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Set the privacyPolicyLink property: Link to the privacy policy of the publisher.
-     *
+     * 
      * @param privacyPolicyLink the privacyPolicyLink value to set.
      * @return the ConfluentAgreementProperties object itself.
      */
@@ -167,7 +168,7 @@ public final class ConfluentAgreementProperties {
     /**
      * Get the retrieveDatetime property: Date and time in UTC of when the terms were accepted. This is empty if
      * Accepted is false.
-     *
+     * 
      * @return the retrieveDatetime value.
      */
     public OffsetDateTime retrieveDatetime() {
@@ -177,7 +178,7 @@ public final class ConfluentAgreementProperties {
     /**
      * Set the retrieveDatetime property: Date and time in UTC of when the terms were accepted. This is empty if
      * Accepted is false.
-     *
+     * 
      * @param retrieveDatetime the retrieveDatetime value to set.
      * @return the ConfluentAgreementProperties object itself.
      */
@@ -188,7 +189,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Get the signature property: Terms signature.
-     *
+     * 
      * @return the signature value.
      */
     public String signature() {
@@ -197,7 +198,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Set the signature property: Terms signature.
-     *
+     * 
      * @param signature the signature value to set.
      * @return the ConfluentAgreementProperties object itself.
      */
@@ -208,7 +209,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Get the accepted property: If any version of the terms have been accepted, otherwise false.
-     *
+     * 
      * @return the accepted value.
      */
     public Boolean accepted() {
@@ -217,7 +218,7 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Set the accepted property: If any version of the terms have been accepted, otherwise false.
-     *
+     * 
      * @param accepted the accepted value to set.
      * @return the ConfluentAgreementProperties object itself.
      */
@@ -228,9 +229,70 @@ public final class ConfluentAgreementProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("product", this.product);
+        jsonWriter.writeStringField("plan", this.plan);
+        jsonWriter.writeStringField("licenseTextLink", this.licenseTextLink);
+        jsonWriter.writeStringField("privacyPolicyLink", this.privacyPolicyLink);
+        jsonWriter.writeStringField("retrieveDatetime",
+            this.retrieveDatetime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.retrieveDatetime));
+        jsonWriter.writeStringField("signature", this.signature);
+        jsonWriter.writeBooleanField("accepted", this.accepted);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfluentAgreementProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfluentAgreementProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfluentAgreementProperties.
+     */
+    public static ConfluentAgreementProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfluentAgreementProperties deserializedConfluentAgreementProperties = new ConfluentAgreementProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publisher".equals(fieldName)) {
+                    deserializedConfluentAgreementProperties.publisher = reader.getString();
+                } else if ("product".equals(fieldName)) {
+                    deserializedConfluentAgreementProperties.product = reader.getString();
+                } else if ("plan".equals(fieldName)) {
+                    deserializedConfluentAgreementProperties.plan = reader.getString();
+                } else if ("licenseTextLink".equals(fieldName)) {
+                    deserializedConfluentAgreementProperties.licenseTextLink = reader.getString();
+                } else if ("privacyPolicyLink".equals(fieldName)) {
+                    deserializedConfluentAgreementProperties.privacyPolicyLink = reader.getString();
+                } else if ("retrieveDatetime".equals(fieldName)) {
+                    deserializedConfluentAgreementProperties.retrieveDatetime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("signature".equals(fieldName)) {
+                    deserializedConfluentAgreementProperties.signature = reader.getString();
+                } else if ("accepted".equals(fieldName)) {
+                    deserializedConfluentAgreementProperties.accepted = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfluentAgreementProperties;
+        });
     }
 }

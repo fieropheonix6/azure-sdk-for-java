@@ -4,21 +4,21 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DataMaskingRules ListBySqlPool. */
+/**
+ * Samples for DataMaskingRules ListBySqlPool.
+ */
 public final class DataMaskingRulesListBySqlPoolSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DataMaskingRuleList.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/DataMaskingRuleList.json
      */
     /**
      * Sample code: List data masking rules.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void listDataMaskingRules(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .dataMaskingRules()
-            .listBySqlPool("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", Context.NONE);
+        manager.dataMaskingRules()
+            .listBySqlPool("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", com.azure.core.util.Context.NONE);
     }
 }

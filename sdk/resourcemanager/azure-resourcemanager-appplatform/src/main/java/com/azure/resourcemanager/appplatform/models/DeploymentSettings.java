@@ -5,40 +5,87 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
-/** Deployment settings payload. */
+/**
+ * Deployment settings payload.
+ */
 @Fluent
-public final class DeploymentSettings {
+public final class DeploymentSettings implements JsonSerializable<DeploymentSettings> {
     /*
-     * The requested resource quantity for required CPU and Memory. It is
-     * recommended that using this field to represent the required CPU and
-     * Memory, the old field cpu and memoryInGB will be deprecated later.
+     * The requested resource quantity for required CPU and Memory. It is recommended that using this field to represent
+     * the required CPU and Memory, the old field cpu and memoryInGB will be deprecated later.
      */
-    @JsonProperty(value = "resourceRequests")
     private ResourceRequests resourceRequests;
 
     /*
      * Collection of environment variables
      */
-    @JsonProperty(value = "environmentVariables")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> environmentVariables;
+
+    /*
+     * Collection of ApmReferences
+     */
+    private List<ApmReference> apms;
 
     /*
      * Collection of addons
      */
-    @JsonProperty(value = "addonConfigs")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Map<String, Object>> addonConfigs;
+
+    /*
+     * Periodic probe of App Instance liveness. App Instance will be restarted if the probe fails. More info:
+     * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+     */
+    private Probe livenessProbe;
+
+    /*
+     * Periodic probe of App Instance service readiness. App Instance will be removed from service endpoints if the
+     * probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+     */
+    private Probe readinessProbe;
+
+    /*
+     * StartupProbe indicates that the App Instance has successfully initialized. If specified, no other probes are
+     * executed until this completes successfully. If this probe fails, the Pod will be restarted, just as if the
+     * livenessProbe failed. This can be used to provide different probe parameters at the beginning of a App Instance's
+     * lifecycle, when it might take a long time to load data or warm a cache, than during steady-state operation. This
+     * cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+     */
+    private Probe startupProbe;
+
+    /*
+     * Optional duration in seconds the App Instance needs to terminate gracefully. May be decreased in delete request.
+     * Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity
+     * to shut down). If this value is nil, the default grace period will be used instead. The grace period is the
+     * duration in seconds after the processes running in the App Instance are sent a termination signal and the time
+     * when the processes are forcibly halted with a kill signal. Set this value longer than the expected cleanup time
+     * for your process. Defaults to 90 seconds.
+     */
+    private Integer terminationGracePeriodSeconds;
+
+    /*
+     * Container liveness and readiness probe settings
+     */
+    private ContainerProbeSettings containerProbeSettings;
+
+    /**
+     * Creates an instance of DeploymentSettings class.
+     */
+    public DeploymentSettings() {
+    }
 
     /**
      * Get the resourceRequests property: The requested resource quantity for required CPU and Memory. It is recommended
      * that using this field to represent the required CPU and Memory, the old field cpu and memoryInGB will be
      * deprecated later.
-     *
+     * 
      * @return the resourceRequests value.
      */
     public ResourceRequests resourceRequests() {
@@ -49,7 +96,7 @@ public final class DeploymentSettings {
      * Set the resourceRequests property: The requested resource quantity for required CPU and Memory. It is recommended
      * that using this field to represent the required CPU and Memory, the old field cpu and memoryInGB will be
      * deprecated later.
-     *
+     * 
      * @param resourceRequests the resourceRequests value to set.
      * @return the DeploymentSettings object itself.
      */
@@ -60,7 +107,7 @@ public final class DeploymentSettings {
 
     /**
      * Get the environmentVariables property: Collection of environment variables.
-     *
+     * 
      * @return the environmentVariables value.
      */
     public Map<String, String> environmentVariables() {
@@ -69,7 +116,7 @@ public final class DeploymentSettings {
 
     /**
      * Set the environmentVariables property: Collection of environment variables.
-     *
+     * 
      * @param environmentVariables the environmentVariables value to set.
      * @return the DeploymentSettings object itself.
      */
@@ -79,8 +126,28 @@ public final class DeploymentSettings {
     }
 
     /**
+     * Get the apms property: Collection of ApmReferences.
+     * 
+     * @return the apms value.
+     */
+    public List<ApmReference> apms() {
+        return this.apms;
+    }
+
+    /**
+     * Set the apms property: Collection of ApmReferences.
+     * 
+     * @param apms the apms value to set.
+     * @return the DeploymentSettings object itself.
+     */
+    public DeploymentSettings withApms(List<ApmReference> apms) {
+        this.apms = apms;
+        return this;
+    }
+
+    /**
      * Get the addonConfigs property: Collection of addons.
-     *
+     * 
      * @return the addonConfigs value.
      */
     public Map<String, Map<String, Object>> addonConfigs() {
@@ -89,7 +156,7 @@ public final class DeploymentSettings {
 
     /**
      * Set the addonConfigs property: Collection of addons.
-     *
+     * 
      * @param addonConfigs the addonConfigs value to set.
      * @return the DeploymentSettings object itself.
      */
@@ -99,13 +166,221 @@ public final class DeploymentSettings {
     }
 
     /**
+     * Get the livenessProbe property: Periodic probe of App Instance liveness. App Instance will be restarted if the
+     * probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
+     * 
+     * @return the livenessProbe value.
+     */
+    public Probe livenessProbe() {
+        return this.livenessProbe;
+    }
+
+    /**
+     * Set the livenessProbe property: Periodic probe of App Instance liveness. App Instance will be restarted if the
+     * probe fails. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
+     * 
+     * @param livenessProbe the livenessProbe value to set.
+     * @return the DeploymentSettings object itself.
+     */
+    public DeploymentSettings withLivenessProbe(Probe livenessProbe) {
+        this.livenessProbe = livenessProbe;
+        return this;
+    }
+
+    /**
+     * Get the readinessProbe property: Periodic probe of App Instance service readiness. App Instance will be removed
+     * from service endpoints if the probe fails. More info:
+     * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
+     * 
+     * @return the readinessProbe value.
+     */
+    public Probe readinessProbe() {
+        return this.readinessProbe;
+    }
+
+    /**
+     * Set the readinessProbe property: Periodic probe of App Instance service readiness. App Instance will be removed
+     * from service endpoints if the probe fails. More info:
+     * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
+     * 
+     * @param readinessProbe the readinessProbe value to set.
+     * @return the DeploymentSettings object itself.
+     */
+    public DeploymentSettings withReadinessProbe(Probe readinessProbe) {
+        this.readinessProbe = readinessProbe;
+        return this;
+    }
+
+    /**
+     * Get the startupProbe property: StartupProbe indicates that the App Instance has successfully initialized. If
+     * specified, no other probes are executed until this completes successfully. If this probe fails, the Pod will be
+     * restarted, just as if the livenessProbe failed. This can be used to provide different probe parameters at the
+     * beginning of a App Instance's lifecycle, when it might take a long time to load data or warm a cache, than during
+     * steady-state operation. This cannot be updated. More info:
+     * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
+     * 
+     * @return the startupProbe value.
+     */
+    public Probe startupProbe() {
+        return this.startupProbe;
+    }
+
+    /**
+     * Set the startupProbe property: StartupProbe indicates that the App Instance has successfully initialized. If
+     * specified, no other probes are executed until this completes successfully. If this probe fails, the Pod will be
+     * restarted, just as if the livenessProbe failed. This can be used to provide different probe parameters at the
+     * beginning of a App Instance's lifecycle, when it might take a long time to load data or warm a cache, than during
+     * steady-state operation. This cannot be updated. More info:
+     * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
+     * 
+     * @param startupProbe the startupProbe value to set.
+     * @return the DeploymentSettings object itself.
+     */
+    public DeploymentSettings withStartupProbe(Probe startupProbe) {
+        this.startupProbe = startupProbe;
+        return this;
+    }
+
+    /**
+     * Get the terminationGracePeriodSeconds property: Optional duration in seconds the App Instance needs to terminate
+     * gracefully. May be decreased in delete request. Value must be non-negative integer. The value zero indicates stop
+     * immediately via the kill signal (no opportunity to shut down). If this value is nil, the default grace period
+     * will be used instead. The grace period is the duration in seconds after the processes running in the App Instance
+     * are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this
+     * value longer than the expected cleanup time for your process. Defaults to 90 seconds.
+     * 
+     * @return the terminationGracePeriodSeconds value.
+     */
+    public Integer terminationGracePeriodSeconds() {
+        return this.terminationGracePeriodSeconds;
+    }
+
+    /**
+     * Set the terminationGracePeriodSeconds property: Optional duration in seconds the App Instance needs to terminate
+     * gracefully. May be decreased in delete request. Value must be non-negative integer. The value zero indicates stop
+     * immediately via the kill signal (no opportunity to shut down). If this value is nil, the default grace period
+     * will be used instead. The grace period is the duration in seconds after the processes running in the App Instance
+     * are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this
+     * value longer than the expected cleanup time for your process. Defaults to 90 seconds.
+     * 
+     * @param terminationGracePeriodSeconds the terminationGracePeriodSeconds value to set.
+     * @return the DeploymentSettings object itself.
+     */
+    public DeploymentSettings withTerminationGracePeriodSeconds(Integer terminationGracePeriodSeconds) {
+        this.terminationGracePeriodSeconds = terminationGracePeriodSeconds;
+        return this;
+    }
+
+    /**
+     * Get the containerProbeSettings property: Container liveness and readiness probe settings.
+     * 
+     * @return the containerProbeSettings value.
+     */
+    public ContainerProbeSettings containerProbeSettings() {
+        return this.containerProbeSettings;
+    }
+
+    /**
+     * Set the containerProbeSettings property: Container liveness and readiness probe settings.
+     * 
+     * @param containerProbeSettings the containerProbeSettings value to set.
+     * @return the DeploymentSettings object itself.
+     */
+    public DeploymentSettings withContainerProbeSettings(ContainerProbeSettings containerProbeSettings) {
+        this.containerProbeSettings = containerProbeSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceRequests() != null) {
             resourceRequests().validate();
         }
+        if (apms() != null) {
+            apms().forEach(e -> e.validate());
+        }
+        if (livenessProbe() != null) {
+            livenessProbe().validate();
+        }
+        if (readinessProbe() != null) {
+            readinessProbe().validate();
+        }
+        if (startupProbe() != null) {
+            startupProbe().validate();
+        }
+        if (containerProbeSettings() != null) {
+            containerProbeSettings().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resourceRequests", this.resourceRequests);
+        jsonWriter.writeMapField("environmentVariables", this.environmentVariables,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("apms", this.apms, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("addonConfigs", this.addonConfigs,
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeUntyped(element1)));
+        jsonWriter.writeJsonField("livenessProbe", this.livenessProbe);
+        jsonWriter.writeJsonField("readinessProbe", this.readinessProbe);
+        jsonWriter.writeJsonField("startupProbe", this.startupProbe);
+        jsonWriter.writeNumberField("terminationGracePeriodSeconds", this.terminationGracePeriodSeconds);
+        jsonWriter.writeJsonField("containerProbeSettings", this.containerProbeSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentSettings.
+     */
+    public static DeploymentSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentSettings deserializedDeploymentSettings = new DeploymentSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceRequests".equals(fieldName)) {
+                    deserializedDeploymentSettings.resourceRequests = ResourceRequests.fromJson(reader);
+                } else if ("environmentVariables".equals(fieldName)) {
+                    Map<String, String> environmentVariables = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeploymentSettings.environmentVariables = environmentVariables;
+                } else if ("apms".equals(fieldName)) {
+                    List<ApmReference> apms = reader.readArray(reader1 -> ApmReference.fromJson(reader1));
+                    deserializedDeploymentSettings.apms = apms;
+                } else if ("addonConfigs".equals(fieldName)) {
+                    Map<String, Map<String, Object>> addonConfigs
+                        = reader.readMap(reader1 -> reader1.readMap(reader2 -> reader2.readUntyped()));
+                    deserializedDeploymentSettings.addonConfigs = addonConfigs;
+                } else if ("livenessProbe".equals(fieldName)) {
+                    deserializedDeploymentSettings.livenessProbe = Probe.fromJson(reader);
+                } else if ("readinessProbe".equals(fieldName)) {
+                    deserializedDeploymentSettings.readinessProbe = Probe.fromJson(reader);
+                } else if ("startupProbe".equals(fieldName)) {
+                    deserializedDeploymentSettings.startupProbe = Probe.fromJson(reader);
+                } else if ("terminationGracePeriodSeconds".equals(fieldName)) {
+                    deserializedDeploymentSettings.terminationGracePeriodSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("containerProbeSettings".equals(fieldName)) {
+                    deserializedDeploymentSettings.containerProbeSettings = ContainerProbeSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentSettings;
+        });
     }
 }

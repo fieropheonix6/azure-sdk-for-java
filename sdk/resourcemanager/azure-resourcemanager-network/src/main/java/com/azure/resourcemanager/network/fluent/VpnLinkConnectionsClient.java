@@ -13,16 +13,19 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.network.fluent.models.ConnectionSharedKeyResultInner;
 import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkConnectionInner;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VpnLinkConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VpnLinkConnectionsClient.
+ */
 public interface VpnLinkConnectionsClient {
     /**
      * Resets the VpnLink connection specified.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -33,12 +36,12 @@ public interface VpnLinkConnectionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> resetConnectionWithResponseAsync(
-        String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName);
+    Mono<Response<Flux<ByteBuffer>>> resetConnectionWithResponseAsync(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName);
 
     /**
      * Resets the VpnLink connection specified.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -49,12 +52,12 @@ public interface VpnLinkConnectionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginResetConnectionAsync(
-        String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName);
+    PollerFlux<PollResult<Void>, Void> beginResetConnectionAsync(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName);
 
     /**
      * Resets the VpnLink connection specified.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -65,12 +68,12 @@ public interface VpnLinkConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginResetConnection(
-        String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginResetConnection(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName);
 
     /**
      * Resets the VpnLink connection specified.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -82,16 +85,12 @@ public interface VpnLinkConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginResetConnection(
-        String resourceGroupName,
-        String gatewayName,
-        String connectionName,
-        String linkConnectionName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginResetConnection(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName, Context context);
 
     /**
      * Resets the VpnLink connection specified.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -102,12 +101,12 @@ public interface VpnLinkConnectionsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> resetConnectionAsync(
-        String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName);
+    Mono<Void> resetConnectionAsync(String resourceGroupName, String gatewayName, String connectionName,
+        String linkConnectionName);
 
     /**
      * Resets the VpnLink connection specified.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -117,12 +116,12 @@ public interface VpnLinkConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void resetConnection(
-        String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName);
+    void resetConnection(String resourceGroupName, String gatewayName, String connectionName,
+        String linkConnectionName);
 
     /**
      * Resets the VpnLink connection specified.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -133,16 +132,333 @@ public interface VpnLinkConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void resetConnection(
-        String resourceGroupName,
-        String gatewayName,
-        String connectionName,
-        String linkConnectionName,
+    void resetConnection(String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName,
         Context context);
 
     /**
+     * Lists all shared keys of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of shared keys for the vpn link connection as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ConnectionSharedKeyResultInner> getAllSharedKeysAsync(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName);
+
+    /**
+     * Lists all shared keys of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of shared keys for the vpn link connection as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ConnectionSharedKeyResultInner> getAllSharedKeys(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName);
+
+    /**
+     * Lists all shared keys of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of shared keys for the vpn link connection as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ConnectionSharedKeyResultInner> getAllSharedKeys(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName, Context context);
+
+    /**
+     * Gets the shared key of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the shared key of VpnLink connection specified along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ConnectionSharedKeyResultInner>> getDefaultSharedKeyWithResponseAsync(String resourceGroupName,
+        String gatewayName, String connectionName, String linkConnectionName);
+
+    /**
+     * Gets the shared key of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the shared key of VpnLink connection specified on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ConnectionSharedKeyResultInner> getDefaultSharedKeyAsync(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName);
+
+    /**
+     * Gets the shared key of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the shared key of VpnLink connection specified along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ConnectionSharedKeyResultInner> getDefaultSharedKeyWithResponse(String resourceGroupName,
+        String gatewayName, String connectionName, String linkConnectionName, Context context);
+
+    /**
+     * Gets the shared key of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the shared key of VpnLink connection specified.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConnectionSharedKeyResultInner getDefaultSharedKey(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName);
+
+    /**
+     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
+     * operation. If key length is given, the operation creates a random key of the pre-defined length.
+     * 
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
+     * connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sharedKey Resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> setOrInitDefaultSharedKeyWithResponseAsync(String resourceGroupName,
+        String gatewayName, String connectionName, String linkConnectionName,
+        ConnectionSharedKeyResultInner connectionSharedKeyParameters);
+
+    /**
+     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
+     * operation. If key length is given, the operation creates a random key of the pre-defined length.
+     * 
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
+     * connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of sharedKey Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ConnectionSharedKeyResultInner>, ConnectionSharedKeyResultInner>
+        beginSetOrInitDefaultSharedKeyAsync(String resourceGroupName, String gatewayName, String connectionName,
+            String linkConnectionName, ConnectionSharedKeyResultInner connectionSharedKeyParameters);
+
+    /**
+     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
+     * operation. If key length is given, the operation creates a random key of the pre-defined length.
+     * 
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
+     * connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of sharedKey Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ConnectionSharedKeyResultInner>, ConnectionSharedKeyResultInner>
+        beginSetOrInitDefaultSharedKey(String resourceGroupName, String gatewayName, String connectionName,
+            String linkConnectionName, ConnectionSharedKeyResultInner connectionSharedKeyParameters);
+
+    /**
+     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
+     * operation. If key length is given, the operation creates a random key of the pre-defined length.
+     * 
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
+     * connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of sharedKey Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ConnectionSharedKeyResultInner>, ConnectionSharedKeyResultInner>
+        beginSetOrInitDefaultSharedKey(String resourceGroupName, String gatewayName, String connectionName,
+            String linkConnectionName, ConnectionSharedKeyResultInner connectionSharedKeyParameters, Context context);
+
+    /**
+     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
+     * operation. If key length is given, the operation creates a random key of the pre-defined length.
+     * 
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
+     * connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sharedKey Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ConnectionSharedKeyResultInner> setOrInitDefaultSharedKeyAsync(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName, ConnectionSharedKeyResultInner connectionSharedKeyParameters);
+
+    /**
+     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
+     * operation. If key length is given, the operation creates a random key of the pre-defined length.
+     * 
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
+     * connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sharedKey Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConnectionSharedKeyResultInner setOrInitDefaultSharedKey(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName, ConnectionSharedKeyResultInner connectionSharedKeyParameters);
+
+    /**
+     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
+     * operation. If key length is given, the operation creates a random key of the pre-defined length.
+     * 
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
+     * connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sharedKey Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConnectionSharedKeyResultInner setOrInitDefaultSharedKey(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName, ConnectionSharedKeyResultInner connectionSharedKeyParameters,
+        Context context);
+
+    /**
+     * Gets the value of the shared key of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the value of the shared key of VpnLink connection specified along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ConnectionSharedKeyResultInner>> listDefaultSharedKeyWithResponseAsync(String resourceGroupName,
+        String gatewayName, String connectionName, String linkConnectionName);
+
+    /**
+     * Gets the value of the shared key of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the value of the shared key of VpnLink connection specified on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ConnectionSharedKeyResultInner> listDefaultSharedKeyAsync(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName);
+
+    /**
+     * Gets the value of the shared key of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the value of the shared key of VpnLink connection specified along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ConnectionSharedKeyResultInner> listDefaultSharedKeyWithResponse(String resourceGroupName,
+        String gatewayName, String connectionName, String linkConnectionName, Context context);
+
+    /**
+     * Gets the value of the shared key of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the value of the shared key of VpnLink connection specified.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConnectionSharedKeyResultInner listDefaultSharedKey(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName);
+
+    /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -153,12 +469,12 @@ public interface VpnLinkConnectionsClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> getIkeSasWithResponseAsync(
-        String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName);
+    Mono<Response<Flux<ByteBuffer>>> getIkeSasWithResponseAsync(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName);
 
     /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -169,12 +485,12 @@ public interface VpnLinkConnectionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<String>, String> beginGetIkeSasAsync(
-        String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName);
+    PollerFlux<PollResult<String>, String> beginGetIkeSasAsync(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName);
 
     /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -185,12 +501,12 @@ public interface VpnLinkConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<String>, String> beginGetIkeSas(
-        String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName);
+    SyncPoller<PollResult<String>, String> beginGetIkeSas(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName);
 
     /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -202,16 +518,12 @@ public interface VpnLinkConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<String>, String> beginGetIkeSas(
-        String resourceGroupName,
-        String gatewayName,
-        String connectionName,
-        String linkConnectionName,
-        Context context);
+    SyncPoller<PollResult<String>, String> beginGetIkeSas(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName, Context context);
 
     /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -222,12 +534,12 @@ public interface VpnLinkConnectionsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<String> getIkeSasAsync(
-        String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName);
+    Mono<String> getIkeSasAsync(String resourceGroupName, String gatewayName, String connectionName,
+        String linkConnectionName);
 
     /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -242,7 +554,7 @@ public interface VpnLinkConnectionsClient {
 
     /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -254,16 +566,12 @@ public interface VpnLinkConnectionsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    String getIkeSas(
-        String resourceGroupName,
-        String gatewayName,
-        String connectionName,
-        String linkConnectionName,
+    String getIkeSas(String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName,
         Context context);
 
     /**
      * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the vpn gateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -271,15 +579,15 @@ public interface VpnLinkConnectionsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<VpnSiteLinkConnectionInner> listByVpnConnectionAsync(
-        String resourceGroupName, String gatewayName, String connectionName);
+    PagedFlux<VpnSiteLinkConnectionInner> listByVpnConnectionAsync(String resourceGroupName, String gatewayName,
+        String connectionName);
 
     /**
      * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the vpn gateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -287,15 +595,15 @@ public interface VpnLinkConnectionsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VpnSiteLinkConnectionInner> listByVpnConnection(
-        String resourceGroupName, String gatewayName, String connectionName);
+    PagedIterable<VpnSiteLinkConnectionInner> listByVpnConnection(String resourceGroupName, String gatewayName,
+        String connectionName);
 
     /**
      * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
-     *
+     * 
      * @param resourceGroupName The resource group name of the vpn gateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
@@ -304,9 +612,9 @@ public interface VpnLinkConnectionsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list all vpn connections to a virtual wan vpn gateway as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VpnSiteLinkConnectionInner> listByVpnConnection(
-        String resourceGroupName, String gatewayName, String connectionName, Context context);
+    PagedIterable<VpnSiteLinkConnectionInner> listByVpnConnection(String resourceGroupName, String gatewayName,
+        String connectionName, Context context);
 }

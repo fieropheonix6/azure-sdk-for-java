@@ -7,20 +7,19 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.FeaturizationSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class FeaturizationSettingsTests {
-    @Test
-    public void testDeserialize() {
-        FeaturizationSettings model =
-            BinaryData.fromString("{\"datasetLanguage\":\"hwtbbaedorvvm\"}").toObject(FeaturizationSettings.class);
-        Assertions.assertEquals("hwtbbaedorvvm", model.datasetLanguage());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        FeaturizationSettings model
+            = BinaryData.fromString("{\"datasetLanguage\":\"auwxsuykznhrfgsl\"}").toObject(FeaturizationSettings.class);
+        Assertions.assertEquals("auwxsuykznhrfgsl", model.datasetLanguage());
     }
 
-    @Test
-    public void testSerialize() {
-        FeaturizationSettings model = new FeaturizationSettings().withDatasetLanguage("hwtbbaedorvvm");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        FeaturizationSettings model = new FeaturizationSettings().withDatasetLanguage("auwxsuykznhrfgsl");
         model = BinaryData.fromObject(model).toObject(FeaturizationSettings.class);
-        Assertions.assertEquals("hwtbbaedorvvm", model.datasetLanguage());
+        Assertions.assertEquals("auwxsuykznhrfgsl", model.datasetLanguage());
     }
 }

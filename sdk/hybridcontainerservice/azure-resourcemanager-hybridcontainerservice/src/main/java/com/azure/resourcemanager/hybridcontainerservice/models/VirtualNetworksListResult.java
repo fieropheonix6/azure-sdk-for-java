@@ -5,52 +5,58 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.models.VirtualNetworksInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.models.VirtualNetworkInner;
+import java.io.IOException;
 import java.util.List;
 
-/** The VirtualNetworksListResult model. */
+/**
+ * A list of virtual network resources.
+ */
 @Fluent
-public final class VirtualNetworksListResult {
+public final class VirtualNetworksListResult implements JsonSerializable<VirtualNetworksListResult> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
-    private List<VirtualNetworksInner> value;
+    private List<VirtualNetworkInner> value;
 
     /*
      * The nextLink property.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of VirtualNetworksListResult class. */
+    /**
+     * Creates an instance of VirtualNetworksListResult class.
+     */
     public VirtualNetworksListResult() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
-    public List<VirtualNetworksInner> value() {
+    public List<VirtualNetworkInner> value() {
         return this.value;
     }
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualNetworksListResult object itself.
      */
-    public VirtualNetworksListResult withValue(List<VirtualNetworksInner> value) {
+    public VirtualNetworksListResult withValue(List<VirtualNetworkInner> value) {
         this.value = value;
         return this;
     }
 
     /**
      * Get the nextLink property: The nextLink property.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class VirtualNetworksListResult {
 
     /**
      * Set the nextLink property: The nextLink property.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualNetworksListResult object itself.
      */
@@ -70,12 +76,53 @@ public final class VirtualNetworksListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworksListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworksListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworksListResult.
+     */
+    public static VirtualNetworksListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworksListResult deserializedVirtualNetworksListResult = new VirtualNetworksListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VirtualNetworkInner> value
+                        = reader.readArray(reader1 -> VirtualNetworkInner.fromJson(reader1));
+                    deserializedVirtualNetworksListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedVirtualNetworksListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworksListResult;
+        });
     }
 }

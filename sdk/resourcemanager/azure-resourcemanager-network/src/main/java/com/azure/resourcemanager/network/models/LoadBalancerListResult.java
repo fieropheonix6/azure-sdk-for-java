@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancerInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Response for ListLoadBalancers API service call. */
+/**
+ * Response for ListLoadBalancers API service call.
+ */
 @Fluent
-public final class LoadBalancerListResult {
+public final class LoadBalancerListResult implements JsonSerializable<LoadBalancerListResult> {
     /*
      * A list of load balancers in a resource group.
      */
-    @JsonProperty(value = "value")
     private List<LoadBalancerInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of LoadBalancerListResult class. */
+    /**
+     * Creates an instance of LoadBalancerListResult class.
+     */
     public LoadBalancerListResult() {
     }
 
     /**
      * Get the value property: A list of load balancers in a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<LoadBalancerInner> value() {
@@ -39,7 +45,7 @@ public final class LoadBalancerListResult {
 
     /**
      * Set the value property: A list of load balancers in a resource group.
-     *
+     * 
      * @param value the value value to set.
      * @return the LoadBalancerListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class LoadBalancerListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +65,51 @@ public final class LoadBalancerListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LoadBalancerListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LoadBalancerListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LoadBalancerListResult.
+     */
+    public static LoadBalancerListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoadBalancerListResult deserializedLoadBalancerListResult = new LoadBalancerListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<LoadBalancerInner> value = reader.readArray(reader1 -> LoadBalancerInner.fromJson(reader1));
+                    deserializedLoadBalancerListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedLoadBalancerListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLoadBalancerListResult;
+        });
     }
 }

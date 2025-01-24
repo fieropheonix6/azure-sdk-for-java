@@ -12,8 +12,7 @@ public final class StorageAccountInformationImpl implements StorageAccountInform
 
     private final com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager;
 
-    StorageAccountInformationImpl(
-        StorageAccountInformationInner innerObject,
+    StorageAccountInformationImpl(StorageAccountInformationInner innerObject,
         com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -23,16 +22,16 @@ public final class StorageAccountInformationImpl implements StorageAccountInform
         return this.innerModel().id();
     }
 
-    public String suffix() {
-        return this.innerModel().suffix();
-    }
-
     public String name() {
         return this.innerModel().name();
     }
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public String suffix() {
+        return this.innerModel().suffix();
     }
 
     public StorageAccountInformationInner innerModel() {

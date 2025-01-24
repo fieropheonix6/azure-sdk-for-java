@@ -4,27 +4,38 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for Certainty. */
+/**
+ * Describes the entities certainty and polarity.
+ */
 public enum Certainty {
-    /** Enum value positive. */
+    /**
+     * Enum value positive.
+     */
     POSITIVE("positive"),
 
-    /** Enum value positivePossible. */
+    /**
+     * Enum value positivePossible.
+     */
     POSITIVE_POSSIBLE("positivePossible"),
 
-    /** Enum value neutralPossible. */
+    /**
+     * Enum value neutralPossible.
+     */
     NEUTRAL_POSSIBLE("neutralPossible"),
 
-    /** Enum value negativePossible. */
+    /**
+     * Enum value negativePossible.
+     */
     NEGATIVE_POSSIBLE("negativePossible"),
 
-    /** Enum value negative. */
+    /**
+     * Enum value negative.
+     */
     NEGATIVE("negative");
 
-    /** The actual serialized value for a Certainty instance. */
+    /**
+     * The actual serialized value for a Certainty instance.
+     */
     private final String value;
 
     Certainty(String value) {
@@ -33,11 +44,10 @@ public enum Certainty {
 
     /**
      * Parses a serialized value to a Certainty instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed Certainty object, or null if unable to parse.
      */
-    @JsonCreator
     public static Certainty fromString(String value) {
         if (value == null) {
             return null;
@@ -51,7 +61,9 @@ public enum Certainty {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

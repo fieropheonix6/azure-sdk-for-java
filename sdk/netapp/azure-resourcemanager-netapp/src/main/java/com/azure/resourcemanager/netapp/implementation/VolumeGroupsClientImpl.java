@@ -39,22 +39,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VolumeGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VolumeGroupsClient.
+ */
 public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VolumeGroupsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetAppManagementClientImpl client;
 
     /**
      * Initializes an instance of VolumeGroupsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VolumeGroupsClientImpl(NetAppManagementClientImpl client) {
-        this.service =
-            RestProxy.create(VolumeGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(VolumeGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,77 +70,54 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetAppManagementClie")
-    private interface VolumeGroupsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/volumeGroups")
-        @ExpectedResponses({200})
+    public interface VolumeGroupsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/volumeGroups")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VolumeGroupList>> listByNetAppAccount(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VolumeGroupList>> listByNetAppAccount(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/volumeGroups/{volumeGroupName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<VolumeGroupDetailsInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("volumeGroupName") String volumeGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/volumeGroups/{volumeGroupName}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("volumeGroupName") String volumeGroupName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") VolumeGroupDetailsInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/volumeGroups/{volumeGroupName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/volumeGroups/{volumeGroupName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VolumeGroupDetailsInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("volumeGroupName") String volumeGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/volumeGroups/{volumeGroupName}")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("volumeGroupName") String volumeGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") VolumeGroupDetailsInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/volumeGroups/{volumeGroupName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("volumeGroupName") String volumeGroupName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("volumeGroupName") String volumeGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Describe all volume groups
-     *
-     * <p>List all volume groups for given account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all volume groups for given account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -142,19 +125,15 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return list of volume group resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VolumeGroupInner>> listByNetAppAccountSinglePageAsync(
-        String resourceGroupName, String accountName) {
+    private Mono<PagedResponse<VolumeGroupInner>> listByNetAppAccountSinglePageAsync(String resourceGroupName,
+        String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -166,29 +145,19 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByNetAppAccount(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<VolumeGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+                context -> service.listByNetAppAccount(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, accountName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<VolumeGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Describe all volume groups
-     *
-     * <p>List all volume groups for given account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all volume groups for given account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -197,19 +166,15 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return list of volume group resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VolumeGroupInner>> listByNetAppAccountSinglePageAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<PagedResponse<VolumeGroupInner>> listByNetAppAccountSinglePageAsync(String resourceGroupName,
+        String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -221,26 +186,18 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByNetAppAccount(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByNetAppAccount(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                accountName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Describe all volume groups
-     *
-     * <p>List all volume groups for given account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all volume groups for given account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -254,10 +211,10 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
 
     /**
      * Describe all volume groups
-     *
-     * <p>List all volume groups for given account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all volume groups for given account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -266,17 +223,17 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return list of volume group resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VolumeGroupInner> listByNetAppAccountAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private PagedFlux<VolumeGroupInner> listByNetAppAccountAsync(String resourceGroupName, String accountName,
+        Context context) {
         return new PagedFlux<>(() -> listByNetAppAccountSinglePageAsync(resourceGroupName, accountName, context));
     }
 
     /**
      * Describe all volume groups
-     *
-     * <p>List all volume groups for given account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all volume groups for given account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -290,10 +247,10 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
 
     /**
      * Describe all volume groups
-     *
-     * <p>List all volume groups for given account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all volume groups for given account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -302,39 +259,35 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return list of volume group resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VolumeGroupInner> listByNetAppAccount(
-        String resourceGroupName, String accountName, Context context) {
+    public PagedIterable<VolumeGroupInner> listByNetAppAccount(String resourceGroupName, String accountName,
+        Context context) {
         return new PagedIterable<>(listByNetAppAccountAsync(resourceGroupName, accountName, context));
     }
 
     /**
      * Describe a Volume Group
-     *
-     * <p>Get details of the specified volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get details of the specified volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified volume group along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return details of the specified volume group along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VolumeGroupDetailsInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String volumeGroupName) {
+    private Mono<Response<VolumeGroupDetailsInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String volumeGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -349,50 +302,36 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            volumeGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, volumeGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Describe a Volume Group
-     *
-     * <p>Get details of the specified volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get details of the specified volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified volume group along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return details of the specified volume group along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VolumeGroupDetailsInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String volumeGroupName, Context context) {
+    private Mono<Response<VolumeGroupDetailsInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String volumeGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -407,24 +346,16 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                volumeGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            volumeGroupName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Describe a Volume Group
-     *
-     * <p>Get details of the specified volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get details of the specified volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -433,36 +364,18 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return details of the specified volume group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VolumeGroupDetailsInner> getAsync(
-        String resourceGroupName, String accountName, String volumeGroupName) {
+    private Mono<VolumeGroupDetailsInner> getAsync(String resourceGroupName, String accountName,
+        String volumeGroupName) {
         return getWithResponseAsync(resourceGroupName, accountName, volumeGroupName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Describe a Volume Group
-     *
-     * <p>Get details of the specified volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param volumeGroupName The name of the volumeGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified volume group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VolumeGroupDetailsInner get(String resourceGroupName, String accountName, String volumeGroupName) {
-        return getAsync(resourceGroupName, accountName, volumeGroupName).block();
-    }
-
-    /**
-     * Describe a Volume Group
-     *
-     * <p>Get details of the specified volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get details of the specified volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param context The context to associate with this operation.
@@ -472,19 +385,37 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return details of the specified volume group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VolumeGroupDetailsInner> getWithResponse(
-        String resourceGroupName, String accountName, String volumeGroupName, Context context) {
+    public Response<VolumeGroupDetailsInner> getWithResponse(String resourceGroupName, String accountName,
+        String volumeGroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, volumeGroupName, context).block();
+    }
+
+    /**
+     * Describe a Volume Group
+     * 
+     * Get details of the specified volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param volumeGroupName The name of the volumeGroup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified volume group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VolumeGroupDetailsInner get(String resourceGroupName, String accountName, String volumeGroupName) {
+        return getWithResponse(resourceGroupName, accountName, volumeGroupName, Context.NONE).getValue();
     }
 
     /**
      * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
      * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
      * thereafter.
-     *
-     * <p>Create a volume group along with specified volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create a volume group along with specified volumes.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param body Volume Group object supplied in the body of the operation.
@@ -494,19 +425,15 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return volume group resource for create along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String accountName, String volumeGroupName, VolumeGroupDetailsInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String volumeGroupName, VolumeGroupDetailsInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -526,19 +453,8 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            volumeGroupName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, volumeGroupName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -546,10 +462,10 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
      * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
      * thereafter.
-     *
-     * <p>Create a volume group along with specified volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create a volume group along with specified volumes.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param body Volume Group object supplied in the body of the operation.
@@ -560,23 +476,15 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return volume group resource for create along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String volumeGroupName,
-        VolumeGroupDetailsInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String volumeGroupName, VolumeGroupDetailsInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -596,27 +504,18 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                volumeGroupName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, volumeGroupName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
      * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
      * thereafter.
-     *
-     * <p>Create a volume group along with specified volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create a volume group along with specified volumes.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param body Volume Group object supplied in the body of the operation.
@@ -628,26 +527,21 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VolumeGroupDetailsInner>, VolumeGroupDetailsInner> beginCreateAsync(
         String resourceGroupName, String accountName, String volumeGroupName, VolumeGroupDetailsInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, accountName, volumeGroupName, body);
-        return this
-            .client
-            .<VolumeGroupDetailsInner, VolumeGroupDetailsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VolumeGroupDetailsInner.class,
-                VolumeGroupDetailsInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, accountName, volumeGroupName, body);
+        return this.client.<VolumeGroupDetailsInner, VolumeGroupDetailsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VolumeGroupDetailsInner.class, VolumeGroupDetailsInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
      * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
      * thereafter.
-     *
-     * <p>Create a volume group along with specified volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create a volume group along with specified volumes.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param body Volume Group object supplied in the body of the operation.
@@ -659,32 +553,23 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VolumeGroupDetailsInner>, VolumeGroupDetailsInner> beginCreateAsync(
-        String resourceGroupName,
-        String accountName,
-        String volumeGroupName,
-        VolumeGroupDetailsInner body,
+        String resourceGroupName, String accountName, String volumeGroupName, VolumeGroupDetailsInner body,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, accountName, volumeGroupName, body, context);
-        return this
-            .client
-            .<VolumeGroupDetailsInner, VolumeGroupDetailsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VolumeGroupDetailsInner.class,
-                VolumeGroupDetailsInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, accountName, volumeGroupName, body, context);
+        return this.client.<VolumeGroupDetailsInner, VolumeGroupDetailsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), VolumeGroupDetailsInner.class, VolumeGroupDetailsInner.class, context);
     }
 
     /**
      * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
      * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
      * thereafter.
-     *
-     * <p>Create a volume group along with specified volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create a volume group along with specified volumes.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param body Volume Group object supplied in the body of the operation.
@@ -696,17 +581,17 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeGroupDetailsInner>, VolumeGroupDetailsInner> beginCreate(
         String resourceGroupName, String accountName, String volumeGroupName, VolumeGroupDetailsInner body) {
-        return beginCreateAsync(resourceGroupName, accountName, volumeGroupName, body).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, accountName, volumeGroupName, body).getSyncPoller();
     }
 
     /**
      * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
      * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
      * thereafter.
-     *
-     * <p>Create a volume group along with specified volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create a volume group along with specified volumes.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param body Volume Group object supplied in the body of the operation.
@@ -718,22 +603,19 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VolumeGroupDetailsInner>, VolumeGroupDetailsInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String volumeGroupName,
-        VolumeGroupDetailsInner body,
+        String resourceGroupName, String accountName, String volumeGroupName, VolumeGroupDetailsInner body,
         Context context) {
-        return beginCreateAsync(resourceGroupName, accountName, volumeGroupName, body, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, accountName, volumeGroupName, body, context).getSyncPoller();
     }
 
     /**
      * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
      * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
      * thereafter.
-     *
-     * <p>Create a volume group along with specified volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create a volume group along with specified volumes.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param body Volume Group object supplied in the body of the operation.
@@ -743,10 +625,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return volume group resource for create on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VolumeGroupDetailsInner> createAsync(
-        String resourceGroupName, String accountName, String volumeGroupName, VolumeGroupDetailsInner body) {
-        return beginCreateAsync(resourceGroupName, accountName, volumeGroupName, body)
-            .last()
+    private Mono<VolumeGroupDetailsInner> createAsync(String resourceGroupName, String accountName,
+        String volumeGroupName, VolumeGroupDetailsInner body) {
+        return beginCreateAsync(resourceGroupName, accountName, volumeGroupName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -754,10 +635,10 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
      * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
      * thereafter.
-     *
-     * <p>Create a volume group along with specified volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create a volume group along with specified volumes.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param body Volume Group object supplied in the body of the operation.
@@ -768,14 +649,9 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return volume group resource for create on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VolumeGroupDetailsInner> createAsync(
-        String resourceGroupName,
-        String accountName,
-        String volumeGroupName,
-        VolumeGroupDetailsInner body,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, accountName, volumeGroupName, body, context)
-            .last()
+    private Mono<VolumeGroupDetailsInner> createAsync(String resourceGroupName, String accountName,
+        String volumeGroupName, VolumeGroupDetailsInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, accountName, volumeGroupName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -783,10 +659,10 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
      * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
      * thereafter.
-     *
-     * <p>Create a volume group along with specified volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create a volume group along with specified volumes.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param body Volume Group object supplied in the body of the operation.
@@ -796,8 +672,8 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return volume group resource for create.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VolumeGroupDetailsInner create(
-        String resourceGroupName, String accountName, String volumeGroupName, VolumeGroupDetailsInner body) {
+    public VolumeGroupDetailsInner create(String resourceGroupName, String accountName, String volumeGroupName,
+        VolumeGroupDetailsInner body) {
         return createAsync(resourceGroupName, accountName, volumeGroupName, body).block();
     }
 
@@ -805,10 +681,10 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
      * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
      * thereafter.
-     *
-     * <p>Create a volume group along with specified volumes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create a volume group along with specified volumes.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param body Volume Group object supplied in the body of the operation.
@@ -819,21 +695,17 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return volume group resource for create.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VolumeGroupDetailsInner create(
-        String resourceGroupName,
-        String accountName,
-        String volumeGroupName,
-        VolumeGroupDetailsInner body,
-        Context context) {
+    public VolumeGroupDetailsInner create(String resourceGroupName, String accountName, String volumeGroupName,
+        VolumeGroupDetailsInner body, Context context) {
         return createAsync(resourceGroupName, accountName, volumeGroupName, body, context).block();
     }
 
     /**
      * Delete a volume group
-     *
-     * <p>Delete the specified volume group only if there are no volumes under volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete the specified volume group only if there are no volumes under volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -842,19 +714,15 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String volumeGroupName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String volumeGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -867,27 +735,19 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter volumeGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            volumeGroupName,
-                            this.client.getApiVersion(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, volumeGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a volume group
-     *
-     * <p>Delete the specified volume group only if there are no volumes under volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete the specified volume group only if there are no volumes under volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param context The context to associate with this operation.
@@ -897,19 +757,15 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String volumeGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String volumeGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -922,24 +778,18 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter volumeGroupName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                volumeGroupName,
-                this.client.getApiVersion(),
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, volumeGroupName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete a volume group
-     *
-     * <p>Delete the specified volume group only if there are no volumes under volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete the specified volume group only if there are no volumes under volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -948,22 +798,20 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String volumeGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, volumeGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String volumeGroupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, volumeGroupName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a volume group
-     *
-     * <p>Delete the specified volume group only if there are no volumes under volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete the specified volume group only if there are no volumes under volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param context The context to associate with this operation.
@@ -973,22 +821,21 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String volumeGroupName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String volumeGroupName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, volumeGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, volumeGroupName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a volume group
-     *
-     * <p>Delete the specified volume group only if there are no volumes under volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete the specified volume group only if there are no volumes under volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -997,17 +844,17 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String volumeGroupName) {
-        return beginDeleteAsync(resourceGroupName, accountName, volumeGroupName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String volumeGroupName) {
+        return this.beginDeleteAsync(resourceGroupName, accountName, volumeGroupName).getSyncPoller();
     }
 
     /**
      * Delete a volume group
-     *
-     * <p>Delete the specified volume group only if there are no volumes under volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete the specified volume group only if there are no volumes under volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param context The context to associate with this operation.
@@ -1017,17 +864,17 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String volumeGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, volumeGroupName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String volumeGroupName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, accountName, volumeGroupName, context).getSyncPoller();
     }
 
     /**
      * Delete a volume group
-     *
-     * <p>Delete the specified volume group only if there are no volumes under volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete the specified volume group only if there are no volumes under volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1037,17 +884,16 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String volumeGroupName) {
-        return beginDeleteAsync(resourceGroupName, accountName, volumeGroupName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, accountName, volumeGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a volume group
-     *
-     * <p>Delete the specified volume group only if there are no volumes under volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete the specified volume group only if there are no volumes under volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param context The context to associate with this operation.
@@ -1057,19 +903,18 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String accountName, String volumeGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, volumeGroupName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String volumeGroupName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, accountName, volumeGroupName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a volume group
-     *
-     * <p>Delete the specified volume group only if there are no volumes under volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete the specified volume group only if there are no volumes under volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1083,10 +928,10 @@ public final class VolumeGroupsClientImpl implements VolumeGroupsClient {
 
     /**
      * Delete a volume group
-     *
-     * <p>Delete the specified volume group only if there are no volumes under volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete the specified volume group only if there are no volumes under volume group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param context The context to associate with this operation.

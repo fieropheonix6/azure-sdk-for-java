@@ -10,6 +10,14 @@ public final class PhoneNumberSearchOptions {
 
     private String areaCode;
     private Integer quantity;
+    private String locality;
+    private String administrativeDivision;
+
+    /**
+     * Creates a new instance of {@link PhoneNumberSearchOptions}.
+     */
+    public PhoneNumberSearchOptions() {
+    }
 
     /**
      * Sets the area code property.
@@ -45,5 +53,41 @@ public final class PhoneNumberSearchOptions {
      */
     public Integer getQuantity() {
         return this.quantity;
+    }
+
+    /**
+     * Sets the locality property.  Examples of a locality are city and town. This is applied only on geographic phone number searches.
+     * @param locality the quantity to set.
+     * @return the PhoneNumberSearchOptions object itself.
+     */
+    public PhoneNumberSearchOptions setLocality(String locality) {
+        this.locality = locality;
+        return this;
+    }
+
+    /**
+     * Gets the locality property.  Examples of a locality are city and town.
+     * @return the quantity.
+     */
+    public String getLocality() {
+        return this.locality;
+    }
+
+    /**
+     * Sets the administrative division property.  Examples of a administrative division are state and province. This is applied only on geographic phone number searches.
+     * @param administrativeDivision the quantity to set.
+     * @return the PhoneNumberSearchOptions object itself.
+     */
+    public PhoneNumberSearchOptions setAdministrativeDivision(String administrativeDivision) {
+        this.administrativeDivision = administrativeDivision;
+        return this;
+    }
+
+    /**
+     * Gets the administrative division property.  Examples of a administrative division are state and province.
+     * @return the quantity.
+     */
+    public String getAdministrativeDivision() {
+        return this.administrativeDivision;
     }
 }

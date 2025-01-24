@@ -5,80 +5,47 @@
 package com.azure.resourcemanager.databox.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databox.models.DataLocationToServiceLocationMap;
 import com.azure.resourcemanager.databox.models.Sku;
 import com.azure.resourcemanager.databox.models.SkuCapacity;
 import com.azure.resourcemanager.databox.models.SkuCost;
 import com.azure.resourcemanager.databox.models.SkuDisabledReason;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Information of the sku. */
-@JsonFlatten
+/**
+ * Information of the sku.
+ */
 @Immutable
-public class SkuInformationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuInformationInner.class);
-
+public final class SkuInformationInner implements JsonSerializable<SkuInformationInner> {
     /*
      * The Sku.
      */
-    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
 
     /*
      * The sku is enabled or not.
      */
-    @JsonProperty(value = "enabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean enabled;
 
     /*
-     * The map of data location to service location.
+     * Properties of the sku.
      */
-    @JsonProperty(value = "properties.dataLocationToServiceLocationMap", access = JsonProperty.Access.WRITE_ONLY)
-    private List<DataLocationToServiceLocationMap> dataLocationToServiceLocationMap;
+    private SkuProperties innerProperties;
 
-    /*
-     * Capacity of the Sku.
+    /**
+     * Creates an instance of SkuInformationInner class.
      */
-    @JsonProperty(value = "properties.capacity", access = JsonProperty.Access.WRITE_ONLY)
-    private SkuCapacity capacity;
-
-    /*
-     * Cost of the Sku.
-     */
-    @JsonProperty(value = "properties.costs", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SkuCost> costs;
-
-    /*
-     * Api versions that support this Sku.
-     */
-    @JsonProperty(value = "properties.apiVersions", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> apiVersions;
-
-    /*
-     * Reason why the Sku is disabled.
-     */
-    @JsonProperty(value = "properties.disabledReason", access = JsonProperty.Access.WRITE_ONLY)
-    private SkuDisabledReason disabledReason;
-
-    /*
-     * Message for why the Sku is disabled.
-     */
-    @JsonProperty(value = "properties.disabledReasonMessage", access = JsonProperty.Access.WRITE_ONLY)
-    private String disabledReasonMessage;
-
-    /*
-     * Required feature to access the sku.
-     */
-    @JsonProperty(value = "properties.requiredFeature", access = JsonProperty.Access.WRITE_ONLY)
-    private String requiredFeature;
+    public SkuInformationInner() {
+    }
 
     /**
      * Get the sku property: The Sku.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -87,7 +54,7 @@ public class SkuInformationInner {
 
     /**
      * Get the enabled property: The sku is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -95,85 +62,137 @@ public class SkuInformationInner {
     }
 
     /**
+     * Get the innerProperties property: Properties of the sku.
+     * 
+     * @return the innerProperties value.
+     */
+    private SkuProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the dataLocationToServiceLocationMap property: The map of data location to service location.
-     *
+     * 
      * @return the dataLocationToServiceLocationMap value.
      */
     public List<DataLocationToServiceLocationMap> dataLocationToServiceLocationMap() {
-        return this.dataLocationToServiceLocationMap;
+        return this.innerProperties() == null ? null : this.innerProperties().dataLocationToServiceLocationMap();
     }
 
     /**
      * Get the capacity property: Capacity of the Sku.
-     *
+     * 
      * @return the capacity value.
      */
     public SkuCapacity capacity() {
-        return this.capacity;
+        return this.innerProperties() == null ? null : this.innerProperties().capacity();
     }
 
     /**
      * Get the costs property: Cost of the Sku.
-     *
+     * 
      * @return the costs value.
      */
     public List<SkuCost> costs() {
-        return this.costs;
+        return this.innerProperties() == null ? null : this.innerProperties().costs();
     }
 
     /**
      * Get the apiVersions property: Api versions that support this Sku.
-     *
+     * 
      * @return the apiVersions value.
      */
     public List<String> apiVersions() {
-        return this.apiVersions;
+        return this.innerProperties() == null ? null : this.innerProperties().apiVersions();
     }
 
     /**
      * Get the disabledReason property: Reason why the Sku is disabled.
-     *
+     * 
      * @return the disabledReason value.
      */
     public SkuDisabledReason disabledReason() {
-        return this.disabledReason;
+        return this.innerProperties() == null ? null : this.innerProperties().disabledReason();
     }
 
     /**
      * Get the disabledReasonMessage property: Message for why the Sku is disabled.
-     *
+     * 
      * @return the disabledReasonMessage value.
      */
     public String disabledReasonMessage() {
-        return this.disabledReasonMessage;
+        return this.innerProperties() == null ? null : this.innerProperties().disabledReasonMessage();
     }
 
     /**
      * Get the requiredFeature property: Required feature to access the sku.
-     *
+     * 
      * @return the requiredFeature value.
      */
     public String requiredFeature() {
-        return this.requiredFeature;
+        return this.innerProperties() == null ? null : this.innerProperties().requiredFeature();
+    }
+
+    /**
+     * Get the countriesWithinCommerceBoundary property: List of all the Countries in the SKU specific commerce
+     * boundary.
+     * 
+     * @return the countriesWithinCommerceBoundary value.
+     */
+    public List<String> countriesWithinCommerceBoundary() {
+        return this.innerProperties() == null ? null : this.innerProperties().countriesWithinCommerceBoundary();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() != null) {
             sku().validate();
         }
-        if (dataLocationToServiceLocationMap() != null) {
-            dataLocationToServiceLocationMap().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
-        if (capacity() != null) {
-            capacity().validate();
-        }
-        if (costs() != null) {
-            costs().forEach(e -> e.validate());
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuInformationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuInformationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkuInformationInner.
+     */
+    public static SkuInformationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuInformationInner deserializedSkuInformationInner = new SkuInformationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedSkuInformationInner.sku = Sku.fromJson(reader);
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedSkuInformationInner.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSkuInformationInner.innerProperties = SkuProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuInformationInner;
+        });
     }
 }

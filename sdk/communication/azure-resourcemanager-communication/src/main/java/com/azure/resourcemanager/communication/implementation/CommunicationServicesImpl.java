@@ -30,16 +30,27 @@ public final class CommunicationServicesImpl implements CommunicationServices {
 
     private final com.azure.resourcemanager.communication.CommunicationManager serviceManager;
 
-    public CommunicationServicesImpl(
-        CommunicationServicesClient innerClient,
+    public CommunicationServicesImpl(CommunicationServicesClient innerClient,
         com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
+    public Response<CheckNameAvailabilityResponse>
+        checkNameAvailabilityWithResponse(NameAvailabilityParameters nameAvailabilityParameters, Context context) {
+        Response<CheckNameAvailabilityResponseInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(nameAvailabilityParameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public CheckNameAvailabilityResponse checkNameAvailability(NameAvailabilityParameters nameAvailabilityParameters) {
-        CheckNameAvailabilityResponseInner inner =
-            this.serviceClient().checkNameAvailability(nameAvailabilityParameters);
+        CheckNameAvailabilityResponseInner inner
+            = this.serviceClient().checkNameAvailability(nameAvailabilityParameters);
         if (inner != null) {
             return new CheckNameAvailabilityResponseImpl(inner, this.manager());
         } else {
@@ -47,24 +58,22 @@ public final class CommunicationServicesImpl implements CommunicationServices {
         }
     }
 
-    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        NameAvailabilityParameters nameAvailabilityParameters, Context context) {
-        Response<CheckNameAvailabilityResponseInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(nameAvailabilityParameters, context);
+    public Response<LinkedNotificationHub> linkNotificationHubWithResponse(String resourceGroupName,
+        String communicationServiceName, LinkNotificationHubParameters linkNotificationHubParameters, Context context) {
+        Response<LinkedNotificationHubInner> inner = this.serviceClient()
+            .linkNotificationHubWithResponse(resourceGroupName, communicationServiceName, linkNotificationHubParameters,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new LinkedNotificationHubImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
     public LinkedNotificationHub linkNotificationHub(String resourceGroupName, String communicationServiceName) {
-        LinkedNotificationHubInner inner =
-            this.serviceClient().linkNotificationHub(resourceGroupName, communicationServiceName);
+        LinkedNotificationHubInner inner
+            = this.serviceClient().linkNotificationHub(resourceGroupName, communicationServiceName);
         if (inner != null) {
             return new LinkedNotificationHubImpl(inner, this.manager());
         } else {
@@ -72,69 +81,49 @@ public final class CommunicationServicesImpl implements CommunicationServices {
         }
     }
 
-    public Response<LinkedNotificationHub> linkNotificationHubWithResponse(
-        String resourceGroupName,
-        String communicationServiceName,
-        LinkNotificationHubParameters linkNotificationHubParameters,
-        Context context) {
-        Response<LinkedNotificationHubInner> inner =
-            this
-                .serviceClient()
-                .linkNotificationHubWithResponse(
-                    resourceGroupName, communicationServiceName, linkNotificationHubParameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new LinkedNotificationHubImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<CommunicationServiceResource> list() {
         PagedIterable<CommunicationServiceResourceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new CommunicationServiceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CommunicationServiceResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CommunicationServiceResource> list(Context context) {
         PagedIterable<CommunicationServiceResourceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new CommunicationServiceResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CommunicationServiceResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CommunicationServiceResource> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<CommunicationServiceResourceInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new CommunicationServiceResourceImpl(inner1, this.manager()));
+        PagedIterable<CommunicationServiceResourceInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CommunicationServiceResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CommunicationServiceResource> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<CommunicationServiceResourceInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new CommunicationServiceResourceImpl(inner1, this.manager()));
+        PagedIterable<CommunicationServiceResourceInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CommunicationServiceResourceImpl(inner1, this.manager()));
     }
 
-    public CommunicationServiceResource getByResourceGroup(String resourceGroupName, String communicationServiceName) {
-        CommunicationServiceResourceInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, communicationServiceName);
+    public Response<CommunicationServiceResource> getByResourceGroupWithResponse(String resourceGroupName,
+        String communicationServiceName, Context context) {
+        Response<CommunicationServiceResourceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, communicationServiceName, context);
         if (inner != null) {
-            return new CommunicationServiceResourceImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CommunicationServiceResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<CommunicationServiceResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String communicationServiceName, Context context) {
-        Response<CommunicationServiceResourceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, communicationServiceName, context);
+    public CommunicationServiceResource getByResourceGroup(String resourceGroupName, String communicationServiceName) {
+        CommunicationServiceResourceInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, communicationServiceName);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CommunicationServiceResourceImpl(inner.getValue(), this.manager()));
+            return new CommunicationServiceResourceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -148,35 +137,21 @@ public final class CommunicationServicesImpl implements CommunicationServices {
         this.serviceClient().delete(resourceGroupName, communicationServiceName, context);
     }
 
-    public CommunicationServiceKeys listKeys(String resourceGroupName, String communicationServiceName) {
-        CommunicationServiceKeysInner inner =
-            this.serviceClient().listKeys(resourceGroupName, communicationServiceName);
+    public Response<CommunicationServiceKeys> listKeysWithResponse(String resourceGroupName,
+        String communicationServiceName, Context context) {
+        Response<CommunicationServiceKeysInner> inner
+            = this.serviceClient().listKeysWithResponse(resourceGroupName, communicationServiceName, context);
         if (inner != null) {
-            return new CommunicationServiceKeysImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<CommunicationServiceKeys> listKeysWithResponse(
-        String resourceGroupName, String communicationServiceName, Context context) {
-        Response<CommunicationServiceKeysInner> inner =
-            this.serviceClient().listKeysWithResponse(resourceGroupName, communicationServiceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CommunicationServiceKeysImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CommunicationServiceKeys regenerateKey(
-        String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters) {
-        CommunicationServiceKeysInner inner =
-            this.serviceClient().regenerateKey(resourceGroupName, communicationServiceName, parameters);
+    public CommunicationServiceKeys listKeys(String resourceGroupName, String communicationServiceName) {
+        CommunicationServiceKeysInner inner
+            = this.serviceClient().listKeys(resourceGroupName, communicationServiceName);
         if (inner != null) {
             return new CommunicationServiceKeysImpl(inner, this.manager());
         } else {
@@ -184,13 +159,22 @@ public final class CommunicationServicesImpl implements CommunicationServices {
         }
     }
 
-    public CommunicationServiceKeys regenerateKey(
-        String resourceGroupName,
-        String communicationServiceName,
-        RegenerateKeyParameters parameters,
-        Context context) {
-        CommunicationServiceKeysInner inner =
-            this.serviceClient().regenerateKey(resourceGroupName, communicationServiceName, parameters, context);
+    public Response<CommunicationServiceKeys> regenerateKeyWithResponse(String resourceGroupName,
+        String communicationServiceName, RegenerateKeyParameters parameters, Context context) {
+        Response<CommunicationServiceKeysInner> inner = this.serviceClient()
+            .regenerateKeyWithResponse(resourceGroupName, communicationServiceName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CommunicationServiceKeysImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CommunicationServiceKeys regenerateKey(String resourceGroupName, String communicationServiceName,
+        RegenerateKeyParameters parameters) {
+        CommunicationServiceKeysInner inner
+            = this.serviceClient().regenerateKey(resourceGroupName, communicationServiceName, parameters);
         if (inner != null) {
             return new CommunicationServiceKeysImpl(inner, this.manager());
         } else {
@@ -199,91 +183,58 @@ public final class CommunicationServicesImpl implements CommunicationServices {
     }
 
     public CommunicationServiceResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String communicationServiceName = Utils.getValueFromIdByName(id, "communicationServices");
+        String communicationServiceName = ResourceManagerUtils.getValueFromIdByName(id, "communicationServices");
         if (communicationServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'communicationServices'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'communicationServices'.", id)));
         }
-        return this
-            .getByResourceGroupWithResponse(resourceGroupName, communicationServiceName, Context.NONE)
+        return this.getByResourceGroupWithResponse(resourceGroupName, communicationServiceName, Context.NONE)
             .getValue();
     }
 
     public Response<CommunicationServiceResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String communicationServiceName = Utils.getValueFromIdByName(id, "communicationServices");
+        String communicationServiceName = ResourceManagerUtils.getValueFromIdByName(id, "communicationServices");
         if (communicationServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'communicationServices'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'communicationServices'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, communicationServiceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String communicationServiceName = Utils.getValueFromIdByName(id, "communicationServices");
+        String communicationServiceName = ResourceManagerUtils.getValueFromIdByName(id, "communicationServices");
         if (communicationServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'communicationServices'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'communicationServices'.", id)));
         }
         this.delete(resourceGroupName, communicationServiceName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String communicationServiceName = Utils.getValueFromIdByName(id, "communicationServices");
+        String communicationServiceName = ResourceManagerUtils.getValueFromIdByName(id, "communicationServices");
         if (communicationServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'communicationServices'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'communicationServices'.", id)));
         }
         this.delete(resourceGroupName, communicationServiceName, context);
     }

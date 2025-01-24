@@ -4,36 +4,53 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for IssueType. */
+/**
+ * Represents the type of the Detector.
+ */
 public enum IssueType {
-    /** Enum value ServiceIncident. */
+    /**
+     * Enum value ServiceIncident.
+     */
     SERVICE_INCIDENT("ServiceIncident"),
 
-    /** Enum value AppDeployment. */
+    /**
+     * Enum value AppDeployment.
+     */
     APP_DEPLOYMENT("AppDeployment"),
 
-    /** Enum value AppCrash. */
+    /**
+     * Enum value AppCrash.
+     */
     APP_CRASH("AppCrash"),
 
-    /** Enum value RuntimeIssueDetected. */
+    /**
+     * Enum value RuntimeIssueDetected.
+     */
     RUNTIME_ISSUE_DETECTED("RuntimeIssueDetected"),
 
-    /** Enum value AseDeployment. */
+    /**
+     * Enum value AseDeployment.
+     */
     ASE_DEPLOYMENT("AseDeployment"),
 
-    /** Enum value UserIssue. */
+    /**
+     * Enum value UserIssue.
+     */
     USER_ISSUE("UserIssue"),
 
-    /** Enum value PlatformIssue. */
+    /**
+     * Enum value PlatformIssue.
+     */
     PLATFORM_ISSUE("PlatformIssue"),
 
-    /** Enum value Other. */
+    /**
+     * Enum value Other.
+     */
     OTHER("Other");
 
-    /** The actual serialized value for a IssueType instance. */
+    /**
+     * The actual serialized value for a IssueType instance.
+     */
     private final String value;
 
     IssueType(String value) {
@@ -42,12 +59,14 @@ public enum IssueType {
 
     /**
      * Parses a serialized value to a IssueType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed IssueType object, or null if unable to parse.
      */
-    @JsonCreator
     public static IssueType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         IssueType[] items = IssueType.values();
         for (IssueType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -57,7 +76,9 @@ public enum IssueType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

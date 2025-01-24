@@ -8,15 +8,21 @@ import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link RecognizePiiEntitiesActionResult} model.
+ * The {@code RecognizePiiEntitiesActionResult} model.
  */
 @Immutable
 public final class RecognizePiiEntitiesActionResult extends TextAnalyticsActionResult {
     private RecognizePiiEntitiesResultCollection documentsResults;
 
     static {
-        RecognizePiiEntitiesActionResultPropertiesHelper.setAccessor(
-            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+        RecognizePiiEntitiesActionResultPropertiesHelper
+            .setAccessor((actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+    }
+
+    /**
+     * Constructs a {@code RecognizePiiEntitiesActionResult} model.
+     */
+    public RecognizePiiEntitiesActionResult() {
     }
 
     /**

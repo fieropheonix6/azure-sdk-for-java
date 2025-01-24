@@ -6,29 +6,38 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.SqlDatabaseResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties to create and update Azure Cosmos DB SQL database. */
+/**
+ * Properties to create and update Azure Cosmos DB SQL database.
+ */
 @Fluent
-public final class SqlDatabaseCreateUpdateProperties {
+public final class SqlDatabaseCreateUpdateProperties implements JsonSerializable<SqlDatabaseCreateUpdateProperties> {
     /*
      * The standard JSON format of a SQL database
      */
-    @JsonProperty(value = "resource", required = true)
     private SqlDatabaseResource resource;
 
     /*
-     * A key-value pair of options to be applied for the request. This corresponds to the headers sent with the
-     * request.
+     * A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
      */
-    @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
     /**
+     * Creates an instance of SqlDatabaseCreateUpdateProperties class.
+     */
+    public SqlDatabaseCreateUpdateProperties() {
+    }
+
+    /**
      * Get the resource property: The standard JSON format of a SQL database.
-     *
+     * 
      * @return the resource value.
      */
     public SqlDatabaseResource resource() {
@@ -37,7 +46,7 @@ public final class SqlDatabaseCreateUpdateProperties {
 
     /**
      * Set the resource property: The standard JSON format of a SQL database.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the SqlDatabaseCreateUpdateProperties object itself.
      */
@@ -49,7 +58,7 @@ public final class SqlDatabaseCreateUpdateProperties {
     /**
      * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @return the options value.
      */
     public CreateUpdateOptions options() {
@@ -59,7 +68,7 @@ public final class SqlDatabaseCreateUpdateProperties {
     /**
      * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @param options the options value to set.
      * @return the SqlDatabaseCreateUpdateProperties object itself.
      */
@@ -70,15 +79,14 @@ public final class SqlDatabaseCreateUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resource in model SqlDatabaseCreateUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resource in model SqlDatabaseCreateUpdateProperties"));
         } else {
             resource().validate();
         }
@@ -88,4 +96,45 @@ public final class SqlDatabaseCreateUpdateProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlDatabaseCreateUpdateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resource", this.resource);
+        jsonWriter.writeJsonField("options", this.options);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlDatabaseCreateUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlDatabaseCreateUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlDatabaseCreateUpdateProperties.
+     */
+    public static SqlDatabaseCreateUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlDatabaseCreateUpdateProperties deserializedSqlDatabaseCreateUpdateProperties
+                = new SqlDatabaseCreateUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resource".equals(fieldName)) {
+                    deserializedSqlDatabaseCreateUpdateProperties.resource = SqlDatabaseResource.fromJson(reader);
+                } else if ("options".equals(fieldName)) {
+                    deserializedSqlDatabaseCreateUpdateProperties.options = CreateUpdateOptions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlDatabaseCreateUpdateProperties;
+        });
+    }
 }

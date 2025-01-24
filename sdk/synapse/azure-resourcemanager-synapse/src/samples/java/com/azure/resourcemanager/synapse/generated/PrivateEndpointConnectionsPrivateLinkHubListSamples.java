@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for PrivateEndpointConnectionsPrivateLinkHub List. */
+/**
+ * Samples for PrivateEndpointConnectionsPrivateLinkHub List.
+ */
 public final class PrivateEndpointConnectionsPrivateLinkHubListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/PrivateEndpointConnectionsPrivateLinkHub_List.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
+     * PrivateEndpointConnectionsPrivateLinkHub_List.json
      */
     /**
      * Sample code: Get a privateLinkHub.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void getAPrivateLinkHub(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.privateEndpointConnectionsPrivateLinkHubs().list("gh-res-grp", "pe0", Context.NONE);
+        manager.privateEndpointConnectionsPrivateLinkHubs().list("gh-res-grp", "pe0", com.azure.core.util.Context.NONE);
     }
 }

@@ -6,44 +6,47 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** IpConfigurations. */
+/**
+ * IpConfigurations.
+ */
 @Fluent
 public final class HubIpConfigurationInner extends SubResource {
     /*
      * The properties of the Virtual Hub IPConfigurations.
      */
-    @JsonProperty(value = "properties")
     private HubIpConfigurationPropertiesFormatInner innerProperties;
 
     /*
      * Name of the Ip Configuration.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Ipconfiguration type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of HubIpConfigurationInner class. */
+    /**
+     * Creates an instance of HubIpConfigurationInner class.
+     */
     public HubIpConfigurationInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the Virtual Hub IPConfigurations.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HubIpConfigurationPropertiesFormatInner innerProperties() {
@@ -52,7 +55,7 @@ public final class HubIpConfigurationInner extends SubResource {
 
     /**
      * Get the name property: Name of the Ip Configuration.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +64,7 @@ public final class HubIpConfigurationInner extends SubResource {
 
     /**
      * Set the name property: Name of the Ip Configuration.
-     *
+     * 
      * @param name the name value to set.
      * @return the HubIpConfigurationInner object itself.
      */
@@ -72,7 +75,7 @@ public final class HubIpConfigurationInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -81,14 +84,16 @@ public final class HubIpConfigurationInner extends SubResource {
 
     /**
      * Get the type property: Ipconfiguration type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HubIpConfigurationInner withId(String id) {
         super.withId(id);
@@ -97,7 +102,7 @@ public final class HubIpConfigurationInner extends SubResource {
 
     /**
      * Get the privateIpAddress property: The private IP address of the IP configuration.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -106,7 +111,7 @@ public final class HubIpConfigurationInner extends SubResource {
 
     /**
      * Set the privateIpAddress property: The private IP address of the IP configuration.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the HubIpConfigurationInner object itself.
      */
@@ -120,7 +125,7 @@ public final class HubIpConfigurationInner extends SubResource {
 
     /**
      * Get the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
@@ -129,7 +134,7 @@ public final class HubIpConfigurationInner extends SubResource {
 
     /**
      * Set the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the HubIpConfigurationInner object itself.
      */
@@ -143,7 +148,7 @@ public final class HubIpConfigurationInner extends SubResource {
 
     /**
      * Get the subnet property: The reference to the subnet resource.
-     *
+     * 
      * @return the subnet value.
      */
     public SubnetInner subnet() {
@@ -152,7 +157,7 @@ public final class HubIpConfigurationInner extends SubResource {
 
     /**
      * Set the subnet property: The reference to the subnet resource.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the HubIpConfigurationInner object itself.
      */
@@ -166,7 +171,7 @@ public final class HubIpConfigurationInner extends SubResource {
 
     /**
      * Get the publicIpAddress property: The reference to the public IP resource.
-     *
+     * 
      * @return the publicIpAddress value.
      */
     public PublicIpAddressInner publicIpAddress() {
@@ -175,7 +180,7 @@ public final class HubIpConfigurationInner extends SubResource {
 
     /**
      * Set the publicIpAddress property: The reference to the public IP resource.
-     *
+     * 
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the HubIpConfigurationInner object itself.
      */
@@ -189,7 +194,7 @@ public final class HubIpConfigurationInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the IP configuration resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -198,12 +203,59 @@ public final class HubIpConfigurationInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HubIpConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HubIpConfigurationInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HubIpConfigurationInner.
+     */
+    public static HubIpConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HubIpConfigurationInner deserializedHubIpConfigurationInner = new HubIpConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedHubIpConfigurationInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedHubIpConfigurationInner.innerProperties
+                        = HubIpConfigurationPropertiesFormatInner.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedHubIpConfigurationInner.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedHubIpConfigurationInner.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedHubIpConfigurationInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHubIpConfigurationInner;
+        });
     }
 }

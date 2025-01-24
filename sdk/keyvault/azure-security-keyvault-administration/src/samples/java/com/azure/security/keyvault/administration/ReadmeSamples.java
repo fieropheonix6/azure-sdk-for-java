@@ -11,6 +11,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultGetSettingsResult;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreResult;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
@@ -18,6 +19,7 @@ import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
 import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
+import com.azure.security.keyvault.administration.models.KeyVaultSetting;
 
 import java.time.Duration;
 
@@ -43,6 +45,18 @@ public class ReadmeSamples {
             .buildClient();
     private final KeyVaultBackupAsyncClient keyVaultBackupAsyncClient =
         new KeyVaultBackupClientBuilder()
+            .vaultUrl("<your-managed-hsm-url>")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
+
+    private final KeyVaultSettingsClient keyVaultSettingsClient =
+        new KeyVaultSettingsClientBuilder()
+            .vaultUrl("<your-managed-hsm-url>")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
+    private final KeyVaultSettingsAsyncClient keyVaultSettingsAsyncClient =
+        new KeyVaultSettingsClientBuilder()
             .vaultUrl("<your-managed-hsm-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
@@ -280,16 +294,43 @@ public class ReadmeSamples {
     }
 
     /**
+     * Code sample for starting a {@link KeyVaultBackupOperation pre-backup check}.
+     */
+    public void beginPreBackup() {
+        // BEGIN: readme-sample-beginPreBackup
+        String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
+        String sasToken = "<sas-token>";
+
+        SyncPoller<KeyVaultBackupOperation, String> preBackupPoller =
+            keyVaultBackupClient.beginPreBackup(blobStorageUrl, sasToken);
+        PollResponse<KeyVaultBackupOperation> pollResponse = preBackupPoller.poll();
+
+        System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
+
+        PollResponse<KeyVaultBackupOperation> finalPollResponse = preBackupPoller.waitForCompletion();
+
+        if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            String folderUrl = preBackupPoller.getFinalResult();
+
+            System.out.printf("Pre-backup check completed successfully.%n");
+        } else {
+            KeyVaultBackupOperation operation = preBackupPoller.poll().getValue();
+
+            System.out.printf("Pre-backup check failed with error: %s.%n", operation.getError().getMessage());
+        }
+        // END: readme-sample-beginPreBackup
+    }
+
+    /**
      * Code sample for starting a {@link KeyVaultBackupOperation backup operation}.
      */
     public void beginBackup() {
         // BEGIN: readme-sample-beginBackup
         String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
-        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+        String sasToken = "<sas-token>";
 
         SyncPoller<KeyVaultBackupOperation, String> backupPoller =
             keyVaultBackupClient.beginBackup(blobStorageUrl, sasToken);
-
         PollResponse<KeyVaultBackupOperation> pollResponse = backupPoller.poll();
 
         System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
@@ -309,26 +350,51 @@ public class ReadmeSamples {
     }
 
     /**
+     * Code sample for starting a {@link KeyVaultRestoreOperation pre-restore check}.
+     */
+    public void beginPreRestore() {
+        // BEGIN: readme-sample-beginPreRestore
+        String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
+        String sasToken = "<sas-token>";
+
+        SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> preRestorePoller =
+            keyVaultBackupClient.beginPreRestore(folderUrl, sasToken);
+        PollResponse<KeyVaultRestoreOperation> pollResponse = preRestorePoller.poll();
+
+        System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
+
+        PollResponse<KeyVaultRestoreOperation> finalPollResponse = preRestorePoller.waitForCompletion();
+
+        if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            System.out.printf("Pre-restore check completed successfully.%n");
+        } else {
+            KeyVaultRestoreOperation operation = preRestorePoller.poll().getValue();
+
+            System.out.printf("Pre-restore check failed with error: %s.%n", operation.getError().getMessage());
+        }
+        // END: readme-sample-beginPreRestore
+    }
+
+    /**
      * Code sample for starting a {@link KeyVaultRestoreOperation restore operation}.
      */
     public void beginRestore() {
         // BEGIN: readme-sample-beginRestore
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+        String sasToken = "<sas-token>";
 
-        SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> backupPoller =
+        SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller =
             keyVaultBackupClient.beginRestore(folderUrl, sasToken);
-
-        PollResponse<KeyVaultRestoreOperation> pollResponse = backupPoller.poll();
+        PollResponse<KeyVaultRestoreOperation> pollResponse = restorePoller.poll();
 
         System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
 
-        PollResponse<KeyVaultRestoreOperation> finalPollResponse = backupPoller.waitForCompletion();
+        PollResponse<KeyVaultRestoreOperation> finalPollResponse = restorePoller.waitForCompletion();
 
         if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
             System.out.printf("Backup restored successfully.%n");
         } else {
-            KeyVaultRestoreOperation operation = backupPoller.poll().getValue();
+            KeyVaultRestoreOperation operation = restorePoller.poll().getValue();
 
             System.out.printf("Restore failed with error: %s.%n", operation.getError().getMessage());
         }
@@ -341,26 +407,45 @@ public class ReadmeSamples {
     public void beginSelectiveKeyRestore() {
         // BEGIN: readme-sample-beginSelectiveKeyRestore
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+        String sasToken = "<sas-token>";
         String keyName = "myKey";
 
-        SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> backupPoller =
+        SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> restorePoller =
             keyVaultBackupClient.beginSelectiveKeyRestore(folderUrl, sasToken, keyName);
-
-        PollResponse<KeyVaultSelectiveKeyRestoreOperation> pollResponse = backupPoller.poll();
+        PollResponse<KeyVaultSelectiveKeyRestoreOperation> pollResponse = restorePoller.poll();
 
         System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
 
-        PollResponse<KeyVaultSelectiveKeyRestoreOperation> finalPollResponse = backupPoller.waitForCompletion();
+        PollResponse<KeyVaultSelectiveKeyRestoreOperation> finalPollResponse = restorePoller.waitForCompletion();
 
         if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
             System.out.printf("Key restored successfully.%n");
         } else {
-            KeyVaultSelectiveKeyRestoreOperation operation = backupPoller.poll().getValue();
+            KeyVaultSelectiveKeyRestoreOperation operation = restorePoller.poll().getValue();
 
             System.out.printf("Key restore failed with error: %s.%n", operation.getError().getMessage());
         }
         // END: readme-sample-beginSelectiveKeyRestore
+    }
+
+    /**
+     * Code sample for starting a {@link KeyVaultBackupOperation pre-backup check} asynchronously.
+     */
+    public void beginPreBackupAsync() {
+        // BEGIN: readme-sample-beginPreBackupAsync
+        String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
+        String sasToken = "<sas-token>";
+
+        keyVaultBackupAsyncClient.beginPreBackup(blobStorageUrl, sasToken)
+            .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
+            .doOnError(e -> System.out.printf("Pre-backup check failed with error: %s.%n", e.getMessage()))
+            .doOnNext(pollResponse ->
+                System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus()))
+            .filter(pollResponse -> pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(folderUrl ->
+                System.out.printf("Pre-backup check completed successfully.%n"));
+        // END: readme-sample-beginPreBackupAsync
     }
 
     /**
@@ -369,7 +454,7 @@ public class ReadmeSamples {
     public void beginBackupAsync() {
         // BEGIN: readme-sample-beginBackupAsync
         String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
-        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+        String sasToken = "<sas-token>";
 
         keyVaultBackupAsyncClient.beginBackup(blobStorageUrl, sasToken)
             .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
@@ -384,12 +469,31 @@ public class ReadmeSamples {
     }
 
     /**
+     * Code sample for starting a {@link KeyVaultRestoreOperation pre-restore check} asynchronously.
+     */
+    public void beginPreRestoreAsync() {
+        // BEGIN: readme-sample-beginPreRestoreAsync
+        String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
+        String sasToken = "<sas-token>";
+
+        keyVaultBackupAsyncClient.beginPreRestore(folderUrl, sasToken)
+            .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
+            .doOnError(e -> System.out.printf("Pre-restore check failed with error: %s.%n", e.getMessage()))
+            .doOnNext(pollResponse ->
+                System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus()))
+            .filter(pollResponse -> pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(unused -> System.out.printf("Pre-restore check completed successfully.%n"));
+        // END: readme-sample-beginPreRestoreAsync
+    }
+
+    /**
      * Code sample for starting a {@link KeyVaultRestoreOperation restore operation} asynchronously.
      */
     public void beginRestoreAsync() {
         // BEGIN: readme-sample-beginRestoreAsync
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+        String sasToken = "<sas-token>";
 
         keyVaultBackupAsyncClient.beginRestore(folderUrl, sasToken)
             .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
@@ -409,7 +513,7 @@ public class ReadmeSamples {
     public void beginSelectiveKeyRestoreAsync() {
         // BEGIN: readme-sample-beginSelectiveKeyRestoreAsync
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
+        String sasToken = "<sas-token>";
         String keyName = "myKey";
 
         keyVaultBackupAsyncClient.beginSelectiveKeyRestore(folderUrl, sasToken, keyName)
@@ -431,5 +535,86 @@ public class ReadmeSamples {
             System.out.println(e.getMessage());
         }
         // END: readme-sample-troubleshooting
+    }
+
+    /**
+     * Code sample for updating a {@link KeyVaultSetting setting}.
+     */
+    public void updateSetting() {
+        // BEGIN: readme-sample-updateSetting
+        String settingName = "<setting-to-update>";
+        KeyVaultSetting settingToUpdate = new KeyVaultSetting(settingName, true);
+        KeyVaultSetting updatedSetting = keyVaultSettingsClient.updateSetting(settingToUpdate);
+
+        System.out.printf("Updated setting '%s' to '%s'.%n", updatedSetting.getName(), updatedSetting.asBoolean());
+        // END: readme-sample-updateSetting
+    }
+
+    /**
+     * Code sample for retrieving a {@link KeyVaultSetting setting}.
+     */
+    public void getSetting() {
+        // BEGIN: readme-sample-getSetting
+        String settingName = "<setting-to-get>";
+        KeyVaultSetting setting = keyVaultSettingsClient.getSetting(settingName);
+
+        System.out.printf("Retrieved setting '%s' with value '%s'.%n", setting.getName(),
+            setting.asBoolean());
+        // END: readme-sample-getSetting
+    }
+
+    /**
+     * Code sample for retrieving an account's {@link KeyVaultSetting settings}.
+     */
+    public void getSettings() {
+        // BEGIN: readme-sample-getSettings
+        KeyVaultGetSettingsResult getSettingsResult = keyVaultSettingsClient.getSettings();
+
+        for (KeyVaultSetting setting : getSettingsResult.getSettings()) {
+            System.out.printf("Retrieved setting '%s' with value '%s'.%n", setting.getName(), setting.asBoolean());
+        }
+        // END: readme-sample-getSettings
+    }
+
+    /**
+     * Code sample for updating a {@link KeyVaultSetting setting} asynchronously.
+     */
+    public void updateSettingAsync() {
+        // BEGIN: readme-sample-updateSettingAsync
+        String settingName = "<setting-to-update>";
+        KeyVaultSetting settingToUpdate = new KeyVaultSetting(settingName, true);
+
+        keyVaultSettingsAsyncClient.updateSetting(settingToUpdate)
+            .subscribe(updatedSetting ->
+                System.out.printf("Updated setting with name '%s' and value '%s'.%n", updatedSetting.getName(),
+                    updatedSetting.asBoolean()));
+        // END: readme-sample-updateSettingAsync
+    }
+
+    /**
+     * Code sample for retrieving a {@link KeyVaultSetting setting} asynchronously.
+     */
+    public void getSettingAsync() {
+        // BEGIN: readme-sample-getSettingAsync
+        String settingName = "<setting-to-get>";
+
+        keyVaultSettingsAsyncClient.getSetting(settingName)
+            .subscribe(setting ->
+                System.out.printf("Retrieved setting with name '%s' and value '%s'.%n", setting.getName(),
+                    setting.asBoolean()));
+        // END: readme-sample-getSettingAsync
+    }
+
+    /**
+     * Code sample for retrieving an account's {@link KeyVaultSetting settings} asynchronously.
+     */
+    public void getSettingsAsync() {
+        // BEGIN: readme-sample-getSettingsAsync
+        keyVaultSettingsAsyncClient.getSettings()
+            .subscribe(settingsResult ->
+                settingsResult.getSettings().forEach(setting ->
+                    System.out.printf("Retrieved setting with name '%s' and value '%s'.%n", setting.getName(),
+                        setting.asBoolean())));
+        // END: readme-sample-getSettingsAsync
     }
 }

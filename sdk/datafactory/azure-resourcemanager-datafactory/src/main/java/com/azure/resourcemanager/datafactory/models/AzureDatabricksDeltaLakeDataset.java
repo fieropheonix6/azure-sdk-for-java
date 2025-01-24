@@ -5,80 +5,113 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureDatabricksDeltaLakeDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Azure Databricks Delta Lake dataset. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureDatabricksDeltaLakeDataset")
+/**
+ * Azure Databricks Delta Lake dataset.
+ */
 @Fluent
 public final class AzureDatabricksDeltaLakeDataset extends Dataset {
     /*
+     * Type of dataset.
+     */
+    private String type = "AzureDatabricksDeltaLakeDataset";
+
+    /*
      * Properties specific to this dataset type.
      */
-    @JsonProperty(value = "typeProperties")
     private AzureDatabricksDeltaLakeDatasetTypeProperties innerTypeProperties;
 
-    /** Creates an instance of AzureDatabricksDeltaLakeDataset class. */
+    /**
+     * Creates an instance of AzureDatabricksDeltaLakeDataset class.
+     */
     public AzureDatabricksDeltaLakeDataset() {
     }
 
     /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private AzureDatabricksDeltaLakeDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -87,7 +120,7 @@ public final class AzureDatabricksDeltaLakeDataset extends Dataset {
 
     /**
      * Get the table property: The name of delta table. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object table() {
@@ -96,7 +129,7 @@ public final class AzureDatabricksDeltaLakeDataset extends Dataset {
 
     /**
      * Set the table property: The name of delta table. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the AzureDatabricksDeltaLakeDataset object itself.
      */
@@ -110,7 +143,7 @@ public final class AzureDatabricksDeltaLakeDataset extends Dataset {
 
     /**
      * Get the database property: The database name of delta table. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the database value.
      */
     public Object database() {
@@ -119,7 +152,7 @@ public final class AzureDatabricksDeltaLakeDataset extends Dataset {
 
     /**
      * Set the database property: The database name of delta table. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param database the database value to set.
      * @return the AzureDatabricksDeltaLakeDataset object itself.
      */
@@ -133,14 +166,110 @@ public final class AzureDatabricksDeltaLakeDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() != null) {
             innerTypeProperties().validate();
         }
+        if (linkedServiceName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedServiceName in model AzureDatabricksDeltaLakeDataset"));
+        } else {
+            linkedServiceName().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (folder() != null) {
+            folder().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureDatabricksDeltaLakeDataset.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedServiceName", linkedServiceName());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeUntypedField("structure", structure());
+        jsonWriter.writeUntypedField("schema", schema());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("folder", folder());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDatabricksDeltaLakeDataset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDatabricksDeltaLakeDataset if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureDatabricksDeltaLakeDataset.
+     */
+    public static AzureDatabricksDeltaLakeDataset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDatabricksDeltaLakeDataset deserializedAzureDatabricksDeltaLakeDataset
+                = new AzureDatabricksDeltaLakeDataset();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedServiceName".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeDataset
+                        .withLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeDataset.withDescription(reader.getString());
+                } else if ("structure".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeDataset.withStructure(reader.readUntyped());
+                } else if ("schema".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeDataset.withSchema(reader.readUntyped());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedAzureDatabricksDeltaLakeDataset.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedAzureDatabricksDeltaLakeDataset.withAnnotations(annotations);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeDataset.withFolder(DatasetFolder.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeDataset.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeDataset.innerTypeProperties
+                        = AzureDatabricksDeltaLakeDatasetTypeProperties.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureDatabricksDeltaLakeDataset.withAdditionalProperties(additionalProperties);
+
+            return deserializedAzureDatabricksDeltaLakeDataset;
+        });
     }
 }

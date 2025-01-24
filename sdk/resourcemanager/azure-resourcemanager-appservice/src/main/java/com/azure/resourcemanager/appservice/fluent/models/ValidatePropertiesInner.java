@@ -5,101 +5,96 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** App properties used for validation. */
+/**
+ * App properties used for validation.
+ */
 @Fluent
-public final class ValidatePropertiesInner {
+public final class ValidatePropertiesInner implements JsonSerializable<ValidatePropertiesInner> {
     /*
      * ARM resource ID of an App Service plan that would host the app.
      */
-    @JsonProperty(value = "serverFarmId")
     private String serverFarmId;
 
     /*
      * Name of the target SKU for the App Service plan.
      */
-    @JsonProperty(value = "skuName")
     private String skuName;
 
     /*
-     * <code>true</code> if App Service plan is for Linux workers; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if App Service plan is for Linux workers; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "needLinuxWorkers")
     private Boolean needLinuxWorkers;
 
     /*
-     * <code>true</code> if App Service plan is for Spot instances; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if App Service plan is for Spot instances; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isSpot")
     private Boolean isSpot;
 
     /*
      * Target capacity of the App Service plan (number of VMs).
      */
-    @JsonProperty(value = "capacity")
     private Integer capacity;
 
     /*
-     * Name of App Service Environment where app or App Service plan should be
-     * created.
+     * Name of App Service Environment where app or App Service plan should be created.
      */
-    @JsonProperty(value = "hostingEnvironment")
     private String hostingEnvironment;
 
     /*
      * <code>true</code> if App Service plan is running as a windows container
      */
-    @JsonProperty(value = "isXenon")
     private Boolean isXenon;
 
     /*
      * Base URL of the container registry
      */
-    @JsonProperty(value = "containerRegistryBaseUrl")
     private String containerRegistryBaseUrl;
 
     /*
      * Username for to access the container registry
      */
-    @JsonProperty(value = "containerRegistryUsername")
     private String containerRegistryUsername;
 
     /*
      * Password for to access the container registry
      */
-    @JsonProperty(value = "containerRegistryPassword")
     private String containerRegistryPassword;
 
     /*
      * Repository name (image name)
      */
-    @JsonProperty(value = "containerImageRepository")
     private String containerImageRepository;
 
     /*
      * Image tag
      */
-    @JsonProperty(value = "containerImageTag")
     private String containerImageTag;
 
     /*
      * Platform (windows or linux)
      */
-    @JsonProperty(value = "containerImagePlatform")
     private String containerImagePlatform;
 
     /*
      * App Service Environment Properties
      */
-    @JsonProperty(value = "appServiceEnvironment")
     private AppServiceEnvironmentInner appServiceEnvironment;
 
     /**
+     * Creates an instance of ValidatePropertiesInner class.
+     */
+    public ValidatePropertiesInner() {
+    }
+
+    /**
      * Get the serverFarmId property: ARM resource ID of an App Service plan that would host the app.
-     *
+     * 
      * @return the serverFarmId value.
      */
     public String serverFarmId() {
@@ -108,7 +103,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Set the serverFarmId property: ARM resource ID of an App Service plan that would host the app.
-     *
+     * 
      * @param serverFarmId the serverFarmId value to set.
      * @return the ValidatePropertiesInner object itself.
      */
@@ -119,7 +114,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Get the skuName property: Name of the target SKU for the App Service plan.
-     *
+     * 
      * @return the skuName value.
      */
     public String skuName() {
@@ -128,7 +123,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Set the skuName property: Name of the target SKU for the App Service plan.
-     *
+     * 
      * @param skuName the skuName value to set.
      * @return the ValidatePropertiesInner object itself.
      */
@@ -140,7 +135,7 @@ public final class ValidatePropertiesInner {
     /**
      * Get the needLinuxWorkers property: &lt;code&gt;true&lt;/code&gt; if App Service plan is for Linux workers;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the needLinuxWorkers value.
      */
     public Boolean needLinuxWorkers() {
@@ -150,7 +145,7 @@ public final class ValidatePropertiesInner {
     /**
      * Set the needLinuxWorkers property: &lt;code&gt;true&lt;/code&gt; if App Service plan is for Linux workers;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param needLinuxWorkers the needLinuxWorkers value to set.
      * @return the ValidatePropertiesInner object itself.
      */
@@ -162,7 +157,7 @@ public final class ValidatePropertiesInner {
     /**
      * Get the isSpot property: &lt;code&gt;true&lt;/code&gt; if App Service plan is for Spot instances; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isSpot value.
      */
     public Boolean isSpot() {
@@ -172,7 +167,7 @@ public final class ValidatePropertiesInner {
     /**
      * Set the isSpot property: &lt;code&gt;true&lt;/code&gt; if App Service plan is for Spot instances; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param isSpot the isSpot value to set.
      * @return the ValidatePropertiesInner object itself.
      */
@@ -183,7 +178,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Get the capacity property: Target capacity of the App Service plan (number of VMs).
-     *
+     * 
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -192,7 +187,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Set the capacity property: Target capacity of the App Service plan (number of VMs).
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the ValidatePropertiesInner object itself.
      */
@@ -204,7 +199,7 @@ public final class ValidatePropertiesInner {
     /**
      * Get the hostingEnvironment property: Name of App Service Environment where app or App Service plan should be
      * created.
-     *
+     * 
      * @return the hostingEnvironment value.
      */
     public String hostingEnvironment() {
@@ -214,7 +209,7 @@ public final class ValidatePropertiesInner {
     /**
      * Set the hostingEnvironment property: Name of App Service Environment where app or App Service plan should be
      * created.
-     *
+     * 
      * @param hostingEnvironment the hostingEnvironment value to set.
      * @return the ValidatePropertiesInner object itself.
      */
@@ -225,7 +220,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Get the isXenon property: &lt;code&gt;true&lt;/code&gt; if App Service plan is running as a windows container.
-     *
+     * 
      * @return the isXenon value.
      */
     public Boolean isXenon() {
@@ -234,7 +229,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Set the isXenon property: &lt;code&gt;true&lt;/code&gt; if App Service plan is running as a windows container.
-     *
+     * 
      * @param isXenon the isXenon value to set.
      * @return the ValidatePropertiesInner object itself.
      */
@@ -245,7 +240,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Get the containerRegistryBaseUrl property: Base URL of the container registry.
-     *
+     * 
      * @return the containerRegistryBaseUrl value.
      */
     public String containerRegistryBaseUrl() {
@@ -254,7 +249,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Set the containerRegistryBaseUrl property: Base URL of the container registry.
-     *
+     * 
      * @param containerRegistryBaseUrl the containerRegistryBaseUrl value to set.
      * @return the ValidatePropertiesInner object itself.
      */
@@ -265,7 +260,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Get the containerRegistryUsername property: Username for to access the container registry.
-     *
+     * 
      * @return the containerRegistryUsername value.
      */
     public String containerRegistryUsername() {
@@ -274,7 +269,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Set the containerRegistryUsername property: Username for to access the container registry.
-     *
+     * 
      * @param containerRegistryUsername the containerRegistryUsername value to set.
      * @return the ValidatePropertiesInner object itself.
      */
@@ -285,7 +280,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Get the containerRegistryPassword property: Password for to access the container registry.
-     *
+     * 
      * @return the containerRegistryPassword value.
      */
     public String containerRegistryPassword() {
@@ -294,7 +289,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Set the containerRegistryPassword property: Password for to access the container registry.
-     *
+     * 
      * @param containerRegistryPassword the containerRegistryPassword value to set.
      * @return the ValidatePropertiesInner object itself.
      */
@@ -305,7 +300,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Get the containerImageRepository property: Repository name (image name).
-     *
+     * 
      * @return the containerImageRepository value.
      */
     public String containerImageRepository() {
@@ -314,7 +309,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Set the containerImageRepository property: Repository name (image name).
-     *
+     * 
      * @param containerImageRepository the containerImageRepository value to set.
      * @return the ValidatePropertiesInner object itself.
      */
@@ -325,7 +320,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Get the containerImageTag property: Image tag.
-     *
+     * 
      * @return the containerImageTag value.
      */
     public String containerImageTag() {
@@ -334,7 +329,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Set the containerImageTag property: Image tag.
-     *
+     * 
      * @param containerImageTag the containerImageTag value to set.
      * @return the ValidatePropertiesInner object itself.
      */
@@ -345,7 +340,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Get the containerImagePlatform property: Platform (windows or linux).
-     *
+     * 
      * @return the containerImagePlatform value.
      */
     public String containerImagePlatform() {
@@ -354,7 +349,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Set the containerImagePlatform property: Platform (windows or linux).
-     *
+     * 
      * @param containerImagePlatform the containerImagePlatform value to set.
      * @return the ValidatePropertiesInner object itself.
      */
@@ -365,7 +360,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Get the appServiceEnvironment property: App Service Environment Properties.
-     *
+     * 
      * @return the appServiceEnvironment value.
      */
     public AppServiceEnvironmentInner appServiceEnvironment() {
@@ -374,7 +369,7 @@ public final class ValidatePropertiesInner {
 
     /**
      * Set the appServiceEnvironment property: App Service Environment Properties.
-     *
+     * 
      * @param appServiceEnvironment the appServiceEnvironment value to set.
      * @return the ValidatePropertiesInner object itself.
      */
@@ -385,12 +380,88 @@ public final class ValidatePropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (appServiceEnvironment() != null) {
             appServiceEnvironment().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serverFarmId", this.serverFarmId);
+        jsonWriter.writeStringField("skuName", this.skuName);
+        jsonWriter.writeBooleanField("needLinuxWorkers", this.needLinuxWorkers);
+        jsonWriter.writeBooleanField("isSpot", this.isSpot);
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        jsonWriter.writeStringField("hostingEnvironment", this.hostingEnvironment);
+        jsonWriter.writeBooleanField("isXenon", this.isXenon);
+        jsonWriter.writeStringField("containerRegistryBaseUrl", this.containerRegistryBaseUrl);
+        jsonWriter.writeStringField("containerRegistryUsername", this.containerRegistryUsername);
+        jsonWriter.writeStringField("containerRegistryPassword", this.containerRegistryPassword);
+        jsonWriter.writeStringField("containerImageRepository", this.containerImageRepository);
+        jsonWriter.writeStringField("containerImageTag", this.containerImageTag);
+        jsonWriter.writeStringField("containerImagePlatform", this.containerImagePlatform);
+        jsonWriter.writeJsonField("appServiceEnvironment", this.appServiceEnvironment);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidatePropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidatePropertiesInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ValidatePropertiesInner.
+     */
+    public static ValidatePropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidatePropertiesInner deserializedValidatePropertiesInner = new ValidatePropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serverFarmId".equals(fieldName)) {
+                    deserializedValidatePropertiesInner.serverFarmId = reader.getString();
+                } else if ("skuName".equals(fieldName)) {
+                    deserializedValidatePropertiesInner.skuName = reader.getString();
+                } else if ("needLinuxWorkers".equals(fieldName)) {
+                    deserializedValidatePropertiesInner.needLinuxWorkers = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isSpot".equals(fieldName)) {
+                    deserializedValidatePropertiesInner.isSpot = reader.getNullable(JsonReader::getBoolean);
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedValidatePropertiesInner.capacity = reader.getNullable(JsonReader::getInt);
+                } else if ("hostingEnvironment".equals(fieldName)) {
+                    deserializedValidatePropertiesInner.hostingEnvironment = reader.getString();
+                } else if ("isXenon".equals(fieldName)) {
+                    deserializedValidatePropertiesInner.isXenon = reader.getNullable(JsonReader::getBoolean);
+                } else if ("containerRegistryBaseUrl".equals(fieldName)) {
+                    deserializedValidatePropertiesInner.containerRegistryBaseUrl = reader.getString();
+                } else if ("containerRegistryUsername".equals(fieldName)) {
+                    deserializedValidatePropertiesInner.containerRegistryUsername = reader.getString();
+                } else if ("containerRegistryPassword".equals(fieldName)) {
+                    deserializedValidatePropertiesInner.containerRegistryPassword = reader.getString();
+                } else if ("containerImageRepository".equals(fieldName)) {
+                    deserializedValidatePropertiesInner.containerImageRepository = reader.getString();
+                } else if ("containerImageTag".equals(fieldName)) {
+                    deserializedValidatePropertiesInner.containerImageTag = reader.getString();
+                } else if ("containerImagePlatform".equals(fieldName)) {
+                    deserializedValidatePropertiesInner.containerImagePlatform = reader.getString();
+                } else if ("appServiceEnvironment".equals(fieldName)) {
+                    deserializedValidatePropertiesInner.appServiceEnvironment
+                        = AppServiceEnvironmentInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidatePropertiesInner;
+        });
     }
 }

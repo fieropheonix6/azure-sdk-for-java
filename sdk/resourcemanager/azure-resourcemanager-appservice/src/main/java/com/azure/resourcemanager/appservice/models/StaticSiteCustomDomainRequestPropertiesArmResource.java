@@ -5,30 +5,86 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteCustomDomainRequestPropertiesArmResourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Static Site Custom Domain Request Properties ARM resource. */
+/**
+ * Static Site Custom Domain Request Properties ARM resource.
+ */
 @Fluent
 public final class StaticSiteCustomDomainRequestPropertiesArmResource extends ProxyOnlyResource {
     /*
-     * StaticSiteCustomDomainRequestPropertiesARMResource resource specific
-     * properties
+     * StaticSiteCustomDomainRequestPropertiesARMResource resource specific properties
      */
-    @JsonProperty(value = "properties")
     private StaticSiteCustomDomainRequestPropertiesArmResourceProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of StaticSiteCustomDomainRequestPropertiesArmResource class.
+     */
+    public StaticSiteCustomDomainRequestPropertiesArmResource() {
+    }
 
     /**
      * Get the innerProperties property: StaticSiteCustomDomainRequestPropertiesARMResource resource specific
      * properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StaticSiteCustomDomainRequestPropertiesArmResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StaticSiteCustomDomainRequestPropertiesArmResource withKind(String kind) {
         super.withKind(kind);
@@ -37,7 +93,7 @@ public final class StaticSiteCustomDomainRequestPropertiesArmResource extends Pr
 
     /**
      * Get the validationMethod property: Validation method for adding a custom domain.
-     *
+     * 
      * @return the validationMethod value.
      */
     public String validationMethod() {
@@ -46,7 +102,7 @@ public final class StaticSiteCustomDomainRequestPropertiesArmResource extends Pr
 
     /**
      * Set the validationMethod property: Validation method for adding a custom domain.
-     *
+     * 
      * @param validationMethod the validationMethod value to set.
      * @return the StaticSiteCustomDomainRequestPropertiesArmResource object itself.
      */
@@ -60,14 +116,62 @@ public final class StaticSiteCustomDomainRequestPropertiesArmResource extends Pr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StaticSiteCustomDomainRequestPropertiesArmResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StaticSiteCustomDomainRequestPropertiesArmResource if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StaticSiteCustomDomainRequestPropertiesArmResource.
+     */
+    public static StaticSiteCustomDomainRequestPropertiesArmResource fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            StaticSiteCustomDomainRequestPropertiesArmResource deserializedStaticSiteCustomDomainRequestPropertiesArmResource
+                = new StaticSiteCustomDomainRequestPropertiesArmResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStaticSiteCustomDomainRequestPropertiesArmResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStaticSiteCustomDomainRequestPropertiesArmResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStaticSiteCustomDomainRequestPropertiesArmResource.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedStaticSiteCustomDomainRequestPropertiesArmResource.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStaticSiteCustomDomainRequestPropertiesArmResource.innerProperties
+                        = StaticSiteCustomDomainRequestPropertiesArmResourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStaticSiteCustomDomainRequestPropertiesArmResource;
+        });
     }
 }

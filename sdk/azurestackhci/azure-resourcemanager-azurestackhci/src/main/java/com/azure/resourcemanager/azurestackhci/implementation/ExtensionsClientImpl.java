@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -35,26 +36,34 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.azurestackhci.fluent.ExtensionsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ExtensionInner;
 import com.azure.resourcemanager.azurestackhci.models.ExtensionList;
+import com.azure.resourcemanager.azurestackhci.models.ExtensionPatch;
+import com.azure.resourcemanager.azurestackhci.models.ExtensionUpgradeParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExtensionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExtensionsClient.
+ */
 public final class ExtensionsClientImpl implements ExtensionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ExtensionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureStackHciClientImpl client;
 
     /**
      * Initializes an instance of ExtensionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ExtensionsClientImpl(AzureStackHciClientImpl client) {
-        this.service =
-            RestProxy.create(ExtensionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ExtensionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,130 +73,102 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureStackHciClientE")
-    private interface ExtensionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI"
-                + "/clusters/{clusterName}/arcSettings/{arcSettingName}/extensions")
-        @ExpectedResponses({200})
+    public interface ExtensionsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}/extensions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExtensionList>> listByArcSetting(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ExtensionList>> listByArcSetting(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("arcSettingName") String arcSettingName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("arcSettingName") String arcSettingName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI"
-                + "/clusters/{clusterName}/arcSettings/{arcSettingName}/extensions/{extensionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}/extensions/{extensionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExtensionInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ExtensionInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("arcSettingName") String arcSettingName,
-            @PathParam("extensionName") String extensionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("arcSettingName") String arcSettingName, @PathParam("extensionName") String extensionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI"
-                + "/clusters/{clusterName}/arcSettings/{arcSettingName}/extensions/{extensionName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}/extensions/{extensionName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("arcSettingName") String arcSettingName,
-            @PathParam("extensionName") String extensionName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ExtensionInner extension,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("arcSettingName") String arcSettingName, @PathParam("extensionName") String extensionName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ExtensionInner extension,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI"
-                + "/clusters/{clusterName}/arcSettings/{arcSettingName}/extensions/{extensionName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}/extensions/{extensionName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("arcSettingName") String arcSettingName,
-            @PathParam("extensionName") String extensionName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ExtensionInner extension,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("arcSettingName") String arcSettingName, @PathParam("extensionName") String extensionName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ExtensionPatch extension,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI"
-                + "/clusters/{clusterName}/arcSettings/{arcSettingName}/extensions/{extensionName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}/extensions/{extensionName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("arcSettingName") String arcSettingName,
-            @PathParam("extensionName") String extensionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("arcSettingName") String arcSettingName, @PathParam("extensionName") String extensionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}/extensions/{extensionName}/upgrade")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> upgrade(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("arcSettingName") String arcSettingName, @PathParam("extensionName") String extensionName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ExtensionUpgradeParameters extensionUpgradeParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExtensionList>> listByArcSettingNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List all Extensions under ArcSetting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Extensions in HCI cluster along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of Extensions in HCI cluster along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExtensionInner>> listByArcSettingSinglePageAsync(
-        String resourceGroupName, String clusterName, String arcSettingName) {
+    private Mono<PagedResponse<ExtensionInner>> listByArcSettingSinglePageAsync(String resourceGroupName,
+        String clusterName, String arcSettingName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -201,33 +182,16 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByArcSetting(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            arcSettingName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ExtensionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByArcSetting(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, arcSettingName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ExtensionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List all Extensions under ArcSetting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -235,23 +199,19 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Extensions in HCI cluster along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of Extensions in HCI cluster along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExtensionInner>> listByArcSettingSinglePageAsync(
-        String resourceGroupName, String clusterName, String arcSettingName, Context context) {
+    private Mono<PagedResponse<ExtensionInner>> listByArcSettingSinglePageAsync(String resourceGroupName,
+        String clusterName, String arcSettingName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -266,29 +226,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByArcSetting(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                arcSettingName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByArcSetting(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                clusterName, arcSettingName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List all Extensions under ArcSetting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -298,16 +244,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return list of Extensions in HCI cluster as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExtensionInner> listByArcSettingAsync(
-        String resourceGroupName, String clusterName, String arcSettingName) {
-        return new PagedFlux<>(
-            () -> listByArcSettingSinglePageAsync(resourceGroupName, clusterName, arcSettingName),
+    private PagedFlux<ExtensionInner> listByArcSettingAsync(String resourceGroupName, String clusterName,
+        String arcSettingName) {
+        return new PagedFlux<>(() -> listByArcSettingSinglePageAsync(resourceGroupName, clusterName, arcSettingName),
             nextLink -> listByArcSettingNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all Extensions under ArcSetting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -318,8 +263,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return list of Extensions in HCI cluster as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExtensionInner> listByArcSettingAsync(
-        String resourceGroupName, String clusterName, String arcSettingName, Context context) {
+    private PagedFlux<ExtensionInner> listByArcSettingAsync(String resourceGroupName, String clusterName,
+        String arcSettingName, Context context) {
         return new PagedFlux<>(
             () -> listByArcSettingSinglePageAsync(resourceGroupName, clusterName, arcSettingName, context),
             nextLink -> listByArcSettingNextSinglePageAsync(nextLink, context));
@@ -327,7 +272,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * List all Extensions under ArcSetting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -337,14 +282,14 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return list of Extensions in HCI cluster as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExtensionInner> listByArcSetting(
-        String resourceGroupName, String clusterName, String arcSettingName) {
+    public PagedIterable<ExtensionInner> listByArcSetting(String resourceGroupName, String clusterName,
+        String arcSettingName) {
         return new PagedIterable<>(listByArcSettingAsync(resourceGroupName, clusterName, arcSettingName));
     }
 
     /**
      * List all Extensions under ArcSetting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -355,14 +300,14 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return list of Extensions in HCI cluster as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExtensionInner> listByArcSetting(
-        String resourceGroupName, String clusterName, String arcSettingName, Context context) {
+    public PagedIterable<ExtensionInner> listByArcSetting(String resourceGroupName, String clusterName,
+        String arcSettingName, Context context) {
         return new PagedIterable<>(listByArcSettingAsync(resourceGroupName, clusterName, arcSettingName, context));
     }
 
     /**
      * Get particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -370,23 +315,19 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return particular Arc Extension of HCI Cluster along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return particular Arc Extension of HCI Cluster along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExtensionInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String arcSettingName, String extensionName) {
+    private Mono<Response<ExtensionInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
+        String arcSettingName, String extensionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -404,24 +345,14 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            arcSettingName,
-                            extensionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    clusterName, arcSettingName, extensionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -430,23 +361,19 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return particular Arc Extension of HCI Cluster along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return particular Arc Extension of HCI Cluster along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExtensionInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String arcSettingName, String extensionName, Context context) {
+    private Mono<Response<ExtensionInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
+        String arcSettingName, String extensionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -463,22 +390,13 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                arcSettingName,
-                extensionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterName,
+            arcSettingName, extensionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -489,33 +407,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return particular Arc Extension of HCI Cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExtensionInner> getAsync(
-        String resourceGroupName, String clusterName, String arcSettingName, String extensionName) {
+    private Mono<ExtensionInner> getAsync(String resourceGroupName, String clusterName, String arcSettingName,
+        String extensionName) {
         return getWithResponseAsync(resourceGroupName, clusterName, arcSettingName, extensionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get particular Arc Extension of HCI Cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return particular Arc Extension of HCI Cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExtensionInner get(
-        String resourceGroupName, String clusterName, String arcSettingName, String extensionName) {
-        return getAsync(resourceGroupName, clusterName, arcSettingName, extensionName).block();
-    }
-
-    /**
-     * Get particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -527,14 +427,32 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return particular Arc Extension of HCI Cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExtensionInner> getWithResponse(
-        String resourceGroupName, String clusterName, String arcSettingName, String extensionName, Context context) {
+    public Response<ExtensionInner> getWithResponse(String resourceGroupName, String clusterName, String arcSettingName,
+        String extensionName, Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, arcSettingName, extensionName, context).block();
     }
 
     /**
+     * Get particular Arc Extension of HCI Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param extensionName The name of the machine extension.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return particular Arc Extension of HCI Cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExtensionInner get(String resourceGroupName, String clusterName, String arcSettingName,
+        String extensionName) {
+        return getWithResponse(resourceGroupName, clusterName, arcSettingName, extensionName, Context.NONE).getValue();
+    }
+
+    /**
      * Create Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -544,26 +462,18 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of a particular extension in HCI Cluster along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String clusterName,
+        String arcSettingName, String extensionName, ExtensionInner extension) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -585,26 +495,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            arcSettingName,
-                            extensionName,
-                            this.client.getApiVersion(),
-                            extension,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, arcSettingName, extensionName, this.client.getApiVersion(), extension,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -615,27 +514,18 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of a particular extension in HCI Cluster along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String clusterName,
+        String arcSettingName, String extensionName, ExtensionInner extension, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -657,23 +547,13 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                arcSettingName,
-                extensionName,
-                this.client.getApiVersion(),
-                extension,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, arcSettingName, extensionName, this.client.getApiVersion(), extension, accept, context);
     }
 
     /**
      * Create Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -685,27 +565,17 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return the {@link PollerFlux} for polling of details of a particular extension in HCI Cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ExtensionInner>, ExtensionInner> beginCreateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension);
-        return this
-            .client
-            .<ExtensionInner, ExtensionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ExtensionInner.class,
-                ExtensionInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<ExtensionInner>, ExtensionInner> beginCreateAsync(String resourceGroupName,
+        String clusterName, String arcSettingName, String extensionName, ExtensionInner extension) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension);
+        return this.client.<ExtensionInner, ExtensionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ExtensionInner.class, ExtensionInner.class, this.client.getContext());
     }
 
     /**
      * Create Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -718,25 +588,18 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return the {@link PollerFlux} for polling of details of a particular extension in HCI Cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ExtensionInner>, ExtensionInner> beginCreateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension,
-        Context context) {
+    private PollerFlux<PollResult<ExtensionInner>, ExtensionInner> beginCreateAsync(String resourceGroupName,
+        String clusterName, String arcSettingName, String extensionName, ExtensionInner extension, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension, context);
-        return this
-            .client
-            .<ExtensionInner, ExtensionInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ExtensionInner.class, ExtensionInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, clusterName, arcSettingName,
+            extensionName, extension, context);
+        return this.client.<ExtensionInner, ExtensionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ExtensionInner.class, ExtensionInner.class, context);
     }
 
     /**
      * Create Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -748,19 +611,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return the {@link SyncPoller} for polling of details of a particular extension in HCI Cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginCreate(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension) {
-        return beginCreateAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension)
+    public SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginCreate(String resourceGroupName,
+        String clusterName, String arcSettingName, String extensionName, ExtensionInner extension) {
+        return this.beginCreateAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension)
             .getSyncPoller();
     }
 
     /**
      * Create Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -773,20 +632,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return the {@link SyncPoller} for polling of details of a particular extension in HCI Cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginCreate(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension, context)
+    public SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginCreate(String resourceGroupName,
+        String clusterName, String arcSettingName, String extensionName, ExtensionInner extension, Context context) {
+        return this.beginCreateAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension, context)
             .getSyncPoller();
     }
 
     /**
      * Create Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -798,20 +652,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return details of a particular extension in HCI Cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExtensionInner> createAsync(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension) {
-        return beginCreateAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension)
-            .last()
+    private Mono<ExtensionInner> createAsync(String resourceGroupName, String clusterName, String arcSettingName,
+        String extensionName, ExtensionInner extension) {
+        return beginCreateAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -824,13 +673,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return details of a particular extension in HCI Cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExtensionInner> createAsync(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension,
-        Context context) {
+    private Mono<ExtensionInner> createAsync(String resourceGroupName, String clusterName, String arcSettingName,
+        String extensionName, ExtensionInner extension, Context context) {
         return beginCreateAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -838,7 +682,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Create Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -850,18 +694,14 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return details of a particular extension in HCI Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExtensionInner create(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension) {
+    public ExtensionInner create(String resourceGroupName, String clusterName, String arcSettingName,
+        String extensionName, ExtensionInner extension) {
         return createAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension).block();
     }
 
     /**
      * Create Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -874,19 +714,14 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return details of a particular extension in HCI Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExtensionInner create(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension,
-        Context context) {
+    public ExtensionInner create(String resourceGroupName, String clusterName, String arcSettingName,
+        String extensionName, ExtensionInner extension, Context context) {
         return createAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension, context).block();
     }
 
     /**
      * Update Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -896,26 +731,18 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of a particular extension in HCI Cluster along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+        String arcSettingName, String extensionName, ExtensionPatch extension) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -937,26 +764,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            arcSettingName,
-                            extensionName,
-                            this.client.getApiVersion(),
-                            extension,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, arcSettingName, extensionName, this.client.getApiVersion(), extension,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -967,27 +783,18 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of a particular extension in HCI Cluster along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+        String arcSettingName, String extensionName, ExtensionPatch extension, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1009,23 +816,13 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                arcSettingName,
-                extensionName,
-                this.client.getApiVersion(),
-                extension,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, arcSettingName, extensionName, this.client.getApiVersion(), extension, accept, context);
     }
 
     /**
      * Update Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -1037,27 +834,17 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return the {@link PollerFlux} for polling of details of a particular extension in HCI Cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ExtensionInner>, ExtensionInner> beginUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension);
-        return this
-            .client
-            .<ExtensionInner, ExtensionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ExtensionInner.class,
-                ExtensionInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<ExtensionInner>, ExtensionInner> beginUpdateAsync(String resourceGroupName,
+        String clusterName, String arcSettingName, String extensionName, ExtensionPatch extension) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension);
+        return this.client.<ExtensionInner, ExtensionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ExtensionInner.class, ExtensionInner.class, this.client.getContext());
     }
 
     /**
      * Update Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -1070,25 +857,18 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return the {@link PollerFlux} for polling of details of a particular extension in HCI Cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ExtensionInner>, ExtensionInner> beginUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension,
-        Context context) {
+    private PollerFlux<PollResult<ExtensionInner>, ExtensionInner> beginUpdateAsync(String resourceGroupName,
+        String clusterName, String arcSettingName, String extensionName, ExtensionPatch extension, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension, context);
-        return this
-            .client
-            .<ExtensionInner, ExtensionInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ExtensionInner.class, ExtensionInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, clusterName, arcSettingName,
+            extensionName, extension, context);
+        return this.client.<ExtensionInner, ExtensionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ExtensionInner.class, ExtensionInner.class, context);
     }
 
     /**
      * Update Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -1100,19 +880,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return the {@link SyncPoller} for polling of details of a particular extension in HCI Cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension) {
-        return beginUpdateAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension)
+    public SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginUpdate(String resourceGroupName,
+        String clusterName, String arcSettingName, String extensionName, ExtensionPatch extension) {
+        return this.beginUpdateAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension)
             .getSyncPoller();
     }
 
     /**
      * Update Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -1125,20 +901,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return the {@link SyncPoller} for polling of details of a particular extension in HCI Cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension, context)
+    public SyncPoller<PollResult<ExtensionInner>, ExtensionInner> beginUpdate(String resourceGroupName,
+        String clusterName, String arcSettingName, String extensionName, ExtensionPatch extension, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension, context)
             .getSyncPoller();
     }
 
     /**
      * Update Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -1150,20 +921,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return details of a particular extension in HCI Cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExtensionInner> updateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension) {
-        return beginUpdateAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension)
-            .last()
+    private Mono<ExtensionInner> updateAsync(String resourceGroupName, String clusterName, String arcSettingName,
+        String extensionName, ExtensionPatch extension) {
+        return beginUpdateAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -1176,13 +942,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return details of a particular extension in HCI Cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExtensionInner> updateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension,
-        Context context) {
+    private Mono<ExtensionInner> updateAsync(String resourceGroupName, String clusterName, String arcSettingName,
+        String extensionName, ExtensionPatch extension, Context context) {
         return beginUpdateAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1190,7 +951,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Update Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -1202,18 +963,14 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return details of a particular extension in HCI Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExtensionInner update(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension) {
+    public ExtensionInner update(String resourceGroupName, String clusterName, String arcSettingName,
+        String extensionName, ExtensionPatch extension) {
         return updateAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension).block();
     }
 
     /**
      * Update Extension for HCI cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -1226,19 +983,14 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return details of a particular extension in HCI Cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExtensionInner update(
-        String resourceGroupName,
-        String clusterName,
-        String arcSettingName,
-        String extensionName,
-        ExtensionInner extension,
-        Context context) {
+    public ExtensionInner update(String resourceGroupName, String clusterName, String arcSettingName,
+        String extensionName, ExtensionPatch extension, Context context) {
         return updateAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extension, context).block();
     }
 
     /**
      * Delete particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -1249,19 +1001,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String arcSettingName, String extensionName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String arcSettingName, String extensionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1279,24 +1027,14 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            arcSettingName,
-                            extensionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    clusterName, arcSettingName, extensionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -1308,19 +1046,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String arcSettingName, String extensionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String arcSettingName, String extensionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1337,22 +1071,13 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                arcSettingName,
-                extensionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, arcSettingName, extensionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -1363,19 +1088,17 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String arcSettingName, String extensionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, arcSettingName, extensionName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String arcSettingName, String extensionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, arcSettingName, extensionName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -1387,19 +1110,18 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String arcSettingName, String extensionName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String arcSettingName, String extensionName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, arcSettingName, extensionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, arcSettingName, extensionName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -1410,14 +1132,14 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String arcSettingName, String extensionName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, arcSettingName, extensionName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String arcSettingName, String extensionName) {
+        return this.beginDeleteAsync(resourceGroupName, clusterName, arcSettingName, extensionName).getSyncPoller();
     }
 
     /**
      * Delete particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -1429,14 +1151,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String arcSettingName, String extensionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, arcSettingName, extensionName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String arcSettingName, String extensionName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, clusterName, arcSettingName, extensionName, context)
+            .getSyncPoller();
     }
 
     /**
      * Delete particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -1447,16 +1170,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String clusterName, String arcSettingName, String extensionName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, arcSettingName, extensionName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String arcSettingName,
+        String extensionName) {
+        return beginDeleteAsync(resourceGroupName, clusterName, arcSettingName, extensionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -1468,16 +1190,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String clusterName, String arcSettingName, String extensionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, arcSettingName, extensionName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String arcSettingName,
+        String extensionName, Context context) {
+        return beginDeleteAsync(resourceGroupName, clusterName, arcSettingName, extensionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -1493,7 +1214,7 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
 
     /**
      * Delete particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -1504,20 +1225,295 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String clusterName, String arcSettingName, String extensionName, Context context) {
+    public void delete(String resourceGroupName, String clusterName, String arcSettingName, String extensionName,
+        Context context) {
         deleteAsync(resourceGroupName, clusterName, arcSettingName, extensionName, context).block();
     }
 
     /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * Upgrade a particular Arc Extension of HCI Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param extensionName The name of the machine extension.
+     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Extensions in HCI cluster along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName, String clusterName,
+        String arcSettingName, String extensionName, ExtensionUpgradeParameters extensionUpgradeParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (arcSettingName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter arcSettingName is required and cannot be null."));
+        }
+        if (extensionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter extensionName is required and cannot be null."));
+        }
+        if (extensionUpgradeParameters == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter extensionUpgradeParameters is required and cannot be null."));
+        } else {
+            extensionUpgradeParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.upgrade(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, arcSettingName, extensionName, this.client.getApiVersion(),
+                extensionUpgradeParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Upgrade a particular Arc Extension of HCI Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param extensionName The name of the machine extension.
+     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName, String clusterName,
+        String arcSettingName, String extensionName, ExtensionUpgradeParameters extensionUpgradeParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (arcSettingName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter arcSettingName is required and cannot be null."));
+        }
+        if (extensionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter extensionName is required and cannot be null."));
+        }
+        if (extensionUpgradeParameters == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter extensionUpgradeParameters is required and cannot be null."));
+        } else {
+            extensionUpgradeParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.upgrade(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, arcSettingName, extensionName, this.client.getApiVersion(), extensionUpgradeParameters, accept,
+            context);
+    }
+
+    /**
+     * Upgrade a particular Arc Extension of HCI Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param extensionName The name of the machine extension.
+     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginUpgradeAsync(String resourceGroupName, String clusterName,
+        String arcSettingName, String extensionName, ExtensionUpgradeParameters extensionUpgradeParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = upgradeWithResponseAsync(resourceGroupName, clusterName, arcSettingName,
+            extensionName, extensionUpgradeParameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Upgrade a particular Arc Extension of HCI Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param extensionName The name of the machine extension.
+     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginUpgradeAsync(String resourceGroupName, String clusterName,
+        String arcSettingName, String extensionName, ExtensionUpgradeParameters extensionUpgradeParameters,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = upgradeWithResponseAsync(resourceGroupName, clusterName, arcSettingName,
+            extensionName, extensionUpgradeParameters, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Upgrade a particular Arc Extension of HCI Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param extensionName The name of the machine extension.
+     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String clusterName,
+        String arcSettingName, String extensionName, ExtensionUpgradeParameters extensionUpgradeParameters) {
+        return this
+            .beginUpgradeAsync(resourceGroupName, clusterName, arcSettingName, extensionName,
+                extensionUpgradeParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Upgrade a particular Arc Extension of HCI Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param extensionName The name of the machine extension.
+     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String clusterName,
+        String arcSettingName, String extensionName, ExtensionUpgradeParameters extensionUpgradeParameters,
+        Context context) {
+        return this
+            .beginUpgradeAsync(resourceGroupName, clusterName, arcSettingName, extensionName,
+                extensionUpgradeParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Upgrade a particular Arc Extension of HCI Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param extensionName The name of the machine extension.
+     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> upgradeAsync(String resourceGroupName, String clusterName, String arcSettingName,
+        String extensionName, ExtensionUpgradeParameters extensionUpgradeParameters) {
+        return beginUpgradeAsync(resourceGroupName, clusterName, arcSettingName, extensionName,
+            extensionUpgradeParameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Upgrade a particular Arc Extension of HCI Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param extensionName The name of the machine extension.
+     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> upgradeAsync(String resourceGroupName, String clusterName, String arcSettingName,
+        String extensionName, ExtensionUpgradeParameters extensionUpgradeParameters, Context context) {
+        return beginUpgradeAsync(resourceGroupName, clusterName, arcSettingName, extensionName,
+            extensionUpgradeParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Upgrade a particular Arc Extension of HCI Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param extensionName The name of the machine extension.
+     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void upgrade(String resourceGroupName, String clusterName, String arcSettingName, String extensionName,
+        ExtensionUpgradeParameters extensionUpgradeParameters) {
+        upgradeAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extensionUpgradeParameters).block();
+    }
+
+    /**
+     * Upgrade a particular Arc Extension of HCI Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param extensionName The name of the machine extension.
+     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void upgrade(String resourceGroupName, String clusterName, String arcSettingName, String extensionName,
+        ExtensionUpgradeParameters extensionUpgradeParameters, Context context) {
+        upgradeAsync(resourceGroupName, clusterName, arcSettingName, extensionName, extensionUpgradeParameters, context)
+            .block();
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Extensions in HCI cluster along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExtensionInner>> listByArcSettingNextSinglePageAsync(String nextLink) {
@@ -1525,36 +1521,27 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByArcSettingNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ExtensionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ExtensionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Extensions in HCI cluster along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of Extensions in HCI cluster along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExtensionInner>> listByArcSettingNextSinglePageAsync(String nextLink, Context context) {
@@ -1562,23 +1549,13 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByArcSettingNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByArcSettingNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

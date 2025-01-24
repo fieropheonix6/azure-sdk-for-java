@@ -8,16 +8,13 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
 import com.azure.resourcemanager.cognitiveservices.models.SkuTier;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SkuTests {
-    @Test
-    public void testDeserialize() {
-        Sku model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"hmwhfpmrqo\",\"tier\":\"Basic\",\"size\":\"kknryrtihf\",\"family\":\"ijbpzvgnwzsymgl\",\"capacity\":2137761200}")
-                .toObject(Sku.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        Sku model = BinaryData.fromString(
+            "{\"name\":\"hmwhfpmrqo\",\"tier\":\"Basic\",\"size\":\"kknryrtihf\",\"family\":\"ijbpzvgnwzsymgl\",\"capacity\":2137761200}")
+            .toObject(Sku.class);
         Assertions.assertEquals("hmwhfpmrqo", model.name());
         Assertions.assertEquals(SkuTier.BASIC, model.tier());
         Assertions.assertEquals("kknryrtihf", model.size());
@@ -25,15 +22,13 @@ public final class SkuTests {
         Assertions.assertEquals(2137761200, model.capacity());
     }
 
-    @Test
-    public void testSerialize() {
-        Sku model =
-            new Sku()
-                .withName("hmwhfpmrqo")
-                .withTier(SkuTier.BASIC)
-                .withSize("kknryrtihf")
-                .withFamily("ijbpzvgnwzsymgl")
-                .withCapacity(2137761200);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        Sku model = new Sku().withName("hmwhfpmrqo")
+            .withTier(SkuTier.BASIC)
+            .withSize("kknryrtihf")
+            .withFamily("ijbpzvgnwzsymgl")
+            .withCapacity(2137761200);
         model = BinaryData.fromObject(model).toObject(Sku.class);
         Assertions.assertEquals("hmwhfpmrqo", model.name());
         Assertions.assertEquals(SkuTier.BASIC, model.tier());

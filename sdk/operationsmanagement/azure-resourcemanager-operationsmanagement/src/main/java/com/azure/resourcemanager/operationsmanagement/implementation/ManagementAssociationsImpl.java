@@ -14,20 +14,29 @@ import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementAs
 import com.azure.resourcemanager.operationsmanagement.models.ManagementAssociation;
 import com.azure.resourcemanager.operationsmanagement.models.ManagementAssociationPropertiesList;
 import com.azure.resourcemanager.operationsmanagement.models.ManagementAssociations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ManagementAssociationsImpl implements ManagementAssociations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementAssociationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ManagementAssociationsImpl.class);
 
     private final ManagementAssociationsClient innerClient;
 
     private final com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager;
 
-    public ManagementAssociationsImpl(
-        ManagementAssociationsClient innerClient,
+    public ManagementAssociationsImpl(ManagementAssociationsClient innerClient,
         com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<ManagementAssociationPropertiesList> listBySubscriptionWithResponse(Context context) {
+        Response<ManagementAssociationPropertiesListInner> inner
+            = this.serviceClient().listBySubscriptionWithResponse(context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ManagementAssociationPropertiesListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ManagementAssociationPropertiesList listBySubscription() {
@@ -39,32 +48,25 @@ public final class ManagementAssociationsImpl implements ManagementAssociations 
         }
     }
 
-    public Response<ManagementAssociationPropertiesList> listBySubscriptionWithResponse(Context context) {
-        Response<ManagementAssociationPropertiesListInner> inner =
-            this.serviceClient().listBySubscriptionWithResponse(context);
+    public Response<ManagementAssociation> createOrUpdateWithResponse(String resourceGroupName, String providerName,
+        String resourceType, String resourceName, String managementAssociationName,
+        ManagementAssociationInner parameters, Context context) {
+        Response<ManagementAssociationInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, providerName, resourceType, resourceName,
+                managementAssociationName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ManagementAssociationPropertiesListImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ManagementAssociationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ManagementAssociation createOrUpdate(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        ManagementAssociationInner parameters) {
-        ManagementAssociationInner inner =
-            this
-                .serviceClient()
-                .createOrUpdate(
-                    resourceGroupName, providerName, resourceType, resourceName, managementAssociationName, parameters);
+    public ManagementAssociation createOrUpdate(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, String managementAssociationName, ManagementAssociationInner parameters) {
+        ManagementAssociationInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, providerName, resourceType, resourceName, managementAssociationName,
+                parameters);
         if (inner != null) {
             return new ManagementAssociationImpl(inner, this.manager());
         } else {
@@ -72,95 +74,38 @@ public final class ManagementAssociationsImpl implements ManagementAssociations 
         }
     }
 
-    public Response<ManagementAssociation> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        ManagementAssociationInner parameters,
-        Context context) {
-        Response<ManagementAssociationInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    providerName,
-                    resourceType,
-                    resourceName,
-                    managementAssociationName,
-                    parameters,
-                    context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ManagementAssociationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, String managementAssociationName, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, providerName, resourceType, resourceName, managementAssociationName,
+                context);
     }
 
-    public void delete(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
+    public void delete(String resourceGroupName, String providerName, String resourceType, String resourceName,
         String managementAssociationName) {
-        this
-            .serviceClient()
+        this.serviceClient()
             .delete(resourceGroupName, providerName, resourceType, resourceName, managementAssociationName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(
-                resourceGroupName, providerName, resourceType, resourceName, managementAssociationName, context);
-    }
-
-    public ManagementAssociation get(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName) {
-        ManagementAssociationInner inner =
-            this
-                .serviceClient()
-                .get(resourceGroupName, providerName, resourceType, resourceName, managementAssociationName);
+    public Response<ManagementAssociation> getWithResponse(String resourceGroupName, String providerName,
+        String resourceType, String resourceName, String managementAssociationName, Context context) {
+        Response<ManagementAssociationInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, providerName, resourceType, resourceName, managementAssociationName,
+                context);
         if (inner != null) {
-            return new ManagementAssociationImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ManagementAssociationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<ManagementAssociation> getWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        Context context) {
-        Response<ManagementAssociationInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    resourceGroupName, providerName, resourceType, resourceName, managementAssociationName, context);
+    public ManagementAssociation get(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, String managementAssociationName) {
+        ManagementAssociationInner inner = this.serviceClient()
+            .get(resourceGroupName, providerName, resourceType, resourceName, managementAssociationName);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ManagementAssociationImpl(inner.getValue(), this.manager()));
+            return new ManagementAssociationImpl(inner, this.manager());
         } else {
             return null;
         }

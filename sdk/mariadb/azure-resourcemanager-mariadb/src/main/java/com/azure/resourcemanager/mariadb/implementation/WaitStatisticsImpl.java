@@ -14,19 +14,30 @@ import com.azure.resourcemanager.mariadb.fluent.models.WaitStatisticInner;
 import com.azure.resourcemanager.mariadb.models.WaitStatistic;
 import com.azure.resourcemanager.mariadb.models.WaitStatistics;
 import com.azure.resourcemanager.mariadb.models.WaitStatisticsInput;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WaitStatisticsImpl implements WaitStatistics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WaitStatisticsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WaitStatisticsImpl.class);
 
     private final WaitStatisticsClient innerClient;
 
     private final com.azure.resourcemanager.mariadb.MariaDBManager serviceManager;
 
-    public WaitStatisticsImpl(
-        WaitStatisticsClient innerClient, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
+    public WaitStatisticsImpl(WaitStatisticsClient innerClient,
+        com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<WaitStatistic> getWithResponse(String resourceGroupName, String serverName, String waitStatisticsId,
+        Context context) {
+        Response<WaitStatisticInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, waitStatisticsId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new WaitStatisticImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public WaitStatistic get(String resourceGroupName, String serverName, String waitStatisticsId) {
@@ -38,33 +49,18 @@ public final class WaitStatisticsImpl implements WaitStatistics {
         }
     }
 
-    public Response<WaitStatistic> getWithResponse(
-        String resourceGroupName, String serverName, String waitStatisticsId, Context context) {
-        Response<WaitStatisticInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serverName, waitStatisticsId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new WaitStatisticImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<WaitStatistic> listByServer(String resourceGroupName, String serverName,
+        WaitStatisticsInput parameters) {
+        PagedIterable<WaitStatisticInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, parameters);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WaitStatisticImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WaitStatistic> listByServer(
-        String resourceGroupName, String serverName, WaitStatisticsInput parameters) {
-        PagedIterable<WaitStatisticInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, parameters);
-        return Utils.mapPage(inner, inner1 -> new WaitStatisticImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<WaitStatistic> listByServer(
-        String resourceGroupName, String serverName, WaitStatisticsInput parameters, Context context) {
-        PagedIterable<WaitStatisticInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, parameters, context);
-        return Utils.mapPage(inner, inner1 -> new WaitStatisticImpl(inner1, this.manager()));
+    public PagedIterable<WaitStatistic> listByServer(String resourceGroupName, String serverName,
+        WaitStatisticsInput parameters, Context context) {
+        PagedIterable<WaitStatisticInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, parameters, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WaitStatisticImpl(inner1, this.manager()));
     }
 
     private WaitStatisticsClient serviceClient() {

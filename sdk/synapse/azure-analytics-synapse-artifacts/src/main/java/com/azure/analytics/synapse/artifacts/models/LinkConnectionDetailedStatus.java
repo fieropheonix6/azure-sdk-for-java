@@ -5,81 +5,86 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The LinkConnectionDetailedStatus model. */
+/**
+ * The LinkConnectionDetailedStatus model.
+ */
 @Fluent
-public final class LinkConnectionDetailedStatus {
+public final class LinkConnectionDetailedStatus implements JsonSerializable<LinkConnectionDetailedStatus> {
     /*
      * Link connection id
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Link connection name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Is link connection applying changes
      */
-    @JsonProperty(value = "isApplyingChanges")
     private Boolean isApplyingChanges;
 
     /*
      * Is link connection partially failed
      */
-    @JsonProperty(value = "isPartiallyFailed")
     private Boolean isPartiallyFailed;
 
     /*
      * Link connection start time
      */
-    @JsonProperty(value = "startTime")
     private Object startTime;
 
     /*
      * Link connection stop time
      */
-    @JsonProperty(value = "stopTime")
     private Object stopTime;
 
     /*
-     * Link connection status
+     * Link connection status, please refer to this
+     * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
+     * for details.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * Link connection's corresponding continuous run id
      */
-    @JsonProperty(value = "continuousRunId")
     private String continuousRunId;
 
     /*
      * Link connection error
      */
-    @JsonProperty(value = "error")
     private Object error;
 
     /*
      * Link connection refresh status
      */
-    @JsonProperty(value = "refreshStatus")
     private LinkConnectionRefreshStatus refreshStatus;
 
     /*
      * Link connection landing zone credential expire time
      */
-    @JsonProperty(value = "landingZoneCredentialExpireTime")
     private OffsetDateTime landingZoneCredentialExpireTime;
 
     /**
+     * Creates an instance of LinkConnectionDetailedStatus class.
+     */
+    public LinkConnectionDetailedStatus() {
+    }
+
+    /**
      * Get the id property: Link connection id.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -88,7 +93,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the id property: Link connection id.
-     *
+     * 
      * @param id the id value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -99,7 +104,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Get the name property: Link connection name.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -108,7 +113,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the name property: Link connection name.
-     *
+     * 
      * @param name the name value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -119,7 +124,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Get the isApplyingChanges property: Is link connection applying changes.
-     *
+     * 
      * @return the isApplyingChanges value.
      */
     public Boolean isApplyingChanges() {
@@ -128,7 +133,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the isApplyingChanges property: Is link connection applying changes.
-     *
+     * 
      * @param isApplyingChanges the isApplyingChanges value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -139,7 +144,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Get the isPartiallyFailed property: Is link connection partially failed.
-     *
+     * 
      * @return the isPartiallyFailed value.
      */
     public Boolean isPartiallyFailed() {
@@ -148,7 +153,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the isPartiallyFailed property: Is link connection partially failed.
-     *
+     * 
      * @param isPartiallyFailed the isPartiallyFailed value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -159,7 +164,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Get the startTime property: Link connection start time.
-     *
+     * 
      * @return the startTime value.
      */
     public Object getStartTime() {
@@ -168,7 +173,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the startTime property: Link connection start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -179,7 +184,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Get the stopTime property: Link connection stop time.
-     *
+     * 
      * @return the stopTime value.
      */
     public Object getStopTime() {
@@ -188,7 +193,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the stopTime property: Link connection stop time.
-     *
+     * 
      * @param stopTime the stopTime value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -198,8 +203,10 @@ public final class LinkConnectionDetailedStatus {
     }
 
     /**
-     * Get the status property: Link connection status.
-     *
+     * Get the status property: Link connection status, please refer to this
+     * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
+     * for details.
+     * 
      * @return the status value.
      */
     public String getStatus() {
@@ -207,8 +214,10 @@ public final class LinkConnectionDetailedStatus {
     }
 
     /**
-     * Set the status property: Link connection status.
-     *
+     * Set the status property: Link connection status, please refer to this
+     * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
+     * for details.
+     * 
      * @param status the status value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -219,7 +228,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Get the continuousRunId property: Link connection's corresponding continuous run id.
-     *
+     * 
      * @return the continuousRunId value.
      */
     public String getContinuousRunId() {
@@ -228,7 +237,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the continuousRunId property: Link connection's corresponding continuous run id.
-     *
+     * 
      * @param continuousRunId the continuousRunId value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -239,7 +248,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Get the error property: Link connection error.
-     *
+     * 
      * @return the error value.
      */
     public Object getError() {
@@ -248,7 +257,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the error property: Link connection error.
-     *
+     * 
      * @param error the error value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -259,7 +268,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Get the refreshStatus property: Link connection refresh status.
-     *
+     * 
      * @return the refreshStatus value.
      */
     public LinkConnectionRefreshStatus getRefreshStatus() {
@@ -268,7 +277,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the refreshStatus property: Link connection refresh status.
-     *
+     * 
      * @param refreshStatus the refreshStatus value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -279,7 +288,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Get the landingZoneCredentialExpireTime property: Link connection landing zone credential expire time.
-     *
+     * 
      * @return the landingZoneCredentialExpireTime value.
      */
     public OffsetDateTime getLandingZoneCredentialExpireTime() {
@@ -288,13 +297,86 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the landingZoneCredentialExpireTime property: Link connection landing zone credential expire time.
-     *
+     * 
      * @param landingZoneCredentialExpireTime the landingZoneCredentialExpireTime value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
-    public LinkConnectionDetailedStatus setLandingZoneCredentialExpireTime(
-            OffsetDateTime landingZoneCredentialExpireTime) {
+    public LinkConnectionDetailedStatus
+        setLandingZoneCredentialExpireTime(OffsetDateTime landingZoneCredentialExpireTime) {
         this.landingZoneCredentialExpireTime = landingZoneCredentialExpireTime;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("isApplyingChanges", this.isApplyingChanges);
+        jsonWriter.writeBooleanField("isPartiallyFailed", this.isPartiallyFailed);
+        jsonWriter.writeUntypedField("startTime", this.startTime);
+        jsonWriter.writeUntypedField("stopTime", this.stopTime);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("continuousRunId", this.continuousRunId);
+        jsonWriter.writeUntypedField("error", this.error);
+        jsonWriter.writeJsonField("refreshStatus", this.refreshStatus);
+        jsonWriter.writeStringField("landingZoneCredentialExpireTime",
+            this.landingZoneCredentialExpireTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.landingZoneCredentialExpireTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkConnectionDetailedStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkConnectionDetailedStatus if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkConnectionDetailedStatus.
+     */
+    public static LinkConnectionDetailedStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkConnectionDetailedStatus deserializedLinkConnectionDetailedStatus = new LinkConnectionDetailedStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLinkConnectionDetailedStatus.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLinkConnectionDetailedStatus.name = reader.getString();
+                } else if ("isApplyingChanges".equals(fieldName)) {
+                    deserializedLinkConnectionDetailedStatus.isApplyingChanges
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isPartiallyFailed".equals(fieldName)) {
+                    deserializedLinkConnectionDetailedStatus.isPartiallyFailed
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedLinkConnectionDetailedStatus.startTime = reader.readUntyped();
+                } else if ("stopTime".equals(fieldName)) {
+                    deserializedLinkConnectionDetailedStatus.stopTime = reader.readUntyped();
+                } else if ("status".equals(fieldName)) {
+                    deserializedLinkConnectionDetailedStatus.status = reader.getString();
+                } else if ("continuousRunId".equals(fieldName)) {
+                    deserializedLinkConnectionDetailedStatus.continuousRunId = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedLinkConnectionDetailedStatus.error = reader.readUntyped();
+                } else if ("refreshStatus".equals(fieldName)) {
+                    deserializedLinkConnectionDetailedStatus.refreshStatus
+                        = LinkConnectionRefreshStatus.fromJson(reader);
+                } else if ("landingZoneCredentialExpireTime".equals(fieldName)) {
+                    deserializedLinkConnectionDetailedStatus.landingZoneCredentialExpireTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkConnectionDetailedStatus;
+        });
     }
 }

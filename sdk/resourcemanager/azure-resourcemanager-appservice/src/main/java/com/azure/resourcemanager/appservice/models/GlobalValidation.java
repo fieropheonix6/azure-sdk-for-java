@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,42 +17,39 @@ import java.util.List;
  * Authentication/Authorization.
  */
 @Fluent
-public final class GlobalValidation {
+public final class GlobalValidation implements JsonSerializable<GlobalValidation> {
     /*
-     * <code>true</code> if the authentication flow is required any request is
-     * made; otherwise, <code>false</code>.
+     * <code>true</code> if the authentication flow is required any request is made; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "requireAuthentication")
     private Boolean requireAuthentication;
 
     /*
-     * The action to take when an unauthenticated client attempts to access the
-     * app.
+     * The action to take when an unauthenticated client attempts to access the app.
      */
-    @JsonProperty(value = "unauthenticatedClientAction")
     private UnauthenticatedClientActionV2 unauthenticatedClientAction;
 
     /*
-     * The default authentication provider to use when multiple providers are
-     * configured.
-     * This setting is only needed if multiple providers are configured and the
-     * unauthenticated client
+     * The default authentication provider to use when multiple providers are configured.
+     * This setting is only needed if multiple providers are configured and the unauthenticated client
      * action is set to "RedirectToLoginPage".
      */
-    @JsonProperty(value = "redirectToProvider")
     private String redirectToProvider;
 
     /*
-     * The paths for which unauthenticated flow would not be redirected to the
-     * login page.
+     * The paths for which unauthenticated flow would not be redirected to the login page.
      */
-    @JsonProperty(value = "excludedPaths")
     private List<String> excludedPaths;
+
+    /**
+     * Creates an instance of GlobalValidation class.
+     */
+    public GlobalValidation() {
+    }
 
     /**
      * Get the requireAuthentication property: &lt;code&gt;true&lt;/code&gt; if the authentication flow is required any
      * request is made; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the requireAuthentication value.
      */
     public Boolean requireAuthentication() {
@@ -58,7 +59,7 @@ public final class GlobalValidation {
     /**
      * Set the requireAuthentication property: &lt;code&gt;true&lt;/code&gt; if the authentication flow is required any
      * request is made; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param requireAuthentication the requireAuthentication value to set.
      * @return the GlobalValidation object itself.
      */
@@ -70,7 +71,7 @@ public final class GlobalValidation {
     /**
      * Get the unauthenticatedClientAction property: The action to take when an unauthenticated client attempts to
      * access the app.
-     *
+     * 
      * @return the unauthenticatedClientAction value.
      */
     public UnauthenticatedClientActionV2 unauthenticatedClientAction() {
@@ -80,7 +81,7 @@ public final class GlobalValidation {
     /**
      * Set the unauthenticatedClientAction property: The action to take when an unauthenticated client attempts to
      * access the app.
-     *
+     * 
      * @param unauthenticatedClientAction the unauthenticatedClientAction value to set.
      * @return the GlobalValidation object itself.
      */
@@ -91,9 +92,10 @@ public final class GlobalValidation {
 
     /**
      * Get the redirectToProvider property: The default authentication provider to use when multiple providers are
-     * configured. This setting is only needed if multiple providers are configured and the unauthenticated client
+     * configured.
+     * This setting is only needed if multiple providers are configured and the unauthenticated client
      * action is set to "RedirectToLoginPage".
-     *
+     * 
      * @return the redirectToProvider value.
      */
     public String redirectToProvider() {
@@ -102,9 +104,10 @@ public final class GlobalValidation {
 
     /**
      * Set the redirectToProvider property: The default authentication provider to use when multiple providers are
-     * configured. This setting is only needed if multiple providers are configured and the unauthenticated client
+     * configured.
+     * This setting is only needed if multiple providers are configured and the unauthenticated client
      * action is set to "RedirectToLoginPage".
-     *
+     * 
      * @param redirectToProvider the redirectToProvider value to set.
      * @return the GlobalValidation object itself.
      */
@@ -116,7 +119,7 @@ public final class GlobalValidation {
     /**
      * Get the excludedPaths property: The paths for which unauthenticated flow would not be redirected to the login
      * page.
-     *
+     * 
      * @return the excludedPaths value.
      */
     public List<String> excludedPaths() {
@@ -126,7 +129,7 @@ public final class GlobalValidation {
     /**
      * Set the excludedPaths property: The paths for which unauthenticated flow would not be redirected to the login
      * page.
-     *
+     * 
      * @param excludedPaths the excludedPaths value to set.
      * @return the GlobalValidation object itself.
      */
@@ -137,9 +140,58 @@ public final class GlobalValidation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("requireAuthentication", this.requireAuthentication);
+        jsonWriter.writeStringField("unauthenticatedClientAction",
+            this.unauthenticatedClientAction == null ? null : this.unauthenticatedClientAction.toString());
+        jsonWriter.writeStringField("redirectToProvider", this.redirectToProvider);
+        jsonWriter.writeArrayField("excludedPaths", this.excludedPaths,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GlobalValidation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GlobalValidation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GlobalValidation.
+     */
+    public static GlobalValidation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GlobalValidation deserializedGlobalValidation = new GlobalValidation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("requireAuthentication".equals(fieldName)) {
+                    deserializedGlobalValidation.requireAuthentication = reader.getNullable(JsonReader::getBoolean);
+                } else if ("unauthenticatedClientAction".equals(fieldName)) {
+                    deserializedGlobalValidation.unauthenticatedClientAction
+                        = UnauthenticatedClientActionV2.fromString(reader.getString());
+                } else if ("redirectToProvider".equals(fieldName)) {
+                    deserializedGlobalValidation.redirectToProvider = reader.getString();
+                } else if ("excludedPaths".equals(fieldName)) {
+                    List<String> excludedPaths = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGlobalValidation.excludedPaths = excludedPaths;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGlobalValidation;
+        });
     }
 }

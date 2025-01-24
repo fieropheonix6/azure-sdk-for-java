@@ -1,0 +1,2 @@
+com.azure.spring.cloud.autoconfigure.monitor.implementation.AzureSpringMonitorAutoConfiguration
+com.azure.spring.cloud.autoconfigure.monitor.implementation.selfdiagnostics.SelfDiagAutoConfig

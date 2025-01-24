@@ -5,34 +5,58 @@
 package com.azure.resourcemanager.nginx.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.nginx.models.NginxCertificateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
+import java.io.IOException;
 
-/** The NginxCertificate model. */
+/**
+ * The NginxCertificate model.
+ */
 @Fluent
-public final class NginxCertificateInner extends Resource {
+public final class NginxCertificateInner extends ProxyResource {
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties")
     private NginxCertificateProperties properties;
+
+    /*
+     * The location property.
+     */
+    private String location;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of NginxCertificateInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of NginxCertificateInner class.
+     */
     public NginxCertificateInner() {
     }
 
     /**
      * Get the properties property: The properties property.
-     *
+     * 
      * @return the properties value.
      */
     public NginxCertificateProperties properties() {
@@ -41,7 +65,7 @@ public final class NginxCertificateInner extends Resource {
 
     /**
      * Set the properties property: The properties property.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the NginxCertificateInner object itself.
      */
@@ -51,36 +75,120 @@ public final class NginxCertificateInner extends Resource {
     }
 
     /**
+     * Get the location property: The location property.
+     * 
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: The location property.
+     * 
+     * @param location the location value to set.
+     * @return the NginxCertificateInner object itself.
+     */
+    public NginxCertificateInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
     @Override
-    public NginxCertificateInner withLocation(String location) {
-        super.withLocation(location);
-        return this;
+    public String type() {
+        return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
     @Override
-    public NginxCertificateInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
-        return this;
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NginxCertificateInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NginxCertificateInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NginxCertificateInner.
+     */
+    public static NginxCertificateInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NginxCertificateInner deserializedNginxCertificateInner = new NginxCertificateInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNginxCertificateInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNginxCertificateInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNginxCertificateInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNginxCertificateInner.properties = NginxCertificateProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedNginxCertificateInner.location = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedNginxCertificateInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNginxCertificateInner;
+        });
     }
 }

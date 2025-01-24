@@ -12,19 +12,28 @@ import com.azure.resourcemanager.azurestack.fluent.CloudManifestFilesClient;
 import com.azure.resourcemanager.azurestack.fluent.models.CloudManifestFileResponseInner;
 import com.azure.resourcemanager.azurestack.models.CloudManifestFileResponse;
 import com.azure.resourcemanager.azurestack.models.CloudManifestFiles;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CloudManifestFilesImpl implements CloudManifestFiles {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudManifestFilesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CloudManifestFilesImpl.class);
 
     private final CloudManifestFilesClient innerClient;
 
     private final com.azure.resourcemanager.azurestack.AzureStackManager serviceManager;
 
-    public CloudManifestFilesImpl(
-        CloudManifestFilesClient innerClient, com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
+    public CloudManifestFilesImpl(CloudManifestFilesClient innerClient,
+        com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<CloudManifestFileResponse> listWithResponse(Context context) {
+        Response<CloudManifestFileResponseInner> inner = this.serviceClient().listWithResponse(context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CloudManifestFileResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CloudManifestFileResponse list() {
@@ -36,13 +45,12 @@ public final class CloudManifestFilesImpl implements CloudManifestFiles {
         }
     }
 
-    public Response<CloudManifestFileResponse> listWithResponse(Context context) {
-        Response<CloudManifestFileResponseInner> inner = this.serviceClient().listWithResponse(context);
+    public Response<CloudManifestFileResponse> getWithResponse(String verificationVersion, String versionCreationDate,
+        Context context) {
+        Response<CloudManifestFileResponseInner> inner
+            = this.serviceClient().getWithResponse(verificationVersion, versionCreationDate, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CloudManifestFileResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -53,21 +61,6 @@ public final class CloudManifestFilesImpl implements CloudManifestFiles {
         CloudManifestFileResponseInner inner = this.serviceClient().get(verificationVersion);
         if (inner != null) {
             return new CloudManifestFileResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<CloudManifestFileResponse> getWithResponse(
-        String verificationVersion, String versionCreationDate, Context context) {
-        Response<CloudManifestFileResponseInner> inner =
-            this.serviceClient().getWithResponse(verificationVersion, versionCreationDate, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CloudManifestFileResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

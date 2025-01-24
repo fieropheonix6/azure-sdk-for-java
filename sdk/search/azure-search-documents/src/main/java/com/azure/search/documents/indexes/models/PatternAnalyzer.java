@@ -6,12 +6,11 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,45 +18,33 @@ import java.util.stream.Collectors;
  * Flexibly separates text into terms via a regular expression pattern. This analyzer is implemented using Apache
  * Lucene.
  */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "@odata.type",
-        visible = true)
-@JsonTypeName("#Microsoft.Azure.Search.PatternAnalyzer")
 @Fluent
 public final class PatternAnalyzer extends LexicalAnalyzer {
 
     /*
-     * Identifies the concrete type of the analyzer.
+     * A URI fragment specifying the type of analyzer.
      */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Azure.Search.PatternAnalyzer";
 
     /*
      * A value indicating whether terms should be lower-cased. Default is true.
      */
-    @JsonProperty(value = "lowercase")
     private Boolean lowerCaseTerms;
 
     /*
      * A regular expression pattern to match token separators. Default is an expression that matches one or more
      * non-word characters.
      */
-    @JsonProperty(value = "pattern")
     private String pattern;
 
     /*
      * Regular expression flags.
      */
-    @JsonProperty(value = "flags")
     private RegexFlags flags;
 
     /*
      * A list of stopwords.
      */
-    @JsonProperty(value = "stopwords")
     private List<String> stopwords;
 
     /**
@@ -65,9 +52,18 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      *
      * @param name the name value to set.
      */
-    @JsonCreator
-    public PatternAnalyzer(@JsonProperty(value = "name", required = true) String name) {
+    public PatternAnalyzer(String name) {
         super(name);
+    }
+
+    /**
+     * Get the odataType property: A URI fragment specifying the type of analyzer.
+     *
+     * @return the odataType value.
+     */
+    @Override
+    public String getOdataType() {
+        return this.odataType;
     }
 
     /**
@@ -122,7 +118,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
             return null;
         } else {
             String[] flagStrings = this.flags.toString().split("\\|");
-            return java.util.Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList());
+            return Arrays.stream(flagStrings).map(RegexFlags::fromString).collect(Collectors.toList());
         }
     }
 
@@ -132,7 +128,6 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      * @param flags the flags value to set.
      * @return the PatternAnalyzer object itself.
      */
-    @JsonSetter
     public PatternAnalyzer setFlags(List<RegexFlags> flags) {
         if (flags == null) {
             this.flags = null;
@@ -140,7 +135,6 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
             String flagString = flags.stream().map(RegexFlags::toString).collect(Collectors.joining("|"));
             this.flags = RegexFlags.fromString(flagString);
         }
-
         return this;
     }
 
@@ -159,10 +153,75 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      * @param stopwords the stopwords value to set.
      * @return the PatternAnalyzer object itself.
      */
-    @JsonSetter
     public PatternAnalyzer setStopwords(List<String> stopwords) {
         this.stopwords = stopwords;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeBooleanField("lowercase", this.lowerCaseTerms);
+        jsonWriter.writeStringField("pattern", this.pattern);
+        jsonWriter.writeStringField("flags", this.flags == null ? null : this.flags.toString());
+        jsonWriter.writeArrayField("stopwords", this.stopwords, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PatternAnalyzer from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PatternAnalyzer if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PatternAnalyzer.
+     */
+    public static PatternAnalyzer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            String odataType = "#Microsoft.Azure.Search.PatternAnalyzer";
+            Boolean lowerCaseTerms = null;
+            String pattern = null;
+            RegexFlags flags = null;
+            List<String> stopwords = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("@odata.type".equals(fieldName)) {
+                    odataType = reader.getString();
+                } else if ("lowercase".equals(fieldName)) {
+                    lowerCaseTerms = reader.getNullable(JsonReader::getBoolean);
+                } else if ("pattern".equals(fieldName)) {
+                    pattern = reader.getString();
+                } else if ("flags".equals(fieldName)) {
+                    flags = RegexFlags.fromString(reader.getString());
+                } else if ("stopwords".equals(fieldName)) {
+                    stopwords = reader.readArray(reader1 -> reader1.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound) {
+                PatternAnalyzer deserializedPatternAnalyzer = new PatternAnalyzer(name);
+                deserializedPatternAnalyzer.odataType = odataType;
+                deserializedPatternAnalyzer.lowerCaseTerms = lowerCaseTerms;
+                deserializedPatternAnalyzer.pattern = pattern;
+                deserializedPatternAnalyzer.flags = flags;
+                deserializedPatternAnalyzer.stopwords = stopwords;
+                return deserializedPatternAnalyzer;
+            }
+            throw new IllegalStateException("Missing required property: name");
+        });
     }
 
     /**
@@ -172,7 +231,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      * @return the PatternAnalyzer object itself.
      */
     public PatternAnalyzer setStopwords(String... stopwords) {
-        this.stopwords = (stopwords == null) ? null : java.util.Arrays.asList(stopwords);
+        this.stopwords = (stopwords == null) ? null : Arrays.asList(stopwords);
         return this;
     }
 
@@ -187,7 +246,7 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
             this.flags = null;
             return this;
         } else {
-            return setFlags(java.util.Arrays.asList(flags));
+            return setFlags(Arrays.asList(flags));
         }
     }
 }

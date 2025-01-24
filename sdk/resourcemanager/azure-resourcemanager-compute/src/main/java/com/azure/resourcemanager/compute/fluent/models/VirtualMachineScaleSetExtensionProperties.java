@@ -5,36 +5,39 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.KeyVaultSecretReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the properties of a Virtual Machine Scale Set Extension. */
+/**
+ * Describes the properties of a Virtual Machine Scale Set Extension.
+ */
 @Fluent
-public final class VirtualMachineScaleSetExtensionProperties {
+public final class VirtualMachineScaleSetExtensionProperties
+    implements JsonSerializable<VirtualMachineScaleSetExtensionProperties> {
     /*
      * If a value is provided and is different from the previous value, the extension handler will be forced to update
      * even if the extension configuration has not changed.
      */
-    @JsonProperty(value = "forceUpdateTag")
     private String forceUpdateTag;
 
     /*
      * The name of the extension handler publisher.
      */
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
      * Specifies the type of the extension; an example is "CustomScriptExtension".
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Specifies the version of the script handler.
      */
-    @JsonProperty(value = "typeHandlerVersion")
     private String typeHandlerVersion;
 
     /*
@@ -42,62 +45,56 @@ public final class VirtualMachineScaleSetExtensionProperties {
      * deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set
      * to true.
      */
-    @JsonProperty(value = "autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
 
     /*
      * Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of
      * the extension available.
      */
-    @JsonProperty(value = "enableAutomaticUpgrade")
     private Boolean enableAutomaticUpgrade;
 
     /*
      * Json formatted public settings for the extension.
      */
-    @JsonProperty(value = "settings")
     private Object settings;
 
     /*
      * The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at
      * all.
      */
-    @JsonProperty(value = "protectedSettings")
     private Object protectedSettings;
 
     /*
      * The provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Collection of extension names after which this extension needs to be provisioned.
      */
-    @JsonProperty(value = "provisionAfterExtensions")
     private List<String> provisionAfterExtensions;
 
     /*
      * Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not
      * connecting to the VM will not be suppressed regardless of this value). The default is false.
      */
-    @JsonProperty(value = "suppressFailures")
     private Boolean suppressFailures;
 
     /*
      * The extensions protected settings that are passed by reference, and consumed from key vault
      */
-    @JsonProperty(value = "protectedSettingsFromKeyVault")
     private KeyVaultSecretReference protectedSettingsFromKeyVault;
 
-    /** Creates an instance of VirtualMachineScaleSetExtensionProperties class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetExtensionProperties class.
+     */
     public VirtualMachineScaleSetExtensionProperties() {
     }
 
     /**
      * Get the forceUpdateTag property: If a value is provided and is different from the previous value, the extension
      * handler will be forced to update even if the extension configuration has not changed.
-     *
+     * 
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
@@ -107,7 +104,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
     /**
      * Set the forceUpdateTag property: If a value is provided and is different from the previous value, the extension
      * handler will be forced to update even if the extension configuration has not changed.
-     *
+     * 
      * @param forceUpdateTag the forceUpdateTag value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
@@ -118,7 +115,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
 
     /**
      * Get the publisher property: The name of the extension handler publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -127,7 +124,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
 
     /**
      * Set the publisher property: The name of the extension handler publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
@@ -138,7 +135,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
 
     /**
      * Get the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -147,7 +144,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
 
     /**
      * Set the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
-     *
+     * 
      * @param type the type value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
@@ -158,7 +155,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
 
     /**
      * Get the typeHandlerVersion property: Specifies the version of the script handler.
-     *
+     * 
      * @return the typeHandlerVersion value.
      */
     public String typeHandlerVersion() {
@@ -167,7 +164,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
 
     /**
      * Set the typeHandlerVersion property: Specifies the version of the script handler.
-     *
+     * 
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
@@ -180,7 +177,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
      * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
      * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
      * redeployed, even with this property set to true.
-     *
+     * 
      * @return the autoUpgradeMinorVersion value.
      */
     public Boolean autoUpgradeMinorVersion() {
@@ -191,7 +188,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
      * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
      * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
      * redeployed, even with this property set to true.
-     *
+     * 
      * @param autoUpgradeMinorVersion the autoUpgradeMinorVersion value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
@@ -203,7 +200,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
     /**
      * Get the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
      * platform if there is a newer version of the extension available.
-     *
+     * 
      * @return the enableAutomaticUpgrade value.
      */
     public Boolean enableAutomaticUpgrade() {
@@ -213,7 +210,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
     /**
      * Set the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
      * platform if there is a newer version of the extension available.
-     *
+     * 
      * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
@@ -224,7 +221,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
 
     /**
      * Get the settings property: Json formatted public settings for the extension.
-     *
+     * 
      * @return the settings value.
      */
     public Object settings() {
@@ -233,7 +230,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
 
     /**
      * Set the settings property: Json formatted public settings for the extension.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
@@ -245,7 +242,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
     /**
      * Get the protectedSettings property: The extension can contain either protectedSettings or
      * protectedSettingsFromKeyVault or no protected settings at all.
-     *
+     * 
      * @return the protectedSettings value.
      */
     public Object protectedSettings() {
@@ -255,7 +252,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
     /**
      * Set the protectedSettings property: The extension can contain either protectedSettings or
      * protectedSettingsFromKeyVault or no protected settings at all.
-     *
+     * 
      * @param protectedSettings the protectedSettings value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
@@ -266,7 +263,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
 
     /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -276,7 +273,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
     /**
      * Get the provisionAfterExtensions property: Collection of extension names after which this extension needs to be
      * provisioned.
-     *
+     * 
      * @return the provisionAfterExtensions value.
      */
     public List<String> provisionAfterExtensions() {
@@ -286,12 +283,12 @@ public final class VirtualMachineScaleSetExtensionProperties {
     /**
      * Set the provisionAfterExtensions property: Collection of extension names after which this extension needs to be
      * provisioned.
-     *
+     * 
      * @param provisionAfterExtensions the provisionAfterExtensions value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
-    public VirtualMachineScaleSetExtensionProperties withProvisionAfterExtensions(
-        List<String> provisionAfterExtensions) {
+    public VirtualMachineScaleSetExtensionProperties
+        withProvisionAfterExtensions(List<String> provisionAfterExtensions) {
         this.provisionAfterExtensions = provisionAfterExtensions;
         return this;
     }
@@ -300,7 +297,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
      * Get the suppressFailures property: Indicates whether failures stemming from the extension will be suppressed
      * (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The
      * default is false.
-     *
+     * 
      * @return the suppressFailures value.
      */
     public Boolean suppressFailures() {
@@ -311,7 +308,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
      * Set the suppressFailures property: Indicates whether failures stemming from the extension will be suppressed
      * (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The
      * default is false.
-     *
+     * 
      * @param suppressFailures the suppressFailures value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
@@ -323,7 +320,7 @@ public final class VirtualMachineScaleSetExtensionProperties {
     /**
      * Get the protectedSettingsFromKeyVault property: The extensions protected settings that are passed by reference,
      * and consumed from key vault.
-     *
+     * 
      * @return the protectedSettingsFromKeyVault value.
      */
     public KeyVaultSecretReference protectedSettingsFromKeyVault() {
@@ -333,24 +330,100 @@ public final class VirtualMachineScaleSetExtensionProperties {
     /**
      * Set the protectedSettingsFromKeyVault property: The extensions protected settings that are passed by reference,
      * and consumed from key vault.
-     *
+     * 
      * @param protectedSettingsFromKeyVault the protectedSettingsFromKeyVault value to set.
      * @return the VirtualMachineScaleSetExtensionProperties object itself.
      */
-    public VirtualMachineScaleSetExtensionProperties withProtectedSettingsFromKeyVault(
-        KeyVaultSecretReference protectedSettingsFromKeyVault) {
+    public VirtualMachineScaleSetExtensionProperties
+        withProtectedSettingsFromKeyVault(KeyVaultSecretReference protectedSettingsFromKeyVault) {
         this.protectedSettingsFromKeyVault = protectedSettingsFromKeyVault;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (protectedSettingsFromKeyVault() != null) {
             protectedSettingsFromKeyVault().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("forceUpdateTag", this.forceUpdateTag);
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("typeHandlerVersion", this.typeHandlerVersion);
+        jsonWriter.writeBooleanField("autoUpgradeMinorVersion", this.autoUpgradeMinorVersion);
+        jsonWriter.writeBooleanField("enableAutomaticUpgrade", this.enableAutomaticUpgrade);
+        jsonWriter.writeUntypedField("settings", this.settings);
+        jsonWriter.writeUntypedField("protectedSettings", this.protectedSettings);
+        jsonWriter.writeArrayField("provisionAfterExtensions", this.provisionAfterExtensions,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("suppressFailures", this.suppressFailures);
+        jsonWriter.writeJsonField("protectedSettingsFromKeyVault", this.protectedSettingsFromKeyVault);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetExtensionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetExtensionProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetExtensionProperties.
+     */
+    public static VirtualMachineScaleSetExtensionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetExtensionProperties deserializedVirtualMachineScaleSetExtensionProperties
+                = new VirtualMachineScaleSetExtensionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("forceUpdateTag".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionProperties.forceUpdateTag = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionProperties.publisher = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionProperties.type = reader.getString();
+                } else if ("typeHandlerVersion".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionProperties.typeHandlerVersion = reader.getString();
+                } else if ("autoUpgradeMinorVersion".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionProperties.autoUpgradeMinorVersion
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableAutomaticUpgrade".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionProperties.enableAutomaticUpgrade
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("settings".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionProperties.settings = reader.readUntyped();
+                } else if ("protectedSettings".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionProperties.protectedSettings = reader.readUntyped();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionProperties.provisioningState = reader.getString();
+                } else if ("provisionAfterExtensions".equals(fieldName)) {
+                    List<String> provisionAfterExtensions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualMachineScaleSetExtensionProperties.provisionAfterExtensions
+                        = provisionAfterExtensions;
+                } else if ("suppressFailures".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionProperties.suppressFailures
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("protectedSettingsFromKeyVault".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionProperties.protectedSettingsFromKeyVault
+                        = KeyVaultSecretReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetExtensionProperties;
+        });
     }
 }

@@ -5,34 +5,50 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Base class for feature object. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("FeatureValidationRequest")
+/**
+ * Base class for feature object.
+ */
 @Fluent
 public final class FeatureValidationRequest extends FeatureValidationRequestBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FeatureValidationRequest.class);
+    /*
+     * Type of the specific object - used for deserializing
+     */
+    private String objectType = "FeatureValidationRequest";
 
     /*
      * backup support feature type.
      */
-    @JsonProperty(value = "featureType")
     private FeatureType featureType;
 
     /*
      * backup support feature name.
      */
-    @JsonProperty(value = "featureName")
     private String featureName;
 
     /**
+     * Creates an instance of FeatureValidationRequest class.
+     */
+    public FeatureValidationRequest() {
+    }
+
+    /**
+     * Get the objectType property: Type of the specific object - used for deserializing.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the featureType property: backup support feature type.
-     *
+     * 
      * @return the featureType value.
      */
     public FeatureType featureType() {
@@ -41,7 +57,7 @@ public final class FeatureValidationRequest extends FeatureValidationRequestBase
 
     /**
      * Set the featureType property: backup support feature type.
-     *
+     * 
      * @param featureType the featureType value to set.
      * @return the FeatureValidationRequest object itself.
      */
@@ -52,7 +68,7 @@ public final class FeatureValidationRequest extends FeatureValidationRequestBase
 
     /**
      * Get the featureName property: backup support feature name.
-     *
+     * 
      * @return the featureName value.
      */
     public String featureName() {
@@ -61,7 +77,7 @@ public final class FeatureValidationRequest extends FeatureValidationRequestBase
 
     /**
      * Set the featureName property: backup support feature name.
-     *
+     * 
      * @param featureName the featureName value to set.
      * @return the FeatureValidationRequest object itself.
      */
@@ -72,11 +88,53 @@ public final class FeatureValidationRequest extends FeatureValidationRequestBase
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("featureType", this.featureType == null ? null : this.featureType.toString());
+        jsonWriter.writeStringField("featureName", this.featureName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FeatureValidationRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FeatureValidationRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FeatureValidationRequest.
+     */
+    public static FeatureValidationRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FeatureValidationRequest deserializedFeatureValidationRequest = new FeatureValidationRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedFeatureValidationRequest.objectType = reader.getString();
+                } else if ("featureType".equals(fieldName)) {
+                    deserializedFeatureValidationRequest.featureType = FeatureType.fromString(reader.getString());
+                } else if ("featureName".equals(fieldName)) {
+                    deserializedFeatureValidationRequest.featureName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFeatureValidationRequest;
+        });
     }
 }

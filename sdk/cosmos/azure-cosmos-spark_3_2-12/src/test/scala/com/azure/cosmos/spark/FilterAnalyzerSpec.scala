@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.models.CosmosParameterizedQuery
+import com.azure.cosmos.models.{CosmosParameterizedQuery, DedicatedGatewayRequestOptions, SparkModelBridgeInternal}
 import org.apache.spark.sql.sources.{AlwaysFalse, AlwaysTrue, EqualTo, Filter, In, IsNotNull, IsNull, StringContains, StringEndsWith, StringStartsWith}
 import org.assertj.core.api.Assertions.assertThat
 import reactor.util.concurrent.Queues
@@ -13,10 +13,17 @@ import scala.collection.JavaConverters._
 class FilterAnalyzerSpec extends UnitSpec {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
-
   private[this] val readConfigWithoutCustomQuery =
     new CosmosReadConfig(
-      true, SchemaConversionModes.Relaxed, 100, Queues.XS_BUFFER_SIZE, None)
+      true,
+      SchemaConversionModes.Relaxed,
+      100,
+      Queues.XS_BUFFER_SIZE,
+      new DedicatedGatewayRequestOptions,
+      None,
+      None,
+      false,
+      CosmosReadManyFilteringConfig(false, "_itemIdentity"))
   private[this] val queryText = "SELECT * FROM c WHERE c.abc='Hello World'"
   private[this] val query = Some(CosmosParameterizedQuery(
     queryText,
@@ -27,14 +34,23 @@ class FilterAnalyzerSpec extends UnitSpec {
     SchemaConversionModes.Relaxed,
     100,
     Queues.XS_BUFFER_SIZE,
-    query)
+    new DedicatedGatewayRequestOptions,
+    query,
+    None,
+    true,
+    CosmosReadManyFilteringConfig(false, "_itemIdentity"))
+
+  private val pkDefinition = "{\"paths\":[\"/pk\"],\"kind\":\"Hash\"}"
+  private val partitionKeyDefinition =
+    SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(pkDefinition)
+
+  private[this] lazy val filterProcessorWithoutCustomQuery = FilterAnalyzer(readConfigWithoutCustomQuery, partitionKeyDefinition)
+  private[this] lazy val filterProcessorWithCustomQuery = FilterAnalyzer(readConfigWithCustomQuery, partitionKeyDefinition)
 
   "many filters" should "be translated to cosmos predicates with AND" in {
-    val filterProcessor = FilterAnalyzer()
-
     val filters = Array[Filter](
       EqualTo("physicist", "Schrodinger"), In("isCatAlive", Array(true, false)))
-    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithoutCustomQuery)
+    val analyzedQuery = filterProcessorWithoutCustomQuery.analyze(filters)
     analyzedQuery.filtersNotSupportedByCosmos shouldBe empty
     analyzedQuery.filtersToBePushedDownToCosmos.toIterable should contain theSameElementsAs filters.toList
 
@@ -45,10 +61,8 @@ class FilterAnalyzerSpec extends UnitSpec {
   }
 
   "in" should "be translated to cosmos in predicate" in {
-    val filterProcessor = FilterAnalyzer()
-
     val filters = Array[Filter](In("physicist", Array("Schrodinger", "Hawking")))
-    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithoutCustomQuery)
+    val analyzedQuery = filterProcessorWithoutCustomQuery.analyze(filters)
     analyzedQuery.filtersNotSupportedByCosmos shouldBe empty
     analyzedQuery.filtersToBePushedDownToCosmos should contain theSameElementsInOrderAs filters
 
@@ -59,10 +73,8 @@ class FilterAnalyzerSpec extends UnitSpec {
   }
 
   "= on number" should "be translated to cosmos = predicate" in {
-    val filterProcessor = FilterAnalyzer()
-
     val filters = Array[Filter](EqualTo("age", 5))
-    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithoutCustomQuery)
+    val analyzedQuery = filterProcessorWithoutCustomQuery.analyze(filters)
     analyzedQuery.filtersNotSupportedByCosmos shouldBe empty
     analyzedQuery.filtersToBePushedDownToCosmos should contain theSameElementsInOrderAs filters
 
@@ -73,11 +85,9 @@ class FilterAnalyzerSpec extends UnitSpec {
   }
 
   "= on utf8" should "be translated to cosmos = predicate" in {
-    val filterProcessor = FilterAnalyzer()
-
     val filters = Array[Filter](EqualTo("mathematician", "خوارزمی"))
 
-    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithoutCustomQuery)
+    val analyzedQuery = filterProcessorWithoutCustomQuery.analyze(filters)
     analyzedQuery.filtersNotSupportedByCosmos shouldBe empty
     analyzedQuery.filtersToBePushedDownToCosmos should contain theSameElementsInOrderAs filters
 
@@ -88,10 +98,8 @@ class FilterAnalyzerSpec extends UnitSpec {
   }
 
   "IsNull" should "be translated to cosmos" in {
-    val filterProcessor = FilterAnalyzer()
-
     val filters = Array[Filter](IsNull("age"))
-    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithoutCustomQuery)
+    val analyzedQuery = filterProcessorWithoutCustomQuery.analyze(filters)
     analyzedQuery.filtersNotSupportedByCosmos shouldBe empty
     analyzedQuery.filtersToBePushedDownToCosmos should contain theSameElementsInOrderAs filters
 
@@ -101,10 +109,8 @@ class FilterAnalyzerSpec extends UnitSpec {
   }
 
   "IsNotNull" should "be translated to cosmos" in {
-    val filterProcessor = FilterAnalyzer()
-
     val filters = Array[Filter](IsNotNull("age"))
-    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithoutCustomQuery)
+    val analyzedQuery = filterProcessorWithoutCustomQuery.analyze(filters)
     analyzedQuery.filtersNotSupportedByCosmos shouldBe empty
     analyzedQuery.filtersToBePushedDownToCosmos should contain theSameElementsInOrderAs filters
 
@@ -114,14 +120,12 @@ class FilterAnalyzerSpec extends UnitSpec {
   }
 
   "nested filter" should "be translated to nested cosmos json filter" in {
-    val filterProcessor = FilterAnalyzer()
-
     val filters = Array[Filter](
       EqualTo("mathematician", "خوارزمی"),
       EqualTo("mathematician.book", "Algorithmo de Numero Indorum"),
       In("mathematician.work", Array("Algebra", "Algorithm")))
 
-    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithoutCustomQuery)
+    val analyzedQuery = filterProcessorWithoutCustomQuery.analyze(filters)
     analyzedQuery.filtersNotSupportedByCosmos shouldBe empty
     analyzedQuery.filtersToBePushedDownToCosmos should contain theSameElementsInOrderAs filters
 
@@ -138,11 +142,9 @@ class FilterAnalyzerSpec extends UnitSpec {
   }
 
   "StringStartsWith on utf8" should "be translated to cosmos startswith predicate" in {
-    val filterProcessor = FilterAnalyzer()
-
     val filters = Array[Filter](StringStartsWith("mathematician.book", "Algorithmo"))
 
-    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithoutCustomQuery)
+    val analyzedQuery = filterProcessorWithoutCustomQuery.analyze(filters)
     analyzedQuery.filtersNotSupportedByCosmos shouldBe empty
     analyzedQuery.filtersToBePushedDownToCosmos should contain theSameElementsInOrderAs filters
 
@@ -153,11 +155,9 @@ class FilterAnalyzerSpec extends UnitSpec {
   }
 
   "StringEndsWith on utf8" should "be translated to cosmos endswith predicate" in {
-    val filterProcessor = FilterAnalyzer()
-
     val filters = Array[Filter](StringEndsWith("mathematician.book", "Numero Indorum"))
 
-    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithoutCustomQuery)
+    val analyzedQuery = filterProcessorWithoutCustomQuery.analyze(filters)
     analyzedQuery.filtersNotSupportedByCosmos shouldBe empty
     analyzedQuery.filtersToBePushedDownToCosmos should contain theSameElementsInOrderAs filters
 
@@ -168,12 +168,10 @@ class FilterAnalyzerSpec extends UnitSpec {
   }
 
   "StringContains on utf8" should "be translated to cosmos contains predicate" in {
-    val filterProcessor = FilterAnalyzer()
-
     // algebra
     val filters = Array[Filter](StringContains("mathematician.work", "gebr"))
 
-    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithoutCustomQuery)
+    val analyzedQuery = filterProcessorWithoutCustomQuery.analyze(filters)
     analyzedQuery.filtersNotSupportedByCosmos shouldBe empty
     analyzedQuery.filtersToBePushedDownToCosmos should contain theSameElementsInOrderAs filters
 
@@ -184,10 +182,8 @@ class FilterAnalyzerSpec extends UnitSpec {
   }
 
   "no filter" should "be translated to cosmos query with no where clause" in {
-    val filterProcessor = FilterAnalyzer()
-
     val filters = Array[Filter]()
-    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithoutCustomQuery)
+    val analyzedQuery = filterProcessorWithoutCustomQuery.analyze(filters)
     analyzedQuery.filtersToBePushedDownToCosmos shouldBe empty
     analyzedQuery.filtersNotSupportedByCosmos shouldBe empty
 
@@ -198,10 +194,8 @@ class FilterAnalyzerSpec extends UnitSpec {
   }
 
   "unsupported filter" should "be translated to cosmos predicates with AND" in {
-    val filterProcessor = FilterAnalyzer()
-
     val filters = Array[Filter](AlwaysTrue)
-    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithoutCustomQuery)
+    val analyzedQuery = filterProcessorWithoutCustomQuery.analyze(filters)
     analyzedQuery.filtersToBePushedDownToCosmos shouldBe empty
     analyzedQuery.filtersNotSupportedByCosmos should contain theSameElementsInOrderAs filters
 
@@ -212,10 +206,8 @@ class FilterAnalyzerSpec extends UnitSpec {
   }
 
   "unsupported filter mixed with supported filter" should "be translated to cosmos predicates with AND" in {
-    val filterProcessor = FilterAnalyzer()
-
     val filters = Array[Filter](AlwaysTrue, EqualTo("pet", "Schrodinger cat"), AlwaysFalse)
-    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithoutCustomQuery)
+    val analyzedQuery = filterProcessorWithoutCustomQuery.analyze(filters)
     assertThat(analyzedQuery.filtersToBePushedDownToCosmos).containsExactly(EqualTo("pet", "Schrodinger cat"))
     assertThat(analyzedQuery.filtersNotSupportedByCosmos.toIterable.asJava).containsExactlyElementsOf(Array(AlwaysTrue, AlwaysFalse).toList.asJava)
 
@@ -226,11 +218,9 @@ class FilterAnalyzerSpec extends UnitSpec {
   }
 
   "for custom query predicates" should "not be pushed down" in {
-    val filterProcessor = FilterAnalyzer()
-
     val filters = Array[Filter](
       EqualTo("physicist", "Schrodinger"), In("isCatAlive", Array(true, false)))
-    val analyzedQuery = filterProcessor.analyze(filters, readConfigWithCustomQuery)
+    val analyzedQuery = filterProcessorWithCustomQuery.analyze(filters)
     analyzedQuery.filtersToBePushedDownToCosmos shouldBe empty
     analyzedQuery.filtersNotSupportedByCosmos.toIterable should contain theSameElementsAs filters.toList
 
@@ -239,6 +229,52 @@ class FilterAnalyzerSpec extends UnitSpec {
     query.parameterNames shouldBe empty
     query.parameterValues shouldBe empty
   }
+
+  "_itemIdentity filter" should "be ignored when readManyFiltering is disabled" in {
+    val filters = Array[Filter](
+      In("_itemIdentity", Array("id(1).pk(1)", "id(2).pk(2)"))
+    )
+
+    val analyzedFilters = filterProcessorWithoutCustomQuery.analyze(filters)
+    analyzedFilters.filtersToBePushedDownToCosmos shouldBe empty
+    analyzedFilters.filtersNotSupportedByCosmos.toIterable should contain theSameElementsAs filters.toList
+    analyzedFilters.cosmosParametrizedQuery.queryText shouldEqual QueryFilterAnalyzer.rootParameterizedQuery.queryText
+    analyzedFilters.readManyFiltersOpt.isDefined shouldBe false
+  }
+
+  "_itemIdentity filter" should "be parsed into readMany list when readManyFiltering is enabled" in {
+    val readConfigWithReadManyFilterEnabled =
+      new CosmosReadConfig(
+        true,
+        SchemaConversionModes.Relaxed,
+        100,
+        Queues.XS_BUFFER_SIZE,
+        new DedicatedGatewayRequestOptions,
+        None,
+        None,
+        false,
+        CosmosReadManyFilteringConfig(true, "_itemIdentity"))
+
+    val filterAnalyzer = FilterAnalyzer(readConfigWithReadManyFilterEnabled, partitionKeyDefinition)
+    val itemIdentityOne = CosmosItemIdentityHelper.getCosmosItemIdentityValueString("1", List("1"))
+    val itemIdentityTwo = CosmosItemIdentityHelper.getCosmosItemIdentityValueString("2", List("2"))
+
+    val filters = Array[Filter](
+      In("_itemIdentity", Array(itemIdentityOne, itemIdentityTwo)),
+      In("isCatAlive", Array(true, false)) // add another filter to also test once readMany filter can be applied, query filter will not kick in
+    )
+
+    val analyzedFilters = filterAnalyzer.analyze(filters)
+
+    analyzedFilters.filtersToBePushedDownToCosmos.contains(filters(0)) shouldBe true
+    analyzedFilters.filtersNotSupportedByCosmos.contains(filters(1)) shouldBe  true
+    analyzedFilters.cosmosParametrizedQuery.queryText shouldEqual QueryFilterAnalyzer.rootParameterizedQuery.queryText
+    analyzedFilters.readManyFiltersOpt.isDefined shouldBe true
+    analyzedFilters.readManyFiltersOpt.get.size shouldBe 2
+    analyzedFilters.readManyFiltersOpt.get(0).value shouldEqual itemIdentityOne
+    analyzedFilters.readManyFiltersOpt.get(1).value shouldEqual itemIdentityTwo
+  }
+
   // TODO: moderakhs add unit test for all spark filters
 
   //scalastyle:on magic.number

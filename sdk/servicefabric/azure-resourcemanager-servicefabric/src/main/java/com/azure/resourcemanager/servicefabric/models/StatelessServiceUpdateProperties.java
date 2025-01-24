@@ -5,43 +5,56 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties of a stateless service resource for patch operations. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "serviceKind")
-@JsonTypeName("Stateless")
+/**
+ * The properties of a stateless service resource for patch operations.
+ */
 @Fluent
 public final class StatelessServiceUpdateProperties extends ServiceResourceUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StatelessServiceUpdateProperties.class);
+    /*
+     * The kind of service (Stateless or Stateful).
+     */
+    private ServiceKind serviceKind = ServiceKind.STATELESS;
 
     /*
      * The instance count.
      */
-    @JsonProperty(value = "instanceCount")
     private Integer instanceCount;
 
     /*
-     * Delay duration for RequestDrain feature to ensures that the endpoint
-     * advertised by the stateless instance is removed before the delay starts
-     * prior to closing the instance. This delay enables existing requests to
-     * drain gracefully before the instance actually goes down
-     * (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-application-upgrade-advanced#avoid-connection-drops-during-stateless-service-planned-downtime-preview).
-     * It is first interpreted as a string representing an ISO 8601 duration.
-     * If that fails, then it is interpreted as a number representing the total
-     * number of milliseconds.
+     * Delay duration for RequestDrain feature to ensures that the endpoint advertised by the stateless instance is
+     * removed before the delay starts prior to closing the instance. This delay enables existing requests to drain
+     * gracefully before the instance actually goes down
+     * (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-application-upgrade-advanced#avoid-
+     * connection-drops-during-stateless-service-planned-downtime-preview). It is first interpreted as a string
+     * representing an ISO 8601 duration. It is represented in ISO 8601 format (hh:mm:ss.s).
      */
-    @JsonProperty(value = "instanceCloseDelayDuration")
     private String instanceCloseDelayDuration;
 
     /**
+     * Creates an instance of StatelessServiceUpdateProperties class.
+     */
+    public StatelessServiceUpdateProperties() {
+    }
+
+    /**
+     * Get the serviceKind property: The kind of service (Stateless or Stateful).
+     * 
+     * @return the serviceKind value.
+     */
+    @Override
+    public ServiceKind serviceKind() {
+        return this.serviceKind;
+    }
+
+    /**
      * Get the instanceCount property: The instance count.
-     *
+     * 
      * @return the instanceCount value.
      */
     public Integer instanceCount() {
@@ -50,7 +63,7 @@ public final class StatelessServiceUpdateProperties extends ServiceResourceUpdat
 
     /**
      * Set the instanceCount property: The instance count.
-     *
+     * 
      * @param instanceCount the instanceCount value to set.
      * @return the StatelessServiceUpdateProperties object itself.
      */
@@ -64,9 +77,9 @@ public final class StatelessServiceUpdateProperties extends ServiceResourceUpdat
      * advertised by the stateless instance is removed before the delay starts prior to closing the instance. This delay
      * enables existing requests to drain gracefully before the instance actually goes down
      * (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-application-upgrade-advanced#avoid-connection-drops-during-stateless-service-planned-downtime-preview).
-     * It is first interpreted as a string representing an ISO 8601 duration. If that fails, then it is interpreted as a
-     * number representing the total number of milliseconds.
-     *
+     * It is first interpreted as a string representing an ISO 8601 duration. It is represented in ISO 8601 format
+     * (hh:mm:ss.s).
+     * 
      * @return the instanceCloseDelayDuration value.
      */
     public String instanceCloseDelayDuration() {
@@ -78,9 +91,9 @@ public final class StatelessServiceUpdateProperties extends ServiceResourceUpdat
      * advertised by the stateless instance is removed before the delay starts prior to closing the instance. This delay
      * enables existing requests to drain gracefully before the instance actually goes down
      * (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-application-upgrade-advanced#avoid-connection-drops-during-stateless-service-planned-downtime-preview).
-     * It is first interpreted as a string representing an ISO 8601 duration. If that fails, then it is interpreted as a
-     * number representing the total number of milliseconds.
-     *
+     * It is first interpreted as a string representing an ISO 8601 duration. It is represented in ISO 8601 format
+     * (hh:mm:ss.s).
+     * 
      * @param instanceCloseDelayDuration the instanceCloseDelayDuration value to set.
      * @return the StatelessServiceUpdateProperties object itself.
      */
@@ -89,38 +102,48 @@ public final class StatelessServiceUpdateProperties extends ServiceResourceUpdat
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatelessServiceUpdateProperties withPlacementConstraints(String placementConstraints) {
         super.withPlacementConstraints(placementConstraints);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public StatelessServiceUpdateProperties withCorrelationScheme(
-        List<ServiceCorrelationDescription> correlationScheme) {
+    public StatelessServiceUpdateProperties
+        withCorrelationScheme(List<ServiceCorrelationDescription> correlationScheme) {
         super.withCorrelationScheme(correlationScheme);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public StatelessServiceUpdateProperties withServiceLoadMetrics(
-        List<ServiceLoadMetricDescription> serviceLoadMetrics) {
+    public StatelessServiceUpdateProperties
+        withServiceLoadMetrics(List<ServiceLoadMetricDescription> serviceLoadMetrics) {
         super.withServiceLoadMetrics(serviceLoadMetrics);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public StatelessServiceUpdateProperties withServicePlacementPolicies(
-        List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
+    public StatelessServiceUpdateProperties
+        withServicePlacementPolicies(List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
         super.withServicePlacementPolicies(servicePlacementPolicies);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatelessServiceUpdateProperties withDefaultMoveCost(MoveCost defaultMoveCost) {
         super.withDefaultMoveCost(defaultMoveCost);
@@ -129,11 +152,88 @@ public final class StatelessServiceUpdateProperties extends ServiceResourceUpdat
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (correlationScheme() != null) {
+            correlationScheme().forEach(e -> e.validate());
+        }
+        if (serviceLoadMetrics() != null) {
+            serviceLoadMetrics().forEach(e -> e.validate());
+        }
+        if (servicePlacementPolicies() != null) {
+            servicePlacementPolicies().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("placementConstraints", placementConstraints());
+        jsonWriter.writeArrayField("correlationScheme", correlationScheme(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("serviceLoadMetrics", serviceLoadMetrics(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("servicePlacementPolicies", servicePlacementPolicies(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("defaultMoveCost", defaultMoveCost() == null ? null : defaultMoveCost().toString());
+        jsonWriter.writeStringField("serviceKind", this.serviceKind == null ? null : this.serviceKind.toString());
+        jsonWriter.writeNumberField("instanceCount", this.instanceCount);
+        jsonWriter.writeStringField("instanceCloseDelayDuration", this.instanceCloseDelayDuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StatelessServiceUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StatelessServiceUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StatelessServiceUpdateProperties.
+     */
+    public static StatelessServiceUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StatelessServiceUpdateProperties deserializedStatelessServiceUpdateProperties
+                = new StatelessServiceUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("placementConstraints".equals(fieldName)) {
+                    deserializedStatelessServiceUpdateProperties.withPlacementConstraints(reader.getString());
+                } else if ("correlationScheme".equals(fieldName)) {
+                    List<ServiceCorrelationDescription> correlationScheme
+                        = reader.readArray(reader1 -> ServiceCorrelationDescription.fromJson(reader1));
+                    deserializedStatelessServiceUpdateProperties.withCorrelationScheme(correlationScheme);
+                } else if ("serviceLoadMetrics".equals(fieldName)) {
+                    List<ServiceLoadMetricDescription> serviceLoadMetrics
+                        = reader.readArray(reader1 -> ServiceLoadMetricDescription.fromJson(reader1));
+                    deserializedStatelessServiceUpdateProperties.withServiceLoadMetrics(serviceLoadMetrics);
+                } else if ("servicePlacementPolicies".equals(fieldName)) {
+                    List<ServicePlacementPolicyDescription> servicePlacementPolicies
+                        = reader.readArray(reader1 -> ServicePlacementPolicyDescription.fromJson(reader1));
+                    deserializedStatelessServiceUpdateProperties.withServicePlacementPolicies(servicePlacementPolicies);
+                } else if ("defaultMoveCost".equals(fieldName)) {
+                    deserializedStatelessServiceUpdateProperties
+                        .withDefaultMoveCost(MoveCost.fromString(reader.getString()));
+                } else if ("serviceKind".equals(fieldName)) {
+                    deserializedStatelessServiceUpdateProperties.serviceKind
+                        = ServiceKind.fromString(reader.getString());
+                } else if ("instanceCount".equals(fieldName)) {
+                    deserializedStatelessServiceUpdateProperties.instanceCount = reader.getNullable(JsonReader::getInt);
+                } else if ("instanceCloseDelayDuration".equals(fieldName)) {
+                    deserializedStatelessServiceUpdateProperties.instanceCloseDelayDuration = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStatelessServiceUpdateProperties;
+        });
     }
 }

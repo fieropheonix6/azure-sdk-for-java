@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataResidencyBoundary. */
+/**
+ * Data Residency Boundary of the resource.
+ */
 public final class DataResidencyBoundary extends ExpandableStringEnum<DataResidencyBoundary> {
-    /** Static value WithinGeopair for DataResidencyBoundary. */
+    /**
+     * Static value WithinGeopair for DataResidencyBoundary.
+     */
     public static final DataResidencyBoundary WITHIN_GEOPAIR = fromString("WithinGeopair");
 
-    /** Static value WithinRegion for DataResidencyBoundary. */
+    /**
+     * Static value WithinRegion for DataResidencyBoundary.
+     */
     public static final DataResidencyBoundary WITHIN_REGION = fromString("WithinRegion");
 
     /**
+     * Creates a new instance of DataResidencyBoundary value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataResidencyBoundary() {
+    }
+
+    /**
      * Creates or finds a DataResidencyBoundary from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DataResidencyBoundary.
      */
-    @JsonCreator
     public static DataResidencyBoundary fromString(String name) {
         return fromString(name, DataResidencyBoundary.class);
     }
 
     /**
      * Gets known DataResidencyBoundary values.
-     *
+     * 
      * @return known DataResidencyBoundary values.
      */
     public static Collection<DataResidencyBoundary> values() {

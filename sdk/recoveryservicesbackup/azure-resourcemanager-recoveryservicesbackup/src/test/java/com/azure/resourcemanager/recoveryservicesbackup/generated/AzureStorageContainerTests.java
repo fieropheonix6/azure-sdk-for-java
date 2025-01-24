@@ -9,52 +9,47 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.AcquireStorageAcc
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureStorageContainer;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureStorageContainerTests {
-    @Test
-    public void testDeserialize() {
-        AzureStorageContainer model =
-            BinaryData
-                .fromString(
-                    "{\"containerType\":\"StorageContainer\",\"sourceResourceId\":\"mczjkm\",\"storageAccountVersion\":\"kyujxsglhsrrr\",\"resourceGroup\":\"jylmbkzudnigr\",\"protectedItemCount\":3830052019666326430,\"acquireStorageAccountLock\":\"NotAcquire\",\"friendlyName\":\"wlpxuzzjg\",\"backupManagementType\":\"Invalid\",\"registrationStatus\":\"qyhqo\",\"healthStatus\":\"ihiqakydiw\",\"protectableObjectType\":\"rkwpzdqtvhcspod\"}")
-                .toObject(AzureStorageContainer.class);
-        Assertions.assertEquals("wlpxuzzjg", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.INVALID, model.backupManagementType());
-        Assertions.assertEquals("qyhqo", model.registrationStatus());
-        Assertions.assertEquals("ihiqakydiw", model.healthStatus());
-        Assertions.assertEquals("rkwpzdqtvhcspod", model.protectableObjectType());
-        Assertions.assertEquals("mczjkm", model.sourceResourceId());
-        Assertions.assertEquals("kyujxsglhsrrr", model.storageAccountVersion());
-        Assertions.assertEquals("jylmbkzudnigr", model.resourceGroup());
-        Assertions.assertEquals(3830052019666326430L, model.protectedItemCount());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureStorageContainer model = BinaryData.fromString(
+            "{\"containerType\":\"StorageContainer\",\"sourceResourceId\":\"bqgvgovpbbtte\",\"storageAccountVersion\":\"oknssqyzqedikdf\",\"resourceGroup\":\"biqmrjgei\",\"protectedItemCount\":7728759697884020161,\"acquireStorageAccountLock\":\"NotAcquire\",\"friendlyName\":\"fiwzcxmjpbyep\",\"backupManagementType\":\"MAB\",\"registrationStatus\":\"vljvrc\",\"healthStatus\":\"fqip\",\"protectableObjectType\":\"hnp\"}")
+            .toObject(AzureStorageContainer.class);
+        Assertions.assertEquals("fiwzcxmjpbyep", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
+        Assertions.assertEquals("vljvrc", model.registrationStatus());
+        Assertions.assertEquals("fqip", model.healthStatus());
+        Assertions.assertEquals("hnp", model.protectableObjectType());
+        Assertions.assertEquals("bqgvgovpbbtte", model.sourceResourceId());
+        Assertions.assertEquals("oknssqyzqedikdf", model.storageAccountVersion());
+        Assertions.assertEquals("biqmrjgei", model.resourceGroup());
+        Assertions.assertEquals(7728759697884020161L, model.protectedItemCount());
         Assertions.assertEquals(AcquireStorageAccountLock.NOT_ACQUIRE, model.acquireStorageAccountLock());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureStorageContainer model =
-            new AzureStorageContainer()
-                .withFriendlyName("wlpxuzzjg")
-                .withBackupManagementType(BackupManagementType.INVALID)
-                .withRegistrationStatus("qyhqo")
-                .withHealthStatus("ihiqakydiw")
-                .withProtectableObjectType("rkwpzdqtvhcspod")
-                .withSourceResourceId("mczjkm")
-                .withStorageAccountVersion("kyujxsglhsrrr")
-                .withResourceGroup("jylmbkzudnigr")
-                .withProtectedItemCount(3830052019666326430L)
-                .withAcquireStorageAccountLock(AcquireStorageAccountLock.NOT_ACQUIRE);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureStorageContainer model = new AzureStorageContainer().withFriendlyName("fiwzcxmjpbyep")
+            .withBackupManagementType(BackupManagementType.MAB)
+            .withRegistrationStatus("vljvrc")
+            .withHealthStatus("fqip")
+            .withProtectableObjectType("hnp")
+            .withSourceResourceId("bqgvgovpbbtte")
+            .withStorageAccountVersion("oknssqyzqedikdf")
+            .withResourceGroup("biqmrjgei")
+            .withProtectedItemCount(7728759697884020161L)
+            .withAcquireStorageAccountLock(AcquireStorageAccountLock.NOT_ACQUIRE);
         model = BinaryData.fromObject(model).toObject(AzureStorageContainer.class);
-        Assertions.assertEquals("wlpxuzzjg", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.INVALID, model.backupManagementType());
-        Assertions.assertEquals("qyhqo", model.registrationStatus());
-        Assertions.assertEquals("ihiqakydiw", model.healthStatus());
-        Assertions.assertEquals("rkwpzdqtvhcspod", model.protectableObjectType());
-        Assertions.assertEquals("mczjkm", model.sourceResourceId());
-        Assertions.assertEquals("kyujxsglhsrrr", model.storageAccountVersion());
-        Assertions.assertEquals("jylmbkzudnigr", model.resourceGroup());
-        Assertions.assertEquals(3830052019666326430L, model.protectedItemCount());
+        Assertions.assertEquals("fiwzcxmjpbyep", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
+        Assertions.assertEquals("vljvrc", model.registrationStatus());
+        Assertions.assertEquals("fqip", model.healthStatus());
+        Assertions.assertEquals("hnp", model.protectableObjectType());
+        Assertions.assertEquals("bqgvgovpbbtte", model.sourceResourceId());
+        Assertions.assertEquals("oknssqyzqedikdf", model.storageAccountVersion());
+        Assertions.assertEquals("biqmrjgei", model.resourceGroup());
+        Assertions.assertEquals(7728759697884020161L, model.protectedItemCount());
         Assertions.assertEquals(AcquireStorageAccountLock.NOT_ACQUIRE, model.acquireStorageAccountLock());
     }
 }

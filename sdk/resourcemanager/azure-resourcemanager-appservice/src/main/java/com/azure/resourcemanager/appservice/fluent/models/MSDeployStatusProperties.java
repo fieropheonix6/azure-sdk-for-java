@@ -5,46 +5,54 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.MSDeployProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** MSDeployStatus resource specific properties. */
+/**
+ * MSDeployStatus resource specific properties.
+ */
 @Immutable
-public final class MSDeployStatusProperties {
+public final class MSDeployStatusProperties implements JsonSerializable<MSDeployStatusProperties> {
     /*
      * Username of deployer
      */
-    @JsonProperty(value = "deployer", access = JsonProperty.Access.WRITE_ONLY)
     private String deployer;
 
     /*
      * Provisioning state
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private MSDeployProvisioningState provisioningState;
 
     /*
      * Start time of deploy operation
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * End time of deploy operation
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * Whether the deployment operation has completed
      */
-    @JsonProperty(value = "complete", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean complete;
 
     /**
+     * Creates an instance of MSDeployStatusProperties class.
+     */
+    public MSDeployStatusProperties() {
+    }
+
+    /**
      * Get the deployer property: Username of deployer.
-     *
+     * 
      * @return the deployer value.
      */
     public String deployer() {
@@ -53,7 +61,7 @@ public final class MSDeployStatusProperties {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public MSDeployProvisioningState provisioningState() {
@@ -62,7 +70,7 @@ public final class MSDeployStatusProperties {
 
     /**
      * Get the startTime property: Start time of deploy operation.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -71,7 +79,7 @@ public final class MSDeployStatusProperties {
 
     /**
      * Get the endTime property: End time of deploy operation.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -80,7 +88,7 @@ public final class MSDeployStatusProperties {
 
     /**
      * Get the complete property: Whether the deployment operation has completed.
-     *
+     * 
      * @return the complete value.
      */
     public Boolean complete() {
@@ -89,9 +97,55 @@ public final class MSDeployStatusProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MSDeployStatusProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MSDeployStatusProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MSDeployStatusProperties.
+     */
+    public static MSDeployStatusProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MSDeployStatusProperties deserializedMSDeployStatusProperties = new MSDeployStatusProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deployer".equals(fieldName)) {
+                    deserializedMSDeployStatusProperties.deployer = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedMSDeployStatusProperties.provisioningState
+                        = MSDeployProvisioningState.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedMSDeployStatusProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedMSDeployStatusProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("complete".equals(fieldName)) {
+                    deserializedMSDeployStatusProperties.complete = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMSDeployStatusProperties;
+        });
     }
 }

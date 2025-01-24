@@ -15,29 +15,50 @@ import com.azure.resourcemanager.azurestack.fluent.models.RegistrationInner;
 import com.azure.resourcemanager.azurestack.models.ActivationKeyResult;
 import com.azure.resourcemanager.azurestack.models.Registration;
 import com.azure.resourcemanager.azurestack.models.Registrations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RegistrationsImpl implements Registrations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistrationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RegistrationsImpl.class);
 
     private final RegistrationsClient innerClient;
 
     private final com.azure.resourcemanager.azurestack.AzureStackManager serviceManager;
 
-    public RegistrationsImpl(
-        RegistrationsClient innerClient, com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
+    public RegistrationsImpl(RegistrationsClient innerClient,
+        com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Registration> listByResourceGroup(String resourceGroup) {
         PagedIterable<RegistrationInner> inner = this.serviceClient().listByResourceGroup(resourceGroup);
-        return Utils.mapPage(inner, inner1 -> new RegistrationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RegistrationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Registration> listByResourceGroup(String resourceGroup, Context context) {
         PagedIterable<RegistrationInner> inner = this.serviceClient().listByResourceGroup(resourceGroup, context);
-        return Utils.mapPage(inner, inner1 -> new RegistrationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RegistrationImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Registration> list() {
+        PagedIterable<RegistrationInner> inner = this.serviceClient().list();
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RegistrationImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Registration> list(Context context) {
+        PagedIterable<RegistrationInner> inner = this.serviceClient().list(context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RegistrationImpl(inner1, this.manager()));
+    }
+
+    public Response<Registration> getByResourceGroupWithResponse(String resourceGroup, String registrationName,
+        Context context) {
+        Response<RegistrationInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroup, registrationName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RegistrationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Registration getByResourceGroup(String resourceGroup, String registrationName) {
@@ -49,27 +70,25 @@ public final class RegistrationsImpl implements Registrations {
         }
     }
 
-    public Response<Registration> getByResourceGroupWithResponse(
-        String resourceGroup, String registrationName, Context context) {
-        Response<RegistrationInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroup, registrationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new RegistrationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroup, String registrationName,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroup, registrationName, context);
     }
 
     public void deleteByResourceGroup(String resourceGroup, String registrationName) {
         this.serviceClient().delete(resourceGroup, registrationName);
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroup, String registrationName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroup, registrationName, context);
+    public Response<ActivationKeyResult> getActivationKeyWithResponse(String resourceGroup, String registrationName,
+        Context context) {
+        Response<ActivationKeyResultInner> inner
+            = this.serviceClient().getActivationKeyWithResponse(resourceGroup, registrationName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ActivationKeyResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ActivationKeyResult getActivationKey(String resourceGroup, String registrationName) {
@@ -81,104 +100,69 @@ public final class RegistrationsImpl implements Registrations {
         }
     }
 
-    public Response<ActivationKeyResult> getActivationKeyWithResponse(
-        String resourceGroup, String registrationName, Context context) {
-        Response<ActivationKeyResultInner> inner =
-            this.serviceClient().getActivationKeyWithResponse(resourceGroup, registrationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ActivationKeyResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> enableRemoteManagementWithResponse(String resourceGroup, String registrationName,
+        Context context) {
+        return this.serviceClient().enableRemoteManagementWithResponse(resourceGroup, registrationName, context);
     }
 
     public void enableRemoteManagement(String resourceGroup, String registrationName) {
         this.serviceClient().enableRemoteManagement(resourceGroup, registrationName);
     }
 
-    public Response<Void> enableRemoteManagementWithResponse(
-        String resourceGroup, String registrationName, Context context) {
-        return this.serviceClient().enableRemoteManagementWithResponse(resourceGroup, registrationName, context);
-    }
-
     public Registration getById(String id) {
-        String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroup = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String registrationName = Utils.getValueFromIdByName(id, "registrations");
+        String registrationName = ResourceManagerUtils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroup, registrationName, Context.NONE).getValue();
     }
 
     public Response<Registration> getByIdWithResponse(String id, Context context) {
-        String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroup = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String registrationName = Utils.getValueFromIdByName(id, "registrations");
+        String registrationName = ResourceManagerUtils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroup, registrationName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroup = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String registrationName = Utils.getValueFromIdByName(id, "registrations");
+        String registrationName = ResourceManagerUtils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
         }
-        this.deleteWithResponse(resourceGroup, registrationName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroup, registrationName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroup = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroup = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroup == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String registrationName = Utils.getValueFromIdByName(id, "registrations");
+        String registrationName = ResourceManagerUtils.getValueFromIdByName(id, "registrations");
         if (registrationName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'registrations'.", id)));
         }
-        return this.deleteWithResponse(resourceGroup, registrationName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroup, registrationName, context);
     }
 
     private RegistrationsClient serviceClient() {

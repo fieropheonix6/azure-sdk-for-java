@@ -7,30 +7,26 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ClientDiscoveryForLogSpecification;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClientDiscoveryForLogSpecificationTests {
-    @Test
-    public void testDeserialize() {
-        ClientDiscoveryForLogSpecification model =
-            BinaryData
-                .fromString("{\"name\":\"dtqajzyulpkudj\",\"displayName\":\"lkhbz\",\"blobDuration\":\"epgzgqexz\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ClientDiscoveryForLogSpecification model
+            = BinaryData.fromString("{\"name\":\"mexgstxgcp\",\"displayName\":\"gmaajrm\",\"blobDuration\":\"jwzrl\"}")
                 .toObject(ClientDiscoveryForLogSpecification.class);
-        Assertions.assertEquals("dtqajzyulpkudj", model.name());
-        Assertions.assertEquals("lkhbz", model.displayName());
-        Assertions.assertEquals("epgzgqexz", model.blobDuration());
+        Assertions.assertEquals("mexgstxgcp", model.name());
+        Assertions.assertEquals("gmaajrm", model.displayName());
+        Assertions.assertEquals("jwzrl", model.blobDuration());
     }
 
-    @Test
-    public void testSerialize() {
-        ClientDiscoveryForLogSpecification model =
-            new ClientDiscoveryForLogSpecification()
-                .withName("dtqajzyulpkudj")
-                .withDisplayName("lkhbz")
-                .withBlobDuration("epgzgqexz");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ClientDiscoveryForLogSpecification model = new ClientDiscoveryForLogSpecification().withName("mexgstxgcp")
+            .withDisplayName("gmaajrm")
+            .withBlobDuration("jwzrl");
         model = BinaryData.fromObject(model).toObject(ClientDiscoveryForLogSpecification.class);
-        Assertions.assertEquals("dtqajzyulpkudj", model.name());
-        Assertions.assertEquals("lkhbz", model.displayName());
-        Assertions.assertEquals("epgzgqexz", model.blobDuration());
+        Assertions.assertEquals("mexgstxgcp", model.name());
+        Assertions.assertEquals("gmaajrm", model.displayName());
+        Assertions.assertEquals("jwzrl", model.blobDuration());
     }
 }

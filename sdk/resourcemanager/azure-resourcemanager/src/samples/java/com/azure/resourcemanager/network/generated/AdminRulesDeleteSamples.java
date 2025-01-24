@@ -4,31 +4,26 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for AdminRules Delete. */
+/**
+ * Samples for AdminRules Delete.
+ */
 public final class AdminRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerAdminRuleDelete.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkManagerAdminRuleDelete
+     * .json
      */
     /**
      * Sample code: Deletes an admin rule.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deletesAnAdminRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getAdminRules()
-            .delete(
-                "rg1",
-                "testNetworkManager",
-                "myTestSecurityConfig",
-                "testRuleCollection",
-                "SampleAdminRule",
-                false,
-                Context.NONE);
+            .delete("rg1", "testNetworkManager", "myTestSecurityConfig", "testRuleCollection", "SampleAdminRule", false,
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -6,16 +6,14 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * The options for creating a call.
  */
 @Fluent
-public class StartRecordingOptions {
+public final class StartRecordingOptions {
     /**
      * Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
      */
@@ -29,9 +27,13 @@ public class StartRecordingOptions {
 
     private RecordingFormat recordingFormat;
 
+    private Boolean pauseOnStart;
+
     private List<CommunicationIdentifier> audioChannelParticipantOrdering;
 
-    private RepeatabilityHeaders repeatabilityHeaders;
+    private List<ChannelAffinity> channelAffinity;
+
+    private RecordingStorage recordingStorage;
 
     /**
      * Constructor
@@ -41,7 +43,6 @@ public class StartRecordingOptions {
     public StartRecordingOptions(CallLocator callLocator) {
         Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
         this.callLocator = callLocator;
-        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
@@ -134,6 +135,26 @@ public class StartRecordingOptions {
     }
 
     /**
+     * Get pause on start.
+     *
+     * @return pause on start.
+     */
+    public Boolean isPauseOnStart() {
+        return pauseOnStart;
+    }
+
+    /**
+     * Set the pause on start property.
+     *
+     * @param pauseOnStart indicate if the recording should be paused on start.
+     * @return the {@link StartRecordingOptions}
+     */
+    public StartRecordingOptions setPauseOnStart(Boolean pauseOnStart) {
+        this.pauseOnStart = pauseOnStart;
+        return this;
+    }
+
+    /**
      * Get the audioChannelParticipantOrdering property: The sequential order in which audio channels are assigned to
      * participants in the unmixed recording. When 'recordingChannelType' is set to 'unmixed' and
      * `audioChannelParticipantOrdering is not specified, the audio channel to participant mapping will be automatically
@@ -156,29 +177,53 @@ public class StartRecordingOptions {
      * @param audioChannelParticipantOrdering the list of {@link CommunicationIdentifier}.
      * @return the {@link StartRecordingOptions}
      */
-    public StartRecordingOptions setAudioChannelParticipantOrdering(List<CommunicationIdentifier> audioChannelParticipantOrdering) {
+    public StartRecordingOptions
+        setAudioChannelParticipantOrdering(List<CommunicationIdentifier> audioChannelParticipantOrdering) {
         this.audioChannelParticipantOrdering = audioChannelParticipantOrdering;
         return this;
     }
 
     /**
-     * Get the Repeatability headers configuration.
+     * Get the externalStorage property: Used to specify external storage for call recording
      *
-     * @return the repeatabilityHeaders
+     * @return the externalStorage value.
      */
-    public RepeatabilityHeaders getRepeatabilityHeaders() {
-        return repeatabilityHeaders;
+    public RecordingStorage getRecordingStorage() {
+        return this.recordingStorage;
     }
 
-
     /**
-     * Set the repeatability headers
+     * Set the externalStorage property: Used to specify external storage for call recording
      *
-     * @param repeatabilityHeaders The repeatability headers configuration.
+     * @param recordingStorage the external storage for call recording
      * @return the StartRecordingOptions object itself.
      */
-    public StartRecordingOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
-        this.repeatabilityHeaders = repeatabilityHeaders;
+    public StartRecordingOptions setRecordingStorage(RecordingStorage recordingStorage) {
+        this.recordingStorage = recordingStorage;
+        return this;
+    }
+
+    /**
+     * Get the channelAffinity property: The channel affinity of call recording When 'recordingChannelType' is set to
+     * 'unmixed', if channelAffinity is not specified, 'channel' will be automatically assigned. Channel-Participant
+     * mapping details can be found in the metadata of the recording. ///.
+     *
+     * @return the channelAffinity value.
+     */
+    public List<ChannelAffinity> getChannelAffinity() {
+        return this.channelAffinity;
+    }
+
+    /**
+     * Set the channelAffinity property: The channel affinity of call recording When 'recordingChannelType' is set to
+     * 'unmixed', if channelAffinity is not specified, 'channel' will be automatically assigned. Channel-Participant
+     * mapping details can be found in the metadata of the recording. ///.
+     *
+     * @param channelAffinity the channelAffinity value to set.
+     * @return the StartRecordingOptions object itself.
+     */
+    public StartRecordingOptions setChannelAffinity(List<ChannelAffinity> channelAffinity) {
+        this.channelAffinity = channelAffinity;
         return this;
     }
 }

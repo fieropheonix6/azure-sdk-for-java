@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.ExpressRoutePortAuthorizationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * ExpressRoute Port Authorization List Result
- *
- * <p>Response for ListExpressRoutePortAuthorizations API service call.
+ * 
+ * Response for ListExpressRoutePortAuthorizations API service call.
  */
 @Fluent
-public final class ExpressRoutePortAuthorizationListResult {
+public final class ExpressRoutePortAuthorizationListResult
+    implements JsonSerializable<ExpressRoutePortAuthorizationListResult> {
     /*
      * The authorizations in an ExpressRoute Port.
      */
-    @JsonProperty(value = "value")
     private List<ExpressRoutePortAuthorizationInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ExpressRoutePortAuthorizationListResult class. */
+    /**
+     * Creates an instance of ExpressRoutePortAuthorizationListResult class.
+     */
     public ExpressRoutePortAuthorizationListResult() {
     }
 
     /**
      * Get the value property: The authorizations in an ExpressRoute Port.
-     *
+     * 
      * @return the value value.
      */
     public List<ExpressRoutePortAuthorizationInner> value() {
@@ -43,7 +48,7 @@ public final class ExpressRoutePortAuthorizationListResult {
 
     /**
      * Set the value property: The authorizations in an ExpressRoute Port.
-     *
+     * 
      * @param value the value value to set.
      * @return the ExpressRoutePortAuthorizationListResult object itself.
      */
@@ -54,7 +59,7 @@ public final class ExpressRoutePortAuthorizationListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +68,7 @@ public final class ExpressRoutePortAuthorizationListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ExpressRoutePortAuthorizationListResult object itself.
      */
@@ -74,12 +79,54 @@ public final class ExpressRoutePortAuthorizationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRoutePortAuthorizationListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRoutePortAuthorizationListResult if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRoutePortAuthorizationListResult.
+     */
+    public static ExpressRoutePortAuthorizationListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRoutePortAuthorizationListResult deserializedExpressRoutePortAuthorizationListResult
+                = new ExpressRoutePortAuthorizationListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ExpressRoutePortAuthorizationInner> value
+                        = reader.readArray(reader1 -> ExpressRoutePortAuthorizationInner.fromJson(reader1));
+                    deserializedExpressRoutePortAuthorizationListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedExpressRoutePortAuthorizationListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRoutePortAuthorizationListResult;
+        });
     }
 }

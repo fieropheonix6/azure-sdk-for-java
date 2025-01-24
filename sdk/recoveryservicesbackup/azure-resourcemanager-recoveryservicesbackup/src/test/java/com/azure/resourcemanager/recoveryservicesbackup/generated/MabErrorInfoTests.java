@@ -6,19 +6,17 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.MabErrorInfo;
-import org.junit.jupiter.api.Test;
 
 public final class MabErrorInfoTests {
-    @Test
-    public void testDeserialize() {
-        MabErrorInfo model =
-            BinaryData
-                .fromString("{\"errorString\":\"zdtmaajquhuxylrj\",\"recommendations\":[\"ygjbmzyospspsh\"]}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        MabErrorInfo model
+            = BinaryData.fromString("{\"errorString\":\"narfdlpukhpyrn\",\"recommendations\":[\"jcpeogkhnmg\",\"ro\"]}")
                 .toObject(MabErrorInfo.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         MabErrorInfo model = new MabErrorInfo();
         model = BinaryData.fromObject(model).toObject(MabErrorInfo.class);
     }

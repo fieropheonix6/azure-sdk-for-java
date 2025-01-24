@@ -19,11 +19,8 @@ public class SqlRestorableDroppedDatabaseImpl
     private final String resourceGroupName;
     private final SqlServerManager sqlServerManager;
 
-    protected SqlRestorableDroppedDatabaseImpl(
-        String resourceGroupName,
-        String sqlServerName,
-        RestorableDroppedDatabaseInner innerObject,
-        SqlServerManager sqlServerManager) {
+    protected SqlRestorableDroppedDatabaseImpl(String resourceGroupName, String sqlServerName,
+        RestorableDroppedDatabaseInner innerObject, SqlServerManager sqlServerManager) {
         super(innerObject);
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
@@ -42,22 +39,12 @@ public class SqlRestorableDroppedDatabaseImpl
 
     @Override
     public String edition() {
-        return this.innerModel().edition();
+        return this.innerModel().sku().tier();
     }
 
     @Override
     public String maxSizeBytes() {
-        return this.innerModel().maxSizeBytes();
-    }
-
-    @Override
-    public String serviceLevelObjective() {
-        return this.innerModel().serviceLevelObjective();
-    }
-
-    @Override
-    public String elasticPoolName() {
-        return this.innerModel().elasticPoolName();
+        return this.innerModel().maxSizeBytes() == null ? null : this.innerModel().maxSizeBytes().toString();
     }
 
     @Override
@@ -77,9 +64,7 @@ public class SqlRestorableDroppedDatabaseImpl
 
     @Override
     protected Mono<RestorableDroppedDatabaseInner> getInnerAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getRestorableDroppedDatabases()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.innerModel().id());
     }

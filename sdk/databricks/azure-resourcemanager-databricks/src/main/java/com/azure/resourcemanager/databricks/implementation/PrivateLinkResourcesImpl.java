@@ -13,17 +13,15 @@ import com.azure.resourcemanager.databricks.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.databricks.fluent.models.GroupIdInformationInner;
 import com.azure.resourcemanager.databricks.models.GroupIdInformation;
 import com.azure.resourcemanager.databricks.models.PrivateLinkResources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkResourcesImpl.class);
 
     private final PrivateLinkResourcesClient innerClient;
 
     private final com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager;
 
-    public PrivateLinkResourcesImpl(
-        PrivateLinkResourcesClient innerClient,
+    public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient,
         com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,34 +29,31 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     public PagedIterable<GroupIdInformation> list(String resourceGroupName, String workspaceName) {
         PagedIterable<GroupIdInformationInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new GroupIdInformationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GroupIdInformationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<GroupIdInformation> list(String resourceGroupName, String workspaceName, Context context) {
-        PagedIterable<GroupIdInformationInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new GroupIdInformationImpl(inner1, this.manager()));
+        PagedIterable<GroupIdInformationInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GroupIdInformationImpl(inner1, this.manager()));
+    }
+
+    public Response<GroupIdInformation> getWithResponse(String resourceGroupName, String workspaceName, String groupId,
+        Context context) {
+        Response<GroupIdInformationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, groupId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new GroupIdInformationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public GroupIdInformation get(String resourceGroupName, String workspaceName, String groupId) {
         GroupIdInformationInner inner = this.serviceClient().get(resourceGroupName, workspaceName, groupId);
         if (inner != null) {
             return new GroupIdInformationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<GroupIdInformation> getWithResponse(
-        String resourceGroupName, String workspaceName, String groupId, Context context) {
-        Response<GroupIdInformationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, groupId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new GroupIdInformationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

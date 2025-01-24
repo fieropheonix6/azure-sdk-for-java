@@ -7,13 +7,16 @@ package com.azure.resourcemanager.subscription.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Alias. */
+/**
+ * Resource collection API of Alias.
+ */
 public interface Alias {
     /**
      * Create Alias Subscription.
-     *
-     * @param aliasName Alias Name.
-     * @param body The parameters required to create a new subscription.
+     * 
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     * as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription creation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -23,9 +26,10 @@ public interface Alias {
 
     /**
      * Create Alias Subscription.
-     *
-     * @param aliasName Alias Name.
-     * @param body The parameters required to create a new subscription.
+     * 
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     * as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription creation.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,8 +40,22 @@ public interface Alias {
 
     /**
      * Get Alias Subscription.
-     *
-     * @param aliasName Alias Name.
+     * 
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     * as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription creation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return alias Subscription along with {@link Response}.
+     */
+    Response<PutAliasResponse> getWithResponse(String aliasName, Context context);
+
+    /**
+     * Get Alias Subscription.
+     * 
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     * as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -46,21 +64,23 @@ public interface Alias {
     PutAliasResponse get(String aliasName);
 
     /**
-     * Get Alias Subscription.
-     *
-     * @param aliasName Alias Name.
+     * Delete Alias.
+     * 
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     * as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription creation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alias Subscription.
+     * @return the {@link Response}.
      */
-    Response<PutAliasResponse> getWithResponse(String aliasName, Context context);
+    Response<Void> deleteWithResponse(String aliasName, Context context);
 
     /**
      * Delete Alias.
-     *
-     * @param aliasName Alias Name.
+     * 
+     * @param aliasName Name for this subscription creation request also known as alias. Note that this is not the same
+     * as subscription name and this doesn’t have any other lifecycle need beyond the request for subscription creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -68,34 +88,22 @@ public interface Alias {
     void delete(String aliasName);
 
     /**
-     * Delete Alias.
-     *
-     * @param aliasName Alias Name.
+     * Get Alias Subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return alias Subscription along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(String aliasName, Context context);
+    Response<PutAliasListResult> listWithResponse(Context context);
 
     /**
      * Get Alias Subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return alias Subscription.
      */
     PutAliasListResult list();
-
-    /**
-     * Get Alias Subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return alias Subscription.
-     */
-    Response<PutAliasListResult> listWithResponse(Context context);
 }

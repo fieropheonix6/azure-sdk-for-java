@@ -12,13 +12,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.apimanagement.fluent.models.ConnectivityCheckResponseInner;
 import com.azure.resourcemanager.apimanagement.models.ConnectivityCheckRequest;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public interface ResourceProvidersClient {
     /**
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,14 +30,14 @@ public interface ResourceProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectivityCheckResponseInner>, ConnectivityCheckResponseInner>
-        beginPerformConnectivityCheckAsync(
-            String resourceGroupName, String serviceName, ConnectivityCheckRequest connectivityCheckRequestParams);
+        beginPerformConnectivityCheckAsync(String resourceGroupName, String serviceName,
+            ConnectivityCheckRequest connectivityCheckRequestParams);
 
     /**
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @param context The context to associate with this operation.
@@ -46,17 +48,14 @@ public interface ResourceProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectivityCheckResponseInner>, ConnectivityCheckResponseInner>
-        beginPerformConnectivityCheckAsync(
-            String resourceGroupName,
-            String serviceName,
-            ConnectivityCheckRequest connectivityCheckRequestParams,
-            Context context);
+        beginPerformConnectivityCheckAsync(String resourceGroupName, String serviceName,
+            ConnectivityCheckRequest connectivityCheckRequestParams, Context context);
 
     /**
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,14 +64,14 @@ public interface ResourceProvidersClient {
      * @return information on the connectivity status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectivityCheckResponseInner performConnectivityCheckAsync(
-        String resourceGroupName, String serviceName, ConnectivityCheckRequest connectivityCheckRequestParams);
+    ConnectivityCheckResponseInner performConnectivityCheckAsync(String resourceGroupName, String serviceName,
+        ConnectivityCheckRequest connectivityCheckRequestParams);
 
     /**
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @param context The context to associate with this operation.
@@ -82,9 +81,6 @@ public interface ResourceProvidersClient {
      * @return information on the connectivity status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectivityCheckResponseInner performConnectivityCheckAsync(
-        String resourceGroupName,
-        String serviceName,
-        ConnectivityCheckRequest connectivityCheckRequestParams,
-        Context context);
+    ConnectivityCheckResponseInner performConnectivityCheckAsync(String resourceGroupName, String serviceName,
+        ConnectivityCheckRequest connectivityCheckRequestParams, Context context);
 }

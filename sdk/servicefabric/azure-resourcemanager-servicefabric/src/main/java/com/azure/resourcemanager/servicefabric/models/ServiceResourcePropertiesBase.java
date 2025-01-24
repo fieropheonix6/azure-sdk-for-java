@@ -5,59 +5,57 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The common service resource properties. */
+/**
+ * The common service resource properties.
+ */
 @Fluent
-public class ServiceResourcePropertiesBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceResourcePropertiesBase.class);
-
+public class ServiceResourcePropertiesBase implements JsonSerializable<ServiceResourcePropertiesBase> {
     /*
-     * The placement constraints as a string. Placement constraints are boolean
-     * expressions on node properties and allow for restricting a service to
-     * particular nodes based on the service requirements. For example, to
-     * place a service on nodes where NodeType is blue specify the following:
-     * "NodeColor == blue)".
+     * The placement constraints as a string. Placement constraints are boolean expressions on node properties and allow
+     * for restricting a service to particular nodes based on the service requirements. For example, to place a service
+     * on nodes where NodeType is blue specify the following: "NodeColor == blue)".
      */
-    @JsonProperty(value = "placementConstraints")
     private String placementConstraints;
 
     /*
-     * A list that describes the correlation of the service with other
-     * services.
+     * A list that describes the correlation of the service with other services.
      */
-    @JsonProperty(value = "correlationScheme")
     private List<ServiceCorrelationDescription> correlationScheme;
 
     /*
-     * The service load metrics is given as an array of
-     * ServiceLoadMetricDescription objects.
+     * The service load metrics is given as an array of ServiceLoadMetricDescription objects.
      */
-    @JsonProperty(value = "serviceLoadMetrics")
     private List<ServiceLoadMetricDescription> serviceLoadMetrics;
 
     /*
-     * A list that describes the correlation of the service with other
-     * services.
+     * A list that describes the correlation of the service with other services.
      */
-    @JsonProperty(value = "servicePlacementPolicies")
     private List<ServicePlacementPolicyDescription> servicePlacementPolicies;
 
     /*
      * Specifies the move cost for the service.
      */
-    @JsonProperty(value = "defaultMoveCost")
     private MoveCost defaultMoveCost;
+
+    /**
+     * Creates an instance of ServiceResourcePropertiesBase class.
+     */
+    public ServiceResourcePropertiesBase() {
+    }
 
     /**
      * Get the placementConstraints property: The placement constraints as a string. Placement constraints are boolean
      * expressions on node properties and allow for restricting a service to particular nodes based on the service
      * requirements. For example, to place a service on nodes where NodeType is blue specify the following: "NodeColor
      * == blue)".
-     *
+     * 
      * @return the placementConstraints value.
      */
     public String placementConstraints() {
@@ -69,7 +67,7 @@ public class ServiceResourcePropertiesBase {
      * expressions on node properties and allow for restricting a service to particular nodes based on the service
      * requirements. For example, to place a service on nodes where NodeType is blue specify the following: "NodeColor
      * == blue)".
-     *
+     * 
      * @param placementConstraints the placementConstraints value to set.
      * @return the ServiceResourcePropertiesBase object itself.
      */
@@ -80,7 +78,7 @@ public class ServiceResourcePropertiesBase {
 
     /**
      * Get the correlationScheme property: A list that describes the correlation of the service with other services.
-     *
+     * 
      * @return the correlationScheme value.
      */
     public List<ServiceCorrelationDescription> correlationScheme() {
@@ -89,7 +87,7 @@ public class ServiceResourcePropertiesBase {
 
     /**
      * Set the correlationScheme property: A list that describes the correlation of the service with other services.
-     *
+     * 
      * @param correlationScheme the correlationScheme value to set.
      * @return the ServiceResourcePropertiesBase object itself.
      */
@@ -101,7 +99,7 @@ public class ServiceResourcePropertiesBase {
     /**
      * Get the serviceLoadMetrics property: The service load metrics is given as an array of
      * ServiceLoadMetricDescription objects.
-     *
+     * 
      * @return the serviceLoadMetrics value.
      */
     public List<ServiceLoadMetricDescription> serviceLoadMetrics() {
@@ -111,7 +109,7 @@ public class ServiceResourcePropertiesBase {
     /**
      * Set the serviceLoadMetrics property: The service load metrics is given as an array of
      * ServiceLoadMetricDescription objects.
-     *
+     * 
      * @param serviceLoadMetrics the serviceLoadMetrics value to set.
      * @return the ServiceResourcePropertiesBase object itself.
      */
@@ -123,7 +121,7 @@ public class ServiceResourcePropertiesBase {
     /**
      * Get the servicePlacementPolicies property: A list that describes the correlation of the service with other
      * services.
-     *
+     * 
      * @return the servicePlacementPolicies value.
      */
     public List<ServicePlacementPolicyDescription> servicePlacementPolicies() {
@@ -133,19 +131,19 @@ public class ServiceResourcePropertiesBase {
     /**
      * Set the servicePlacementPolicies property: A list that describes the correlation of the service with other
      * services.
-     *
+     * 
      * @param servicePlacementPolicies the servicePlacementPolicies value to set.
      * @return the ServiceResourcePropertiesBase object itself.
      */
-    public ServiceResourcePropertiesBase withServicePlacementPolicies(
-        List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
+    public ServiceResourcePropertiesBase
+        withServicePlacementPolicies(List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
         this.servicePlacementPolicies = servicePlacementPolicies;
         return this;
     }
 
     /**
      * Get the defaultMoveCost property: Specifies the move cost for the service.
-     *
+     * 
      * @return the defaultMoveCost value.
      */
     public MoveCost defaultMoveCost() {
@@ -154,7 +152,7 @@ public class ServiceResourcePropertiesBase {
 
     /**
      * Set the defaultMoveCost property: Specifies the move cost for the service.
-     *
+     * 
      * @param defaultMoveCost the defaultMoveCost value to set.
      * @return the ServiceResourcePropertiesBase object itself.
      */
@@ -165,7 +163,7 @@ public class ServiceResourcePropertiesBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -178,5 +176,64 @@ public class ServiceResourcePropertiesBase {
         if (servicePlacementPolicies() != null) {
             servicePlacementPolicies().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("placementConstraints", this.placementConstraints);
+        jsonWriter.writeArrayField("correlationScheme", this.correlationScheme,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("serviceLoadMetrics", this.serviceLoadMetrics,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("servicePlacementPolicies", this.servicePlacementPolicies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("defaultMoveCost",
+            this.defaultMoveCost == null ? null : this.defaultMoveCost.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceResourcePropertiesBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceResourcePropertiesBase if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceResourcePropertiesBase.
+     */
+    public static ServiceResourcePropertiesBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceResourcePropertiesBase deserializedServiceResourcePropertiesBase
+                = new ServiceResourcePropertiesBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("placementConstraints".equals(fieldName)) {
+                    deserializedServiceResourcePropertiesBase.placementConstraints = reader.getString();
+                } else if ("correlationScheme".equals(fieldName)) {
+                    List<ServiceCorrelationDescription> correlationScheme
+                        = reader.readArray(reader1 -> ServiceCorrelationDescription.fromJson(reader1));
+                    deserializedServiceResourcePropertiesBase.correlationScheme = correlationScheme;
+                } else if ("serviceLoadMetrics".equals(fieldName)) {
+                    List<ServiceLoadMetricDescription> serviceLoadMetrics
+                        = reader.readArray(reader1 -> ServiceLoadMetricDescription.fromJson(reader1));
+                    deserializedServiceResourcePropertiesBase.serviceLoadMetrics = serviceLoadMetrics;
+                } else if ("servicePlacementPolicies".equals(fieldName)) {
+                    List<ServicePlacementPolicyDescription> servicePlacementPolicies
+                        = reader.readArray(reader1 -> ServicePlacementPolicyDescription.fromJson(reader1));
+                    deserializedServiceResourcePropertiesBase.servicePlacementPolicies = servicePlacementPolicies;
+                } else if ("defaultMoveCost".equals(fieldName)) {
+                    deserializedServiceResourcePropertiesBase.defaultMoveCost = MoveCost.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceResourcePropertiesBase;
+        });
     }
 }

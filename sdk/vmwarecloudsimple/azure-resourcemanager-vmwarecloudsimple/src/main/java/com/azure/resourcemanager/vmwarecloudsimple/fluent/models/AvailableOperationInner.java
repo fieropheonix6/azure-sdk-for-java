@@ -5,53 +5,54 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.vmwarecloudsimple.models.AvailableOperationDisplay;
 import com.azure.resourcemanager.vmwarecloudsimple.models.AvailableOperationDisplayPropertyServiceSpecificationMetricsList;
 import com.azure.resourcemanager.vmwarecloudsimple.models.OperationOrigin;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Resource provider available operation model. */
-@JsonFlatten
+/**
+ * Resource provider available operation model.
+ */
 @Fluent
-public class AvailableOperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableOperationInner.class);
-
+public final class AvailableOperationInner implements JsonSerializable<AvailableOperationInner> {
     /*
      * The list of operations
      */
-    @JsonProperty(value = "display")
     private AvailableOperationDisplay display;
 
     /*
      * Indicating whether the operation is a data action or not
      */
-    @JsonProperty(value = "isDataAction")
     private Boolean isDataAction;
 
     /*
      * {resourceProviderNamespace}/{resourceType}/{read|write|delete|action}
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The origin of operation
      */
-    @JsonProperty(value = "origin")
     private OperationOrigin origin;
 
     /*
-     * The list of specification's service metrics
+     * The list of operation properties
      */
-    @JsonProperty(value = "properties.serviceSpecification")
-    private AvailableOperationDisplayPropertyServiceSpecificationMetricsList serviceSpecification;
+    private AvailableOperationDisplayPropertyServiceSpecification innerProperties;
+
+    /**
+     * Creates an instance of AvailableOperationInner class.
+     */
+    public AvailableOperationInner() {
+    }
 
     /**
      * Get the display property: The list of operations.
-     *
+     * 
      * @return the display value.
      */
     public AvailableOperationDisplay display() {
@@ -60,7 +61,7 @@ public class AvailableOperationInner {
 
     /**
      * Set the display property: The list of operations.
-     *
+     * 
      * @param display the display value to set.
      * @return the AvailableOperationInner object itself.
      */
@@ -71,7 +72,7 @@ public class AvailableOperationInner {
 
     /**
      * Get the isDataAction property: Indicating whether the operation is a data action or not.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -80,7 +81,7 @@ public class AvailableOperationInner {
 
     /**
      * Set the isDataAction property: Indicating whether the operation is a data action or not.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the AvailableOperationInner object itself.
      */
@@ -91,7 +92,7 @@ public class AvailableOperationInner {
 
     /**
      * Get the name property: {resourceProviderNamespace}/{resourceType}/{read|write|delete|action}.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -100,7 +101,7 @@ public class AvailableOperationInner {
 
     /**
      * Set the name property: {resourceProviderNamespace}/{resourceType}/{read|write|delete|action}.
-     *
+     * 
      * @param name the name value to set.
      * @return the AvailableOperationInner object itself.
      */
@@ -111,7 +112,7 @@ public class AvailableOperationInner {
 
     /**
      * Get the origin property: The origin of operation.
-     *
+     * 
      * @return the origin value.
      */
     public OperationOrigin origin() {
@@ -120,7 +121,7 @@ public class AvailableOperationInner {
 
     /**
      * Set the origin property: The origin of operation.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the AvailableOperationInner object itself.
      */
@@ -130,37 +131,98 @@ public class AvailableOperationInner {
     }
 
     /**
+     * Get the innerProperties property: The list of operation properties.
+     * 
+     * @return the innerProperties value.
+     */
+    private AvailableOperationDisplayPropertyServiceSpecification innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the serviceSpecification property: The list of specification's service metrics.
-     *
+     * 
      * @return the serviceSpecification value.
      */
     public AvailableOperationDisplayPropertyServiceSpecificationMetricsList serviceSpecification() {
-        return this.serviceSpecification;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceSpecification();
     }
 
     /**
      * Set the serviceSpecification property: The list of specification's service metrics.
-     *
+     * 
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the AvailableOperationInner object itself.
      */
     public AvailableOperationInner withServiceSpecification(
         AvailableOperationDisplayPropertyServiceSpecificationMetricsList serviceSpecification) {
-        this.serviceSpecification = serviceSpecification;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailableOperationDisplayPropertyServiceSpecification();
+        }
+        this.innerProperties().withServiceSpecification(serviceSpecification);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (display() != null) {
             display().validate();
         }
-        if (serviceSpecification() != null) {
-            serviceSpecification().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeBooleanField("isDataAction", this.isDataAction);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("origin", this.origin == null ? null : this.origin.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableOperationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableOperationInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableOperationInner.
+     */
+    public static AvailableOperationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableOperationInner deserializedAvailableOperationInner = new AvailableOperationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("display".equals(fieldName)) {
+                    deserializedAvailableOperationInner.display = AvailableOperationDisplay.fromJson(reader);
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedAvailableOperationInner.isDataAction = reader.getNullable(JsonReader::getBoolean);
+                } else if ("name".equals(fieldName)) {
+                    deserializedAvailableOperationInner.name = reader.getString();
+                } else if ("origin".equals(fieldName)) {
+                    deserializedAvailableOperationInner.origin = OperationOrigin.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAvailableOperationInner.innerProperties
+                        = AvailableOperationDisplayPropertyServiceSpecification.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableOperationInner;
+        });
     }
 }

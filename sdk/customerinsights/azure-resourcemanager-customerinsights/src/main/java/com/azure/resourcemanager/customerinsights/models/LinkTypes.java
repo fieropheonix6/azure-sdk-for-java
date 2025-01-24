@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.customerinsights.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for LinkTypes. */
+/**
+ * Link type.
+ */
 public enum LinkTypes {
-    /** Enum value UpdateAlways. */
+    /**
+     * Enum value UpdateAlways.
+     */
     UPDATE_ALWAYS("UpdateAlways"),
 
-    /** Enum value CopyIfNull. */
+    /**
+     * Enum value CopyIfNull.
+     */
     COPY_IF_NULL("CopyIfNull");
 
-    /** The actual serialized value for a LinkTypes instance. */
+    /**
+     * The actual serialized value for a LinkTypes instance.
+     */
     private final String value;
 
     LinkTypes(String value) {
@@ -24,12 +29,14 @@ public enum LinkTypes {
 
     /**
      * Parses a serialized value to a LinkTypes instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed LinkTypes object, or null if unable to parse.
      */
-    @JsonCreator
     public static LinkTypes fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         LinkTypes[] items = LinkTypes.values();
         for (LinkTypes item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum LinkTypes {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -4,30 +4,43 @@
 
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for NicType. */
+/**
+ * NIC type.
+ */
 public enum NicType {
-    /** Enum value E1000. */
+    /**
+     * Enum value E1000.
+     */
     E1000("E1000"),
 
-    /** Enum value E1000E. */
+    /**
+     * Enum value E1000E.
+     */
     E1000E("E1000E"),
 
-    /** Enum value PCNET32. */
+    /**
+     * Enum value PCNET32.
+     */
     PCNET32("PCNET32"),
 
-    /** Enum value VMXNET. */
+    /**
+     * Enum value VMXNET.
+     */
     VMXNET("VMXNET"),
 
-    /** Enum value VMXNET2. */
+    /**
+     * Enum value VMXNET2.
+     */
     VMXNET2("VMXNET2"),
 
-    /** Enum value VMXNET3. */
+    /**
+     * Enum value VMXNET3.
+     */
     VMXNET3("VMXNET3");
 
-    /** The actual serialized value for a NicType instance. */
+    /**
+     * The actual serialized value for a NicType instance.
+     */
     private final String value;
 
     NicType(String value) {
@@ -36,12 +49,14 @@ public enum NicType {
 
     /**
      * Parses a serialized value to a NicType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed NicType object, or null if unable to parse.
      */
-    @JsonCreator
     public static NicType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         NicType[] items = NicType.values();
         for (NicType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,7 +66,9 @@ public enum NicType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

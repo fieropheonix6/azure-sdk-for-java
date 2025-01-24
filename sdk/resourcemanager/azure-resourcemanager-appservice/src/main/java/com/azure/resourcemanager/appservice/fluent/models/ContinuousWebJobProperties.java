@@ -5,79 +5,79 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ContinuousWebJobStatus;
 import com.azure.resourcemanager.appservice.models.WebJobType;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** ContinuousWebJob resource specific properties. */
+/**
+ * ContinuousWebJob resource specific properties.
+ */
 @Fluent
-public final class ContinuousWebJobProperties {
+public final class ContinuousWebJobProperties implements JsonSerializable<ContinuousWebJobProperties> {
     /*
      * Job status.
      */
-    @JsonProperty(value = "status")
     private ContinuousWebJobStatus status;
 
     /*
      * Detailed status.
      */
-    @JsonProperty(value = "detailed_status")
     private String detailedStatus;
 
     /*
      * Log URL.
      */
-    @JsonProperty(value = "log_url")
     private String logUrl;
 
     /*
      * Run command.
      */
-    @JsonProperty(value = "run_command")
     private String runCommand;
 
     /*
      * Job URL.
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * Extra Info URL.
      */
-    @JsonProperty(value = "extra_info_url")
     private String extraInfoUrl;
 
     /*
      * Job type.
      */
-    @JsonProperty(value = "web_job_type")
     private WebJobType webJobType;
 
     /*
      * Error information.
      */
-    @JsonProperty(value = "error")
     private String error;
 
     /*
      * Using SDK?
      */
-    @JsonProperty(value = "using_sdk")
     private Boolean usingSdk;
 
     /*
      * Job settings.
      */
-    @JsonProperty(value = "settings")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> settings;
 
     /**
+     * Creates an instance of ContinuousWebJobProperties class.
+     */
+    public ContinuousWebJobProperties() {
+    }
+
+    /**
      * Get the status property: Job status.
-     *
+     * 
      * @return the status value.
      */
     public ContinuousWebJobStatus status() {
@@ -86,7 +86,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the status property: Job status.
-     *
+     * 
      * @param status the status value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -97,7 +97,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Get the detailedStatus property: Detailed status.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public String detailedStatus() {
@@ -106,7 +106,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the detailedStatus property: Detailed status.
-     *
+     * 
      * @param detailedStatus the detailedStatus value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -117,7 +117,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Get the logUrl property: Log URL.
-     *
+     * 
      * @return the logUrl value.
      */
     public String logUrl() {
@@ -126,7 +126,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the logUrl property: Log URL.
-     *
+     * 
      * @param logUrl the logUrl value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -137,7 +137,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Get the runCommand property: Run command.
-     *
+     * 
      * @return the runCommand value.
      */
     public String runCommand() {
@@ -146,7 +146,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the runCommand property: Run command.
-     *
+     * 
      * @param runCommand the runCommand value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -157,7 +157,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Get the url property: Job URL.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -166,7 +166,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the url property: Job URL.
-     *
+     * 
      * @param url the url value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -177,7 +177,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Get the extraInfoUrl property: Extra Info URL.
-     *
+     * 
      * @return the extraInfoUrl value.
      */
     public String extraInfoUrl() {
@@ -186,7 +186,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the extraInfoUrl property: Extra Info URL.
-     *
+     * 
      * @param extraInfoUrl the extraInfoUrl value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -197,7 +197,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Get the webJobType property: Job type.
-     *
+     * 
      * @return the webJobType value.
      */
     public WebJobType webJobType() {
@@ -206,7 +206,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the webJobType property: Job type.
-     *
+     * 
      * @param webJobType the webJobType value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -217,7 +217,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Get the error property: Error information.
-     *
+     * 
      * @return the error value.
      */
     public String error() {
@@ -226,7 +226,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the error property: Error information.
-     *
+     * 
      * @param error the error value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -237,7 +237,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Get the usingSdk property: Using SDK?.
-     *
+     * 
      * @return the usingSdk value.
      */
     public Boolean usingSdk() {
@@ -246,7 +246,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the usingSdk property: Using SDK?.
-     *
+     * 
      * @param usingSdk the usingSdk value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -257,7 +257,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Get the settings property: Job settings.
-     *
+     * 
      * @return the settings value.
      */
     public Map<String, Object> settings() {
@@ -266,7 +266,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the settings property: Job settings.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -277,9 +277,74 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("detailed_status", this.detailedStatus);
+        jsonWriter.writeStringField("log_url", this.logUrl);
+        jsonWriter.writeStringField("run_command", this.runCommand);
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("extra_info_url", this.extraInfoUrl);
+        jsonWriter.writeStringField("web_job_type", this.webJobType == null ? null : this.webJobType.toString());
+        jsonWriter.writeStringField("error", this.error);
+        jsonWriter.writeBooleanField("using_sdk", this.usingSdk);
+        jsonWriter.writeMapField("settings", this.settings, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContinuousWebJobProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContinuousWebJobProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContinuousWebJobProperties.
+     */
+    public static ContinuousWebJobProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContinuousWebJobProperties deserializedContinuousWebJobProperties = new ContinuousWebJobProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedContinuousWebJobProperties.status
+                        = ContinuousWebJobStatus.fromString(reader.getString());
+                } else if ("detailed_status".equals(fieldName)) {
+                    deserializedContinuousWebJobProperties.detailedStatus = reader.getString();
+                } else if ("log_url".equals(fieldName)) {
+                    deserializedContinuousWebJobProperties.logUrl = reader.getString();
+                } else if ("run_command".equals(fieldName)) {
+                    deserializedContinuousWebJobProperties.runCommand = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedContinuousWebJobProperties.url = reader.getString();
+                } else if ("extra_info_url".equals(fieldName)) {
+                    deserializedContinuousWebJobProperties.extraInfoUrl = reader.getString();
+                } else if ("web_job_type".equals(fieldName)) {
+                    deserializedContinuousWebJobProperties.webJobType = WebJobType.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedContinuousWebJobProperties.error = reader.getString();
+                } else if ("using_sdk".equals(fieldName)) {
+                    deserializedContinuousWebJobProperties.usingSdk = reader.getNullable(JsonReader::getBoolean);
+                } else if ("settings".equals(fieldName)) {
+                    Map<String, Object> settings = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedContinuousWebJobProperties.settings = settings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContinuousWebJobProperties;
+        });
     }
 }

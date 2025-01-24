@@ -7,44 +7,49 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of IP configuration of an Bastion Host. */
+/**
+ * Properties of IP configuration of an Bastion Host.
+ */
 @Fluent
-public final class BastionHostIpConfigurationPropertiesFormat {
+public final class BastionHostIpConfigurationPropertiesFormat
+    implements JsonSerializable<BastionHostIpConfigurationPropertiesFormat> {
     /*
      * Reference of the subnet resource.
      */
-    @JsonProperty(value = "subnet", required = true)
     private SubResource subnet;
 
     /*
-     * Reference of the PublicIP resource.
+     * Reference of the PublicIP resource. Null for private only bastion
      */
-    @JsonProperty(value = "publicIPAddress", required = true)
     private SubResource publicIpAddress;
 
     /*
      * The provisioning state of the bastion host IP configuration resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Private IP allocation method.
      */
-    @JsonProperty(value = "privateIPAllocationMethod")
     private IpAllocationMethod privateIpAllocationMethod;
 
-    /** Creates an instance of BastionHostIpConfigurationPropertiesFormat class. */
+    /**
+     * Creates an instance of BastionHostIpConfigurationPropertiesFormat class.
+     */
     public BastionHostIpConfigurationPropertiesFormat() {
     }
 
     /**
      * Get the subnet property: Reference of the subnet resource.
-     *
+     * 
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -53,7 +58,7 @@ public final class BastionHostIpConfigurationPropertiesFormat {
 
     /**
      * Set the subnet property: Reference of the subnet resource.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the BastionHostIpConfigurationPropertiesFormat object itself.
      */
@@ -63,8 +68,8 @@ public final class BastionHostIpConfigurationPropertiesFormat {
     }
 
     /**
-     * Get the publicIpAddress property: Reference of the PublicIP resource.
-     *
+     * Get the publicIpAddress property: Reference of the PublicIP resource. Null for private only bastion.
+     * 
      * @return the publicIpAddress value.
      */
     public SubResource publicIpAddress() {
@@ -72,8 +77,8 @@ public final class BastionHostIpConfigurationPropertiesFormat {
     }
 
     /**
-     * Set the publicIpAddress property: Reference of the PublicIP resource.
-     *
+     * Set the publicIpAddress property: Reference of the PublicIP resource. Null for private only bastion.
+     * 
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the BastionHostIpConfigurationPropertiesFormat object itself.
      */
@@ -84,7 +89,7 @@ public final class BastionHostIpConfigurationPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the bastion host IP configuration resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -93,7 +98,7 @@ public final class BastionHostIpConfigurationPropertiesFormat {
 
     /**
      * Get the privateIpAllocationMethod property: Private IP allocation method.
-     *
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
@@ -102,36 +107,78 @@ public final class BastionHostIpConfigurationPropertiesFormat {
 
     /**
      * Set the privateIpAllocationMethod property: Private IP allocation method.
-     *
+     * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the BastionHostIpConfigurationPropertiesFormat object itself.
      */
-    public BastionHostIpConfigurationPropertiesFormat withPrivateIpAllocationMethod(
-        IpAllocationMethod privateIpAllocationMethod) {
+    public BastionHostIpConfigurationPropertiesFormat
+        withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subnet() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subnet in model BastionHostIpConfigurationPropertiesFormat"));
-        }
-        if (publicIpAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publicIpAddress in model"
-                            + " BastionHostIpConfigurationPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subnet in model BastionHostIpConfigurationPropertiesFormat"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BastionHostIpConfigurationPropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeJsonField("publicIPAddress", this.publicIpAddress);
+        jsonWriter.writeStringField("privateIPAllocationMethod",
+            this.privateIpAllocationMethod == null ? null : this.privateIpAllocationMethod.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BastionHostIpConfigurationPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BastionHostIpConfigurationPropertiesFormat if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BastionHostIpConfigurationPropertiesFormat.
+     */
+    public static BastionHostIpConfigurationPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BastionHostIpConfigurationPropertiesFormat deserializedBastionHostIpConfigurationPropertiesFormat
+                = new BastionHostIpConfigurationPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnet".equals(fieldName)) {
+                    deserializedBastionHostIpConfigurationPropertiesFormat.subnet = SubResource.fromJson(reader);
+                } else if ("publicIPAddress".equals(fieldName)) {
+                    deserializedBastionHostIpConfigurationPropertiesFormat.publicIpAddress
+                        = SubResource.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedBastionHostIpConfigurationPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("privateIPAllocationMethod".equals(fieldName)) {
+                    deserializedBastionHostIpConfigurationPropertiesFormat.privateIpAllocationMethod
+                        = IpAllocationMethod.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBastionHostIpConfigurationPropertiesFormat;
+        });
+    }
 }

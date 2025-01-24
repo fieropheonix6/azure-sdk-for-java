@@ -14,29 +14,40 @@ import com.azure.resourcemanager.advisor.fluent.models.ConfigDataInner;
 import com.azure.resourcemanager.advisor.models.ConfigData;
 import com.azure.resourcemanager.advisor.models.ConfigurationName;
 import com.azure.resourcemanager.advisor.models.Configurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConfigurationsImpl implements Configurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationsImpl.class);
 
     private final ConfigurationsClient innerClient;
 
     private final com.azure.resourcemanager.advisor.AdvisorManager serviceManager;
 
-    public ConfigurationsImpl(
-        ConfigurationsClient innerClient, com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
+    public ConfigurationsImpl(ConfigurationsClient innerClient,
+        com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ConfigData> list() {
         PagedIterable<ConfigDataInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ConfigDataImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigDataImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConfigData> list(Context context) {
         PagedIterable<ConfigDataInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ConfigDataImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigDataImpl(inner1, this.manager()));
+    }
+
+    public Response<ConfigData> createInSubscriptionWithResponse(ConfigurationName configurationName,
+        ConfigDataInner configContract, Context context) {
+        Response<ConfigDataInner> inner
+            = this.serviceClient().createInSubscriptionWithResponse(configurationName, configContract, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ConfigDataImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ConfigData createInSubscription(ConfigurationName configurationName, ConfigDataInner configContract) {
@@ -48,29 +59,14 @@ public final class ConfigurationsImpl implements Configurations {
         }
     }
 
-    public Response<ConfigData> createInSubscriptionWithResponse(
-        ConfigurationName configurationName, ConfigDataInner configContract, Context context) {
-        Response<ConfigDataInner> inner =
-            this.serviceClient().createInSubscriptionWithResponse(configurationName, configContract, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ConfigDataImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<ConfigData> listByResourceGroup(String resourceGroup) {
         PagedIterable<ConfigDataInner> inner = this.serviceClient().listByResourceGroup(resourceGroup);
-        return Utils.mapPage(inner, inner1 -> new ConfigDataImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigDataImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ConfigData> listByResourceGroup(String resourceGroup, Context context) {
         PagedIterable<ConfigDataInner> inner = this.serviceClient().listByResourceGroup(resourceGroup, context);
-        return Utils.mapPage(inner, inner1 -> new ConfigDataImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigDataImpl(inner1, this.manager()));
     }
 
     private ConfigurationsClient serviceClient() {

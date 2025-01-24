@@ -7,23 +7,13 @@ package com.azure.resourcemanager.loganalytics.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SharedKeysOperations. */
+/**
+ * Resource collection API of SharedKeysOperations.
+ */
 public interface SharedKeysOperations {
     /**
      * Gets the shared keys for a workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared keys for a workspace.
-     */
-    SharedKeys getSharedKeys(String resourceGroupName, String workspaceName);
-
-    /**
-     * Gets the shared keys for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -35,9 +25,8 @@ public interface SharedKeysOperations {
     Response<SharedKeys> getSharedKeysWithResponse(String resourceGroupName, String workspaceName, Context context);
 
     /**
-     * Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
-     * Insights agents to the workspace.
-     *
+     * Gets the shared keys for a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,12 +34,12 @@ public interface SharedKeysOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the shared keys for a workspace.
      */
-    SharedKeys regenerate(String resourceGroupName, String workspaceName);
+    SharedKeys getSharedKeys(String resourceGroupName, String workspaceName);
 
     /**
      * Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
      * Insights agents to the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -60,4 +49,17 @@ public interface SharedKeysOperations {
      * @return the shared keys for a workspace along with {@link Response}.
      */
     Response<SharedKeys> regenerateWithResponse(String resourceGroupName, String workspaceName, Context context);
+
+    /**
+     * Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational
+     * Insights agents to the workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the shared keys for a workspace.
+     */
+    SharedKeys regenerate(String resourceGroupName, String workspaceName);
 }

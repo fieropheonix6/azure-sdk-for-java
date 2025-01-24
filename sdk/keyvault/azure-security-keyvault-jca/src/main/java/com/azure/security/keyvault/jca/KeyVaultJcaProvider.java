@@ -3,11 +3,13 @@
 
 package com.azure.security.keyvault.jca;
 
-import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessRsaSignature;
-import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha384Signature;
-import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha512Signature;
-import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessEcSha256Signature;
-import com.azure.security.keyvault.jca.implementation.signature.AbstractKeyVaultKeyLessSignature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessRsa256Signature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessRsa512Signature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessEcSha384Signature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessEcSha512Signature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessEcSha256Signature;
+import com.azure.security.keyvault.jca.implementation.signature.AbstractKeyVaultKeylessSignature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessRsaSsaPssSignature;
 
 import java.lang.reflect.InvocationTargetException;
 import java.security.PrivilegedAction;
@@ -57,16 +59,8 @@ public final class KeyVaultJcaProvider extends Provider {
     @SuppressWarnings("removal")
     private void initialize() {
         java.security.AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-            putService(
-                new Provider.Service(
-                    this,
-                    "KeyManagerFactory",
-                    "SunX509",
-                    KeyVaultKeyManagerFactory.class.getName(),
-                    Arrays.asList("SunX509", "IbmX509"),
-                    null
-                )
-            );
+            putService(new Provider.Service(this, "KeyManagerFactory", "SunX509",
+                KeyVaultKeyManagerFactory.class.getName(), Arrays.asList("SunX509", "IbmX509"), null));
 
             /*
              * Note for Tomcat we needed to add "DKS" as an algorithm so it does
@@ -76,50 +70,24 @@ public final class KeyVaultJcaProvider extends Provider {
              * See SSLUtilBase.getKeyManagers and look for the
              * "DKS".equalsIgnoreCase(certificate.getCertificateKeystoreType()
              */
-            putService(
-                new Provider.Service(
-                    this,
-                    "KeyStore",
-                    "DKS",
-                    KeyVaultKeyStore.class.getName(),
-                    Collections.singletonList("DKS"),
-                    null
-                )
-            );
-            putService(
-                new Provider.Service(
-                    this,
-                    "KeyStore",
-                    KeyVaultKeyStore.ALGORITHM_NAME,
-                    KeyVaultKeyStore.class.getName(),
-                    Collections.singletonList(KeyVaultKeyStore.ALGORITHM_NAME),
-                    null
-                )
-            );
-            Stream.of(
-                KeyVaultKeyLessRsaSignature.class,
-                KeyVaultKeyLessEcSha256Signature.class,
-                KeyVaultKeyLessEcSha384Signature.class,
-                KeyVaultKeyLessEcSha512Signature.class)
-                .forEach(c -> putService(
-                    new Service(
-                        this,
-                        "Signature",
-                        getAlgorithmName(c),
-                        c.getName(),
-                        null,
-                        null
-                    )
-                ));
+            putService(new Provider.Service(this, "KeyStore", "DKS", KeyVaultKeyStore.class.getName(),
+                Collections.singletonList("DKS"), null));
+            putService(new Provider.Service(this, "KeyStore", KeyVaultKeyStore.ALGORITHM_NAME,
+                KeyVaultKeyStore.class.getName(), Collections.singletonList(KeyVaultKeyStore.ALGORITHM_NAME), null));
+            Stream
+                .of(KeyVaultKeylessRsaSsaPssSignature.class, KeyVaultKeylessRsa256Signature.class,
+                    KeyVaultKeylessRsa512Signature.class, KeyVaultKeylessEcSha256Signature.class,
+                    KeyVaultKeylessEcSha384Signature.class, KeyVaultKeylessEcSha512Signature.class)
+                .forEach(c -> putService(new Service(this, "Signature", getAlgorithmName(c), c.getName(), null, null)));
             return null;
         });
     }
 
-
-    private String getAlgorithmName(Class<? extends AbstractKeyVaultKeyLessSignature> c) {
+    private String getAlgorithmName(Class<? extends AbstractKeyVaultKeylessSignature> c) {
         try {
             return c.getDeclaredConstructor().newInstance().getAlgorithmName();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException
+            | NoSuchMethodException e) {
             return "";
         }
     }

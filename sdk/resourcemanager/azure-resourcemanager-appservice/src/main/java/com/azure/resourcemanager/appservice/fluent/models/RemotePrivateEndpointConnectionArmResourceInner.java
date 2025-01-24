@@ -5,31 +5,88 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ArmIdWrapper;
 import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionState;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Remote Private Endpoint Connection ARM resource. */
+/**
+ * Remote Private Endpoint Connection ARM resource.
+ */
 @Fluent
 public final class RemotePrivateEndpointConnectionArmResourceInner extends ProxyOnlyResource {
     /*
      * RemotePrivateEndpointConnectionARMResource resource specific properties
      */
-    @JsonProperty(value = "properties")
     private RemotePrivateEndpointConnectionArmResourceProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RemotePrivateEndpointConnectionArmResourceInner class.
+     */
+    public RemotePrivateEndpointConnectionArmResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: RemotePrivateEndpointConnectionARMResource resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RemotePrivateEndpointConnectionArmResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RemotePrivateEndpointConnectionArmResourceInner withKind(String kind) {
         super.withKind(kind);
@@ -38,7 +95,7 @@ public final class RemotePrivateEndpointConnectionArmResourceInner extends Proxy
 
     /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -47,7 +104,7 @@ public final class RemotePrivateEndpointConnectionArmResourceInner extends Proxy
 
     /**
      * Get the privateEndpoint property: PrivateEndpoint of a remote private endpoint connection.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public ArmIdWrapper privateEndpoint() {
@@ -56,7 +113,7 @@ public final class RemotePrivateEndpointConnectionArmResourceInner extends Proxy
 
     /**
      * Set the privateEndpoint property: PrivateEndpoint of a remote private endpoint connection.
-     *
+     * 
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the RemotePrivateEndpointConnectionArmResourceInner object itself.
      */
@@ -70,7 +127,7 @@ public final class RemotePrivateEndpointConnectionArmResourceInner extends Proxy
 
     /**
      * Get the privateLinkServiceConnectionState property: The state of a private link connection.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkConnectionState privateLinkServiceConnectionState() {
@@ -79,12 +136,12 @@ public final class RemotePrivateEndpointConnectionArmResourceInner extends Proxy
 
     /**
      * Set the privateLinkServiceConnectionState property: The state of a private link connection.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the RemotePrivateEndpointConnectionArmResourceInner object itself.
      */
-    public RemotePrivateEndpointConnectionArmResourceInner withPrivateLinkServiceConnectionState(
-        PrivateLinkConnectionState privateLinkServiceConnectionState) {
+    public RemotePrivateEndpointConnectionArmResourceInner
+        withPrivateLinkServiceConnectionState(PrivateLinkConnectionState privateLinkServiceConnectionState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new RemotePrivateEndpointConnectionArmResourceProperties();
         }
@@ -94,7 +151,7 @@ public final class RemotePrivateEndpointConnectionArmResourceInner extends Proxy
 
     /**
      * Get the ipAddresses property: Private IPAddresses mapped to the remote private endpoint.
-     *
+     * 
      * @return the ipAddresses value.
      */
     public List<String> ipAddresses() {
@@ -103,7 +160,7 @@ public final class RemotePrivateEndpointConnectionArmResourceInner extends Proxy
 
     /**
      * Set the ipAddresses property: Private IPAddresses mapped to the remote private endpoint.
-     *
+     * 
      * @param ipAddresses the ipAddresses value to set.
      * @return the RemotePrivateEndpointConnectionArmResourceInner object itself.
      */
@@ -117,14 +174,61 @@ public final class RemotePrivateEndpointConnectionArmResourceInner extends Proxy
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemotePrivateEndpointConnectionArmResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemotePrivateEndpointConnectionArmResourceInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RemotePrivateEndpointConnectionArmResourceInner.
+     */
+    public static RemotePrivateEndpointConnectionArmResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RemotePrivateEndpointConnectionArmResourceInner deserializedRemotePrivateEndpointConnectionArmResourceInner
+                = new RemotePrivateEndpointConnectionArmResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRemotePrivateEndpointConnectionArmResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRemotePrivateEndpointConnectionArmResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRemotePrivateEndpointConnectionArmResourceInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedRemotePrivateEndpointConnectionArmResourceInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRemotePrivateEndpointConnectionArmResourceInner.innerProperties
+                        = RemotePrivateEndpointConnectionArmResourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRemotePrivateEndpointConnectionArmResourceInner;
+        });
     }
 }

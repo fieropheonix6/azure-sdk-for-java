@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ManagedClusters Stop. */
+/**
+ * Samples for ManagedClusters Stop.
+ */
 public final class ManagedClustersStopSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-09-01/examples/ManagedClustersStop.json
+     * x-ms-original-file:
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
+     * ManagedClustersStop.json
      */
     /**
      * Sample code: Stop Managed Cluster.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void stopManagedCluster(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
+        azure.kubernetesClusters()
             .manager()
             .serviceClient()
             .getManagedClusters()
-            .stop("rg1", "clustername1", Context.NONE);
+            .stop("rg1", "clustername1", com.azure.core.util.Context.NONE);
     }
 }

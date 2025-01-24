@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Factory's git repo information. */
+/**
+ * Factory's git repo information.
+ */
 @Fluent
-public final class FactoryRepoUpdate {
+public final class FactoryRepoUpdate implements JsonSerializable<FactoryRepoUpdate> {
     /*
      * The factory resource id.
      */
-    @JsonProperty(value = "factoryResourceId")
     private String factoryResourceId;
 
     /*
      * Git repo information of the factory.
      */
-    @JsonProperty(value = "repoConfiguration")
     private FactoryRepoConfiguration repoConfiguration;
 
-    /** Creates an instance of FactoryRepoUpdate class. */
+    /**
+     * Creates an instance of FactoryRepoUpdate class.
+     */
     public FactoryRepoUpdate() {
     }
 
     /**
      * Get the factoryResourceId property: The factory resource id.
-     *
+     * 
      * @return the factoryResourceId value.
      */
     public String factoryResourceId() {
@@ -37,7 +43,7 @@ public final class FactoryRepoUpdate {
 
     /**
      * Set the factoryResourceId property: The factory resource id.
-     *
+     * 
      * @param factoryResourceId the factoryResourceId value to set.
      * @return the FactoryRepoUpdate object itself.
      */
@@ -48,7 +54,7 @@ public final class FactoryRepoUpdate {
 
     /**
      * Get the repoConfiguration property: Git repo information of the factory.
-     *
+     * 
      * @return the repoConfiguration value.
      */
     public FactoryRepoConfiguration repoConfiguration() {
@@ -57,7 +63,7 @@ public final class FactoryRepoUpdate {
 
     /**
      * Set the repoConfiguration property: Git repo information of the factory.
-     *
+     * 
      * @param repoConfiguration the repoConfiguration value to set.
      * @return the FactoryRepoUpdate object itself.
      */
@@ -68,12 +74,51 @@ public final class FactoryRepoUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (repoConfiguration() != null) {
             repoConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("factoryResourceId", this.factoryResourceId);
+        jsonWriter.writeJsonField("repoConfiguration", this.repoConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FactoryRepoUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FactoryRepoUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FactoryRepoUpdate.
+     */
+    public static FactoryRepoUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FactoryRepoUpdate deserializedFactoryRepoUpdate = new FactoryRepoUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("factoryResourceId".equals(fieldName)) {
+                    deserializedFactoryRepoUpdate.factoryResourceId = reader.getString();
+                } else if ("repoConfiguration".equals(fieldName)) {
+                    deserializedFactoryRepoUpdate.repoConfiguration = FactoryRepoConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFactoryRepoUpdate;
+        });
     }
 }

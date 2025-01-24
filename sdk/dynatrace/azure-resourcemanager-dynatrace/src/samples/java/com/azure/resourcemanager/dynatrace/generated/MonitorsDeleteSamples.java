@@ -4,31 +4,33 @@
 
 package com.azure.resourcemanager.dynatrace.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Monitors Delete. */
+/**
+ * Samples for Monitors Delete.
+ */
 public final class MonitorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/
+     * Monitors_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_Delete_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to DynatraceManager.
      */
     public static void monitorsDeleteMinimumSetGen(com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
-        manager.monitors().delete("myResourceGroup", "myMonitor", Context.NONE);
+        manager.monitors().delete("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/
+     * Monitors_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_Delete_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to DynatraceManager.
      */
     public static void monitorsDeleteMaximumSetGen(com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
-        manager.monitors().delete("myResourceGroup", "myMonitor", Context.NONE);
+        manager.monitors().delete("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 }

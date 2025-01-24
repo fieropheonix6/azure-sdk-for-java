@@ -5,82 +5,81 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitReference;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of ExpressRouteCrossConnection. */
+/**
+ * Properties of ExpressRouteCrossConnection.
+ */
 @Fluent
-public final class ExpressRouteCrossConnectionProperties {
+public final class ExpressRouteCrossConnectionProperties
+    implements JsonSerializable<ExpressRouteCrossConnectionProperties> {
     /*
      * The name of the primary port.
      */
-    @JsonProperty(value = "primaryAzurePort", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryAzurePort;
 
     /*
      * The name of the secondary port.
      */
-    @JsonProperty(value = "secondaryAzurePort", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryAzurePort;
 
     /*
      * The identifier of the circuit traffic.
      */
-    @JsonProperty(value = "sTag", access = JsonProperty.Access.WRITE_ONLY)
     private Integer stag;
 
     /*
      * The peering location of the ExpressRoute circuit.
      */
-    @JsonProperty(value = "peeringLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String peeringLocation;
 
     /*
      * The circuit bandwidth In Mbps.
      */
-    @JsonProperty(value = "bandwidthInMbps", access = JsonProperty.Access.WRITE_ONLY)
     private Integer bandwidthInMbps;
 
     /*
      * The ExpressRouteCircuit.
      */
-    @JsonProperty(value = "expressRouteCircuit")
     private ExpressRouteCircuitReference expressRouteCircuit;
 
     /*
      * The provisioning state of the circuit in the connectivity provider system.
      */
-    @JsonProperty(value = "serviceProviderProvisioningState")
     private ServiceProviderProvisioningState serviceProviderProvisioningState;
 
     /*
      * Additional read only notes set by the connectivity provider.
      */
-    @JsonProperty(value = "serviceProviderNotes")
     private String serviceProviderNotes;
 
     /*
      * The provisioning state of the express route cross connection resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The list of peerings.
      */
-    @JsonProperty(value = "peerings")
     private List<ExpressRouteCrossConnectionPeeringInner> peerings;
 
-    /** Creates an instance of ExpressRouteCrossConnectionProperties class. */
+    /**
+     * Creates an instance of ExpressRouteCrossConnectionProperties class.
+     */
     public ExpressRouteCrossConnectionProperties() {
     }
 
     /**
      * Get the primaryAzurePort property: The name of the primary port.
-     *
+     * 
      * @return the primaryAzurePort value.
      */
     public String primaryAzurePort() {
@@ -89,7 +88,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Get the secondaryAzurePort property: The name of the secondary port.
-     *
+     * 
      * @return the secondaryAzurePort value.
      */
     public String secondaryAzurePort() {
@@ -98,7 +97,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Get the stag property: The identifier of the circuit traffic.
-     *
+     * 
      * @return the stag value.
      */
     public Integer stag() {
@@ -107,7 +106,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Get the peeringLocation property: The peering location of the ExpressRoute circuit.
-     *
+     * 
      * @return the peeringLocation value.
      */
     public String peeringLocation() {
@@ -116,7 +115,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Get the bandwidthInMbps property: The circuit bandwidth In Mbps.
-     *
+     * 
      * @return the bandwidthInMbps value.
      */
     public Integer bandwidthInMbps() {
@@ -125,7 +124,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Get the expressRouteCircuit property: The ExpressRouteCircuit.
-     *
+     * 
      * @return the expressRouteCircuit value.
      */
     public ExpressRouteCircuitReference expressRouteCircuit() {
@@ -134,12 +133,12 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Set the expressRouteCircuit property: The ExpressRouteCircuit.
-     *
+     * 
      * @param expressRouteCircuit the expressRouteCircuit value to set.
      * @return the ExpressRouteCrossConnectionProperties object itself.
      */
-    public ExpressRouteCrossConnectionProperties withExpressRouteCircuit(
-        ExpressRouteCircuitReference expressRouteCircuit) {
+    public ExpressRouteCrossConnectionProperties
+        withExpressRouteCircuit(ExpressRouteCircuitReference expressRouteCircuit) {
         this.expressRouteCircuit = expressRouteCircuit;
         return this;
     }
@@ -147,7 +146,7 @@ public final class ExpressRouteCrossConnectionProperties {
     /**
      * Get the serviceProviderProvisioningState property: The provisioning state of the circuit in the connectivity
      * provider system.
-     *
+     * 
      * @return the serviceProviderProvisioningState value.
      */
     public ServiceProviderProvisioningState serviceProviderProvisioningState() {
@@ -157,19 +156,19 @@ public final class ExpressRouteCrossConnectionProperties {
     /**
      * Set the serviceProviderProvisioningState property: The provisioning state of the circuit in the connectivity
      * provider system.
-     *
+     * 
      * @param serviceProviderProvisioningState the serviceProviderProvisioningState value to set.
      * @return the ExpressRouteCrossConnectionProperties object itself.
      */
-    public ExpressRouteCrossConnectionProperties withServiceProviderProvisioningState(
-        ServiceProviderProvisioningState serviceProviderProvisioningState) {
+    public ExpressRouteCrossConnectionProperties
+        withServiceProviderProvisioningState(ServiceProviderProvisioningState serviceProviderProvisioningState) {
         this.serviceProviderProvisioningState = serviceProviderProvisioningState;
         return this;
     }
 
     /**
      * Get the serviceProviderNotes property: Additional read only notes set by the connectivity provider.
-     *
+     * 
      * @return the serviceProviderNotes value.
      */
     public String serviceProviderNotes() {
@@ -178,7 +177,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Set the serviceProviderNotes property: Additional read only notes set by the connectivity provider.
-     *
+     * 
      * @param serviceProviderNotes the serviceProviderNotes value to set.
      * @return the ExpressRouteCrossConnectionProperties object itself.
      */
@@ -189,7 +188,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the express route cross connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -198,7 +197,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Get the peerings property: The list of peerings.
-     *
+     * 
      * @return the peerings value.
      */
     public List<ExpressRouteCrossConnectionPeeringInner> peerings() {
@@ -207,7 +206,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Set the peerings property: The list of peerings.
-     *
+     * 
      * @param peerings the peerings value to set.
      * @return the ExpressRouteCrossConnectionProperties object itself.
      */
@@ -218,7 +217,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -228,5 +227,70 @@ public final class ExpressRouteCrossConnectionProperties {
         if (peerings() != null) {
             peerings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("expressRouteCircuit", this.expressRouteCircuit);
+        jsonWriter.writeStringField("serviceProviderProvisioningState",
+            this.serviceProviderProvisioningState == null ? null : this.serviceProviderProvisioningState.toString());
+        jsonWriter.writeStringField("serviceProviderNotes", this.serviceProviderNotes);
+        jsonWriter.writeArrayField("peerings", this.peerings, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteCrossConnectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteCrossConnectionProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRouteCrossConnectionProperties.
+     */
+    public static ExpressRouteCrossConnectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteCrossConnectionProperties deserializedExpressRouteCrossConnectionProperties
+                = new ExpressRouteCrossConnectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryAzurePort".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionProperties.primaryAzurePort = reader.getString();
+                } else if ("secondaryAzurePort".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionProperties.secondaryAzurePort = reader.getString();
+                } else if ("sTag".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionProperties.stag = reader.getNullable(JsonReader::getInt);
+                } else if ("peeringLocation".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionProperties.peeringLocation = reader.getString();
+                } else if ("bandwidthInMbps".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionProperties.bandwidthInMbps
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("expressRouteCircuit".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionProperties.expressRouteCircuit
+                        = ExpressRouteCircuitReference.fromJson(reader);
+                } else if ("serviceProviderProvisioningState".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionProperties.serviceProviderProvisioningState
+                        = ServiceProviderProvisioningState.fromString(reader.getString());
+                } else if ("serviceProviderNotes".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionProperties.serviceProviderNotes = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedExpressRouteCrossConnectionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("peerings".equals(fieldName)) {
+                    List<ExpressRouteCrossConnectionPeeringInner> peerings
+                        = reader.readArray(reader1 -> ExpressRouteCrossConnectionPeeringInner.fromJson(reader1));
+                    deserializedExpressRouteCrossConnectionProperties.peerings = peerings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteCrossConnectionProperties;
+        });
     }
 }

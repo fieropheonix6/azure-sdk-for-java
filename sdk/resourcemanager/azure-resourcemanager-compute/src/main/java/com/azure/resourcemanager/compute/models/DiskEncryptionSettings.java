@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes a Encryption Settings for a Disk. */
+/**
+ * Describes a Encryption Settings for a Disk.
+ */
 @Fluent
-public final class DiskEncryptionSettings {
+public final class DiskEncryptionSettings implements JsonSerializable<DiskEncryptionSettings> {
     /*
      * Specifies the location of the disk encryption key, which is a Key Vault Secret.
      */
-    @JsonProperty(value = "diskEncryptionKey")
     private KeyVaultSecretReference diskEncryptionKey;
 
     /*
      * Specifies the location of the key encryption key in Key Vault.
      */
-    @JsonProperty(value = "keyEncryptionKey")
     private KeyVaultKeyReference keyEncryptionKey;
 
     /*
      * Specifies whether disk encryption should be enabled on the virtual machine.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /** Creates an instance of DiskEncryptionSettings class. */
+    /**
+     * Creates an instance of DiskEncryptionSettings class.
+     */
     public DiskEncryptionSettings() {
     }
 
     /**
      * Get the diskEncryptionKey property: Specifies the location of the disk encryption key, which is a Key Vault
      * Secret.
-     *
+     * 
      * @return the diskEncryptionKey value.
      */
     public KeyVaultSecretReference diskEncryptionKey() {
@@ -45,7 +50,7 @@ public final class DiskEncryptionSettings {
     /**
      * Set the diskEncryptionKey property: Specifies the location of the disk encryption key, which is a Key Vault
      * Secret.
-     *
+     * 
      * @param diskEncryptionKey the diskEncryptionKey value to set.
      * @return the DiskEncryptionSettings object itself.
      */
@@ -56,7 +61,7 @@ public final class DiskEncryptionSettings {
 
     /**
      * Get the keyEncryptionKey property: Specifies the location of the key encryption key in Key Vault.
-     *
+     * 
      * @return the keyEncryptionKey value.
      */
     public KeyVaultKeyReference keyEncryptionKey() {
@@ -65,7 +70,7 @@ public final class DiskEncryptionSettings {
 
     /**
      * Set the keyEncryptionKey property: Specifies the location of the key encryption key in Key Vault.
-     *
+     * 
      * @param keyEncryptionKey the keyEncryptionKey value to set.
      * @return the DiskEncryptionSettings object itself.
      */
@@ -76,7 +81,7 @@ public final class DiskEncryptionSettings {
 
     /**
      * Get the enabled property: Specifies whether disk encryption should be enabled on the virtual machine.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -85,7 +90,7 @@ public final class DiskEncryptionSettings {
 
     /**
      * Set the enabled property: Specifies whether disk encryption should be enabled on the virtual machine.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the DiskEncryptionSettings object itself.
      */
@@ -96,7 +101,7 @@ public final class DiskEncryptionSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -106,5 +111,47 @@ public final class DiskEncryptionSettings {
         if (keyEncryptionKey() != null) {
             keyEncryptionKey().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("diskEncryptionKey", this.diskEncryptionKey);
+        jsonWriter.writeJsonField("keyEncryptionKey", this.keyEncryptionKey);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskEncryptionSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskEncryptionSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiskEncryptionSettings.
+     */
+    public static DiskEncryptionSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskEncryptionSettings deserializedDiskEncryptionSettings = new DiskEncryptionSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskEncryptionKey".equals(fieldName)) {
+                    deserializedDiskEncryptionSettings.diskEncryptionKey = KeyVaultSecretReference.fromJson(reader);
+                } else if ("keyEncryptionKey".equals(fieldName)) {
+                    deserializedDiskEncryptionSettings.keyEncryptionKey = KeyVaultKeyReference.fromJson(reader);
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedDiskEncryptionSettings.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskEncryptionSettings;
+        });
     }
 }

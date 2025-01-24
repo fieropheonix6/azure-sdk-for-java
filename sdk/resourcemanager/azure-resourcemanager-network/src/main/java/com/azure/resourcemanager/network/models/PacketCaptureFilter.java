@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Filter that is applied to packet capture request. Multiple filters can be applied. */
+/**
+ * Filter that is applied to packet capture request. Multiple filters can be applied.
+ */
 @Fluent
-public final class PacketCaptureFilter {
+public final class PacketCaptureFilter implements JsonSerializable<PacketCaptureFilter> {
     /*
      * Protocol to be filtered on.
      */
-    @JsonProperty(value = "protocol")
     private PcProtocol protocol;
 
     /*
@@ -21,7 +26,6 @@ public final class PacketCaptureFilter {
      * range. "127.0.0.1;127.0.0.5"? for multiple entries. Multiple ranges not currently supported. Mixing ranges with
      * multiple entries not currently supported. Default = null.
      */
-    @JsonProperty(value = "localIPAddress")
     private String localIpAddress;
 
     /*
@@ -29,7 +33,6 @@ public final class PacketCaptureFilter {
      * range. "127.0.0.1;127.0.0.5;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with
      * multiple entries not currently supported. Default = null.
      */
-    @JsonProperty(value = "remoteIPAddress")
     private String remoteIpAddress;
 
     /*
@@ -37,7 +40,6 @@ public final class PacketCaptureFilter {
      * entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported.
      * Default = null.
      */
-    @JsonProperty(value = "localPort")
     private String localPort;
 
     /*
@@ -45,16 +47,17 @@ public final class PacketCaptureFilter {
      * entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported.
      * Default = null.
      */
-    @JsonProperty(value = "remotePort")
     private String remotePort;
 
-    /** Creates an instance of PacketCaptureFilter class. */
+    /**
+     * Creates an instance of PacketCaptureFilter class.
+     */
     public PacketCaptureFilter() {
     }
 
     /**
      * Get the protocol property: Protocol to be filtered on.
-     *
+     * 
      * @return the protocol value.
      */
     public PcProtocol protocol() {
@@ -63,7 +66,7 @@ public final class PacketCaptureFilter {
 
     /**
      * Set the protocol property: Protocol to be filtered on.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the PacketCaptureFilter object itself.
      */
@@ -76,7 +79,7 @@ public final class PacketCaptureFilter {
      * Get the localIpAddress property: Local IP Address to be filtered on. Notation: "127.0.0.1" for single address
      * entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5"? for multiple entries. Multiple ranges not
      * currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
-     *
+     * 
      * @return the localIpAddress value.
      */
     public String localIpAddress() {
@@ -87,7 +90,7 @@ public final class PacketCaptureFilter {
      * Set the localIpAddress property: Local IP Address to be filtered on. Notation: "127.0.0.1" for single address
      * entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5"? for multiple entries. Multiple ranges not
      * currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
-     *
+     * 
      * @param localIpAddress the localIpAddress value to set.
      * @return the PacketCaptureFilter object itself.
      */
@@ -100,7 +103,7 @@ public final class PacketCaptureFilter {
      * Get the remoteIpAddress property: Local IP Address to be filtered on. Notation: "127.0.0.1" for single address
      * entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5;" for multiple entries. Multiple ranges not
      * currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
-     *
+     * 
      * @return the remoteIpAddress value.
      */
     public String remoteIpAddress() {
@@ -111,7 +114,7 @@ public final class PacketCaptureFilter {
      * Set the remoteIpAddress property: Local IP Address to be filtered on. Notation: "127.0.0.1" for single address
      * entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5;" for multiple entries. Multiple ranges not
      * currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
-     *
+     * 
      * @param remoteIpAddress the remoteIpAddress value to set.
      * @return the PacketCaptureFilter object itself.
      */
@@ -124,7 +127,7 @@ public final class PacketCaptureFilter {
      * Get the localPort property: Local port to be filtered on. Notation: "80" for single port entry."80-85" for range.
      * "80;443;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not
      * currently supported. Default = null.
-     *
+     * 
      * @return the localPort value.
      */
     public String localPort() {
@@ -135,7 +138,7 @@ public final class PacketCaptureFilter {
      * Set the localPort property: Local port to be filtered on. Notation: "80" for single port entry."80-85" for range.
      * "80;443;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not
      * currently supported. Default = null.
-     *
+     * 
      * @param localPort the localPort value to set.
      * @return the PacketCaptureFilter object itself.
      */
@@ -148,7 +151,7 @@ public final class PacketCaptureFilter {
      * Get the remotePort property: Remote port to be filtered on. Notation: "80" for single port entry."80-85" for
      * range. "80;443;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple
      * entries not currently supported. Default = null.
-     *
+     * 
      * @return the remotePort value.
      */
     public String remotePort() {
@@ -159,7 +162,7 @@ public final class PacketCaptureFilter {
      * Set the remotePort property: Remote port to be filtered on. Notation: "80" for single port entry."80-85" for
      * range. "80;443;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple
      * entries not currently supported. Default = null.
-     *
+     * 
      * @param remotePort the remotePort value to set.
      * @return the PacketCaptureFilter object itself.
      */
@@ -170,9 +173,57 @@ public final class PacketCaptureFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeStringField("localIPAddress", this.localIpAddress);
+        jsonWriter.writeStringField("remoteIPAddress", this.remoteIpAddress);
+        jsonWriter.writeStringField("localPort", this.localPort);
+        jsonWriter.writeStringField("remotePort", this.remotePort);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PacketCaptureFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PacketCaptureFilter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PacketCaptureFilter.
+     */
+    public static PacketCaptureFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PacketCaptureFilter deserializedPacketCaptureFilter = new PacketCaptureFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protocol".equals(fieldName)) {
+                    deserializedPacketCaptureFilter.protocol = PcProtocol.fromString(reader.getString());
+                } else if ("localIPAddress".equals(fieldName)) {
+                    deserializedPacketCaptureFilter.localIpAddress = reader.getString();
+                } else if ("remoteIPAddress".equals(fieldName)) {
+                    deserializedPacketCaptureFilter.remoteIpAddress = reader.getString();
+                } else if ("localPort".equals(fieldName)) {
+                    deserializedPacketCaptureFilter.localPort = reader.getString();
+                } else if ("remotePort".equals(fieldName)) {
+                    deserializedPacketCaptureFilter.remotePort = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPacketCaptureFilter;
+        });
     }
 }

@@ -5,42 +5,61 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the move collection properties. */
+/**
+ * Defines the move collection properties.
+ */
 @Fluent
-public final class MoveCollectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MoveCollectionProperties.class);
-
+public final class MoveCollectionProperties implements JsonSerializable<MoveCollectionProperties> {
     /*
      * Gets or sets the source region.
      */
-    @JsonProperty(value = "sourceRegion", required = true)
     private String sourceRegion;
 
     /*
      * Gets or sets the target region.
      */
-    @JsonProperty(value = "targetRegion", required = true)
     private String targetRegion;
+
+    /*
+     * Gets or sets the move region which indicates the region where the VM Regional to Zonal move will be conducted.
+     */
+    private String moveRegion;
 
     /*
      * Defines the provisioning states.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * Gets or sets the version of move collection.
+     */
+    private String version;
+
+    /*
+     * Defines the MoveType.
+     */
+    private MoveType moveType;
 
     /*
      * Defines the move collection errors.
      */
-    @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private MoveCollectionPropertiesErrors errors;
 
     /**
+     * Creates an instance of MoveCollectionProperties class.
+     */
+    public MoveCollectionProperties() {
+    }
+
+    /**
      * Get the sourceRegion property: Gets or sets the source region.
-     *
+     * 
      * @return the sourceRegion value.
      */
     public String sourceRegion() {
@@ -49,7 +68,7 @@ public final class MoveCollectionProperties {
 
     /**
      * Set the sourceRegion property: Gets or sets the source region.
-     *
+     * 
      * @param sourceRegion the sourceRegion value to set.
      * @return the MoveCollectionProperties object itself.
      */
@@ -60,7 +79,7 @@ public final class MoveCollectionProperties {
 
     /**
      * Get the targetRegion property: Gets or sets the target region.
-     *
+     * 
      * @return the targetRegion value.
      */
     public String targetRegion() {
@@ -69,7 +88,7 @@ public final class MoveCollectionProperties {
 
     /**
      * Set the targetRegion property: Gets or sets the target region.
-     *
+     * 
      * @param targetRegion the targetRegion value to set.
      * @return the MoveCollectionProperties object itself.
      */
@@ -79,8 +98,30 @@ public final class MoveCollectionProperties {
     }
 
     /**
+     * Get the moveRegion property: Gets or sets the move region which indicates the region where the VM Regional to
+     * Zonal move will be conducted.
+     * 
+     * @return the moveRegion value.
+     */
+    public String moveRegion() {
+        return this.moveRegion;
+    }
+
+    /**
+     * Set the moveRegion property: Gets or sets the move region which indicates the region where the VM Regional to
+     * Zonal move will be conducted.
+     * 
+     * @param moveRegion the moveRegion value to set.
+     * @return the MoveCollectionProperties object itself.
+     */
+    public MoveCollectionProperties withMoveRegion(String moveRegion) {
+        this.moveRegion = moveRegion;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Defines the provisioning states.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -88,8 +129,48 @@ public final class MoveCollectionProperties {
     }
 
     /**
+     * Get the version property: Gets or sets the version of move collection.
+     * 
+     * @return the version value.
+     */
+    public String version() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: Gets or sets the version of move collection.
+     * 
+     * @param version the version value to set.
+     * @return the MoveCollectionProperties object itself.
+     */
+    public MoveCollectionProperties withVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
+     * Get the moveType property: Defines the MoveType.
+     * 
+     * @return the moveType value.
+     */
+    public MoveType moveType() {
+        return this.moveType;
+    }
+
+    /**
+     * Set the moveType property: Defines the MoveType.
+     * 
+     * @param moveType the moveType value to set.
+     * @return the MoveCollectionProperties object itself.
+     */
+    public MoveCollectionProperties withMoveType(MoveType moveType) {
+        this.moveType = moveType;
+        return this;
+    }
+
+    /**
      * Get the errors property: Defines the move collection errors.
-     *
+     * 
      * @return the errors value.
      */
     public MoveCollectionPropertiesErrors errors() {
@@ -98,24 +179,65 @@ public final class MoveCollectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sourceRegion() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceRegion in model MoveCollectionProperties"));
-        }
-        if (targetRegion() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetRegion in model MoveCollectionProperties"));
-        }
         if (errors() != null) {
             errors().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceRegion", this.sourceRegion);
+        jsonWriter.writeStringField("targetRegion", this.targetRegion);
+        jsonWriter.writeStringField("moveRegion", this.moveRegion);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("moveType", this.moveType == null ? null : this.moveType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MoveCollectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MoveCollectionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MoveCollectionProperties.
+     */
+    public static MoveCollectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MoveCollectionProperties deserializedMoveCollectionProperties = new MoveCollectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRegion".equals(fieldName)) {
+                    deserializedMoveCollectionProperties.sourceRegion = reader.getString();
+                } else if ("targetRegion".equals(fieldName)) {
+                    deserializedMoveCollectionProperties.targetRegion = reader.getString();
+                } else if ("moveRegion".equals(fieldName)) {
+                    deserializedMoveCollectionProperties.moveRegion = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedMoveCollectionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("version".equals(fieldName)) {
+                    deserializedMoveCollectionProperties.version = reader.getString();
+                } else if ("moveType".equals(fieldName)) {
+                    deserializedMoveCollectionProperties.moveType = MoveType.fromString(reader.getString());
+                } else if ("errors".equals(fieldName)) {
+                    deserializedMoveCollectionProperties.errors = MoveCollectionPropertiesErrors.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMoveCollectionProperties;
+        });
     }
 }

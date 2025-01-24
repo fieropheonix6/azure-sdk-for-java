@@ -32,11 +32,11 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
+import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
@@ -63,19 +63,18 @@ import java.util.Objects;
  * @see PageBlobClient
  * @see PageBlobAsyncClient
  */
-@ServiceClientBuilder(serviceClients = {
-    AppendBlobClient.class, AppendBlobAsyncClient.class,
-    BlockBlobClient.class, BlockBlobAsyncClient.class,
-    PageBlobClient.class, PageBlobAsyncClient.class
-})
-public final class SpecializedBlobClientBuilder implements
-    TokenCredentialTrait<SpecializedBlobClientBuilder>,
-    ConnectionStringTrait<SpecializedBlobClientBuilder>,
-    AzureNamedKeyCredentialTrait<SpecializedBlobClientBuilder>,
-    AzureSasCredentialTrait<SpecializedBlobClientBuilder>,
-    HttpTrait<SpecializedBlobClientBuilder>,
-    ConfigurationTrait<SpecializedBlobClientBuilder>,
-    EndpointTrait<SpecializedBlobClientBuilder> {
+@ServiceClientBuilder(
+    serviceClients = {
+        AppendBlobClient.class,
+        AppendBlobAsyncClient.class,
+        BlockBlobClient.class,
+        BlockBlobAsyncClient.class,
+        PageBlobClient.class,
+        PageBlobAsyncClient.class })
+public final class SpecializedBlobClientBuilder implements TokenCredentialTrait<SpecializedBlobClientBuilder>,
+    ConnectionStringTrait<SpecializedBlobClientBuilder>, AzureNamedKeyCredentialTrait<SpecializedBlobClientBuilder>,
+    AzureSasCredentialTrait<SpecializedBlobClientBuilder>, HttpTrait<SpecializedBlobClientBuilder>,
+    ConfigurationTrait<SpecializedBlobClientBuilder>, EndpointTrait<SpecializedBlobClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(SpecializedBlobClientBuilder.class);
 
     private String endpoint;
@@ -103,6 +102,13 @@ public final class SpecializedBlobClientBuilder implements
     private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private BlobServiceVersion version;
+    private BlobAudience audience;
+
+    /**
+     * Creates a new instance of {@link SpecializedBlobClientBuilder}.
+     */
+    public SpecializedBlobClientBuilder() {
+    }
 
     /**
      * Creates a {@link AppendBlobClient} based on options set in the Builder. AppendBlobClients are used to perform
@@ -132,8 +138,8 @@ public final class SpecializedBlobClientBuilder implements
         validateConstruction();
         String containerName = getContainerName();
 
-        return new AppendBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
+        return new AppendBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(), accountName, containerName,
+            blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
     /**
@@ -167,8 +173,8 @@ public final class SpecializedBlobClientBuilder implements
         validateConstruction();
         String containerName = getContainerName();
 
-        return new BlockBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
+        return new BlockBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(), accountName, containerName,
+            blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
     /**
@@ -201,8 +207,8 @@ public final class SpecializedBlobClientBuilder implements
         validateConstruction();
         String containerName = getContainerName();
 
-        return new PageBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
+        return new PageBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(), accountName, containerName,
+            blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
     /*
@@ -215,8 +221,8 @@ public final class SpecializedBlobClientBuilder implements
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, LOGGER);
 
         if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption"
-                + "scope cannot both be set"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Customer provided key and encryption" + "scope cannot both be set"));
         }
     }
 
@@ -232,10 +238,11 @@ public final class SpecializedBlobClientBuilder implements
     }
 
     private HttpPipeline getHttpPipeline() {
-        return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
+        return (httpPipeline != null)
+            ? httpPipeline
+            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+                endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+                perRetryPolicies, configuration, audience, LOGGER);
     }
 
     private BlobServiceVersion getServiceVersion() {
@@ -315,8 +322,8 @@ public final class SpecializedBlobClientBuilder implements
         blobName(blobName);
         this.customerProvidedKey = blobContainerAsyncClient.getCustomerProvidedKey();
         if (blobContainerAsyncClient.getEncryptionScope() != null) {
-            this.encryptionScope = new EncryptionScope().setEncryptionScope(
-                blobContainerAsyncClient.getEncryptionScope());
+            this.encryptionScope
+                = new EncryptionScope().setEncryptionScope(blobContainerAsyncClient.getEncryptionScope());
         }
         return this;
     }
@@ -336,9 +343,9 @@ public final class SpecializedBlobClientBuilder implements
 
             this.accountName = parts.getAccountName();
             this.endpoint = BuilderHelper.getEndpoint(parts);
-            this.containerName = parts.getBlobContainerName() == null ? this.containerName
-                : parts.getBlobContainerName();
-            this.blobName = parts.getBlobName() == null ? this.blobName : Utility.urlEncode(parts.getBlobName());
+            this.containerName
+                = parts.getBlobContainerName() == null ? this.containerName : parts.getBlobContainerName();
+            this.blobName = parts.getBlobName() == null ? this.blobName : parts.getBlobName();
             this.snapshot = parts.getSnapshot();
             this.versionId = parts.getVersionId();
 
@@ -363,15 +370,13 @@ public final class SpecializedBlobClientBuilder implements
         if (customerProvidedKey == null) {
             this.customerProvidedKey = null;
         } else {
-            this.customerProvidedKey = new CpkInfo()
-                .setEncryptionKey(customerProvidedKey.getKey())
+            this.customerProvidedKey = new CpkInfo().setEncryptionKey(customerProvidedKey.getKey())
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
 
         return this;
     }
-
 
     /**
      * Sets the {@code encryption scope} that is used to encrypt blob contents on the server.
@@ -442,8 +447,7 @@ public final class SpecializedBlobClientBuilder implements
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public SpecializedBlobClientBuilder sasToken(String sasToken) {
-        this.sasToken = Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null.");
+        this.sasToken = Objects.requireNonNull(sasToken, "'sasToken' cannot be null.");
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -458,8 +462,7 @@ public final class SpecializedBlobClientBuilder implements
      */
     @Override
     public SpecializedBlobClientBuilder credential(AzureSasCredential credential) {
-        this.azureSasCredential = Objects.requireNonNull(credential,
-            "'credential' cannot be null.");
+        this.azureSasCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
     }
 
@@ -487,13 +490,11 @@ public final class SpecializedBlobClientBuilder implements
      */
     @Override
     public SpecializedBlobClientBuilder connectionString(String connectionString) {
-        StorageConnectionString storageConnectionString
-                = StorageConnectionString.create(connectionString, LOGGER);
+        StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, LOGGER);
         StorageEndpoint endpoint = storageConnectionString.getBlobEndpoint();
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
-            throw LOGGER
-                    .logExceptionAsError(new IllegalArgumentException(
-                            "connectionString missing required settings to derive blob service endpoint."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "connectionString missing required settings to derive blob service endpoint."));
         }
         this.endpoint(endpoint.getPrimaryUri());
         if (storageConnectionString.getAccountName() != null) {
@@ -502,7 +503,7 @@ public final class SpecializedBlobClientBuilder implements
         StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
         if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
             this.credential(new StorageSharedKeyCredential(authSettings.getAccount().getName(),
-                    authSettings.getAccount().getAccessKey()));
+                authSettings.getAccount().getAccessKey()));
         } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
             this.sasToken(authSettings.getSasToken());
         }
@@ -540,8 +541,7 @@ public final class SpecializedBlobClientBuilder implements
      * @throws NullPointerException If {@code blobName} is {@code null}
      */
     public SpecializedBlobClientBuilder blobName(String blobName) {
-        this.blobName = Utility.urlEncode(Utility.urlDecode(Objects.requireNonNull(blobName,
-            "'blobName' cannot be null.")));
+        this.blobName = Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         return this;
     }
 
@@ -757,6 +757,17 @@ public final class SpecializedBlobClientBuilder implements
      */
     public SpecializedBlobClientBuilder serviceVersion(BlobServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered
+     * when using a shared key.
+     * @param audience {@link BlobAudience} to be used when requesting a token from Azure Active Directory (AAD).
+     * @return the updated SpecializedBlobClientBuilder object
+     */
+    public SpecializedBlobClientBuilder audience(BlobAudience audience) {
+        this.audience = audience;
         return this;
     }
 }

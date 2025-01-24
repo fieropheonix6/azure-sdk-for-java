@@ -3,20 +3,25 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AbstractiveSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.ClassifyDocumentOperationDetail;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
+import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
-import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
+import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryOptions;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
@@ -26,7 +31,10 @@ import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyAction;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
@@ -34,6 +42,8 @@ import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.AbstractiveSummaryPagedIterable;
+import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
@@ -42,6 +52,8 @@ import com.azure.ai.textanalytics.util.ClassifyDocumentPagedIterable;
 import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.util.ExtractiveSummaryPagedIterable;
+import com.azure.ai.textanalytics.util.ExtractiveSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -50,23 +62,513 @@ import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 
+import java.util.Collections;
 import java.util.Objects;
 
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapByIndex;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
 
 /**
  * This class provides a synchronous client that contains all the operations that apply to Azure Text Analytics.
  * Operations allowed by the client are language detection, entities recognition, linked entities recognition,
  * key phrases extraction, and sentiment analysis of a document or a list of documents.
  *
- * <p><strong>Instantiating a synchronous Text Analytics Client</strong></p>
- * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeActions#Iterable-TextAnalyticsActions-String-AnalyzeActionsOptions -->
+ * <h2>Getting Started</h2>
+ *
+ * <p>In order to interact with the Text Analytics features in Azure AI Language Service, you'll need to create an
+ * instance of the {@link TextAnalyticsClient}. To make this possible you'll need the key credential of the service.
+ * Alternatively, you can use AAD authentication via
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>
+ * to connect to the service.</p>
+ * <ol>
+ *   <li>Azure Key Credential, see {@link TextAnalyticsClientBuilder#credential(AzureKeyCredential) AzureKeyCredential}.</li>
+ *   <li>Azure Active Directory, see {@link TextAnalyticsClientBuilder#credential(TokenCredential) TokenCredential}.</li>
+ * </ol>
+ *
+ * <p><strong>Sample: Construct Synchronous Text Analytics Client with Azure Key Credential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link TextAnalyticsClient},
+ * using the {@link TextAnalyticsClientBuilder} to configure it with a key credential.</p>
+ *
+ * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.instantiation -->
+ * <pre>
+ * TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.instantiation -->
+ *
+ * <p>View {@link TextAnalyticsClientBuilder TextAnalyticsClientBuilder} for additional ways to construct the client.</p>
+ *
+ * <p>See methods in client level class below to explore all features that library provides.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Extract information</h2>
+ *
+ * <p>Text Analytics client can use Natural Language Understanding (NLU) to extract information from unstructured text.
+ * For example, identify key phrases or Personally Identifiable, etc. Below you can look at the samples on how to use it.</p>
+ *
+ * <h3>Key Phrases Extraction</h3>
+ *
+ * <p>The {@link TextAnalyticsClient#extractKeyPhrases(String) extractKeyPhrases}
+ * method can be used to extract key phrases, which returns a list of strings denoting the key phrases in the document.
+ * </p>
+ *
+ * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String -->
+ * <pre>
+ * KeyPhrasesCollection extractedKeyPhrases =
+ *     textAnalyticsClient.extractKeyPhrases&#40;&quot;My cat might need to see a veterinarian.&quot;&#41;;
+ * for &#40;String keyPhrase : extractedKeyPhrases&#41; &#123;
+ *     System.out.printf&#40;&quot;%s.%n&quot;, keyPhrase&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String -->
+ *
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link TextAnalyticsAsyncClient}.</p>
+ *
+ * <h3>Named Entities Recognition(NER): Prebuilt Model</h3>
+ *
+ * <p>The {@link TextAnalyticsClient#recognizeEntities(String) recognizeEntities} method can be used to recognize
+ * entities, which returns a list of general categorized entities in the provided document.</p>
+ *
+ * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntities#String -->
+ * <pre>
+ * CategorizedEntityCollection recognizeEntitiesResult =
+ *     textAnalyticsClient.recognizeEntities&#40;&quot;Satya Nadella is the CEO of Microsoft&quot;&#41;;
+ * for &#40;CategorizedEntity entity : recognizeEntitiesResult&#41; &#123;
+ *     System.out.printf&#40;&quot;Recognized entity: %s, entity category: %s, confidence score: %f.%n&quot;,
+ *         entity.getText&#40;&#41;, entity.getCategory&#40;&#41;, entity.getConfidenceScore&#40;&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntities#String -->
+ *
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link TextAnalyticsAsyncClient}.</p>
+ *
+ * <h3>Custom Named Entities Recognition(NER): Custom Model</h3>
+ *
+ * <p>The {@link TextAnalyticsClient#beginRecognizeCustomEntities(Iterable, String, String)} method can be used to
+ * recognize custom entities, which returns a list of custom entities for the provided list of document.</p>
+ *
+ * <!-- src_embed Client.beginRecognizeCustomEntities#Iterable-String-String -->
+ * <pre>
+ * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+ * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+ *     documents.add&#40;
+ *         &quot;A recent report by the Government Accountability Office &#40;GAO&#41; found that the dramatic increase &quot;
+ *             + &quot;in oil and natural gas development on federal lands over the past six years has stretched the&quot;
+ *             + &quot; staff of the BLM to a point that it has been unable to meet its environmental protection &quot;
+ *             + &quot;responsibilities.&quot;&#41;; &#125;
+ * SyncPoller&lt;RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedIterable&gt; syncPoller =
+ *     textAnalyticsClient.beginRecognizeCustomEntities&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;&#41;;
+ * syncPoller.waitForCompletion&#40;&#41;;
+ * syncPoller.getFinalResult&#40;&#41;.forEach&#40;documentsResults -&gt; &#123;
+ *     System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+ *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+ *     for &#40;RecognizeEntitiesResult documentResult : documentsResults&#41; &#123;
+ *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+ *         for &#40;CategorizedEntity entity : documentResult.getEntities&#40;&#41;&#41; &#123;
+ *             System.out.printf&#40;
+ *                 &quot;&#92;tText: %s, category: %s, confidence score: %f.%n&quot;,
+ *                 entity.getText&#40;&#41;, entity.getCategory&#40;&#41;, entity.getConfidenceScore&#40;&#41;&#41;;
+ *         &#125;
+ *     &#125;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end Client.beginRecognizeCustomEntities#Iterable-String-String -->
+ *
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link TextAnalyticsAsyncClient}.</p>
+ *
+ * <h3>Linked Entities Recognition</h3>
+ *
+ * <p>The {@link TextAnalyticsClient#recognizeLinkedEntities(String) recognizeLinkedEntities} method can be used to
+ * find linked entities, which returns a list of recognized entities with links to a well-known knowledge base for
+ * the provided document.</p>
+ *
+ * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String -->
+ * <pre>
+ * String document = &quot;Old Faithful is a geyser at Yellowstone Park.&quot;;
+ * System.out.println&#40;&quot;Linked Entities:&quot;&#41;;
+ * textAnalyticsClient.recognizeLinkedEntities&#40;document&#41;.forEach&#40;linkedEntity -&gt; &#123;
+ *     System.out.printf&#40;&quot;Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n&quot;,
+ *         linkedEntity.getName&#40;&#41;, linkedEntity.getDataSourceEntityId&#40;&#41;, linkedEntity.getUrl&#40;&#41;,
+ *         linkedEntity.getDataSource&#40;&#41;&#41;;
+ *     linkedEntity.getMatches&#40;&#41;.forEach&#40;entityMatch -&gt; System.out.printf&#40;
+ *         &quot;Matched entity: %s, confidence score: %f.%n&quot;,
+ *         entityMatch.getText&#40;&#41;, entityMatch.getConfidenceScore&#40;&#41;&#41;&#41;;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String -->
+ *
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link TextAnalyticsAsyncClient}.</p>
+ *
+ * <h3>Personally Identifiable Information(PII) Entities Recognition</h3>
+ *
+ * <p>The {@link TextAnalyticsClient#recognizePiiEntities(String) recognizePiiEntities}
+ * method can be used to recognize PII entities, which returns a list of Personally Identifiable Information(PII)
+ * entities in the provided document.</p>
+ *
+ * <p>For a list of supported entity types, check: <a href="https://aka.ms/azsdk/language/pii">this</a>.</p>
+ *
+ * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String -->
+ * <pre>
+ * PiiEntityCollection piiEntityCollection = textAnalyticsClient.recognizePiiEntities&#40;&quot;My SSN is 859-98-0987&quot;&#41;;
+ * System.out.printf&#40;&quot;Redacted Text: %s%n&quot;, piiEntityCollection.getRedactedText&#40;&#41;&#41;;
+ * for &#40;PiiEntity entity : piiEntityCollection&#41; &#123;
+ *     System.out.printf&#40;
+ *         &quot;Recognized Personally Identifiable Information entity: %s, entity category: %s,&quot;
+ *             + &quot; entity subcategory: %s, confidence score: %f.%n&quot;,
+ *         entity.getText&#40;&#41;, entity.getCategory&#40;&#41;, entity.getSubcategory&#40;&#41;, entity.getConfidenceScore&#40;&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String -->
+ *
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link TextAnalyticsAsyncClient}.</p>
+ *
+ * <h3>Text Analytics for Health: Prebuilt Model</h3>
+ *
+ * <p>The {@link TextAnalyticsClient#beginAnalyzeHealthcareEntities(Iterable) beginAnalyzeHealthcareEntities} method
+ * can be used to analyze healthcare entities, entity data sources, and entity relations in a list of documents.</p>
+ *
+ * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeHealthcareEntities#Iterable -->
+ * <pre>
+ * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+ * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+ *     documents.add&#40;&quot;The patient is a 54-year-old gentleman with a history of progressive angina over &quot;
+ *         + &quot;the past several months.&quot;&#41;;
+ * &#125;
+ *
+ * SyncPoller&lt;AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable&gt;
+ *     syncPoller = textAnalyticsClient.beginAnalyzeHealthcareEntities&#40;documents&#41;;
+ *
+ * syncPoller.waitForCompletion&#40;&#41;;
+ * AnalyzeHealthcareEntitiesPagedIterable result = syncPoller.getFinalResult&#40;&#41;;
+ *
+ * result.forEach&#40;analyzeHealthcareEntitiesResultCollection -&gt; &#123;
+ *     analyzeHealthcareEntitiesResultCollection.forEach&#40;healthcareEntitiesResult -&gt; &#123;
+ *         System.out.println&#40;&quot;document id = &quot; + healthcareEntitiesResult.getId&#40;&#41;&#41;;
+ *         System.out.println&#40;&quot;Document entities: &quot;&#41;;
+ *         AtomicInteger ct = new AtomicInteger&#40;&#41;;
+ *         healthcareEntitiesResult.getEntities&#40;&#41;.forEach&#40;healthcareEntity -&gt; &#123;
+ *             System.out.printf&#40;&quot;&#92;ti = %d, Text: %s, category: %s, confidence score: %f.%n&quot;,
+ *                 ct.getAndIncrement&#40;&#41;, healthcareEntity.getText&#40;&#41;, healthcareEntity.getCategory&#40;&#41;,
+ *                 healthcareEntity.getConfidenceScore&#40;&#41;&#41;;
+ *
+ *             IterableStream&lt;EntityDataSource&gt; healthcareEntityDataSources =
+ *                 healthcareEntity.getDataSources&#40;&#41;;
+ *             if &#40;healthcareEntityDataSources != null&#41; &#123;
+ *                 healthcareEntityDataSources.forEach&#40;healthcareEntityLink -&gt; System.out.printf&#40;
+ *                     &quot;&#92;t&#92;tEntity ID in data source: %s, data source: %s.%n&quot;,
+ *                     healthcareEntityLink.getEntityId&#40;&#41;, healthcareEntityLink.getName&#40;&#41;&#41;&#41;;
+ *             &#125;
+ *         &#125;&#41;;
+ *         &#47;&#47; Healthcare entity relation groups
+ *         healthcareEntitiesResult.getEntityRelations&#40;&#41;.forEach&#40;entityRelation -&gt; &#123;
+ *             System.out.printf&#40;&quot;&#92;tRelation type: %s.%n&quot;, entityRelation.getRelationType&#40;&#41;&#41;;
+ *             entityRelation.getRoles&#40;&#41;.forEach&#40;role -&gt; &#123;
+ *                 final HealthcareEntity entity = role.getEntity&#40;&#41;;
+ *                 System.out.printf&#40;&quot;&#92;t&#92;tEntity text: %s, category: %s, role: %s.%n&quot;,
+ *                     entity.getText&#40;&#41;, entity.getCategory&#40;&#41;, role.getName&#40;&#41;&#41;;
+ *             &#125;&#41;;
+ *             System.out.printf&#40;&quot;&#92;tRelation confidence score: %f.%n&quot;,
+ *                 entityRelation.getConfidenceScore&#40;&#41;&#41;;
+ *         &#125;&#41;;
+ *     &#125;&#41;;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeHealthcareEntities#Iterable -->
+ *
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link TextAnalyticsAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Summarize text-based content: Document Summarization</h2>
+ *
+ * <p>Text Analytics client can use Natural Language Understanding (NLU) to summarize lengthy documents.
+ * For example, extractive or abstractive summarization. Below you can look at the samples on how to use it.</p>
+ *
+ * <h3>Extractive summarization</h3>
+ *
+ * <p>The {@link TextAnalyticsClient#beginExtractSummary(Iterable) beginExtractSummary}
+ * method returns a list of extract summaries for the provided list of document.</p>
+ *
+ * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2023_04_01}.</p>
+ *
+ * <!-- src_embed Client.beginExtractSummary#Iterable -->
+ * <pre>
+ * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+ * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+ *     documents.add&#40;
+ *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+ *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+ *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+ *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+ *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+ *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+ *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+ *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+ *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+ *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+ *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+ *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+ *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+ *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+ *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+ *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+ *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+ *             + &quot;the downstream AI tasks.&quot;&#41;;
+ * &#125;
+ * SyncPoller&lt;ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedIterable&gt; syncPoller =
+ *     textAnalyticsClient.beginExtractSummary&#40;documents&#41;;
+ * syncPoller.waitForCompletion&#40;&#41;;
+ * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+ *     for &#40;ExtractiveSummaryResult documentResult : resultCollection&#41; &#123;
+ *         System.out.println&#40;&quot;&#92;tExtracted summary sentences:&quot;&#41;;
+ *         for &#40;ExtractiveSummarySentence extractiveSummarySentence : documentResult.getSentences&#40;&#41;&#41; &#123;
+ *             System.out.printf&#40;
+ *                 &quot;&#92;t&#92;t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n&quot;,
+ *                 extractiveSummarySentence.getText&#40;&#41;, extractiveSummarySentence.getLength&#40;&#41;,
+ *                 extractiveSummarySentence.getOffset&#40;&#41;, extractiveSummarySentence.getRankScore&#40;&#41;&#41;;
+ *         &#125;
+ *     &#125;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end Client.beginExtractSummary#Iterable -->
+ *
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link TextAnalyticsAsyncClient}.</p>
+ *
+ * <h3>Abstractive summarization</h3>
+ * <p>The {@link TextAnalyticsClient#beginAbstractSummary(Iterable) beginAbstractSummary}
+ * method returns  a list of abstractive summary for the provided list of document.</p>
+ *
+ * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2023_04_01}.</p>
+ *
+ * <!-- src_embed Client.beginAbstractSummary#Iterable -->
+ * <pre>
+ * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+ * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+ *     documents.add&#40;
+ *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+ *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+ *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+ *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+ *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+ *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+ *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+ *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+ *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+ *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+ *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+ *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+ *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+ *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+ *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+ *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+ *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+ *             + &quot;the downstream AI tasks.&quot;&#41;;
+ * &#125;
+ * SyncPoller&lt;AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedIterable&gt; syncPoller =
+ *     textAnalyticsClient.beginAbstractSummary&#40;documents&#41;;
+ * syncPoller.waitForCompletion&#40;&#41;;
+ * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+ *     for &#40;AbstractiveSummaryResult documentResult : resultCollection&#41; &#123;
+ *         System.out.println&#40;&quot;&#92;tAbstractive summary sentences:&quot;&#41;;
+ *         for &#40;AbstractiveSummary summarySentence : documentResult.getSummaries&#40;&#41;&#41; &#123;
+ *             System.out.printf&#40;&quot;&#92;t&#92;t Summary text: %s.%n&quot;, summarySentence.getText&#40;&#41;&#41;;
+ *             for &#40;AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;
+ *                 System.out.printf&#40;&quot;&#92;t&#92;t offset: %d, length: %d%n&quot;,
+ *                     abstractiveSummaryContext.getOffset&#40;&#41;, abstractiveSummaryContext.getLength&#40;&#41;&#41;;
+ *             &#125;
+ *         &#125;
+ *     &#125;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end Client.beginAbstractSummary#Iterable -->
+ *
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link TextAnalyticsAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Classify Text</h2>
+ *
+ * <p>Text Analytics client can use Natural Language Understanding (NLU) to detect the language or
+ * classify the sentiment of text you have. For example, language detection, sentiment analysis, or
+ * custom text classification. Below you can look at the samples on how to use it.</p>
+ *
+ * <h3>Analyze Sentiment and Mine Text for Opinions</h3>
+ *
+ * <p>The {@link TextAnalyticsClient#analyzeSentiment(String, String, AnalyzeSentimentOptions)} analyzeSentiment}
+ * method can be used to analyze sentiment on a given input text string, which returns a sentiment prediction,
+ * as well as confidence scores for each sentiment label (Positive, Negative, and Neutral) for the document and each
+ * sentence within it. If the {@code includeOpinionMining} of {@link AnalyzeSentimentOptions} set to true,
+ * the output will include the opinion mining results. It mines the opinions of a sentence and conducts more granular
+ * analysis around the aspects in the text (also known as aspect-based sentiment analysis).</p>
+ *
+ * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-String-AnalyzeSentimentOptions -->
+ * <pre>
+ * DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment&#40;
+ *     &quot;The hotel was dark and unclean.&quot;, &quot;en&quot;,
+ *     new AnalyzeSentimentOptions&#40;&#41;.setIncludeOpinionMining&#40;true&#41;&#41;;
+ * for &#40;SentenceSentiment sentenceSentiment : documentSentiment.getSentences&#40;&#41;&#41; &#123;
+ *     System.out.printf&#40;&quot;&#92;tSentence sentiment: %s%n&quot;, sentenceSentiment.getSentiment&#40;&#41;&#41;;
+ *     sentenceSentiment.getOpinions&#40;&#41;.forEach&#40;opinion -&gt; &#123;
+ *         TargetSentiment targetSentiment = opinion.getTarget&#40;&#41;;
+ *         System.out.printf&#40;&quot;&#92;tTarget sentiment: %s, target text: %s%n&quot;, targetSentiment.getSentiment&#40;&#41;,
+ *             targetSentiment.getText&#40;&#41;&#41;;
+ *         for &#40;AssessmentSentiment assessmentSentiment : opinion.getAssessments&#40;&#41;&#41; &#123;
+ *             System.out.printf&#40;&quot;&#92;t&#92;t'%s' sentiment because of &#92;&quot;%s&#92;&quot;. Is the assessment negated: %s.%n&quot;,
+ *                 assessmentSentiment.getSentiment&#40;&#41;, assessmentSentiment.getText&#40;&#41;, assessmentSentiment.isNegated&#40;&#41;&#41;;
+ *         &#125;
+ *     &#125;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-String-AnalyzeSentimentOptions -->
+ *
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link TextAnalyticsAsyncClient}.</p>
+ *
+ * <h3>Detect Language</h3>
+ *
+ * <p>The {@link TextAnalyticsClient#detectLanguage(String) detectLanguage}
+ * method returns the detected language and a confidence score between zero and one. Scores close to one indicate 100%
+ * certainty that the identified language is true.</p>
+ *
+ * <p>This method will use the default country hint that sets up in
+ * {@link TextAnalyticsClientBuilder#defaultCountryHint(String)}. If none is specified, service will use 'US' as the
+ * country hint.</p>
+ *
+ * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguage#String -->
+ * <pre>
+ * DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage&#40;&quot;Bonjour tout le monde&quot;&#41;;
+ * System.out.printf&#40;&quot;Detected language name: %s, ISO 6391 name: %s, confidence score: %f.%n&quot;,
+ *     detectedLanguage.getName&#40;&#41;, detectedLanguage.getIso6391Name&#40;&#41;, detectedLanguage.getConfidenceScore&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguage#String -->
+ *
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link TextAnalyticsAsyncClient}.</p>
+ *
+ * <h3>Single-Label Classification</h3>
+ * <p>The {@link TextAnalyticsClient#beginSingleLabelClassify(Iterable, String, String) beginSingleLabelClassify}
+ * method returns a list of single-label classification for the provided list of documents.</p>
+ *
+ * <p><strong>Note:</strong> this method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
+ *
+ * <!-- src_embed Client.beginSingleLabelClassify#Iterable-String-String -->
+ * <pre>
+ * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+ * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+ *     documents.add&#40;
+ *         &quot;A recent report by the Government Accountability Office &#40;GAO&#41; found that the dramatic increase &quot;
+ *             + &quot;in oil and natural gas development on federal lands over the past six years has stretched the&quot;
+ *             + &quot; staff of the BLM to a point that it has been unable to meet its environmental protection &quot;
+ *             + &quot;responsibilities.&quot;
+ *     &#41;;
+ * &#125;
+ * &#47;&#47; See the service documentation for regional support and how to train a model to classify your documents,
+ * &#47;&#47; see https:&#47;&#47;aka.ms&#47;azsdk&#47;textanalytics&#47;customfunctionalities
+ * SyncPoller&lt;ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable&gt; syncPoller =
+ *     textAnalyticsClient.beginSingleLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;&#41;;
+ * syncPoller.waitForCompletion&#40;&#41;;
+ * syncPoller.getFinalResult&#40;&#41;.forEach&#40;documentsResults -&gt; &#123;
+ *     System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+ *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+ *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+ *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+ *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+ *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+ *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+ *         &#125;
+ *     &#125;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end Client.beginSingleLabelClassify#Iterable-String-String -->
+ *
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link TextAnalyticsAsyncClient}.</p>
+ *
+ * <h3>Multi-Label Classification</h3>
+ *
+ * <p>The {@link TextAnalyticsClient#beginMultiLabelClassify(Iterable, String, String) beginMultiLabelClassify}
+ * method returns a list of multi-label classification for the provided list of document.</p>
+ *
+ * <p><strong>Note:</strong> this method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
+ *
+ * <!-- src_embed Client.beginMultiLabelClassify#Iterable-String-String -->
+ * <pre>
+ * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+ * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+ *     documents.add&#40;
+ *         &quot;I need a reservation for an indoor restaurant in China. Please don't stop the music.&quot;
+ *             + &quot; Play music and add it to my playlist&quot;&#41;;
+ * &#125;
+ * SyncPoller&lt;ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable&gt; syncPoller =
+ *     textAnalyticsClient.beginMultiLabelClassify&#40;documents, &quot;&#123;project_name&#125;&quot;, &quot;&#123;deployment_name&#125;&quot;&#41;;
+ * syncPoller.waitForCompletion&#40;&#41;;
+ * syncPoller.getFinalResult&#40;&#41;.forEach&#40;documentsResults -&gt; &#123;
+ *     System.out.printf&#40;&quot;Project name: %s, deployment name: %s.%n&quot;,
+ *         documentsResults.getProjectName&#40;&#41;, documentsResults.getDeploymentName&#40;&#41;&#41;;
+ *     for &#40;ClassifyDocumentResult documentResult : documentsResults&#41; &#123;
+ *         System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
+ *         for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
+ *             System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
+ *                 classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
+ *         &#125;
+ *     &#125;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end Client.beginMultiLabelClassify#Iterable-String-String -->
+ *
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link TextAnalyticsAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Execute multiple actions</h2>
+ *
+ * <p>The {@link TextAnalyticsClient#beginAnalyzeActions(Iterable, TextAnalyticsActions) beginAnalyzeActions} method
+ * execute actions, such as, entities recognition, PII entities recognition, key phrases extraction, and etc, for a
+ * list of documents.</p>
+ *
+ * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeActions#Iterable-TextAnalyticsActions -->
  * <pre>
  * List&lt;String&gt; documents = Arrays.asList&#40;
  *     &quot;Elon Musk is the CEO of SpaceX and Tesla.&quot;,
@@ -78,9 +580,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.mapByIndex;
  *         documents,
  *         new TextAnalyticsActions&#40;&#41;.setDisplayName&#40;&quot;&#123;tasks_display_name&#125;&quot;&#41;
  *             .setRecognizeEntitiesActions&#40;new RecognizeEntitiesAction&#40;&#41;&#41;
- *             .setExtractKeyPhrasesActions&#40;new ExtractKeyPhrasesAction&#40;&#41;&#41;,
- *         &quot;en&quot;,
- *         new AnalyzeActionsOptions&#40;&#41;.setIncludeStatistics&#40;false&#41;&#41;;
+ *             .setExtractKeyPhrasesActions&#40;new ExtractKeyPhrasesAction&#40;&#41;&#41;&#41;;
  * syncPoller.waitForCompletion&#40;&#41;;
  * AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult&#40;&#41;;
  * result.forEach&#40;analyzeActionsResult -&gt; &#123;
@@ -110,13 +610,19 @@ import static com.azure.ai.textanalytics.implementation.Utility.mapByIndex;
  *         &#125;&#41;;
  * &#125;&#41;;
  * </pre>
- * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeActions#Iterable-TextAnalyticsActions-String-AnalyzeActionsOptions -->
- * <p>View {@link TextAnalyticsClientBuilder this} for additional ways to construct the client.</p>
+ * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeActions#Iterable-TextAnalyticsActions -->
  *
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link TextAnalyticsAsyncClient}.</p>
+ *
+ * @see com.azure.ai.textanalytics
  * @see TextAnalyticsClientBuilder
  */
 @ServiceClient(builder = TextAnalyticsClientBuilder.class)
 public final class TextAnalyticsClient {
+    private static final ClientLogger LOGGER = new ClientLogger(TextAnalyticsClient.class);
+
     private final TextAnalyticsAsyncClient client;
 
     /**
@@ -206,7 +712,19 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectedLanguage detectLanguage(String document, String countryHint) {
-        return client.detectLanguage(document, countryHint).block();
+        Objects.requireNonNull(document, "'document' cannot be null.");
+        DetectLanguageResultCollection resultCollection
+            = detectLanguageBatch(Collections.singletonList(document), countryHint, null);
+        DetectedLanguage detectedLanguage = null;
+        for (DetectLanguageResult detectLanguageResult : resultCollection) {
+            if (detectLanguageResult.isError()) {
+                throw LOGGER.logExceptionAsError(toTextAnalyticsException(detectLanguageResult.getError()));
+            }
+            detectedLanguage = detectLanguageResult.getPrimaryLanguage();
+        }
+        // When the detected language result collection is empty,
+        // return empty result for the empty collection returned by the service.
+        return detectedLanguage;
     }
 
     /**
@@ -258,10 +776,12 @@ public final class TextAnalyticsClient {
      *   version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectLanguageResultCollection detectLanguageBatch(
-        Iterable<String> documents, String countryHint, TextAnalyticsRequestOptions options) {
+    public DetectLanguageResultCollection detectLanguageBatch(Iterable<String> documents, String countryHint,
+        TextAnalyticsRequestOptions options) {
         inputDocumentsValidation(documents);
-        return client.detectLanguageBatch(documents, countryHint, options).block();
+        return detectLanguageBatchWithResponse(
+            mapByIndex(documents, (index, value) -> new DetectLanguageInput(index, value, countryHint)), options,
+            Context.NONE).getValue();
     }
 
     /**
@@ -323,7 +843,7 @@ public final class TextAnalyticsClient {
     public Response<DetectLanguageResultCollection> detectLanguageBatchWithResponse(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
         inputDocumentsValidation(documents);
-        return client.detectLanguageAsyncClient.detectLanguageBatchWithContext(documents, options, context).block();
+        return client.detectLanguageUtilClient.getDetectedLanguageResponseSync(documents, options, context);
     }
 
     // Categorized Entity
@@ -340,7 +860,7 @@ public final class TextAnalyticsClient {
      * <p>Recognize the entities of documents</p>
      * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntities#String -->
      * <pre>
-     * final CategorizedEntityCollection recognizeEntitiesResult =
+     * CategorizedEntityCollection recognizeEntitiesResult =
      *     textAnalyticsClient.recognizeEntities&#40;&quot;Satya Nadella is the CEO of Microsoft&quot;&#41;;
      * for &#40;CategorizedEntity entity : recognizeEntitiesResult&#41; &#123;
      *     System.out.printf&#40;&quot;Recognized entity: %s, entity category: %s, confidence score: %f.%n&quot;,
@@ -374,7 +894,7 @@ public final class TextAnalyticsClient {
      * <p>Recognizes the entities in a document with a provided language code.</p>
      * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntities#String-String -->
      * <pre>
-     * final CategorizedEntityCollection recognizeEntitiesResult =
+     * CategorizedEntityCollection recognizeEntitiesResult =
      *     textAnalyticsClient.recognizeEntities&#40;&quot;Satya Nadella is the CEO of Microsoft&quot;, &quot;en&quot;&#41;;
      *
      * for &#40;CategorizedEntity entity : recognizeEntitiesResult&#41; &#123;
@@ -397,7 +917,19 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CategorizedEntityCollection recognizeEntities(String document, String language) {
-        return client.recognizeEntities(document, language).block();
+        Objects.requireNonNull(document, "'document' cannot be null.");
+        final RecognizeEntitiesResultCollection recognizeEntitiesResultCollectionMono
+            = recognizeEntitiesBatch(Collections.singletonList(document), language, null);
+        CategorizedEntityCollection entityCollection = null;
+        // for each loop will have only one entry inside
+        for (RecognizeEntitiesResult entitiesResult : recognizeEntitiesResultCollectionMono) {
+            if (entitiesResult.isError()) {
+                throw LOGGER.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
+            }
+            entityCollection = new CategorizedEntityCollection(entitiesResult.getEntities(),
+                entitiesResult.getEntities().getWarnings());
+        }
+        return entityCollection;
     }
 
     /**
@@ -444,10 +976,14 @@ public final class TextAnalyticsClient {
      *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecognizeEntitiesResultCollection recognizeEntitiesBatch(
-        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+    public RecognizeEntitiesResultCollection recognizeEntitiesBatch(Iterable<String> documents, String language,
+        TextAnalyticsRequestOptions options) {
         inputDocumentsValidation(documents);
-        return client.recognizeEntitiesBatch(documents, language, options).block();
+        return recognizeEntitiesBatchWithResponse(mapByIndex(documents, (index, value) -> {
+            final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+            textDocumentInput.setLanguage(language);
+            return textDocumentInput;
+        }), options, Context.NONE).getValue();
     }
 
     /**
@@ -504,7 +1040,7 @@ public final class TextAnalyticsClient {
     public Response<RecognizeEntitiesResultCollection> recognizeEntitiesBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         inputDocumentsValidation(documents);
-        return client.recognizeEntityAsyncClient.recognizeEntitiesBatchWithContext(documents, options, context).block();
+        return client.recognizeEntityUtilClient.getRecognizedEntitiesResponseSync(documents, options, context);
     }
 
     // PII Entity
@@ -586,7 +1122,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PiiEntityCollection recognizePiiEntities(String document, String language) {
-        return client.recognizePiiEntities(document, language).block();
+        return recognizePiiEntities(document, language, null);
     }
 
     /**
@@ -631,7 +1167,19 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PiiEntityCollection recognizePiiEntities(String document, String language,
         RecognizePiiEntitiesOptions options) {
-        return client.recognizePiiEntities(document, language, options).block();
+        Objects.requireNonNull(document, "'document' cannot be null.");
+        final RecognizePiiEntitiesResultCollection recognizePiiEntitiesResults
+            = recognizePiiEntitiesBatch(Collections.singletonList(document), language, options);
+        PiiEntityCollection entityCollection = null;
+        // for each loop will have only one entry inside
+        for (RecognizePiiEntitiesResult entitiesResult : recognizePiiEntitiesResults) {
+            if (entitiesResult.isError()) {
+                throw LOGGER.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
+            }
+            entityCollection = new PiiEntityCollection(entitiesResult.getEntities(),
+                entitiesResult.getEntities().getRedactedText(), entitiesResult.getEntities().getWarnings());
+        }
+        return entityCollection;
     }
 
     /**
@@ -684,9 +1232,13 @@ public final class TextAnalyticsClient {
      *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecognizePiiEntitiesResultCollection recognizePiiEntitiesBatch(
-        Iterable<String> documents, String language, RecognizePiiEntitiesOptions options) {
-        return client.recognizePiiEntitiesBatch(documents, language, options).block();
+    public RecognizePiiEntitiesResultCollection recognizePiiEntitiesBatch(Iterable<String> documents, String language,
+        RecognizePiiEntitiesOptions options) {
+        return recognizePiiEntitiesBatchWithResponse(mapByIndex(documents, (index, value) -> {
+            final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+            textDocumentInput.setLanguage(language);
+            return textDocumentInput;
+        }), options, Context.NONE).getValue();
     }
 
     /**
@@ -744,8 +1296,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesBatchWithResponse(
         Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
-        return client.recognizePiiEntityAsyncClient.recognizePiiEntitiesBatchWithContext(documents, options,
-            context).block();
+        return client.recognizePiiEntityUtilClient.getRecognizePiiEntitiesResponseSync(documents, options, context);
     }
 
     // Linked Entities
@@ -761,7 +1312,7 @@ public final class TextAnalyticsClient {
      * <p>Recognize the linked entities of documents</p>
      * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String -->
      * <pre>
-     * final String document = &quot;Old Faithful is a geyser at Yellowstone Park.&quot;;
+     * String document = &quot;Old Faithful is a geyser at Yellowstone Park.&quot;;
      * System.out.println&#40;&quot;Linked Entities:&quot;&#41;;
      * textAnalyticsClient.recognizeLinkedEntities&#40;document&#41;.forEach&#40;linkedEntity -&gt; &#123;
      *     System.out.printf&#40;&quot;Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n&quot;,
@@ -824,7 +1375,18 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LinkedEntityCollection recognizeLinkedEntities(String document, String language) {
         Objects.requireNonNull(document, "'document' cannot be null.");
-        return client.recognizeLinkedEntities(document, language).block();
+        final RecognizeLinkedEntitiesResultCollection resultCollectionResponse
+            = recognizeLinkedEntitiesBatch(Collections.singletonList(document), language, null);
+        LinkedEntityCollection linkedEntityCollection = null;
+        // for each loop will have only one entry inside
+        for (RecognizeLinkedEntitiesResult entitiesResult : resultCollectionResponse) {
+            if (entitiesResult.isError()) {
+                throw LOGGER.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
+            }
+            linkedEntityCollection
+                = new LinkedEntityCollection(entitiesResult.getEntities(), entitiesResult.getEntities().getWarnings());
+        }
+        return linkedEntityCollection;
     }
 
     /**
@@ -881,10 +1443,14 @@ public final class TextAnalyticsClient {
      *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecognizeLinkedEntitiesResultCollection recognizeLinkedEntitiesBatch(
-        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+    public RecognizeLinkedEntitiesResultCollection recognizeLinkedEntitiesBatch(Iterable<String> documents,
+        String language, TextAnalyticsRequestOptions options) {
         inputDocumentsValidation(documents);
-        return client.recognizeLinkedEntitiesBatch(documents, language, options).block();
+        return recognizeLinkedEntitiesBatchWithResponse(mapByIndex(documents, (index, value) -> {
+            final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+            textDocumentInput.setLanguage(language);
+            return textDocumentInput;
+        }), options, Context.NONE).getValue();
     }
 
     /**
@@ -949,8 +1515,8 @@ public final class TextAnalyticsClient {
     public Response<RecognizeLinkedEntitiesResultCollection> recognizeLinkedEntitiesBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         inputDocumentsValidation(documents);
-        return client.recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesBatchWithContext(documents,
-            options, context).block();
+        return client.recognizeLinkedEntityUtilClient.getRecognizedLinkedEntitiesResponseSync(documents, options,
+            context);
     }
 
     // Key Phrase
@@ -965,8 +1531,9 @@ public final class TextAnalyticsClient {
      * <p>Extracts key phrases of documents</p>
      * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String -->
      * <pre>
-     * System.out.println&#40;&quot;Extracted phrases:&quot;&#41;;
-     * for &#40;String keyPhrase : textAnalyticsClient.extractKeyPhrases&#40;&quot;My cat might need to see a veterinarian.&quot;&#41;&#41; &#123;
+     * KeyPhrasesCollection extractedKeyPhrases =
+     *     textAnalyticsClient.extractKeyPhrases&#40;&quot;My cat might need to see a veterinarian.&quot;&#41;;
+     * for &#40;String keyPhrase : extractedKeyPhrases&#41; &#123;
      *     System.out.printf&#40;&quot;%s.%n&quot;, keyPhrase&#41;;
      * &#125;
      * </pre>
@@ -994,7 +1561,6 @@ public final class TextAnalyticsClient {
      * <p>Extracts key phrases in a document with a provided language representation.</p>
      * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String-String-Context -->
      * <pre>
-     * System.out.println&#40;&quot;Extracted phrases:&quot;&#41;;
      * textAnalyticsClient.extractKeyPhrases&#40;&quot;My cat might need to see a veterinarian.&quot;, &quot;en&quot;&#41;
      *     .forEach&#40;kegPhrase -&gt; System.out.printf&#40;&quot;%s.%n&quot;, kegPhrase&#41;&#41;;
      * </pre>
@@ -1014,7 +1580,18 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyPhrasesCollection extractKeyPhrases(String document, String language) {
         Objects.requireNonNull(document, "'document' cannot be null.");
-        return client.extractKeyPhrases(document, language).block();
+        final ExtractKeyPhrasesResultCollection resultCollectionResponse
+            = extractKeyPhrasesBatch(Collections.singletonList(document), language, null);
+        KeyPhrasesCollection keyPhrasesCollection = null;
+        // for each loop will have only one entry inside
+        for (ExtractKeyPhraseResult keyPhraseResult : resultCollectionResponse) {
+            if (keyPhraseResult.isError()) {
+                throw LOGGER.logExceptionAsError(toTextAnalyticsException(keyPhraseResult.getError()));
+            }
+            keyPhrasesCollection = new KeyPhrasesCollection(keyPhraseResult.getKeyPhrases(),
+                keyPhraseResult.getKeyPhrases().getWarnings());
+        }
+        return keyPhrasesCollection;
     }
 
     /**
@@ -1069,10 +1646,14 @@ public final class TextAnalyticsClient {
      *   API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExtractKeyPhrasesResultCollection extractKeyPhrasesBatch(
-        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+    public ExtractKeyPhrasesResultCollection extractKeyPhrasesBatch(Iterable<String> documents, String language,
+        TextAnalyticsRequestOptions options) {
         inputDocumentsValidation(documents);
-        return client.extractKeyPhrasesBatch(documents, language, options).block();
+        return extractKeyPhrasesBatchWithResponse(mapByIndex(documents, (index, value) -> {
+            final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+            textDocumentInput.setLanguage(language);
+            return textDocumentInput;
+        }), options, Context.NONE).getValue();
     }
 
     /**
@@ -1136,8 +1717,7 @@ public final class TextAnalyticsClient {
     public Response<ExtractKeyPhrasesResultCollection> extractKeyPhrasesBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         inputDocumentsValidation(documents);
-        return client.extractKeyPhraseAsyncClient.extractKeyPhrasesBatchWithContext(documents, options, context)
-            .block();
+        return client.extractKeyPhraseUtilClient.getExtractedKeyPhrasesResponseSync(documents, options, context);
     }
 
     // Sentiment
@@ -1154,7 +1734,7 @@ public final class TextAnalyticsClient {
      *
      * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String -->
      * <pre>
-     * final DocumentSentiment documentSentiment =
+     * DocumentSentiment documentSentiment =
      *     textAnalyticsClient.analyzeSentiment&#40;&quot;The hotel was dark and unclean.&quot;&#41;;
      *
      * System.out.printf&#40;
@@ -1198,7 +1778,7 @@ public final class TextAnalyticsClient {
      *
      * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-String -->
      * <pre>
-     * final DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment&#40;
+     * DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment&#40;
      *     &quot;The hotel was dark and unclean.&quot;, &quot;en&quot;&#41;;
      *
      * System.out.printf&#40;
@@ -1232,7 +1812,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentSentiment analyzeSentiment(String document, String language) {
-        return client.analyzeSentiment(document, language).block();
+        return analyzeSentiment(document, language, null);
     }
 
     /**
@@ -1248,7 +1828,7 @@ public final class TextAnalyticsClient {
      *
      * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-String-AnalyzeSentimentOptions -->
      * <pre>
-     * final DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment&#40;
+     * DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment&#40;
      *     &quot;The hotel was dark and unclean.&quot;, &quot;en&quot;,
      *     new AnalyzeSentimentOptions&#40;&#41;.setIncludeOpinionMining&#40;true&#41;&#41;;
      * for &#40;SentenceSentiment sentenceSentiment : documentSentiment.getSentences&#40;&#41;&#41; &#123;
@@ -1285,7 +1865,17 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentSentiment analyzeSentiment(String document, String language, AnalyzeSentimentOptions options) {
-        return client.analyzeSentiment(document, language, options).block();
+        Objects.requireNonNull(document, "'document' cannot be null.");
+        final AnalyzeSentimentResultCollection sentimentResultCollection
+            = analyzeSentimentBatch(Collections.singletonList(document), language, options);
+        DocumentSentiment documentSentiment = null;
+        for (AnalyzeSentimentResult sentimentResult : sentimentResultCollection) {
+            if (sentimentResult.isError()) {
+                throw LOGGER.logExceptionAsError(toTextAnalyticsException(sentimentResult.getError()));
+            }
+            documentSentiment = sentimentResult.getDocumentSentiment();
+        }
+        return documentSentiment;
     }
 
     /**
@@ -1350,9 +1940,13 @@ public final class TextAnalyticsClient {
      */
     @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeSentimentResultCollection analyzeSentimentBatch(
-        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
-        return client.analyzeSentimentBatch(documents, language, options).block();
+    public AnalyzeSentimentResultCollection analyzeSentimentBatch(Iterable<String> documents, String language,
+        TextAnalyticsRequestOptions options) {
+        return analyzeSentimentBatchWithResponse(mapByIndex(documents, (index, value) -> {
+            final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+            textDocumentInput.setLanguage(language);
+            return textDocumentInput;
+        }), options, Context.NONE).getValue();
     }
 
     /**
@@ -1415,9 +2009,13 @@ public final class TextAnalyticsClient {
      *   available for API version v3.1 and newer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeSentimentResultCollection analyzeSentimentBatch(Iterable<String> documents,
-        String language, AnalyzeSentimentOptions options) {
-        return client.analyzeSentimentBatch(documents, language, options).block();
+    public AnalyzeSentimentResultCollection analyzeSentimentBatch(Iterable<String> documents, String language,
+        AnalyzeSentimentOptions options) {
+        return analyzeSentimentBatchWithResponse(mapByIndex(documents, (index, value) -> {
+            final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+            textDocumentInput.setLanguage(language);
+            return textDocumentInput;
+        }), options, Context.NONE).getValue();
     }
 
     /**
@@ -1494,10 +2092,10 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnalyzeSentimentResultCollection> analyzeSentimentBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents,
-            new AnalyzeSentimentOptions()
-                .setIncludeStatistics(options == null ? false : options.isIncludeStatistics())
-                .setModelVersion(options == null ? null : options.getModelVersion()), context).block();
+        return analyzeSentimentBatchWithResponse(documents,
+            new AnalyzeSentimentOptions().setIncludeStatistics(options == null ? false : options.isIncludeStatistics())
+                .setModelVersion(options == null ? null : options.getModelVersion()),
+            context);
     }
 
     /**
@@ -1576,142 +2174,7 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnalyzeSentimentResultCollection> analyzeSentimentBatchWithResponse(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
-        return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents, options, context).block();
-    }
-
-    /**
-     * Perform dynamic classification on a batch of documents. On the fly classification of the input documents into
-     * one or multiple categories. Assigns either one or multiple categories per document. This type of classification
-     * doesn't require model training. See https://aka.ms/azsdk/textanalytics/data-limits for service data limits.
-     *
-     * <p><strong>Code Sample</strong></p>
-     * <p>Dynamic classification of each document in a list of {@link String document} with provided
-     * {@link DynamicClassificationOptions} options.
-     *
-     * <!-- src_embed Client.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions -->
-     * <pre>
-     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
-     * documents.add&#40;&quot;The WHO is issuing a warning about Monkey Pox.&quot;&#41;;
-     * documents.add&#40;&quot;Mo Salah plays in Liverpool FC in England.&quot;&#41;;
-     * DynamicClassificationOptions options = new DynamicClassificationOptions&#40;&#41;
-     *     .setCategories&#40;&quot;Health&quot;, &quot;Politics&quot;, &quot;Music&quot;, &quot;Sport&quot;&#41;;
-     *
-     * &#47;&#47; Analyzing dynamic classification
-     * DynamicClassifyDocumentResultCollection resultCollection =
-     *     textAnalyticsClient.dynamicClassificationBatch&#40;documents, &quot;en&quot;, options&#41;;
-     *
-     * &#47;&#47; Result of dynamic classification
-     * resultCollection.forEach&#40;documentResult -&gt; &#123;
-     *     System.out.println&#40;&quot;Document ID: &quot; + documentResult.getId&#40;&#41;&#41;;
-     *     for &#40;ClassificationCategory classification : documentResult.getClassifications&#40;&#41;&#41; &#123;
-     *         System.out.printf&#40;&quot;&#92;tCategory: %s, confidence score: %f.%n&quot;,
-     *             classification.getCategory&#40;&#41;, classification.getConfidenceScore&#40;&#41;&#41;;
-     *     &#125;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end Client.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions -->
-     *
-     * @param documents A list of documents to be analyzed.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
-     * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
-     * English as default.
-     * @param options The additional configurable {@link DynamicClassificationOptions options} that may be passed when
-     * analyzing dynamic classification.
-     *
-     * @return A {@link DynamicClassifyDocumentResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is null.
-     * @throws IllegalArgumentException if {@code documents} is empty.
-     * @throws UnsupportedOperationException if {@code dynamicClassificationBatch} is called with
-     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
-     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
-     * 2022-10-01-preview and newer.
-     * @throws TextAnalyticsException If analyze operation fails.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicClassifyDocumentResultCollection dynamicClassificationBatch(Iterable<String> documents,
-        String language, DynamicClassificationOptions options) {
-        return client.dynamicClassificationBatch(documents, language, options).block();
-    }
-
-    /**
-     * Perform dynamic classification on a batch of documents. On the fly classification of the input documents into
-     * one or multiple categories. Assigns either one or multiple categories per document. This type of classification
-     * doesn't require model training. See https://aka.ms/azsdk/textanalytics/data-limits for service data limits.
-     *
-     * <p><strong>Code Sample</strong></p>
-     * <p>Dynamic classification of each document in a list of {@link TextDocumentInput document} with provided
-     * {@link DynamicClassificationOptions} options.
-     *
-     * <!-- Client.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions-Context -->
-     * <pre>
-     * List&lt;TextDocumentInput&gt; textDocumentInputs = Arrays.asList&#40;
-     *     new TextDocumentInput&#40;&quot;1&quot;, &quot;The hotel was dark and unclean. The restaurant had amazing gnocchi.&quot;&#41;
-     *         .setLanguage&#40;&quot;en&quot;&#41;,
-     *     new TextDocumentInput&#40;&quot;2&quot;, &quot;The restaurant had amazing gnocchi. The hotel was dark and unclean.&quot;&#41;
-     *         .setLanguage&#40;&quot;en&quot;&#41;
-     * &#41;;
-     *
-     * AnalyzeSentimentOptions options = new AnalyzeSentimentOptions&#40;&#41;.setIncludeOpinionMining&#40;true&#41;
-     *     .setIncludeStatistics&#40;true&#41;;
-     *
-     * &#47;&#47; Analyzing batch sentiments
-     * Response&lt;AnalyzeSentimentResultCollection&gt; response =
-     *     textAnalyticsClient.analyzeSentimentBatchWithResponse&#40;textDocumentInputs, options, Context.NONE&#41;;
-     *
-     * &#47;&#47; Response's status code
-     * System.out.printf&#40;&quot;Status code of request response: %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * AnalyzeSentimentResultCollection resultCollection = response.getValue&#40;&#41;;
-     *
-     * &#47;&#47; Batch statistics
-     * TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics&#40;&#41;;
-     * System.out.printf&#40;&quot;A batch of documents statistics, transaction count: %s, valid document count: %s.%n&quot;,
-     *     batchStatistics.getTransactionCount&#40;&#41;, batchStatistics.getValidDocumentCount&#40;&#41;&#41;;
-     *
-     * &#47;&#47; Analyzed sentiment for each of documents from a batch of documents
-     * resultCollection.forEach&#40;analyzeSentimentResult -&gt; &#123;
-     *     System.out.printf&#40;&quot;Document ID: %s%n&quot;, analyzeSentimentResult.getId&#40;&#41;&#41;;
-     *     DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment&#40;&#41;;
-     *     documentSentiment.getSentences&#40;&#41;.forEach&#40;sentenceSentiment -&gt; &#123;
-     *         System.out.printf&#40;&quot;&#92;tSentence sentiment: %s%n&quot;, sentenceSentiment.getSentiment&#40;&#41;&#41;;
-     *         sentenceSentiment.getOpinions&#40;&#41;.forEach&#40;opinion -&gt; &#123;
-     *             TargetSentiment targetSentiment = opinion.getTarget&#40;&#41;;
-     *             System.out.printf&#40;&quot;&#92;tTarget sentiment: %s, target text: %s%n&quot;, targetSentiment.getSentiment&#40;&#41;,
-     *                 targetSentiment.getText&#40;&#41;&#41;;
-     *             for &#40;AssessmentSentiment assessmentSentiment : opinion.getAssessments&#40;&#41;&#41; &#123;
-     *                 System.out.printf&#40;&quot;&#92;t&#92;t'%s' sentiment because of &#92;&quot;%s&#92;&quot;. Is the assessment negated: %s.%n&quot;,
-     *                     assessmentSentiment.getSentiment&#40;&#41;, assessmentSentiment.getText&#40;&#41;,
-     *                     assessmentSentiment.isNegated&#40;&#41;&#41;;
-     *             &#125;
-     *         &#125;&#41;;
-     *     &#125;&#41;;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end Client.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions-Context -->
-     *
-     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
-     * @param options The additional configurable {@link DynamicClassificationOptions options} that may be passed when
-     * analyzing dynamic classification.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     *
-     * @return A {@link Response} that contains a {@link DynamicClassifyDocumentResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is null.
-     * @throws IllegalArgumentException if {@code documents} is empty.
-     * @throws UnsupportedOperationException if {@code dynamicClassificationBatchWithResponse} is called with
-     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
-     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
-     * 2022-10-01-preview and newer.
-     * @throws TextAnalyticsException If analyze operation fails.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DynamicClassifyDocumentResultCollection> dynamicClassificationBatchWithResponse(
-        Iterable<TextDocumentInput> documents, DynamicClassificationOptions options, Context context) {
-        return client.dynamicClassificationAsyncClient.getDynamicClassifyDocumentResultCollectionResponse(
-            documents, options, context).block();
+        return client.analyzeSentimentUtilClient.getAnalyzedSentimentResponseSync(documents, options, context);
     }
 
     /**
@@ -1882,12 +2345,11 @@ public final class TextAnalyticsClient {
     public SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
         beginAnalyzeHealthcareEntities(Iterable<String> documents, String language,
             AnalyzeHealthcareEntitiesOptions options) {
-        return beginAnalyzeHealthcareEntities(
-            mapByIndex(documents, (index, value) -> {
-                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
-                textDocumentInput.setLanguage(language);
-                return textDocumentInput;
-            }), options, Context.NONE);
+        return beginAnalyzeHealthcareEntities(mapByIndex(documents, (index, value) -> {
+            final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+            textDocumentInput.setLanguage(language);
+            return textDocumentInput;
+        }), options, Context.NONE);
     }
 
     /**
@@ -1918,7 +2380,7 @@ public final class TextAnalyticsClient {
      * AnalyzeHealthcareEntitiesPagedIterable result = syncPoller.getFinalResult&#40;&#41;;
      *
      * &#47;&#47; Task operation statistics
-     * final AnalyzeHealthcareEntitiesOperationDetail operationResult = syncPoller.poll&#40;&#41;.getValue&#40;&#41;;
+     * AnalyzeHealthcareEntitiesOperationDetail operationResult = syncPoller.poll&#40;&#41;.getValue&#40;&#41;;
      * System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
      *     operationResult.getCreatedAt&#40;&#41;, operationResult.getExpiresAt&#40;&#41;&#41;;
      *
@@ -1987,14 +2449,14 @@ public final class TextAnalyticsClient {
     public SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, AnalyzeHealthcareEntitiesPagedIterable>
         beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents, AnalyzeHealthcareEntitiesOptions options,
             Context context) {
-        return client.analyzeHealthcareEntityAsyncClient.beginAnalyzeHealthcarePagedIterable(documents, options,
-            context).getSyncPoller();
+        return client.analyzeHealthcareEntityUtilClient.beginAnalyzeHealthcarePagedIterable(documents, options,
+            context);
     }
 
     /**
      * Returns a list of custom entities for the provided list of {@link String document}.
      *
-     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
      *
      * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
@@ -2052,10 +2514,10 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of custom entities for the provided list of {@link String document} with provided
+     * Returns a list of custom entities for the provided list of document with provided
      * request options.
      *
-     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
      *
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
@@ -2125,7 +2587,7 @@ public final class TextAnalyticsClient {
      * Returns a list of custom entities for the provided list of {@link TextDocumentInput document} with provided
      * request options.
      *
-     * <p>This method is supported since service API version {@code V2022_05_01} </p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01} </p>
      *
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
@@ -2183,16 +2645,16 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedIterable>
-        beginRecognizeCustomEntities(Iterable<TextDocumentInput> documents, String projectName,
-            String deploymentName, RecognizeCustomEntitiesOptions options, Context context) {
-        return client.recognizeCustomEntitiesAsyncClient.recognizeCustomEntitiesPagedIterable(
-            documents, projectName, deploymentName, options, context).getSyncPoller();
+        beginRecognizeCustomEntities(Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
+            RecognizeCustomEntitiesOptions options, Context context) {
+        return client.recognizeCustomEntitiesUtilClient.recognizeCustomEntitiesPagedIterable(documents, projectName,
+            deploymentName, options, context);
     }
 
     /**
      * Returns a list of single-label classification for the provided list of {@link String document}.
      *
-     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
      *
      * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
@@ -2256,7 +2718,7 @@ public final class TextAnalyticsClient {
      * Returns a list of single-label classification for the provided list of {@link String document} with
      * provided request options.
      *
-     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
      *
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
@@ -2315,9 +2777,9 @@ public final class TextAnalyticsClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable>
-        beginSingleLabelClassify(Iterable<String> documents, String projectName, String deploymentName,
-            String language, SingleLabelClassifyOptions options) {
+    public SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> beginSingleLabelClassify(
+        Iterable<String> documents, String projectName, String deploymentName, String language,
+        SingleLabelClassifyOptions options) {
         return beginSingleLabelClassify(mapByIndex(documents, (index, value) -> {
             final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
             textDocumentInput.setLanguage(language);
@@ -2329,7 +2791,7 @@ public final class TextAnalyticsClient {
      * Returns a list of single-label classification for the provided list of {@link TextDocumentInput document} with
      * provided request options.
      *
-     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
      *
      * <p><strong>Code Sample</strong></p>
      * <!-- src_embed Client.beginSingleLabelClassify#Iterable-String-String-SingleLabelClassifyOptions-Context -->
@@ -2384,17 +2846,17 @@ public final class TextAnalyticsClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable>
-        beginSingleLabelClassify(Iterable<TextDocumentInput> documents, String projectName,
-            String deploymentName, SingleLabelClassifyOptions options, Context context) {
-        return client.labelClassifyAsyncClient.singleLabelClassifyPagedIterable(
-            documents, projectName, deploymentName, options, context).getSyncPoller();
+    public SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> beginSingleLabelClassify(
+        Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
+        SingleLabelClassifyOptions options, Context context) {
+        return client.labelClassifyUtilClient.singleLabelClassifyPagedIterable(documents, projectName, deploymentName,
+            options, context);
     }
 
     /**
      * Returns a list of multi-label classification for the provided list of {@link String document}.
      *
-     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
      *
      * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
@@ -2453,7 +2915,7 @@ public final class TextAnalyticsClient {
      * Returns a list of multi-label classification for the provided list of {@link String document} with
      * provided request options.
      *
-     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
      *
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
@@ -2506,9 +2968,9 @@ public final class TextAnalyticsClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable>
-        beginMultiLabelClassify(Iterable<String> documents, String projectName, String deploymentName,
-            String language, MultiLabelClassifyOptions options) {
+    public SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> beginMultiLabelClassify(
+        Iterable<String> documents, String projectName, String deploymentName, String language,
+        MultiLabelClassifyOptions options) {
         return beginMultiLabelClassify(mapByIndex(documents, (index, value) -> {
             final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
             textDocumentInput.setLanguage(language);
@@ -2520,7 +2982,7 @@ public final class TextAnalyticsClient {
      * Returns a list of multi-label classification for the provided list of {@link TextDocumentInput document} with
      * provided request options.
      *
-     * <p>This method is supported since service API version {@code V2022_05_01}.</p>
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
      *
      * <p><strong>Code Sample</strong></p>
      * <!-- src_embed Client.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions-Context -->
@@ -2571,11 +3033,477 @@ public final class TextAnalyticsClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable>
-        beginMultiLabelClassify(Iterable<TextDocumentInput> documents, String projectName,
-            String deploymentName, MultiLabelClassifyOptions options, Context context) {
-        return client.labelClassifyAsyncClient.multiLabelClassifyPagedIterable(
-            documents, projectName, deploymentName, options, context).getSyncPoller();
+    public SyncPoller<ClassifyDocumentOperationDetail, ClassifyDocumentPagedIterable> beginMultiLabelClassify(
+        Iterable<TextDocumentInput> documents, String projectName, String deploymentName,
+        MultiLabelClassifyOptions options, Context context) {
+        return client.labelClassifyUtilClient.multiLabelClassifyPagedIterable(documents, projectName, deploymentName,
+            options, context);
+    }
+
+    // Abstractive Summarization
+    /**
+     * Returns a list of abstractive summary for the provided list of {@link String document}.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2023_04_01}.</p>
+     *
+     * This method will use the default language that can be set by using method
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginAbstractSummary#Iterable -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+     *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+     *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+     *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+     *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+     *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+     *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+     *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+     *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+     *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+     *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+     *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+     *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+     *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+     *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+     *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+     *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+     *             + &quot;the downstream AI tasks.&quot;&#41;;
+     * &#125;
+     * SyncPoller&lt;AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginAbstractSummary&#40;documents&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+     *     for &#40;AbstractiveSummaryResult documentResult : resultCollection&#41; &#123;
+     *         System.out.println&#40;&quot;&#92;tAbstractive summary sentences:&quot;&#41;;
+     *         for &#40;AbstractiveSummary summarySentence : documentResult.getSummaries&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;&#92;t&#92;t Summary text: %s.%n&quot;, summarySentence.getText&#40;&#41;&#41;;
+     *             for &#40;AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;&#92;t&#92;t offset: %d, length: %d%n&quot;,
+     *                     abstractiveSummaryContext.getOffset&#40;&#41;, abstractiveSummaryContext.getLength&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginAbstractSummary#Iterable -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>..
+     *
+     * @return A {@link SyncPoller} that polls the abstractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link AbstractiveSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginAbstractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2023_04_01} and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedIterable>
+        beginAbstractSummary(Iterable<String> documents) {
+        return beginAbstractSummary(documents, client.getDefaultLanguage(), null);
+    }
+
+    /**
+     * Returns a list of abstractive summary for the provided list of {@link String document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginAbstractSummary#Iterable-String-AbstractiveSummaryOptions -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+     *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+     *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+     *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+     *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+     *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+     *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+     *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+     *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+     *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+     *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+     *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+     *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+     *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+     *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+     *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+     *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+     *             + &quot;the downstream AI tasks.&quot;&#41;;
+     * &#125;
+     * SyncPoller&lt;AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginAbstractSummary&#40;documents, &quot;en&quot;,
+     *         new AbstractiveSummaryOptions&#40;&#41;.setDisplayName&#40;&quot;&#123;tasks_display_name&#125;&quot;&#41;.setSentenceCount&#40;3&#41;&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+     *     for &#40;AbstractiveSummaryResult documentResult : resultCollection&#41; &#123;
+     *         System.out.println&#40;&quot;&#92;tAbstractive summary sentences:&quot;&#41;;
+     *         for &#40;AbstractiveSummary summarySentence : documentResult.getSummaries&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;&#92;t&#92;t Summary text: %s.%n&quot;, summarySentence.getText&#40;&#41;&#41;;
+     *             for &#40;AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;&#92;t&#92;t offset: %d, length: %d%n&quot;,
+     *                     abstractiveSummaryContext.getOffset&#40;&#41;, abstractiveSummaryContext.getLength&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginAbstractSummary#Iterable-String-AbstractiveSummaryOptions -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link AbstractiveSummaryOptions options} that may be passed
+     * when analyzing abstractive summarization.
+     *
+     * @return A {@link SyncPoller} that polls the abstractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link AbstractiveSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginAbstractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2023_04_01}  and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedIterable>
+        beginAbstractSummary(Iterable<String> documents, String language, AbstractiveSummaryOptions options) {
+        return client.abstractiveSummaryUtilClient
+            .abstractiveSummaryPagedIterable(mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options, Context.NONE);
+    }
+
+    /**
+     * Returns a list of abstractive summary for the provided list of {@link TextDocumentInput document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2023_04_01}.</p>
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginAbstractSummary#Iterable-AbstractiveSummaryOptions-Context -->
+     * <pre>
+     * List&lt;TextDocumentInput&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;new TextDocumentInput&#40;Integer.toString&#40;i&#41;,
+     *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+     *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+     *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+     *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+     *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+     *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+     *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+     *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+     *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+     *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+     *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+     *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+     *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+     *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+     *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+     *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+     *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+     *             + &quot;the downstream AI tasks.&quot;&#41;&#41;;
+     * &#125;
+     * SyncPoller&lt;AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginAbstractSummary&#40;documents,
+     *         new AbstractiveSummaryOptions&#40;&#41;.setDisplayName&#40;&quot;&#123;tasks_display_name&#125;&quot;&#41;.setSentenceCount&#40;3&#41;,
+     *         Context.NONE&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+     *     for &#40;AbstractiveSummaryResult documentResult : resultCollection&#41; &#123;
+     *         System.out.println&#40;&quot;&#92;tAbstractive summary sentences:&quot;&#41;;
+     *         for &#40;AbstractiveSummary summarySentence : documentResult.getSummaries&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;&#92;t&#92;t Summary text: %s.%n&quot;, summarySentence.getText&#40;&#41;&#41;;
+     *             for &#40;AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;&#92;t&#92;t offset: %d, length: %d%n&quot;,
+     *                     abstractiveSummaryContext.getOffset&#40;&#41;, abstractiveSummaryContext.getLength&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginAbstractSummary#Iterable-AbstractiveSummaryOptions-Context -->
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param options The additional configurable {@link AbstractiveSummaryOptions options} that may be passed
+     * when analyzing abstractive summarization.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} that polls the abstractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link AbstractiveSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginAbstractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2023_04_01}  and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedIterable> beginAbstractSummary(
+        Iterable<TextDocumentInput> documents, AbstractiveSummaryOptions options, Context context) {
+        return client.abstractiveSummaryUtilClient.abstractiveSummaryPagedIterable(documents, options, context);
+    }
+
+    // Extractive Summarization
+    /**
+     * Returns a list of extract summaries for the provided list of {@link String document}.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2023_04_01}.</p>
+     *
+     * This method will use the default language that can be set by using method
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginExtractSummary#Iterable -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+     *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+     *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+     *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+     *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+     *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+     *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+     *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+     *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+     *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+     *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+     *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+     *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+     *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+     *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+     *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+     *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+     *             + &quot;the downstream AI tasks.&quot;&#41;;
+     * &#125;
+     * SyncPoller&lt;ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginExtractSummary&#40;documents&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+     *     for &#40;ExtractiveSummaryResult documentResult : resultCollection&#41; &#123;
+     *         System.out.println&#40;&quot;&#92;tExtracted summary sentences:&quot;&#41;;
+     *         for &#40;ExtractiveSummarySentence extractiveSummarySentence : documentResult.getSentences&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;
+     *                 &quot;&#92;t&#92;t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n&quot;,
+     *                 extractiveSummarySentence.getText&#40;&#41;, extractiveSummarySentence.getLength&#40;&#41;,
+     *                 extractiveSummarySentence.getOffset&#40;&#41;, extractiveSummarySentence.getRankScore&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginExtractSummary#Iterable -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     *
+     * @return A {@link SyncPoller} that polls the extractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link ExtractiveSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginExtractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2023_04_01}  and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedIterable>
+        beginExtractSummary(Iterable<String> documents) {
+        return beginExtractSummary(documents, client.getDefaultLanguage(), null);
+    }
+
+    /**
+     * Returns a list of  extract summaries for the provided list of {@link String document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2023_04_01}.</p>
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginExtractSummary#Iterable-String-ExtractSummaryOptions -->
+     * <pre>
+     * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;
+     *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+     *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+     *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+     *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+     *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+     *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+     *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+     *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+     *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+     *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+     *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+     *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+     *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+     *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+     *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+     *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+     *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+     *             + &quot;the downstream AI tasks.&quot;&#41;;
+     * &#125;
+     * SyncPoller&lt;ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginExtractSummary&#40;documents,
+     *         &quot;en&quot;,
+     *         new ExtractiveSummaryOptions&#40;&#41;.setMaxSentenceCount&#40;4&#41;.setOrderBy&#40;ExtractiveSummarySentencesOrder.RANK&#41;&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+     *     for &#40;ExtractiveSummaryResult documentResult : resultCollection&#41; &#123;
+     *         System.out.println&#40;&quot;&#92;tExtracted summary sentences:&quot;&#41;;
+     *         for &#40;ExtractiveSummarySentence extractiveSummarySentence : documentResult.getSentences&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;
+     *                 &quot;&#92;t&#92;t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n&quot;,
+     *                 extractiveSummarySentence.getText&#40;&#41;, extractiveSummarySentence.getLength&#40;&#41;,
+     *                 extractiveSummarySentence.getOffset&#40;&#41;, extractiveSummarySentence.getRankScore&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginExtractSummary#Iterable-String-ExtractSummaryOptions -->
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link ExtractiveSummaryOptions options} that may be passed
+     * when analyzing extractive summarization.
+     *
+     * @return A {@link SyncPoller} that polls the extractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link ExtractiveSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginExtractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2023_04_01}  and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedIterable>
+        beginExtractSummary(Iterable<String> documents, String language, ExtractiveSummaryOptions options) {
+        return client.extractiveSummaryUtilClient
+            .extractiveSummaryPagedIterable(mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options, Context.NONE);
+    }
+
+    /**
+     * Returns a list of extract summaries for the provided list of {@link TextDocumentInput document} with
+     * provided request options.
+     *
+     * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2023_04_01}.</p>
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <!-- src_embed Client.beginExtractSummary#Iterable-ExtractSummaryOptions-Context -->
+     * <pre>
+     * List&lt;TextDocumentInput&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
+     * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
+     *     documents.add&#40;new TextDocumentInput&#40;Integer.toString&#40;i&#41;,
+     *         &quot;At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,&quot;
+     *             + &quot; human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI&quot;
+     *             + &quot; Cognitive Services, I have been working with a team of amazing scientists and engineers to turn &quot;
+     *             + &quot;this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship&quot;
+     *             + &quot; among three attributes of human cognition: monolingual text &#40;X&#41;, audio or visual sensory signals,&quot;
+     *             + &quot; &#40;Y&#41; and multilingual &#40;Z&#41;. At the intersection of all three, there’s magic—what we call XYZ-code&quot;
+     *             + &quot; as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,&quot;
+     *             + &quot; see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term&quot;
+     *             + &quot; vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have&quot;
+     *             + &quot; pretrained models that can jointly learn representations to support a broad range of downstream&quot;
+     *             + &quot; AI tasks, much in the way humans do today. Over the past five years, we have achieved human&quot;
+     *             + &quot; performance on benchmarks in conversational speech recognition, machine translation, &quot;
+     *             + &quot;conversational question answering, machine reading comprehension, and image captioning. These&quot;
+     *             + &quot; five breakthroughs provided us with strong signals toward our more ambitious aspiration to&quot;
+     *             + &quot; produce a leap in AI capabilities, achieving multisensory and multilingual learning that &quot;
+     *             + &quot;is closer in line with how humans learn and understand. I believe the joint XYZ-code is a &quot;
+     *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
+     *             + &quot;the downstream AI tasks.&quot;&#41;&#41;;
+     * &#125;
+     * SyncPoller&lt;ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedIterable&gt; syncPoller =
+     *     textAnalyticsClient.beginExtractSummary&#40;documents,
+     *         new ExtractiveSummaryOptions&#40;&#41;.setMaxSentenceCount&#40;4&#41;.setOrderBy&#40;ExtractiveSummarySentencesOrder.RANK&#41;,
+     *         Context.NONE&#41;;
+     * syncPoller.waitForCompletion&#40;&#41;;
+     * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
+     *     for &#40;ExtractiveSummaryResult documentResult : resultCollection&#41; &#123;
+     *         System.out.println&#40;&quot;&#92;tExtracted summary sentences:&quot;&#41;;
+     *         for &#40;ExtractiveSummarySentence extractiveSummarySentence : documentResult.getSentences&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;
+     *                 &quot;&#92;t&#92;t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n&quot;,
+     *                 extractiveSummarySentence.getText&#40;&#41;, extractiveSummarySentence.getLength&#40;&#41;,
+     *                 extractiveSummarySentence.getOffset&#40;&#41;, extractiveSummarySentence.getRankScore&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end Client.beginExtractSummary#Iterable-ExtractSummaryOptions-Context -->
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
+     * @param options The additional configurable {@link ExtractiveSummaryOptions options} that may be passed
+     * when analyzing extractive summarization.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} that polls the extractive summarization operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link ExtractiveSummaryResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws UnsupportedOperationException if {@code beginExtractSummary} is called with
+     * service API version {@link TextAnalyticsServiceVersion#V3_0}, {@link TextAnalyticsServiceVersion#V3_1},
+     * or {@link TextAnalyticsServiceVersion#V2022_05_01}. Those actions are only available for API version
+     * {@link TextAnalyticsServiceVersion#V2023_04_01}  and newer.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedIterable>
+        beginExtractSummary(Iterable<TextDocumentInput> documents, ExtractiveSummaryOptions options, Context context) {
+        return client.extractiveSummaryUtilClient.extractiveSummaryPagedIterable(documents, options, context);
     }
 
     /**
@@ -2653,8 +3581,8 @@ public final class TextAnalyticsClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> beginAnalyzeActions(
-        Iterable<String> documents, TextAnalyticsActions actions) {
+    public SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable>
+        beginAnalyzeActions(Iterable<String> documents, TextAnalyticsActions actions) {
         return beginAnalyzeActions(documents, actions, client.getDefaultLanguage(), null);
     }
 
@@ -2739,12 +3667,11 @@ public final class TextAnalyticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> beginAnalyzeActions(
         Iterable<String> documents, TextAnalyticsActions actions, String language, AnalyzeActionsOptions options) {
-        return client.analyzeActionsAsyncClient.beginAnalyzeActionsIterable(
-            mapByIndex(documents, (index, value) -> {
-                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
-                textDocumentInput.setLanguage(language);
-                return textDocumentInput;
-            }), actions, options, Context.NONE).getSyncPoller();
+        return client.analyzeActionsUtilClient.beginAnalyzeActionsIterable(mapByIndex(documents, (index, value) -> {
+            final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+            textDocumentInput.setLanguage(language);
+            return textDocumentInput;
+        }), actions, options, Context.NONE);
     }
 
     /**
@@ -2826,7 +3753,6 @@ public final class TextAnalyticsClient {
     public SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> beginAnalyzeActions(
         Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeActionsOptions options,
         Context context) {
-        return client.analyzeActionsAsyncClient.beginAnalyzeActionsIterable(documents, actions, options, context)
-            .getSyncPoller();
+        return client.analyzeActionsUtilClient.beginAnalyzeActionsIterable(documents, actions, options, context);
     }
 }

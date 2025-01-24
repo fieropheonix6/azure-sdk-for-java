@@ -5,23 +5,32 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The unique key on that enforces uniqueness constraint on documents in the collection in the Azure Cosmos DB service.
  */
 @Fluent
-public final class UniqueKey {
+public final class UniqueKey implements JsonSerializable<UniqueKey> {
     /*
      * List of paths must be unique for each document in the Azure Cosmos DB service
      */
-    @JsonProperty(value = "paths")
     private List<String> paths;
 
     /**
+     * Creates an instance of UniqueKey class.
+     */
+    public UniqueKey() {
+    }
+
+    /**
      * Get the paths property: List of paths must be unique for each document in the Azure Cosmos DB service.
-     *
+     * 
      * @return the paths value.
      */
     public List<String> paths() {
@@ -30,7 +39,7 @@ public final class UniqueKey {
 
     /**
      * Set the paths property: List of paths must be unique for each document in the Azure Cosmos DB service.
-     *
+     * 
      * @param paths the paths value to set.
      * @return the UniqueKey object itself.
      */
@@ -41,9 +50,46 @@ public final class UniqueKey {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("paths", this.paths, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UniqueKey from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UniqueKey if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the UniqueKey.
+     */
+    public static UniqueKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UniqueKey deserializedUniqueKey = new UniqueKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("paths".equals(fieldName)) {
+                    List<String> paths = reader.readArray(reader1 -> reader1.getString());
+                    deserializedUniqueKey.paths = paths;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUniqueKey;
+        });
     }
 }

@@ -23,43 +23,35 @@ public final class AvailableServiceTiersImpl implements AvailableServiceTiers {
 
     private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public AvailableServiceTiersImpl(
-        AvailableServiceTiersClient innerClient,
+    public AvailableServiceTiersImpl(AvailableServiceTiersClient innerClient,
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public List<AvailableServiceTier> listByWorkspace(String resourceGroupName, String workspaceName) {
-        List<AvailableServiceTierInner> inner = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
+    public Response<List<AvailableServiceTier>> listByWorkspaceWithResponse(String resourceGroupName,
+        String workspaceName, Context context) {
+        Response<List<AvailableServiceTierInner>> inner
+            = this.serviceClient().listByWorkspaceWithResponse(resourceGroupName, workspaceName, context);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new AvailableServiceTierImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public Response<List<AvailableServiceTier>> listByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, Context context) {
-        Response<List<AvailableServiceTierInner>> inner =
-            this.serviceClient().listByWorkspaceWithResponse(resourceGroupName, workspaceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
                     .stream()
                     .map(inner1 -> new AvailableServiceTierImpl(inner1, this.manager()))
                     .collect(Collectors.toList()));
         } else {
             return null;
+        }
+    }
+
+    public List<AvailableServiceTier> listByWorkspace(String resourceGroupName, String workspaceName) {
+        List<AvailableServiceTierInner> inner = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new AvailableServiceTierImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
         }
     }
 

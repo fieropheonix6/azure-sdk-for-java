@@ -11,41 +11,29 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.fluent.models.ProviderResourceTypeListResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ProviderResourceTypesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProviderResourceTypesClient.
+ */
 public interface ProviderResourceTypesClient {
     /**
      * List the resource types for a specified resource provider.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param expand The $expand query parameter. For example, to include property aliases in response, use
-     *     $expand=resourceTypes/aliases.
+     * $expand=resourceTypes/aliases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of resource types of a resource provider along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ProviderResourceTypeListResultInner>> listWithResponseAsync(
-        String resourceProviderNamespace, String expand);
+    Mono<Response<ProviderResourceTypeListResultInner>> listWithResponseAsync(String resourceProviderNamespace,
+        String expand);
 
     /**
      * List the resource types for a specified resource provider.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param expand The $expand query parameter. For example, to include property aliases in response, use
-     *     $expand=resourceTypes/aliases.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource types of a resource provider on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ProviderResourceTypeListResultInner> listAsync(String resourceProviderNamespace, String expand);
-
-    /**
-     * List the resource types for a specified resource provider.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -57,7 +45,23 @@ public interface ProviderResourceTypesClient {
 
     /**
      * List the resource types for a specified resource provider.
-     *
+     * 
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param expand The $expand query parameter. For example, to include property aliases in response, use
+     * $expand=resourceTypes/aliases.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of resource types of a resource provider along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ProviderResourceTypeListResultInner> listWithResponse(String resourceProviderNamespace, String expand,
+        Context context);
+
+    /**
+     * List the resource types for a specified resource provider.
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,20 +70,4 @@ public interface ProviderResourceTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ProviderResourceTypeListResultInner list(String resourceProviderNamespace);
-
-    /**
-     * List the resource types for a specified resource provider.
-     *
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param expand The $expand query parameter. For example, to include property aliases in response, use
-     *     $expand=resourceTypes/aliases.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource types of a resource provider along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProviderResourceTypeListResultInner> listWithResponse(
-        String resourceProviderNamespace, String expand, Context context);
 }

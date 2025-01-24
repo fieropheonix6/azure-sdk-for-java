@@ -10,57 +10,63 @@ import com.azure.resourcemanager.kusto.models.DefaultPrincipalsModificationKind;
 import com.azure.resourcemanager.kusto.models.TableLevelSharingProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AttachedDatabaseConfigurationPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        AttachedDatabaseConfigurationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Succeeded\",\"databaseName\":\"dpfrxtrthzvaytdw\",\"clusterResourceId\":\"qbrqubpaxhexiili\",\"attachedDatabaseNames\":[\"tiirqtdqoa\",\"oruzfgsquyfxrxx\"],\"defaultPrincipalsModificationKind\":\"Union\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"amxjezwlw\",\"wxuqlcvydypatdoo\",\"ojknio\"],\"tablesToExclude\":[\"oebwnujhemms\"],\"externalTablesToInclude\":[\"kcrodtjinfw\",\"lfltka\"],\"externalTablesToExclude\":[\"efkdlf\",\"akggkfpag\",\"owpulpq\",\"lyls\"],\"materializedViewsToInclude\":[\"qjnsjervtia\"],\"materializedViewsToExclude\":[\"dszue\",\"psbzkfzbeyvpn\"]},\"databaseNameOverride\":\"cvinvkjjxdxrbuuk\",\"databaseNamePrefix\":\"lewyhmlwpaz\"}")
-                .toObject(AttachedDatabaseConfigurationProperties.class);
-        Assertions.assertEquals("dpfrxtrthzvaytdw", model.databaseName());
-        Assertions.assertEquals("qbrqubpaxhexiili", model.clusterResourceId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AttachedDatabaseConfigurationProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Canceled\",\"databaseName\":\"ejd\",\"clusterResourceId\":\"nxcvds\",\"attachedDatabaseNames\":[\"jivolvtnov\",\"fzg\",\"mjdftu\"],\"defaultPrincipalsModificationKind\":\"Union\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"ucea\",\"tmczuomejwcwwqi\",\"knssxmojm\"],\"tablesToExclude\":[\"kjprvk\"],\"externalTablesToInclude\":[\"zqljyxgtczh\"],\"externalTablesToExclude\":[\"bsdshmkxmaehvbbx\",\"ripltf\"],\"materializedViewsToInclude\":[\"baxk\",\"xywr\"],\"materializedViewsToExclude\":[\"yklyhpluodpvruud\",\"gzibthostgktstv\",\"xeclzedqbcvhzlhp\",\"odqkdlwwqfb\"],\"functionsToInclude\":[\"kxtrq\"],\"functionsToExclude\":[\"mlmbtxhwgfwsrta\",\"coezbrhubskh\",\"dyg\",\"ookk\"]},\"databaseNameOverride\":\"qjbvleorfmlu\",\"databaseNamePrefix\":\"tqzfavyv\"}")
+            .toObject(AttachedDatabaseConfigurationProperties.class);
+        Assertions.assertEquals("ejd", model.databaseName());
+        Assertions.assertEquals("nxcvds", model.clusterResourceId());
         Assertions.assertEquals(DefaultPrincipalsModificationKind.UNION, model.defaultPrincipalsModificationKind());
-        Assertions.assertEquals("amxjezwlw", model.tableLevelSharingProperties().tablesToInclude().get(0));
-        Assertions.assertEquals("oebwnujhemms", model.tableLevelSharingProperties().tablesToExclude().get(0));
-        Assertions.assertEquals("kcrodtjinfw", model.tableLevelSharingProperties().externalTablesToInclude().get(0));
-        Assertions.assertEquals("efkdlf", model.tableLevelSharingProperties().externalTablesToExclude().get(0));
-        Assertions.assertEquals("qjnsjervtia", model.tableLevelSharingProperties().materializedViewsToInclude().get(0));
-        Assertions.assertEquals("dszue", model.tableLevelSharingProperties().materializedViewsToExclude().get(0));
-        Assertions.assertEquals("cvinvkjjxdxrbuuk", model.databaseNameOverride());
-        Assertions.assertEquals("lewyhmlwpaz", model.databaseNamePrefix());
+        Assertions.assertEquals("ucea", model.tableLevelSharingProperties().tablesToInclude().get(0));
+        Assertions.assertEquals("kjprvk", model.tableLevelSharingProperties().tablesToExclude().get(0));
+        Assertions.assertEquals("zqljyxgtczh", model.tableLevelSharingProperties().externalTablesToInclude().get(0));
+        Assertions.assertEquals("bsdshmkxmaehvbbx",
+            model.tableLevelSharingProperties().externalTablesToExclude().get(0));
+        Assertions.assertEquals("baxk", model.tableLevelSharingProperties().materializedViewsToInclude().get(0));
+        Assertions.assertEquals("yklyhpluodpvruud",
+            model.tableLevelSharingProperties().materializedViewsToExclude().get(0));
+        Assertions.assertEquals("kxtrq", model.tableLevelSharingProperties().functionsToInclude().get(0));
+        Assertions.assertEquals("mlmbtxhwgfwsrta", model.tableLevelSharingProperties().functionsToExclude().get(0));
+        Assertions.assertEquals("qjbvleorfmlu", model.databaseNameOverride());
+        Assertions.assertEquals("tqzfavyv", model.databaseNamePrefix());
     }
 
-    @Test
-    public void testSerialize() {
-        AttachedDatabaseConfigurationProperties model =
-            new AttachedDatabaseConfigurationProperties()
-                .withDatabaseName("dpfrxtrthzvaytdw")
-                .withClusterResourceId("qbrqubpaxhexiili")
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AttachedDatabaseConfigurationProperties model
+            = new AttachedDatabaseConfigurationProperties().withDatabaseName("ejd")
+                .withClusterResourceId("nxcvds")
                 .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.UNION)
-                .withTableLevelSharingProperties(
-                    new TableLevelSharingProperties()
-                        .withTablesToInclude(Arrays.asList("amxjezwlw", "wxuqlcvydypatdoo", "ojknio"))
-                        .withTablesToExclude(Arrays.asList("oebwnujhemms"))
-                        .withExternalTablesToInclude(Arrays.asList("kcrodtjinfw", "lfltka"))
-                        .withExternalTablesToExclude(Arrays.asList("efkdlf", "akggkfpag", "owpulpq", "lyls"))
-                        .withMaterializedViewsToInclude(Arrays.asList("qjnsjervtia"))
-                        .withMaterializedViewsToExclude(Arrays.asList("dszue", "psbzkfzbeyvpn")))
-                .withDatabaseNameOverride("cvinvkjjxdxrbuuk")
-                .withDatabaseNamePrefix("lewyhmlwpaz");
+                .withTableLevelSharingProperties(new TableLevelSharingProperties()
+                    .withTablesToInclude(Arrays.asList("ucea", "tmczuomejwcwwqi", "knssxmojm"))
+                    .withTablesToExclude(Arrays.asList("kjprvk"))
+                    .withExternalTablesToInclude(Arrays.asList("zqljyxgtczh"))
+                    .withExternalTablesToExclude(Arrays.asList("bsdshmkxmaehvbbx", "ripltf"))
+                    .withMaterializedViewsToInclude(Arrays.asList("baxk", "xywr"))
+                    .withMaterializedViewsToExclude(
+                        Arrays.asList("yklyhpluodpvruud", "gzibthostgktstv", "xeclzedqbcvhzlhp", "odqkdlwwqfb"))
+                    .withFunctionsToInclude(Arrays.asList("kxtrq"))
+                    .withFunctionsToExclude(Arrays.asList("mlmbtxhwgfwsrta", "coezbrhubskh", "dyg", "ookk")))
+                .withDatabaseNameOverride("qjbvleorfmlu")
+                .withDatabaseNamePrefix("tqzfavyv");
         model = BinaryData.fromObject(model).toObject(AttachedDatabaseConfigurationProperties.class);
-        Assertions.assertEquals("dpfrxtrthzvaytdw", model.databaseName());
-        Assertions.assertEquals("qbrqubpaxhexiili", model.clusterResourceId());
+        Assertions.assertEquals("ejd", model.databaseName());
+        Assertions.assertEquals("nxcvds", model.clusterResourceId());
         Assertions.assertEquals(DefaultPrincipalsModificationKind.UNION, model.defaultPrincipalsModificationKind());
-        Assertions.assertEquals("amxjezwlw", model.tableLevelSharingProperties().tablesToInclude().get(0));
-        Assertions.assertEquals("oebwnujhemms", model.tableLevelSharingProperties().tablesToExclude().get(0));
-        Assertions.assertEquals("kcrodtjinfw", model.tableLevelSharingProperties().externalTablesToInclude().get(0));
-        Assertions.assertEquals("efkdlf", model.tableLevelSharingProperties().externalTablesToExclude().get(0));
-        Assertions.assertEquals("qjnsjervtia", model.tableLevelSharingProperties().materializedViewsToInclude().get(0));
-        Assertions.assertEquals("dszue", model.tableLevelSharingProperties().materializedViewsToExclude().get(0));
-        Assertions.assertEquals("cvinvkjjxdxrbuuk", model.databaseNameOverride());
-        Assertions.assertEquals("lewyhmlwpaz", model.databaseNamePrefix());
+        Assertions.assertEquals("ucea", model.tableLevelSharingProperties().tablesToInclude().get(0));
+        Assertions.assertEquals("kjprvk", model.tableLevelSharingProperties().tablesToExclude().get(0));
+        Assertions.assertEquals("zqljyxgtczh", model.tableLevelSharingProperties().externalTablesToInclude().get(0));
+        Assertions.assertEquals("bsdshmkxmaehvbbx",
+            model.tableLevelSharingProperties().externalTablesToExclude().get(0));
+        Assertions.assertEquals("baxk", model.tableLevelSharingProperties().materializedViewsToInclude().get(0));
+        Assertions.assertEquals("yklyhpluodpvruud",
+            model.tableLevelSharingProperties().materializedViewsToExclude().get(0));
+        Assertions.assertEquals("kxtrq", model.tableLevelSharingProperties().functionsToInclude().get(0));
+        Assertions.assertEquals("mlmbtxhwgfwsrta", model.tableLevelSharingProperties().functionsToExclude().get(0));
+        Assertions.assertEquals("qjbvleorfmlu", model.databaseNameOverride());
+        Assertions.assertEquals("tqzfavyv", model.databaseNamePrefix());
     }
 }

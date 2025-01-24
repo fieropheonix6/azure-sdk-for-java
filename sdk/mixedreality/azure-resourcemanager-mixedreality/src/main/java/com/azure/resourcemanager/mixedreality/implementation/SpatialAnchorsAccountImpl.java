@@ -88,6 +88,10 @@ public final class SpatialAnchorsAccountImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SpatialAnchorsAccountInner innerModel() {
         return this.innerObject;
     }
@@ -106,22 +110,18 @@ public final class SpatialAnchorsAccountImpl
     }
 
     public SpatialAnchorsAccount create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSpatialAnchorsAccounts()
-                .createWithResponse(resourceGroupName, accountName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSpatialAnchorsAccounts()
+            .createWithResponse(resourceGroupName, accountName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public SpatialAnchorsAccount create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSpatialAnchorsAccounts()
-                .createWithResponse(resourceGroupName, accountName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSpatialAnchorsAccounts()
+            .createWithResponse(resourceGroupName, accountName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -136,70 +136,60 @@ public final class SpatialAnchorsAccountImpl
     }
 
     public SpatialAnchorsAccount apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSpatialAnchorsAccounts()
-                .updateWithResponse(resourceGroupName, accountName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSpatialAnchorsAccounts()
+            .updateWithResponse(resourceGroupName, accountName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public SpatialAnchorsAccount apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSpatialAnchorsAccounts()
-                .updateWithResponse(resourceGroupName, accountName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSpatialAnchorsAccounts()
+            .updateWithResponse(resourceGroupName, accountName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    SpatialAnchorsAccountImpl(
-        SpatialAnchorsAccountInner innerObject,
+    SpatialAnchorsAccountImpl(SpatialAnchorsAccountInner innerObject,
         com.azure.resourcemanager.mixedreality.MixedRealityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "spatialAnchorsAccounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "spatialAnchorsAccounts");
     }
 
     public SpatialAnchorsAccount refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSpatialAnchorsAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSpatialAnchorsAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SpatialAnchorsAccount refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSpatialAnchorsAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSpatialAnchorsAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
+            .getValue();
         return this;
-    }
-
-    public AccountKeys listKeys() {
-        return serviceManager.spatialAnchorsAccounts().listKeys(resourceGroupName, accountName);
     }
 
     public Response<AccountKeys> listKeysWithResponse(Context context) {
         return serviceManager.spatialAnchorsAccounts().listKeysWithResponse(resourceGroupName, accountName, context);
     }
 
-    public AccountKeys regenerateKeys(AccountKeyRegenerateRequest regenerate) {
-        return serviceManager.spatialAnchorsAccounts().regenerateKeys(resourceGroupName, accountName, regenerate);
+    public AccountKeys listKeys() {
+        return serviceManager.spatialAnchorsAccounts().listKeys(resourceGroupName, accountName);
     }
 
     public Response<AccountKeys> regenerateKeysWithResponse(AccountKeyRegenerateRequest regenerate, Context context) {
-        return serviceManager
-            .spatialAnchorsAccounts()
+        return serviceManager.spatialAnchorsAccounts()
             .regenerateKeysWithResponse(resourceGroupName, accountName, regenerate, context);
+    }
+
+    public AccountKeys regenerateKeys(AccountKeyRegenerateRequest regenerate) {
+        return serviceManager.spatialAnchorsAccounts().regenerateKeys(resourceGroupName, accountName, regenerate);
     }
 
     public SpatialAnchorsAccountImpl withRegion(Region location) {

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.changefeed.epkversion;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -27,6 +28,7 @@ import com.azure.cosmos.implementation.changefeed.common.DefaultObserverFactory;
 import com.azure.cosmos.implementation.changefeed.common.EqualPartitionsBalancingStrategy;
 import com.azure.cosmos.implementation.changefeed.common.PartitionedByIdCollectionRequestOptionsFactory;
 import com.azure.cosmos.implementation.changefeed.common.TraceHealthMonitor;
+import com.azure.cosmos.ChangeFeedProcessorContext;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
@@ -45,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
@@ -57,7 +60,6 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
     private static final int DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE = 100;
     private final static int DEFAULT_DEGREE_OF_PARALLELISM = 25; // default
 
-
     private final String hostName;
     private final ChangeFeedContextClient feedContextClient;
     private final ChangeFeedContextClient leaseContextClient;
@@ -67,12 +69,13 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
     private final Scheduler scheduler;
 
     private volatile String databaseResourceId;
+    private volatile String databaseId;
     private volatile String collectionResourceId;
+    private volatile String collectionId;
     private PartitionLoadBalancingStrategy loadBalancingStrategy;
     private LeaseStoreManager leaseStoreManager;
     private HealthMonitor healthMonitor;
     private volatile PartitionManager partitionManager;
-
 
     public ChangeFeedProcessorImplBase(
             String hostName,
@@ -101,6 +104,33 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
         this.leaseContextClient.setScheduler(this.scheduler);
         this.changeFeedMode = changeFeedMode;
         this.observerFactory = new DefaultObserverFactory<>(consumer);
+    }
+
+    public ChangeFeedProcessorImplBase(String hostName,
+                                       CosmosAsyncContainer feedContainer,
+                                       CosmosAsyncContainer leaseContainer,
+                                       ChangeFeedProcessorOptions changeFeedProcessorOptions,
+                                       BiConsumer<List<T>, ChangeFeedProcessorContext> biConsumer,
+                                       ChangeFeedMode changeFeedMode) {
+        checkNotNull(hostName, "Argument 'hostName' can not be null");
+        checkNotNull(feedContainer, "Argument 'feedContainer' can not be null");
+        checkNotNull(biConsumer, "Argument 'biConsumer' can not be null");
+
+        if (changeFeedProcessorOptions == null) {
+            changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
+        }
+        this.validateChangeFeedProcessorOptions(changeFeedProcessorOptions);
+        this.validateLeaseContainer(leaseContainer);
+
+        this.hostName = hostName;
+        this.changeFeedProcessorOptions = changeFeedProcessorOptions;
+        this.feedContextClient = new ChangeFeedContextClientImpl(feedContainer);
+        this.leaseContextClient = new ChangeFeedContextClientImpl(leaseContainer);
+        this.scheduler = this.changeFeedProcessorOptions.getScheduler();
+        this.feedContextClient.setScheduler(this.scheduler);
+        this.leaseContextClient.setScheduler(this.scheduler);
+        this.changeFeedMode = changeFeedMode;
+        this.observerFactory = new DefaultObserverFactory<>(biConsumer);
     }
 
     abstract CosmosChangeFeedRequestOptions createRequestOptionsForProcessingFromNow(FeedRange feedRange);
@@ -201,16 +231,16 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                             CosmosChangeFeedRequestOptions options = this.createRequestOptionsForProcessingFromNow(lease.getFeedRange());
 
                             return this.feedContextClient
-                                    .createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options, ChangeFeedProcessorItem.class)
+                                    .createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options, ChangeFeedProcessorItem.class, false)
                                     .take(1)
                                     .map(feedResponse -> {
                                         ChangeFeedProcessorState changeFeedProcessorState = new ChangeFeedProcessorState()
                                                 .setHostName(lease.getOwner())
                                                 .setLeaseToken(lease.getLeaseToken());
 
-                                        int latestLsn = 0;
-                                        int estimatedLag = 0;
-                                        int currentLsn = 0;
+                                        long latestLsn;
+                                        long estimatedLag = 0;
+                                        long currentLsn;
                                         try {
                                             latestLsn = getLsnFromEncodedContinuationToken(feedResponse.getContinuationToken());
                                             changeFeedProcessorState.setContinuationToken(feedResponse.getContinuationToken());
@@ -230,7 +260,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                                             changeFeedProcessorState.setEstimatedLag(-1);
                                         }
 
-                                        changeFeedProcessorState.setEstimatedLag(estimatedLag);
+                                        changeFeedProcessorState.setEstimatedLag((int)Math.min(estimatedLag, Integer.MAX_VALUE));
                                         return changeFeedProcessorState;
                                     });
                         })
@@ -239,8 +269,8 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 );
     }
 
-    private int getLsnFromEncodedContinuationToken(String continuationToken) {
-        int lsn;
+    private long getLsnFromEncodedContinuationToken(String continuationToken) {
+        long lsn;
         ChangeFeedState changeFeedState = ChangeFeedState.fromString(continuationToken);
         String token = changeFeedState
                 .getContinuation()
@@ -248,7 +278,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 .getToken();
         //   Remove extra quotes from token.
         token = token.replace("\"", "");
-        lsn = Integer.parseInt(token);
+        lsn = Long.parseLong(token);
         return lsn;
     }
 
@@ -257,12 +287,14 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 .readDatabase(this.feedContextClient.getDatabaseClient(), null)
                 .map(databaseResourceResponse -> {
                     this.databaseResourceId = databaseResourceResponse.getProperties().getResourceId();
+                    this.databaseId = databaseResourceResponse.getProperties().getId();
                     return this.databaseResourceId;
                 })
                 .flatMap( id -> this.feedContextClient
                         .readContainer(this.feedContextClient.getContainerClient(), null)
                         .map(documentCollectionResourceResponse -> {
                             this.collectionResourceId = documentCollectionResourceResponse.getProperties().getResourceId();
+                            this.collectionId = documentCollectionResourceResponse.getProperties().getId();
                             return this;
                         }));
     }
@@ -287,6 +319,7 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                                     .requestOptionsFactory(requestOptionsFactory)
                                     .hostName(this.hostName)
                                     .build();
+
                         return Mono.just(this.leaseStoreManager);
                     });
         }
@@ -319,20 +352,73 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 this.collectionResourceId);
     }
 
+    private String getPkRangeIdVersionLeasePrefix() {
+        String optionsPrefix = this.changeFeedProcessorOptions.getLeasePrefix();
+
+        if (optionsPrefix == null) {
+            optionsPrefix = "";
+        }
+
+        URI uri = this.feedContextClient.getServiceEndpoint();
+
+        return String.format(
+            "%s%s_%s_%s",
+            optionsPrefix,
+            uri.getHost(),
+            this.databaseId,
+            this.collectionId);
+    }
+
     abstract Class<T> getPartitionProcessorItemType();
+    abstract boolean canBootstrapFromPkRangeIdVersionLeaseStore();
 
     private Mono<PartitionManager> buildPartitionManager(LeaseStoreManager leaseStoreManager) {
         CheckpointerObserverFactory<T> factory = new CheckpointerObserverFactory<>(this.observerFactory, new CheckpointFrequency());
 
         PartitionSynchronizerImpl synchronizer = new PartitionSynchronizerImpl(
                 this.feedContextClient,
-                this.feedContextClient.getContainerClient(),
+                BridgeInternal.extractContainerSelfLink(this.feedContextClient.getContainerClient()),
                 leaseStoreManager,
                 leaseStoreManager,
                 DEFAULT_DEGREE_OF_PARALLELISM,
-                DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE);
+                DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE,
+                this.changeFeedProcessorOptions,
+                this.changeFeedMode);
 
-        Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, leaseStoreManager, this.lockTime, this.sleepTime);
+        Bootstrapper bootstrapper;
+        if (this.canBootstrapFromPkRangeIdVersionLeaseStore()) {
+
+            String pkRangeIdVersionLeasePrefix = this.getPkRangeIdVersionLeasePrefix();
+            RequestOptionsFactory requestOptionsFactory = new PartitionedByIdCollectionRequestOptionsFactory();
+            LeaseStoreManager pkRangeIdVersionLeaseStoreManager =
+                com.azure.cosmos.implementation.changefeed.pkversion.LeaseStoreManagerImpl.builder()
+                    .leasePrefix(pkRangeIdVersionLeasePrefix)
+                    .leaseCollectionLink(this.leaseContextClient.getContainerClient())
+                    .leaseContextClient(this.leaseContextClient)
+                    .requestOptionsFactory(requestOptionsFactory)
+                    .hostName(this.hostName)
+                    .build();
+
+            bootstrapper = new PkRangeIdVersionLeaseStoreBootstrapperImpl(
+                synchronizer,
+                leaseStoreManager,
+                this.lockTime,
+                this.sleepTime,
+                pkRangeIdVersionLeaseStoreManager,
+                leaseStoreManager,
+                this.changeFeedMode);
+        } else {
+            bootstrapper = new BootstrapperImpl(
+                synchronizer,
+                leaseStoreManager,
+                this.lockTime,
+                this.sleepTime,
+                leaseStoreManager,
+                this.changeFeedMode);
+        }
+
+        FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager = this.getFeedRangeThroughputControlConfigManager();
+
         PartitionSupervisorFactory partitionSupervisorFactory = new PartitionSupervisorFactoryImpl<>(
                 factory,
                 leaseStoreManager,
@@ -342,7 +428,8 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                         leaseStoreManager,
                         this.feedContextClient.getContainerClient(),
                         this.collectionResourceId,
-                        this.changeFeedMode),
+                        this.changeFeedMode,
+                        feedRangeThroughputControlConfigManager),
                 this.changeFeedProcessorOptions,
                 this.scheduler,
                 this.getPartitionProcessorItemType()
@@ -369,12 +456,23 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 leaseStoreManager,
                 this.loadBalancingStrategy,
                 this.changeFeedProcessorOptions.getLeaseAcquireInterval(),
-                this.scheduler
+                this.scheduler,
+                feedRangeThroughputControlConfigManager
         );
 
         PartitionManager partitionManager = new PartitionManagerImpl(bootstrapper, partitionController, partitionLoadBalancer);
 
         return Mono.just(partitionManager);
+    }
+
+    private FeedRangeThroughputControlConfigManager getFeedRangeThroughputControlConfigManager() {
+        if (this.changeFeedProcessorOptions != null && this.changeFeedProcessorOptions.getFeedPollThroughputControlGroupConfig() != null) {
+            return new FeedRangeThroughputControlConfigManager(
+                this.changeFeedProcessorOptions.getFeedPollThroughputControlGroupConfig(),
+                this.feedContextClient);
+        }
+
+        return null;
     }
 
     @Override

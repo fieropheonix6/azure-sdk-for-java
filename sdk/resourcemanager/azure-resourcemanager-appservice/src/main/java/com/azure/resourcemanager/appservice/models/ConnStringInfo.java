@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Database connection string information. */
+/**
+ * Database connection string information.
+ */
 @Fluent
-public final class ConnStringInfo {
+public final class ConnStringInfo implements JsonSerializable<ConnStringInfo> {
     /*
      * Name of connection string.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Connection string value.
      */
-    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /*
      * Type of database.
      */
-    @JsonProperty(value = "type")
     private ConnectionStringType type;
 
     /**
+     * Creates an instance of ConnStringInfo class.
+     */
+    public ConnStringInfo() {
+    }
+
+    /**
      * Get the name property: Name of connection string.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +48,7 @@ public final class ConnStringInfo {
 
     /**
      * Set the name property: Name of connection string.
-     *
+     * 
      * @param name the name value to set.
      * @return the ConnStringInfo object itself.
      */
@@ -50,7 +59,7 @@ public final class ConnStringInfo {
 
     /**
      * Get the connectionString property: Connection string value.
-     *
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -59,7 +68,7 @@ public final class ConnStringInfo {
 
     /**
      * Set the connectionString property: Connection string value.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the ConnStringInfo object itself.
      */
@@ -70,7 +79,7 @@ public final class ConnStringInfo {
 
     /**
      * Get the type property: Type of database.
-     *
+     * 
      * @return the type value.
      */
     public ConnectionStringType type() {
@@ -79,7 +88,7 @@ public final class ConnStringInfo {
 
     /**
      * Set the type property: Type of database.
-     *
+     * 
      * @param type the type value to set.
      * @return the ConnStringInfo object itself.
      */
@@ -90,9 +99,51 @@ public final class ConnStringInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("connectionString", this.connectionString);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnStringInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnStringInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnStringInfo.
+     */
+    public static ConnStringInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnStringInfo deserializedConnStringInfo = new ConnStringInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedConnStringInfo.name = reader.getString();
+                } else if ("connectionString".equals(fieldName)) {
+                    deserializedConnStringInfo.connectionString = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedConnStringInfo.type = ConnectionStringType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnStringInfo;
+        });
     }
 }

@@ -5,37 +5,54 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TopicTypeSourceScope. */
+/**
+ * Defines values for TopicTypeSourceScope.
+ */
 public final class TopicTypeSourceScope extends ExpandableStringEnum<TopicTypeSourceScope> {
-    /** Static value Resource for TopicTypeSourceScope. */
+    /**
+     * Static value Resource for TopicTypeSourceScope.
+     */
     public static final TopicTypeSourceScope RESOURCE = fromString("Resource");
 
-    /** Static value ResourceGroup for TopicTypeSourceScope. */
+    /**
+     * Static value ResourceGroup for TopicTypeSourceScope.
+     */
     public static final TopicTypeSourceScope RESOURCE_GROUP = fromString("ResourceGroup");
 
-    /** Static value AzureSubscription for TopicTypeSourceScope. */
+    /**
+     * Static value AzureSubscription for TopicTypeSourceScope.
+     */
     public static final TopicTypeSourceScope AZURE_SUBSCRIPTION = fromString("AzureSubscription");
 
-    /** Static value ManagementGroup for TopicTypeSourceScope. */
+    /**
+     * Static value ManagementGroup for TopicTypeSourceScope.
+     */
     public static final TopicTypeSourceScope MANAGEMENT_GROUP = fromString("ManagementGroup");
 
     /**
+     * Creates a new instance of TopicTypeSourceScope value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TopicTypeSourceScope() {
+    }
+
+    /**
      * Creates or finds a TopicTypeSourceScope from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TopicTypeSourceScope.
      */
-    @JsonCreator
     public static TopicTypeSourceScope fromString(String name) {
         return fromString(name, TopicTypeSourceScope.class);
     }
 
     /**
      * Gets known TopicTypeSourceScope values.
-     *
+     * 
      * @return known TopicTypeSourceScope values.
      */
     public static Collection<TopicTypeSourceScope> values() {

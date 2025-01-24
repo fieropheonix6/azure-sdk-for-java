@@ -6,17 +6,18 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
+import com.azure.resourcemanager.elasticsan.models.AutoScalePolicyEnforcement;
+import com.azure.resourcemanager.elasticsan.models.AutoScaleProperties;
 import com.azure.resourcemanager.elasticsan.models.ElasticSan;
+import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
+import com.azure.resourcemanager.elasticsan.models.ScaleUpProperties;
 import com.azure.resourcemanager.elasticsan.models.Sku;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
 import com.azure.resourcemanager.elasticsan.models.SkuTier;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -24,69 +25,58 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ElasticSansCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"mnzgmwznmabi\",\"nsorgjhxbldt\",\"wwrlkdmtncv\",\"kotl\"],\"provisioningState\":\"Succeeded\",\"baseSizeTiB\":4662524940731727545,\"extendedCapacitySizeTiB\":8614672168967170032,\"totalVolumeSizeGiB\":4987957604610375925,\"volumeGroupCount\":4877471072225031792,\"totalIops\":3528662492556478567,\"totalMBps\":7818158463712312814,\"totalSizeTiB\":8180810548190524314,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"cikhnv\",\"amqgxqquezikyw\",\"gxk\",\"lla\"]},\"id\":\"elwuipi\",\"name\":\"cjzkzivgvvcna\",\"type\":\"rhyrnxxmueed\"},{\"properties\":{\"provisioningState\":\"Creating\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"tkwqqtchealm\",\"mtdaa\",\"gdv\"]},\"id\":\"gpiohgwxrtfudxe\",\"name\":\"xg\",\"type\":\"qagvrvm\"},{\"properties\":{\"provisioningState\":\"Invalid\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"himdbl\",\"gwimfn\"]},\"id\":\"fjxwmsz\",\"name\":\"kfoqreyfkzikfj\",\"type\":\"wneaiv\"}],\"publicNetworkAccess\":\"Disabled\",\"autoScaleProperties\":{\"scaleUpProperties\":{\"unusedSizeTiB\":4458311958924430551,\"increaseCapacityUnitByTiB\":1107964176928344291,\"capacityUnitScaleUpLimitTiB\":3578444818865680080,\"autoScalePolicyEnforcement\":\"None\"}}},\"location\":\"nwabfatkldd\",\"tags\":{\"youlp\":\"hwuaanozjosp\",\"xitc\":\"rvxaglrvimjwosy\",\"ekkezzikhlyfjh\":\"kfcktqum\"},\"id\":\"gqggebdunygae\",\"name\":\"idb\",\"type\":\"fatpxllrxcyjmoa\"}";
 
-        String responseStr =
-            "{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"nuqqkpikadrgvt\",\"agnb\",\"ynhijggme\"],\"provisioningState\":\"Succeeded\",\"baseSizeTiB\":3996731828739891249,\"extendedCapacitySizeTiB\":2578720957092092730,\"totalVolumeSizeGiB\":3371222467349281870,\"volumeGroupCount\":7973446433897202047,\"totalIops\":4751429642100442648,\"totalMBps\":7222768982101103933,\"totalSizeTiB\":4980695192319165499},\"location\":\"mpxttdbhrbnlankx\",\"tags\":{\"bhenbtkcxywnyt\":\"k\",\"qidybyx\":\"rsyn\",\"aaxdbabphlwrq\":\"zfcl\",\"hsucoc\":\"fkts\"},\"id\":\"nyyazttbtwwrqpue\",\"name\":\"ckzywbiexzfeyue\",\"type\":\"xibxujwbhqwalm\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ElasticSanManager manager = ElasticSanManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ElasticSan response = manager.elasticSans()
+            .define("qyib")
+            .withRegion("ubjibww")
+            .withExistingResourceGroup("m")
+            .withSku(new Sku().withName(SkuName.PREMIUM_LRS).withTier(SkuTier.PREMIUM))
+            .withBaseSizeTiB(6217672492639104016L)
+            .withExtendedCapacitySizeTiB(4808196089345937384L)
+            .withTags(
+                mapOf("kn", "ohqkvpuvksgpls", "synljphuopxodl", "n", "sjswsrms", "iyntorzihle", "ox", "yzrpzbchckqqzq"))
+            .withAvailabilityZones(Arrays.asList("szdtmhrkwof", "yvoqa", "piexpbtgiw"))
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+            .withAutoScaleProperties(new AutoScaleProperties()
+                .withScaleUpProperties(new ScaleUpProperties().withUnusedSizeTiB(8598185540275371348L)
+                    .withIncreaseCapacityUnitByTiB(1710903714386145180L)
+                    .withCapacityUnitScaleUpLimitTiB(9086145037828754941L)
+                    .withAutoScalePolicyEnforcement(AutoScalePolicyEnforcement.DISABLED)))
+            .create();
 
-        ElasticSanManager manager =
-            ElasticSanManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ElasticSan response =
-            manager
-                .elasticSans()
-                .define("ctq")
-                .withRegion("uujqgidokgjljyo")
-                .withExistingResourceGroup("fcivfsnkym")
-                .withSku(new Sku().withName(SkuName.PREMIUM_LRS).withTier(SkuTier.PREMIUM))
-                .withBaseSizeTiB(3045302180420879642L)
-                .withExtendedCapacitySizeTiB(2013084954384756967L)
-                .withTags(mapOf("hbijhtxfvgxb", "cltbgsncghkjesz", "eh", "smx", "qkkrb", "pvecxgodeb"))
-                .withAvailabilityZones(Arrays.asList("rjcxerfuwu", "ttxfvjr"))
-                .create();
-
-        Assertions.assertEquals("mpxttdbhrbnlankx", response.location());
-        Assertions.assertEquals("k", response.tags().get("bhenbtkcxywnyt"));
+        Assertions.assertEquals("nwabfatkldd", response.location());
+        Assertions.assertEquals("hwuaanozjosp", response.tags().get("youlp"));
         Assertions.assertEquals(SkuName.PREMIUM_LRS, response.sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, response.sku().tier());
-        Assertions.assertEquals("nuqqkpikadrgvt", response.availabilityZones().get(0));
-        Assertions.assertEquals(3996731828739891249L, response.baseSizeTiB());
-        Assertions.assertEquals(2578720957092092730L, response.extendedCapacitySizeTiB());
+        Assertions.assertEquals("mnzgmwznmabi", response.availabilityZones().get(0));
+        Assertions.assertEquals(4662524940731727545L, response.baseSizeTiB());
+        Assertions.assertEquals(8614672168967170032L, response.extendedCapacitySizeTiB());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.publicNetworkAccess());
+        Assertions.assertEquals(4458311958924430551L,
+            response.autoScaleProperties().scaleUpProperties().unusedSizeTiB());
+        Assertions.assertEquals(1107964176928344291L,
+            response.autoScaleProperties().scaleUpProperties().increaseCapacityUnitByTiB());
+        Assertions.assertEquals(3578444818865680080L,
+            response.autoScaleProperties().scaleUpProperties().capacityUnitScaleUpLimitTiB());
+        Assertions.assertEquals(AutoScalePolicyEnforcement.NONE,
+            response.autoScaleProperties().scaleUpProperties().autoScalePolicyEnforcement());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

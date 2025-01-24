@@ -3,20 +3,28 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.implementation.ImplUtils;
+import com.azure.core.implementation.http.AuthenticateChallengeParser;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.nio.charset.IllegalCharsetNameException;
-import java.nio.charset.StandardCharsets;
-import java.nio.charset.UnsupportedCharsetException;
+import java.time.DateTimeException;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalQueries;
+import java.time.temporal.TemporalQuery;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -25,6 +33,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.UUID;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -37,16 +53,11 @@ import java.util.stream.Collectors;
 public final class CoreUtils {
     // CoreUtils is a commonly used utility, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
-    private static final String COMMA = ",";
-    private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
-    private static final Charset UTF_32LE = Charset.forName("UTF-32LE");
-    private static final byte ZERO = (byte) 0x00;
-    private static final byte BB = (byte) 0xBB;
-    private static final byte BF = (byte) 0xBF;
-    private static final byte EF = (byte) 0xEF;
-    private static final byte FE = (byte) 0xFE;
-    private static final byte FF = (byte) 0xFF;
-    private static final Pattern CHARSET_PATTERN = Pattern.compile("charset=([\\S]+)\\b", Pattern.CASE_INSENSITIVE);
+
+    private static final char[] LOWERCASE_HEX_CHARACTERS = "0123456789abcdef".toCharArray();
+
+    // Used to check if the ISO8601 date time doesn't have a colon in the offset.
+    private static final Pattern ISO8601_COLONLESS_OFFSET = Pattern.compile("([+-][0-9]{2})([0-9]{2})(?=\\[|$)");
 
     private CoreUtils() {
         // Exists only to defeat instantiation.
@@ -150,7 +161,7 @@ public final class CoreUtils {
             return null;
         }
 
-        return Arrays.stream(array).map(mapper).collect(Collectors.joining(COMMA));
+        return Arrays.stream(array).map(mapper).collect(Collectors.joining(","));
     }
 
     /**
@@ -195,7 +206,6 @@ public final class CoreUtils {
         return Flux.fromIterable(page.getElements()).concatWith(content.apply(nextPageLink, context));
     }
 
-
     /**
      * Helper method that returns an immutable {@link Map} of properties defined in {@code propertiesFileName}.
      *
@@ -203,18 +213,18 @@ public final class CoreUtils {
      * @return an immutable {@link Map}.
      */
     public static Map<String, String> getProperties(String propertiesFileName) {
-        try (InputStream inputStream = CoreUtils.class.getClassLoader()
-            .getResourceAsStream(propertiesFileName)) {
+        try (InputStream inputStream = CoreUtils.class.getClassLoader().getResourceAsStream(propertiesFileName)) {
             if (inputStream != null) {
                 Properties properties = new Properties();
                 properties.load(inputStream);
-                return Collections.unmodifiableMap(properties.entrySet().stream()
-                    .collect(Collectors.toMap(entry -> (String) entry.getKey(),
-                        entry -> (String) entry.getValue())));
+                return Collections.unmodifiableMap(properties.entrySet()
+                    .stream()
+                    .collect(Collectors.toMap(entry -> (String) entry.getKey(), entry -> (String) entry.getValue())));
             }
         } catch (IOException ex) {
-            LOGGER.warning("Failed to get properties from " + propertiesFileName, ex);
+            LOGGER.log(LogLevel.WARNING, () -> "Failed to get properties from " + propertiesFileName, ex);
         }
+
         return Collections.emptyMap();
     }
 
@@ -237,36 +247,7 @@ public final class CoreUtils {
             return null;
         }
 
-        if (bytes.length >= 3 && bytes[0] == EF && bytes[1] == BB && bytes[2] == BF) {
-            return new String(bytes, 3, bytes.length - 3, StandardCharsets.UTF_8);
-        } else if (bytes.length >= 4 && bytes[0] == ZERO && bytes[1] == ZERO && bytes[2] == FE && bytes[3] == FF) {
-            return new String(bytes, 4, bytes.length - 4, UTF_32BE);
-        } else if (bytes.length >= 4 && bytes[0] == FF && bytes[1] == FE && bytes[2] == ZERO && bytes[3] == ZERO) {
-            return new String(bytes, 4, bytes.length - 4, UTF_32LE);
-        } else if (bytes.length >= 2 && bytes[0] == FE && bytes[1] == FF) {
-            return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16BE);
-        } else if (bytes.length >= 2 && bytes[0] == FF && bytes[1] == FE) {
-            return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16LE);
-        } else {
-            /*
-             * Attempt to retrieve the default charset from the 'Content-Encoding' header, if the value isn't
-             * present or invalid fallback to 'UTF-8' for the default charset.
-             */
-            if (!isNullOrEmpty(contentType)) {
-                try {
-                    Matcher charsetMatcher = CHARSET_PATTERN.matcher(contentType);
-                    if (charsetMatcher.find()) {
-                        return new String(bytes, Charset.forName(charsetMatcher.group(1)));
-                    } else {
-                        return new String(bytes, StandardCharsets.UTF_8);
-                    }
-                } catch (IllegalCharsetNameException | UnsupportedCharsetException ex) {
-                    return new String(bytes, StandardCharsets.UTF_8);
-                }
-            } else {
-                return new String(bytes, StandardCharsets.UTF_8);
-            }
-        }
+        return ImplUtils.bomAwareToString(bytes, 0, bytes.length, contentType);
     }
 
     /**
@@ -302,6 +283,7 @@ public final class CoreUtils {
      * @return {@link HttpHeaders} containing the {@link Header} values from {@link ClientOptions#getHeaders()} if
      * {@code clientOptions} isn't null and contains {@link Header} values, otherwise null.
      */
+    @SuppressWarnings("deprecation")
     public static HttpHeaders createHttpHeadersFromClientOptions(ClientOptions clientOptions) {
         if (clientOptions == null) {
             return null;
@@ -349,13 +331,13 @@ public final class CoreUtils {
             if (timeoutMillis < 0) {
                 logger.atVerbose()
                     .addKeyValue(timeoutPropertyName, timeoutMillis)
-                    .log("Negative timeout values are not allowed. Using 'Duration.ZERO' to indicate no timeout..");
+                    .log("Negative timeout values are not allowed. Using 'Duration.ZERO' to indicate no timeout.");
                 return Duration.ZERO;
             }
 
             return Duration.ofMillis(timeoutMillis);
         } catch (NumberFormatException ex) {
-            logger.atWarning()
+            logger.atInfo()
                 .addKeyValue(timeoutPropertyName, environmentTimeout)
                 .addKeyValue("defaultTimeout", defaultTimeout)
                 .log("Timeout is not valid number. Using default value.", ex);
@@ -376,6 +358,17 @@ public final class CoreUtils {
         Objects.requireNonNull(into, "'into' cannot be null.");
         Objects.requireNonNull(from, "'from' cannot be null.");
 
+        // If the 'into' Context is the NONE Context just return the 'from' Context.
+        // This is safe as Context is immutable and prevents needing to create any new Contexts and temporary arrays.
+        if (into == Context.NONE) {
+            return from;
+        }
+
+        // Same goes the other way, where if the 'from' Context is the NONE Context just return the 'into' Context.
+        if (from == Context.NONE) {
+            return into;
+        }
+
         Context[] contextChain = from.getContextChain();
 
         Context returnContext = into;
@@ -389,8 +382,8 @@ public final class CoreUtils {
     }
 
     /**
-     * Optimized version of {@link String#join(CharSequence, Iterable)} when the {@code values} has a small
-     * set of object.
+     * Optimized version of {@link String#join(CharSequence, Iterable)} when the {@code values} has a small set of
+     * object.
      *
      * @param delimiter Delimiter between the values.
      * @param values The values to join.
@@ -403,28 +396,438 @@ public final class CoreUtils {
 
         int count = values.size();
         switch (count) {
-            case 0: return "";
-            case 1: return values.get(0);
-            case 2: return values.get(0) + delimiter + values.get(1);
-            case 3: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2);
-            case 4: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3);
-            case 5: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3) + delimiter + values.get(4);
-            case 6: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5);
-            case 7: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6);
-            case 8: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
-                + delimiter + values.get(7);
-            case 9: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
-                + delimiter + values.get(7) + delimiter + values.get(8);
-            case 10: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
-                + delimiter + values.get(7) + delimiter + values.get(8) + delimiter + values.get(9);
-            default: return String.join(delimiter, values);
+            case 0:
+                return "";
+
+            case 1:
+                return values.get(0);
+
+            case 2:
+                return values.get(0) + delimiter + values.get(1);
+
+            case 3:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2);
+
+            case 4:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
+                    + values.get(3);
+
+            case 5:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4);
+
+            case 6:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5);
+
+            case 7:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6);
+
+            case 8:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6) + delimiter
+                    + values.get(7);
+
+            case 9:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6) + delimiter
+                    + values.get(7) + delimiter + values.get(8);
+
+            case 10:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6) + delimiter
+                    + values.get(7) + delimiter + values.get(8) + delimiter + values.get(9);
+
+            default:
+                return String.join(delimiter, values);
         }
+    }
+
+    /**
+     * Converts a byte array into a hex string.
+     *
+     * <p>The hex string returned uses characters {@code 0123456789abcdef}, if uppercase {@code ABCDEF} is required the
+     * returned string will need to be {@link String#toUpperCase() uppercased}.</p>
+     *
+     * <p>If {@code bytes} is null, null will be returned. If {@code bytes} was an empty array an empty string is
+     * returned.</p>
+     *
+     * @param bytes The byte array to convert into a hex string.
+     * @return A hex string representing the {@code bytes} that were passed, or null if {@code bytes} were null.
+     */
+    public static String bytesToHexString(byte[] bytes) {
+        if (bytes == null) {
+            return null;
+        }
+
+        if (bytes.length == 0) {
+            return "";
+        }
+
+        // Hex uses 4 bits, converting a byte to hex will double its size.
+        char[] hexString = new char[bytes.length * 2];
+
+        for (int i = 0; i < bytes.length; i++) {
+            // Convert the byte into an integer, masking all but the last 8 bits (the byte).
+            int b = bytes[i] & 0xFF;
+
+            // Shift 4 times to the right to get the leading 4 bits and get the corresponding hex character.
+            hexString[i * 2] = LOWERCASE_HEX_CHARACTERS[b >>> 4];
+
+            // Mask all but the last 4 bits and get the corresponding hex character.
+            hexString[i * 2 + 1] = LOWERCASE_HEX_CHARACTERS[b & 0x0F];
+        }
+
+        return new String(hexString);
+    }
+
+    /**
+     * Extracts the size from a {@code Content-Range} header.
+     * <p>
+     * The {@code Content-Range} header can take the following forms:
+     *
+     * <ul>
+     * <li>{@code <unit> <start>-<end>/<size>}</li>
+     * <li>{@code <unit> <start>-<end>/}&#42;</li>
+     * <li>{@code <unit> }&#42;{@code /<size>}</li>
+     * </ul>
+     *
+     * If the {@code <size>} is represented by &#42; this method will return -1.
+     * <p>
+     * If {@code contentRange} is null a {@link NullPointerException} will be thrown, if it doesn't contain a size
+     * segment ({@code /<size>} or /&#42;) an {@link IllegalArgumentException} will be thrown.
+     *
+     * @param contentRange The {@code Content-Range} header to extract the size from.
+     * @return The size contained in the {@code Content-Range}, or -1 if the size was &#42;.
+     * @throws NullPointerException If {@code contentRange} is null.
+     * @throws IllegalArgumentException If {@code contentRange} doesn't contain a {@code <size>} segment.
+     * @throws NumberFormatException If the {@code <size>} segment of the {@code contentRange} isn't a valid number.
+     */
+    public static long extractSizeFromContentRange(String contentRange) {
+        Objects.requireNonNull(contentRange, "Cannot extract length from null 'contentRange'.");
+        int index = contentRange.indexOf('/');
+
+        if (index == -1) {
+            // No size segment.
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The Content-Range header wasn't properly "
+                + "formatted and didn't contain a '/size' segment. The 'contentRange' was: " + contentRange));
+        }
+
+        String sizeString = contentRange.substring(index + 1).trim();
+        if ("*".equals(sizeString)) {
+            // Size unknown to the Content-Range header.
+            return -1;
+        }
+
+        return Long.parseLong(sizeString);
+    }
+
+    /**
+     * Utility method for parsing query parameters one-by-one without the use of string splitting.
+     * <p>
+     * This method provides an optimization over parsing query parameters with {@link String#split(String)} or a
+     * {@link java.util.regex.Pattern} as it doesn't allocate any arrays to maintain values, instead it parses the query
+     * parameters linearly.
+     * <p>
+     * Query parameter parsing works the following way, {@code key=value} will turn into an immutable {@link Map.Entry}
+     * where the {@link Map.Entry#getKey()} is {@code key} and the {@link Map.Entry#getValue()} is {@code value}. For
+     * query parameters without a value, {@code key=} or just {@code key}, the value will be an empty string.
+     *
+     * @param queryParameters The query parameter string.
+     * @return An {@link Iterator} over the query parameter key-value pairs.
+     */
+    public static Iterator<Map.Entry<String, String>> parseQueryParameters(String queryParameters) {
+        return (CoreUtils.isNullOrEmpty(queryParameters))
+            ? Collections.emptyIterator()
+            : new ImplUtils.QueryParameterIterator(queryParameters);
+    }
+
+    /**
+     * Creates a type 4 (pseudo randomly generated) UUID.
+     * <p>
+     * The {@link UUID} is generated using a non-cryptographically strong pseudo random number generator.
+     *
+     * @return A randomly generated {@link UUID}.
+     */
+    public static UUID randomUuid() {
+        return randomUuid(ThreadLocalRandom.current().nextLong(), ThreadLocalRandom.current().nextLong());
+    }
+
+    static UUID randomUuid(long msb, long lsb) {
+        msb &= 0xffffffffffff0fffL; // Clear the UUID version.
+        msb |= 0x0000000000004000L; // Set the UUID version to 4.
+        lsb &= 0x3fffffffffffffffL; // Clear the variant.
+        lsb |= 0x8000000000000000L; // Set the variant to IETF.
+
+        // Use new UUID(long, long) instead of UUID.randomUUID as UUID.randomUUID may be blocking.
+        // For environments using Reactor's BlockHound this will raise an exception if called in non-blocking threads.
+        return new UUID(msb, lsb);
+    }
+
+    /**
+     * Calls {@link Future#get(long, TimeUnit)} and returns the value if the {@code future} completes before the timeout
+     * is triggered. If the timeout is triggered, the {@code future} is {@link Future#cancel(boolean) cancelled}
+     * interrupting the execution of the task that the {@link Future} represented.
+     * <p>
+     * If the timeout is {@link Duration#isZero()} or is {@link Duration#isNegative()} then the timeout will be ignored
+     * and an infinite timeout will be used.
+     *
+     * @param <T> The type of value returned by the {@code future}.
+     * @param future The {@link Future} to get the value from.
+     * @param timeout The timeout value. If the timeout is {@link Duration#isZero()} or is {@link Duration#isNegative()}
+     * then the timeout will be ignored and an infinite timeout will be used.
+     * @return The value from the {@code future}.
+     * @throws NullPointerException If {@code future} is null.
+     * @throws CancellationException If the computation was cancelled.
+     * @throws ExecutionException If the computation threw an exception.
+     * @throws InterruptedException If the current thread was interrupted while waiting.
+     * @throws TimeoutException If the wait timed out.
+     * @throws RuntimeException If the {@code future} threw an exception during processing.
+     * @throws Error If the {@code future} threw an {@link Error} during processing.
+     */
+    public static <T> T getResultWithTimeout(Future<T> future, Duration timeout)
+        throws InterruptedException, ExecutionException, TimeoutException {
+        Objects.requireNonNull(future, "'future' cannot be null.");
+
+        if (timeout == null) {
+            return future.get();
+        }
+
+        return ImplUtils.getResultWithTimeout(future, timeout.toMillis());
+    }
+
+    /**
+     * Helper method that safely adds a {@link Runtime#addShutdownHook(Thread)} to the JVM that will close the
+     * {@code executorService} when the JVM is shutting down.
+     * <p>
+     * {@link Runtime#addShutdownHook(Thread)} checks for security privileges and will throw an exception if the proper
+     * security isn't available. So, if running with a security manager, setting
+     * {@code AZURE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE} to true will have this method use access controller to add
+     * the shutdown hook with privileged permissions.
+     * <p>
+     * If {@code executorService} is null, no shutdown hook will be added and this method will return null.
+     * <p>
+     * The {@code shutdownTimeout} is the amount of time to wait for the {@code executorService} to shutdown. If the
+     * {@code executorService} doesn't shutdown within half the timeout, it will be forcefully shutdown.
+     *
+     * @param executorService The {@link ExecutorService} to shutdown when the JVM is shutting down.
+     * @param shutdownTimeout The amount of time to wait for the {@code executorService} to shutdown.
+     * @return The {@code executorService} that was passed in.
+     * @throws NullPointerException If {@code shutdownTimeout} is null.
+     * @throws IllegalArgumentException If {@code shutdownTimeout} is zero or negative.
+     */
+    public static ExecutorService addShutdownHookSafely(ExecutorService executorService, Duration shutdownTimeout) {
+        if (executorService == null) {
+            return null;
+        }
+        Objects.requireNonNull(shutdownTimeout, "'shutdownTimeout' cannot be null.");
+        if (shutdownTimeout.isZero() || shutdownTimeout.isNegative()) {
+            throw new IllegalArgumentException("'shutdownTimeout' must be a non-zero positive duration.");
+        }
+
+        CoreUtils.addShutdownHookSafely(createExecutorServiceShutdownThread(executorService, shutdownTimeout));
+
+        return executorService;
+    }
+
+    static Thread createExecutorServiceShutdownThread(ExecutorService executorService, Duration shutdownTimeout) {
+        long timeoutNanos = shutdownTimeout.toNanos();
+        return new Thread(() -> {
+            try {
+                executorService.shutdown();
+                if (!executorService.awaitTermination(timeoutNanos / 2, TimeUnit.NANOSECONDS)) {
+                    executorService.shutdownNow();
+                    executorService.awaitTermination(timeoutNanos / 2, TimeUnit.NANOSECONDS);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                executorService.shutdown();
+            }
+        });
+    }
+
+    /**
+     * Helper method that safely adds a {@link Runtime#addShutdownHook(Thread)} to the JVM that will run when the JVM is
+     * shutting down.
+     * <p>
+     * {@link Runtime#addShutdownHook(Thread)} checks for security privileges and will throw an exception if the proper
+     * security isn't available. So, if running with a security manager, setting
+     * {@code AZURE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE} to true will have this method use access controller to add
+     * the shutdown hook with privileged permissions.
+     * <p>
+     * If {@code shutdownThread} is null, no shutdown hook will be added and this method will return null.
+     *
+     * @param shutdownThread The {@link Thread} that will be added as a
+     * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
+     * @return The {@link Thread} that was passed in.
+     */
+    public static Thread addShutdownHookSafely(Thread shutdownThread) {
+        return ImplUtils.addShutdownHookSafely(shutdownThread);
+    }
+
+    /**
+     * Converts a {@link Duration} to a string in ISO-8601 format with support for a day component.
+     * <p>
+     * {@link Duration#toString()} doesn't use a day component, so if the duration is greater than 24 hours it would
+     * return an ISO-8601 duration string like {@code PT48H}. This method returns an ISO-8601 duration string with a day
+     * component if the duration is greater than 24 hours, such as {@code P2D} instead of {@code PT48H}.
+     *
+     * @param duration The {@link Duration} to convert.
+     * @return The {@link Duration} as a string in ISO-8601 format with support for a day component, or null if the
+     * provided {@link Duration} was null.
+     */
+    public static String durationToStringWithDays(Duration duration) {
+        if (duration == null) {
+            return null;
+        }
+
+        if (duration.isZero()) {
+            return "PT0S";
+        }
+
+        StringBuilder builder = new StringBuilder();
+
+        if (duration.isNegative()) {
+            builder.append("-P");
+            duration = duration.negated();
+        } else {
+            builder.append('P');
+        }
+
+        long days = duration.toDays();
+        if (days > 0) {
+            builder.append(days);
+            builder.append('D');
+            duration = duration.minusDays(days);
+        }
+
+        long hours = duration.toHours();
+        if (hours > 0) {
+            builder.append('T');
+            builder.append(hours);
+            builder.append('H');
+            duration = duration.minusHours(hours);
+        }
+
+        final long minutes = duration.toMinutes();
+        if (minutes > 0) {
+            if (hours == 0) {
+                builder.append('T');
+            }
+
+            builder.append(minutes);
+            builder.append('M');
+            duration = duration.minusMinutes(minutes);
+        }
+
+        final long seconds = duration.getSeconds();
+        if (seconds > 0) {
+            if (hours == 0 && minutes == 0) {
+                builder.append('T');
+            }
+
+            builder.append(seconds);
+            duration = duration.minusSeconds(seconds);
+        }
+
+        long milliseconds = duration.toMillis();
+        if (milliseconds > 0) {
+            if (hours == 0 && minutes == 0 && seconds == 0) {
+                builder.append("T");
+            }
+
+            if (seconds == 0) {
+                builder.append("0");
+            }
+
+            builder.append('.');
+
+            if (milliseconds <= 99) {
+                builder.append('0');
+
+                if (milliseconds <= 9) {
+                    builder.append('0');
+                }
+            }
+
+            // Remove trailing zeros.
+            while (milliseconds % 10 == 0) {
+                milliseconds /= 10;
+            }
+            builder.append(milliseconds);
+        }
+
+        if (seconds > 0 || milliseconds > 0) {
+            builder.append('S');
+        }
+
+        return builder.toString();
+    }
+
+    /**
+     * Parses a string into an {@link OffsetDateTime}.
+     * <p>
+     * If {@code dateString} is null, null will be returned.
+     * <p>
+     * This method attempts to parse the {@code dateString} using
+     * {@link DateTimeFormatter#parseBest(CharSequence, TemporalQuery[])}. This will use
+     * {@link OffsetDateTime#from(TemporalAccessor)} as the first attempt and will fall back to
+     * {@link LocalDateTime#from(TemporalAccessor)} with setting the offset as {@link ZoneOffset#UTC}.
+     *
+     * @param dateString The string to parse into an {@link OffsetDateTime}.
+     * @return The parsed {@link OffsetDateTime}, or null if {@code dateString} was null.
+     * @throws DateTimeException If the {@code dateString} cannot be parsed by either
+     * {@link OffsetDateTime#from(TemporalAccessor)} or {@link LocalDateTime#from(TemporalAccessor)}.
+     */
+    public static OffsetDateTime parseBestOffsetDateTime(String dateString) {
+        if (dateString == null) {
+            return null;
+        }
+
+        Matcher matcher = ISO8601_COLONLESS_OFFSET.matcher(dateString);
+        if (matcher.find()) {
+            dateString = dateString.substring(0, matcher.start()) + matcher.group(1) + ":" + matcher.group(2)
+                + dateString.substring(matcher.start() + 5);
+        }
+
+        TemporalAccessor temporal
+            = DateTimeFormatter.ISO_DATE_TIME.parseBest(dateString, OffsetDateTime::from, LocalDateTime::from);
+
+        if (temporal.query(TemporalQueries.offset()) == null) {
+            return LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC);
+        } else {
+            return OffsetDateTime.from(temporal);
+        }
+    }
+
+    /**
+     * Processes an authenticate header, such as {@link HttpHeaderName#WWW_AUTHENTICATE} or
+     * {@link HttpHeaderName#PROXY_AUTHENTICATE}, into a list of {@link AuthenticateChallenge}.
+     * <p>
+     * If the {@code authenticateHeader} is null or empty an empty list will be returned.
+     * <p>
+     * This method will parse the authenticate header as plainly as possible, meaning no casing will be changed on the
+     * scheme and no decoding will be done on the parameters. The only processing done is removal of quotes around
+     * parameter values and backslashes escaping values. Ex, {@code "va\"lue"} will be parsed as {@code va"lue}.
+     * <p>
+     * In addition to processing as plainly as possible, this method will not validate the authenticate header, it will
+     * only parse it. Though, if the authenticate header has syntax errors an {@link IllegalStateException} will be
+     * thrown.
+     * <p>
+     * A list of {@link AuthenticateChallenge} will be returned as it is valid for multiple authenticate challenges to
+     * use the same scheme, therefore a map cannot be used as the scheme would be the key and only one challenge would
+     * be stored.
+     *
+     * @param authenticateHeader The authenticate header to be parsed.
+     * @return A list of authenticate challenges.
+     * @throws IllegalArgumentException If the {@code authenticateHeader} has syntax errors.
+     */
+    public static List<AuthenticateChallenge> parseAuthenticateHeader(String authenticateHeader) {
+        if (isNullOrEmpty(authenticateHeader)) {
+            return Collections.emptyList();
+        }
+
+        return new AuthenticateChallengeParser(authenticateHeader).parse();
     }
 }

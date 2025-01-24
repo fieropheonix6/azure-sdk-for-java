@@ -5,32 +5,42 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Authentication configuration information. */
+/**
+ * Authentication configuration information.
+ */
 @Fluent
-public final class ServiceAuthenticationConfigurationInfo {
+public final class ServiceAuthenticationConfigurationInfo
+    implements JsonSerializable<ServiceAuthenticationConfigurationInfo> {
     /*
      * The authority url for the service
      */
-    @JsonProperty(value = "authority")
     private String authority;
 
     /*
      * The audience url for the service
      */
-    @JsonProperty(value = "audience")
     private String audience;
 
     /*
      * If the SMART on FHIR proxy is enabled
      */
-    @JsonProperty(value = "smartProxyEnabled")
     private Boolean smartProxyEnabled;
 
     /**
+     * Creates an instance of ServiceAuthenticationConfigurationInfo class.
+     */
+    public ServiceAuthenticationConfigurationInfo() {
+    }
+
+    /**
      * Get the authority property: The authority url for the service.
-     *
+     * 
      * @return the authority value.
      */
     public String authority() {
@@ -39,7 +49,7 @@ public final class ServiceAuthenticationConfigurationInfo {
 
     /**
      * Set the authority property: The authority url for the service.
-     *
+     * 
      * @param authority the authority value to set.
      * @return the ServiceAuthenticationConfigurationInfo object itself.
      */
@@ -50,7 +60,7 @@ public final class ServiceAuthenticationConfigurationInfo {
 
     /**
      * Get the audience property: The audience url for the service.
-     *
+     * 
      * @return the audience value.
      */
     public String audience() {
@@ -59,7 +69,7 @@ public final class ServiceAuthenticationConfigurationInfo {
 
     /**
      * Set the audience property: The audience url for the service.
-     *
+     * 
      * @param audience the audience value to set.
      * @return the ServiceAuthenticationConfigurationInfo object itself.
      */
@@ -70,7 +80,7 @@ public final class ServiceAuthenticationConfigurationInfo {
 
     /**
      * Get the smartProxyEnabled property: If the SMART on FHIR proxy is enabled.
-     *
+     * 
      * @return the smartProxyEnabled value.
      */
     public Boolean smartProxyEnabled() {
@@ -79,7 +89,7 @@ public final class ServiceAuthenticationConfigurationInfo {
 
     /**
      * Set the smartProxyEnabled property: If the SMART on FHIR proxy is enabled.
-     *
+     * 
      * @param smartProxyEnabled the smartProxyEnabled value to set.
      * @return the ServiceAuthenticationConfigurationInfo object itself.
      */
@@ -90,9 +100,53 @@ public final class ServiceAuthenticationConfigurationInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authority", this.authority);
+        jsonWriter.writeStringField("audience", this.audience);
+        jsonWriter.writeBooleanField("smartProxyEnabled", this.smartProxyEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceAuthenticationConfigurationInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceAuthenticationConfigurationInfo if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceAuthenticationConfigurationInfo.
+     */
+    public static ServiceAuthenticationConfigurationInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceAuthenticationConfigurationInfo deserializedServiceAuthenticationConfigurationInfo
+                = new ServiceAuthenticationConfigurationInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authority".equals(fieldName)) {
+                    deserializedServiceAuthenticationConfigurationInfo.authority = reader.getString();
+                } else if ("audience".equals(fieldName)) {
+                    deserializedServiceAuthenticationConfigurationInfo.audience = reader.getString();
+                } else if ("smartProxyEnabled".equals(fieldName)) {
+                    deserializedServiceAuthenticationConfigurationInfo.smartProxyEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceAuthenticationConfigurationInfo;
+        });
     }
 }

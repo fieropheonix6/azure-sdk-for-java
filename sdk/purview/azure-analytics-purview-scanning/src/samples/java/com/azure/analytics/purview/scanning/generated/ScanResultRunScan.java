@@ -13,15 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ScanResultRunScan {
     public static void main(String[] args) {
-        ScanResultClient client =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildScanResultClient();
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addQueryParam("scanLevel", "Full");
-        Response<BinaryData> response =
-                client.runScanWithResponse(
-                        "testDataSourceName", "scan1", "138301e4-f4f9-4ab5-b734-bac446b236e7", requestOptions);
+        ScanResultClient scanResultClient
+            = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildScanResultClient();
+        // BEGIN:com.azure.analytics.purview.scanning.generated.scanresultrunscan.scanresultrunscan
+        RequestOptions requestOptions = new RequestOptions().addQueryParam("scanLevel", "Full");
+        Response<BinaryData> response = scanResultClient.runScanWithResponse("testDataSourceName", "scan1",
+            "138301e4-f4f9-4ab5-b734-bac446b236e7", requestOptions);
+        // END:com.azure.analytics.purview.scanning.generated.scanresultrunscan.scanresultrunscan
     }
 }

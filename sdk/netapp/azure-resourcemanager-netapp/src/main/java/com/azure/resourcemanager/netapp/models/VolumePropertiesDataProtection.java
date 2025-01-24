@@ -5,36 +5,48 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * DataProtection
- *
- * <p>DataProtection type volumes include an object containing details of the replication.
+ * 
+ * DataProtection type volumes include an object containing details of the replication.
  */
 @Fluent
-public final class VolumePropertiesDataProtection {
+public final class VolumePropertiesDataProtection implements JsonSerializable<VolumePropertiesDataProtection> {
     /*
      * Backup Properties
      */
-    @JsonProperty(value = "backup")
     private VolumeBackupProperties backup;
 
     /*
      * Replication properties
      */
-    @JsonProperty(value = "replication")
     private ReplicationObject replication;
 
     /*
      * Snapshot properties.
      */
-    @JsonProperty(value = "snapshot")
     private VolumeSnapshotProperties snapshot;
+
+    /*
+     * VolumeRelocation properties
+     */
+    private VolumeRelocationProperties volumeRelocation;
+
+    /**
+     * Creates an instance of VolumePropertiesDataProtection class.
+     */
+    public VolumePropertiesDataProtection() {
+    }
 
     /**
      * Get the backup property: Backup Properties.
-     *
+     * 
      * @return the backup value.
      */
     public VolumeBackupProperties backup() {
@@ -43,7 +55,7 @@ public final class VolumePropertiesDataProtection {
 
     /**
      * Set the backup property: Backup Properties.
-     *
+     * 
      * @param backup the backup value to set.
      * @return the VolumePropertiesDataProtection object itself.
      */
@@ -54,7 +66,7 @@ public final class VolumePropertiesDataProtection {
 
     /**
      * Get the replication property: Replication properties.
-     *
+     * 
      * @return the replication value.
      */
     public ReplicationObject replication() {
@@ -63,7 +75,7 @@ public final class VolumePropertiesDataProtection {
 
     /**
      * Set the replication property: Replication properties.
-     *
+     * 
      * @param replication the replication value to set.
      * @return the VolumePropertiesDataProtection object itself.
      */
@@ -74,7 +86,7 @@ public final class VolumePropertiesDataProtection {
 
     /**
      * Get the snapshot property: Snapshot properties.
-     *
+     * 
      * @return the snapshot value.
      */
     public VolumeSnapshotProperties snapshot() {
@@ -83,7 +95,7 @@ public final class VolumePropertiesDataProtection {
 
     /**
      * Set the snapshot property: Snapshot properties.
-     *
+     * 
      * @param snapshot the snapshot value to set.
      * @return the VolumePropertiesDataProtection object itself.
      */
@@ -93,8 +105,28 @@ public final class VolumePropertiesDataProtection {
     }
 
     /**
+     * Get the volumeRelocation property: VolumeRelocation properties.
+     * 
+     * @return the volumeRelocation value.
+     */
+    public VolumeRelocationProperties volumeRelocation() {
+        return this.volumeRelocation;
+    }
+
+    /**
+     * Set the volumeRelocation property: VolumeRelocation properties.
+     * 
+     * @param volumeRelocation the volumeRelocation value to set.
+     * @return the VolumePropertiesDataProtection object itself.
+     */
+    public VolumePropertiesDataProtection withVolumeRelocation(VolumeRelocationProperties volumeRelocation) {
+        this.volumeRelocation = volumeRelocation;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -107,5 +139,55 @@ public final class VolumePropertiesDataProtection {
         if (snapshot() != null) {
             snapshot().validate();
         }
+        if (volumeRelocation() != null) {
+            volumeRelocation().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("backup", this.backup);
+        jsonWriter.writeJsonField("replication", this.replication);
+        jsonWriter.writeJsonField("snapshot", this.snapshot);
+        jsonWriter.writeJsonField("volumeRelocation", this.volumeRelocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumePropertiesDataProtection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumePropertiesDataProtection if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VolumePropertiesDataProtection.
+     */
+    public static VolumePropertiesDataProtection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumePropertiesDataProtection deserializedVolumePropertiesDataProtection
+                = new VolumePropertiesDataProtection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backup".equals(fieldName)) {
+                    deserializedVolumePropertiesDataProtection.backup = VolumeBackupProperties.fromJson(reader);
+                } else if ("replication".equals(fieldName)) {
+                    deserializedVolumePropertiesDataProtection.replication = ReplicationObject.fromJson(reader);
+                } else if ("snapshot".equals(fieldName)) {
+                    deserializedVolumePropertiesDataProtection.snapshot = VolumeSnapshotProperties.fromJson(reader);
+                } else if ("volumeRelocation".equals(fieldName)) {
+                    deserializedVolumePropertiesDataProtection.volumeRelocation
+                        = VolumeRelocationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumePropertiesDataProtection;
+        });
     }
 }

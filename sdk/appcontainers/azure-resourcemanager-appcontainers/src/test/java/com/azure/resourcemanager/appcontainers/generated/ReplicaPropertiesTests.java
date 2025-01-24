@@ -9,59 +9,75 @@ import com.azure.resourcemanager.appcontainers.fluent.models.ReplicaProperties;
 import com.azure.resourcemanager.appcontainers.models.ReplicaContainer;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ReplicaPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        ReplicaProperties model =
-            BinaryData
-                .fromString(
-                    "{\"createdTime\":\"2021-01-29T19:24:27Z\",\"containers\":[{\"name\":\"hrixkwmy\",\"containerId\":\"ejvegrhbpnaixex\",\"ready\":false,\"started\":true,\"restartCount\":303838192,\"logStreamEndpoint\":\"hcexdrrvqa\",\"execEndpoint\":\"kghtpwijnh\"},{\"name\":\"svfycxzbfv\",\"containerId\":\"wvrvmtg\",\"ready\":true,\"started\":false,\"restartCount\":213302833,\"logStreamEndpoint\":\"ronzmyhgfip\",\"execEndpoint\":\"xkmcwaekrrjre\"},{\"name\":\"xt\",\"containerId\":\"umh\",\"ready\":false,\"started\":false,\"restartCount\":401545193,\"logStreamEndpoint\":\"slol\",\"execEndpoint\":\"pvuzlmv\"},{\"name\":\"lfktgplcrpwjxe\",\"containerId\":\"oi\",\"ready\":false,\"started\":true,\"restartCount\":509080980,\"logStreamEndpoint\":\"kpnb\",\"execEndpoint\":\"zejjoqk\"}]}")
-                .toObject(ReplicaProperties.class);
-        Assertions.assertEquals("hrixkwmy", model.containers().get(0).name());
-        Assertions.assertEquals("ejvegrhbpnaixex", model.containers().get(0).containerId());
-        Assertions.assertEquals(false, model.containers().get(0).ready());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ReplicaProperties model = BinaryData.fromString(
+            "{\"createdTime\":\"2021-08-28T15:42:49Z\",\"runningState\":\"Running\",\"runningStateDetails\":\"fusfzsvtuikzhajq\",\"containers\":[{\"name\":\"hm\",\"containerId\":\"qryxyn\",\"ready\":true,\"started\":true,\"restartCount\":1655994607,\"runningState\":\"Running\",\"runningStateDetails\":\"xznptgoeiyb\",\"logStreamEndpoint\":\"bp\",\"execEndpoint\":\"vf\",\"debugEndpoint\":\"kvntjlrigjkskyri\"},{\"name\":\"vzidsxwaab\",\"containerId\":\"ifrygzn\",\"ready\":false,\"started\":false,\"restartCount\":1979636769,\"runningState\":\"Waiting\",\"runningStateDetails\":\"bgopxlhslnel\",\"logStreamEndpoint\":\"eixynllxecwcroj\",\"execEndpoint\":\"slhcawjutifd\",\"debugEndpoint\":\"mvi\"},{\"name\":\"rqjb\",\"containerId\":\"zhraglkafh\",\"ready\":true,\"started\":false,\"restartCount\":1352761194,\"runningState\":\"Terminated\",\"runningStateDetails\":\"pzvcpopmxelnwc\",\"logStreamEndpoint\":\"yjede\",\"execEndpoint\":\"mlfmkqs\",\"debugEndpoint\":\"zuawxtzxpuamwa\"}],\"initContainers\":[{\"name\":\"vxcushsphaivmx\",\"containerId\":\"sflvgsgzwywakoih\",\"ready\":true,\"started\":true,\"restartCount\":1233115603,\"runningState\":\"Terminated\",\"runningStateDetails\":\"hlnymzotq\",\"logStreamEndpoint\":\"yuzcbmqqvxmvw\",\"execEndpoint\":\"tayx\",\"debugEndpoint\":\"supe\"},{\"name\":\"lzqnhcvs\",\"containerId\":\"tnzoibgsxgnxfy\",\"ready\":true,\"started\":false,\"restartCount\":520618832,\"runningState\":\"Terminated\",\"runningStateDetails\":\"o\",\"logStreamEndpoint\":\"bxiqxeiiqbimht\",\"execEndpoint\":\"winhehfqpo\",\"debugEndpoint\":\"wbcb\"},{\"name\":\"mbnkb\",\"containerId\":\"qvxkd\",\"ready\":false,\"started\":false,\"restartCount\":229905373,\"runningState\":\"Waiting\",\"runningStateDetails\":\"wbzuwfmdurage\",\"logStreamEndpoint\":\"zvcjfelisdjubggb\",\"execEndpoint\":\"gkxkbsazgakg\",\"debugEndpoint\":\"yrcmjdmspofap\"},{\"name\":\"hryl\",\"containerId\":\"ofrzgb\",\"ready\":false,\"started\":false,\"restartCount\":1946171356,\"runningState\":\"Waiting\",\"runningStateDetails\":\"l\",\"logStreamEndpoint\":\"bcuiiz\",\"execEndpoint\":\"twfans\",\"debugEndpoint\":\"pdibmikostbzbki\"}]}")
+            .toObject(ReplicaProperties.class);
+        Assertions.assertEquals("hm", model.containers().get(0).name());
+        Assertions.assertEquals("qryxyn", model.containers().get(0).containerId());
+        Assertions.assertEquals(true, model.containers().get(0).ready());
         Assertions.assertEquals(true, model.containers().get(0).started());
-        Assertions.assertEquals(303838192, model.containers().get(0).restartCount());
+        Assertions.assertEquals(1655994607, model.containers().get(0).restartCount());
+        Assertions.assertEquals("vxcushsphaivmx", model.initContainers().get(0).name());
+        Assertions.assertEquals("sflvgsgzwywakoih", model.initContainers().get(0).containerId());
+        Assertions.assertEquals(true, model.initContainers().get(0).ready());
+        Assertions.assertEquals(true, model.initContainers().get(0).started());
+        Assertions.assertEquals(1233115603, model.initContainers().get(0).restartCount());
     }
 
-    @Test
-    public void testSerialize() {
-        ReplicaProperties model =
-            new ReplicaProperties()
-                .withContainers(
-                    Arrays
-                        .asList(
-                            new ReplicaContainer()
-                                .withName("hrixkwmy")
-                                .withContainerId("ejvegrhbpnaixex")
-                                .withReady(false)
-                                .withStarted(true)
-                                .withRestartCount(303838192),
-                            new ReplicaContainer()
-                                .withName("svfycxzbfv")
-                                .withContainerId("wvrvmtg")
-                                .withReady(true)
-                                .withStarted(false)
-                                .withRestartCount(213302833),
-                            new ReplicaContainer()
-                                .withName("xt")
-                                .withContainerId("umh")
-                                .withReady(false)
-                                .withStarted(false)
-                                .withRestartCount(401545193),
-                            new ReplicaContainer()
-                                .withName("lfktgplcrpwjxe")
-                                .withContainerId("oi")
-                                .withReady(false)
-                                .withStarted(true)
-                                .withRestartCount(509080980)));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ReplicaProperties model = new ReplicaProperties()
+            .withContainers(Arrays.asList(
+                new ReplicaContainer().withName("hm")
+                    .withContainerId("qryxyn")
+                    .withReady(true)
+                    .withStarted(true)
+                    .withRestartCount(1655994607),
+                new ReplicaContainer().withName("vzidsxwaab")
+                    .withContainerId("ifrygzn")
+                    .withReady(false)
+                    .withStarted(false)
+                    .withRestartCount(1979636769),
+                new ReplicaContainer().withName("rqjb")
+                    .withContainerId("zhraglkafh")
+                    .withReady(true)
+                    .withStarted(false)
+                    .withRestartCount(1352761194)))
+            .withInitContainers(Arrays.asList(
+                new ReplicaContainer().withName("vxcushsphaivmx")
+                    .withContainerId("sflvgsgzwywakoih")
+                    .withReady(true)
+                    .withStarted(true)
+                    .withRestartCount(1233115603),
+                new ReplicaContainer().withName("lzqnhcvs")
+                    .withContainerId("tnzoibgsxgnxfy")
+                    .withReady(true)
+                    .withStarted(false)
+                    .withRestartCount(520618832),
+                new ReplicaContainer().withName("mbnkb")
+                    .withContainerId("qvxkd")
+                    .withReady(false)
+                    .withStarted(false)
+                    .withRestartCount(229905373),
+                new ReplicaContainer().withName("hryl")
+                    .withContainerId("ofrzgb")
+                    .withReady(false)
+                    .withStarted(false)
+                    .withRestartCount(1946171356)));
         model = BinaryData.fromObject(model).toObject(ReplicaProperties.class);
-        Assertions.assertEquals("hrixkwmy", model.containers().get(0).name());
-        Assertions.assertEquals("ejvegrhbpnaixex", model.containers().get(0).containerId());
-        Assertions.assertEquals(false, model.containers().get(0).ready());
+        Assertions.assertEquals("hm", model.containers().get(0).name());
+        Assertions.assertEquals("qryxyn", model.containers().get(0).containerId());
+        Assertions.assertEquals(true, model.containers().get(0).ready());
         Assertions.assertEquals(true, model.containers().get(0).started());
-        Assertions.assertEquals(303838192, model.containers().get(0).restartCount());
+        Assertions.assertEquals(1655994607, model.containers().get(0).restartCount());
+        Assertions.assertEquals("vxcushsphaivmx", model.initContainers().get(0).name());
+        Assertions.assertEquals("sflvgsgzwywakoih", model.initContainers().get(0).containerId());
+        Assertions.assertEquals(true, model.initContainers().get(0).ready());
+        Assertions.assertEquals(true, model.initContainers().get(0).started());
+        Assertions.assertEquals(1233115603, model.initContainers().get(0).restartCount());
     }
 }

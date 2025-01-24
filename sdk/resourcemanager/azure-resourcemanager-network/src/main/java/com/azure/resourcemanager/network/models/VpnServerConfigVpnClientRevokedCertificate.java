@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of the revoked VPN client certificate of VpnServerConfiguration. */
+/**
+ * Properties of the revoked VPN client certificate of VpnServerConfiguration.
+ */
 @Fluent
-public final class VpnServerConfigVpnClientRevokedCertificate {
+public final class VpnServerConfigVpnClientRevokedCertificate
+    implements JsonSerializable<VpnServerConfigVpnClientRevokedCertificate> {
     /*
      * The certificate name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The revoked VPN client certificate thumbprint.
      */
-    @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
-    /** Creates an instance of VpnServerConfigVpnClientRevokedCertificate class. */
+    /**
+     * Creates an instance of VpnServerConfigVpnClientRevokedCertificate class.
+     */
     public VpnServerConfigVpnClientRevokedCertificate() {
     }
 
     /**
      * Get the name property: The certificate name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +44,7 @@ public final class VpnServerConfigVpnClientRevokedCertificate {
 
     /**
      * Set the name property: The certificate name.
-     *
+     * 
      * @param name the name value to set.
      * @return the VpnServerConfigVpnClientRevokedCertificate object itself.
      */
@@ -48,7 +55,7 @@ public final class VpnServerConfigVpnClientRevokedCertificate {
 
     /**
      * Get the thumbprint property: The revoked VPN client certificate thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -57,7 +64,7 @@ public final class VpnServerConfigVpnClientRevokedCertificate {
 
     /**
      * Set the thumbprint property: The revoked VPN client certificate thumbprint.
-     *
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the VpnServerConfigVpnClientRevokedCertificate object itself.
      */
@@ -68,9 +75,49 @@ public final class VpnServerConfigVpnClientRevokedCertificate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("thumbprint", this.thumbprint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnServerConfigVpnClientRevokedCertificate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnServerConfigVpnClientRevokedCertificate if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VpnServerConfigVpnClientRevokedCertificate.
+     */
+    public static VpnServerConfigVpnClientRevokedCertificate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnServerConfigVpnClientRevokedCertificate deserializedVpnServerConfigVpnClientRevokedCertificate
+                = new VpnServerConfigVpnClientRevokedCertificate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVpnServerConfigVpnClientRevokedCertificate.name = reader.getString();
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedVpnServerConfigVpnClientRevokedCertificate.thumbprint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnServerConfigVpnClientRevokedCertificate;
+        });
     }
 }

@@ -5,33 +5,51 @@
 package com.azure.resourcemanager.azurestackhci.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Status of Arc Extension for a particular node in HCI Cluster. */
+/**
+ * Status of Arc Extension for a particular node in HCI Cluster.
+ */
 @Immutable
-public final class PerNodeExtensionState {
+public final class PerNodeExtensionState implements JsonSerializable<PerNodeExtensionState> {
     /*
      * Name of the node in HCI Cluster.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * Fully qualified resource ID for the particular Arc Extension on this
-     * node.
+     * Fully qualified resource ID for the particular Arc Extension on this node.
      */
-    @JsonProperty(value = "extension", access = JsonProperty.Access.WRITE_ONLY)
     private String extension;
+
+    /*
+     * Specifies the version of the script handler.
+     */
+    private String typeHandlerVersion;
 
     /*
      * State of Arc Extension in this node.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private NodeExtensionState state;
+
+    /*
+     * The extension instance view.
+     */
+    private ExtensionInstanceView instanceView;
+
+    /**
+     * Creates an instance of PerNodeExtensionState class.
+     */
+    public PerNodeExtensionState() {
+    }
 
     /**
      * Get the name property: Name of the node in HCI Cluster.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -40,7 +58,7 @@ public final class PerNodeExtensionState {
 
     /**
      * Get the extension property: Fully qualified resource ID for the particular Arc Extension on this node.
-     *
+     * 
      * @return the extension value.
      */
     public String extension() {
@@ -48,8 +66,17 @@ public final class PerNodeExtensionState {
     }
 
     /**
+     * Get the typeHandlerVersion property: Specifies the version of the script handler.
+     * 
+     * @return the typeHandlerVersion value.
+     */
+    public String typeHandlerVersion() {
+        return this.typeHandlerVersion;
+    }
+
+    /**
      * Get the state property: State of Arc Extension in this node.
-     *
+     * 
      * @return the state value.
      */
     public NodeExtensionState state() {
@@ -57,10 +84,65 @@ public final class PerNodeExtensionState {
     }
 
     /**
+     * Get the instanceView property: The extension instance view.
+     * 
+     * @return the instanceView value.
+     */
+    public ExtensionInstanceView instanceView() {
+        return this.instanceView;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (instanceView() != null) {
+            instanceView().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PerNodeExtensionState from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PerNodeExtensionState if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PerNodeExtensionState.
+     */
+    public static PerNodeExtensionState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PerNodeExtensionState deserializedPerNodeExtensionState = new PerNodeExtensionState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPerNodeExtensionState.name = reader.getString();
+                } else if ("extension".equals(fieldName)) {
+                    deserializedPerNodeExtensionState.extension = reader.getString();
+                } else if ("typeHandlerVersion".equals(fieldName)) {
+                    deserializedPerNodeExtensionState.typeHandlerVersion = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedPerNodeExtensionState.state = NodeExtensionState.fromString(reader.getString());
+                } else if ("instanceView".equals(fieldName)) {
+                    deserializedPerNodeExtensionState.instanceView = ExtensionInstanceView.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPerNodeExtensionState;
+        });
     }
 }

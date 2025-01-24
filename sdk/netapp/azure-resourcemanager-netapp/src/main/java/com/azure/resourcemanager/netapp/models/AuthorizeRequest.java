@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Authorize request. */
+/**
+ * Authorize request.
+ */
 @Fluent
-public final class AuthorizeRequest {
+public final class AuthorizeRequest implements JsonSerializable<AuthorizeRequest> {
     /*
      * Resource id of the remote volume
      */
-    @JsonProperty(value = "remoteVolumeResourceId")
     private String remoteVolumeResourceId;
 
     /**
+     * Creates an instance of AuthorizeRequest class.
+     */
+    public AuthorizeRequest() {
+    }
+
+    /**
      * Get the remoteVolumeResourceId property: Resource id of the remote volume.
-     *
+     * 
      * @return the remoteVolumeResourceId value.
      */
     public String remoteVolumeResourceId() {
@@ -27,7 +38,7 @@ public final class AuthorizeRequest {
 
     /**
      * Set the remoteVolumeResourceId property: Resource id of the remote volume.
-     *
+     * 
      * @param remoteVolumeResourceId the remoteVolumeResourceId value to set.
      * @return the AuthorizeRequest object itself.
      */
@@ -38,9 +49,45 @@ public final class AuthorizeRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("remoteVolumeResourceId", this.remoteVolumeResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthorizeRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthorizeRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AuthorizeRequest.
+     */
+    public static AuthorizeRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthorizeRequest deserializedAuthorizeRequest = new AuthorizeRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("remoteVolumeResourceId".equals(fieldName)) {
+                    deserializedAuthorizeRequest.remoteVolumeResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthorizeRequest;
+        });
     }
 }

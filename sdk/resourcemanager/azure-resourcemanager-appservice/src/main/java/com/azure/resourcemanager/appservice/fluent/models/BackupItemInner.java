@@ -5,32 +5,89 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.BackupItemStatus;
 import com.azure.resourcemanager.appservice.models.DatabaseBackupSetting;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Backup description. */
+/**
+ * Backup description.
+ */
 @Fluent
 public final class BackupItemInner extends ProxyOnlyResource {
     /*
      * BackupItem resource specific properties
      */
-    @JsonProperty(value = "properties")
     private BackupItemProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of BackupItemInner class.
+     */
+    public BackupItemInner() {
+    }
 
     /**
      * Get the innerProperties property: BackupItem resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BackupItemProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupItemInner withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +96,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the backupId property: Id of the backup.
-     *
+     * 
      * @return the backupId value.
      */
     public Integer backupId() {
@@ -48,7 +105,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the storageAccountUrl property: SAS URL for the storage account container which contains this backup.
-     *
+     * 
      * @return the storageAccountUrl value.
      */
     public String storageAccountUrl() {
@@ -57,7 +114,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the blobName property: Name of the blob which contains data for this backup.
-     *
+     * 
      * @return the blobName value.
      */
     public String blobName() {
@@ -66,7 +123,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the name property: Name of this backup.
-     *
+     * 
      * @return the name value.
      */
     public String namePropertiesName() {
@@ -75,7 +132,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the status property: Backup status.
-     *
+     * 
      * @return the status value.
      */
     public BackupItemStatus status() {
@@ -84,7 +141,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the sizeInBytes property: Size of the backup in bytes.
-     *
+     * 
      * @return the sizeInBytes value.
      */
     public Long sizeInBytes() {
@@ -93,7 +150,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the created property: Timestamp of the backup creation.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -102,7 +159,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the log property: Details regarding this backup. Might contain an error message.
-     *
+     * 
      * @return the log value.
      */
     public String log() {
@@ -111,7 +168,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the databases property: List of databases included in the backup.
-     *
+     * 
      * @return the databases value.
      */
     public List<DatabaseBackupSetting> databases() {
@@ -120,7 +177,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the scheduled property: True if this backup has been created due to a schedule being triggered.
-     *
+     * 
      * @return the scheduled value.
      */
     public Boolean scheduled() {
@@ -129,7 +186,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the lastRestoreTimestamp property: Timestamp of a last restore operation which used this backup.
-     *
+     * 
      * @return the lastRestoreTimestamp value.
      */
     public OffsetDateTime lastRestoreTimestamp() {
@@ -138,7 +195,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the finishedTimestamp property: Timestamp when this backup finished.
-     *
+     * 
      * @return the finishedTimestamp value.
      */
     public OffsetDateTime finishedTimestamp() {
@@ -148,7 +205,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
     /**
      * Get the correlationId property: Unique correlation identifier. Please use this along with the timestamp while
      * communicating with Azure support.
-     *
+     * 
      * @return the correlationId value.
      */
     public String correlationId() {
@@ -157,7 +214,7 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Get the websiteSizeInBytes property: Size of the original web app which has been backed up.
-     *
+     * 
      * @return the websiteSizeInBytes value.
      */
     public Long websiteSizeInBytes() {
@@ -166,14 +223,59 @@ public final class BackupItemInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupItemInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupItemInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BackupItemInner.
+     */
+    public static BackupItemInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupItemInner deserializedBackupItemInner = new BackupItemInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBackupItemInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBackupItemInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBackupItemInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedBackupItemInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBackupItemInner.innerProperties = BackupItemProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupItemInner;
+        });
     }
 }

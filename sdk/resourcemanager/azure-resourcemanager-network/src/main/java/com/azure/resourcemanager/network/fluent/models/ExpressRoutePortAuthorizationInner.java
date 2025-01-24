@@ -6,52 +6,49 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRoutePortAuthorizationUseStatus;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * ExpressRoute Port Authorization
- *
- * <p>ExpressRoutePort Authorization resource definition.
+ * 
+ * ExpressRoutePort Authorization resource definition.
  */
 @Fluent
 public final class ExpressRoutePortAuthorizationInner extends SubResource {
     /*
-     * ExpressRoute Port Authorization Properties
-     *
      * ExpressRoutePort properties.
      */
-    @JsonProperty(value = "properties")
     private ExpressRoutePortAuthorizationPropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ExpressRoutePortAuthorizationInner class. */
+    /**
+     * Creates an instance of ExpressRoutePortAuthorizationInner class.
+     */
     public ExpressRoutePortAuthorizationInner() {
     }
 
     /**
-     * Get the innerProperties property: ExpressRoute Port Authorization Properties
-     *
-     * <p>ExpressRoutePort properties.
-     *
+     * Get the innerProperties property: ExpressRoutePort properties.
+     * 
      * @return the innerProperties value.
      */
     private ExpressRoutePortAuthorizationPropertiesFormat innerProperties() {
@@ -61,7 +58,7 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -71,7 +68,7 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the ExpressRoutePortAuthorizationInner object itself.
      */
@@ -82,7 +79,7 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -91,14 +88,16 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressRoutePortAuthorizationInner withId(String id) {
         super.withId(id);
@@ -107,7 +106,7 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
 
     /**
      * Get the authorizationKey property: The authorization key.
-     *
+     * 
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -116,7 +115,7 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
 
     /**
      * Get the authorizationUseStatus property: The authorization use status.
-     *
+     * 
      * @return the authorizationUseStatus value.
      */
     public ExpressRoutePortAuthorizationUseStatus authorizationUseStatus() {
@@ -125,7 +124,7 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
 
     /**
      * Get the circuitResourceUri property: The reference to the ExpressRoute circuit resource using the authorization.
-     *
+     * 
      * @return the circuitResourceUri value.
      */
     public String circuitResourceUri() {
@@ -134,7 +133,7 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the authorization resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -143,12 +142,60 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRoutePortAuthorizationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRoutePortAuthorizationInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRoutePortAuthorizationInner.
+     */
+    public static ExpressRoutePortAuthorizationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRoutePortAuthorizationInner deserializedExpressRoutePortAuthorizationInner
+                = new ExpressRoutePortAuthorizationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedExpressRoutePortAuthorizationInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedExpressRoutePortAuthorizationInner.innerProperties
+                        = ExpressRoutePortAuthorizationPropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedExpressRoutePortAuthorizationInner.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedExpressRoutePortAuthorizationInner.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedExpressRoutePortAuthorizationInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRoutePortAuthorizationInner;
+        });
     }
 }

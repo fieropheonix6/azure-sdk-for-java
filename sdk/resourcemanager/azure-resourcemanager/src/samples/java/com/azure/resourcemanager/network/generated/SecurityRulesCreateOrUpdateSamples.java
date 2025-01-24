@@ -4,34 +4,31 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
 import com.azure.resourcemanager.network.models.SecurityRuleAccess;
 import com.azure.resourcemanager.network.models.SecurityRuleDirection;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 
-/** Samples for SecurityRules CreateOrUpdate. */
+/**
+ * Samples for SecurityRules CreateOrUpdate.
+ */
 public final class SecurityRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkSecurityGroupRuleCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * NetworkSecurityGroupRuleCreate.json
      */
     /**
      * Sample code: Create security rule.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createSecurityRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getSecurityRules()
-            .createOrUpdate(
-                "rg1",
-                "testnsg",
-                "rule1",
-                new SecurityRuleInner()
-                    .withProtocol(SecurityRuleProtocol.ASTERISK)
+            .createOrUpdate("rg1", "testnsg", "rule1",
+                new SecurityRuleInner().withProtocol(SecurityRuleProtocol.ASTERISK)
                     .withSourcePortRange("*")
                     .withDestinationPortRange("8080")
                     .withSourceAddressPrefix("10.0.0.0/8")
@@ -39,6 +36,6 @@ public final class SecurityRulesCreateOrUpdateSamples {
                     .withAccess(SecurityRuleAccess.DENY)
                     .withPriority(100)
                     .withDirection(SecurityRuleDirection.OUTBOUND),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

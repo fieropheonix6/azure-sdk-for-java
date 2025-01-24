@@ -6,22 +6,47 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Subscription details. */
+/**
+ * Subscription details.
+ */
 @Fluent
 public final class SubscriptionContractInner extends ProxyResource {
     /*
      * Subscription contract properties.
      */
-    @JsonProperty(value = "properties")
     private SubscriptionContractProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SubscriptionContractInner class.
+     */
+    public SubscriptionContractInner() {
+    }
 
     /**
      * Get the innerProperties property: Subscription contract properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SubscriptionContractProperties innerProperties() {
@@ -29,9 +54,39 @@ public final class SubscriptionContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the ownerId property: The user resource identifier of the subscription owner. The value is a valid relative
      * URL in the format of /users/{userId} where {userId} is a user identifier.
-     *
+     * 
      * @return the ownerId value.
      */
     public String ownerId() {
@@ -41,7 +96,7 @@ public final class SubscriptionContractInner extends ProxyResource {
     /**
      * Set the ownerId property: The user resource identifier of the subscription owner. The value is a valid relative
      * URL in the format of /users/{userId} where {userId} is a user identifier.
-     *
+     * 
      * @param ownerId the ownerId value to set.
      * @return the SubscriptionContractInner object itself.
      */
@@ -55,7 +110,7 @@ public final class SubscriptionContractInner extends ProxyResource {
 
     /**
      * Get the scope property: Scope like /products/{productId} or /apis or /apis/{apiId}.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -64,7 +119,7 @@ public final class SubscriptionContractInner extends ProxyResource {
 
     /**
      * Set the scope property: Scope like /products/{productId} or /apis or /apis/{apiId}.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the SubscriptionContractInner object itself.
      */
@@ -78,7 +133,7 @@ public final class SubscriptionContractInner extends ProxyResource {
 
     /**
      * Get the displayName property: The name of the subscription, or null if the subscription has no name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -87,7 +142,7 @@ public final class SubscriptionContractInner extends ProxyResource {
 
     /**
      * Set the displayName property: The name of the subscription, or null if the subscription has no name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the SubscriptionContractInner object itself.
      */
@@ -105,7 +160,7 @@ public final class SubscriptionContractInner extends ProxyResource {
      * the subscription request has been made by the developer, but has not yet been approved or rejected, * rejected –
      * the subscription request has been denied by an administrator, * cancelled – the subscription has been cancelled
      * by the developer or administrator, * expired – the subscription reached its expiration date and was deactivated.
-     *
+     * 
      * @return the state value.
      */
     public SubscriptionState state() {
@@ -118,7 +173,7 @@ public final class SubscriptionContractInner extends ProxyResource {
      * the subscription request has been made by the developer, but has not yet been approved or rejected, * rejected –
      * the subscription request has been denied by an administrator, * cancelled – the subscription has been cancelled
      * by the developer or administrator, * expired – the subscription reached its expiration date and was deactivated.
-     *
+     * 
      * @param state the state value to set.
      * @return the SubscriptionContractInner object itself.
      */
@@ -133,7 +188,7 @@ public final class SubscriptionContractInner extends ProxyResource {
     /**
      * Get the createdDate property: Subscription creation date. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -145,7 +200,7 @@ public final class SubscriptionContractInner extends ProxyResource {
      * subscription is not automatically activated. The subscription lifecycle can be managed by using the `state`
      * property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
      * standard.
-     *
+     * 
      * @return the startDate value.
      */
     public OffsetDateTime startDate() {
@@ -157,7 +212,7 @@ public final class SubscriptionContractInner extends ProxyResource {
      * subscription is not automatically activated. The subscription lifecycle can be managed by using the `state`
      * property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
      * standard.
-     *
+     * 
      * @param startDate the startDate value to set.
      * @return the SubscriptionContractInner object itself.
      */
@@ -174,7 +229,7 @@ public final class SubscriptionContractInner extends ProxyResource {
      * subscription is not automatically expired. The subscription lifecycle can be managed by using the `state`
      * property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
      * standard.
-     *
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
@@ -186,7 +241,7 @@ public final class SubscriptionContractInner extends ProxyResource {
      * subscription is not automatically expired. The subscription lifecycle can be managed by using the `state`
      * property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
      * standard.
-     *
+     * 
      * @param expirationDate the expirationDate value to set.
      * @return the SubscriptionContractInner object itself.
      */
@@ -203,7 +258,7 @@ public final class SubscriptionContractInner extends ProxyResource {
      * and the subscription is not automatically cancelled. The subscription lifecycle can be managed by using the
      * `state` property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
      * standard.
-     *
+     * 
      * @return the endDate value.
      */
     public OffsetDateTime endDate() {
@@ -215,7 +270,7 @@ public final class SubscriptionContractInner extends ProxyResource {
      * and the subscription is not automatically cancelled. The subscription lifecycle can be managed by using the
      * `state` property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
      * standard.
-     *
+     * 
      * @param endDate the endDate value to set.
      * @return the SubscriptionContractInner object itself.
      */
@@ -230,7 +285,7 @@ public final class SubscriptionContractInner extends ProxyResource {
     /**
      * Get the notificationDate property: Upcoming subscription expiration notification date. The date conforms to the
      * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the notificationDate value.
      */
     public OffsetDateTime notificationDate() {
@@ -240,7 +295,7 @@ public final class SubscriptionContractInner extends ProxyResource {
     /**
      * Set the notificationDate property: Upcoming subscription expiration notification date. The date conforms to the
      * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @param notificationDate the notificationDate value to set.
      * @return the SubscriptionContractInner object itself.
      */
@@ -255,7 +310,7 @@ public final class SubscriptionContractInner extends ProxyResource {
     /**
      * Get the primaryKey property: Subscription primary key. This property will not be filled on 'GET' operations! Use
      * '/listSecrets' POST request to get the value.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -265,7 +320,7 @@ public final class SubscriptionContractInner extends ProxyResource {
     /**
      * Set the primaryKey property: Subscription primary key. This property will not be filled on 'GET' operations! Use
      * '/listSecrets' POST request to get the value.
-     *
+     * 
      * @param primaryKey the primaryKey value to set.
      * @return the SubscriptionContractInner object itself.
      */
@@ -280,7 +335,7 @@ public final class SubscriptionContractInner extends ProxyResource {
     /**
      * Get the secondaryKey property: Subscription secondary key. This property will not be filled on 'GET' operations!
      * Use '/listSecrets' POST request to get the value.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -290,7 +345,7 @@ public final class SubscriptionContractInner extends ProxyResource {
     /**
      * Set the secondaryKey property: Subscription secondary key. This property will not be filled on 'GET' operations!
      * Use '/listSecrets' POST request to get the value.
-     *
+     * 
      * @param secondaryKey the secondaryKey value to set.
      * @return the SubscriptionContractInner object itself.
      */
@@ -305,7 +360,7 @@ public final class SubscriptionContractInner extends ProxyResource {
     /**
      * Get the stateComment property: Optional subscription comment added by an administrator when the state is changed
      * to the 'rejected'.
-     *
+     * 
      * @return the stateComment value.
      */
     public String stateComment() {
@@ -315,7 +370,7 @@ public final class SubscriptionContractInner extends ProxyResource {
     /**
      * Set the stateComment property: Optional subscription comment added by an administrator when the state is changed
      * to the 'rejected'.
-     *
+     * 
      * @param stateComment the stateComment value to set.
      * @return the SubscriptionContractInner object itself.
      */
@@ -329,7 +384,7 @@ public final class SubscriptionContractInner extends ProxyResource {
 
     /**
      * Get the allowTracing property: Determines whether tracing is enabled.
-     *
+     * 
      * @return the allowTracing value.
      */
     public Boolean allowTracing() {
@@ -338,7 +393,7 @@ public final class SubscriptionContractInner extends ProxyResource {
 
     /**
      * Set the allowTracing property: Determines whether tracing is enabled.
-     *
+     * 
      * @param allowTracing the allowTracing value to set.
      * @return the SubscriptionContractInner object itself.
      */
@@ -352,12 +407,56 @@ public final class SubscriptionContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionContractInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SubscriptionContractInner.
+     */
+    public static SubscriptionContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionContractInner deserializedSubscriptionContractInner = new SubscriptionContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSubscriptionContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSubscriptionContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSubscriptionContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSubscriptionContractInner.innerProperties
+                        = SubscriptionContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionContractInner;
+        });
     }
 }

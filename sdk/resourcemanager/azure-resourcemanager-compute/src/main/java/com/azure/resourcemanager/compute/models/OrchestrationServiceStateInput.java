@@ -6,30 +6,36 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The input for OrchestrationServiceState. */
+/**
+ * The input for OrchestrationServiceState.
+ */
 @Fluent
-public final class OrchestrationServiceStateInput {
+public final class OrchestrationServiceStateInput implements JsonSerializable<OrchestrationServiceStateInput> {
     /*
      * The name of the service.
      */
-    @JsonProperty(value = "serviceName", required = true)
     private OrchestrationServiceNames serviceName;
 
     /*
      * The action to be performed.
      */
-    @JsonProperty(value = "action", required = true)
     private OrchestrationServiceStateAction action;
 
-    /** Creates an instance of OrchestrationServiceStateInput class. */
+    /**
+     * Creates an instance of OrchestrationServiceStateInput class.
+     */
     public OrchestrationServiceStateInput() {
     }
 
     /**
      * Get the serviceName property: The name of the service.
-     *
+     * 
      * @return the serviceName value.
      */
     public OrchestrationServiceNames serviceName() {
@@ -38,7 +44,7 @@ public final class OrchestrationServiceStateInput {
 
     /**
      * Set the serviceName property: The name of the service.
-     *
+     * 
      * @param serviceName the serviceName value to set.
      * @return the OrchestrationServiceStateInput object itself.
      */
@@ -49,7 +55,7 @@ public final class OrchestrationServiceStateInput {
 
     /**
      * Get the action property: The action to be performed.
-     *
+     * 
      * @return the action value.
      */
     public OrchestrationServiceStateAction action() {
@@ -58,7 +64,7 @@ public final class OrchestrationServiceStateInput {
 
     /**
      * Set the action property: The action to be performed.
-     *
+     * 
      * @param action the action value to set.
      * @return the OrchestrationServiceStateInput object itself.
      */
@@ -69,23 +75,64 @@ public final class OrchestrationServiceStateInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serviceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serviceName in model OrchestrationServiceStateInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serviceName in model OrchestrationServiceStateInput"));
         }
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property action in model OrchestrationServiceStateInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property action in model OrchestrationServiceStateInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OrchestrationServiceStateInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceName", this.serviceName == null ? null : this.serviceName.toString());
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrchestrationServiceStateInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrchestrationServiceStateInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OrchestrationServiceStateInput.
+     */
+    public static OrchestrationServiceStateInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrchestrationServiceStateInput deserializedOrchestrationServiceStateInput
+                = new OrchestrationServiceStateInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceName".equals(fieldName)) {
+                    deserializedOrchestrationServiceStateInput.serviceName
+                        = OrchestrationServiceNames.fromString(reader.getString());
+                } else if ("action".equals(fieldName)) {
+                    deserializedOrchestrationServiceStateInput.action
+                        = OrchestrationServiceStateAction.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrchestrationServiceStateInput;
+        });
+    }
 }

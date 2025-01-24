@@ -11,12 +11,17 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicInner;
 import com.azure.resourcemanager.eventgrid.models.DataResidencyBoundary;
+import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
+import com.azure.resourcemanager.eventgrid.models.ExtendedLocation;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
+import com.azure.resourcemanager.eventgrid.models.ResourceKind;
+import com.azure.resourcemanager.eventgrid.models.ResourceSku;
+import com.azure.resourcemanager.eventgrid.models.TlsVersion;
 import com.azure.resourcemanager.eventgrid.models.Topic;
 import com.azure.resourcemanager.eventgrid.models.TopicProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.TopicRegenerateKeyRequest;
@@ -57,8 +62,20 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         }
     }
 
+    public ResourceSku sku() {
+        return this.innerModel().sku();
+    }
+
     public IdentityInfo identity() {
         return this.innerModel().identity();
+    }
+
+    public ResourceKind kind() {
+        return this.innerModel().kind();
+    }
+
+    public ExtendedLocation extendedLocation() {
+        return this.innerModel().extendedLocation();
     }
 
     public SystemData systemData() {
@@ -68,12 +85,9 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -85,6 +99,14 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
 
     public String endpoint() {
         return this.innerModel().endpoint();
+    }
+
+    public EventTypeInfo eventTypeInfo() {
+        return this.innerModel().eventTypeInfo();
+    }
+
+    public TlsVersion minimumTlsVersionAllowed() {
+        return this.innerModel().minimumTlsVersionAllowed();
     }
 
     public InputSchema inputSchema() {
@@ -152,20 +174,16 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
     }
 
     public Topic create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTopics()
-                .createOrUpdate(resourceGroupName, topicName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getTopics()
+            .createOrUpdate(resourceGroupName, topicName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Topic create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTopics()
-                .createOrUpdate(resourceGroupName, topicName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getTopics()
+            .createOrUpdate(resourceGroupName, topicName, this.innerModel(), context);
         return this;
     }
 
@@ -181,56 +199,48 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
     }
 
     public Topic apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTopics()
-                .update(resourceGroupName, topicName, updateTopicUpdateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getTopics()
+            .update(resourceGroupName, topicName, updateTopicUpdateParameters, Context.NONE);
         return this;
     }
 
     public Topic apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTopics()
-                .update(resourceGroupName, topicName, updateTopicUpdateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getTopics()
+            .update(resourceGroupName, topicName, updateTopicUpdateParameters, context);
         return this;
     }
 
     TopicImpl(TopicInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.topicName = Utils.getValueFromIdByName(innerObject.id(), "topics");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.topicName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "topics");
     }
 
     public Topic refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTopics()
-                .getByResourceGroupWithResponse(resourceGroupName, topicName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTopics()
+            .getByResourceGroupWithResponse(resourceGroupName, topicName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Topic refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTopics()
-                .getByResourceGroupWithResponse(resourceGroupName, topicName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTopics()
+            .getByResourceGroupWithResponse(resourceGroupName, topicName, context)
+            .getValue();
         return this;
-    }
-
-    public TopicSharedAccessKeys listSharedAccessKeys() {
-        return serviceManager.topics().listSharedAccessKeys(resourceGroupName, topicName);
     }
 
     public Response<TopicSharedAccessKeys> listSharedAccessKeysWithResponse(Context context) {
         return serviceManager.topics().listSharedAccessKeysWithResponse(resourceGroupName, topicName, context);
+    }
+
+    public TopicSharedAccessKeys listSharedAccessKeys() {
+        return serviceManager.topics().listSharedAccessKeys(resourceGroupName, topicName);
     }
 
     public TopicSharedAccessKeys regenerateKey(TopicRegenerateKeyRequest regenerateKeyRequest) {
@@ -261,12 +271,52 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         }
     }
 
+    public TopicImpl withSku(ResourceSku sku) {
+        if (isInCreateMode()) {
+            this.innerModel().withSku(sku);
+            return this;
+        } else {
+            this.updateTopicUpdateParameters.withSku(sku);
+            return this;
+        }
+    }
+
     public TopicImpl withIdentity(IdentityInfo identity) {
         if (isInCreateMode()) {
             this.innerModel().withIdentity(identity);
             return this;
         } else {
             this.updateTopicUpdateParameters.withIdentity(identity);
+            return this;
+        }
+    }
+
+    public TopicImpl withKind(ResourceKind kind) {
+        this.innerModel().withKind(kind);
+        return this;
+    }
+
+    public TopicImpl withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.innerModel().withExtendedLocation(extendedLocation);
+        return this;
+    }
+
+    public TopicImpl withEventTypeInfo(EventTypeInfo eventTypeInfo) {
+        if (isInCreateMode()) {
+            this.innerModel().withEventTypeInfo(eventTypeInfo);
+            return this;
+        } else {
+            this.updateTopicUpdateParameters.withEventTypeInfo(eventTypeInfo);
+            return this;
+        }
+    }
+
+    public TopicImpl withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed) {
+        if (isInCreateMode()) {
+            this.innerModel().withMinimumTlsVersionAllowed(minimumTlsVersionAllowed);
+            return this;
+        } else {
+            this.updateTopicUpdateParameters.withMinimumTlsVersionAllowed(minimumTlsVersionAllowed);
             return this;
         }
     }

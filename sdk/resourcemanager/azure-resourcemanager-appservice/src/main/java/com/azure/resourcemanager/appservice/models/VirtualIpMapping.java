@@ -5,44 +5,51 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Virtual IP mapping. */
+/**
+ * Virtual IP mapping.
+ */
 @Fluent
-public final class VirtualIpMapping {
+public final class VirtualIpMapping implements JsonSerializable<VirtualIpMapping> {
     /*
      * Virtual IP address.
      */
-    @JsonProperty(value = "virtualIP")
     private String virtualIp;
 
     /*
      * Internal HTTP port.
      */
-    @JsonProperty(value = "internalHttpPort")
     private Integer internalHttpPort;
 
     /*
      * Internal HTTPS port.
      */
-    @JsonProperty(value = "internalHttpsPort")
     private Integer internalHttpsPort;
 
     /*
      * Is virtual IP mapping in use.
      */
-    @JsonProperty(value = "inUse")
     private Boolean inUse;
 
     /*
      * name of the service that virtual IP is assigned to
      */
-    @JsonProperty(value = "serviceName")
     private String serviceName;
 
     /**
+     * Creates an instance of VirtualIpMapping class.
+     */
+    public VirtualIpMapping() {
+    }
+
+    /**
      * Get the virtualIp property: Virtual IP address.
-     *
+     * 
      * @return the virtualIp value.
      */
     public String virtualIp() {
@@ -51,7 +58,7 @@ public final class VirtualIpMapping {
 
     /**
      * Set the virtualIp property: Virtual IP address.
-     *
+     * 
      * @param virtualIp the virtualIp value to set.
      * @return the VirtualIpMapping object itself.
      */
@@ -62,7 +69,7 @@ public final class VirtualIpMapping {
 
     /**
      * Get the internalHttpPort property: Internal HTTP port.
-     *
+     * 
      * @return the internalHttpPort value.
      */
     public Integer internalHttpPort() {
@@ -71,7 +78,7 @@ public final class VirtualIpMapping {
 
     /**
      * Set the internalHttpPort property: Internal HTTP port.
-     *
+     * 
      * @param internalHttpPort the internalHttpPort value to set.
      * @return the VirtualIpMapping object itself.
      */
@@ -82,7 +89,7 @@ public final class VirtualIpMapping {
 
     /**
      * Get the internalHttpsPort property: Internal HTTPS port.
-     *
+     * 
      * @return the internalHttpsPort value.
      */
     public Integer internalHttpsPort() {
@@ -91,7 +98,7 @@ public final class VirtualIpMapping {
 
     /**
      * Set the internalHttpsPort property: Internal HTTPS port.
-     *
+     * 
      * @param internalHttpsPort the internalHttpsPort value to set.
      * @return the VirtualIpMapping object itself.
      */
@@ -102,7 +109,7 @@ public final class VirtualIpMapping {
 
     /**
      * Get the inUse property: Is virtual IP mapping in use.
-     *
+     * 
      * @return the inUse value.
      */
     public Boolean inUse() {
@@ -111,7 +118,7 @@ public final class VirtualIpMapping {
 
     /**
      * Set the inUse property: Is virtual IP mapping in use.
-     *
+     * 
      * @param inUse the inUse value to set.
      * @return the VirtualIpMapping object itself.
      */
@@ -122,7 +129,7 @@ public final class VirtualIpMapping {
 
     /**
      * Get the serviceName property: name of the service that virtual IP is assigned to.
-     *
+     * 
      * @return the serviceName value.
      */
     public String serviceName() {
@@ -131,7 +138,7 @@ public final class VirtualIpMapping {
 
     /**
      * Set the serviceName property: name of the service that virtual IP is assigned to.
-     *
+     * 
      * @param serviceName the serviceName value to set.
      * @return the VirtualIpMapping object itself.
      */
@@ -142,9 +149,57 @@ public final class VirtualIpMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("virtualIP", this.virtualIp);
+        jsonWriter.writeNumberField("internalHttpPort", this.internalHttpPort);
+        jsonWriter.writeNumberField("internalHttpsPort", this.internalHttpsPort);
+        jsonWriter.writeBooleanField("inUse", this.inUse);
+        jsonWriter.writeStringField("serviceName", this.serviceName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualIpMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualIpMapping if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualIpMapping.
+     */
+    public static VirtualIpMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualIpMapping deserializedVirtualIpMapping = new VirtualIpMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualIP".equals(fieldName)) {
+                    deserializedVirtualIpMapping.virtualIp = reader.getString();
+                } else if ("internalHttpPort".equals(fieldName)) {
+                    deserializedVirtualIpMapping.internalHttpPort = reader.getNullable(JsonReader::getInt);
+                } else if ("internalHttpsPort".equals(fieldName)) {
+                    deserializedVirtualIpMapping.internalHttpsPort = reader.getNullable(JsonReader::getInt);
+                } else if ("inUse".equals(fieldName)) {
+                    deserializedVirtualIpMapping.inUse = reader.getNullable(JsonReader::getBoolean);
+                } else if ("serviceName".equals(fieldName)) {
+                    deserializedVirtualIpMapping.serviceName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualIpMapping;
+        });
     }
 }

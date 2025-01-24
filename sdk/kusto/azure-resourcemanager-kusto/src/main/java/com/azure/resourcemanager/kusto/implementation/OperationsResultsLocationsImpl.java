@@ -4,11 +4,11 @@
 
 package com.azure.resourcemanager.kusto.implementation;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.OperationsResultsLocationsClient;
 import com.azure.resourcemanager.kusto.models.OperationsResultsLocations;
+import com.azure.resourcemanager.kusto.models.OperationsResultsLocationsGetResponse;
 
 public final class OperationsResultsLocationsImpl implements OperationsResultsLocations {
     private static final ClientLogger LOGGER = new ClientLogger(OperationsResultsLocationsImpl.class);
@@ -17,18 +17,18 @@ public final class OperationsResultsLocationsImpl implements OperationsResultsLo
 
     private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    public OperationsResultsLocationsImpl(
-        OperationsResultsLocationsClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
+    public OperationsResultsLocationsImpl(OperationsResultsLocationsClient innerClient,
+        com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public void get(String location, String operationId) {
-        this.serviceClient().get(location, operationId);
+    public OperationsResultsLocationsGetResponse getWithResponse(String location, String operationId, Context context) {
+        return this.serviceClient().getWithResponse(location, operationId, context);
     }
 
-    public Response<Void> getWithResponse(String location, String operationId, Context context) {
-        return this.serviceClient().getWithResponse(location, operationId, context);
+    public void get(String location, String operationId) {
+        this.serviceClient().get(location, operationId);
     }
 
     private OperationsResultsLocationsClient serviceClient() {

@@ -8,16 +8,13 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elastic.fluent.models.OperationResultInner;
 import com.azure.resourcemanager.elastic.models.OperationDisplay;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationResultInnerTests {
-    @Test
-    public void testDeserialize() {
-        OperationResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"nygj\",\"isDataAction\":true,\"display\":{\"provider\":\"eqsrdeupewnwreit\",\"resource\":\"yflusarhmofc\",\"operation\":\"smy\",\"description\":\"kdtmlxhekuk\"},\"origin\":\"txukcdmp\"}")
-                .toObject(OperationResultInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OperationResultInner model = BinaryData.fromString(
+            "{\"name\":\"nygj\",\"isDataAction\":true,\"display\":{\"provider\":\"eqsrdeupewnwreit\",\"resource\":\"yflusarhmofc\",\"operation\":\"smy\",\"description\":\"kdtmlxhekuk\"},\"origin\":\"txukcdmp\"}")
+            .toObject(OperationResultInner.class);
         Assertions.assertEquals("nygj", model.name());
         Assertions.assertEquals(true, model.isDataAction());
         Assertions.assertEquals("eqsrdeupewnwreit", model.display().provider());
@@ -27,19 +24,15 @@ public final class OperationResultInnerTests {
         Assertions.assertEquals("txukcdmp", model.origin());
     }
 
-    @Test
-    public void testSerialize() {
-        OperationResultInner model =
-            new OperationResultInner()
-                .withName("nygj")
-                .withIsDataAction(true)
-                .withDisplay(
-                    new OperationDisplay()
-                        .withProvider("eqsrdeupewnwreit")
-                        .withResource("yflusarhmofc")
-                        .withOperation("smy")
-                        .withDescription("kdtmlxhekuk"))
-                .withOrigin("txukcdmp");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OperationResultInner model = new OperationResultInner().withName("nygj")
+            .withIsDataAction(true)
+            .withDisplay(new OperationDisplay().withProvider("eqsrdeupewnwreit")
+                .withResource("yflusarhmofc")
+                .withOperation("smy")
+                .withDescription("kdtmlxhekuk"))
+            .withOrigin("txukcdmp");
         model = BinaryData.fromObject(model).toObject(OperationResultInner.class);
         Assertions.assertEquals("nygj", model.name());
         Assertions.assertEquals(true, model.isDataAction());

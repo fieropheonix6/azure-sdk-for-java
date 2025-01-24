@@ -7,25 +7,13 @@ package com.azure.resourcemanager.customerinsights.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Images. */
+/**
+ * Resource collection API of Images.
+ */
 public interface Images {
     /**
      * Gets entity type (profile or interaction) image upload URL.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param parameters Parameters supplied to the GetUploadUrlForEntityType operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity type (profile or interaction) image upload URL.
-     */
-    ImageDefinition getUploadUrlForEntityType(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters);
-
-    /**
-     * Gets entity type (profile or interaction) image upload URL.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param parameters Parameters supplied to the GetUploadUrlForEntityType operation.
@@ -33,14 +21,43 @@ public interface Images {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return entity type (profile or interaction) image upload URL along with {@link Response}.
+     */
+    Response<ImageDefinition> getUploadUrlForEntityTypeWithResponse(String resourceGroupName, String hubName,
+        GetImageUploadUrlInput parameters, Context context);
+
+    /**
+     * Gets entity type (profile or interaction) image upload URL.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param parameters Parameters supplied to the GetUploadUrlForEntityType operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entity type (profile or interaction) image upload URL.
      */
-    Response<ImageDefinition> getUploadUrlForEntityTypeWithResponse(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters, Context context);
+    ImageDefinition getUploadUrlForEntityType(String resourceGroupName, String hubName,
+        GetImageUploadUrlInput parameters);
 
     /**
      * Gets data image upload URL.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param parameters Parameters supplied to the GetUploadUrlForData operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data image upload URL along with {@link Response}.
+     */
+    Response<ImageDefinition> getUploadUrlForDataWithResponse(String resourceGroupName, String hubName,
+        GetImageUploadUrlInput parameters, Context context);
+
+    /**
+     * Gets data image upload URL.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param parameters Parameters supplied to the GetUploadUrlForData operation.
@@ -50,19 +67,4 @@ public interface Images {
      * @return data image upload URL.
      */
     ImageDefinition getUploadUrlForData(String resourceGroupName, String hubName, GetImageUploadUrlInput parameters);
-
-    /**
-     * Gets data image upload URL.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param parameters Parameters supplied to the GetUploadUrlForData operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data image upload URL.
-     */
-    Response<ImageDefinition> getUploadUrlForDataWithResponse(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters, Context context);
 }

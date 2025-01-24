@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for WebApplicationFirewallPolicies Delete. */
+/**
+ * Samples for WebApplicationFirewallPolicies Delete.
+ */
 public final class WebApplicationFirewallPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/WafPolicyDelete.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/WafPolicyDelete.json
      */
     /**
      * Sample code: Deletes a WAF policy within a resource group.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deletesAWAFPolicyWithinAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getWebApplicationFirewallPolicies()
-            .delete("rg1", "Policy1", Context.NONE);
+            .delete("rg1", "Policy1", com.azure.core.util.Context.NONE);
     }
 }

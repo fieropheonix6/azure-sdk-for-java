@@ -6,20 +6,31 @@ package com.azure.resourcemanager.deviceupdate.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Device Update account integration with IoT Hub settings. */
+/**
+ * Device Update account integration with IoT Hub settings.
+ */
 @Fluent
-public final class IotHubSettings {
+public final class IotHubSettings implements JsonSerializable<IotHubSettings> {
     /*
      * IoTHub resource ID
      */
-    @JsonProperty(value = "resourceId", required = true)
     private String resourceId;
 
     /**
+     * Creates an instance of IotHubSettings class.
+     */
+    public IotHubSettings() {
+    }
+
+    /**
      * Get the resourceId property: IoTHub resource ID.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -28,7 +39,7 @@ public final class IotHubSettings {
 
     /**
      * Set the resourceId property: IoTHub resource ID.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the IotHubSettings object itself.
      */
@@ -39,16 +50,52 @@ public final class IotHubSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property resourceId in model IotHubSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property resourceId in model IotHubSettings"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IotHubSettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IotHubSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotHubSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IotHubSettings.
+     */
+    public static IotHubSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotHubSettings deserializedIotHubSettings = new IotHubSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedIotHubSettings.resourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIotHubSettings;
+        });
+    }
 }

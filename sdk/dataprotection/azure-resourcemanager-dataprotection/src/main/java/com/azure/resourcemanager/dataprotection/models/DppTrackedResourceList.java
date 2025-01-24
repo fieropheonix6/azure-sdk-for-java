@@ -5,26 +5,32 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The DppTrackedResourceList model. */
+/**
+ * The DppTrackedResourceList model.
+ */
 @Fluent
-public class DppTrackedResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DppTrackedResourceList.class);
-
+public class DppTrackedResourceList implements JsonSerializable<DppTrackedResourceList> {
     /*
-     * The uri to fetch the next page of resources. Call ListNext() fetches
-     * next page of resources.
+     * The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /**
+     * Creates an instance of DppTrackedResourceList class.
+     */
+    public DppTrackedResourceList() {
+    }
 
     /**
      * Get the nextLink property: The uri to fetch the next page of resources. Call ListNext() fetches next page of
      * resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -34,7 +40,7 @@ public class DppTrackedResourceList {
     /**
      * Set the nextLink property: The uri to fetch the next page of resources. Call ListNext() fetches next page of
      * resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DppTrackedResourceList object itself.
      */
@@ -45,9 +51,45 @@ public class DppTrackedResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DppTrackedResourceList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DppTrackedResourceList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DppTrackedResourceList.
+     */
+    public static DppTrackedResourceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DppTrackedResourceList deserializedDppTrackedResourceList = new DppTrackedResourceList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedDppTrackedResourceList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDppTrackedResourceList;
+        });
     }
 }

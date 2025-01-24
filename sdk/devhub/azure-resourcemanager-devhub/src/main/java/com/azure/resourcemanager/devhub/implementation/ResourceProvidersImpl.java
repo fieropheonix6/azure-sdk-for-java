@@ -9,6 +9,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devhub.fluent.ResourceProvidersClient;
+import com.azure.resourcemanager.devhub.fluent.models.ArtifactGenerationProperties;
 import com.azure.resourcemanager.devhub.fluent.models.GitHubOAuthInfoResponseInner;
 import com.azure.resourcemanager.devhub.fluent.models.GitHubOAuthListResponseInner;
 import com.azure.resourcemanager.devhub.fluent.models.GitHubOAuthResponseInner;
@@ -17,6 +18,8 @@ import com.azure.resourcemanager.devhub.models.GitHubOAuthInfoResponse;
 import com.azure.resourcemanager.devhub.models.GitHubOAuthListResponse;
 import com.azure.resourcemanager.devhub.models.GitHubOAuthResponse;
 import com.azure.resourcemanager.devhub.models.ResourceProviders;
+import java.util.Collections;
+import java.util.Map;
 
 public final class ResourceProvidersImpl implements ResourceProviders {
     private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersImpl.class);
@@ -25,10 +28,22 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.devhub.DevHubManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient, com.azure.resourcemanager.devhub.DevHubManager serviceManager) {
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
+        com.azure.resourcemanager.devhub.DevHubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<GitHubOAuthInfoResponse> gitHubOAuthWithResponse(String location, GitHubOAuthCallRequest parameters,
+        Context context) {
+        Response<GitHubOAuthInfoResponseInner> inner
+            = this.serviceClient().gitHubOAuthWithResponse(location, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new GitHubOAuthInfoResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public GitHubOAuthInfoResponse gitHubOAuth(String location) {
@@ -40,16 +55,13 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public Response<GitHubOAuthInfoResponse> gitHubOAuthWithResponse(
-        String location, GitHubOAuthCallRequest parameters, Context context) {
-        Response<GitHubOAuthInfoResponseInner> inner =
-            this.serviceClient().gitHubOAuthWithResponse(location, parameters, context);
+    public Response<GitHubOAuthResponse> gitHubOAuthCallbackWithResponse(String location, String code, String state,
+        Context context) {
+        Response<GitHubOAuthResponseInner> inner
+            = this.serviceClient().gitHubOAuthCallbackWithResponse(location, code, state, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new GitHubOAuthInfoResponseImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new GitHubOAuthResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -64,16 +76,12 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public Response<GitHubOAuthResponse> gitHubOAuthCallbackWithResponse(
-        String location, String code, String state, Context context) {
-        Response<GitHubOAuthResponseInner> inner =
-            this.serviceClient().gitHubOAuthCallbackWithResponse(location, code, state, context);
+    public Response<GitHubOAuthListResponse> listGitHubOAuthWithResponse(String location, Context context) {
+        Response<GitHubOAuthListResponseInner> inner
+            = this.serviceClient().listGitHubOAuthWithResponse(location, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new GitHubOAuthResponseImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new GitHubOAuthListResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -88,17 +96,17 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public Response<GitHubOAuthListResponse> listGitHubOAuthWithResponse(String location, Context context) {
-        Response<GitHubOAuthListResponseInner> inner =
-            this.serviceClient().listGitHubOAuthWithResponse(location, context);
+    public Response<Map<String, String>> generatePreviewArtifactsWithResponse(String location,
+        ArtifactGenerationProperties parameters, Context context) {
+        return this.serviceClient().generatePreviewArtifactsWithResponse(location, parameters, context);
+    }
+
+    public Map<String, String> generatePreviewArtifacts(String location, ArtifactGenerationProperties parameters) {
+        Map<String, String> inner = this.serviceClient().generatePreviewArtifacts(location, parameters);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new GitHubOAuthListResponseImpl(inner.getValue(), this.manager()));
+            return Collections.unmodifiableMap(inner);
         } else {
-            return null;
+            return Collections.emptyMap();
         }
     }
 

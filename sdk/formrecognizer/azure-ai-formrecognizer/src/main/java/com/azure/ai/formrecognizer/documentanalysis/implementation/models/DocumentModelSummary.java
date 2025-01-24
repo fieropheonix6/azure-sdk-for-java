@@ -5,49 +5,67 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-/** Document model summary. */
+/**
+ * Document model summary.
+ */
 @Fluent
-public final class DocumentModelSummary {
+public final class DocumentModelSummary implements JsonSerializable<DocumentModelSummary> {
     /*
      * Unique document model name.
      */
-    @JsonProperty(value = "modelId", required = true)
-    private String modelId;
+    private final String modelId;
 
     /*
      * Document model description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Date and time (UTC) when the document model was created.
      */
-    @JsonProperty(value = "createdDateTime", required = true)
-    private OffsetDateTime createdDateTime;
+    private final OffsetDateTime createdDateTime;
+
+    /*
+     * Date and time (UTC) when the document model will expire.
+     */
+    private OffsetDateTime expirationDateTime;
 
     /*
      * API version used to create this document model.
      */
-    @JsonProperty(value = "apiVersion")
     private String apiVersion;
 
     /*
      * List of key-value tag attributes associated with the document model.
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
-    /** Creates an instance of DocumentModelSummary class. */
-    public DocumentModelSummary() {}
+    /**
+     * Creates an instance of DocumentModelSummary class.
+     * 
+     * @param modelId the modelId value to set.
+     * @param createdDateTime the createdDateTime value to set.
+     */
+    public DocumentModelSummary(String modelId, OffsetDateTime createdDateTime) {
+        this.modelId = modelId;
+        this.createdDateTime = createdDateTime;
+    }
 
     /**
      * Get the modelId property: Unique document model name.
-     *
+     * 
      * @return the modelId value.
      */
     public String getModelId() {
@@ -55,19 +73,8 @@ public final class DocumentModelSummary {
     }
 
     /**
-     * Set the modelId property: Unique document model name.
-     *
-     * @param modelId the modelId value to set.
-     * @return the DocumentModelSummary object itself.
-     */
-    public DocumentModelSummary setModelId(String modelId) {
-        this.modelId = modelId;
-        return this;
-    }
-
-    /**
      * Get the description property: Document model description.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -76,7 +83,7 @@ public final class DocumentModelSummary {
 
     /**
      * Set the description property: Document model description.
-     *
+     * 
      * @param description the description value to set.
      * @return the DocumentModelSummary object itself.
      */
@@ -87,7 +94,7 @@ public final class DocumentModelSummary {
 
     /**
      * Get the createdDateTime property: Date and time (UTC) when the document model was created.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime getCreatedDateTime() {
@@ -95,19 +102,28 @@ public final class DocumentModelSummary {
     }
 
     /**
-     * Set the createdDateTime property: Date and time (UTC) when the document model was created.
-     *
-     * @param createdDateTime the createdDateTime value to set.
+     * Get the expirationDateTime property: Date and time (UTC) when the document model will expire.
+     * 
+     * @return the expirationDateTime value.
+     */
+    public OffsetDateTime getExpirationDateTime() {
+        return this.expirationDateTime;
+    }
+
+    /**
+     * Set the expirationDateTime property: Date and time (UTC) when the document model will expire.
+     * 
+     * @param expirationDateTime the expirationDateTime value to set.
      * @return the DocumentModelSummary object itself.
      */
-    public DocumentModelSummary setCreatedDateTime(OffsetDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
+    public DocumentModelSummary setExpirationDateTime(OffsetDateTime expirationDateTime) {
+        this.expirationDateTime = expirationDateTime;
         return this;
     }
 
     /**
      * Get the apiVersion property: API version used to create this document model.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
@@ -116,7 +132,7 @@ public final class DocumentModelSummary {
 
     /**
      * Set the apiVersion property: API version used to create this document model.
-     *
+     * 
      * @param apiVersion the apiVersion value to set.
      * @return the DocumentModelSummary object itself.
      */
@@ -127,7 +143,7 @@ public final class DocumentModelSummary {
 
     /**
      * Get the tags property: List of key-value tag attributes associated with the document model.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -136,12 +152,97 @@ public final class DocumentModelSummary {
 
     /**
      * Set the tags property: List of key-value tag attributes associated with the document model.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the DocumentModelSummary object itself.
      */
     public DocumentModelSummary setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("modelId", this.modelId);
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("expirationDateTime",
+            this.expirationDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDateTime));
+        jsonWriter.writeStringField("apiVersion", this.apiVersion);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentModelSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentModelSummary if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentModelSummary.
+     */
+    public static DocumentModelSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean modelIdFound = false;
+            String modelId = null;
+            boolean createdDateTimeFound = false;
+            OffsetDateTime createdDateTime = null;
+            String description = null;
+            OffsetDateTime expirationDateTime = null;
+            String apiVersion = null;
+            Map<String, String> tags = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("modelId".equals(fieldName)) {
+                    modelId = reader.getString();
+                    modelIdFound = true;
+                } else if ("createdDateTime".equals(fieldName)) {
+                    createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    createdDateTimeFound = true;
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("expirationDateTime".equals(fieldName)) {
+                    expirationDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("apiVersion".equals(fieldName)) {
+                    apiVersion = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readMap(reader1 -> reader1.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (modelIdFound && createdDateTimeFound) {
+                DocumentModelSummary deserializedDocumentModelSummary
+                    = new DocumentModelSummary(modelId, createdDateTime);
+                deserializedDocumentModelSummary.description = description;
+                deserializedDocumentModelSummary.expirationDateTime = expirationDateTime;
+                deserializedDocumentModelSummary.apiVersion = apiVersion;
+                deserializedDocumentModelSummary.tags = tags;
+
+                return deserializedDocumentModelSummary;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!modelIdFound) {
+                missingProperties.add("modelId");
+            }
+            if (!createdDateTimeFound) {
+                missingProperties.add("createdDateTime");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

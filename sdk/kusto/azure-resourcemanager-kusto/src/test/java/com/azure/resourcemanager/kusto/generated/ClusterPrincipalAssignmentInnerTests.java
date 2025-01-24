@@ -9,34 +9,29 @@ import com.azure.resourcemanager.kusto.fluent.models.ClusterPrincipalAssignmentI
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalRole;
 import com.azure.resourcemanager.kusto.models.PrincipalType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterPrincipalAssignmentInnerTests {
-    @Test
-    public void testDeserialize() {
-        ClusterPrincipalAssignmentInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"principalId\":\"dkcglhsl\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"dyggdtjixhbku\",\"principalType\":\"App\",\"tenantName\":\"wey\",\"principalName\":\"menevfyexfwh\",\"provisioningState\":\"Creating\",\"aadObjectId\":\"bvyvdcsity\"},\"id\":\"naamde\",\"name\":\"tehfiqscjeypvh\",\"type\":\"zrkgqhcjrefovg\"}")
-                .toObject(ClusterPrincipalAssignmentInner.class);
-        Assertions.assertEquals("dkcglhsl", model.principalId());
-        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, model.role());
-        Assertions.assertEquals("dyggdtjixhbku", model.tenantId());
-        Assertions.assertEquals(PrincipalType.APP, model.principalType());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ClusterPrincipalAssignmentInner model = BinaryData.fromString(
+            "{\"properties\":{\"principalId\":\"vzwdzuhtymwis\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"thwxmnteiwaopvkm\",\"principalType\":\"Group\",\"tenantName\":\"mmxdcu\",\"principalName\":\"fsrpymzidnse\",\"provisioningState\":\"Moving\",\"aadObjectId\":\"bzsgfyccsne\"},\"id\":\"mdwzjeiachboo\",\"name\":\"flnrosfqpteehzz\",\"type\":\"ypyqrimzinp\"}")
+            .toObject(ClusterPrincipalAssignmentInner.class);
+        Assertions.assertEquals("vzwdzuhtymwis", model.principalId());
+        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_VIEWER, model.role());
+        Assertions.assertEquals("thwxmnteiwaopvkm", model.tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
     }
 
-    @Test
-    public void testSerialize() {
-        ClusterPrincipalAssignmentInner model =
-            new ClusterPrincipalAssignmentInner()
-                .withPrincipalId("dkcglhsl")
-                .withRole(ClusterPrincipalRole.ALL_DATABASES_ADMIN)
-                .withTenantId("dyggdtjixhbku")
-                .withPrincipalType(PrincipalType.APP);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ClusterPrincipalAssignmentInner model = new ClusterPrincipalAssignmentInner().withPrincipalId("vzwdzuhtymwis")
+            .withRole(ClusterPrincipalRole.ALL_DATABASES_VIEWER)
+            .withTenantId("thwxmnteiwaopvkm")
+            .withPrincipalType(PrincipalType.GROUP);
         model = BinaryData.fromObject(model).toObject(ClusterPrincipalAssignmentInner.class);
-        Assertions.assertEquals("dkcglhsl", model.principalId());
-        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, model.role());
-        Assertions.assertEquals("dyggdtjixhbku", model.tenantId());
-        Assertions.assertEquals(PrincipalType.APP, model.principalType());
+        Assertions.assertEquals("vzwdzuhtymwis", model.principalId());
+        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_VIEWER, model.role());
+        Assertions.assertEquals("thwxmnteiwaopvkm", model.tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
     }
 }

@@ -6,72 +6,71 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.HDInsightActivityDebugInfoOption;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** HDInsight MapReduce activity properties. */
+/**
+ * HDInsight MapReduce activity properties.
+ */
 @Fluent
-public final class HDInsightMapReduceActivityTypeProperties {
+public final class HDInsightMapReduceActivityTypeProperties
+    implements JsonSerializable<HDInsightMapReduceActivityTypeProperties> {
     /*
      * Storage linked service references.
      */
-    @JsonProperty(value = "storageLinkedServices")
     private List<LinkedServiceReference> storageLinkedServices;
 
     /*
      * User specified arguments to HDInsightActivity.
      */
-    @JsonProperty(value = "arguments")
     private List<Object> arguments;
 
     /*
      * Debug info option.
      */
-    @JsonProperty(value = "getDebugInfo")
     private HDInsightActivityDebugInfoOption getDebugInfo;
 
     /*
      * Class name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "className", required = true)
     private Object className;
 
     /*
      * Jar path. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "jarFilePath", required = true)
     private Object jarFilePath;
 
     /*
      * Jar linked service reference.
      */
-    @JsonProperty(value = "jarLinkedService")
     private LinkedServiceReference jarLinkedService;
 
     /*
      * Jar libs.
      */
-    @JsonProperty(value = "jarLibs")
     private List<Object> jarLibs;
 
     /*
      * Allows user to specify defines for the MapReduce job request.
      */
-    @JsonProperty(value = "defines")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> defines;
 
-    /** Creates an instance of HDInsightMapReduceActivityTypeProperties class. */
+    /**
+     * Creates an instance of HDInsightMapReduceActivityTypeProperties class.
+     */
     public HDInsightMapReduceActivityTypeProperties() {
     }
 
     /**
      * Get the storageLinkedServices property: Storage linked service references.
-     *
+     * 
      * @return the storageLinkedServices value.
      */
     public List<LinkedServiceReference> storageLinkedServices() {
@@ -80,19 +79,19 @@ public final class HDInsightMapReduceActivityTypeProperties {
 
     /**
      * Set the storageLinkedServices property: Storage linked service references.
-     *
+     * 
      * @param storageLinkedServices the storageLinkedServices value to set.
      * @return the HDInsightMapReduceActivityTypeProperties object itself.
      */
-    public HDInsightMapReduceActivityTypeProperties withStorageLinkedServices(
-        List<LinkedServiceReference> storageLinkedServices) {
+    public HDInsightMapReduceActivityTypeProperties
+        withStorageLinkedServices(List<LinkedServiceReference> storageLinkedServices) {
         this.storageLinkedServices = storageLinkedServices;
         return this;
     }
 
     /**
      * Get the arguments property: User specified arguments to HDInsightActivity.
-     *
+     * 
      * @return the arguments value.
      */
     public List<Object> arguments() {
@@ -101,7 +100,7 @@ public final class HDInsightMapReduceActivityTypeProperties {
 
     /**
      * Set the arguments property: User specified arguments to HDInsightActivity.
-     *
+     * 
      * @param arguments the arguments value to set.
      * @return the HDInsightMapReduceActivityTypeProperties object itself.
      */
@@ -112,7 +111,7 @@ public final class HDInsightMapReduceActivityTypeProperties {
 
     /**
      * Get the getDebugInfo property: Debug info option.
-     *
+     * 
      * @return the getDebugInfo value.
      */
     public HDInsightActivityDebugInfoOption getDebugInfo() {
@@ -121,7 +120,7 @@ public final class HDInsightMapReduceActivityTypeProperties {
 
     /**
      * Set the getDebugInfo property: Debug info option.
-     *
+     * 
      * @param getDebugInfo the getDebugInfo value to set.
      * @return the HDInsightMapReduceActivityTypeProperties object itself.
      */
@@ -132,7 +131,7 @@ public final class HDInsightMapReduceActivityTypeProperties {
 
     /**
      * Get the className property: Class name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the className value.
      */
     public Object className() {
@@ -141,7 +140,7 @@ public final class HDInsightMapReduceActivityTypeProperties {
 
     /**
      * Set the className property: Class name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param className the className value to set.
      * @return the HDInsightMapReduceActivityTypeProperties object itself.
      */
@@ -152,7 +151,7 @@ public final class HDInsightMapReduceActivityTypeProperties {
 
     /**
      * Get the jarFilePath property: Jar path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the jarFilePath value.
      */
     public Object jarFilePath() {
@@ -161,7 +160,7 @@ public final class HDInsightMapReduceActivityTypeProperties {
 
     /**
      * Set the jarFilePath property: Jar path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param jarFilePath the jarFilePath value to set.
      * @return the HDInsightMapReduceActivityTypeProperties object itself.
      */
@@ -172,7 +171,7 @@ public final class HDInsightMapReduceActivityTypeProperties {
 
     /**
      * Get the jarLinkedService property: Jar linked service reference.
-     *
+     * 
      * @return the jarLinkedService value.
      */
     public LinkedServiceReference jarLinkedService() {
@@ -181,7 +180,7 @@ public final class HDInsightMapReduceActivityTypeProperties {
 
     /**
      * Set the jarLinkedService property: Jar linked service reference.
-     *
+     * 
      * @param jarLinkedService the jarLinkedService value to set.
      * @return the HDInsightMapReduceActivityTypeProperties object itself.
      */
@@ -192,7 +191,7 @@ public final class HDInsightMapReduceActivityTypeProperties {
 
     /**
      * Get the jarLibs property: Jar libs.
-     *
+     * 
      * @return the jarLibs value.
      */
     public List<Object> jarLibs() {
@@ -201,7 +200,7 @@ public final class HDInsightMapReduceActivityTypeProperties {
 
     /**
      * Set the jarLibs property: Jar libs.
-     *
+     * 
      * @param jarLibs the jarLibs value to set.
      * @return the HDInsightMapReduceActivityTypeProperties object itself.
      */
@@ -212,7 +211,7 @@ public final class HDInsightMapReduceActivityTypeProperties {
 
     /**
      * Get the defines property: Allows user to specify defines for the MapReduce job request.
-     *
+     * 
      * @return the defines value.
      */
     public Map<String, Object> defines() {
@@ -221,7 +220,7 @@ public final class HDInsightMapReduceActivityTypeProperties {
 
     /**
      * Set the defines property: Allows user to specify defines for the MapReduce job request.
-     *
+     * 
      * @param defines the defines value to set.
      * @return the HDInsightMapReduceActivityTypeProperties object itself.
      */
@@ -232,7 +231,7 @@ public final class HDInsightMapReduceActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -240,16 +239,14 @@ public final class HDInsightMapReduceActivityTypeProperties {
             storageLinkedServices().forEach(e -> e.validate());
         }
         if (className() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property className in model HDInsightMapReduceActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property className in model HDInsightMapReduceActivityTypeProperties"));
         }
         if (jarFilePath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property jarFilePath in model HDInsightMapReduceActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property jarFilePath in model HDInsightMapReduceActivityTypeProperties"));
         }
         if (jarLinkedService() != null) {
             jarLinkedService().validate();
@@ -257,4 +254,71 @@ public final class HDInsightMapReduceActivityTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HDInsightMapReduceActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("className", this.className);
+        jsonWriter.writeUntypedField("jarFilePath", this.jarFilePath);
+        jsonWriter.writeArrayField("storageLinkedServices", this.storageLinkedServices,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("arguments", this.arguments, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("getDebugInfo", this.getDebugInfo == null ? null : this.getDebugInfo.toString());
+        jsonWriter.writeJsonField("jarLinkedService", this.jarLinkedService);
+        jsonWriter.writeArrayField("jarLibs", this.jarLibs, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("defines", this.defines, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HDInsightMapReduceActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HDInsightMapReduceActivityTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HDInsightMapReduceActivityTypeProperties.
+     */
+    public static HDInsightMapReduceActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HDInsightMapReduceActivityTypeProperties deserializedHDInsightMapReduceActivityTypeProperties
+                = new HDInsightMapReduceActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("className".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivityTypeProperties.className = reader.readUntyped();
+                } else if ("jarFilePath".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivityTypeProperties.jarFilePath = reader.readUntyped();
+                } else if ("storageLinkedServices".equals(fieldName)) {
+                    List<LinkedServiceReference> storageLinkedServices
+                        = reader.readArray(reader1 -> LinkedServiceReference.fromJson(reader1));
+                    deserializedHDInsightMapReduceActivityTypeProperties.storageLinkedServices = storageLinkedServices;
+                } else if ("arguments".equals(fieldName)) {
+                    List<Object> arguments = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedHDInsightMapReduceActivityTypeProperties.arguments = arguments;
+                } else if ("getDebugInfo".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivityTypeProperties.getDebugInfo
+                        = HDInsightActivityDebugInfoOption.fromString(reader.getString());
+                } else if ("jarLinkedService".equals(fieldName)) {
+                    deserializedHDInsightMapReduceActivityTypeProperties.jarLinkedService
+                        = LinkedServiceReference.fromJson(reader);
+                } else if ("jarLibs".equals(fieldName)) {
+                    List<Object> jarLibs = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedHDInsightMapReduceActivityTypeProperties.jarLibs = jarLibs;
+                } else if ("defines".equals(fieldName)) {
+                    Map<String, Object> defines = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedHDInsightMapReduceActivityTypeProperties.defines = defines;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHDInsightMapReduceActivityTypeProperties;
+        });
+    }
 }

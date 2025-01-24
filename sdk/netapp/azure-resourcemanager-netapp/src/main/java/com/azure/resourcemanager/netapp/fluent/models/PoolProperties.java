@@ -6,83 +6,82 @@ package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.EncryptionType;
 import com.azure.resourcemanager.netapp.models.QosType;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Pool properties. */
+/**
+ * Pool properties.
+ */
 @Fluent
-public final class PoolProperties {
+public final class PoolProperties implements JsonSerializable<PoolProperties> {
     /*
-     * poolId
-     *
      * UUID v4 used to identify the Pool
      */
-    @JsonProperty(value = "poolId", access = JsonProperty.Access.WRITE_ONLY)
     private String poolId;
 
     /*
-     * size
-     *
-     * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
-     * 4398046511104).
+     * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiple of
+     * 1099511627776).
      */
-    @JsonProperty(value = "size", required = true)
     private long size;
 
     /*
-     * serviceLevel
-     *
      * The service level of the file system
      */
-    @JsonProperty(value = "serviceLevel", required = true)
     private ServiceLevel serviceLevel;
 
     /*
      * Azure lifecycle management
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Total throughput of pool in MiB/s
      */
-    @JsonProperty(value = "totalThroughputMibps", access = JsonProperty.Access.WRITE_ONLY)
     private Float totalThroughputMibps;
 
     /*
      * Utilized throughput of pool in MiB/s
      */
-    @JsonProperty(value = "utilizedThroughputMibps", access = JsonProperty.Access.WRITE_ONLY)
     private Float utilizedThroughputMibps;
+
+    /*
+     * Maximum throughput in MiB/s that can be achieved by this pool and this will be accepted as input only for manual
+     * qosType pool with Flexible service level
+     */
+    private Float customThroughputMibps;
 
     /*
      * The qos type of the pool
      */
-    @JsonProperty(value = "qosType")
     private QosType qosType;
 
     /*
      * If enabled (true) the pool can contain cool Access enabled volumes.
      */
-    @JsonProperty(value = "coolAccess")
     private Boolean coolAccess;
 
     /*
-     * encryptionType
-     *
      * Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it.
      * This value can only be set when creating new pool.
      */
-    @JsonProperty(value = "encryptionType")
     private EncryptionType encryptionType;
 
     /**
-     * Get the poolId property: poolId
-     *
-     * <p>UUID v4 used to identify the Pool.
-     *
+     * Creates an instance of PoolProperties class.
+     */
+    public PoolProperties() {
+    }
+
+    /**
+     * Get the poolId property: UUID v4 used to identify the Pool.
+     * 
      * @return the poolId value.
      */
     public String poolId() {
@@ -90,11 +89,9 @@ public final class PoolProperties {
     }
 
     /**
-     * Get the size property: size
-     *
-     * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
-     * 4398046511104).
-     *
+     * Get the size property: Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be
+     * multiple of 1099511627776).
+     * 
      * @return the size value.
      */
     public long size() {
@@ -102,11 +99,9 @@ public final class PoolProperties {
     }
 
     /**
-     * Set the size property: size
-     *
-     * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
-     * 4398046511104).
-     *
+     * Set the size property: Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be
+     * multiple of 1099511627776).
+     * 
      * @param size the size value to set.
      * @return the PoolProperties object itself.
      */
@@ -116,10 +111,8 @@ public final class PoolProperties {
     }
 
     /**
-     * Get the serviceLevel property: serviceLevel
-     *
-     * <p>The service level of the file system.
-     *
+     * Get the serviceLevel property: The service level of the file system.
+     * 
      * @return the serviceLevel value.
      */
     public ServiceLevel serviceLevel() {
@@ -127,10 +120,8 @@ public final class PoolProperties {
     }
 
     /**
-     * Set the serviceLevel property: serviceLevel
-     *
-     * <p>The service level of the file system.
-     *
+     * Set the serviceLevel property: The service level of the file system.
+     * 
      * @param serviceLevel the serviceLevel value to set.
      * @return the PoolProperties object itself.
      */
@@ -141,7 +132,7 @@ public final class PoolProperties {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -150,7 +141,7 @@ public final class PoolProperties {
 
     /**
      * Get the totalThroughputMibps property: Total throughput of pool in MiB/s.
-     *
+     * 
      * @return the totalThroughputMibps value.
      */
     public Float totalThroughputMibps() {
@@ -159,7 +150,7 @@ public final class PoolProperties {
 
     /**
      * Get the utilizedThroughputMibps property: Utilized throughput of pool in MiB/s.
-     *
+     * 
      * @return the utilizedThroughputMibps value.
      */
     public Float utilizedThroughputMibps() {
@@ -167,8 +158,30 @@ public final class PoolProperties {
     }
 
     /**
+     * Get the customThroughputMibps property: Maximum throughput in MiB/s that can be achieved by this pool and this
+     * will be accepted as input only for manual qosType pool with Flexible service level.
+     * 
+     * @return the customThroughputMibps value.
+     */
+    public Float customThroughputMibps() {
+        return this.customThroughputMibps;
+    }
+
+    /**
+     * Set the customThroughputMibps property: Maximum throughput in MiB/s that can be achieved by this pool and this
+     * will be accepted as input only for manual qosType pool with Flexible service level.
+     * 
+     * @param customThroughputMibps the customThroughputMibps value to set.
+     * @return the PoolProperties object itself.
+     */
+    public PoolProperties withCustomThroughputMibps(Float customThroughputMibps) {
+        this.customThroughputMibps = customThroughputMibps;
+        return this;
+    }
+
+    /**
      * Get the qosType property: The qos type of the pool.
-     *
+     * 
      * @return the qosType value.
      */
     public QosType qosType() {
@@ -177,7 +190,7 @@ public final class PoolProperties {
 
     /**
      * Set the qosType property: The qos type of the pool.
-     *
+     * 
      * @param qosType the qosType value to set.
      * @return the PoolProperties object itself.
      */
@@ -188,7 +201,7 @@ public final class PoolProperties {
 
     /**
      * Get the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
-     *
+     * 
      * @return the coolAccess value.
      */
     public Boolean coolAccess() {
@@ -197,7 +210,7 @@ public final class PoolProperties {
 
     /**
      * Set the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
-     *
+     * 
      * @param coolAccess the coolAccess value to set.
      * @return the PoolProperties object itself.
      */
@@ -207,11 +220,9 @@ public final class PoolProperties {
     }
 
     /**
-     * Get the encryptionType property: encryptionType
-     *
-     * <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in
-     * it. This value can only be set when creating new pool.
-     *
+     * Get the encryptionType property: Encryption type of the capacity pool, set encryption type for data at rest for
+     * this pool and all volumes in it. This value can only be set when creating new pool.
+     * 
      * @return the encryptionType value.
      */
     public EncryptionType encryptionType() {
@@ -219,11 +230,9 @@ public final class PoolProperties {
     }
 
     /**
-     * Set the encryptionType property: encryptionType
-     *
-     * <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in
-     * it. This value can only be set when creating new pool.
-     *
+     * Set the encryptionType property: Encryption type of the capacity pool, set encryption type for data at rest for
+     * this pool and all volumes in it. This value can only be set when creating new pool.
+     * 
      * @param encryptionType the encryptionType value to set.
      * @return the PoolProperties object itself.
      */
@@ -234,16 +243,76 @@ public final class PoolProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serviceLevel() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property serviceLevel in model PoolProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property serviceLevel in model PoolProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PoolProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeLongField("size", this.size);
+        jsonWriter.writeStringField("serviceLevel", this.serviceLevel == null ? null : this.serviceLevel.toString());
+        jsonWriter.writeNumberField("customThroughputMibps", this.customThroughputMibps);
+        jsonWriter.writeStringField("qosType", this.qosType == null ? null : this.qosType.toString());
+        jsonWriter.writeBooleanField("coolAccess", this.coolAccess);
+        jsonWriter.writeStringField("encryptionType",
+            this.encryptionType == null ? null : this.encryptionType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PoolProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PoolProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PoolProperties.
+     */
+    public static PoolProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PoolProperties deserializedPoolProperties = new PoolProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("size".equals(fieldName)) {
+                    deserializedPoolProperties.size = reader.getLong();
+                } else if ("serviceLevel".equals(fieldName)) {
+                    deserializedPoolProperties.serviceLevel = ServiceLevel.fromString(reader.getString());
+                } else if ("poolId".equals(fieldName)) {
+                    deserializedPoolProperties.poolId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPoolProperties.provisioningState = reader.getString();
+                } else if ("totalThroughputMibps".equals(fieldName)) {
+                    deserializedPoolProperties.totalThroughputMibps = reader.getNullable(JsonReader::getFloat);
+                } else if ("utilizedThroughputMibps".equals(fieldName)) {
+                    deserializedPoolProperties.utilizedThroughputMibps = reader.getNullable(JsonReader::getFloat);
+                } else if ("customThroughputMibps".equals(fieldName)) {
+                    deserializedPoolProperties.customThroughputMibps = reader.getNullable(JsonReader::getFloat);
+                } else if ("qosType".equals(fieldName)) {
+                    deserializedPoolProperties.qosType = QosType.fromString(reader.getString());
+                } else if ("coolAccess".equals(fieldName)) {
+                    deserializedPoolProperties.coolAccess = reader.getNullable(JsonReader::getBoolean);
+                } else if ("encryptionType".equals(fieldName)) {
+                    deserializedPoolProperties.encryptionType = EncryptionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPoolProperties;
+        });
+    }
 }

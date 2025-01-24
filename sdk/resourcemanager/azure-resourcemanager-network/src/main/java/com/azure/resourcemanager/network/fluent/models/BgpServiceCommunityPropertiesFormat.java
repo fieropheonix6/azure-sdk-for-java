@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.BgpCommunity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of Service Community. */
+/**
+ * Properties of Service Community.
+ */
 @Fluent
-public final class BgpServiceCommunityPropertiesFormat {
+public final class BgpServiceCommunityPropertiesFormat
+    implements JsonSerializable<BgpServiceCommunityPropertiesFormat> {
     /*
      * The name of the bgp community. e.g. Skype.
      */
-    @JsonProperty(value = "serviceName")
     private String serviceName;
 
     /*
      * A list of bgp communities.
      */
-    @JsonProperty(value = "bgpCommunities")
     private List<BgpCommunity> bgpCommunities;
 
-    /** Creates an instance of BgpServiceCommunityPropertiesFormat class. */
+    /**
+     * Creates an instance of BgpServiceCommunityPropertiesFormat class.
+     */
     public BgpServiceCommunityPropertiesFormat() {
     }
 
     /**
      * Get the serviceName property: The name of the bgp community. e.g. Skype.
-     *
+     * 
      * @return the serviceName value.
      */
     public String serviceName() {
@@ -39,7 +46,7 @@ public final class BgpServiceCommunityPropertiesFormat {
 
     /**
      * Set the serviceName property: The name of the bgp community. e.g. Skype.
-     *
+     * 
      * @param serviceName the serviceName value to set.
      * @return the BgpServiceCommunityPropertiesFormat object itself.
      */
@@ -50,7 +57,7 @@ public final class BgpServiceCommunityPropertiesFormat {
 
     /**
      * Get the bgpCommunities property: A list of bgp communities.
-     *
+     * 
      * @return the bgpCommunities value.
      */
     public List<BgpCommunity> bgpCommunities() {
@@ -59,7 +66,7 @@ public final class BgpServiceCommunityPropertiesFormat {
 
     /**
      * Set the bgpCommunities property: A list of bgp communities.
-     *
+     * 
      * @param bgpCommunities the bgpCommunities value to set.
      * @return the BgpServiceCommunityPropertiesFormat object itself.
      */
@@ -70,12 +77,54 @@ public final class BgpServiceCommunityPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (bgpCommunities() != null) {
             bgpCommunities().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceName", this.serviceName);
+        jsonWriter.writeArrayField("bgpCommunities", this.bgpCommunities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BgpServiceCommunityPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BgpServiceCommunityPropertiesFormat if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BgpServiceCommunityPropertiesFormat.
+     */
+    public static BgpServiceCommunityPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BgpServiceCommunityPropertiesFormat deserializedBgpServiceCommunityPropertiesFormat
+                = new BgpServiceCommunityPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceName".equals(fieldName)) {
+                    deserializedBgpServiceCommunityPropertiesFormat.serviceName = reader.getString();
+                } else if ("bgpCommunities".equals(fieldName)) {
+                    List<BgpCommunity> bgpCommunities = reader.readArray(reader1 -> BgpCommunity.fromJson(reader1));
+                    deserializedBgpServiceCommunityPropertiesFormat.bgpCommunities = bgpCommunities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBgpServiceCommunityPropertiesFormat;
+        });
     }
 }

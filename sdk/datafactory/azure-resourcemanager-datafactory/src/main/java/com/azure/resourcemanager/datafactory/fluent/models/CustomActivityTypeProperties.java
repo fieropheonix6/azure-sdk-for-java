@@ -6,68 +6,67 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.CustomActivityReferenceObject;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Custom activity properties. */
+/**
+ * Custom activity properties.
+ */
 @Fluent
-public final class CustomActivityTypeProperties {
+public final class CustomActivityTypeProperties implements JsonSerializable<CustomActivityTypeProperties> {
     /*
      * Command for custom activity Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "command", required = true)
     private Object command;
 
     /*
      * Resource linked service reference.
      */
-    @JsonProperty(value = "resourceLinkedService")
     private LinkedServiceReference resourceLinkedService;
 
     /*
      * Folder path for resource files Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "folderPath")
     private Object folderPath;
 
     /*
      * Reference objects
      */
-    @JsonProperty(value = "referenceObjects")
     private CustomActivityReferenceObject referenceObjects;
 
     /*
      * User defined property bag. There is no restriction on the keys or values that can be used. The user specified
      * custom activity has the full responsibility to consume and interpret the content defined.
      */
-    @JsonProperty(value = "extendedProperties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> extendedProperties;
 
     /*
      * The retention time for the files submitted for custom activity. Type: double (or Expression with resultType
      * double).
      */
-    @JsonProperty(value = "retentionTimeInDays")
     private Object retentionTimeInDays;
 
     /*
      * Elevation level and scope for the user, default is nonadmin task. Type: string (or Expression with resultType
      * double).
      */
-    @JsonProperty(value = "autoUserSpecification")
     private Object autoUserSpecification;
 
-    /** Creates an instance of CustomActivityTypeProperties class. */
+    /**
+     * Creates an instance of CustomActivityTypeProperties class.
+     */
     public CustomActivityTypeProperties() {
     }
 
     /**
      * Get the command property: Command for custom activity Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the command value.
      */
     public Object command() {
@@ -76,7 +75,7 @@ public final class CustomActivityTypeProperties {
 
     /**
      * Set the command property: Command for custom activity Type: string (or Expression with resultType string).
-     *
+     * 
      * @param command the command value to set.
      * @return the CustomActivityTypeProperties object itself.
      */
@@ -87,7 +86,7 @@ public final class CustomActivityTypeProperties {
 
     /**
      * Get the resourceLinkedService property: Resource linked service reference.
-     *
+     * 
      * @return the resourceLinkedService value.
      */
     public LinkedServiceReference resourceLinkedService() {
@@ -96,7 +95,7 @@ public final class CustomActivityTypeProperties {
 
     /**
      * Set the resourceLinkedService property: Resource linked service reference.
-     *
+     * 
      * @param resourceLinkedService the resourceLinkedService value to set.
      * @return the CustomActivityTypeProperties object itself.
      */
@@ -107,7 +106,7 @@ public final class CustomActivityTypeProperties {
 
     /**
      * Get the folderPath property: Folder path for resource files Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the folderPath value.
      */
     public Object folderPath() {
@@ -116,7 +115,7 @@ public final class CustomActivityTypeProperties {
 
     /**
      * Set the folderPath property: Folder path for resource files Type: string (or Expression with resultType string).
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the CustomActivityTypeProperties object itself.
      */
@@ -127,7 +126,7 @@ public final class CustomActivityTypeProperties {
 
     /**
      * Get the referenceObjects property: Reference objects.
-     *
+     * 
      * @return the referenceObjects value.
      */
     public CustomActivityReferenceObject referenceObjects() {
@@ -136,7 +135,7 @@ public final class CustomActivityTypeProperties {
 
     /**
      * Set the referenceObjects property: Reference objects.
-     *
+     * 
      * @param referenceObjects the referenceObjects value to set.
      * @return the CustomActivityTypeProperties object itself.
      */
@@ -149,7 +148,7 @@ public final class CustomActivityTypeProperties {
      * Get the extendedProperties property: User defined property bag. There is no restriction on the keys or values
      * that can be used. The user specified custom activity has the full responsibility to consume and interpret the
      * content defined.
-     *
+     * 
      * @return the extendedProperties value.
      */
     public Map<String, Object> extendedProperties() {
@@ -160,7 +159,7 @@ public final class CustomActivityTypeProperties {
      * Set the extendedProperties property: User defined property bag. There is no restriction on the keys or values
      * that can be used. The user specified custom activity has the full responsibility to consume and interpret the
      * content defined.
-     *
+     * 
      * @param extendedProperties the extendedProperties value to set.
      * @return the CustomActivityTypeProperties object itself.
      */
@@ -172,7 +171,7 @@ public final class CustomActivityTypeProperties {
     /**
      * Get the retentionTimeInDays property: The retention time for the files submitted for custom activity. Type:
      * double (or Expression with resultType double).
-     *
+     * 
      * @return the retentionTimeInDays value.
      */
     public Object retentionTimeInDays() {
@@ -182,7 +181,7 @@ public final class CustomActivityTypeProperties {
     /**
      * Set the retentionTimeInDays property: The retention time for the files submitted for custom activity. Type:
      * double (or Expression with resultType double).
-     *
+     * 
      * @param retentionTimeInDays the retentionTimeInDays value to set.
      * @return the CustomActivityTypeProperties object itself.
      */
@@ -194,7 +193,7 @@ public final class CustomActivityTypeProperties {
     /**
      * Get the autoUserSpecification property: Elevation level and scope for the user, default is nonadmin task. Type:
      * string (or Expression with resultType double).
-     *
+     * 
      * @return the autoUserSpecification value.
      */
     public Object autoUserSpecification() {
@@ -204,7 +203,7 @@ public final class CustomActivityTypeProperties {
     /**
      * Set the autoUserSpecification property: Elevation level and scope for the user, default is nonadmin task. Type:
      * string (or Expression with resultType double).
-     *
+     * 
      * @param autoUserSpecification the autoUserSpecification value to set.
      * @return the CustomActivityTypeProperties object itself.
      */
@@ -215,15 +214,14 @@ public final class CustomActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (command() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property command in model CustomActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property command in model CustomActivityTypeProperties"));
         }
         if (resourceLinkedService() != null) {
             resourceLinkedService().validate();
@@ -234,4 +232,63 @@ public final class CustomActivityTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("command", this.command);
+        jsonWriter.writeJsonField("resourceLinkedService", this.resourceLinkedService);
+        jsonWriter.writeUntypedField("folderPath", this.folderPath);
+        jsonWriter.writeJsonField("referenceObjects", this.referenceObjects);
+        jsonWriter.writeMapField("extendedProperties", this.extendedProperties,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeUntypedField("retentionTimeInDays", this.retentionTimeInDays);
+        jsonWriter.writeUntypedField("autoUserSpecification", this.autoUserSpecification);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomActivityTypeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomActivityTypeProperties.
+     */
+    public static CustomActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomActivityTypeProperties deserializedCustomActivityTypeProperties = new CustomActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("command".equals(fieldName)) {
+                    deserializedCustomActivityTypeProperties.command = reader.readUntyped();
+                } else if ("resourceLinkedService".equals(fieldName)) {
+                    deserializedCustomActivityTypeProperties.resourceLinkedService
+                        = LinkedServiceReference.fromJson(reader);
+                } else if ("folderPath".equals(fieldName)) {
+                    deserializedCustomActivityTypeProperties.folderPath = reader.readUntyped();
+                } else if ("referenceObjects".equals(fieldName)) {
+                    deserializedCustomActivityTypeProperties.referenceObjects
+                        = CustomActivityReferenceObject.fromJson(reader);
+                } else if ("extendedProperties".equals(fieldName)) {
+                    Map<String, Object> extendedProperties = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedCustomActivityTypeProperties.extendedProperties = extendedProperties;
+                } else if ("retentionTimeInDays".equals(fieldName)) {
+                    deserializedCustomActivityTypeProperties.retentionTimeInDays = reader.readUntyped();
+                } else if ("autoUserSpecification".equals(fieldName)) {
+                    deserializedCustomActivityTypeProperties.autoUserSpecification = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomActivityTypeProperties;
+        });
+    }
 }

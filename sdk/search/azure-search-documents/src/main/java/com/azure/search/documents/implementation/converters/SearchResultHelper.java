@@ -5,7 +5,8 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchDocument;
-import com.azure.search.documents.models.CaptionResult;
+import com.azure.search.documents.models.DocumentDebugInfo;
+import com.azure.search.documents.models.QueryCaptionResult;
 import com.azure.search.documents.models.SearchResult;
 
 import java.util.List;
@@ -17,17 +18,23 @@ import java.util.Map;
 public final class SearchResultHelper {
     private static SearchResultAccessor accessor;
 
-    private SearchResultHelper() { }
+    private SearchResultHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link SearchResult} instance.
      */
     public interface SearchResultAccessor {
         void setAdditionalProperties(SearchResult searchResult, SearchDocument additionalProperties);
+
         void setHighlights(SearchResult searchResult, Map<String, List<String>> highlights);
+
         void setJsonSerializer(SearchResult searchResult, JsonSerializer jsonSerializer);
-        void setRerankerScore(SearchResult searchResult, Double rerankerScore);
-        void setCaptions(SearchResult searchResult, List<CaptionResult> captions);
+
+        void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore,
+            List<QueryCaptionResult> captions);
+
+        void setDocumentDebugInfo(SearchResult searchResult, DocumentDebugInfo documentDebugInfo);
     }
 
     /**
@@ -51,11 +58,12 @@ public final class SearchResultHelper {
         accessor.setJsonSerializer(searchResult, jsonSerializer);
     }
 
-    static void setRerankerScore(SearchResult searchResult, Double rerankerScore) {
-        accessor.setRerankerScore(searchResult, rerankerScore);
+    static void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore,
+        List<QueryCaptionResult> captions) {
+        accessor.setSemanticSearchResults(searchResult, rerankerScore, captions);
     }
 
-    static void setCaptions(SearchResult searchResult, List<CaptionResult> captions) {
-        accessor.setCaptions(searchResult, captions);
+    static void setDocumentDebugInfo(SearchResult searchResult, DocumentDebugInfo documentDebugInfo) {
+        accessor.setDocumentDebugInfo(searchResult, documentDebugInfo);
     }
 }

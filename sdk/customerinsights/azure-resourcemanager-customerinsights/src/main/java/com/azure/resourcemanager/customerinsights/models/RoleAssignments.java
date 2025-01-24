@@ -8,36 +8,53 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of RoleAssignments. */
+/**
+ * Resource collection API of RoleAssignments.
+ */
 public interface RoleAssignments {
     /**
      * Gets all the role assignments for the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the role assignments for the specified hub.
+     * @return all the role assignments for the specified hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RoleAssignmentResourceFormat> listByHub(String resourceGroupName, String hubName);
 
     /**
      * Gets all the role assignments for the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the role assignments for the specified hub.
+     * @return all the role assignments for the specified hub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RoleAssignmentResourceFormat> listByHub(String resourceGroupName, String hubName, Context context);
 
     /**
      * Gets the role assignment in the hub.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param assignmentName The name of the role assignment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the role assignment in the hub along with {@link Response}.
+     */
+    Response<RoleAssignmentResourceFormat> getWithResponse(String resourceGroupName, String hubName,
+        String assignmentName, Context context);
+
+    /**
+     * Gets the role assignment in the hub.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The name of the role assignment.
@@ -49,8 +66,8 @@ public interface RoleAssignments {
     RoleAssignmentResourceFormat get(String resourceGroupName, String hubName, String assignmentName);
 
     /**
-     * Gets the role assignment in the hub.
-     *
+     * Deletes the role assignment in the hub.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The name of the role assignment.
@@ -58,14 +75,13 @@ public interface RoleAssignments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment in the hub.
+     * @return the {@link Response}.
      */
-    Response<RoleAssignmentResourceFormat> getWithResponse(
-        String resourceGroupName, String hubName, String assignmentName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String hubName, String assignmentName, Context context);
 
     /**
      * Deletes the role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The name of the role assignment.
@@ -76,45 +92,31 @@ public interface RoleAssignments {
     void delete(String resourceGroupName, String hubName, String assignmentName);
 
     /**
-     * Deletes the role assignment in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param assignmentName The name of the role assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteWithResponse(String resourceGroupName, String hubName, String assignmentName, Context context);
-
-    /**
      * Gets the role assignment in the hub.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment in the hub.
+     * @return the role assignment in the hub along with {@link Response}.
      */
     RoleAssignmentResourceFormat getById(String id);
 
     /**
      * Gets the role assignment in the hub.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment in the hub.
+     * @return the role assignment in the hub along with {@link Response}.
      */
     Response<RoleAssignmentResourceFormat> getByIdWithResponse(String id, Context context);
 
     /**
      * Deletes the role assignment in the hub.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,19 +126,19 @@ public interface RoleAssignments {
 
     /**
      * Deletes the role assignment in the hub.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new RoleAssignmentResourceFormat resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new RoleAssignmentResourceFormat definition.
      */

@@ -6,38 +6,43 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.SsisLogLocationTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** SSIS package execution log location. */
+/**
+ * SSIS package execution log location.
+ */
 @Fluent
-public final class SsisLogLocation {
+public final class SsisLogLocation implements JsonSerializable<SsisLogLocation> {
     /*
      * The SSIS package execution log path. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "logPath", required = true)
     private Object logPath;
 
     /*
      * The type of SSIS log location.
      */
-    @JsonProperty(value = "type", required = true)
     private SsisLogLocationType type;
 
     /*
      * SSIS package execution log location properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private SsisLogLocationTypeProperties innerTypeProperties = new SsisLogLocationTypeProperties();
 
-    /** Creates an instance of SsisLogLocation class. */
+    /**
+     * Creates an instance of SsisLogLocation class.
+     */
     public SsisLogLocation() {
     }
 
     /**
      * Get the logPath property: The SSIS package execution log path. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the logPath value.
      */
     public Object logPath() {
@@ -47,7 +52,7 @@ public final class SsisLogLocation {
     /**
      * Set the logPath property: The SSIS package execution log path. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param logPath the logPath value to set.
      * @return the SsisLogLocation object itself.
      */
@@ -58,7 +63,7 @@ public final class SsisLogLocation {
 
     /**
      * Get the type property: The type of SSIS log location.
-     *
+     * 
      * @return the type value.
      */
     public SsisLogLocationType type() {
@@ -67,7 +72,7 @@ public final class SsisLogLocation {
 
     /**
      * Set the type property: The type of SSIS log location.
-     *
+     * 
      * @param type the type value to set.
      * @return the SsisLogLocation object itself.
      */
@@ -78,7 +83,7 @@ public final class SsisLogLocation {
 
     /**
      * Get the innerTypeProperties property: SSIS package execution log location properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private SsisLogLocationTypeProperties innerTypeProperties() {
@@ -87,7 +92,7 @@ public final class SsisLogLocation {
 
     /**
      * Get the accessCredential property: The package execution log access credential.
-     *
+     * 
      * @return the accessCredential value.
      */
     public SsisAccessCredential accessCredential() {
@@ -96,7 +101,7 @@ public final class SsisLogLocation {
 
     /**
      * Set the accessCredential property: The package execution log access credential.
-     *
+     * 
      * @param accessCredential the accessCredential value to set.
      * @return the SsisLogLocation object itself.
      */
@@ -112,7 +117,7 @@ public final class SsisLogLocation {
      * Get the logRefreshInterval property: Specifies the interval to refresh log. The default interval is 5 minutes.
      * Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the logRefreshInterval value.
      */
     public Object logRefreshInterval() {
@@ -123,7 +128,7 @@ public final class SsisLogLocation {
      * Set the logRefreshInterval property: Specifies the interval to refresh log. The default interval is 5 minutes.
      * Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param logRefreshInterval the logRefreshInterval value to set.
      * @return the SsisLogLocation object itself.
      */
@@ -137,29 +142,69 @@ public final class SsisLogLocation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (logPath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property logPath in model SsisLogLocation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property logPath in model SsisLogLocation"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model SsisLogLocation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model SsisLogLocation"));
         }
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model SsisLogLocation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SsisLogLocation"));
         } else {
             innerTypeProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SsisLogLocation.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("logPath", this.logPath);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsisLogLocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsisLogLocation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SsisLogLocation.
+     */
+    public static SsisLogLocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsisLogLocation deserializedSsisLogLocation = new SsisLogLocation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logPath".equals(fieldName)) {
+                    deserializedSsisLogLocation.logPath = reader.readUntyped();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSsisLogLocation.type = SsisLogLocationType.fromString(reader.getString());
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedSsisLogLocation.innerTypeProperties = SsisLogLocationTypeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsisLogLocation;
+        });
+    }
 }

@@ -14,14 +14,16 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeQuotaRuleInner;
 import com.azure.resourcemanager.netapp.models.VolumeQuotaRulePatch;
 
-/** An instance of this class provides access to all the operations defined in VolumeQuotaRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VolumeQuotaRulesClient.
+ */
 public interface VolumeQuotaRulesClient {
     /**
      * Get all quota rules for a volume
-     *
-     * <p>List all quota rules associated with the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all quota rules associated with the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -31,15 +33,15 @@ public interface VolumeQuotaRulesClient {
      * @return list of Volume Quota Rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VolumeQuotaRuleInner> listByVolume(
-        String resourceGroupName, String accountName, String poolName, String volumeName);
+    PagedIterable<VolumeQuotaRuleInner> listByVolume(String resourceGroupName, String accountName, String poolName,
+        String volumeName);
 
     /**
      * Get all quota rules for a volume
-     *
-     * <p>List all quota rules associated with the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all quota rules associated with the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -50,34 +52,15 @@ public interface VolumeQuotaRulesClient {
      * @return list of Volume Quota Rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VolumeQuotaRuleInner> listByVolume(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    PagedIterable<VolumeQuotaRuleInner> listByVolume(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context);
 
     /**
      * Describe a quota rule
-     *
-     * <p>Get details of the specified quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified quota rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VolumeQuotaRuleInner get(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName);
-
-    /**
-     * Describe a quota rule
-     *
-     * <p>Get details of the specified quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get details of the specified quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -89,20 +72,34 @@ public interface VolumeQuotaRulesClient {
      * @return details of the specified quota rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VolumeQuotaRuleInner> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        Context context);
+    Response<VolumeQuotaRuleInner> getWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String volumeQuotaRuleName, Context context);
+
+    /**
+     * Describe a quota rule
+     * 
+     * Get details of the specified quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param volumeQuotaRuleName The name of volume quota rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified quota rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VolumeQuotaRuleInner get(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName);
 
     /**
      * Create a quota rule
-     *
-     * <p>Create the specified quota rule within the given volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create the specified quota rule within the given volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -114,20 +111,15 @@ public interface VolumeQuotaRulesClient {
      * @return the {@link SyncPoller} for polling of quota Rule of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRuleInner body);
+    SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginCreate(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String volumeQuotaRuleName, VolumeQuotaRuleInner body);
 
     /**
      * Create a quota rule
-     *
-     * <p>Create the specified quota rule within the given volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create the specified quota rule within the given volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -140,21 +132,16 @@ public interface VolumeQuotaRulesClient {
      * @return the {@link SyncPoller} for polling of quota Rule of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRuleInner body,
+    SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginCreate(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String volumeQuotaRuleName, VolumeQuotaRuleInner body,
         Context context);
 
     /**
      * Create a quota rule
-     *
-     * <p>Create the specified quota rule within the given volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create the specified quota rule within the given volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -166,20 +153,15 @@ public interface VolumeQuotaRulesClient {
      * @return quota Rule of a Volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VolumeQuotaRuleInner create(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRuleInner body);
+    VolumeQuotaRuleInner create(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName, VolumeQuotaRuleInner body);
 
     /**
      * Create a quota rule
-     *
-     * <p>Create the specified quota rule within the given volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create the specified quota rule within the given volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -192,21 +174,15 @@ public interface VolumeQuotaRulesClient {
      * @return quota Rule of a Volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VolumeQuotaRuleInner create(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRuleInner body,
-        Context context);
+    VolumeQuotaRuleInner create(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName, VolumeQuotaRuleInner body, Context context);
 
     /**
      * Update a quota rule
-     *
-     * <p>Patch a quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -218,20 +194,15 @@ public interface VolumeQuotaRulesClient {
      * @return the {@link SyncPoller} for polling of quota Rule of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRulePatch body);
+    SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginUpdate(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String volumeQuotaRuleName, VolumeQuotaRulePatch body);
 
     /**
      * Update a quota rule
-     *
-     * <p>Patch a quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -244,21 +215,16 @@ public interface VolumeQuotaRulesClient {
      * @return the {@link SyncPoller} for polling of quota Rule of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRulePatch body,
+    SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginUpdate(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String volumeQuotaRuleName, VolumeQuotaRulePatch body,
         Context context);
 
     /**
      * Update a quota rule
-     *
-     * <p>Patch a quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -270,20 +236,15 @@ public interface VolumeQuotaRulesClient {
      * @return quota Rule of a Volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VolumeQuotaRuleInner update(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRulePatch body);
+    VolumeQuotaRuleInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName, VolumeQuotaRulePatch body);
 
     /**
      * Update a quota rule
-     *
-     * <p>Patch a quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -296,21 +257,15 @@ public interface VolumeQuotaRulesClient {
      * @return quota Rule of a Volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VolumeQuotaRuleInner update(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRulePatch body,
-        Context context);
+    VolumeQuotaRuleInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName, VolumeQuotaRulePatch body, Context context);
 
     /**
      * Delete a quota rule
-     *
-     * <p>Delete quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -321,15 +276,15 @@ public interface VolumeQuotaRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String volumeQuotaRuleName);
 
     /**
      * Delete a quota rule
-     *
-     * <p>Delete quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -341,20 +296,15 @@ public interface VolumeQuotaRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String volumeQuotaRuleName, Context context);
 
     /**
      * Delete a quota rule
-     *
-     * <p>Delete quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -364,15 +314,15 @@ public interface VolumeQuotaRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName);
+    void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName);
 
     /**
      * Delete a quota rule
-     *
-     * <p>Delete quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -383,11 +333,6 @@ public interface VolumeQuotaRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        Context context);
+    void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName, Context context);
 }

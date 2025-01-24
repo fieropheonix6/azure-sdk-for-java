@@ -4,58 +4,55 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.OrchestrationServiceNames;
 import com.azure.resourcemanager.compute.models.OrchestrationServiceStateAction;
 import com.azure.resourcemanager.compute.models.OrchestrationServiceStateInput;
 
-/** Samples for VirtualMachineScaleSets SetOrchestrationServiceState. */
+/**
+ * Samples for VirtualMachineScaleSets SetOrchestrationServiceState.
+ */
 public final class VirtualMachineScaleSetsSetOrchestrationServiceStateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_SetOrchestrationServiceState_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_SetOrchestrationServiceState_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_SetOrchestrationServiceState_MinimumSet_Gen.
-     *
+     * Sample code: VirtualMachineScaleSet_SetOrchestrationServiceState_MinimumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsSetOrchestrationServiceStateMinimumSetGen(
+    public static void virtualMachineScaleSetSetOrchestrationServiceStateMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .setOrchestrationServiceState(
-                "rgcompute",
-                "aaaaaaaaaaaaaaaaaaaaaaaa",
-                new OrchestrationServiceStateInput()
-                    .withServiceName(OrchestrationServiceNames.AUTOMATIC_REPAIRS)
+            .setOrchestrationServiceState("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaa",
+                new OrchestrationServiceStateInput().withServiceName(OrchestrationServiceNames.AUTOMATIC_REPAIRS)
                     .withAction(OrchestrationServiceStateAction.RESUME),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_SetOrchestrationServiceState_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_SetOrchestrationServiceState_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_SetOrchestrationServiceState_MaximumSet_Gen.
-     *
+     * Sample code: VirtualMachineScaleSet_SetOrchestrationServiceState_MaximumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsSetOrchestrationServiceStateMaximumSetGen(
+    public static void virtualMachineScaleSetSetOrchestrationServiceStateMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .setOrchestrationServiceState(
-                "rgcompute",
-                "aaaaaaaaaaaaaaaa",
-                new OrchestrationServiceStateInput()
-                    .withServiceName(OrchestrationServiceNames.AUTOMATIC_REPAIRS)
+            .setOrchestrationServiceState("rgcompute", "aaaaaaaaaaaaaaaa",
+                new OrchestrationServiceStateInput().withServiceName(OrchestrationServiceNames.AUTOMATIC_REPAIRS)
                     .withAction(OrchestrationServiceStateAction.RESUME),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

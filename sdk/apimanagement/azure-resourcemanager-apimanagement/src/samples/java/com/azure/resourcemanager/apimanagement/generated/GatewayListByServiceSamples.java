@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Gateway ListByService. */
+/**
+ * Samples for Gateway ListByService.
+ */
 public final class GatewayListByServiceSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListGateways.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementListGateways.json
      */
     /**
      * Sample code: ApiManagementListGateways.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementListGateways(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.gateways().listByService("rg1", "apimService1", null, null, null, Context.NONE);
+        manager.gateways().listByService("rg1", "apimService1", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

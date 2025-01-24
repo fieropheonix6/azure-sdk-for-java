@@ -6,41 +6,44 @@ package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The properties of the application type version resource. */
+/**
+ * The properties of the application type version resource.
+ */
 @Fluent
-public final class ApplicationTypeVersionResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationTypeVersionResourceProperties.class);
-
+public final class ApplicationTypeVersionResourceProperties
+    implements JsonSerializable<ApplicationTypeVersionResourceProperties> {
     /*
-     * The current deployment or provisioning state, which only appears in the
-     * response
+     * The current deployment or provisioning state, which only appears in the response
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The URL to the application package
      */
-    @JsonProperty(value = "appPackageUrl", required = true)
     private String appPackageUrl;
 
     /*
-     * List of application type parameters that can be overridden when creating
-     * or updating the application.
+     * List of application type parameters that can be overridden when creating or updating the application.
      */
-    @JsonProperty(value = "defaultParameterList", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> defaultParameterList;
+
+    /**
+     * Creates an instance of ApplicationTypeVersionResourceProperties class.
+     */
+    public ApplicationTypeVersionResourceProperties() {
+    }
 
     /**
      * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
      * response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -49,7 +52,7 @@ public final class ApplicationTypeVersionResourceProperties {
 
     /**
      * Get the appPackageUrl property: The URL to the application package.
-     *
+     * 
      * @return the appPackageUrl value.
      */
     public String appPackageUrl() {
@@ -58,7 +61,7 @@ public final class ApplicationTypeVersionResourceProperties {
 
     /**
      * Set the appPackageUrl property: The URL to the application package.
-     *
+     * 
      * @param appPackageUrl the appPackageUrl value to set.
      * @return the ApplicationTypeVersionResourceProperties object itself.
      */
@@ -70,7 +73,7 @@ public final class ApplicationTypeVersionResourceProperties {
     /**
      * Get the defaultParameterList property: List of application type parameters that can be overridden when creating
      * or updating the application.
-     *
+     * 
      * @return the defaultParameterList value.
      */
     public Map<String, String> defaultParameterList() {
@@ -79,15 +82,59 @@ public final class ApplicationTypeVersionResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (appPackageUrl() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property appPackageUrl in model ApplicationTypeVersionResourceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property appPackageUrl in model ApplicationTypeVersionResourceProperties"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationTypeVersionResourceProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("appPackageUrl", this.appPackageUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationTypeVersionResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationTypeVersionResourceProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationTypeVersionResourceProperties.
+     */
+    public static ApplicationTypeVersionResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationTypeVersionResourceProperties deserializedApplicationTypeVersionResourceProperties
+                = new ApplicationTypeVersionResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("appPackageUrl".equals(fieldName)) {
+                    deserializedApplicationTypeVersionResourceProperties.appPackageUrl = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationTypeVersionResourceProperties.provisioningState = reader.getString();
+                } else if ("defaultParameterList".equals(fieldName)) {
+                    Map<String, String> defaultParameterList = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApplicationTypeVersionResourceProperties.defaultParameterList = defaultParameterList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationTypeVersionResourceProperties;
+        });
     }
 }

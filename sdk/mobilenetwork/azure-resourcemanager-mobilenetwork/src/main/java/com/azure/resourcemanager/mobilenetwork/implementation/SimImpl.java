@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mobilenetwork.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
@@ -11,8 +12,10 @@ import com.azure.resourcemanager.mobilenetwork.models.Sim;
 import com.azure.resourcemanager.mobilenetwork.models.SimPolicyResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.SimState;
 import com.azure.resourcemanager.mobilenetwork.models.SimStaticIpProperties;
+import com.azure.resourcemanager.mobilenetwork.models.SiteProvisioningState;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
     private SimInner innerObject;
@@ -31,20 +34,8 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
         return this.innerModel().type();
     }
 
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public SimState simState() {
-        return this.innerModel().simState();
-    }
-
-    public String internationalMobileSubscriberIdentity() {
-        return this.innerModel().internationalMobileSubscriberIdentity();
-    }
-
-    public String integratedCircuitCardIdentifier() {
-        return this.innerModel().integratedCircuitCardIdentifier();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String authenticationKey() {
@@ -53,6 +44,31 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
 
     public String operatorKeyCode() {
         return this.innerModel().operatorKeyCode();
+    }
+
+    public ProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public SimState simState() {
+        return this.innerModel().simState();
+    }
+
+    public Map<String, SiteProvisioningState> siteProvisioningState() {
+        Map<String, SiteProvisioningState> inner = this.innerModel().siteProvisioningState();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
+    public String internationalMobileSubscriberIdentity() {
+        return this.innerModel().internationalMobileSubscriberIdentity();
+    }
+
+    public String integratedCircuitCardIdentifier() {
+        return this.innerModel().integratedCircuitCardIdentifier();
     }
 
     public String deviceType() {
@@ -70,6 +86,14 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public String vendorName() {
+        return this.innerModel().vendorName();
+    }
+
+    public String vendorKeyFingerprint() {
+        return this.innerModel().vendorKeyFingerprint();
     }
 
     public String resourceGroupName() {
@@ -97,20 +121,16 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
     }
 
     public Sim create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSims()
-                .createOrUpdate(resourceGroupName, simGroupName, simName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSims()
+            .createOrUpdate(resourceGroupName, simGroupName, simName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Sim create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSims()
-                .createOrUpdate(resourceGroupName, simGroupName, simName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSims()
+            .createOrUpdate(resourceGroupName, simGroupName, simName, this.innerModel(), context);
         return this;
     }
 
@@ -125,58 +145,45 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
     }
 
     public Sim apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSims()
-                .createOrUpdate(resourceGroupName, simGroupName, simName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSims()
+            .createOrUpdate(resourceGroupName, simGroupName, simName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Sim apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSims()
-                .createOrUpdate(resourceGroupName, simGroupName, simName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSims()
+            .createOrUpdate(resourceGroupName, simGroupName, simName, this.innerModel(), context);
         return this;
     }
 
     SimImpl(SimInner innerObject, com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.simGroupName = Utils.getValueFromIdByName(innerObject.id(), "simGroups");
-        this.simName = Utils.getValueFromIdByName(innerObject.id(), "sims");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.simGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "simGroups");
+        this.simName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sims");
     }
 
     public Sim refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSims()
-                .getWithResponse(resourceGroupName, simGroupName, simName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSims()
+            .getWithResponse(resourceGroupName, simGroupName, simName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Sim refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSims()
-                .getWithResponse(resourceGroupName, simGroupName, simName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSims()
+            .getWithResponse(resourceGroupName, simGroupName, simName, context)
+            .getValue();
         return this;
     }
 
     public SimImpl withInternationalMobileSubscriberIdentity(String internationalMobileSubscriberIdentity) {
         this.innerModel().withInternationalMobileSubscriberIdentity(internationalMobileSubscriberIdentity);
-        return this;
-    }
-
-    public SimImpl withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier) {
-        this.innerModel().withIntegratedCircuitCardIdentifier(integratedCircuitCardIdentifier);
         return this;
     }
 
@@ -187,6 +194,11 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
 
     public SimImpl withOperatorKeyCode(String operatorKeyCode) {
         this.innerModel().withOperatorKeyCode(operatorKeyCode);
+        return this;
+    }
+
+    public SimImpl withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier) {
+        this.innerModel().withIntegratedCircuitCardIdentifier(integratedCircuitCardIdentifier);
         return this;
     }
 

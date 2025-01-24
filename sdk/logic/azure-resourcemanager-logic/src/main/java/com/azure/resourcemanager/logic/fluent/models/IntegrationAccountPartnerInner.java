@@ -5,138 +5,99 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.PartnerContent;
 import com.azure.resourcemanager.logic.models.PartnerType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The integration account partner. */
-@JsonFlatten
+/**
+ * The integration account partner.
+ */
 @Fluent
-public class IntegrationAccountPartnerInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountPartnerInner.class);
+public final class IntegrationAccountPartnerInner extends Resource {
+    /*
+     * The integration account partner properties.
+     */
+    private IntegrationAccountPartnerProperties innerProperties = new IntegrationAccountPartnerProperties();
 
     /*
-     * The partner type.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.partnerType", required = true)
-    private PartnerType partnerType;
+    private String type;
 
     /*
-     * The created time.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.createdTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdTime;
+    private String name;
 
     /*
-     * The changed time.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.changedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime changedTime;
-
-    /*
-     * The metadata.
-     */
-    @JsonProperty(value = "properties.metadata")
-    private Object metadata;
-
-    /*
-     * The partner content.
-     */
-    @JsonProperty(value = "properties.content", required = true)
-    private PartnerContent content;
+    private String id;
 
     /**
-     * Get the partnerType property: The partner type.
-     *
-     * @return the partnerType value.
+     * Creates an instance of IntegrationAccountPartnerInner class.
      */
-    public PartnerType partnerType() {
-        return this.partnerType;
+    public IntegrationAccountPartnerInner() {
     }
 
     /**
-     * Set the partnerType property: The partner type.
-     *
-     * @param partnerType the partnerType value to set.
-     * @return the IntegrationAccountPartnerInner object itself.
+     * Get the innerProperties property: The integration account partner properties.
+     * 
+     * @return the innerProperties value.
      */
-    public IntegrationAccountPartnerInner withPartnerType(PartnerType partnerType) {
-        this.partnerType = partnerType;
-        return this;
+    private IntegrationAccountPartnerProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the createdTime property: The created time.
-     *
-     * @return the createdTime value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public OffsetDateTime createdTime() {
-        return this.createdTime;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the changedTime property: The changed time.
-     *
-     * @return the changedTime value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public OffsetDateTime changedTime() {
-        return this.changedTime;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the metadata property: The metadata.
-     *
-     * @return the metadata value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public Object metadata() {
-        return this.metadata;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Set the metadata property: The metadata.
-     *
-     * @param metadata the metadata value to set.
-     * @return the IntegrationAccountPartnerInner object itself.
+     * {@inheritDoc}
      */
-    public IntegrationAccountPartnerInner withMetadata(Object metadata) {
-        this.metadata = metadata;
-        return this;
-    }
-
-    /**
-     * Get the content property: The partner content.
-     *
-     * @return the content value.
-     */
-    public PartnerContent content() {
-        return this.content;
-    }
-
-    /**
-     * Set the content property: The partner content.
-     *
-     * @param content the content value to set.
-     * @return the IntegrationAccountPartnerInner object itself.
-     */
-    public IntegrationAccountPartnerInner withContent(PartnerContent content) {
-        this.content = content;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public IntegrationAccountPartnerInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IntegrationAccountPartnerInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -144,24 +105,158 @@ public class IntegrationAccountPartnerInner extends Resource {
     }
 
     /**
+     * Get the partnerType property: The partner type.
+     * 
+     * @return the partnerType value.
+     */
+    public PartnerType partnerType() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerType();
+    }
+
+    /**
+     * Set the partnerType property: The partner type.
+     * 
+     * @param partnerType the partnerType value to set.
+     * @return the IntegrationAccountPartnerInner object itself.
+     */
+    public IntegrationAccountPartnerInner withPartnerType(PartnerType partnerType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountPartnerProperties();
+        }
+        this.innerProperties().withPartnerType(partnerType);
+        return this;
+    }
+
+    /**
+     * Get the createdTime property: The created time.
+     * 
+     * @return the createdTime value.
+     */
+    public OffsetDateTime createdTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdTime();
+    }
+
+    /**
+     * Get the changedTime property: The changed time.
+     * 
+     * @return the changedTime value.
+     */
+    public OffsetDateTime changedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().changedTime();
+    }
+
+    /**
+     * Get the metadata property: The metadata.
+     * 
+     * @return the metadata value.
+     */
+    public Object metadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
+    }
+
+    /**
+     * Set the metadata property: The metadata.
+     * 
+     * @param metadata the metadata value to set.
+     * @return the IntegrationAccountPartnerInner object itself.
+     */
+    public IntegrationAccountPartnerInner withMetadata(Object metadata) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountPartnerProperties();
+        }
+        this.innerProperties().withMetadata(metadata);
+        return this;
+    }
+
+    /**
+     * Get the content property: The partner content.
+     * 
+     * @return the content value.
+     */
+    public PartnerContent content() {
+        return this.innerProperties() == null ? null : this.innerProperties().content();
+    }
+
+    /**
+     * Set the content property: The partner content.
+     * 
+     * @param content the content value to set.
+     * @return the IntegrationAccountPartnerInner object itself.
+     */
+    public IntegrationAccountPartnerInner withContent(PartnerContent content) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountPartnerProperties();
+        }
+        this.innerProperties().withContent(content);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (partnerType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property partnerType in model IntegrationAccountPartnerInner"));
-        }
-        if (content() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property content in model IntegrationAccountPartnerInner"));
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model IntegrationAccountPartnerInner"));
         } else {
-            content().validate();
+            innerProperties().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountPartnerInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationAccountPartnerInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationAccountPartnerInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IntegrationAccountPartnerInner.
+     */
+    public static IntegrationAccountPartnerInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationAccountPartnerInner deserializedIntegrationAccountPartnerInner
+                = new IntegrationAccountPartnerInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIntegrationAccountPartnerInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIntegrationAccountPartnerInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIntegrationAccountPartnerInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedIntegrationAccountPartnerInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIntegrationAccountPartnerInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIntegrationAccountPartnerInner.innerProperties
+                        = IntegrationAccountPartnerProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationAccountPartnerInner;
+        });
     }
 }

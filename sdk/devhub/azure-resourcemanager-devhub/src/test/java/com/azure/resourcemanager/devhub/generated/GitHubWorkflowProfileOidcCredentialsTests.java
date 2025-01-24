@@ -7,27 +7,23 @@ package com.azure.resourcemanager.devhub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devhub.models.GitHubWorkflowProfileOidcCredentials;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class GitHubWorkflowProfileOidcCredentialsTests {
-    @Test
-    public void testDeserialize() {
-        GitHubWorkflowProfileOidcCredentials model =
-            BinaryData
-                .fromString("{\"azureClientId\":\"odgmaajrmvdjwz\",\"azureTenantId\":\"ovmclwhijcoejct\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        GitHubWorkflowProfileOidcCredentials model
+            = BinaryData.fromString("{\"azureClientId\":\"u\",\"azureTenantId\":\"krlkhbzhfepg\"}")
                 .toObject(GitHubWorkflowProfileOidcCredentials.class);
-        Assertions.assertEquals("odgmaajrmvdjwz", model.azureClientId());
-        Assertions.assertEquals("ovmclwhijcoejct", model.azureTenantId());
+        Assertions.assertEquals("u", model.azureClientId());
+        Assertions.assertEquals("krlkhbzhfepg", model.azureTenantId());
     }
 
-    @Test
-    public void testSerialize() {
-        GitHubWorkflowProfileOidcCredentials model =
-            new GitHubWorkflowProfileOidcCredentials()
-                .withAzureClientId("odgmaajrmvdjwz")
-                .withAzureTenantId("ovmclwhijcoejct");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        GitHubWorkflowProfileOidcCredentials model
+            = new GitHubWorkflowProfileOidcCredentials().withAzureClientId("u").withAzureTenantId("krlkhbzhfepg");
         model = BinaryData.fromObject(model).toObject(GitHubWorkflowProfileOidcCredentials.class);
-        Assertions.assertEquals("odgmaajrmvdjwz", model.azureClientId());
-        Assertions.assertEquals("ovmclwhijcoejct", model.azureTenantId());
+        Assertions.assertEquals("u", model.azureClientId());
+        Assertions.assertEquals("krlkhbzhfepg", model.azureTenantId());
     }
 }

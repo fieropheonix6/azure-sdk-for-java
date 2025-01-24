@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry;
 
-import com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryConfigurationProperties;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 
 import java.time.Duration;
@@ -14,7 +13,7 @@ import java.time.Duration;
 public class AmqpRetryConfigurationProperties extends RetryConfigurationProperties implements RetryOptionsProvider.AmqpRetryOptions {
 
     /**
-     * Amount of time to wait until a timeout.
+     * Amount of time(Duration) to wait until a timeout.
      */
     private Duration tryTimeout;
 

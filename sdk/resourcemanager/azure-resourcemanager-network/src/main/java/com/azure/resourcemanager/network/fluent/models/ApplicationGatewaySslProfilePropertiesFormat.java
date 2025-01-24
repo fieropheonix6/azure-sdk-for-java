@@ -6,47 +6,52 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayClientAuthConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of SSL profile of an application gateway. */
+/**
+ * Properties of SSL profile of an application gateway.
+ */
 @Fluent
-public final class ApplicationGatewaySslProfilePropertiesFormat {
+public final class ApplicationGatewaySslProfilePropertiesFormat
+    implements JsonSerializable<ApplicationGatewaySslProfilePropertiesFormat> {
     /*
      * Array of references to application gateway trusted client certificates.
      */
-    @JsonProperty(value = "trustedClientCertificates")
     private List<SubResource> trustedClientCertificates;
 
     /*
      * SSL policy of the application gateway resource.
      */
-    @JsonProperty(value = "sslPolicy")
     private ApplicationGatewaySslPolicy sslPolicy;
 
     /*
      * Client authentication configuration of the application gateway resource.
      */
-    @JsonProperty(value = "clientAuthConfiguration")
     private ApplicationGatewayClientAuthConfiguration clientAuthConfiguration;
 
     /*
      * The provisioning state of the HTTP listener resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ApplicationGatewaySslProfilePropertiesFormat class. */
+    /**
+     * Creates an instance of ApplicationGatewaySslProfilePropertiesFormat class.
+     */
     public ApplicationGatewaySslProfilePropertiesFormat() {
     }
 
     /**
      * Get the trustedClientCertificates property: Array of references to application gateway trusted client
      * certificates.
-     *
+     * 
      * @return the trustedClientCertificates value.
      */
     public List<SubResource> trustedClientCertificates() {
@@ -56,19 +61,19 @@ public final class ApplicationGatewaySslProfilePropertiesFormat {
     /**
      * Set the trustedClientCertificates property: Array of references to application gateway trusted client
      * certificates.
-     *
+     * 
      * @param trustedClientCertificates the trustedClientCertificates value to set.
      * @return the ApplicationGatewaySslProfilePropertiesFormat object itself.
      */
-    public ApplicationGatewaySslProfilePropertiesFormat withTrustedClientCertificates(
-        List<SubResource> trustedClientCertificates) {
+    public ApplicationGatewaySslProfilePropertiesFormat
+        withTrustedClientCertificates(List<SubResource> trustedClientCertificates) {
         this.trustedClientCertificates = trustedClientCertificates;
         return this;
     }
 
     /**
      * Get the sslPolicy property: SSL policy of the application gateway resource.
-     *
+     * 
      * @return the sslPolicy value.
      */
     public ApplicationGatewaySslPolicy sslPolicy() {
@@ -77,7 +82,7 @@ public final class ApplicationGatewaySslProfilePropertiesFormat {
 
     /**
      * Set the sslPolicy property: SSL policy of the application gateway resource.
-     *
+     * 
      * @param sslPolicy the sslPolicy value to set.
      * @return the ApplicationGatewaySslProfilePropertiesFormat object itself.
      */
@@ -89,7 +94,7 @@ public final class ApplicationGatewaySslProfilePropertiesFormat {
     /**
      * Get the clientAuthConfiguration property: Client authentication configuration of the application gateway
      * resource.
-     *
+     * 
      * @return the clientAuthConfiguration value.
      */
     public ApplicationGatewayClientAuthConfiguration clientAuthConfiguration() {
@@ -99,19 +104,19 @@ public final class ApplicationGatewaySslProfilePropertiesFormat {
     /**
      * Set the clientAuthConfiguration property: Client authentication configuration of the application gateway
      * resource.
-     *
+     * 
      * @param clientAuthConfiguration the clientAuthConfiguration value to set.
      * @return the ApplicationGatewaySslProfilePropertiesFormat object itself.
      */
-    public ApplicationGatewaySslProfilePropertiesFormat withClientAuthConfiguration(
-        ApplicationGatewayClientAuthConfiguration clientAuthConfiguration) {
+    public ApplicationGatewaySslProfilePropertiesFormat
+        withClientAuthConfiguration(ApplicationGatewayClientAuthConfiguration clientAuthConfiguration) {
         this.clientAuthConfiguration = clientAuthConfiguration;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the HTTP listener resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -120,7 +125,7 @@ public final class ApplicationGatewaySslProfilePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -130,5 +135,57 @@ public final class ApplicationGatewaySslProfilePropertiesFormat {
         if (clientAuthConfiguration() != null) {
             clientAuthConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("trustedClientCertificates", this.trustedClientCertificates,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("sslPolicy", this.sslPolicy);
+        jsonWriter.writeJsonField("clientAuthConfiguration", this.clientAuthConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewaySslProfilePropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewaySslProfilePropertiesFormat if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewaySslProfilePropertiesFormat.
+     */
+    public static ApplicationGatewaySslProfilePropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewaySslProfilePropertiesFormat deserializedApplicationGatewaySslProfilePropertiesFormat
+                = new ApplicationGatewaySslProfilePropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("trustedClientCertificates".equals(fieldName)) {
+                    List<SubResource> trustedClientCertificates
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedApplicationGatewaySslProfilePropertiesFormat.trustedClientCertificates
+                        = trustedClientCertificates;
+                } else if ("sslPolicy".equals(fieldName)) {
+                    deserializedApplicationGatewaySslProfilePropertiesFormat.sslPolicy
+                        = ApplicationGatewaySslPolicy.fromJson(reader);
+                } else if ("clientAuthConfiguration".equals(fieldName)) {
+                    deserializedApplicationGatewaySslProfilePropertiesFormat.clientAuthConfiguration
+                        = ApplicationGatewayClientAuthConfiguration.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationGatewaySslProfilePropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewaySslProfilePropertiesFormat;
+        });
     }
 }

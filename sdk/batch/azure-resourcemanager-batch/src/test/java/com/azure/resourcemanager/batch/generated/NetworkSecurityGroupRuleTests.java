@@ -9,34 +9,29 @@ import com.azure.resourcemanager.batch.models.NetworkSecurityGroupRule;
 import com.azure.resourcemanager.batch.models.NetworkSecurityGroupRuleAccess;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NetworkSecurityGroupRuleTests {
-    @Test
-    public void testDeserialize() {
-        NetworkSecurityGroupRule model =
-            BinaryData
-                .fromString(
-                    "{\"priority\":1383619855,\"access\":\"Deny\",\"sourceAddressPrefix\":\"tbobz\",\"sourcePortRanges\":[\"cjwvn\",\"dldwmgxc\"]}")
-                .toObject(NetworkSecurityGroupRule.class);
-        Assertions.assertEquals(1383619855, model.priority());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        NetworkSecurityGroupRule model = BinaryData.fromString(
+            "{\"priority\":1515133247,\"access\":\"Deny\",\"sourceAddressPrefix\":\"ffimrzrtuzqogsex\",\"sourcePortRanges\":[\"fdnw\",\"wmewzsyy\",\"euzsoi\",\"judpfrxt\"]}")
+            .toObject(NetworkSecurityGroupRule.class);
+        Assertions.assertEquals(1515133247, model.priority());
         Assertions.assertEquals(NetworkSecurityGroupRuleAccess.DENY, model.access());
-        Assertions.assertEquals("tbobz", model.sourceAddressPrefix());
-        Assertions.assertEquals("cjwvn", model.sourcePortRanges().get(0));
+        Assertions.assertEquals("ffimrzrtuzqogsex", model.sourceAddressPrefix());
+        Assertions.assertEquals("fdnw", model.sourcePortRanges().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        NetworkSecurityGroupRule model =
-            new NetworkSecurityGroupRule()
-                .withPriority(1383619855)
-                .withAccess(NetworkSecurityGroupRuleAccess.DENY)
-                .withSourceAddressPrefix("tbobz")
-                .withSourcePortRanges(Arrays.asList("cjwvn", "dldwmgxc"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        NetworkSecurityGroupRule model = new NetworkSecurityGroupRule().withPriority(1515133247)
+            .withAccess(NetworkSecurityGroupRuleAccess.DENY)
+            .withSourceAddressPrefix("ffimrzrtuzqogsex")
+            .withSourcePortRanges(Arrays.asList("fdnw", "wmewzsyy", "euzsoi", "judpfrxt"));
         model = BinaryData.fromObject(model).toObject(NetworkSecurityGroupRule.class);
-        Assertions.assertEquals(1383619855, model.priority());
+        Assertions.assertEquals(1515133247, model.priority());
         Assertions.assertEquals(NetworkSecurityGroupRuleAccess.DENY, model.access());
-        Assertions.assertEquals("tbobz", model.sourceAddressPrefix());
-        Assertions.assertEquals("cjwvn", model.sourcePortRanges().get(0));
+        Assertions.assertEquals("ffimrzrtuzqogsex", model.sourceAddressPrefix());
+        Assertions.assertEquals("fdnw", model.sourcePortRanges().get(0));
     }
 }

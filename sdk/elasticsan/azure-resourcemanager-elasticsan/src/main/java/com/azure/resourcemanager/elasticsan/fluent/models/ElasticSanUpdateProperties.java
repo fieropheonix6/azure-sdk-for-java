@@ -5,30 +5,49 @@
 package com.azure.resourcemanager.elasticsan.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.elasticsan.models.AutoScaleProperties;
+import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
+import java.io.IOException;
 
-/** Elastic San update properties. */
+/**
+ * Elastic San update properties.
+ */
 @Fluent
-public final class ElasticSanUpdateProperties {
+public final class ElasticSanUpdateProperties implements JsonSerializable<ElasticSanUpdateProperties> {
     /*
      * Base size of the Elastic San appliance in TiB.
      */
-    @JsonProperty(value = "baseSizeTiB")
     private Long baseSizeTiB;
 
     /*
      * Extended size of the Elastic San appliance in TiB.
      */
-    @JsonProperty(value = "extendedCapacitySizeTiB")
     private Long extendedCapacitySizeTiB;
 
-    /** Creates an instance of ElasticSanUpdateProperties class. */
+    /*
+     * Allow or disallow public network access to ElasticSan Account. Value is optional but if passed in, must be
+     * 'Enabled' or 'Disabled'.
+     */
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * Auto Scale Properties for Elastic San Appliance.
+     */
+    private AutoScaleProperties autoScaleProperties;
+
+    /**
+     * Creates an instance of ElasticSanUpdateProperties class.
+     */
     public ElasticSanUpdateProperties() {
     }
 
     /**
      * Get the baseSizeTiB property: Base size of the Elastic San appliance in TiB.
-     *
+     * 
      * @return the baseSizeTiB value.
      */
     public Long baseSizeTiB() {
@@ -37,7 +56,7 @@ public final class ElasticSanUpdateProperties {
 
     /**
      * Set the baseSizeTiB property: Base size of the Elastic San appliance in TiB.
-     *
+     * 
      * @param baseSizeTiB the baseSizeTiB value to set.
      * @return the ElasticSanUpdateProperties object itself.
      */
@@ -48,7 +67,7 @@ public final class ElasticSanUpdateProperties {
 
     /**
      * Get the extendedCapacitySizeTiB property: Extended size of the Elastic San appliance in TiB.
-     *
+     * 
      * @return the extendedCapacitySizeTiB value.
      */
     public Long extendedCapacitySizeTiB() {
@@ -57,7 +76,7 @@ public final class ElasticSanUpdateProperties {
 
     /**
      * Set the extendedCapacitySizeTiB property: Extended size of the Elastic San appliance in TiB.
-     *
+     * 
      * @param extendedCapacitySizeTiB the extendedCapacitySizeTiB value to set.
      * @return the ElasticSanUpdateProperties object itself.
      */
@@ -67,10 +86,103 @@ public final class ElasticSanUpdateProperties {
     }
 
     /**
+     * Get the publicNetworkAccess property: Allow or disallow public network access to ElasticSan Account. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Allow or disallow public network access to ElasticSan Account. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ElasticSanUpdateProperties object itself.
+     */
+    public ElasticSanUpdateProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the autoScaleProperties property: Auto Scale Properties for Elastic San Appliance.
+     * 
+     * @return the autoScaleProperties value.
+     */
+    public AutoScaleProperties autoScaleProperties() {
+        return this.autoScaleProperties;
+    }
+
+    /**
+     * Set the autoScaleProperties property: Auto Scale Properties for Elastic San Appliance.
+     * 
+     * @param autoScaleProperties the autoScaleProperties value to set.
+     * @return the ElasticSanUpdateProperties object itself.
+     */
+    public ElasticSanUpdateProperties withAutoScaleProperties(AutoScaleProperties autoScaleProperties) {
+        this.autoScaleProperties = autoScaleProperties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (autoScaleProperties() != null) {
+            autoScaleProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("baseSizeTiB", this.baseSizeTiB);
+        jsonWriter.writeNumberField("extendedCapacitySizeTiB", this.extendedCapacitySizeTiB);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("autoScaleProperties", this.autoScaleProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticSanUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticSanUpdateProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ElasticSanUpdateProperties.
+     */
+    public static ElasticSanUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ElasticSanUpdateProperties deserializedElasticSanUpdateProperties = new ElasticSanUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("baseSizeTiB".equals(fieldName)) {
+                    deserializedElasticSanUpdateProperties.baseSizeTiB = reader.getNullable(JsonReader::getLong);
+                } else if ("extendedCapacitySizeTiB".equals(fieldName)) {
+                    deserializedElasticSanUpdateProperties.extendedCapacitySizeTiB
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedElasticSanUpdateProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("autoScaleProperties".equals(fieldName)) {
+                    deserializedElasticSanUpdateProperties.autoScaleProperties = AutoScaleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedElasticSanUpdateProperties;
+        });
     }
 }

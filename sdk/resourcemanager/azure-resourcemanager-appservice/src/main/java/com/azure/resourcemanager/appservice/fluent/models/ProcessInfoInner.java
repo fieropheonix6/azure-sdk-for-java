@@ -5,31 +5,88 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Process Information. */
+/**
+ * Process Information.
+ */
 @Fluent
 public final class ProcessInfoInner extends ProxyOnlyResource {
     /*
      * ProcessInfo resource specific properties
      */
-    @JsonProperty(value = "properties")
     private ProcessInfoProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ProcessInfoInner class.
+     */
+    public ProcessInfoInner() {
+    }
 
     /**
      * Get the innerProperties property: ProcessInfo resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProcessInfoProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProcessInfoInner withKind(String kind) {
         super.withKind(kind);
@@ -38,7 +95,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the identifier property: ARM Identifier for deployment.
-     *
+     * 
      * @return the identifier value.
      */
     public Integer identifier() {
@@ -47,7 +104,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the deploymentName property: Deployment name.
-     *
+     * 
      * @return the deploymentName value.
      */
     public String deploymentName() {
@@ -56,7 +113,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the deploymentName property: Deployment name.
-     *
+     * 
      * @param deploymentName the deploymentName value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -70,7 +127,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the href property: HRef URI.
-     *
+     * 
      * @return the href value.
      */
     public String href() {
@@ -79,7 +136,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the href property: HRef URI.
-     *
+     * 
      * @param href the href value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -93,7 +150,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the minidump property: Minidump URI.
-     *
+     * 
      * @return the minidump value.
      */
     public String minidump() {
@@ -102,7 +159,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the minidump property: Minidump URI.
-     *
+     * 
      * @param minidump the minidump value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -116,7 +173,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the isProfileRunning property: Is profile running?.
-     *
+     * 
      * @return the isProfileRunning value.
      */
     public Boolean isProfileRunning() {
@@ -125,7 +182,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the isProfileRunning property: Is profile running?.
-     *
+     * 
      * @param isProfileRunning the isProfileRunning value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -139,7 +196,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the isIisProfileRunning property: Is the IIS Profile running?.
-     *
+     * 
      * @return the isIisProfileRunning value.
      */
     public Boolean isIisProfileRunning() {
@@ -148,7 +205,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the isIisProfileRunning property: Is the IIS Profile running?.
-     *
+     * 
      * @param isIisProfileRunning the isIisProfileRunning value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -162,7 +219,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the iisProfileTimeoutInSeconds property: IIS Profile timeout (seconds).
-     *
+     * 
      * @return the iisProfileTimeoutInSeconds value.
      */
     public Double iisProfileTimeoutInSeconds() {
@@ -171,7 +228,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the iisProfileTimeoutInSeconds property: IIS Profile timeout (seconds).
-     *
+     * 
      * @param iisProfileTimeoutInSeconds the iisProfileTimeoutInSeconds value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -185,7 +242,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the parent property: Parent process.
-     *
+     * 
      * @return the parent value.
      */
     public String parent() {
@@ -194,7 +251,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the parent property: Parent process.
-     *
+     * 
      * @param parent the parent value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -208,7 +265,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the children property: Child process list.
-     *
+     * 
      * @return the children value.
      */
     public List<String> children() {
@@ -217,7 +274,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the children property: Child process list.
-     *
+     * 
      * @param children the children value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -231,7 +288,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the threads property: Thread list.
-     *
+     * 
      * @return the threads value.
      */
     public List<ProcessThreadInfoInner> threads() {
@@ -240,7 +297,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the threads property: Thread list.
-     *
+     * 
      * @param threads the threads value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -254,7 +311,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the openFileHandles property: List of open files.
-     *
+     * 
      * @return the openFileHandles value.
      */
     public List<String> openFileHandles() {
@@ -263,7 +320,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the openFileHandles property: List of open files.
-     *
+     * 
      * @param openFileHandles the openFileHandles value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -277,7 +334,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the modules property: List of modules.
-     *
+     * 
      * @return the modules value.
      */
     public List<ProcessModuleInfoInner> modules() {
@@ -286,7 +343,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the modules property: List of modules.
-     *
+     * 
      * @param modules the modules value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -300,7 +357,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the fileName property: File name of this process.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -309,7 +366,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the fileName property: File name of this process.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -323,7 +380,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the commandLine property: Command line.
-     *
+     * 
      * @return the commandLine value.
      */
     public String commandLine() {
@@ -332,7 +389,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the commandLine property: Command line.
-     *
+     * 
      * @param commandLine the commandLine value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -346,7 +403,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the username property: User name.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -355,7 +412,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the username property: User name.
-     *
+     * 
      * @param username the username value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -369,7 +426,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the handleCount property: Handle count.
-     *
+     * 
      * @return the handleCount value.
      */
     public Integer handleCount() {
@@ -378,7 +435,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the handleCount property: Handle count.
-     *
+     * 
      * @param handleCount the handleCount value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -392,7 +449,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the moduleCount property: Module count.
-     *
+     * 
      * @return the moduleCount value.
      */
     public Integer moduleCount() {
@@ -401,7 +458,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the moduleCount property: Module count.
-     *
+     * 
      * @param moduleCount the moduleCount value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -415,7 +472,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the threadCount property: Thread count.
-     *
+     * 
      * @return the threadCount value.
      */
     public Integer threadCount() {
@@ -424,7 +481,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the threadCount property: Thread count.
-     *
+     * 
      * @param threadCount the threadCount value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -438,7 +495,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the startTime property: Start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -447,7 +504,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the startTime property: Start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -461,7 +518,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the totalCpuTime property: Total CPU time.
-     *
+     * 
      * @return the totalCpuTime value.
      */
     public String totalCpuTime() {
@@ -470,7 +527,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the totalCpuTime property: Total CPU time.
-     *
+     * 
      * @param totalCpuTime the totalCpuTime value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -484,7 +541,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the userCpuTime property: User CPU time.
-     *
+     * 
      * @return the userCpuTime value.
      */
     public String userCpuTime() {
@@ -493,7 +550,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the userCpuTime property: User CPU time.
-     *
+     * 
      * @param userCpuTime the userCpuTime value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -507,7 +564,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the privilegedCpuTime property: Privileged CPU time.
-     *
+     * 
      * @return the privilegedCpuTime value.
      */
     public String privilegedCpuTime() {
@@ -516,7 +573,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the privilegedCpuTime property: Privileged CPU time.
-     *
+     * 
      * @param privilegedCpuTime the privilegedCpuTime value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -530,7 +587,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the workingSet property: Working set.
-     *
+     * 
      * @return the workingSet value.
      */
     public Long workingSet() {
@@ -539,7 +596,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the workingSet property: Working set.
-     *
+     * 
      * @param workingSet the workingSet value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -553,7 +610,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the peakWorkingSet property: Peak working set.
-     *
+     * 
      * @return the peakWorkingSet value.
      */
     public Long peakWorkingSet() {
@@ -562,7 +619,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the peakWorkingSet property: Peak working set.
-     *
+     * 
      * @param peakWorkingSet the peakWorkingSet value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -576,7 +633,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the privateMemory property: Private memory size.
-     *
+     * 
      * @return the privateMemory value.
      */
     public Long privateMemory() {
@@ -585,7 +642,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the privateMemory property: Private memory size.
-     *
+     * 
      * @param privateMemory the privateMemory value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -599,7 +656,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the virtualMemory property: Virtual memory size.
-     *
+     * 
      * @return the virtualMemory value.
      */
     public Long virtualMemory() {
@@ -608,7 +665,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the virtualMemory property: Virtual memory size.
-     *
+     * 
      * @param virtualMemory the virtualMemory value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -622,7 +679,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the peakVirtualMemory property: Peak virtual memory usage.
-     *
+     * 
      * @return the peakVirtualMemory value.
      */
     public Long peakVirtualMemory() {
@@ -631,7 +688,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the peakVirtualMemory property: Peak virtual memory usage.
-     *
+     * 
      * @param peakVirtualMemory the peakVirtualMemory value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -645,7 +702,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the pagedSystemMemory property: Paged system memory.
-     *
+     * 
      * @return the pagedSystemMemory value.
      */
     public Long pagedSystemMemory() {
@@ -654,7 +711,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the pagedSystemMemory property: Paged system memory.
-     *
+     * 
      * @param pagedSystemMemory the pagedSystemMemory value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -668,7 +725,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the nonPagedSystemMemory property: Non-paged system memory.
-     *
+     * 
      * @return the nonPagedSystemMemory value.
      */
     public Long nonPagedSystemMemory() {
@@ -677,7 +734,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the nonPagedSystemMemory property: Non-paged system memory.
-     *
+     * 
      * @param nonPagedSystemMemory the nonPagedSystemMemory value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -691,7 +748,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the pagedMemory property: Paged memory.
-     *
+     * 
      * @return the pagedMemory value.
      */
     public Long pagedMemory() {
@@ -700,7 +757,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the pagedMemory property: Paged memory.
-     *
+     * 
      * @param pagedMemory the pagedMemory value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -714,7 +771,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the peakPagedMemory property: Peak paged memory.
-     *
+     * 
      * @return the peakPagedMemory value.
      */
     public Long peakPagedMemory() {
@@ -723,7 +780,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the peakPagedMemory property: Peak paged memory.
-     *
+     * 
      * @param peakPagedMemory the peakPagedMemory value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -737,7 +794,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the timestamp property: Time stamp.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -746,7 +803,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the timestamp property: Time stamp.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -760,7 +817,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the environmentVariables property: List of environment variables.
-     *
+     * 
      * @return the environmentVariables value.
      */
     public Map<String, String> environmentVariables() {
@@ -769,7 +826,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the environmentVariables property: List of environment variables.
-     *
+     * 
      * @param environmentVariables the environmentVariables value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -783,7 +840,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the isScmSite property: Is this the SCM site?.
-     *
+     * 
      * @return the isScmSite value.
      */
     public Boolean isScmSite() {
@@ -792,7 +849,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the isScmSite property: Is this the SCM site?.
-     *
+     * 
      * @param isScmSite the isScmSite value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -806,7 +863,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the isWebjob property: Is this a Web Job?.
-     *
+     * 
      * @return the isWebjob value.
      */
     public Boolean isWebjob() {
@@ -815,7 +872,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the isWebjob property: Is this a Web Job?.
-     *
+     * 
      * @param isWebjob the isWebjob value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -829,7 +886,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the description property: Description of process.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -838,7 +895,7 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the description property: Description of process.
-     *
+     * 
      * @param description the description value to set.
      * @return the ProcessInfoInner object itself.
      */
@@ -852,14 +909,59 @@ public final class ProcessInfoInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProcessInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProcessInfoInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProcessInfoInner.
+     */
+    public static ProcessInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProcessInfoInner deserializedProcessInfoInner = new ProcessInfoInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedProcessInfoInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedProcessInfoInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedProcessInfoInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedProcessInfoInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedProcessInfoInner.innerProperties = ProcessInfoProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProcessInfoInner;
+        });
     }
 }

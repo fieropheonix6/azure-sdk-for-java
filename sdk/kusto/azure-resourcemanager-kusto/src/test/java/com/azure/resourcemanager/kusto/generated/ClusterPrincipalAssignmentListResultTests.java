@@ -11,38 +11,30 @@ import com.azure.resourcemanager.kusto.models.ClusterPrincipalRole;
 import com.azure.resourcemanager.kusto.models.PrincipalType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterPrincipalAssignmentListResultTests {
-    @Test
-    public void testDeserialize() {
-        ClusterPrincipalAssignmentListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"principalId\":\"fhyhltrpmopjmcma\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"kthfui\",\"principalType\":\"App\",\"tenantName\":\"dsfcpkvxodpuoz\",\"principalName\":\"zydagfuaxbezyiuo\",\"provisioningState\":\"Deleting\",\"aadObjectId\":\"hrdxwzywqsmbs\"},\"id\":\"reximoryocfs\",\"name\":\"ksymd\",\"type\":\"ys\"}]}")
-                .toObject(ClusterPrincipalAssignmentListResult.class);
-        Assertions.assertEquals("fhyhltrpmopjmcma", model.value().get(0).principalId());
-        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, model.value().get(0).role());
-        Assertions.assertEquals("kthfui", model.value().get(0).tenantId());
-        Assertions.assertEquals(PrincipalType.APP, model.value().get(0).principalType());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ClusterPrincipalAssignmentListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"principalId\":\"cyshurzafbljjgp\",\"role\":\"AllDatabasesMonitor\",\"tenantId\":\"qcjm\",\"principalType\":\"Group\",\"tenantName\":\"a\",\"principalName\":\"qidtqajzyu\",\"provisioningState\":\"Deleting\",\"aadObjectId\":\"dj\"},\"id\":\"rlkhbzhfepgzgq\",\"name\":\"xzlocxscp\",\"type\":\"ierhhbcsglummaj\"}]}")
+            .toObject(ClusterPrincipalAssignmentListResult.class);
+        Assertions.assertEquals("cyshurzafbljjgp", model.value().get(0).principalId());
+        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_MONITOR, model.value().get(0).role());
+        Assertions.assertEquals("qcjm", model.value().get(0).tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, model.value().get(0).principalType());
     }
 
-    @Test
-    public void testSerialize() {
-        ClusterPrincipalAssignmentListResult model =
-            new ClusterPrincipalAssignmentListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ClusterPrincipalAssignmentInner()
-                                .withPrincipalId("fhyhltrpmopjmcma")
-                                .withRole(ClusterPrincipalRole.ALL_DATABASES_ADMIN)
-                                .withTenantId("kthfui")
-                                .withPrincipalType(PrincipalType.APP)));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ClusterPrincipalAssignmentListResult model = new ClusterPrincipalAssignmentListResult()
+            .withValue(Arrays.asList(new ClusterPrincipalAssignmentInner().withPrincipalId("cyshurzafbljjgp")
+                .withRole(ClusterPrincipalRole.ALL_DATABASES_MONITOR)
+                .withTenantId("qcjm")
+                .withPrincipalType(PrincipalType.GROUP)));
         model = BinaryData.fromObject(model).toObject(ClusterPrincipalAssignmentListResult.class);
-        Assertions.assertEquals("fhyhltrpmopjmcma", model.value().get(0).principalId());
-        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, model.value().get(0).role());
-        Assertions.assertEquals("kthfui", model.value().get(0).tenantId());
-        Assertions.assertEquals(PrincipalType.APP, model.value().get(0).principalType());
+        Assertions.assertEquals("cyshurzafbljjgp", model.value().get(0).principalId());
+        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_MONITOR, model.value().get(0).role());
+        Assertions.assertEquals("qcjm", model.value().get(0).tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, model.value().get(0).principalType());
     }
 }

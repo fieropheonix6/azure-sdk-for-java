@@ -4,19 +4,12 @@ parameters:
     default: 'oom-hprofs'
 
 steps:
-  - pwsh: |
-      New-Item $(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }} -ItemType directory
-      foreach($hprofFile in (Get-ChildItem -Path . -Recurse -Filter *.hprof -File))
-      {
-        $fileFullName = $hprofFile.FullName
-        $fileName = $hprofFile.Name
-        Move-Item -Path $fileFullName -Destination $(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}/$fileName -ErrorAction SilentlyContinue
-      }
-      [System.IO.Compression.ZipFile]::CreateFromDirectory("$(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}","$(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}.zip")
-    displayName: 'Copy OOM hprofs'
-    condition: always()
-
-  - publish: $(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}.zip
-    displayName: 'Publish OOM hprofs'
-    artifact: ${{ parameters.OomArtifactName }}-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
+  - task: PowerShell@2
+    displayName: 'Check for and copy OOM hprofs'
+    inputs:
+      pwsh: true
+      filePath: eng/pipelines/scripts/Get-Heap-Dump-Hprofs.ps1
+      arguments: >
+        -StagingDirectory $(System.DefaultWorkingDirectory)
+        -OomArtifactName ${{ parameters.OomArtifactName }}
     condition: always()

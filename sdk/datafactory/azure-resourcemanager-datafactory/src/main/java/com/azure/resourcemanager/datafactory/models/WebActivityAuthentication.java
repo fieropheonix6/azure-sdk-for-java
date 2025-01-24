@@ -5,63 +5,64 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Web activity authentication properties. */
+/**
+ * Web activity authentication properties.
+ */
 @Fluent
-public final class WebActivityAuthentication {
+public final class WebActivityAuthentication implements JsonSerializable<WebActivityAuthentication> {
     /*
      * Web activity authentication (Basic/ClientCertificate/MSI/ServicePrincipal)
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Base64-encoded contents of a PFX file or Certificate when used for ServicePrincipal
      */
-    @JsonProperty(value = "pfx")
     private SecretBase pfx;
 
     /*
      * Web activity authentication user name for basic authentication or ClientID when used for ServicePrincipal. Type:
      * string (or Expression with resultType string).
      */
-    @JsonProperty(value = "username")
     private Object username;
 
     /*
      * Password for the PFX file or basic authentication / Secret when used for ServicePrincipal
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * Resource for which Azure Auth token will be requested when using MSI Authentication. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "resource")
     private Object resource;
 
     /*
      * TenantId for which Azure Auth token will be requested when using ServicePrincipal Authentication. Type: string
      * (or Expression with resultType string).
      */
-    @JsonProperty(value = "userTenant")
     private Object userTenant;
 
     /*
      * The credential reference containing authentication information.
      */
-    @JsonProperty(value = "credential")
     private CredentialReference credential;
 
-    /** Creates an instance of WebActivityAuthentication class. */
+    /**
+     * Creates an instance of WebActivityAuthentication class.
+     */
     public WebActivityAuthentication() {
     }
 
     /**
      * Get the type property: Web activity authentication (Basic/ClientCertificate/MSI/ServicePrincipal).
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -70,7 +71,7 @@ public final class WebActivityAuthentication {
 
     /**
      * Set the type property: Web activity authentication (Basic/ClientCertificate/MSI/ServicePrincipal).
-     *
+     * 
      * @param type the type value to set.
      * @return the WebActivityAuthentication object itself.
      */
@@ -81,7 +82,7 @@ public final class WebActivityAuthentication {
 
     /**
      * Get the pfx property: Base64-encoded contents of a PFX file or Certificate when used for ServicePrincipal.
-     *
+     * 
      * @return the pfx value.
      */
     public SecretBase pfx() {
@@ -90,7 +91,7 @@ public final class WebActivityAuthentication {
 
     /**
      * Set the pfx property: Base64-encoded contents of a PFX file or Certificate when used for ServicePrincipal.
-     *
+     * 
      * @param pfx the pfx value to set.
      * @return the WebActivityAuthentication object itself.
      */
@@ -102,7 +103,7 @@ public final class WebActivityAuthentication {
     /**
      * Get the username property: Web activity authentication user name for basic authentication or ClientID when used
      * for ServicePrincipal. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -112,7 +113,7 @@ public final class WebActivityAuthentication {
     /**
      * Set the username property: Web activity authentication user name for basic authentication or ClientID when used
      * for ServicePrincipal. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param username the username value to set.
      * @return the WebActivityAuthentication object itself.
      */
@@ -124,7 +125,7 @@ public final class WebActivityAuthentication {
     /**
      * Get the password property: Password for the PFX file or basic authentication / Secret when used for
      * ServicePrincipal.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -134,7 +135,7 @@ public final class WebActivityAuthentication {
     /**
      * Set the password property: Password for the PFX file or basic authentication / Secret when used for
      * ServicePrincipal.
-     *
+     * 
      * @param password the password value to set.
      * @return the WebActivityAuthentication object itself.
      */
@@ -146,7 +147,7 @@ public final class WebActivityAuthentication {
     /**
      * Get the resource property: Resource for which Azure Auth token will be requested when using MSI Authentication.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the resource value.
      */
     public Object resource() {
@@ -156,7 +157,7 @@ public final class WebActivityAuthentication {
     /**
      * Set the resource property: Resource for which Azure Auth token will be requested when using MSI Authentication.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param resource the resource value to set.
      * @return the WebActivityAuthentication object itself.
      */
@@ -168,7 +169,7 @@ public final class WebActivityAuthentication {
     /**
      * Get the userTenant property: TenantId for which Azure Auth token will be requested when using ServicePrincipal
      * Authentication. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the userTenant value.
      */
     public Object userTenant() {
@@ -178,7 +179,7 @@ public final class WebActivityAuthentication {
     /**
      * Set the userTenant property: TenantId for which Azure Auth token will be requested when using ServicePrincipal
      * Authentication. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param userTenant the userTenant value to set.
      * @return the WebActivityAuthentication object itself.
      */
@@ -189,7 +190,7 @@ public final class WebActivityAuthentication {
 
     /**
      * Get the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @return the credential value.
      */
     public CredentialReference credential() {
@@ -198,7 +199,7 @@ public final class WebActivityAuthentication {
 
     /**
      * Set the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the WebActivityAuthentication object itself.
      */
@@ -209,7 +210,7 @@ public final class WebActivityAuthentication {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -222,5 +223,59 @@ public final class WebActivityAuthentication {
         if (credential() != null) {
             credential().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("pfx", this.pfx);
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("resource", this.resource);
+        jsonWriter.writeUntypedField("userTenant", this.userTenant);
+        jsonWriter.writeJsonField("credential", this.credential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebActivityAuthentication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebActivityAuthentication if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebActivityAuthentication.
+     */
+    public static WebActivityAuthentication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebActivityAuthentication deserializedWebActivityAuthentication = new WebActivityAuthentication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedWebActivityAuthentication.type = reader.getString();
+                } else if ("pfx".equals(fieldName)) {
+                    deserializedWebActivityAuthentication.pfx = SecretBase.fromJson(reader);
+                } else if ("username".equals(fieldName)) {
+                    deserializedWebActivityAuthentication.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedWebActivityAuthentication.password = SecretBase.fromJson(reader);
+                } else if ("resource".equals(fieldName)) {
+                    deserializedWebActivityAuthentication.resource = reader.readUntyped();
+                } else if ("userTenant".equals(fieldName)) {
+                    deserializedWebActivityAuthentication.userTenant = reader.readUntyped();
+                } else if ("credential".equals(fieldName)) {
+                    deserializedWebActivityAuthentication.credential = CredentialReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebActivityAuthentication;
+        });
     }
 }

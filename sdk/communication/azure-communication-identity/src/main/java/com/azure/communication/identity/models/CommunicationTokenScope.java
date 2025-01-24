@@ -5,31 +5,60 @@
 package com.azure.communication.identity.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CommunicationTokenScope. */
+/**
+ * List of scopes for an access token.
+ */
 public final class CommunicationTokenScope extends ExpandableStringEnum<CommunicationTokenScope> {
-    /** Static value chat for CommunicationTokenScope. */
+    /**
+     * Use this for full access to Chat APIs.
+     */
     public static final CommunicationTokenScope CHAT = fromString("chat");
 
-    /** Static value voip for CommunicationTokenScope. */
+    /**
+     * Use this for full access to Calling APIs.
+     */
     public static final CommunicationTokenScope VOIP = fromString("voip");
 
     /**
+     * Access to Chat APIs but without the authorization to create, delete or update chat threads.
+     */
+    public static final CommunicationTokenScope CHAT_JOIN = fromString("chat.join");
+
+    /**
+     * A more limited version of chat.join that doesn't allow to add or remove participants. Use this scope when the
+     * token bearer is not fully trusted, for example in guest scenarios.
+     */
+    public static final CommunicationTokenScope CHAT_JOIN_LIMITED = fromString("chat.join.limited");
+
+    /**
+     * Access to Calling APIs but without the authorization to start new calls.
+     */
+    public static final CommunicationTokenScope VOIP_JOIN = fromString("voip.join");
+
+    /**
+     * Creates a new instance of CommunicationTokenScope value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CommunicationTokenScope() {
+    }
+
+    /**
      * Creates or finds a CommunicationTokenScope from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CommunicationTokenScope.
      */
-    @JsonCreator
     public static CommunicationTokenScope fromString(String name) {
         return fromString(name, CommunicationTokenScope.class);
     }
 
     /**
      * Gets known CommunicationTokenScope values.
-     *
+     * 
      * @return known CommunicationTokenScope values.
      */
     public static Collection<CommunicationTokenScope> values() {

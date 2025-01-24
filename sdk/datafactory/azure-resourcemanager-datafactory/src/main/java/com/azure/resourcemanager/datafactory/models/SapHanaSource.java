@@ -5,47 +5,63 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity source for SAP HANA source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SapHanaSource")
+/**
+ * A copy activity source for SAP HANA source.
+ */
 @Fluent
 public final class SapHanaSource extends TabularSource {
     /*
+     * Copy source type.
+     */
+    private String type = "SapHanaSource";
+
+    /*
      * SAP HANA Sql query. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "query")
     private Object query;
 
     /*
      * The packet size of data read from SAP HANA. Type: integer(or Expression with resultType integer).
      */
-    @JsonProperty(value = "packetSize")
     private Object packetSize;
 
     /*
      * The partition mechanism that will be used for SAP HANA read in parallel. Possible values include: "None",
      * "PhysicalPartitionsOfTable", "SapHanaDynamicRange".
      */
-    @JsonProperty(value = "partitionOption")
     private Object partitionOption;
 
     /*
      * The settings that will be leveraged for SAP HANA source partitioning.
      */
-    @JsonProperty(value = "partitionSettings")
     private SapHanaPartitionSettings partitionSettings;
 
-    /** Creates an instance of SapHanaSource class. */
+    /**
+     * Creates an instance of SapHanaSource class.
+     */
     public SapHanaSource() {
     }
 
     /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the query property: SAP HANA Sql query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the query value.
      */
     public Object query() {
@@ -54,7 +70,7 @@ public final class SapHanaSource extends TabularSource {
 
     /**
      * Set the query property: SAP HANA Sql query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param query the query value to set.
      * @return the SapHanaSource object itself.
      */
@@ -66,7 +82,7 @@ public final class SapHanaSource extends TabularSource {
     /**
      * Get the packetSize property: The packet size of data read from SAP HANA. Type: integer(or Expression with
      * resultType integer).
-     *
+     * 
      * @return the packetSize value.
      */
     public Object packetSize() {
@@ -76,7 +92,7 @@ public final class SapHanaSource extends TabularSource {
     /**
      * Set the packetSize property: The packet size of data read from SAP HANA. Type: integer(or Expression with
      * resultType integer).
-     *
+     * 
      * @param packetSize the packetSize value to set.
      * @return the SapHanaSource object itself.
      */
@@ -88,7 +104,7 @@ public final class SapHanaSource extends TabularSource {
     /**
      * Get the partitionOption property: The partition mechanism that will be used for SAP HANA read in parallel.
      * Possible values include: "None", "PhysicalPartitionsOfTable", "SapHanaDynamicRange".
-     *
+     * 
      * @return the partitionOption value.
      */
     public Object partitionOption() {
@@ -98,7 +114,7 @@ public final class SapHanaSource extends TabularSource {
     /**
      * Set the partitionOption property: The partition mechanism that will be used for SAP HANA read in parallel.
      * Possible values include: "None", "PhysicalPartitionsOfTable", "SapHanaDynamicRange".
-     *
+     * 
      * @param partitionOption the partitionOption value to set.
      * @return the SapHanaSource object itself.
      */
@@ -109,7 +125,7 @@ public final class SapHanaSource extends TabularSource {
 
     /**
      * Get the partitionSettings property: The settings that will be leveraged for SAP HANA source partitioning.
-     *
+     * 
      * @return the partitionSettings value.
      */
     public SapHanaPartitionSettings partitionSettings() {
@@ -118,7 +134,7 @@ public final class SapHanaSource extends TabularSource {
 
     /**
      * Set the partitionSettings property: The settings that will be leveraged for SAP HANA source partitioning.
-     *
+     * 
      * @param partitionSettings the partitionSettings value to set.
      * @return the SapHanaSource object itself.
      */
@@ -127,42 +143,54 @@ public final class SapHanaSource extends TabularSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaSource withQueryTimeout(Object queryTimeout) {
         super.withQueryTimeout(queryTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaSource withAdditionalColumns(Object additionalColumns) {
         super.withAdditionalColumns(additionalColumns);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaSource withSourceRetryCount(Object sourceRetryCount) {
         super.withSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaSource withSourceRetryWait(Object sourceRetryWait) {
         super.withSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaSource withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapHanaSource withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -171,14 +199,90 @@ public final class SapHanaSource extends TabularSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (partitionSettings() != null) {
             partitionSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeUntypedField("queryTimeout", queryTimeout());
+        jsonWriter.writeUntypedField("additionalColumns", additionalColumns());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("query", this.query);
+        jsonWriter.writeUntypedField("packetSize", this.packetSize);
+        jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        jsonWriter.writeJsonField("partitionSettings", this.partitionSettings);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapHanaSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapHanaSource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapHanaSource.
+     */
+    public static SapHanaSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapHanaSource deserializedSapHanaSource = new SapHanaSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedSapHanaSource.withSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedSapHanaSource.withSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedSapHanaSource.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedSapHanaSource.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("queryTimeout".equals(fieldName)) {
+                    deserializedSapHanaSource.withQueryTimeout(reader.readUntyped());
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedSapHanaSource.withAdditionalColumns(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSapHanaSource.type = reader.getString();
+                } else if ("query".equals(fieldName)) {
+                    deserializedSapHanaSource.query = reader.readUntyped();
+                } else if ("packetSize".equals(fieldName)) {
+                    deserializedSapHanaSource.packetSize = reader.readUntyped();
+                } else if ("partitionOption".equals(fieldName)) {
+                    deserializedSapHanaSource.partitionOption = reader.readUntyped();
+                } else if ("partitionSettings".equals(fieldName)) {
+                    deserializedSapHanaSource.partitionSettings = SapHanaPartitionSettings.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSapHanaSource.withAdditionalProperties(additionalProperties);
+
+            return deserializedSapHanaSource;
+        });
     }
 }

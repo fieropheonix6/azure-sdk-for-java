@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Directory for virtual application. */
+/**
+ * Directory for virtual application.
+ */
 @Fluent
-public final class VirtualDirectory {
+public final class VirtualDirectory implements JsonSerializable<VirtualDirectory> {
     /*
      * Path to virtual application.
      */
-    @JsonProperty(value = "virtualPath")
     private String virtualPath;
 
     /*
      * Physical path.
      */
-    @JsonProperty(value = "physicalPath")
     private String physicalPath;
 
     /**
+     * Creates an instance of VirtualDirectory class.
+     */
+    public VirtualDirectory() {
+    }
+
+    /**
      * Get the virtualPath property: Path to virtual application.
-     *
+     * 
      * @return the virtualPath value.
      */
     public String virtualPath() {
@@ -33,7 +43,7 @@ public final class VirtualDirectory {
 
     /**
      * Set the virtualPath property: Path to virtual application.
-     *
+     * 
      * @param virtualPath the virtualPath value to set.
      * @return the VirtualDirectory object itself.
      */
@@ -44,7 +54,7 @@ public final class VirtualDirectory {
 
     /**
      * Get the physicalPath property: Physical path.
-     *
+     * 
      * @return the physicalPath value.
      */
     public String physicalPath() {
@@ -53,7 +63,7 @@ public final class VirtualDirectory {
 
     /**
      * Set the physicalPath property: Physical path.
-     *
+     * 
      * @param physicalPath the physicalPath value to set.
      * @return the VirtualDirectory object itself.
      */
@@ -64,9 +74,48 @@ public final class VirtualDirectory {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("virtualPath", this.virtualPath);
+        jsonWriter.writeStringField("physicalPath", this.physicalPath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualDirectory from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualDirectory if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualDirectory.
+     */
+    public static VirtualDirectory fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualDirectory deserializedVirtualDirectory = new VirtualDirectory();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualPath".equals(fieldName)) {
+                    deserializedVirtualDirectory.virtualPath = reader.getString();
+                } else if ("physicalPath".equals(fieldName)) {
+                    deserializedVirtualDirectory.physicalPath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualDirectory;
+        });
     }
 }

@@ -5,43 +5,48 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHealthServerHealth;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Application gateway backendhealth http settings. */
+/**
+ * Application gateway backendhealth http settings.
+ */
 @Fluent
-public final class ApplicationGatewayBackendHealthServerInner {
+public final class ApplicationGatewayBackendHealthServerInner
+    implements JsonSerializable<ApplicationGatewayBackendHealthServerInner> {
     /*
      * IP address or FQDN of backend server.
      */
-    @JsonProperty(value = "address")
     private String address;
 
     /*
      * Reference to IP configuration of backend server.
      */
-    @JsonProperty(value = "ipConfiguration")
     private NetworkInterfaceIpConfigurationInner ipConfiguration;
 
     /*
      * Health of backend server.
      */
-    @JsonProperty(value = "health")
     private ApplicationGatewayBackendHealthServerHealth health;
 
     /*
      * Health Probe Log.
      */
-    @JsonProperty(value = "healthProbeLog")
     private String healthProbeLog;
 
-    /** Creates an instance of ApplicationGatewayBackendHealthServerInner class. */
+    /**
+     * Creates an instance of ApplicationGatewayBackendHealthServerInner class.
+     */
     public ApplicationGatewayBackendHealthServerInner() {
     }
 
     /**
      * Get the address property: IP address or FQDN of backend server.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -50,7 +55,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
 
     /**
      * Set the address property: IP address or FQDN of backend server.
-     *
+     * 
      * @param address the address value to set.
      * @return the ApplicationGatewayBackendHealthServerInner object itself.
      */
@@ -61,7 +66,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
 
     /**
      * Get the ipConfiguration property: Reference to IP configuration of backend server.
-     *
+     * 
      * @return the ipConfiguration value.
      */
     public NetworkInterfaceIpConfigurationInner ipConfiguration() {
@@ -70,19 +75,19 @@ public final class ApplicationGatewayBackendHealthServerInner {
 
     /**
      * Set the ipConfiguration property: Reference to IP configuration of backend server.
-     *
+     * 
      * @param ipConfiguration the ipConfiguration value to set.
      * @return the ApplicationGatewayBackendHealthServerInner object itself.
      */
-    public ApplicationGatewayBackendHealthServerInner withIpConfiguration(
-        NetworkInterfaceIpConfigurationInner ipConfiguration) {
+    public ApplicationGatewayBackendHealthServerInner
+        withIpConfiguration(NetworkInterfaceIpConfigurationInner ipConfiguration) {
         this.ipConfiguration = ipConfiguration;
         return this;
     }
 
     /**
      * Get the health property: Health of backend server.
-     *
+     * 
      * @return the health value.
      */
     public ApplicationGatewayBackendHealthServerHealth health() {
@@ -91,7 +96,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
 
     /**
      * Set the health property: Health of backend server.
-     *
+     * 
      * @param health the health value to set.
      * @return the ApplicationGatewayBackendHealthServerInner object itself.
      */
@@ -102,7 +107,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
 
     /**
      * Get the healthProbeLog property: Health Probe Log.
-     *
+     * 
      * @return the healthProbeLog value.
      */
     public String healthProbeLog() {
@@ -111,7 +116,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
 
     /**
      * Set the healthProbeLog property: Health Probe Log.
-     *
+     * 
      * @param healthProbeLog the healthProbeLog value to set.
      * @return the ApplicationGatewayBackendHealthServerInner object itself.
      */
@@ -122,12 +127,60 @@ public final class ApplicationGatewayBackendHealthServerInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ipConfiguration() != null) {
             ipConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("address", this.address);
+        jsonWriter.writeJsonField("ipConfiguration", this.ipConfiguration);
+        jsonWriter.writeStringField("health", this.health == null ? null : this.health.toString());
+        jsonWriter.writeStringField("healthProbeLog", this.healthProbeLog);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayBackendHealthServerInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayBackendHealthServerInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayBackendHealthServerInner.
+     */
+    public static ApplicationGatewayBackendHealthServerInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayBackendHealthServerInner deserializedApplicationGatewayBackendHealthServerInner
+                = new ApplicationGatewayBackendHealthServerInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("address".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHealthServerInner.address = reader.getString();
+                } else if ("ipConfiguration".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHealthServerInner.ipConfiguration
+                        = NetworkInterfaceIpConfigurationInner.fromJson(reader);
+                } else if ("health".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHealthServerInner.health
+                        = ApplicationGatewayBackendHealthServerHealth.fromString(reader.getString());
+                } else if ("healthProbeLog".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendHealthServerInner.healthProbeLog = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayBackendHealthServerInner;
+        });
     }
 }

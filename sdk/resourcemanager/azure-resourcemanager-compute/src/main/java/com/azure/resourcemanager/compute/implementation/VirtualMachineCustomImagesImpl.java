@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.resourcemanager.compute.ComputeManager;
+import com.azure.resourcemanager.compute.models.HyperVGenerationTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImages;
 import com.azure.resourcemanager.compute.fluent.models.ImageInner;
@@ -11,9 +12,8 @@ import com.azure.resourcemanager.compute.fluent.ImagesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** The implementation for VirtualMachineCustomImages. */
-public class VirtualMachineCustomImagesImpl
-    extends TopLevelModifiableResourcesImpl<
-        VirtualMachineCustomImage, VirtualMachineCustomImageImpl, ImageInner, ImagesClient, ComputeManager>
+public class VirtualMachineCustomImagesImpl extends
+    TopLevelModifiableResourcesImpl<VirtualMachineCustomImage, VirtualMachineCustomImageImpl, ImageInner, ImagesClient, ComputeManager>
     implements VirtualMachineCustomImages {
 
     public VirtualMachineCustomImagesImpl(final ComputeManager computeManager) {
@@ -35,6 +35,6 @@ public class VirtualMachineCustomImagesImpl
 
     @Override
     public VirtualMachineCustomImageImpl define(String name) {
-        return this.wrapModel(name);
+        return this.wrapModel(name).withHyperVGeneration(HyperVGenerationTypes.V1);
     }
 }

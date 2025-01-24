@@ -5,31 +5,88 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ConfigReferenceSource;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.ResolveStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Description of site key vault references. */
+/**
+ * Description of site key vault references.
+ */
 @Fluent
 public final class ApiKVReferenceInner extends ProxyOnlyResource {
     /*
      * ApiKVReference resource specific properties
      */
-    @JsonProperty(value = "properties")
     private ApiKVReferenceProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ApiKVReferenceInner class.
+     */
+    public ApiKVReferenceInner() {
+    }
 
     /**
      * Get the innerProperties property: ApiKVReference resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApiKVReferenceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiKVReferenceInner withKind(String kind) {
         super.withKind(kind);
@@ -38,7 +95,7 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Get the reference property: The reference property.
-     *
+     * 
      * @return the reference value.
      */
     public String reference() {
@@ -47,7 +104,7 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Set the reference property: The reference property.
-     *
+     * 
      * @param reference the reference value to set.
      * @return the ApiKVReferenceInner object itself.
      */
@@ -61,7 +118,7 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Get the status property: The status property.
-     *
+     * 
      * @return the status value.
      */
     public ResolveStatus status() {
@@ -70,7 +127,7 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Set the status property: The status property.
-     *
+     * 
      * @param status the status value to set.
      * @return the ApiKVReferenceInner object itself.
      */
@@ -84,7 +141,7 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Get the vaultName property: The vaultName property.
-     *
+     * 
      * @return the vaultName value.
      */
     public String vaultName() {
@@ -93,7 +150,7 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Set the vaultName property: The vaultName property.
-     *
+     * 
      * @param vaultName the vaultName value to set.
      * @return the ApiKVReferenceInner object itself.
      */
@@ -107,7 +164,7 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Get the secretName property: The secretName property.
-     *
+     * 
      * @return the secretName value.
      */
     public String secretName() {
@@ -116,7 +173,7 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Set the secretName property: The secretName property.
-     *
+     * 
      * @param secretName the secretName value to set.
      * @return the ApiKVReferenceInner object itself.
      */
@@ -130,7 +187,7 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Get the secretVersion property: The secretVersion property.
-     *
+     * 
      * @return the secretVersion value.
      */
     public String secretVersion() {
@@ -139,7 +196,7 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Set the secretVersion property: The secretVersion property.
-     *
+     * 
      * @param secretVersion the secretVersion value to set.
      * @return the ApiKVReferenceInner object itself.
      */
@@ -153,7 +210,7 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Get the identityType property: Managed service identity.
-     *
+     * 
      * @return the identityType value.
      */
     public ManagedServiceIdentity identityType() {
@@ -162,7 +219,7 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Set the identityType property: Managed service identity.
-     *
+     * 
      * @param identityType the identityType value to set.
      * @return the ApiKVReferenceInner object itself.
      */
@@ -176,7 +233,7 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Get the details property: The details property.
-     *
+     * 
      * @return the details value.
      */
     public String details() {
@@ -185,7 +242,7 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Set the details property: The details property.
-     *
+     * 
      * @param details the details value to set.
      * @return the ApiKVReferenceInner object itself.
      */
@@ -199,7 +256,7 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Get the source property: The source property.
-     *
+     * 
      * @return the source value.
      */
     public ConfigReferenceSource source() {
@@ -208,7 +265,7 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Set the source property: The source property.
-     *
+     * 
      * @param source the source value to set.
      * @return the ApiKVReferenceInner object itself.
      */
@@ -222,7 +279,7 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Get the activeVersion property: The activeVersion property.
-     *
+     * 
      * @return the activeVersion value.
      */
     public String activeVersion() {
@@ -231,7 +288,7 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Set the activeVersion property: The activeVersion property.
-     *
+     * 
      * @param activeVersion the activeVersion value to set.
      * @return the ApiKVReferenceInner object itself.
      */
@@ -245,14 +302,59 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiKVReferenceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiKVReferenceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApiKVReferenceInner.
+     */
+    public static ApiKVReferenceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiKVReferenceInner deserializedApiKVReferenceInner = new ApiKVReferenceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApiKVReferenceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedApiKVReferenceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApiKVReferenceInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedApiKVReferenceInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApiKVReferenceInner.innerProperties = ApiKVReferenceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiKVReferenceInner;
+        });
     }
 }

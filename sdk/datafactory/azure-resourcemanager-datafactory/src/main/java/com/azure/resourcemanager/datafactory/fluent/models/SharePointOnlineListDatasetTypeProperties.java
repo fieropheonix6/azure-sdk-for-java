@@ -5,25 +5,33 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Sharepoint online list dataset properties. */
+/**
+ * Sharepoint online list dataset properties.
+ */
 @Fluent
-public final class SharePointOnlineListDatasetTypeProperties {
+public final class SharePointOnlineListDatasetTypeProperties
+    implements JsonSerializable<SharePointOnlineListDatasetTypeProperties> {
     /*
      * The name of the SharePoint Online list. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "listName")
     private Object listName;
 
-    /** Creates an instance of SharePointOnlineListDatasetTypeProperties class. */
+    /**
+     * Creates an instance of SharePointOnlineListDatasetTypeProperties class.
+     */
     public SharePointOnlineListDatasetTypeProperties() {
     }
 
     /**
      * Get the listName property: The name of the SharePoint Online list. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the listName value.
      */
     public Object listName() {
@@ -33,7 +41,7 @@ public final class SharePointOnlineListDatasetTypeProperties {
     /**
      * Set the listName property: The name of the SharePoint Online list. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param listName the listName value to set.
      * @return the SharePointOnlineListDatasetTypeProperties object itself.
      */
@@ -44,9 +52,46 @@ public final class SharePointOnlineListDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("listName", this.listName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SharePointOnlineListDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SharePointOnlineListDatasetTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SharePointOnlineListDatasetTypeProperties.
+     */
+    public static SharePointOnlineListDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SharePointOnlineListDatasetTypeProperties deserializedSharePointOnlineListDatasetTypeProperties
+                = new SharePointOnlineListDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("listName".equals(fieldName)) {
+                    deserializedSharePointOnlineListDatasetTypeProperties.listName = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSharePointOnlineListDatasetTypeProperties;
+        });
     }
 }

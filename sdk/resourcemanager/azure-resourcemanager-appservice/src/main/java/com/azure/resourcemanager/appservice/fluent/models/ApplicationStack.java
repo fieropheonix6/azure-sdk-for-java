@@ -5,53 +5,58 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.StackMajorVersion;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Application stack. */
+/**
+ * Application stack.
+ */
 @Fluent
-public final class ApplicationStack {
+public final class ApplicationStack implements JsonSerializable<ApplicationStack> {
     /*
      * Application stack name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Application stack display name.
      */
-    @JsonProperty(value = "display")
     private String display;
 
     /*
      * Application stack dependency.
      */
-    @JsonProperty(value = "dependency")
     private String dependency;
 
     /*
      * List of major versions available.
      */
-    @JsonProperty(value = "majorVersions")
     private List<StackMajorVersion> majorVersions;
 
     /*
      * List of frameworks associated with application stack.
      */
-    @JsonProperty(value = "frameworks")
     private List<ApplicationStack> frameworks;
 
     /*
-     * <code>true</code> if this is the stack is deprecated; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if this is the stack is deprecated; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isDeprecated")
     private List<ApplicationStack> isDeprecated;
 
     /**
+     * Creates an instance of ApplicationStack class.
+     */
+    public ApplicationStack() {
+    }
+
+    /**
      * Get the name property: Application stack name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +65,7 @@ public final class ApplicationStack {
 
     /**
      * Set the name property: Application stack name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationStack object itself.
      */
@@ -71,7 +76,7 @@ public final class ApplicationStack {
 
     /**
      * Get the display property: Application stack display name.
-     *
+     * 
      * @return the display value.
      */
     public String display() {
@@ -80,7 +85,7 @@ public final class ApplicationStack {
 
     /**
      * Set the display property: Application stack display name.
-     *
+     * 
      * @param display the display value to set.
      * @return the ApplicationStack object itself.
      */
@@ -91,7 +96,7 @@ public final class ApplicationStack {
 
     /**
      * Get the dependency property: Application stack dependency.
-     *
+     * 
      * @return the dependency value.
      */
     public String dependency() {
@@ -100,7 +105,7 @@ public final class ApplicationStack {
 
     /**
      * Set the dependency property: Application stack dependency.
-     *
+     * 
      * @param dependency the dependency value to set.
      * @return the ApplicationStack object itself.
      */
@@ -111,7 +116,7 @@ public final class ApplicationStack {
 
     /**
      * Get the majorVersions property: List of major versions available.
-     *
+     * 
      * @return the majorVersions value.
      */
     public List<StackMajorVersion> majorVersions() {
@@ -120,7 +125,7 @@ public final class ApplicationStack {
 
     /**
      * Set the majorVersions property: List of major versions available.
-     *
+     * 
      * @param majorVersions the majorVersions value to set.
      * @return the ApplicationStack object itself.
      */
@@ -131,7 +136,7 @@ public final class ApplicationStack {
 
     /**
      * Get the frameworks property: List of frameworks associated with application stack.
-     *
+     * 
      * @return the frameworks value.
      */
     public List<ApplicationStack> frameworks() {
@@ -140,7 +145,7 @@ public final class ApplicationStack {
 
     /**
      * Set the frameworks property: List of frameworks associated with application stack.
-     *
+     * 
      * @param frameworks the frameworks value to set.
      * @return the ApplicationStack object itself.
      */
@@ -152,7 +157,7 @@ public final class ApplicationStack {
     /**
      * Get the isDeprecated property: &lt;code&gt;true&lt;/code&gt; if this is the stack is deprecated; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isDeprecated value.
      */
     public List<ApplicationStack> isDeprecated() {
@@ -162,7 +167,7 @@ public final class ApplicationStack {
     /**
      * Set the isDeprecated property: &lt;code&gt;true&lt;/code&gt; if this is the stack is deprecated; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param isDeprecated the isDeprecated value to set.
      * @return the ApplicationStack object itself.
      */
@@ -173,7 +178,7 @@ public final class ApplicationStack {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -186,5 +191,61 @@ public final class ApplicationStack {
         if (isDeprecated() != null) {
             isDeprecated().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("display", this.display);
+        jsonWriter.writeStringField("dependency", this.dependency);
+        jsonWriter.writeArrayField("majorVersions", this.majorVersions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("frameworks", this.frameworks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("isDeprecated", this.isDeprecated, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationStack from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationStack if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationStack.
+     */
+    public static ApplicationStack fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationStack deserializedApplicationStack = new ApplicationStack();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedApplicationStack.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedApplicationStack.display = reader.getString();
+                } else if ("dependency".equals(fieldName)) {
+                    deserializedApplicationStack.dependency = reader.getString();
+                } else if ("majorVersions".equals(fieldName)) {
+                    List<StackMajorVersion> majorVersions
+                        = reader.readArray(reader1 -> StackMajorVersion.fromJson(reader1));
+                    deserializedApplicationStack.majorVersions = majorVersions;
+                } else if ("frameworks".equals(fieldName)) {
+                    List<ApplicationStack> frameworks = reader.readArray(reader1 -> ApplicationStack.fromJson(reader1));
+                    deserializedApplicationStack.frameworks = frameworks;
+                } else if ("isDeprecated".equals(fieldName)) {
+                    List<ApplicationStack> isDeprecated
+                        = reader.readArray(reader1 -> ApplicationStack.fromJson(reader1));
+                    deserializedApplicationStack.isDeprecated = isDeprecated;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationStack;
+        });
     }
 }

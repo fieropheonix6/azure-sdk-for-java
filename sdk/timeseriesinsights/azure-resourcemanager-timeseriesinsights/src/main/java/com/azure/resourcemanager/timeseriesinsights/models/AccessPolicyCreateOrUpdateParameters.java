@@ -5,101 +5,163 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.timeseriesinsights.fluent.models.AccessPolicyResourceProperties;
+import java.io.IOException;
 import java.util.List;
 
-/** The AccessPolicyCreateOrUpdateParameters model. */
-@JsonFlatten
+/**
+ * The AccessPolicyCreateOrUpdateParameters model.
+ */
 @Fluent
-public class AccessPolicyCreateOrUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessPolicyCreateOrUpdateParameters.class);
-
+public final class AccessPolicyCreateOrUpdateParameters
+    implements JsonSerializable<AccessPolicyCreateOrUpdateParameters> {
     /*
-     * The objectId of the principal in Azure Active Directory.
+     * The properties property.
      */
-    @JsonProperty(value = "properties.principalObjectId")
-    private String principalObjectId;
+    private AccessPolicyResourceProperties innerProperties = new AccessPolicyResourceProperties();
 
-    /*
-     * An description of the access policy.
+    /**
+     * Creates an instance of AccessPolicyCreateOrUpdateParameters class.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    public AccessPolicyCreateOrUpdateParameters() {
+    }
 
-    /*
-     * The list of roles the principal is assigned on the environment.
+    /**
+     * Get the innerProperties property: The properties property.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.roles")
-    private List<AccessPolicyRole> roles;
+    private AccessPolicyResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the principalObjectId property: The objectId of the principal in Azure Active Directory.
-     *
+     * 
      * @return the principalObjectId value.
      */
     public String principalObjectId() {
-        return this.principalObjectId;
+        return this.innerProperties() == null ? null : this.innerProperties().principalObjectId();
     }
 
     /**
      * Set the principalObjectId property: The objectId of the principal in Azure Active Directory.
-     *
+     * 
      * @param principalObjectId the principalObjectId value to set.
      * @return the AccessPolicyCreateOrUpdateParameters object itself.
      */
     public AccessPolicyCreateOrUpdateParameters withPrincipalObjectId(String principalObjectId) {
-        this.principalObjectId = principalObjectId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessPolicyResourceProperties();
+        }
+        this.innerProperties().withPrincipalObjectId(principalObjectId);
         return this;
     }
 
     /**
      * Get the description property: An description of the access policy.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
      * Set the description property: An description of the access policy.
-     *
+     * 
      * @param description the description value to set.
      * @return the AccessPolicyCreateOrUpdateParameters object itself.
      */
     public AccessPolicyCreateOrUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessPolicyResourceProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
     /**
      * Get the roles property: The list of roles the principal is assigned on the environment.
-     *
+     * 
      * @return the roles value.
      */
     public List<AccessPolicyRole> roles() {
-        return this.roles;
+        return this.innerProperties() == null ? null : this.innerProperties().roles();
     }
 
     /**
      * Set the roles property: The list of roles the principal is assigned on the environment.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the AccessPolicyCreateOrUpdateParameters object itself.
      */
     public AccessPolicyCreateOrUpdateParameters withRoles(List<AccessPolicyRole> roles) {
-        this.roles = roles;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessPolicyResourceProperties();
+        }
+        this.innerProperties().withRoles(roles);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model AccessPolicyCreateOrUpdateParameters"));
+        } else {
+            innerProperties().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AccessPolicyCreateOrUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessPolicyCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessPolicyCreateOrUpdateParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AccessPolicyCreateOrUpdateParameters.
+     */
+    public static AccessPolicyCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessPolicyCreateOrUpdateParameters deserializedAccessPolicyCreateOrUpdateParameters
+                = new AccessPolicyCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAccessPolicyCreateOrUpdateParameters.innerProperties
+                        = AccessPolicyResourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessPolicyCreateOrUpdateParameters;
+        });
     }
 }

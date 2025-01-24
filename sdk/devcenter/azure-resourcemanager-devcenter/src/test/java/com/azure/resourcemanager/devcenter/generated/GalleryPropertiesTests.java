@@ -7,22 +7,20 @@ package com.azure.resourcemanager.devcenter.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.GalleryProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class GalleryPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        GalleryProperties model =
-            BinaryData
-                .fromString("{\"provisioningState\":\"Created\",\"galleryResourceId\":\"wzrlovmclwhij\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        GalleryProperties model
+            = BinaryData.fromString("{\"provisioningState\":\"MovingResources\",\"galleryResourceId\":\"xepcyvahfn\"}")
                 .toObject(GalleryProperties.class);
-        Assertions.assertEquals("wzrlovmclwhij", model.galleryResourceId());
+        Assertions.assertEquals("xepcyvahfn", model.galleryResourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        GalleryProperties model = new GalleryProperties().withGalleryResourceId("wzrlovmclwhij");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        GalleryProperties model = new GalleryProperties().withGalleryResourceId("xepcyvahfn");
         model = BinaryData.fromObject(model).toObject(GalleryProperties.class);
-        Assertions.assertEquals("wzrlovmclwhij", model.galleryResourceId());
+        Assertions.assertEquals("xepcyvahfn", model.galleryResourceId());
     }
 }

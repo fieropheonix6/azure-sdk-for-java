@@ -6,69 +6,69 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.OfficeTrafficCategory;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Parameters for VirtualWAN. */
+/**
+ * Parameters for VirtualWAN.
+ */
 @Fluent
-public final class VirtualWanProperties {
+public final class VirtualWanProperties implements JsonSerializable<VirtualWanProperties> {
     /*
      * Vpn encryption to be disabled or not.
      */
-    @JsonProperty(value = "disableVpnEncryption")
     private Boolean disableVpnEncryption;
 
     /*
      * List of VirtualHubs in the VirtualWAN.
      */
-    @JsonProperty(value = "virtualHubs", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> virtualHubs;
 
     /*
      * List of VpnSites in the VirtualWAN.
      */
-    @JsonProperty(value = "vpnSites", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> vpnSites;
 
     /*
      * True if branch to branch traffic is allowed.
      */
-    @JsonProperty(value = "allowBranchToBranchTraffic")
     private Boolean allowBranchToBranchTraffic;
 
     /*
      * True if Vnet to Vnet traffic is allowed.
      */
-    @JsonProperty(value = "allowVnetToVnetTraffic")
     private Boolean allowVnetToVnetTraffic;
 
     /*
      * The office local breakout category.
      */
-    @JsonProperty(value = "office365LocalBreakoutCategory", access = JsonProperty.Access.WRITE_ONLY)
     private OfficeTrafficCategory office365LocalBreakoutCategory;
 
     /*
      * The provisioning state of the virtual WAN resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The type of the VirtualWAN.
      */
-    @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of VirtualWanProperties class. */
+    /**
+     * Creates an instance of VirtualWanProperties class.
+     */
     public VirtualWanProperties() {
     }
 
     /**
      * Get the disableVpnEncryption property: Vpn encryption to be disabled or not.
-     *
+     * 
      * @return the disableVpnEncryption value.
      */
     public Boolean disableVpnEncryption() {
@@ -77,7 +77,7 @@ public final class VirtualWanProperties {
 
     /**
      * Set the disableVpnEncryption property: Vpn encryption to be disabled or not.
-     *
+     * 
      * @param disableVpnEncryption the disableVpnEncryption value to set.
      * @return the VirtualWanProperties object itself.
      */
@@ -88,7 +88,7 @@ public final class VirtualWanProperties {
 
     /**
      * Get the virtualHubs property: List of VirtualHubs in the VirtualWAN.
-     *
+     * 
      * @return the virtualHubs value.
      */
     public List<SubResource> virtualHubs() {
@@ -97,7 +97,7 @@ public final class VirtualWanProperties {
 
     /**
      * Get the vpnSites property: List of VpnSites in the VirtualWAN.
-     *
+     * 
      * @return the vpnSites value.
      */
     public List<SubResource> vpnSites() {
@@ -106,7 +106,7 @@ public final class VirtualWanProperties {
 
     /**
      * Get the allowBranchToBranchTraffic property: True if branch to branch traffic is allowed.
-     *
+     * 
      * @return the allowBranchToBranchTraffic value.
      */
     public Boolean allowBranchToBranchTraffic() {
@@ -115,7 +115,7 @@ public final class VirtualWanProperties {
 
     /**
      * Set the allowBranchToBranchTraffic property: True if branch to branch traffic is allowed.
-     *
+     * 
      * @param allowBranchToBranchTraffic the allowBranchToBranchTraffic value to set.
      * @return the VirtualWanProperties object itself.
      */
@@ -126,7 +126,7 @@ public final class VirtualWanProperties {
 
     /**
      * Get the allowVnetToVnetTraffic property: True if Vnet to Vnet traffic is allowed.
-     *
+     * 
      * @return the allowVnetToVnetTraffic value.
      */
     public Boolean allowVnetToVnetTraffic() {
@@ -135,7 +135,7 @@ public final class VirtualWanProperties {
 
     /**
      * Set the allowVnetToVnetTraffic property: True if Vnet to Vnet traffic is allowed.
-     *
+     * 
      * @param allowVnetToVnetTraffic the allowVnetToVnetTraffic value to set.
      * @return the VirtualWanProperties object itself.
      */
@@ -146,7 +146,7 @@ public final class VirtualWanProperties {
 
     /**
      * Get the office365LocalBreakoutCategory property: The office local breakout category.
-     *
+     * 
      * @return the office365LocalBreakoutCategory value.
      */
     public OfficeTrafficCategory office365LocalBreakoutCategory() {
@@ -155,7 +155,7 @@ public final class VirtualWanProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual WAN resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -164,7 +164,7 @@ public final class VirtualWanProperties {
 
     /**
      * Get the type property: The type of the VirtualWAN.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -173,7 +173,7 @@ public final class VirtualWanProperties {
 
     /**
      * Set the type property: The type of the VirtualWAN.
-     *
+     * 
      * @param type the type value to set.
      * @return the VirtualWanProperties object itself.
      */
@@ -184,9 +184,68 @@ public final class VirtualWanProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("disableVpnEncryption", this.disableVpnEncryption);
+        jsonWriter.writeBooleanField("allowBranchToBranchTraffic", this.allowBranchToBranchTraffic);
+        jsonWriter.writeBooleanField("allowVnetToVnetTraffic", this.allowVnetToVnetTraffic);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualWanProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualWanProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualWanProperties.
+     */
+    public static VirtualWanProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualWanProperties deserializedVirtualWanProperties = new VirtualWanProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("disableVpnEncryption".equals(fieldName)) {
+                    deserializedVirtualWanProperties.disableVpnEncryption = reader.getNullable(JsonReader::getBoolean);
+                } else if ("virtualHubs".equals(fieldName)) {
+                    List<SubResource> virtualHubs = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVirtualWanProperties.virtualHubs = virtualHubs;
+                } else if ("vpnSites".equals(fieldName)) {
+                    List<SubResource> vpnSites = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVirtualWanProperties.vpnSites = vpnSites;
+                } else if ("allowBranchToBranchTraffic".equals(fieldName)) {
+                    deserializedVirtualWanProperties.allowBranchToBranchTraffic
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowVnetToVnetTraffic".equals(fieldName)) {
+                    deserializedVirtualWanProperties.allowVnetToVnetTraffic
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("office365LocalBreakoutCategory".equals(fieldName)) {
+                    deserializedVirtualWanProperties.office365LocalBreakoutCategory
+                        = OfficeTrafficCategory.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualWanProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualWanProperties.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualWanProperties;
+        });
     }
 }

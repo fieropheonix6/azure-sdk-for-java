@@ -5,38 +5,46 @@
 package com.azure.resourcemanager.azurestackhci.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ArcIdentityResponseProperties model. */
+/**
+ * The ArcIdentityResponseProperties model.
+ */
 @Fluent
-public final class ArcIdentityResponseProperties {
+public final class ArcIdentityResponseProperties implements JsonSerializable<ArcIdentityResponseProperties> {
     /*
      * The arcApplicationClientId property.
      */
-    @JsonProperty(value = "arcApplicationClientId")
     private String arcApplicationClientId;
 
     /*
      * The arcApplicationTenantId property.
      */
-    @JsonProperty(value = "arcApplicationTenantId")
     private String arcApplicationTenantId;
 
     /*
      * The arcServicePrincipalObjectId property.
      */
-    @JsonProperty(value = "arcServicePrincipalObjectId")
     private String arcServicePrincipalObjectId;
 
     /*
      * The arcApplicationObjectId property.
      */
-    @JsonProperty(value = "arcApplicationObjectId")
     private String arcApplicationObjectId;
 
     /**
+     * Creates an instance of ArcIdentityResponseProperties class.
+     */
+    public ArcIdentityResponseProperties() {
+    }
+
+    /**
      * Get the arcApplicationClientId property: The arcApplicationClientId property.
-     *
+     * 
      * @return the arcApplicationClientId value.
      */
     public String arcApplicationClientId() {
@@ -45,7 +53,7 @@ public final class ArcIdentityResponseProperties {
 
     /**
      * Set the arcApplicationClientId property: The arcApplicationClientId property.
-     *
+     * 
      * @param arcApplicationClientId the arcApplicationClientId value to set.
      * @return the ArcIdentityResponseProperties object itself.
      */
@@ -56,7 +64,7 @@ public final class ArcIdentityResponseProperties {
 
     /**
      * Get the arcApplicationTenantId property: The arcApplicationTenantId property.
-     *
+     * 
      * @return the arcApplicationTenantId value.
      */
     public String arcApplicationTenantId() {
@@ -65,7 +73,7 @@ public final class ArcIdentityResponseProperties {
 
     /**
      * Set the arcApplicationTenantId property: The arcApplicationTenantId property.
-     *
+     * 
      * @param arcApplicationTenantId the arcApplicationTenantId value to set.
      * @return the ArcIdentityResponseProperties object itself.
      */
@@ -76,7 +84,7 @@ public final class ArcIdentityResponseProperties {
 
     /**
      * Get the arcServicePrincipalObjectId property: The arcServicePrincipalObjectId property.
-     *
+     * 
      * @return the arcServicePrincipalObjectId value.
      */
     public String arcServicePrincipalObjectId() {
@@ -85,7 +93,7 @@ public final class ArcIdentityResponseProperties {
 
     /**
      * Set the arcServicePrincipalObjectId property: The arcServicePrincipalObjectId property.
-     *
+     * 
      * @param arcServicePrincipalObjectId the arcServicePrincipalObjectId value to set.
      * @return the ArcIdentityResponseProperties object itself.
      */
@@ -96,7 +104,7 @@ public final class ArcIdentityResponseProperties {
 
     /**
      * Get the arcApplicationObjectId property: The arcApplicationObjectId property.
-     *
+     * 
      * @return the arcApplicationObjectId value.
      */
     public String arcApplicationObjectId() {
@@ -105,7 +113,7 @@ public final class ArcIdentityResponseProperties {
 
     /**
      * Set the arcApplicationObjectId property: The arcApplicationObjectId property.
-     *
+     * 
      * @param arcApplicationObjectId the arcApplicationObjectId value to set.
      * @return the ArcIdentityResponseProperties object itself.
      */
@@ -116,9 +124,55 @@ public final class ArcIdentityResponseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("arcApplicationClientId", this.arcApplicationClientId);
+        jsonWriter.writeStringField("arcApplicationTenantId", this.arcApplicationTenantId);
+        jsonWriter.writeStringField("arcServicePrincipalObjectId", this.arcServicePrincipalObjectId);
+        jsonWriter.writeStringField("arcApplicationObjectId", this.arcApplicationObjectId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArcIdentityResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArcIdentityResponseProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArcIdentityResponseProperties.
+     */
+    public static ArcIdentityResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArcIdentityResponseProperties deserializedArcIdentityResponseProperties
+                = new ArcIdentityResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("arcApplicationClientId".equals(fieldName)) {
+                    deserializedArcIdentityResponseProperties.arcApplicationClientId = reader.getString();
+                } else if ("arcApplicationTenantId".equals(fieldName)) {
+                    deserializedArcIdentityResponseProperties.arcApplicationTenantId = reader.getString();
+                } else if ("arcServicePrincipalObjectId".equals(fieldName)) {
+                    deserializedArcIdentityResponseProperties.arcServicePrincipalObjectId = reader.getString();
+                } else if ("arcApplicationObjectId".equals(fieldName)) {
+                    deserializedArcIdentityResponseProperties.arcApplicationObjectId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArcIdentityResponseProperties;
+        });
     }
 }

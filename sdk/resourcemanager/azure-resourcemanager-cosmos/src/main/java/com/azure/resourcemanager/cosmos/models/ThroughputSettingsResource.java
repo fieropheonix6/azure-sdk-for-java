@@ -5,43 +5,59 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cosmos DB resource throughput object. Either throughput is required or autoscaleSettings is required, but not both.
  */
 @Fluent
-public class ThroughputSettingsResource {
+public class ThroughputSettingsResource implements JsonSerializable<ThroughputSettingsResource> {
     /*
      * Value of the Cosmos DB resource throughput. Either throughput is required or autoscaleSettings is required, but
      * not both.
      */
-    @JsonProperty(value = "throughput")
     private Integer throughput;
 
     /*
      * Cosmos DB resource for autoscale settings. Either throughput is required or autoscaleSettings is required, but
      * not both.
      */
-    @JsonProperty(value = "autoscaleSettings")
     private AutoscaleSettingsResource autoscaleSettings;
 
     /*
      * The minimum throughput of the resource
      */
-    @JsonProperty(value = "minimumThroughput", access = JsonProperty.Access.WRITE_ONLY)
     private String minimumThroughput;
 
     /*
      * The throughput replace is pending
      */
-    @JsonProperty(value = "offerReplacePending", access = JsonProperty.Access.WRITE_ONLY)
     private String offerReplacePending;
+
+    /*
+     * The offer throughput value to instantly scale up without triggering splits
+     */
+    private String instantMaximumThroughput;
+
+    /*
+     * The maximum throughput value or the maximum maxThroughput value (for autoscale) that can be specified
+     */
+    private String softAllowedMaximumThroughput;
+
+    /**
+     * Creates an instance of ThroughputSettingsResource class.
+     */
+    public ThroughputSettingsResource() {
+    }
 
     /**
      * Get the throughput property: Value of the Cosmos DB resource throughput. Either throughput is required or
      * autoscaleSettings is required, but not both.
-     *
+     * 
      * @return the throughput value.
      */
     public Integer throughput() {
@@ -51,7 +67,7 @@ public class ThroughputSettingsResource {
     /**
      * Set the throughput property: Value of the Cosmos DB resource throughput. Either throughput is required or
      * autoscaleSettings is required, but not both.
-     *
+     * 
      * @param throughput the throughput value to set.
      * @return the ThroughputSettingsResource object itself.
      */
@@ -63,7 +79,7 @@ public class ThroughputSettingsResource {
     /**
      * Get the autoscaleSettings property: Cosmos DB resource for autoscale settings. Either throughput is required or
      * autoscaleSettings is required, but not both.
-     *
+     * 
      * @return the autoscaleSettings value.
      */
     public AutoscaleSettingsResource autoscaleSettings() {
@@ -73,7 +89,7 @@ public class ThroughputSettingsResource {
     /**
      * Set the autoscaleSettings property: Cosmos DB resource for autoscale settings. Either throughput is required or
      * autoscaleSettings is required, but not both.
-     *
+     * 
      * @param autoscaleSettings the autoscaleSettings value to set.
      * @return the ThroughputSettingsResource object itself.
      */
@@ -84,7 +100,7 @@ public class ThroughputSettingsResource {
 
     /**
      * Get the minimumThroughput property: The minimum throughput of the resource.
-     *
+     * 
      * @return the minimumThroughput value.
      */
     public String minimumThroughput() {
@@ -92,8 +108,19 @@ public class ThroughputSettingsResource {
     }
 
     /**
+     * Set the minimumThroughput property: The minimum throughput of the resource.
+     * 
+     * @param minimumThroughput the minimumThroughput value to set.
+     * @return the ThroughputSettingsResource object itself.
+     */
+    ThroughputSettingsResource withMinimumThroughput(String minimumThroughput) {
+        this.minimumThroughput = minimumThroughput;
+        return this;
+    }
+
+    /**
      * Get the offerReplacePending property: The throughput replace is pending.
-     *
+     * 
      * @return the offerReplacePending value.
      */
     public String offerReplacePending() {
@@ -101,13 +128,116 @@ public class ThroughputSettingsResource {
     }
 
     /**
+     * Set the offerReplacePending property: The throughput replace is pending.
+     * 
+     * @param offerReplacePending the offerReplacePending value to set.
+     * @return the ThroughputSettingsResource object itself.
+     */
+    ThroughputSettingsResource withOfferReplacePending(String offerReplacePending) {
+        this.offerReplacePending = offerReplacePending;
+        return this;
+    }
+
+    /**
+     * Get the instantMaximumThroughput property: The offer throughput value to instantly scale up without triggering
+     * splits.
+     * 
+     * @return the instantMaximumThroughput value.
+     */
+    public String instantMaximumThroughput() {
+        return this.instantMaximumThroughput;
+    }
+
+    /**
+     * Set the instantMaximumThroughput property: The offer throughput value to instantly scale up without triggering
+     * splits.
+     * 
+     * @param instantMaximumThroughput the instantMaximumThroughput value to set.
+     * @return the ThroughputSettingsResource object itself.
+     */
+    ThroughputSettingsResource withInstantMaximumThroughput(String instantMaximumThroughput) {
+        this.instantMaximumThroughput = instantMaximumThroughput;
+        return this;
+    }
+
+    /**
+     * Get the softAllowedMaximumThroughput property: The maximum throughput value or the maximum maxThroughput value
+     * (for autoscale) that can be specified.
+     * 
+     * @return the softAllowedMaximumThroughput value.
+     */
+    public String softAllowedMaximumThroughput() {
+        return this.softAllowedMaximumThroughput;
+    }
+
+    /**
+     * Set the softAllowedMaximumThroughput property: The maximum throughput value or the maximum maxThroughput value
+     * (for autoscale) that can be specified.
+     * 
+     * @param softAllowedMaximumThroughput the softAllowedMaximumThroughput value to set.
+     * @return the ThroughputSettingsResource object itself.
+     */
+    ThroughputSettingsResource withSoftAllowedMaximumThroughput(String softAllowedMaximumThroughput) {
+        this.softAllowedMaximumThroughput = softAllowedMaximumThroughput;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (autoscaleSettings() != null) {
             autoscaleSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("throughput", this.throughput);
+        jsonWriter.writeJsonField("autoscaleSettings", this.autoscaleSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThroughputSettingsResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThroughputSettingsResource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ThroughputSettingsResource.
+     */
+    public static ThroughputSettingsResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThroughputSettingsResource deserializedThroughputSettingsResource = new ThroughputSettingsResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("throughput".equals(fieldName)) {
+                    deserializedThroughputSettingsResource.throughput = reader.getNullable(JsonReader::getInt);
+                } else if ("autoscaleSettings".equals(fieldName)) {
+                    deserializedThroughputSettingsResource.autoscaleSettings
+                        = AutoscaleSettingsResource.fromJson(reader);
+                } else if ("minimumThroughput".equals(fieldName)) {
+                    deserializedThroughputSettingsResource.minimumThroughput = reader.getString();
+                } else if ("offerReplacePending".equals(fieldName)) {
+                    deserializedThroughputSettingsResource.offerReplacePending = reader.getString();
+                } else if ("instantMaximumThroughput".equals(fieldName)) {
+                    deserializedThroughputSettingsResource.instantMaximumThroughput = reader.getString();
+                } else if ("softAllowedMaximumThroughput".equals(fieldName)) {
+                    deserializedThroughputSettingsResource.softAllowedMaximumThroughput = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThroughputSettingsResource;
+        });
     }
 }

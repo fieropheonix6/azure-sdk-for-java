@@ -6,43 +6,46 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayTrustedRootCertificatePropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Trusted Root certificates of an application gateway. */
+/**
+ * Trusted Root certificates of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayTrustedRootCertificate extends SubResource {
     /*
      * Properties of the application gateway trusted root certificate.
      */
-    @JsonProperty(value = "properties")
     private ApplicationGatewayTrustedRootCertificatePropertiesFormat innerProperties;
 
     /*
      * Name of the trusted root certificate that is unique within an Application Gateway.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ApplicationGatewayTrustedRootCertificate class. */
+    /**
+     * Creates an instance of ApplicationGatewayTrustedRootCertificate class.
+     */
     public ApplicationGatewayTrustedRootCertificate() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway trusted root certificate.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayTrustedRootCertificatePropertiesFormat innerProperties() {
@@ -51,7 +54,7 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
 
     /**
      * Get the name property: Name of the trusted root certificate that is unique within an Application Gateway.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +63,7 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
 
     /**
      * Set the name property: Name of the trusted root certificate that is unique within an Application Gateway.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayTrustedRootCertificate object itself.
      */
@@ -71,7 +74,7 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -80,14 +83,16 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayTrustedRootCertificate withId(String id) {
         super.withId(id);
@@ -96,7 +101,7 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
 
     /**
      * Get the data property: Certificate public data.
-     *
+     * 
      * @return the data value.
      */
     public String data() {
@@ -105,7 +110,7 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
 
     /**
      * Set the data property: Certificate public data.
-     *
+     * 
      * @param data the data value to set.
      * @return the ApplicationGatewayTrustedRootCertificate object itself.
      */
@@ -120,7 +125,7 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
     /**
      * Get the keyVaultSecretId property: Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
      * object stored in KeyVault.
-     *
+     * 
      * @return the keyVaultSecretId value.
      */
     public String keyVaultSecretId() {
@@ -130,7 +135,7 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
     /**
      * Set the keyVaultSecretId property: Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
      * object stored in KeyVault.
-     *
+     * 
      * @param keyVaultSecretId the keyVaultSecretId value to set.
      * @return the ApplicationGatewayTrustedRootCertificate object itself.
      */
@@ -144,7 +149,7 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
 
     /**
      * Get the provisioningState property: The provisioning state of the trusted root certificate resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -153,12 +158,60 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayTrustedRootCertificate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayTrustedRootCertificate if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayTrustedRootCertificate.
+     */
+    public static ApplicationGatewayTrustedRootCertificate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayTrustedRootCertificate deserializedApplicationGatewayTrustedRootCertificate
+                = new ApplicationGatewayTrustedRootCertificate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApplicationGatewayTrustedRootCertificate.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationGatewayTrustedRootCertificate.innerProperties
+                        = ApplicationGatewayTrustedRootCertificatePropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplicationGatewayTrustedRootCertificate.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedApplicationGatewayTrustedRootCertificate.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicationGatewayTrustedRootCertificate.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayTrustedRootCertificate;
+        });
     }
 }

@@ -5,11 +5,16 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kusto.models.AcceptedAudiences;
 import com.azure.resourcemanager.kusto.models.ClusterNetworkAccessFlag;
 import com.azure.resourcemanager.kusto.models.EngineType;
 import com.azure.resourcemanager.kusto.models.KeyVaultProperties;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionsList;
+import com.azure.resourcemanager.kusto.models.MigrationClusterProperties;
 import com.azure.resourcemanager.kusto.models.OptimizedAutoscale;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
 import com.azure.resourcemanager.kusto.models.PublicIpType;
@@ -17,162 +22,162 @@ import com.azure.resourcemanager.kusto.models.PublicNetworkAccess;
 import com.azure.resourcemanager.kusto.models.State;
 import com.azure.resourcemanager.kusto.models.TrustedExternalTenant;
 import com.azure.resourcemanager.kusto.models.VirtualNetworkConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.kusto.models.ZoneStatus;
+import java.io.IOException;
 import java.util.List;
 
-/** Class representing the Kusto cluster properties. */
+/**
+ * Class representing the Kusto cluster properties.
+ */
 @Fluent
-public final class ClusterProperties {
+public final class ClusterProperties implements JsonSerializable<ClusterProperties> {
     /*
      * The state of the resource.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private State state;
 
     /*
      * The provisioned state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The cluster URI.
      */
-    @JsonProperty(value = "uri", access = JsonProperty.Access.WRITE_ONLY)
     private String uri;
 
     /*
      * The cluster data ingestion URI.
      */
-    @JsonProperty(value = "dataIngestionUri", access = JsonProperty.Access.WRITE_ONLY)
     private String dataIngestionUri;
 
     /*
      * The reason for the cluster's current state.
      */
-    @JsonProperty(value = "stateReason", access = JsonProperty.Access.WRITE_ONLY)
     private String stateReason;
 
     /*
      * The cluster's external tenants.
      */
-    @JsonProperty(value = "trustedExternalTenants")
     private List<TrustedExternalTenant> trustedExternalTenants;
 
     /*
      * Optimized auto scale definition.
      */
-    @JsonProperty(value = "optimizedAutoscale")
     private OptimizedAutoscale optimizedAutoscale;
 
     /*
      * A boolean value that indicates if the cluster's disks are encrypted.
      */
-    @JsonProperty(value = "enableDiskEncryption")
     private Boolean enableDiskEncryption;
 
     /*
      * A boolean value that indicates if the streaming ingest is enabled.
      */
-    @JsonProperty(value = "enableStreamingIngest")
     private Boolean enableStreamingIngest;
 
     /*
      * Virtual network definition.
      */
-    @JsonProperty(value = "virtualNetworkConfiguration")
     private VirtualNetworkConfiguration virtualNetworkConfiguration;
 
     /*
      * KeyVault properties for the cluster encryption.
      */
-    @JsonProperty(value = "keyVaultProperties")
     private KeyVaultProperties keyVaultProperties;
 
     /*
      * A boolean value that indicates if the purge operations are enabled.
      */
-    @JsonProperty(value = "enablePurge")
     private Boolean enablePurge;
 
     /*
      * List of the cluster's language extensions.
      */
-    @JsonProperty(value = "languageExtensions", access = JsonProperty.Access.WRITE_ONLY)
     private LanguageExtensionsList languageExtensions;
 
     /*
      * A boolean value that indicates if double encryption is enabled.
      */
-    @JsonProperty(value = "enableDoubleEncryption")
     private Boolean enableDoubleEncryption;
 
     /*
      * Public network access to the cluster is enabled by default. When disabled, only private endpoint connection to
      * the cluster is allowed
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * The list of ips in the format of CIDR allowed to connect to the cluster.
      */
-    @JsonProperty(value = "allowedIpRangeList")
     private List<String> allowedIpRangeList;
 
     /*
      * The engine type
      */
-    @JsonProperty(value = "engineType")
     private EngineType engineType;
 
     /*
      * The cluster's accepted audiences.
      */
-    @JsonProperty(value = "acceptedAudiences")
     private List<AcceptedAudiences> acceptedAudiences;
 
     /*
      * A boolean value that indicates if the cluster could be automatically stopped (due to lack of data or no activity
      * for many days).
      */
-    @JsonProperty(value = "enableAutoStop")
     private Boolean enableAutoStop;
 
     /*
-     * Whether or not to restrict outbound network access.  Value is optional but if passed in, must be 'Enabled' or
+     * Whether or not to restrict outbound network access. Value is optional but if passed in, must be 'Enabled' or
      * 'Disabled'
      */
-    @JsonProperty(value = "restrictOutboundNetworkAccess")
     private ClusterNetworkAccessFlag restrictOutboundNetworkAccess;
 
     /*
      * List of allowed FQDNs(Fully Qualified Domain Name) for egress from Cluster.
      */
-    @JsonProperty(value = "allowedFqdnList")
     private List<String> allowedFqdnList;
+
+    /*
+     * List of callout policies for egress from Cluster.
+     */
+    private List<CalloutPolicyInner> calloutPolicies;
 
     /*
      * Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4 and IPv6)
      */
-    @JsonProperty(value = "publicIPType")
     private PublicIpType publicIpType;
 
     /*
      * Virtual Cluster graduation properties
      */
-    @JsonProperty(value = "virtualClusterGraduationProperties")
     private String virtualClusterGraduationProperties;
 
     /*
      * A list of private endpoint connections.
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /*
+     * Properties of the peer cluster involved in a migration to/from this cluster.
+     */
+    private MigrationClusterProperties migrationCluster;
+
+    /*
+     * Indicates whether the cluster is zonal or non-zonal.
+     */
+    private ZoneStatus zoneStatus;
+
+    /**
+     * Creates an instance of ClusterProperties class.
+     */
+    public ClusterProperties() {
+    }
 
     /**
      * Get the state property: The state of the resource.
-     *
+     * 
      * @return the state value.
      */
     public State state() {
@@ -181,7 +186,7 @@ public final class ClusterProperties {
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -190,7 +195,7 @@ public final class ClusterProperties {
 
     /**
      * Get the uri property: The cluster URI.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -199,7 +204,7 @@ public final class ClusterProperties {
 
     /**
      * Get the dataIngestionUri property: The cluster data ingestion URI.
-     *
+     * 
      * @return the dataIngestionUri value.
      */
     public String dataIngestionUri() {
@@ -208,7 +213,7 @@ public final class ClusterProperties {
 
     /**
      * Get the stateReason property: The reason for the cluster's current state.
-     *
+     * 
      * @return the stateReason value.
      */
     public String stateReason() {
@@ -217,7 +222,7 @@ public final class ClusterProperties {
 
     /**
      * Get the trustedExternalTenants property: The cluster's external tenants.
-     *
+     * 
      * @return the trustedExternalTenants value.
      */
     public List<TrustedExternalTenant> trustedExternalTenants() {
@@ -226,7 +231,7 @@ public final class ClusterProperties {
 
     /**
      * Set the trustedExternalTenants property: The cluster's external tenants.
-     *
+     * 
      * @param trustedExternalTenants the trustedExternalTenants value to set.
      * @return the ClusterProperties object itself.
      */
@@ -237,7 +242,7 @@ public final class ClusterProperties {
 
     /**
      * Get the optimizedAutoscale property: Optimized auto scale definition.
-     *
+     * 
      * @return the optimizedAutoscale value.
      */
     public OptimizedAutoscale optimizedAutoscale() {
@@ -246,7 +251,7 @@ public final class ClusterProperties {
 
     /**
      * Set the optimizedAutoscale property: Optimized auto scale definition.
-     *
+     * 
      * @param optimizedAutoscale the optimizedAutoscale value to set.
      * @return the ClusterProperties object itself.
      */
@@ -257,7 +262,7 @@ public final class ClusterProperties {
 
     /**
      * Get the enableDiskEncryption property: A boolean value that indicates if the cluster's disks are encrypted.
-     *
+     * 
      * @return the enableDiskEncryption value.
      */
     public Boolean enableDiskEncryption() {
@@ -266,7 +271,7 @@ public final class ClusterProperties {
 
     /**
      * Set the enableDiskEncryption property: A boolean value that indicates if the cluster's disks are encrypted.
-     *
+     * 
      * @param enableDiskEncryption the enableDiskEncryption value to set.
      * @return the ClusterProperties object itself.
      */
@@ -277,7 +282,7 @@ public final class ClusterProperties {
 
     /**
      * Get the enableStreamingIngest property: A boolean value that indicates if the streaming ingest is enabled.
-     *
+     * 
      * @return the enableStreamingIngest value.
      */
     public Boolean enableStreamingIngest() {
@@ -286,7 +291,7 @@ public final class ClusterProperties {
 
     /**
      * Set the enableStreamingIngest property: A boolean value that indicates if the streaming ingest is enabled.
-     *
+     * 
      * @param enableStreamingIngest the enableStreamingIngest value to set.
      * @return the ClusterProperties object itself.
      */
@@ -297,7 +302,7 @@ public final class ClusterProperties {
 
     /**
      * Get the virtualNetworkConfiguration property: Virtual network definition.
-     *
+     * 
      * @return the virtualNetworkConfiguration value.
      */
     public VirtualNetworkConfiguration virtualNetworkConfiguration() {
@@ -306,7 +311,7 @@ public final class ClusterProperties {
 
     /**
      * Set the virtualNetworkConfiguration property: Virtual network definition.
-     *
+     * 
      * @param virtualNetworkConfiguration the virtualNetworkConfiguration value to set.
      * @return the ClusterProperties object itself.
      */
@@ -317,7 +322,7 @@ public final class ClusterProperties {
 
     /**
      * Get the keyVaultProperties property: KeyVault properties for the cluster encryption.
-     *
+     * 
      * @return the keyVaultProperties value.
      */
     public KeyVaultProperties keyVaultProperties() {
@@ -326,7 +331,7 @@ public final class ClusterProperties {
 
     /**
      * Set the keyVaultProperties property: KeyVault properties for the cluster encryption.
-     *
+     * 
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the ClusterProperties object itself.
      */
@@ -337,7 +342,7 @@ public final class ClusterProperties {
 
     /**
      * Get the enablePurge property: A boolean value that indicates if the purge operations are enabled.
-     *
+     * 
      * @return the enablePurge value.
      */
     public Boolean enablePurge() {
@@ -346,7 +351,7 @@ public final class ClusterProperties {
 
     /**
      * Set the enablePurge property: A boolean value that indicates if the purge operations are enabled.
-     *
+     * 
      * @param enablePurge the enablePurge value to set.
      * @return the ClusterProperties object itself.
      */
@@ -357,7 +362,7 @@ public final class ClusterProperties {
 
     /**
      * Get the languageExtensions property: List of the cluster's language extensions.
-     *
+     * 
      * @return the languageExtensions value.
      */
     public LanguageExtensionsList languageExtensions() {
@@ -365,8 +370,19 @@ public final class ClusterProperties {
     }
 
     /**
+     * Set the languageExtensions property: List of the cluster's language extensions.
+     * 
+     * @param languageExtensions the languageExtensions value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withLanguageExtensions(LanguageExtensionsList languageExtensions) {
+        this.languageExtensions = languageExtensions;
+        return this;
+    }
+
+    /**
      * Get the enableDoubleEncryption property: A boolean value that indicates if double encryption is enabled.
-     *
+     * 
      * @return the enableDoubleEncryption value.
      */
     public Boolean enableDoubleEncryption() {
@@ -375,7 +391,7 @@ public final class ClusterProperties {
 
     /**
      * Set the enableDoubleEncryption property: A boolean value that indicates if double encryption is enabled.
-     *
+     * 
      * @param enableDoubleEncryption the enableDoubleEncryption value to set.
      * @return the ClusterProperties object itself.
      */
@@ -387,7 +403,7 @@ public final class ClusterProperties {
     /**
      * Get the publicNetworkAccess property: Public network access to the cluster is enabled by default. When disabled,
      * only private endpoint connection to the cluster is allowed.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -397,7 +413,7 @@ public final class ClusterProperties {
     /**
      * Set the publicNetworkAccess property: Public network access to the cluster is enabled by default. When disabled,
      * only private endpoint connection to the cluster is allowed.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ClusterProperties object itself.
      */
@@ -408,7 +424,7 @@ public final class ClusterProperties {
 
     /**
      * Get the allowedIpRangeList property: The list of ips in the format of CIDR allowed to connect to the cluster.
-     *
+     * 
      * @return the allowedIpRangeList value.
      */
     public List<String> allowedIpRangeList() {
@@ -417,7 +433,7 @@ public final class ClusterProperties {
 
     /**
      * Set the allowedIpRangeList property: The list of ips in the format of CIDR allowed to connect to the cluster.
-     *
+     * 
      * @param allowedIpRangeList the allowedIpRangeList value to set.
      * @return the ClusterProperties object itself.
      */
@@ -428,7 +444,7 @@ public final class ClusterProperties {
 
     /**
      * Get the engineType property: The engine type.
-     *
+     * 
      * @return the engineType value.
      */
     public EngineType engineType() {
@@ -437,7 +453,7 @@ public final class ClusterProperties {
 
     /**
      * Set the engineType property: The engine type.
-     *
+     * 
      * @param engineType the engineType value to set.
      * @return the ClusterProperties object itself.
      */
@@ -448,7 +464,7 @@ public final class ClusterProperties {
 
     /**
      * Get the acceptedAudiences property: The cluster's accepted audiences.
-     *
+     * 
      * @return the acceptedAudiences value.
      */
     public List<AcceptedAudiences> acceptedAudiences() {
@@ -457,7 +473,7 @@ public final class ClusterProperties {
 
     /**
      * Set the acceptedAudiences property: The cluster's accepted audiences.
-     *
+     * 
      * @param acceptedAudiences the acceptedAudiences value to set.
      * @return the ClusterProperties object itself.
      */
@@ -469,7 +485,7 @@ public final class ClusterProperties {
     /**
      * Get the enableAutoStop property: A boolean value that indicates if the cluster could be automatically stopped
      * (due to lack of data or no activity for many days).
-     *
+     * 
      * @return the enableAutoStop value.
      */
     public Boolean enableAutoStop() {
@@ -479,7 +495,7 @@ public final class ClusterProperties {
     /**
      * Set the enableAutoStop property: A boolean value that indicates if the cluster could be automatically stopped
      * (due to lack of data or no activity for many days).
-     *
+     * 
      * @param enableAutoStop the enableAutoStop value to set.
      * @return the ClusterProperties object itself.
      */
@@ -491,7 +507,7 @@ public final class ClusterProperties {
     /**
      * Get the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access. Value is
      * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the restrictOutboundNetworkAccess value.
      */
     public ClusterNetworkAccessFlag restrictOutboundNetworkAccess() {
@@ -501,7 +517,7 @@ public final class ClusterProperties {
     /**
      * Set the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access. Value is
      * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param restrictOutboundNetworkAccess the restrictOutboundNetworkAccess value to set.
      * @return the ClusterProperties object itself.
      */
@@ -512,7 +528,7 @@ public final class ClusterProperties {
 
     /**
      * Get the allowedFqdnList property: List of allowed FQDNs(Fully Qualified Domain Name) for egress from Cluster.
-     *
+     * 
      * @return the allowedFqdnList value.
      */
     public List<String> allowedFqdnList() {
@@ -521,7 +537,7 @@ public final class ClusterProperties {
 
     /**
      * Set the allowedFqdnList property: List of allowed FQDNs(Fully Qualified Domain Name) for egress from Cluster.
-     *
+     * 
      * @param allowedFqdnList the allowedFqdnList value to set.
      * @return the ClusterProperties object itself.
      */
@@ -531,9 +547,29 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the calloutPolicies property: List of callout policies for egress from Cluster.
+     * 
+     * @return the calloutPolicies value.
+     */
+    public List<CalloutPolicyInner> calloutPolicies() {
+        return this.calloutPolicies;
+    }
+
+    /**
+     * Set the calloutPolicies property: List of callout policies for egress from Cluster.
+     * 
+     * @param calloutPolicies the calloutPolicies value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withCalloutPolicies(List<CalloutPolicyInner> calloutPolicies) {
+        this.calloutPolicies = calloutPolicies;
+        return this;
+    }
+
+    /**
      * Get the publicIpType property: Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4
      * and IPv6).
-     *
+     * 
      * @return the publicIpType value.
      */
     public PublicIpType publicIpType() {
@@ -543,7 +579,7 @@ public final class ClusterProperties {
     /**
      * Set the publicIpType property: Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4
      * and IPv6).
-     *
+     * 
      * @param publicIpType the publicIpType value to set.
      * @return the ClusterProperties object itself.
      */
@@ -554,7 +590,7 @@ public final class ClusterProperties {
 
     /**
      * Get the virtualClusterGraduationProperties property: Virtual Cluster graduation properties.
-     *
+     * 
      * @return the virtualClusterGraduationProperties value.
      */
     public String virtualClusterGraduationProperties() {
@@ -563,7 +599,7 @@ public final class ClusterProperties {
 
     /**
      * Set the virtualClusterGraduationProperties property: Virtual Cluster graduation properties.
-     *
+     * 
      * @param virtualClusterGraduationProperties the virtualClusterGraduationProperties value to set.
      * @return the ClusterProperties object itself.
      */
@@ -574,7 +610,7 @@ public final class ClusterProperties {
 
     /**
      * Get the privateEndpointConnections property: A list of private endpoint connections.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -582,8 +618,26 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the migrationCluster property: Properties of the peer cluster involved in a migration to/from this cluster.
+     * 
+     * @return the migrationCluster value.
+     */
+    public MigrationClusterProperties migrationCluster() {
+        return this.migrationCluster;
+    }
+
+    /**
+     * Get the zoneStatus property: Indicates whether the cluster is zonal or non-zonal.
+     * 
+     * @return the zoneStatus value.
+     */
+    public ZoneStatus zoneStatus() {
+        return this.zoneStatus;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -605,8 +659,140 @@ public final class ClusterProperties {
         if (acceptedAudiences() != null) {
             acceptedAudiences().forEach(e -> e.validate());
         }
+        if (calloutPolicies() != null) {
+            calloutPolicies().forEach(e -> e.validate());
+        }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+        if (migrationCluster() != null) {
+            migrationCluster().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("trustedExternalTenants", this.trustedExternalTenants,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("optimizedAutoscale", this.optimizedAutoscale);
+        jsonWriter.writeBooleanField("enableDiskEncryption", this.enableDiskEncryption);
+        jsonWriter.writeBooleanField("enableStreamingIngest", this.enableStreamingIngest);
+        jsonWriter.writeJsonField("virtualNetworkConfiguration", this.virtualNetworkConfiguration);
+        jsonWriter.writeJsonField("keyVaultProperties", this.keyVaultProperties);
+        jsonWriter.writeBooleanField("enablePurge", this.enablePurge);
+        jsonWriter.writeJsonField("languageExtensions", this.languageExtensions);
+        jsonWriter.writeBooleanField("enableDoubleEncryption", this.enableDoubleEncryption);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeArrayField("allowedIpRangeList", this.allowedIpRangeList,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("engineType", this.engineType == null ? null : this.engineType.toString());
+        jsonWriter.writeArrayField("acceptedAudiences", this.acceptedAudiences,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("enableAutoStop", this.enableAutoStop);
+        jsonWriter.writeStringField("restrictOutboundNetworkAccess",
+            this.restrictOutboundNetworkAccess == null ? null : this.restrictOutboundNetworkAccess.toString());
+        jsonWriter.writeArrayField("allowedFqdnList", this.allowedFqdnList,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("calloutPolicies", this.calloutPolicies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("publicIPType", this.publicIpType == null ? null : this.publicIpType.toString());
+        jsonWriter.writeStringField("virtualClusterGraduationProperties", this.virtualClusterGraduationProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterProperties.
+     */
+    public static ClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterProperties deserializedClusterProperties = new ClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedClusterProperties.state = State.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedClusterProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("uri".equals(fieldName)) {
+                    deserializedClusterProperties.uri = reader.getString();
+                } else if ("dataIngestionUri".equals(fieldName)) {
+                    deserializedClusterProperties.dataIngestionUri = reader.getString();
+                } else if ("stateReason".equals(fieldName)) {
+                    deserializedClusterProperties.stateReason = reader.getString();
+                } else if ("trustedExternalTenants".equals(fieldName)) {
+                    List<TrustedExternalTenant> trustedExternalTenants
+                        = reader.readArray(reader1 -> TrustedExternalTenant.fromJson(reader1));
+                    deserializedClusterProperties.trustedExternalTenants = trustedExternalTenants;
+                } else if ("optimizedAutoscale".equals(fieldName)) {
+                    deserializedClusterProperties.optimizedAutoscale = OptimizedAutoscale.fromJson(reader);
+                } else if ("enableDiskEncryption".equals(fieldName)) {
+                    deserializedClusterProperties.enableDiskEncryption = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableStreamingIngest".equals(fieldName)) {
+                    deserializedClusterProperties.enableStreamingIngest = reader.getNullable(JsonReader::getBoolean);
+                } else if ("virtualNetworkConfiguration".equals(fieldName)) {
+                    deserializedClusterProperties.virtualNetworkConfiguration
+                        = VirtualNetworkConfiguration.fromJson(reader);
+                } else if ("keyVaultProperties".equals(fieldName)) {
+                    deserializedClusterProperties.keyVaultProperties = KeyVaultProperties.fromJson(reader);
+                } else if ("enablePurge".equals(fieldName)) {
+                    deserializedClusterProperties.enablePurge = reader.getNullable(JsonReader::getBoolean);
+                } else if ("languageExtensions".equals(fieldName)) {
+                    deserializedClusterProperties.languageExtensions = LanguageExtensionsList.fromJson(reader);
+                } else if ("enableDoubleEncryption".equals(fieldName)) {
+                    deserializedClusterProperties.enableDoubleEncryption = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedClusterProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("allowedIpRangeList".equals(fieldName)) {
+                    List<String> allowedIpRangeList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClusterProperties.allowedIpRangeList = allowedIpRangeList;
+                } else if ("engineType".equals(fieldName)) {
+                    deserializedClusterProperties.engineType = EngineType.fromString(reader.getString());
+                } else if ("acceptedAudiences".equals(fieldName)) {
+                    List<AcceptedAudiences> acceptedAudiences
+                        = reader.readArray(reader1 -> AcceptedAudiences.fromJson(reader1));
+                    deserializedClusterProperties.acceptedAudiences = acceptedAudiences;
+                } else if ("enableAutoStop".equals(fieldName)) {
+                    deserializedClusterProperties.enableAutoStop = reader.getNullable(JsonReader::getBoolean);
+                } else if ("restrictOutboundNetworkAccess".equals(fieldName)) {
+                    deserializedClusterProperties.restrictOutboundNetworkAccess
+                        = ClusterNetworkAccessFlag.fromString(reader.getString());
+                } else if ("allowedFqdnList".equals(fieldName)) {
+                    List<String> allowedFqdnList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClusterProperties.allowedFqdnList = allowedFqdnList;
+                } else if ("calloutPolicies".equals(fieldName)) {
+                    List<CalloutPolicyInner> calloutPolicies
+                        = reader.readArray(reader1 -> CalloutPolicyInner.fromJson(reader1));
+                    deserializedClusterProperties.calloutPolicies = calloutPolicies;
+                } else if ("publicIPType".equals(fieldName)) {
+                    deserializedClusterProperties.publicIpType = PublicIpType.fromString(reader.getString());
+                } else if ("virtualClusterGraduationProperties".equals(fieldName)) {
+                    deserializedClusterProperties.virtualClusterGraduationProperties = reader.getString();
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedClusterProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("migrationCluster".equals(fieldName)) {
+                    deserializedClusterProperties.migrationCluster = MigrationClusterProperties.fromJson(reader);
+                } else if ("zoneStatus".equals(fieldName)) {
+                    deserializedClusterProperties.zoneStatus = ZoneStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterProperties;
+        });
     }
 }

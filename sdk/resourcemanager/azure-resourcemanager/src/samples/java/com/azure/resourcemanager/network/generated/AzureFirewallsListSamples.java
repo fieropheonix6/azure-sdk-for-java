@@ -4,20 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for AzureFirewalls List. */
+/**
+ * Samples for AzureFirewalls List.
+ */
 public final class AzureFirewallsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/AzureFirewallListBySubscription.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * AzureFirewallListBySubscription.json
      */
     /**
      * Sample code: List all Azure Firewalls for a given subscription.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listAllAzureFirewallsForAGivenSubscription(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getAzureFirewalls().list(Context.NONE);
+    public static void
+        listAllAzureFirewallsForAGivenSubscription(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks().manager().serviceClient().getAzureFirewalls().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -8,24 +8,22 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMBackupRequest;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IaasVMBackupRequestTests {
-    @Test
-    public void testDeserialize() {
-        IaasVMBackupRequest model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"IaasVMBackupRequest\",\"recoveryPointExpiryTimeInUTC\":\"2021-05-17T22:41:54Z\"}")
-                .toObject(IaasVMBackupRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-17T22:41:54Z"), model.recoveryPointExpiryTimeInUtc());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        IaasVMBackupRequest model = BinaryData
+            .fromString(
+                "{\"objectType\":\"IaasVMBackupRequest\",\"recoveryPointExpiryTimeInUTC\":\"2021-01-13T02:45:42Z\"}")
+            .toObject(IaasVMBackupRequest.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-13T02:45:42Z"), model.recoveryPointExpiryTimeInUtc());
     }
 
-    @Test
-    public void testSerialize() {
-        IaasVMBackupRequest model =
-            new IaasVMBackupRequest().withRecoveryPointExpiryTimeInUtc(OffsetDateTime.parse("2021-05-17T22:41:54Z"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        IaasVMBackupRequest model
+            = new IaasVMBackupRequest().withRecoveryPointExpiryTimeInUtc(OffsetDateTime.parse("2021-01-13T02:45:42Z"));
         model = BinaryData.fromObject(model).toObject(IaasVMBackupRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-17T22:41:54Z"), model.recoveryPointExpiryTimeInUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-13T02:45:42Z"), model.recoveryPointExpiryTimeInUtc());
     }
 }

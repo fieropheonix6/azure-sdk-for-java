@@ -12,6 +12,7 @@ definition, such as text or binary data.
 ### Prerequisites
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 
@@ -55,7 +56,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.20.1</version>
+    <version>12.29.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -180,12 +181,18 @@ The following sections provide several code snippets covering some of the most c
 - [Upload data to a blob](#upload-data-to-a-blob)
 - [Upload a blob from a stream](#upload-a-blob-from-a-stream)
 - [Upload a blob from local path](#upload-a-blob-from-local-path)
+- [Upload a blob if one does not already exist](#upload-a-blob-if-one-does-not-already-exist)
+- [Upload a blob and overwrite if one already exists](#upload-a-blob-and-overwrite-if-one-already-exists)
+- [Upload a blob via an `OutputStream`](#upload-a-blob-via-an-outputstream)
 - [Download data from a blob](#download-data-from-a-blob)
 - [Download a blob to a stream](#download-a-blob-to-a-stream)
 - [Download a blob to local path](#download-a-blob-to-local-path)
+- [Read a blob via an `InputStream`](#read-a-blob-via-an-inputstream)
 - [Enumerate blobs](#enumerate-blobs)
 - [Copy a blob](#copy-a-blob)
+- [Generate a SAS token](#generate-a-sas-token)
 - [Authenticate with Azure Identity](#authenticate-with-azure-identity)
+- [Set a proxy when building a client](#set-a-proxy-when-building-a-client)
 
 ### Create a `BlobServiceClient`
 
@@ -548,6 +555,8 @@ BlobServiceClient blobStorageClient = new BlobServiceClientBuilder()
 ```java readme-sample-setProxy
 ProxyOptions options = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 888));
 BlobServiceClient client = new BlobServiceClientBuilder()
+    .endpoint("<ENDPOINT>")
+    .sasToken("<SAS_TOKEN>")
     .httpClient(new NettyAsyncHttpClientBuilder().proxy(options).build())
     .buildClient();
 ```
@@ -560,6 +569,8 @@ Allow the client builder to determine the `HttpClient` type to be used but const
 HttpClientOptions clientOptions = new HttpClientOptions()
     .setProxyOptions(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 888)));
 BlobServiceClient client = new BlobServiceClientBuilder()
+    .endpoint("<ENDPOINT>")
+    .sasToken("<SAS_TOKEN>")
     .clientOptions(clientOptions)
     .buildClient();
 ```
@@ -573,7 +584,7 @@ doesn't exist in your Storage Account, a `404` error is returned, indicating `No
 ### Default HTTP Client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
-[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
 
 ### Default SSL library
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
@@ -600,16 +611,16 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [source]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/src
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/src/samples/README.md
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
-[product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
-[sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[rest_docs]: https://learn.microsoft.com/rest/api/storageservices/blob-service-rest-api
+[product_docs]: https://learn.microsoft.com/azure/storage/blobs/storage-blobs-overview
+[sas_token]: https://learn.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
-[storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
-[storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
-[storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[storage_account]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[storage_account_create_cli]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
+[storage_account_create_portal]: https://learn.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md
-[error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
+[error_codes]: https://learn.microsoft.com/rest/api/storageservices/blob-service-error-codes
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-blob/src/samples
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/

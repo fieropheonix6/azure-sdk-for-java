@@ -5,31 +5,55 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DigitalTwinsIdentityType. */
+/**
+ * The type of Managed Identity used by the DigitalTwinsInstance.
+ */
 public final class DigitalTwinsIdentityType extends ExpandableStringEnum<DigitalTwinsIdentityType> {
-    /** Static value None for DigitalTwinsIdentityType. */
+    /**
+     * Static value None for DigitalTwinsIdentityType.
+     */
     public static final DigitalTwinsIdentityType NONE = fromString("None");
 
-    /** Static value SystemAssigned for DigitalTwinsIdentityType. */
+    /**
+     * Static value SystemAssigned for DigitalTwinsIdentityType.
+     */
     public static final DigitalTwinsIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
     /**
+     * Static value UserAssigned for DigitalTwinsIdentityType.
+     */
+    public static final DigitalTwinsIdentityType USER_ASSIGNED = fromString("UserAssigned");
+
+    /**
+     * Static value SystemAssigned,UserAssigned for DigitalTwinsIdentityType.
+     */
+    public static final DigitalTwinsIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED
+        = fromString("SystemAssigned,UserAssigned");
+
+    /**
+     * Creates a new instance of DigitalTwinsIdentityType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DigitalTwinsIdentityType() {
+    }
+
+    /**
      * Creates or finds a DigitalTwinsIdentityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DigitalTwinsIdentityType.
      */
-    @JsonCreator
     public static DigitalTwinsIdentityType fromString(String name) {
         return fromString(name, DigitalTwinsIdentityType.class);
     }
 
     /**
      * Gets known DigitalTwinsIdentityType values.
-     *
+     * 
      * @return known DigitalTwinsIdentityType values.
      */
     public static Collection<DigitalTwinsIdentityType> values() {

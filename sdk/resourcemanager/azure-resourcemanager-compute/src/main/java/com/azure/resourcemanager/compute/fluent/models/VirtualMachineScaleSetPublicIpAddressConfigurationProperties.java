@@ -6,60 +6,63 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.IpVersion;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIpTag;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes a virtual machines scale set IP Configuration's PublicIPAddress configuration. */
+/**
+ * Describes a virtual machines scale set IP Configuration's PublicIPAddress configuration.
+ */
 @Fluent
-public final class VirtualMachineScaleSetPublicIpAddressConfigurationProperties {
+public final class VirtualMachineScaleSetPublicIpAddressConfigurationProperties
+    implements JsonSerializable<VirtualMachineScaleSetPublicIpAddressConfigurationProperties> {
     /*
      * The idle timeout of the public IP address.
      */
-    @JsonProperty(value = "idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
 
     /*
      * The dns settings to be applied on the publicIP addresses .
      */
-    @JsonProperty(value = "dnsSettings")
     private VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings;
 
     /*
      * The list of IP tags associated with the public IP address.
      */
-    @JsonProperty(value = "ipTags")
     private List<VirtualMachineScaleSetIpTag> ipTags;
 
     /*
      * The PublicIPPrefix from which to allocate publicIP addresses.
      */
-    @JsonProperty(value = "publicIPPrefix")
     private SubResource publicIpPrefix;
 
     /*
      * Available from Api-Version 2019-07-01 onwards, it represents whether the specific ipconfiguration is IPv4 or
      * IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
      */
-    @JsonProperty(value = "publicIPAddressVersion")
     private IpVersion publicIpAddressVersion;
 
     /*
      * Specify what happens to the public IP when the VM is deleted
      */
-    @JsonProperty(value = "deleteOption")
     private DeleteOptions deleteOption;
 
-    /** Creates an instance of VirtualMachineScaleSetPublicIpAddressConfigurationProperties class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetPublicIpAddressConfigurationProperties class.
+     */
     public VirtualMachineScaleSetPublicIpAddressConfigurationProperties() {
     }
 
     /**
      * Get the idleTimeoutInMinutes property: The idle timeout of the public IP address.
-     *
+     * 
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
@@ -68,19 +71,19 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationProperties 
 
     /**
      * Set the idleTimeoutInMinutes property: The idle timeout of the public IP address.
-     *
+     * 
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the VirtualMachineScaleSetPublicIpAddressConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetPublicIpAddressConfigurationProperties withIdleTimeoutInMinutes(
-        Integer idleTimeoutInMinutes) {
+    public VirtualMachineScaleSetPublicIpAddressConfigurationProperties
+        withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
         this.idleTimeoutInMinutes = idleTimeoutInMinutes;
         return this;
     }
 
     /**
      * Get the dnsSettings property: The dns settings to be applied on the publicIP addresses .
-     *
+     * 
      * @return the dnsSettings value.
      */
     public VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings() {
@@ -89,19 +92,19 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationProperties 
 
     /**
      * Set the dnsSettings property: The dns settings to be applied on the publicIP addresses .
-     *
+     * 
      * @param dnsSettings the dnsSettings value to set.
      * @return the VirtualMachineScaleSetPublicIpAddressConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetPublicIpAddressConfigurationProperties withDnsSettings(
-        VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings) {
+    public VirtualMachineScaleSetPublicIpAddressConfigurationProperties
+        withDnsSettings(VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings) {
         this.dnsSettings = dnsSettings;
         return this;
     }
 
     /**
      * Get the ipTags property: The list of IP tags associated with the public IP address.
-     *
+     * 
      * @return the ipTags value.
      */
     public List<VirtualMachineScaleSetIpTag> ipTags() {
@@ -110,19 +113,19 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationProperties 
 
     /**
      * Set the ipTags property: The list of IP tags associated with the public IP address.
-     *
+     * 
      * @param ipTags the ipTags value to set.
      * @return the VirtualMachineScaleSetPublicIpAddressConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetPublicIpAddressConfigurationProperties withIpTags(
-        List<VirtualMachineScaleSetIpTag> ipTags) {
+    public VirtualMachineScaleSetPublicIpAddressConfigurationProperties
+        withIpTags(List<VirtualMachineScaleSetIpTag> ipTags) {
         this.ipTags = ipTags;
         return this;
     }
 
     /**
      * Get the publicIpPrefix property: The PublicIPPrefix from which to allocate publicIP addresses.
-     *
+     * 
      * @return the publicIpPrefix value.
      */
     public SubResource publicIpPrefix() {
@@ -131,7 +134,7 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationProperties 
 
     /**
      * Set the publicIpPrefix property: The PublicIPPrefix from which to allocate publicIP addresses.
-     *
+     * 
      * @param publicIpPrefix the publicIpPrefix value to set.
      * @return the VirtualMachineScaleSetPublicIpAddressConfigurationProperties object itself.
      */
@@ -143,7 +146,7 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationProperties 
     /**
      * Get the publicIpAddressVersion property: Available from Api-Version 2019-07-01 onwards, it represents whether the
      * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
-     *
+     * 
      * @return the publicIpAddressVersion value.
      */
     public IpVersion publicIpAddressVersion() {
@@ -153,19 +156,19 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationProperties 
     /**
      * Set the publicIpAddressVersion property: Available from Api-Version 2019-07-01 onwards, it represents whether the
      * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
-     *
+     * 
      * @param publicIpAddressVersion the publicIpAddressVersion value to set.
      * @return the VirtualMachineScaleSetPublicIpAddressConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetPublicIpAddressConfigurationProperties withPublicIpAddressVersion(
-        IpVersion publicIpAddressVersion) {
+    public VirtualMachineScaleSetPublicIpAddressConfigurationProperties
+        withPublicIpAddressVersion(IpVersion publicIpAddressVersion) {
         this.publicIpAddressVersion = publicIpAddressVersion;
         return this;
     }
 
     /**
      * Get the deleteOption property: Specify what happens to the public IP when the VM is deleted.
-     *
+     * 
      * @return the deleteOption value.
      */
     public DeleteOptions deleteOption() {
@@ -174,7 +177,7 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationProperties 
 
     /**
      * Set the deleteOption property: Specify what happens to the public IP when the VM is deleted.
-     *
+     * 
      * @param deleteOption the deleteOption value to set.
      * @return the VirtualMachineScaleSetPublicIpAddressConfigurationProperties object itself.
      */
@@ -185,7 +188,7 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationProperties 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -195,5 +198,67 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationProperties 
         if (ipTags() != null) {
             ipTags().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("idleTimeoutInMinutes", this.idleTimeoutInMinutes);
+        jsonWriter.writeJsonField("dnsSettings", this.dnsSettings);
+        jsonWriter.writeArrayField("ipTags", this.ipTags, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("publicIPPrefix", this.publicIpPrefix);
+        jsonWriter.writeStringField("publicIPAddressVersion",
+            this.publicIpAddressVersion == null ? null : this.publicIpAddressVersion.toString());
+        jsonWriter.writeStringField("deleteOption", this.deleteOption == null ? null : this.deleteOption.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetPublicIpAddressConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetPublicIpAddressConfigurationProperties if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * VirtualMachineScaleSetPublicIpAddressConfigurationProperties.
+     */
+    public static VirtualMachineScaleSetPublicIpAddressConfigurationProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetPublicIpAddressConfigurationProperties deserializedVirtualMachineScaleSetPublicIpAddressConfigurationProperties
+                = new VirtualMachineScaleSetPublicIpAddressConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("idleTimeoutInMinutes".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetPublicIpAddressConfigurationProperties.idleTimeoutInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("dnsSettings".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetPublicIpAddressConfigurationProperties.dnsSettings
+                        = VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings.fromJson(reader);
+                } else if ("ipTags".equals(fieldName)) {
+                    List<VirtualMachineScaleSetIpTag> ipTags
+                        = reader.readArray(reader1 -> VirtualMachineScaleSetIpTag.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetPublicIpAddressConfigurationProperties.ipTags = ipTags;
+                } else if ("publicIPPrefix".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetPublicIpAddressConfigurationProperties.publicIpPrefix
+                        = SubResource.fromJson(reader);
+                } else if ("publicIPAddressVersion".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetPublicIpAddressConfigurationProperties.publicIpAddressVersion
+                        = IpVersion.fromString(reader.getString());
+                } else if ("deleteOption".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetPublicIpAddressConfigurationProperties.deleteOption
+                        = DeleteOptions.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetPublicIpAddressConfigurationProperties;
+        });
     }
 }

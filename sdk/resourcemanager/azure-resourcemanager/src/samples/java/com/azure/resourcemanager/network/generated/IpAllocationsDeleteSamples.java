@@ -4,19 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for IpAllocations Delete. */
+/**
+ * Samples for IpAllocations Delete.
+ */
 public final class IpAllocationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/IpAllocationDelete.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/IpAllocationDelete.json
      */
     /**
      * Sample code: Delete IpAllocation.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteIpAllocation(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getIpAllocations().delete("rg1", "test-ipallocation", Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getIpAllocations()
+            .delete("rg1", "test-ipallocation", com.azure.core.util.Context.NONE);
     }
 }

@@ -24,6 +24,7 @@ import java.util.function.Supplier;
  * A token cache that supports caching a token and refreshing it.
  */
 public final class AccessTokenCache {
+
     // The delay after a refresh to attempt another token refresh
     private static final Duration REFRESH_DELAY = Duration.ofSeconds(30);
     // the offset before token expiry to attempt proactive token refresh
@@ -40,6 +41,7 @@ public final class AccessTokenCache {
     /**
      * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
      *
+     * @param tokenCredential The {@link TokenCredential} to use during refreshes.
      */
     public AccessTokenCache(TokenCredential tokenCredential) {
         Objects.requireNonNull(tokenCredential, "The token credential cannot be null");
@@ -53,6 +55,7 @@ public final class AccessTokenCache {
      * Asynchronously get a token from either the cache or replenish the cache with a new token.
      *
      * @param tokenRequestContext The request context for token acquisition.
+     * @param checkToForceFetchToken Whether token fetch should be forced.
      * @return The Publisher that emits an AccessToken
      */
     public Mono<AccessTokenResult> getToken(TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
@@ -115,11 +118,10 @@ public final class AccessTokenCache {
                         // cache hasn't expired, ignore refresh error this time
                         fallback = Mono.just(new AccessTokenResult(cache, false));
                     }
-                    return tokenRefresh
-                            .materialize()
-                            .flatMap(processTokenRefreshResult(sinksOne, now, fallback))
-                            .doOnError(sinksOne::tryEmitError)
-                            .doFinally(ignored -> wip.set(null));
+
+                    return Mono.using(() -> wip, ignored -> tokenRefresh.materialize()
+                        .flatMap(processTokenRefreshResult(sinksOne, now, fallback))
+                        .doOnError(sinksOne::tryEmitError), w -> w.set(null));
                 } else if (cache != null && !cache.isExpired() && !checkToForceFetchToken) {
                     // another thread might be refreshing the token proactively, but the current token is still valid
                     return Mono.just(new AccessTokenResult(cache, false));

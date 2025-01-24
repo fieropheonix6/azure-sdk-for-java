@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualMachineTemplates ListByResourceGroup. */
+/**
+ * Samples for VirtualMachineTemplates ListByResourceGroup.
+ */
 public final class VirtualMachineTemplatesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/ListVirtualMachineTemplatesByResourceGroup.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListVirtualMachineTemplatesByResourceGroup.json
      */
     /**
      * Sample code: ListVirtualMachineTemplatesByResourceGroup.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void listVirtualMachineTemplatesByResourceGroup(
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager.virtualMachineTemplates().listByResourceGroup("testrg", Context.NONE);
+        manager.virtualMachineTemplates().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }

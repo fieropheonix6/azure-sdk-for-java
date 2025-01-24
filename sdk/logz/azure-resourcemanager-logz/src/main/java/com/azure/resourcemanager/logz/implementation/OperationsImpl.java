@@ -11,10 +11,9 @@ import com.azure.resourcemanager.logz.fluent.OperationsClient;
 import com.azure.resourcemanager.logz.fluent.models.OperationResultInner;
 import com.azure.resourcemanager.logz.models.OperationResult;
 import com.azure.resourcemanager.logz.models.Operations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 
@@ -27,12 +26,12 @@ public final class OperationsImpl implements Operations {
 
     public PagedIterable<OperationResult> list() {
         PagedIterable<OperationResultInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new OperationResultImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationResultImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OperationResult> list(Context context) {
         PagedIterable<OperationResultInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new OperationResultImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationResultImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {

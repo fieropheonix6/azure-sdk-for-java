@@ -3,6 +3,7 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -12,17 +13,27 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.models.TestProxyRequestMatcher.TestProxyRequestMatcherType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.data.tables.models.TableServiceProperties;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -37,6 +48,8 @@ public final class TestUtils {
     private TestUtils() {
     }
 
+    private static final String URL_REGEX = "(?<=http:\\/\\/|https:\\/\\/)([^\\/?]+)";
+
     /**
      * Gets the connection string for running tests.
      *
@@ -50,14 +63,43 @@ public final class TestUtils {
             : Configuration.getGlobalConfiguration().get("TABLES_CONNECTION_STRING");
     }
 
+    /**
+     * Retrieve the appropriate TokenCredential based on the test mode.
+     *
+     * @param interceptorManager the interceptor manager
+     * @return The appropriate token credential
+     */
+    public static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isLiveMode()) {
+            return new AzurePowerShellCredentialBuilder().build();
+        } else if (interceptorManager.isRecordMode()) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else {
+            return new MockTokenCredential();
+        }
+    }
+
+    /**
+     * Gets the endpoint for running tests.
+     *
+     * @param isPlaybackMode {@code true} if the code is not running against a live service. false otherwise.
+     *
+     * @return The corresponding endpoint.
+     */
+    public static String getEndpoint(boolean isPlaybackMode) {
+        return isPlaybackMode
+            ? "https://dummyAccount.table.core.windows.net/"
+            : Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT");
+    }
+
     public static HttpRequest request(String url) throws MalformedURLException {
-        return new HttpRequest(HttpMethod.HEAD,
-            new URL(url), new HttpHeaders().put("Content-Length", "0"),
+        return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().put("Content-Length", "0"),
             Flux.empty());
     }
 
     public static final class FreshDateTestClient implements HttpClient {
         private DateTimeRfc1123 firstDate;
+
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             if (firstDate == null) {
@@ -70,6 +112,7 @@ public final class TestUtils {
 
             return Mono.just(new MockHttpResponse(request, 200));
         }
+
         private static DateTimeRfc1123 convertToDateObject(String dateHeader) {
             if (CoreUtils.isNullOrEmpty(dateHeader)) {
                 throw new RuntimeException("Failed to set 'Date' header.");
@@ -100,8 +143,7 @@ public final class TestUtils {
         }
     }
 
-    static void assertPropertiesEquals(TableServiceProperties expected,
-                                       TableServiceProperties actual) {
+    static void assertPropertiesEquals(TableServiceProperties expected, TableServiceProperties actual) {
         if (expected.getLogging() != null && actual.getLogging() != null) {
             assertEquals(expected.getLogging().isReadLogged(), actual.getLogging().isReadLogged());
             assertEquals(expected.getLogging().isDeleteLogged(), actual.getLogging().isDeleteLogged());
@@ -189,7 +231,34 @@ public final class TestUtils {
 
     static boolean isCosmosTest() {
         Configuration globalConfiguration = Configuration.getGlobalConfiguration();
-        return globalConfiguration.get("TABLES_CONNECTION_STRING") != null
-            && globalConfiguration.get("TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
+
+        return (globalConfiguration.get("TABLES_CONNECTION_STRING") != null
+            && globalConfiguration.get("TABLES_CONNECTION_STRING").contains("cosmos.azure.com"))
+            || (globalConfiguration.get("TABLES_ENDPOINT") != null
+                && globalConfiguration.get("TABLES_ENDPOINT").contains("cosmos.azure.com"));
+    }
+
+    public static void addTestProxyTestSanitizersAndMatchers(InterceptorManager interceptorManager) {
+
+        if (interceptorManager.isLiveMode()) {
+            return;
+        }
+
+        List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+        customSanitizers.add(new TestProxySanitizer("content-type", ".* boundary=(?<bound>.*)", "REDACTED",
+            TestProxySanitizerType.HEADER).setGroupForReplace("bound"));
+        customSanitizers.add(new TestProxySanitizer(".*\\\\?(?<query>.*)", "REDACTED", TestProxySanitizerType.URL)
+            .setGroupForReplace("query"));
+        customSanitizers.add(new TestProxySanitizer("Location", URL_REGEX, "REDACTED", TestProxySanitizerType.HEADER));
+        customSanitizers
+            .add(new TestProxySanitizer("DataServiceId", URL_REGEX, "REDACTED", TestProxySanitizerType.HEADER));
+        customSanitizers.add(new TestProxySanitizer(URL_REGEX, "REDACTED", TestProxySanitizerType.BODY_REGEX));
+        interceptorManager.addSanitizers(customSanitizers);
+
+        if (interceptorManager.isPlaybackMode()) {
+            List<TestProxyRequestMatcher> customMatcher = new ArrayList<>();
+            customMatcher.add(new TestProxyRequestMatcher(TestProxyRequestMatcherType.BODILESS));
+            interceptorManager.addMatchers(customMatcher);
+        }
     }
 }

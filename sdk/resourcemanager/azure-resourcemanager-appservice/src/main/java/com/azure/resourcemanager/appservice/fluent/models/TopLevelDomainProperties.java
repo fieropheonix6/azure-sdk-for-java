@@ -5,22 +5,32 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** TopLevelDomain resource specific properties. */
+/**
+ * TopLevelDomain resource specific properties.
+ */
 @Fluent
-public final class TopLevelDomainProperties {
+public final class TopLevelDomainProperties implements JsonSerializable<TopLevelDomainProperties> {
     /*
-     * If <code>true</code>, then the top level domain supports domain privacy;
-     * otherwise, <code>false</code>.
+     * If <code>true</code>, then the top level domain supports domain privacy; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "privacy")
     private Boolean privacy;
+
+    /**
+     * Creates an instance of TopLevelDomainProperties class.
+     */
+    public TopLevelDomainProperties() {
+    }
 
     /**
      * Get the privacy property: If &lt;code&gt;true&lt;/code&gt;, then the top level domain supports domain privacy;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the privacy value.
      */
     public Boolean privacy() {
@@ -30,7 +40,7 @@ public final class TopLevelDomainProperties {
     /**
      * Set the privacy property: If &lt;code&gt;true&lt;/code&gt;, then the top level domain supports domain privacy;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param privacy the privacy value to set.
      * @return the TopLevelDomainProperties object itself.
      */
@@ -41,9 +51,45 @@ public final class TopLevelDomainProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("privacy", this.privacy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TopLevelDomainProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TopLevelDomainProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TopLevelDomainProperties.
+     */
+    public static TopLevelDomainProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TopLevelDomainProperties deserializedTopLevelDomainProperties = new TopLevelDomainProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privacy".equals(fieldName)) {
+                    deserializedTopLevelDomainProperties.privacy = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTopLevelDomainProperties;
+        });
     }
 }

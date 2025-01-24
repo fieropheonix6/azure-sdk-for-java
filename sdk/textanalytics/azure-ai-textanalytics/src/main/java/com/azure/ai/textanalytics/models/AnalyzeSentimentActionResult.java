@@ -8,15 +8,21 @@ import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link AnalyzeSentimentActionResult} model.
+ * The {@code AnalyzeSentimentActionResult} model.
  */
 @Immutable
 public final class AnalyzeSentimentActionResult extends TextAnalyticsActionResult {
     private AnalyzeSentimentResultCollection documentsResults;
 
     static {
-        AnalyzeSentimentActionResultPropertiesHelper.setAccessor(
-            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+        AnalyzeSentimentActionResultPropertiesHelper
+            .setAccessor((actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+    }
+
+    /**
+     * Constructs a {@code AnalyzeSentimentActionResult} model.
+     */
+    public AnalyzeSentimentActionResult() {
     }
 
     /**

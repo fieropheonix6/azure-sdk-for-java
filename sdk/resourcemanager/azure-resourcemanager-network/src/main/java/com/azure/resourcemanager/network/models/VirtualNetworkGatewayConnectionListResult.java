@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConnectionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Response for the ListVirtualNetworkGatewayConnections API service call. */
+/**
+ * Response for the ListVirtualNetworkGatewayConnections API service call.
+ */
 @Fluent
-public final class VirtualNetworkGatewayConnectionListResult {
+public final class VirtualNetworkGatewayConnectionListResult
+    implements JsonSerializable<VirtualNetworkGatewayConnectionListResult> {
     /*
      * A list of VirtualNetworkGatewayConnection resources that exists in a resource group.
      */
-    @JsonProperty(value = "value")
     private List<VirtualNetworkGatewayConnectionInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of VirtualNetworkGatewayConnectionListResult class. */
+    /**
+     * Creates an instance of VirtualNetworkGatewayConnectionListResult class.
+     */
     public VirtualNetworkGatewayConnectionListResult() {
     }
 
     /**
      * Get the value property: A list of VirtualNetworkGatewayConnection resources that exists in a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualNetworkGatewayConnectionInner> value() {
@@ -39,7 +46,7 @@ public final class VirtualNetworkGatewayConnectionListResult {
 
     /**
      * Set the value property: A list of VirtualNetworkGatewayConnection resources that exists in a resource group.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualNetworkGatewayConnectionListResult object itself.
      */
@@ -50,7 +57,7 @@ public final class VirtualNetworkGatewayConnectionListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +66,53 @@ public final class VirtualNetworkGatewayConnectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkGatewayConnectionListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkGatewayConnectionListResult if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkGatewayConnectionListResult.
+     */
+    public static VirtualNetworkGatewayConnectionListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkGatewayConnectionListResult deserializedVirtualNetworkGatewayConnectionListResult
+                = new VirtualNetworkGatewayConnectionListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VirtualNetworkGatewayConnectionInner> value
+                        = reader.readArray(reader1 -> VirtualNetworkGatewayConnectionInner.fromJson(reader1));
+                    deserializedVirtualNetworkGatewayConnectionListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayConnectionListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkGatewayConnectionListResult;
+        });
     }
 }

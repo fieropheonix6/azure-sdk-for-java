@@ -44,22 +44,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DataConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataConnectionsClient.
+ */
 public final class DataConnectionsClientImpl implements DataConnectionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DataConnectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final KustoManagementClientImpl client;
 
     /**
      * Initializes an instance of DataConnectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DataConnectionsClientImpl(KustoManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DataConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DataConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,148 +75,99 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
-    private interface DataConnectionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/dataConnections")
-        @ExpectedResponses({200})
+    public interface DataConnectionsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnections")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataConnectionListResult>> listByDatabase(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DataConnectionListResult>> listByDatabase(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/dataConnectionValidation")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnectionValidation")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> dataConnectionValidation(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> dataConnectionValidation(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") DataConnectionValidationInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/checkNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/checkNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameResultInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<CheckNameResultInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") DataConnectionCheckNameRequest dataConnectionName,
-            @HeaderParam("Accept") String accept,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DataConnectionInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @PathParam("dataConnectionName") String dataConnectionName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @PathParam("dataConnectionName") String dataConnectionName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DataConnectionInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataConnectionInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("dataConnectionName") String dataConnectionName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @PathParam("dataConnectionName") String dataConnectionName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DataConnectionInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("dataConnectionName") String dataConnectionName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DataConnectionInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
-        @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("dataConnectionName") String dataConnectionName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DataConnectionInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
-                + "/{clusterName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("dataConnectionName") String dataConnectionName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @PathParam("dataConnectionName") String dataConnectionName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Returns the list of data connections of the given Kusto database.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto data connections operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataConnectionInner>> listByDatabaseSinglePageAsync(
-        String resourceGroupName, String clusterName, String databaseName) {
+    private Mono<PagedResponse<DataConnectionInner>> listByDatabaseSinglePageAsync(String resourceGroupName,
+        String clusterName, String databaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -223,36 +180,22 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDatabase(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DataConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByDatabase(this.client.getEndpoint(), resourceGroupName, clusterName,
+                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DataConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns the list of data connections of the given Kusto database.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -260,16 +203,14 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto data connections operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataConnectionInner>> listByDatabaseSinglePageAsync(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    private Mono<PagedResponse<DataConnectionInner>> listByDatabaseSinglePageAsync(String resourceGroupName,
+        String clusterName, String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -282,33 +223,22 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDatabase(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByDatabase(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Returns the list of data connections of the given Kusto database.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -317,15 +247,15 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return the list Kusto data connections operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataConnectionInner> listByDatabaseAsync(
-        String resourceGroupName, String clusterName, String databaseName) {
+    private PagedFlux<DataConnectionInner> listByDatabaseAsync(String resourceGroupName, String clusterName,
+        String databaseName) {
         return new PagedFlux<>(() -> listByDatabaseSinglePageAsync(resourceGroupName, clusterName, databaseName));
     }
 
     /**
      * Returns the list of data connections of the given Kusto database.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -335,16 +265,16 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return the list Kusto data connections operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataConnectionInner> listByDatabaseAsync(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    private PagedFlux<DataConnectionInner> listByDatabaseAsync(String resourceGroupName, String clusterName,
+        String databaseName, Context context) {
         return new PagedFlux<>(
             () -> listByDatabaseSinglePageAsync(resourceGroupName, clusterName, databaseName, context));
     }
 
     /**
      * Returns the list of data connections of the given Kusto database.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -353,15 +283,15 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return the list Kusto data connections operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataConnectionInner> listByDatabase(
-        String resourceGroupName, String clusterName, String databaseName) {
+    public PagedIterable<DataConnectionInner> listByDatabase(String resourceGroupName, String clusterName,
+        String databaseName) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, clusterName, databaseName));
     }
 
     /**
      * Returns the list of data connections of the given Kusto database.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
@@ -371,15 +301,15 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return the list Kusto data connections operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataConnectionInner> listByDatabase(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    public PagedIterable<DataConnectionInner> listByDatabase(String resourceGroupName, String clusterName,
+        String databaseName, Context context) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, clusterName, databaseName, context));
     }
 
     /**
      * Checks that the data connection parameters are valid.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -387,16 +317,14 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto data connection validation result along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> dataConnectionValidationWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, DataConnectionValidationInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> dataConnectionValidationWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, DataConnectionValidationInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -409,10 +337,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -421,26 +347,16 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .dataConnectionValidation(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.dataConnectionValidation(this.client.getEndpoint(), resourceGroupName,
+                clusterName, databaseName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks that the data connection parameters are valid.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -449,20 +365,14 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto data connection validation result along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> dataConnectionValidationWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DataConnectionValidationInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> dataConnectionValidationWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, DataConnectionValidationInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -475,10 +385,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -487,23 +395,14 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .dataConnectionValidation(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.dataConnectionValidation(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Checks that the data connection parameters are valid.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -514,27 +413,20 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataConnectionValidationListResultInner>, DataConnectionValidationListResultInner>
-        beginDataConnectionValidationAsync(
-            String resourceGroupName,
-            String clusterName,
-            String databaseName,
+        beginDataConnectionValidationAsync(String resourceGroupName, String clusterName, String databaseName,
             DataConnectionValidationInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            dataConnectionValidationWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters);
-        return this
-            .client
-            .<DataConnectionValidationListResultInner, DataConnectionValidationListResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DataConnectionValidationListResultInner.class,
-                DataConnectionValidationListResultInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = dataConnectionValidationWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters);
+        return this.client
+            .<DataConnectionValidationListResultInner, DataConnectionValidationListResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), DataConnectionValidationListResultInner.class,
+                DataConnectionValidationListResultInner.class, this.client.getContext());
     }
 
     /**
      * Checks that the data connection parameters are valid.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -546,30 +438,21 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataConnectionValidationListResultInner>, DataConnectionValidationListResultInner>
-        beginDataConnectionValidationAsync(
-            String resourceGroupName,
-            String clusterName,
-            String databaseName,
-            DataConnectionValidationInner parameters,
-            Context context) {
+        beginDataConnectionValidationAsync(String resourceGroupName, String clusterName, String databaseName,
+            DataConnectionValidationInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            dataConnectionValidationWithResponseAsync(
-                resourceGroupName, clusterName, databaseName, parameters, context);
-        return this
-            .client
-            .<DataConnectionValidationListResultInner, DataConnectionValidationListResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DataConnectionValidationListResultInner.class,
-                DataConnectionValidationListResultInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = dataConnectionValidationWithResponseAsync(resourceGroupName,
+            clusterName, databaseName, parameters, context);
+        return this.client
+            .<DataConnectionValidationListResultInner, DataConnectionValidationListResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), DataConnectionValidationListResultInner.class,
+                DataConnectionValidationListResultInner.class, context);
     }
 
     /**
      * Checks that the data connection parameters are valid.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -580,19 +463,16 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataConnectionValidationListResultInner>, DataConnectionValidationListResultInner>
-        beginDataConnectionValidation(
-            String resourceGroupName,
-            String clusterName,
-            String databaseName,
+        beginDataConnectionValidation(String resourceGroupName, String clusterName, String databaseName,
             DataConnectionValidationInner parameters) {
-        return beginDataConnectionValidationAsync(resourceGroupName, clusterName, databaseName, parameters)
+        return this.beginDataConnectionValidationAsync(resourceGroupName, clusterName, databaseName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Checks that the data connection parameters are valid.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -604,20 +484,17 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataConnectionValidationListResultInner>, DataConnectionValidationListResultInner>
-        beginDataConnectionValidation(
-            String resourceGroupName,
-            String clusterName,
-            String databaseName,
-            DataConnectionValidationInner parameters,
-            Context context) {
-        return beginDataConnectionValidationAsync(resourceGroupName, clusterName, databaseName, parameters, context)
+        beginDataConnectionValidation(String resourceGroupName, String clusterName, String databaseName,
+            DataConnectionValidationInner parameters, Context context) {
+        return this
+            .beginDataConnectionValidationAsync(resourceGroupName, clusterName, databaseName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Checks that the data connection parameters are valid.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -627,17 +504,16 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return the list Kusto data connection validation result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataConnectionValidationListResultInner> dataConnectionValidationAsync(
-        String resourceGroupName, String clusterName, String databaseName, DataConnectionValidationInner parameters) {
-        return beginDataConnectionValidationAsync(resourceGroupName, clusterName, databaseName, parameters)
-            .last()
+    private Mono<DataConnectionValidationListResultInner> dataConnectionValidationAsync(String resourceGroupName,
+        String clusterName, String databaseName, DataConnectionValidationInner parameters) {
+        return beginDataConnectionValidationAsync(resourceGroupName, clusterName, databaseName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Checks that the data connection parameters are valid.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -648,12 +524,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return the list Kusto data connection validation result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataConnectionValidationListResultInner> dataConnectionValidationAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DataConnectionValidationInner parameters,
-        Context context) {
+    private Mono<DataConnectionValidationListResultInner> dataConnectionValidationAsync(String resourceGroupName,
+        String clusterName, String databaseName, DataConnectionValidationInner parameters, Context context) {
         return beginDataConnectionValidationAsync(resourceGroupName, clusterName, databaseName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -661,8 +533,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
 
     /**
      * Checks that the data connection parameters are valid.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -672,15 +544,15 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return the list Kusto data connection validation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataConnectionValidationListResultInner dataConnectionValidation(
-        String resourceGroupName, String clusterName, String databaseName, DataConnectionValidationInner parameters) {
+    public DataConnectionValidationListResultInner dataConnectionValidation(String resourceGroupName,
+        String clusterName, String databaseName, DataConnectionValidationInner parameters) {
         return dataConnectionValidationAsync(resourceGroupName, clusterName, databaseName, parameters).block();
     }
 
     /**
      * Checks that the data connection parameters are valid.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
@@ -691,19 +563,15 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return the list Kusto data connection validation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataConnectionValidationListResultInner dataConnectionValidation(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DataConnectionValidationInner parameters,
-        Context context) {
+    public DataConnectionValidationListResultInner dataConnectionValidation(String resourceGroupName,
+        String clusterName, String databaseName, DataConnectionValidationInner parameters, Context context) {
         return dataConnectionValidationAsync(resourceGroupName, clusterName, databaseName, parameters, context).block();
     }
 
     /**
      * Checks that the data connection name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -711,19 +579,14 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DataConnectionCheckNameRequest dataConnectionName) {
+    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, DataConnectionCheckNameRequest dataConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -736,10 +599,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (dataConnectionName == null) {
             return Mono
@@ -749,26 +610,16 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            dataConnectionName,
-                            accept,
-                            context))
+            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(), resourceGroupName,
+                clusterName, databaseName, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                dataConnectionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks that the data connection name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -777,20 +628,14 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DataConnectionCheckNameRequest dataConnectionName,
-        Context context) {
+    private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, DataConnectionCheckNameRequest dataConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -803,10 +648,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (dataConnectionName == null) {
             return Mono
@@ -816,23 +659,14 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                dataConnectionName,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), dataConnectionName, accept, context);
     }
 
     /**
      * Checks that the data connection name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -842,40 +676,16 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return the result returned from a check name availability request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameResultInner> checkNameAvailabilityAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DataConnectionCheckNameRequest dataConnectionName) {
+    private Mono<CheckNameResultInner> checkNameAvailabilityAsync(String resourceGroupName, String clusterName,
+        String databaseName, DataConnectionCheckNameRequest dataConnectionName) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, databaseName, dataConnectionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checks that the data connection name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param dataConnectionName The name of the data connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameResultInner checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DataConnectionCheckNameRequest dataConnectionName) {
-        return checkNameAvailabilityAsync(resourceGroupName, clusterName, databaseName, dataConnectionName).block();
-    }
-
-    /**
-     * Checks that the data connection name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -886,38 +696,50 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DataConnectionCheckNameRequest dataConnectionName,
-        Context context) {
-        return checkNameAvailabilityWithResponseAsync(
-                resourceGroupName, clusterName, databaseName, dataConnectionName, context)
-            .block();
+    public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String resourceGroupName,
+        String clusterName, String databaseName, DataConnectionCheckNameRequest dataConnectionName, Context context) {
+        return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, databaseName, dataConnectionName,
+            context).block();
     }
 
     /**
-     * Returns a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * Checks that the data connection name is valid and is not already in use.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an data connection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName) {
+    public CheckNameResultInner checkNameAvailability(String resourceGroupName, String clusterName, String databaseName,
+        DataConnectionCheckNameRequest dataConnectionName) {
+        return checkNameAvailabilityWithResponse(resourceGroupName, clusterName, databaseName, dataConnectionName,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Returns a data connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param dataConnectionName The name of the data connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing an data connection along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DataConnectionInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, String dataConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -934,33 +756,20 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
                 .error(new IllegalArgumentException("Parameter dataConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            dataConnectionName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+                dataConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -968,17 +777,15 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an data connection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return class representing an data connection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName, Context context) {
+    private Mono<Response<DataConnectionInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, String dataConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -995,30 +802,19 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
                 .error(new IllegalArgumentException("Parameter dataConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                dataConnectionName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName, dataConnectionName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Returns a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1028,34 +824,16 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return class representing an data connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataConnectionInner> getAsync(
-        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName) {
+    private Mono<DataConnectionInner> getAsync(String resourceGroupName, String clusterName, String databaseName,
+        String dataConnectionName) {
         return getWithResponseAsync(resourceGroupName, clusterName, databaseName, dataConnectionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Returns a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param dataConnectionName The name of the data connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an data connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataConnectionInner get(
-        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName) {
-        return getAsync(resourceGroupName, clusterName, databaseName, dataConnectionName).block();
-    }
-
-    /**
-     * Returns a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1066,15 +844,34 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return class representing an data connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataConnectionInner> getWithResponse(
-        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName, Context context) {
+    public Response<DataConnectionInner> getWithResponse(String resourceGroupName, String clusterName,
+        String databaseName, String dataConnectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, context).block();
     }
 
     /**
+     * Returns a data connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param dataConnectionName The name of the data connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing an data connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataConnectionInner get(String resourceGroupName, String clusterName, String databaseName,
+        String dataConnectionName) {
+        return getWithResponse(resourceGroupName, clusterName, databaseName, dataConnectionName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Creates or updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1082,21 +879,15 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an data connection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return class representing an data connection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, String dataConnectionName, DataConnectionInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1113,10 +904,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
                 .error(new IllegalArgumentException("Parameter dataConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1125,27 +914,16 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            dataConnectionName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, clusterName,
+                databaseName, dataConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1154,22 +932,16 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an data connection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return class representing an data connection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, String dataConnectionName, DataConnectionInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1186,10 +958,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
                 .error(new IllegalArgumentException("Parameter dataConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1198,24 +968,15 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                dataConnectionName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            dataConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept,
+            context);
     }
 
     /**
      * Creates or updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1227,28 +988,18 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataConnectionInner>, DataConnectionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
+        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName,
         DataConnectionInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, clusterName, databaseName, dataConnectionName, parameters);
-        return this
-            .client
-            .<DataConnectionInner, DataConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DataConnectionInner.class,
-                DataConnectionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, clusterName,
+            databaseName, dataConnectionName, parameters);
+        return this.client.<DataConnectionInner, DataConnectionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DataConnectionInner.class, DataConnectionInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1261,50 +1012,41 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataConnectionInner>, DataConnectionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters,
-        Context context) {
+        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName,
+        DataConnectionInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, clusterName,
+            databaseName, dataConnectionName, parameters, context);
+        return this.client.<DataConnectionInner, DataConnectionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DataConnectionInner.class, DataConnectionInner.class, context);
+    }
+
+    /**
+     * Creates or updates a data connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param dataConnectionName The name of the data connection.
+     * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of class representing an data connection.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DataConnectionInner>, DataConnectionInner> beginCreateOrUpdate(
+        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName,
+        DataConnectionInner parameters) {
         return this
-            .client
-            .<DataConnectionInner, DataConnectionInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DataConnectionInner.class, DataConnectionInner.class, context);
-    }
-
-    /**
-     * Creates or updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param dataConnectionName The name of the data connection.
-     * @param parameters The data connection parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of class representing an data connection.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DataConnectionInner>, DataConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters)
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1317,21 +1059,18 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataConnectionInner>, DataConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, context)
+        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName,
+        DataConnectionInner parameters, Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters,
+                context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1342,12 +1081,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return class representing an data connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataConnectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters) {
+    private Mono<DataConnectionInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
+        String databaseName, String dataConnectionName, DataConnectionInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1355,8 +1090,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
 
     /**
      * Creates or updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1368,23 +1103,16 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return class representing an data connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataConnectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<DataConnectionInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
+        String databaseName, String dataConnectionName, DataConnectionInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1395,20 +1123,16 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return class representing an data connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters) {
+    public DataConnectionInner createOrUpdate(String resourceGroupName, String clusterName, String databaseName,
+        String dataConnectionName, DataConnectionInner parameters) {
         return createOrUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters)
             .block();
     }
 
     /**
      * Creates or updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1420,22 +1144,16 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return class representing an data connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, context)
-            .block();
+    public DataConnectionInner createOrUpdate(String resourceGroupName, String clusterName, String databaseName,
+        String dataConnectionName, DataConnectionInner parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters,
+            context).block();
     }
 
     /**
      * Updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1443,21 +1161,15 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an data connection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return class representing an data connection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, String dataConnectionName, DataConnectionInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1474,10 +1186,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
                 .error(new IllegalArgumentException("Parameter dataConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1486,27 +1196,16 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            dataConnectionName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, clusterName,
+                databaseName, dataConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1515,22 +1214,15 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing an data connection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return class representing an data connection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, String dataConnectionName, DataConnectionInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1547,10 +1239,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
                 .error(new IllegalArgumentException("Parameter dataConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1559,24 +1249,15 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                dataConnectionName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            dataConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept,
+            context);
     }
 
     /**
      * Updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1587,28 +1268,18 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return the {@link PollerFlux} for polling of class representing an data connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DataConnectionInner>, DataConnectionInner> beginUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters);
-        return this
-            .client
-            .<DataConnectionInner, DataConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DataConnectionInner.class,
-                DataConnectionInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DataConnectionInner>, DataConnectionInner> beginUpdateAsync(String resourceGroupName,
+        String clusterName, String databaseName, String dataConnectionName, DataConnectionInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters);
+        return this.client.<DataConnectionInner, DataConnectionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DataConnectionInner.class, DataConnectionInner.class, this.client.getContext());
     }
 
     /**
      * Updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1620,77 +1291,63 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return the {@link PollerFlux} for polling of class representing an data connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DataConnectionInner>, DataConnectionInner> beginUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters,
+    private PollerFlux<PollResult<DataConnectionInner>, DataConnectionInner> beginUpdateAsync(String resourceGroupName,
+        String clusterName, String databaseName, String dataConnectionName, DataConnectionInner parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, clusterName, databaseName,
+            dataConnectionName, parameters, context);
+        return this.client.<DataConnectionInner, DataConnectionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DataConnectionInner.class, DataConnectionInner.class, context);
+    }
+
+    /**
+     * Updates a data connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param dataConnectionName The name of the data connection.
+     * @param parameters The data connection parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of class representing an data connection.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DataConnectionInner>, DataConnectionInner> beginUpdate(String resourceGroupName,
+        String clusterName, String databaseName, String dataConnectionName, DataConnectionInner parameters) {
+        return this.beginUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates a data connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param dataConnectionName The name of the data connection.
+     * @param parameters The data connection parameters supplied to the Update operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of class representing an data connection.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DataConnectionInner>, DataConnectionInner> beginUpdate(String resourceGroupName,
+        String clusterName, String databaseName, String dataConnectionName, DataConnectionInner parameters,
+        Context context) {
         return this
-            .client
-            .<DataConnectionInner, DataConnectionInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DataConnectionInner.class, DataConnectionInner.class, context);
-    }
-
-    /**
-     * Updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param dataConnectionName The name of the data connection.
-     * @param parameters The data connection parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of class representing an data connection.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DataConnectionInner>, DataConnectionInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters) {
-        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters)
+            .beginUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param dataConnectionName The name of the data connection.
-     * @param parameters The data connection parameters supplied to the Update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of class representing an data connection.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DataConnectionInner>, DataConnectionInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1701,21 +1358,16 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return class representing an data connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataConnectionInner> updateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters) {
-        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters)
-            .last()
+    private Mono<DataConnectionInner> updateAsync(String resourceGroupName, String clusterName, String databaseName,
+        String dataConnectionName, DataConnectionInner parameters) {
+        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1727,13 +1379,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return class representing an data connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataConnectionInner> updateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters,
-        Context context) {
+    private Mono<DataConnectionInner> updateAsync(String resourceGroupName, String clusterName, String databaseName,
+        String dataConnectionName, DataConnectionInner parameters, Context context) {
         return beginUpdateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1741,8 +1388,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
 
     /**
      * Updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1753,19 +1400,15 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return class representing an data connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataConnectionInner update(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters) {
+    public DataConnectionInner update(String resourceGroupName, String clusterName, String databaseName,
+        String dataConnectionName, DataConnectionInner parameters) {
         return updateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters).block();
     }
 
     /**
      * Updates a data connection.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1777,21 +1420,16 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return class representing an data connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataConnectionInner update(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters,
-        Context context) {
+    public DataConnectionInner update(String resourceGroupName, String clusterName, String databaseName,
+        String dataConnectionName, DataConnectionInner parameters, Context context) {
         return updateAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, context)
             .block();
     }
 
     /**
      * Deletes the data connection with the given name.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1801,13 +1439,11 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, String dataConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1824,33 +1460,21 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
                 .error(new IllegalArgumentException("Parameter dataConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            dataConnectionName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+                    dataConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the data connection with the given name.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1861,13 +1485,11 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, String dataConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1884,30 +1506,19 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
                 .error(new IllegalArgumentException("Parameter dataConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                dataConnectionName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            dataConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the data connection with the given name.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1917,20 +1528,18 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, databaseName, dataConnectionName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String databaseName, String dataConnectionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, databaseName, dataConnectionName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the data connection with the given name.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1941,20 +1550,19 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String databaseName, String dataConnectionName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the data connection with the given name.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1964,15 +1572,15 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, dataConnectionName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String databaseName, String dataConnectionName) {
+        return this.beginDeleteAsync(resourceGroupName, clusterName, databaseName, dataConnectionName).getSyncPoller();
     }
 
     /**
      * Deletes the data connection with the given name.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -1983,16 +1591,16 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String databaseName, String dataConnectionName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes the data connection with the given name.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -2002,17 +1610,16 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, dataConnectionName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String databaseName,
+        String dataConnectionName) {
+        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, dataConnectionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the data connection with the given name.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -2023,17 +1630,16 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String databaseName,
+        String dataConnectionName, Context context) {
+        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the data connection with the given name.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -2048,8 +1654,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
 
     /**
      * Deletes the data connection with the given name.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param dataConnectionName The name of the data connection.
@@ -2059,8 +1665,8 @@ public final class DataConnectionsClientImpl implements DataConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String clusterName, String databaseName, String dataConnectionName, Context context) {
+    public void delete(String resourceGroupName, String clusterName, String databaseName, String dataConnectionName,
+        Context context) {
         deleteAsync(resourceGroupName, clusterName, databaseName, dataConnectionName, context).block();
     }
 }

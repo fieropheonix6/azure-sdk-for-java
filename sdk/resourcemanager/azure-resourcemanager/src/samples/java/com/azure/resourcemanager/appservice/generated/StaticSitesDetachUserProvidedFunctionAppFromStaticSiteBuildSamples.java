@@ -4,26 +4,26 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for StaticSites DetachUserProvidedFunctionAppFromStaticSiteBuild. */
+/**
+ * Samples for StaticSites DetachUserProvidedFunctionAppFromStaticSiteBuild.
+ */
 public final class StaticSitesDetachUserProvidedFunctionAppFromStaticSiteBuildSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/DetachUserProvidedFunctionAppFromStaticSiteBuild.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/
+     * DetachUserProvidedFunctionAppFromStaticSiteBuild.json
      */
     /**
      * Sample code: Detach the user provided function app from the static site build.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void detachTheUserProvidedFunctionAppFromTheStaticSiteBuild(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
+    public static void
+        detachTheUserProvidedFunctionAppFromTheStaticSiteBuild(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.webApps()
             .manager()
             .serviceClient()
             .getStaticSites()
-            .detachUserProvidedFunctionAppFromStaticSiteBuildWithResponse(
-                "rg", "testStaticSite0", "12", "testFunctionApp", Context.NONE);
+            .detachUserProvidedFunctionAppFromStaticSiteBuildWithResponse("rg", "testStaticSite0", "12",
+                "testFunctionApp", com.azure.core.util.Context.NONE);
     }
 }

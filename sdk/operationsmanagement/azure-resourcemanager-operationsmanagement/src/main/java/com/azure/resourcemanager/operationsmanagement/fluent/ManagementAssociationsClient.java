@@ -11,11 +11,29 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementAssociationInner;
 import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementAssociationPropertiesListInner;
 
-/** An instance of this class provides access to all the operations defined in ManagementAssociationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagementAssociationsClient.
+ */
 public interface ManagementAssociationsClient {
     /**
+     * Retrieves the ManagementAssociations list for the subscription
+     * 
      * Retrieves the ManagementAssociations list.
-     *
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of ManagementAssociation response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ManagementAssociationPropertiesListInner> listBySubscriptionWithResponse(Context context);
+
+    /**
+     * Retrieves the ManagementAssociations list for the subscription
+     * 
+     * Retrieves the ManagementAssociations list.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of ManagementAssociation response.
@@ -24,20 +42,32 @@ public interface ManagementAssociationsClient {
     ManagementAssociationPropertiesListInner listBySubscription();
 
     /**
-     * Retrieves the ManagementAssociations list.
-     *
+     * Create/Update ManagementAssociation.
+     * 
+     * Creates or updates the ManagementAssociation.
+     * 
+     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
+     * @param providerName Provider name for the parent resource.
+     * @param resourceType Resource type for the parent resource.
+     * @param resourceName Parent resource name.
+     * @param managementAssociationName User ManagementAssociation Name.
+     * @param parameters The parameters required to create ManagementAssociation extension.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of ManagementAssociation response.
+     * @return the container for solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagementAssociationPropertiesListInner> listBySubscriptionWithResponse(Context context);
+    Response<ManagementAssociationInner> createOrUpdateWithResponse(String resourceGroupName, String providerName,
+        String resourceType, String resourceName, String managementAssociationName,
+        ManagementAssociationInner parameters, Context context);
 
     /**
+     * Create/Update ManagementAssociation.
+     * 
      * Creates or updates the ManagementAssociation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -50,42 +80,34 @@ public interface ManagementAssociationsClient {
      * @return the container for solution.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagementAssociationInner createOrUpdate(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        ManagementAssociationInner parameters);
+    ManagementAssociationInner createOrUpdate(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, String managementAssociationName, ManagementAssociationInner parameters);
 
     /**
-     * Creates or updates the ManagementAssociation.
-     *
+     * Deletes the ManagementAssociation
+     * 
+     * Deletes the ManagementAssociation in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
      * @param resourceName Parent resource name.
      * @param managementAssociationName User ManagementAssociation Name.
-     * @param parameters The parameters required to create ManagementAssociation extension.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagementAssociationInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        ManagementAssociationInner parameters,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, String managementAssociationName, Context context);
 
     /**
+     * Deletes the ManagementAssociation
+     * 
      * Deletes the ManagementAssociation in the subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -96,16 +118,14 @@ public interface ManagementAssociationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
+    void delete(String resourceGroupName, String providerName, String resourceType, String resourceName,
         String managementAssociationName);
 
     /**
-     * Deletes the ManagementAssociation in the subscription.
-     *
+     * Retrieve ManagementAssociation.
+     * 
+     * Retrieves the user ManagementAssociation.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -115,20 +135,17 @@ public interface ManagementAssociationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the container for solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        Context context);
+    Response<ManagementAssociationInner> getWithResponse(String resourceGroupName, String providerName,
+        String resourceType, String resourceName, String managementAssociationName, Context context);
 
     /**
+     * Retrieve ManagementAssociation.
+     * 
      * Retrieves the user ManagementAssociation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -140,33 +157,6 @@ public interface ManagementAssociationsClient {
      * @return the container for solution.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagementAssociationInner get(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName);
-
-    /**
-     * Retrieves the user ManagementAssociation.
-     *
-     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
-     * @param providerName Provider name for the parent resource.
-     * @param resourceType Resource type for the parent resource.
-     * @param resourceName Parent resource name.
-     * @param managementAssociationName User ManagementAssociation Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagementAssociationInner> getWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        Context context);
+    ManagementAssociationInner get(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, String managementAssociationName);
 }

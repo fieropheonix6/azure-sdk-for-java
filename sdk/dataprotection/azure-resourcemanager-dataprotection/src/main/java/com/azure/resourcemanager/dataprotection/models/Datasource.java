@@ -6,61 +6,69 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Datasource Datasource to be backed up. */
+/**
+ * Datasource
+ * 
+ * Datasource to be backed up.
+ */
 @Fluent
-public final class Datasource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Datasource.class);
-
+public final class Datasource implements JsonSerializable<Datasource> {
     /*
      * DatasourceType of the resource.
      */
-    @JsonProperty(value = "datasourceType")
     private String datasourceType;
 
     /*
      * Type of Datasource object, used to initialize the right inherited type
      */
-    @JsonProperty(value = "objectType")
     private String objectType;
 
     /*
-     * Full ARM ID of the resource. For azure resources, this is ARM ID. For
-     * non azure resources, this will be the ID created by backup service via
-     * Fabric/Vault.
+     * Full ARM ID of the resource. For azure resources, this is ARM ID. For non azure resources, this will be the ID
+     * created by backup service via Fabric/Vault.
      */
-    @JsonProperty(value = "resourceID", required = true)
     private String resourceId;
 
     /*
      * Location of datasource.
      */
-    @JsonProperty(value = "resourceLocation")
     private String resourceLocation;
 
     /*
      * Unique identifier of the resource in the context of parent.
      */
-    @JsonProperty(value = "resourceName")
     private String resourceName;
 
     /*
      * Resource Type of Datasource.
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
      * Uri of the resource.
      */
-    @JsonProperty(value = "resourceUri")
     private String resourceUri;
+
+    /*
+     * Properties specific to data source
+     */
+    private BaseResourceProperties resourceProperties;
+
+    /**
+     * Creates an instance of Datasource class.
+     */
+    public Datasource() {
+    }
 
     /**
      * Get the datasourceType property: DatasourceType of the resource.
-     *
+     * 
      * @return the datasourceType value.
      */
     public String datasourceType() {
@@ -69,7 +77,7 @@ public final class Datasource {
 
     /**
      * Set the datasourceType property: DatasourceType of the resource.
-     *
+     * 
      * @param datasourceType the datasourceType value to set.
      * @return the Datasource object itself.
      */
@@ -80,7 +88,7 @@ public final class Datasource {
 
     /**
      * Get the objectType property: Type of Datasource object, used to initialize the right inherited type.
-     *
+     * 
      * @return the objectType value.
      */
     public String objectType() {
@@ -89,7 +97,7 @@ public final class Datasource {
 
     /**
      * Set the objectType property: Type of Datasource object, used to initialize the right inherited type.
-     *
+     * 
      * @param objectType the objectType value to set.
      * @return the Datasource object itself.
      */
@@ -101,7 +109,7 @@ public final class Datasource {
     /**
      * Get the resourceId property: Full ARM ID of the resource. For azure resources, this is ARM ID. For non azure
      * resources, this will be the ID created by backup service via Fabric/Vault.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -111,7 +119,7 @@ public final class Datasource {
     /**
      * Set the resourceId property: Full ARM ID of the resource. For azure resources, this is ARM ID. For non azure
      * resources, this will be the ID created by backup service via Fabric/Vault.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the Datasource object itself.
      */
@@ -122,7 +130,7 @@ public final class Datasource {
 
     /**
      * Get the resourceLocation property: Location of datasource.
-     *
+     * 
      * @return the resourceLocation value.
      */
     public String resourceLocation() {
@@ -131,7 +139,7 @@ public final class Datasource {
 
     /**
      * Set the resourceLocation property: Location of datasource.
-     *
+     * 
      * @param resourceLocation the resourceLocation value to set.
      * @return the Datasource object itself.
      */
@@ -142,7 +150,7 @@ public final class Datasource {
 
     /**
      * Get the resourceName property: Unique identifier of the resource in the context of parent.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -151,7 +159,7 @@ public final class Datasource {
 
     /**
      * Set the resourceName property: Unique identifier of the resource in the context of parent.
-     *
+     * 
      * @param resourceName the resourceName value to set.
      * @return the Datasource object itself.
      */
@@ -162,7 +170,7 @@ public final class Datasource {
 
     /**
      * Get the resourceType property: Resource Type of Datasource.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -171,7 +179,7 @@ public final class Datasource {
 
     /**
      * Set the resourceType property: Resource Type of Datasource.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the Datasource object itself.
      */
@@ -182,7 +190,7 @@ public final class Datasource {
 
     /**
      * Get the resourceUri property: Uri of the resource.
-     *
+     * 
      * @return the resourceUri value.
      */
     public String resourceUri() {
@@ -191,7 +199,7 @@ public final class Datasource {
 
     /**
      * Set the resourceUri property: Uri of the resource.
-     *
+     * 
      * @param resourceUri the resourceUri value to set.
      * @return the Datasource object itself.
      */
@@ -201,15 +209,97 @@ public final class Datasource {
     }
 
     /**
+     * Get the resourceProperties property: Properties specific to data source.
+     * 
+     * @return the resourceProperties value.
+     */
+    public BaseResourceProperties resourceProperties() {
+        return this.resourceProperties;
+    }
+
+    /**
+     * Set the resourceProperties property: Properties specific to data source.
+     * 
+     * @param resourceProperties the resourceProperties value to set.
+     * @return the Datasource object itself.
+     */
+    public Datasource withResourceProperties(BaseResourceProperties resourceProperties) {
+        this.resourceProperties = resourceProperties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property resourceId in model Datasource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property resourceId in model Datasource"));
         }
+        if (resourceProperties() != null) {
+            resourceProperties().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Datasource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceID", this.resourceId);
+        jsonWriter.writeStringField("datasourceType", this.datasourceType);
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("resourceLocation", this.resourceLocation);
+        jsonWriter.writeStringField("resourceName", this.resourceName);
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeStringField("resourceUri", this.resourceUri);
+        jsonWriter.writeJsonField("resourceProperties", this.resourceProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Datasource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Datasource if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Datasource.
+     */
+    public static Datasource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Datasource deserializedDatasource = new Datasource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceID".equals(fieldName)) {
+                    deserializedDatasource.resourceId = reader.getString();
+                } else if ("datasourceType".equals(fieldName)) {
+                    deserializedDatasource.datasourceType = reader.getString();
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedDatasource.objectType = reader.getString();
+                } else if ("resourceLocation".equals(fieldName)) {
+                    deserializedDatasource.resourceLocation = reader.getString();
+                } else if ("resourceName".equals(fieldName)) {
+                    deserializedDatasource.resourceName = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedDatasource.resourceType = reader.getString();
+                } else if ("resourceUri".equals(fieldName)) {
+                    deserializedDatasource.resourceUri = reader.getString();
+                } else if ("resourceProperties".equals(fieldName)) {
+                    deserializedDatasource.resourceProperties = BaseResourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatasource;
+        });
     }
 }

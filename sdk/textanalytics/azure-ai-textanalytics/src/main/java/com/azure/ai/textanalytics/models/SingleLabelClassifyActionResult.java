@@ -8,15 +8,21 @@ import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link SingleLabelClassifyActionResult} model.
+ * The {@code SingleLabelClassifyActionResult} model.
  */
 @Immutable
 public final class SingleLabelClassifyActionResult extends TextAnalyticsActionResult {
     private ClassifyDocumentResultCollection documentsResults;
 
     static {
-        SingleLabelClassifyActionResultPropertiesHelper.setAccessor(
-            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+        SingleLabelClassifyActionResultPropertiesHelper
+            .setAccessor((actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+    }
+
+    /**
+     * Constructs a {@code SingleLabelClassifyActionResult} model.
+     */
+    public SingleLabelClassifyActionResult() {
     }
 
     /**

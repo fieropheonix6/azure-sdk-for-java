@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.resourcemover.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourcemover.fluent.models.MoveResourceInner;
 import com.azure.resourcemanager.resourcemover.models.MoveResource;
@@ -14,8 +15,8 @@ public final class MoveResourceImpl implements MoveResource, MoveResource.Defini
 
     private final com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager;
 
-    MoveResourceImpl(
-        MoveResourceInner innerObject, com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager) {
+    MoveResourceImpl(MoveResourceInner innerObject,
+        com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -34,6 +35,10 @@ public final class MoveResourceImpl implements MoveResource, MoveResource.Defini
 
     public MoveResourceProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public MoveResourceInner innerModel() {
@@ -57,20 +62,16 @@ public final class MoveResourceImpl implements MoveResource, MoveResource.Defini
     }
 
     public MoveResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMoveResources()
-                .create(resourceGroupName, moveCollectionName, moveResourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMoveResources()
+            .create(resourceGroupName, moveCollectionName, moveResourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public MoveResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMoveResources()
-                .create(resourceGroupName, moveCollectionName, moveResourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMoveResources()
+            .create(resourceGroupName, moveCollectionName, moveResourceName, this.innerModel(), context);
         return this;
     }
 
@@ -81,22 +82,18 @@ public final class MoveResourceImpl implements MoveResource, MoveResource.Defini
     }
 
     public MoveResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMoveResources()
-                .getWithResponse(resourceGroupName, moveCollectionName, moveResourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMoveResources()
+            .getWithResponse(resourceGroupName, moveCollectionName, moveResourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MoveResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMoveResources()
-                .getWithResponse(resourceGroupName, moveCollectionName, moveResourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMoveResources()
+            .getWithResponse(resourceGroupName, moveCollectionName, moveResourceName, context)
+            .getValue();
         return this;
     }
 

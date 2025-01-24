@@ -17,8 +17,8 @@ import com.azure.resourcemanager.synapse.models.WorkspaceManagedSqlServerExtende
 
 public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl
     implements WorkspaceManagedSqlServerExtendedBlobAuditingPolicies {
-    private static final ClientLogger LOGGER =
-        new ClientLogger(WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl.class);
 
     private final WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient innerClient;
 
@@ -31,10 +31,22 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl
         this.serviceManager = serviceManager;
     }
 
-    public ExtendedServerBlobAuditingPolicy get(
-        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName) {
-        ExtendedServerBlobAuditingPolicyInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, blobAuditingPolicyName);
+    public Response<ExtendedServerBlobAuditingPolicy> getWithResponse(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName, Context context) {
+        Response<ExtendedServerBlobAuditingPolicyInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, blobAuditingPolicyName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ExtendedServerBlobAuditingPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ExtendedServerBlobAuditingPolicy get(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName) {
+        ExtendedServerBlobAuditingPolicyInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, blobAuditingPolicyName);
         if (inner != null) {
             return new ExtendedServerBlobAuditingPolicyImpl(inner, this.manager());
         } else {
@@ -42,95 +54,59 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl
         }
     }
 
-    public Response<ExtendedServerBlobAuditingPolicy> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        BlobAuditingPolicyName blobAuditingPolicyName,
-        Context context) {
-        Response<ExtendedServerBlobAuditingPolicyInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, blobAuditingPolicyName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ExtendedServerBlobAuditingPolicyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<ExtendedServerBlobAuditingPolicy> listByWorkspace(String resourceGroupName,
+        String workspaceName) {
+        PagedIterable<ExtendedServerBlobAuditingPolicyInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ExtendedServerBlobAuditingPolicyImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ExtendedServerBlobAuditingPolicy> listByWorkspace(
-        String resourceGroupName, String workspaceName) {
-        PagedIterable<ExtendedServerBlobAuditingPolicyInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new ExtendedServerBlobAuditingPolicyImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<ExtendedServerBlobAuditingPolicy> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context) {
-        PagedIterable<ExtendedServerBlobAuditingPolicyInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new ExtendedServerBlobAuditingPolicyImpl(inner1, this.manager()));
+    public PagedIterable<ExtendedServerBlobAuditingPolicy> listByWorkspace(String resourceGroupName,
+        String workspaceName, Context context) {
+        PagedIterable<ExtendedServerBlobAuditingPolicyInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ExtendedServerBlobAuditingPolicyImpl(inner1, this.manager()));
     }
 
     public ExtendedServerBlobAuditingPolicy getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        BlobAuditingPolicyName blobAuditingPolicyName =
-            BlobAuditingPolicyName.fromString(Utils.getValueFromIdByName(id, "extendedAuditingSettings"));
-        if (blobAuditingPolicyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'extendedAuditingSettings'.",
-                                id)));
+        String blobAuditingPolicyNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "extendedAuditingSettings");
+        if (blobAuditingPolicyNameLocal == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'extendedAuditingSettings'.", id)));
         }
+        BlobAuditingPolicyName blobAuditingPolicyName = BlobAuditingPolicyName.fromString(blobAuditingPolicyNameLocal);
         return this.getWithResponse(resourceGroupName, workspaceName, blobAuditingPolicyName, Context.NONE).getValue();
     }
 
     public Response<ExtendedServerBlobAuditingPolicy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        BlobAuditingPolicyName blobAuditingPolicyName =
-            BlobAuditingPolicyName.fromString(Utils.getValueFromIdByName(id, "extendedAuditingSettings"));
-        if (blobAuditingPolicyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'extendedAuditingSettings'.",
-                                id)));
+        String blobAuditingPolicyNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "extendedAuditingSettings");
+        if (blobAuditingPolicyNameLocal == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'extendedAuditingSettings'.", id)));
         }
+        BlobAuditingPolicyName blobAuditingPolicyName = BlobAuditingPolicyName.fromString(blobAuditingPolicyNameLocal);
         return this.getWithResponse(resourceGroupName, workspaceName, blobAuditingPolicyName, context);
     }
 

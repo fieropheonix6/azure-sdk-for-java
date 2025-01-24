@@ -8,31 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.MLTableJobOutput;
 import com.azure.resourcemanager.machinelearning.models.OutputDeliveryMode;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MLTableJobOutputTests {
-    @Test
-    public void testDeserialize() {
-        MLTableJobOutput model =
-            BinaryData
-                .fromString(
-                    "{\"jobOutputType\":\"mltable\",\"mode\":\"ReadWriteMount\",\"uri\":\"mlcfnzhmhsurl\",\"description\":\"qkpmmzpstau\"}")
-                .toObject(MLTableJobOutput.class);
-        Assertions.assertEquals("qkpmmzpstau", model.description());
-        Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
-        Assertions.assertEquals("mlcfnzhmhsurl", model.uri());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        MLTableJobOutput model = BinaryData.fromString(
+            "{\"jobOutputType\":\"mltable\",\"uri\":\"jwqdmr\",\"mode\":\"Upload\",\"description\":\"lppqcaigazwfwlr\"}")
+            .toObject(MLTableJobOutput.class);
+        Assertions.assertEquals("lppqcaigazwfwlr", model.description());
+        Assertions.assertEquals("jwqdmr", model.uri());
+        Assertions.assertEquals(OutputDeliveryMode.UPLOAD, model.mode());
     }
 
-    @Test
-    public void testSerialize() {
-        MLTableJobOutput model =
-            new MLTableJobOutput()
-                .withDescription("qkpmmzpstau")
-                .withMode(OutputDeliveryMode.READ_WRITE_MOUNT)
-                .withUri("mlcfnzhmhsurl");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        MLTableJobOutput model = new MLTableJobOutput().withDescription("lppqcaigazwfwlr")
+            .withUri("jwqdmr")
+            .withMode(OutputDeliveryMode.UPLOAD);
         model = BinaryData.fromObject(model).toObject(MLTableJobOutput.class);
-        Assertions.assertEquals("qkpmmzpstau", model.description());
-        Assertions.assertEquals(OutputDeliveryMode.READ_WRITE_MOUNT, model.mode());
-        Assertions.assertEquals("mlcfnzhmhsurl", model.uri());
+        Assertions.assertEquals("lppqcaigazwfwlr", model.description());
+        Assertions.assertEquals("jwqdmr", model.uri());
+        Assertions.assertEquals(OutputDeliveryMode.UPLOAD, model.mode());
     }
 }

@@ -9,16 +9,13 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementT
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionIntent;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProtectionIntentTests {
-    @Test
-    public void testDeserialize() {
-        ProtectionIntent model =
-            BinaryData
-                .fromString(
-                    "{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureSql\",\"sourceResourceId\":\"kvnipjoxz\",\"itemId\":\"chgejspodm\",\"policyId\":\"lzydehojwyahux\",\"protectionState\":\"ProtectionFailed\"}")
-                .toObject(ProtectionIntent.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ProtectionIntent model = BinaryData.fromString(
+            "{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureSql\",\"sourceResourceId\":\"kvnipjoxz\",\"itemId\":\"chgejspodm\",\"policyId\":\"lzydehojwyahux\",\"protectionState\":\"ProtectionFailed\"}")
+            .toObject(ProtectionIntent.class);
         Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
         Assertions.assertEquals("kvnipjoxz", model.sourceResourceId());
         Assertions.assertEquals("chgejspodm", model.itemId());
@@ -26,15 +23,13 @@ public final class ProtectionIntentTests {
         Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
     }
 
-    @Test
-    public void testSerialize() {
-        ProtectionIntent model =
-            new ProtectionIntent()
-                .withBackupManagementType(BackupManagementType.AZURE_SQL)
-                .withSourceResourceId("kvnipjoxz")
-                .withItemId("chgejspodm")
-                .withPolicyId("lzydehojwyahux")
-                .withProtectionState(ProtectionStatus.PROTECTION_FAILED);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ProtectionIntent model = new ProtectionIntent().withBackupManagementType(BackupManagementType.AZURE_SQL)
+            .withSourceResourceId("kvnipjoxz")
+            .withItemId("chgejspodm")
+            .withPolicyId("lzydehojwyahux")
+            .withProtectionState(ProtectionStatus.PROTECTION_FAILED);
         model = BinaryData.fromObject(model).toObject(ProtectionIntent.class);
         Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
         Assertions.assertEquals("kvnipjoxz", model.sourceResourceId());

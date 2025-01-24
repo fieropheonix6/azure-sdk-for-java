@@ -9,29 +9,50 @@ import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.util.Collection;
+import java.util.List;
 
 /** A client-side representation of an HTTP load balancing rule. */
 @Fluent()
-public interface LoadBalancingRule
-    extends HasInnerModel<LoadBalancingRuleInner>,
-        ChildResource<LoadBalancer>,
-        HasBackendPort,
-        HasFrontend,
-        HasFloatingIP,
-        HasProtocol<TransportProtocol>,
-        HasFrontendPort {
+public interface LoadBalancingRule extends HasInnerModel<LoadBalancingRuleInner>, ChildResource<LoadBalancer>,
+    HasBackendPort, HasFrontend, HasFloatingIP, HasProtocol<TransportProtocol>, HasFrontendPort {
 
-    /** @return the method of load distribution */
+    /**
+     * Gets the method of load distribution.
+     *
+     * @return the method of load distribution
+     */
     LoadDistribution loadDistribution();
 
-    /** @return the number of minutes before an inactive connection is closed */
+    /**
+     * Gets the number of minutes before an inactive connection is closed.
+     *
+     * @return the number of minutes before an inactive connection is closed
+     */
     int idleTimeoutInMinutes();
 
-    /** @return the backend associated with the load balancing rule */
+    /**
+     * Gets the backend associated with the load balancing rule.
+     * <p>
+     * If there are multiple backends associated with the rule, this API only returns the first backend.
+     * Use {@link #backends()} for the case of multiple backends associated with the rule.
+     *
+     * @return the backend associated with the load balancing rule
+     */
     LoadBalancerBackend backend();
 
-    /** @return the probe associated with the load balancing rule */
+    /**
+     * Gets the probe associated with the load balancing rule.
+     *
+     * @return the probe associated with the load balancing rule
+     */
     LoadBalancerProbe probe();
+
+    /**
+     * Gets the list of backends associated with the load balancing rule.
+     *
+     * @return the list of backends associated with the load balancing rule
+     */
+    List<LoadBalancerBackend> backends();
 
     /** Grouping of load balancing rule definition stages. */
     interface DefinitionStages {
@@ -165,12 +186,9 @@ public interface LoadBalancingRule
          *
          * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ReturnT>
-            extends Attachable.InDefinition<ReturnT>,
-                DefinitionStages.WithFloatingIP<ReturnT>,
-                DefinitionStages.WithIdleTimeoutInMinutes<ReturnT>,
-                DefinitionStages.WithLoadDistribution<ReturnT>,
-                DefinitionStages.WithProbe<ReturnT> {
+        interface WithAttach<ReturnT> extends Attachable.InDefinition<ReturnT>,
+            DefinitionStages.WithFloatingIP<ReturnT>, DefinitionStages.WithIdleTimeoutInMinutes<ReturnT>,
+            DefinitionStages.WithLoadDistribution<ReturnT>, DefinitionStages.WithProbe<ReturnT> {
         }
 
         /**
@@ -218,14 +236,10 @@ public interface LoadBalancingRule
      *
      * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
      */
-    interface Definition<ReturnT>
-        extends DefinitionStages.Blank<ReturnT>,
-            DefinitionStages.WithAttach<ReturnT>,
-            DefinitionStages.WithProtocol<ReturnT>,
-            DefinitionStages.WithFrontendPort<ReturnT>,
-            DefinitionStages.WithFrontend<ReturnT>,
-            DefinitionStages.WithBackend<ReturnT>,
-            DefinitionStages.WithBackendPort<ReturnT> {
+    interface Definition<ReturnT> extends DefinitionStages.Blank<ReturnT>, DefinitionStages.WithAttach<ReturnT>,
+        DefinitionStages.WithProtocol<ReturnT>, DefinitionStages.WithFrontendPort<ReturnT>,
+        DefinitionStages.WithFrontend<ReturnT>, DefinitionStages.WithBackend<ReturnT>,
+        DefinitionStages.WithBackendPort<ReturnT> {
     }
 
     /** Grouping of load balancing rule update stages. */
@@ -292,16 +306,9 @@ public interface LoadBalancingRule
     }
 
     /** The entirety of a load balancing rule update as part of a load balancer update. */
-    interface Update
-        extends Settable<LoadBalancer.Update>,
-            UpdateStages.WithFrontendPort,
-            UpdateStages.WithFrontend,
-            UpdateStages.WithProtocol,
-            UpdateStages.WithBackendPort,
-            UpdateStages.WithFloatingIP,
-            UpdateStages.WithIdleTimeoutInMinutes,
-            UpdateStages.WithLoadDistribution,
-            UpdateStages.WithProbe {
+    interface Update extends Settable<LoadBalancer.Update>, UpdateStages.WithFrontendPort, UpdateStages.WithFrontend,
+        UpdateStages.WithProtocol, UpdateStages.WithBackendPort, UpdateStages.WithFloatingIP,
+        UpdateStages.WithIdleTimeoutInMinutes, UpdateStages.WithLoadDistribution, UpdateStages.WithProbe {
     }
 
     /** Grouping of load balancing rule definition stages applicable as part of a load balancer update. */
@@ -476,12 +483,9 @@ public interface LoadBalancingRule
          *
          * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ReturnT>
-            extends Attachable.InUpdate<ReturnT>,
-                UpdateDefinitionStages.WithFloatingIP<ReturnT>,
-                UpdateDefinitionStages.WithIdleTimeoutInMinutes<ReturnT>,
-                UpdateDefinitionStages.WithLoadDistribution<ReturnT>,
-                UpdateDefinitionStages.WithProbe<ReturnT> {
+        interface WithAttach<ReturnT> extends Attachable.InUpdate<ReturnT>,
+            UpdateDefinitionStages.WithFloatingIP<ReturnT>, UpdateDefinitionStages.WithIdleTimeoutInMinutes<ReturnT>,
+            UpdateDefinitionStages.WithLoadDistribution<ReturnT>, UpdateDefinitionStages.WithProbe<ReturnT> {
         }
     }
 
@@ -490,13 +494,9 @@ public interface LoadBalancingRule
      *
      * @param <ReturnT> the stage of the parent definition to return to after attaching this definition
      */
-    interface UpdateDefinition<ReturnT>
-        extends UpdateDefinitionStages.Blank<ReturnT>,
-            UpdateDefinitionStages.WithAttach<ReturnT>,
-            UpdateDefinitionStages.WithProtocol<ReturnT>,
-            UpdateDefinitionStages.WithFrontendPort<ReturnT>,
-            UpdateDefinitionStages.WithFrontend<ReturnT>,
-            UpdateDefinitionStages.WithBackend<ReturnT>,
-            UpdateDefinitionStages.WithBackendPort<ReturnT> {
+    interface UpdateDefinition<ReturnT> extends UpdateDefinitionStages.Blank<ReturnT>,
+        UpdateDefinitionStages.WithAttach<ReturnT>, UpdateDefinitionStages.WithProtocol<ReturnT>,
+        UpdateDefinitionStages.WithFrontendPort<ReturnT>, UpdateDefinitionStages.WithFrontend<ReturnT>,
+        UpdateDefinitionStages.WithBackend<ReturnT>, UpdateDefinitionStages.WithBackendPort<ReturnT> {
     }
 }

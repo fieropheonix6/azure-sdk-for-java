@@ -22,31 +22,33 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dns.fluent.DnsResourceReferencesClient;
 import com.azure.resourcemanager.dns.fluent.models.DnsResourceReferenceResultInner;
 import com.azure.resourcemanager.dns.models.DnsResourceReferenceRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DnsResourceReferencesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DnsResourceReferencesClient.
+ */
 public final class DnsResourceReferencesClientImpl implements DnsResourceReferencesClient {
-    private final ClientLogger logger = new ClientLogger(DnsResourceReferencesClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DnsResourceReferencesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DnsManagementClientImpl client;
 
     /**
      * Initializes an instance of DnsResourceReferencesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DnsResourceReferencesClientImpl(DnsManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(DnsResourceReferencesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(DnsResourceReferencesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,43 +58,37 @@ public final class DnsResourceReferencesClientImpl implements DnsResourceReferen
      */
     @Host("{$host}")
     @ServiceInterface(name = "DnsManagementClientD")
-    private interface DnsResourceReferencesService {
-        @Headers({"Content-Type: application/json"})
+    public interface DnsResourceReferencesService {
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Network/getDnsResourceReference")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DnsResourceReferenceResultInner>> getByTargetResources(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") DnsResourceReferenceRequest parameters,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<DnsResourceReferenceResultInner>> getByTargetResources(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") DnsResourceReferenceRequest parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Returns the DNS records specified by the referencing targetResourceIds.
-     *
+     * 
      * @param parameters Properties for dns resource reference request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the properties of the Dns Resource Reference Result.
+     * @return represents the properties of the Dns Resource Reference Result along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DnsResourceReferenceResultInner>> getByTargetResourcesWithResponseAsync(
-        DnsResourceReferenceRequest parameters) {
+    public Mono<Response<DnsResourceReferenceResultInner>>
+        getByTargetResourcesWithResponseAsync(DnsResourceReferenceRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -101,43 +97,32 @@ public final class DnsResourceReferencesClientImpl implements DnsResourceReferen
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByTargetResources(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.getByTargetResources(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns the DNS records specified by the referencing targetResourceIds.
-     *
+     * 
      * @param parameters Properties for dns resource reference request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the properties of the Dns Resource Reference Result.
+     * @return represents the properties of the Dns Resource Reference Result along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DnsResourceReferenceResultInner>> getByTargetResourcesWithResponseAsync(
-        DnsResourceReferenceRequest parameters, Context context) {
+    private Mono<Response<DnsResourceReferenceResultInner>>
+        getByTargetResourcesWithResponseAsync(DnsResourceReferenceRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -146,41 +131,43 @@ public final class DnsResourceReferencesClientImpl implements DnsResourceReferen
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByTargetResources(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.getByTargetResources(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Returns the DNS records specified by the referencing targetResourceIds.
-     *
+     * 
      * @param parameters Properties for dns resource reference request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the properties of the Dns Resource Reference Result.
+     * @return represents the properties of the Dns Resource Reference Result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DnsResourceReferenceResultInner> getByTargetResourcesAsync(DnsResourceReferenceRequest parameters) {
-        return getByTargetResourcesWithResponseAsync(parameters)
-            .flatMap(
-                (Response<DnsResourceReferenceResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getByTargetResourcesWithResponseAsync(parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Returns the DNS records specified by the referencing targetResourceIds.
-     *
+     * 
+     * @param parameters Properties for dns resource reference request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the properties of the Dns Resource Reference Result along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DnsResourceReferenceResultInner>
+        getByTargetResourcesWithResponse(DnsResourceReferenceRequest parameters, Context context) {
+        return getByTargetResourcesWithResponseAsync(parameters, context).block();
+    }
+
+    /**
+     * Returns the DNS records specified by the referencing targetResourceIds.
+     * 
      * @param parameters Properties for dns resource reference request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -189,22 +176,6 @@ public final class DnsResourceReferencesClientImpl implements DnsResourceReferen
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DnsResourceReferenceResultInner getByTargetResources(DnsResourceReferenceRequest parameters) {
-        return getByTargetResourcesAsync(parameters).block();
-    }
-
-    /**
-     * Returns the DNS records specified by the referencing targetResourceIds.
-     *
-     * @param parameters Properties for dns resource reference request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the properties of the Dns Resource Reference Result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DnsResourceReferenceResultInner> getByTargetResourcesWithResponse(
-        DnsResourceReferenceRequest parameters, Context context) {
-        return getByTargetResourcesWithResponseAsync(parameters, context).block();
+        return getByTargetResourcesWithResponse(parameters, Context.NONE).getValue();
     }
 }

@@ -7,11 +7,27 @@ package com.azure.resourcemanager.digitaltwins.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PrivateLinkResources. */
+/**
+ * Resource collection API of PrivateLinkResources.
+ */
 public interface PrivateLinkResources {
     /**
      * List private link resources for given Digital Twin.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
+     * @param resourceName The name of the DigitalTwinsInstance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the available private link resources for a Digital Twin along with {@link Response}.
+     */
+    Response<GroupIdInformationResponse> listWithResponse(String resourceGroupName, String resourceName,
+        Context context);
+
+    /**
+     * List private link resources for given Digital Twin.
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -22,35 +38,8 @@ public interface PrivateLinkResources {
     GroupIdInformationResponse list(String resourceGroupName, String resourceName);
 
     /**
-     * List private link resources for given Digital Twin.
-     *
-     * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
-     * @param resourceName The name of the DigitalTwinsInstance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available private link resources for a Digital Twin along with {@link Response}.
-     */
-    Response<GroupIdInformationResponse> listWithResponse(
-        String resourceGroupName, String resourceName, Context context);
-
-    /**
      * Get the specified private link resource for the given Digital Twin.
-     *
-     * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
-     * @param resourceName The name of the DigitalTwinsInstance.
-     * @param resourceId The name of the private link resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link resource for the given Digital Twin.
-     */
-    GroupIdInformation get(String resourceGroupName, String resourceName, String resourceId);
-
-    /**
-     * Get the specified private link resource for the given Digital Twin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param resourceId The name of the private link resource.
@@ -60,6 +49,19 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private link resource for the given Digital Twin along with {@link Response}.
      */
-    Response<GroupIdInformation> getWithResponse(
-        String resourceGroupName, String resourceName, String resourceId, Context context);
+    Response<GroupIdInformation> getWithResponse(String resourceGroupName, String resourceName, String resourceId,
+        Context context);
+
+    /**
+     * Get the specified private link resource for the given Digital Twin.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
+     * @param resourceName The name of the DigitalTwinsInstance.
+     * @param resourceId The name of the private link resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private link resource for the given Digital Twin.
+     */
+    GroupIdInformation get(String resourceGroupName, String resourceName, String resourceId);
 }

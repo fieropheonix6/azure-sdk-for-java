@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AppType. */
+/**
+ * Defines values for AppType.
+ */
 public final class AppType extends ExpandableStringEnum<AppType> {
-    /** Static value portal for AppType. */
+    /**
+     * Static value portal for AppType.
+     */
     public static final AppType PORTAL = fromString("portal");
 
-    /** Static value developerPortal for AppType. */
+    /**
+     * Static value developerPortal for AppType.
+     */
     public static final AppType DEVELOPER_PORTAL = fromString("developerPortal");
 
     /**
+     * Creates a new instance of AppType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AppType() {
+    }
+
+    /**
      * Creates or finds a AppType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AppType.
      */
-    @JsonCreator
     public static AppType fromString(String name) {
         return fromString(name, AppType.class);
     }
 
-    /** @return known AppType values. */
+    /**
+     * Gets known AppType values.
+     * 
+     * @return known AppType values.
+     */
     public static Collection<AppType> values() {
         return values(AppType.class);
     }

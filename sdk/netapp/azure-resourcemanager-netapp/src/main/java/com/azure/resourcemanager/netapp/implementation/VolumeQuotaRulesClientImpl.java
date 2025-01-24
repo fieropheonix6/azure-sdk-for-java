@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VolumeQuotaRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VolumeQuotaRulesClient.
+ */
 public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VolumeQuotaRulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetAppManagementClientImpl client;
 
     /**
      * Initializes an instance of VolumeQuotaRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VolumeQuotaRulesClientImpl(NetAppManagementClientImpl client) {
-        this.service =
-            RestProxy.create(VolumeQuotaRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(VolumeQuotaRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,108 +71,70 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetAppManagementClie")
-    private interface VolumeQuotaRulesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/volumeQuotaRules")
-        @ExpectedResponses({200})
+    public interface VolumeQuotaRulesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/volumeQuotaRules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VolumeQuotaRulesList>> listByVolume(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VolumeQuotaRulesList>> listByVolume(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @PathParam("volumeName") String volumeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/volumeQuotaRules/{volumeQuotaRuleName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<VolumeQuotaRuleInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @PathParam("volumeQuotaRuleName") String volumeQuotaRuleName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/volumeQuotaRules/{volumeQuotaRuleName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @PathParam("volumeQuotaRuleName") String volumeQuotaRuleName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") VolumeQuotaRuleInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/volumeQuotaRules"
-                + "/{volumeQuotaRuleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/volumeQuotaRules/{volumeQuotaRuleName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VolumeQuotaRuleInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @PathParam("volumeName") String volumeName,
-            @PathParam("volumeQuotaRuleName") String volumeQuotaRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @PathParam("volumeQuotaRuleName") String volumeQuotaRuleName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") VolumeQuotaRulePatch body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/volumeQuotaRules"
-                + "/{volumeQuotaRuleName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/volumeQuotaRules/{volumeQuotaRuleName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @PathParam("volumeName") String volumeName,
-            @PathParam("volumeQuotaRuleName") String volumeQuotaRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") VolumeQuotaRuleInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/volumeQuotaRules"
-                + "/{volumeQuotaRuleName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @PathParam("volumeName") String volumeName,
-            @PathParam("volumeQuotaRuleName") String volumeQuotaRuleName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") VolumeQuotaRulePatch body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/volumeQuotaRules"
-                + "/{volumeQuotaRuleName}")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @PathParam("volumeName") String volumeName,
-            @PathParam("volumeQuotaRuleName") String volumeQuotaRuleName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @PathParam("volumeQuotaRuleName") String volumeQuotaRuleName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get all quota rules for a volume
-     *
-     * <p>List all quota rules associated with the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all quota rules associated with the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -176,19 +144,15 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return list of Volume Quota Rules along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VolumeQuotaRuleInner>> listByVolumeSinglePageAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
+    private Mono<PagedResponse<VolumeQuotaRuleInner>> listByVolumeSinglePageAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -205,32 +169,19 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByVolume(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            volumeName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<VolumeQuotaRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByVolume(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<VolumeQuotaRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all quota rules for a volume
-     *
-     * <p>List all quota rules associated with the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all quota rules associated with the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -241,19 +192,15 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return list of Volume Quota Rules along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VolumeQuotaRuleInner>> listByVolumeSinglePageAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+    private Mono<PagedResponse<VolumeQuotaRuleInner>> listByVolumeSinglePageAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -271,28 +218,18 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByVolume(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                volumeName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByVolume(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+                poolName, volumeName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Get all quota rules for a volume
-     *
-     * <p>List all quota rules associated with the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all quota rules associated with the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -302,17 +239,17 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return list of Volume Quota Rules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VolumeQuotaRuleInner> listByVolumeAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
+    private PagedFlux<VolumeQuotaRuleInner> listByVolumeAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
         return new PagedFlux<>(() -> listByVolumeSinglePageAsync(resourceGroupName, accountName, poolName, volumeName));
     }
 
     /**
      * Get all quota rules for a volume
-     *
-     * <p>List all quota rules associated with the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all quota rules associated with the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -323,18 +260,18 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return list of Volume Quota Rules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VolumeQuotaRuleInner> listByVolumeAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+    private PagedFlux<VolumeQuotaRuleInner> listByVolumeAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
         return new PagedFlux<>(
             () -> listByVolumeSinglePageAsync(resourceGroupName, accountName, poolName, volumeName, context));
     }
 
     /**
      * Get all quota rules for a volume
-     *
-     * <p>List all quota rules associated with the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all quota rules associated with the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -344,17 +281,17 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return list of Volume Quota Rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VolumeQuotaRuleInner> listByVolume(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
+    public PagedIterable<VolumeQuotaRuleInner> listByVolume(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
         return new PagedIterable<>(listByVolumeAsync(resourceGroupName, accountName, poolName, volumeName));
     }
 
     /**
      * Get all quota rules for a volume
-     *
-     * <p>List all quota rules associated with the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all quota rules associated with the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -365,17 +302,17 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return list of Volume Quota Rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VolumeQuotaRuleInner> listByVolume(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+    public PagedIterable<VolumeQuotaRuleInner> listByVolume(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
         return new PagedIterable<>(listByVolumeAsync(resourceGroupName, accountName, poolName, volumeName, context));
     }
 
     /**
      * Describe a quota rule
-     *
-     * <p>Get details of the specified quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get details of the specified quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -386,19 +323,15 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return details of the specified quota rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VolumeQuotaRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName) {
+    private Mono<Response<VolumeQuotaRuleInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String volumeQuotaRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -419,29 +352,18 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            volumeName,
-                            volumeQuotaRuleName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, this.client.getApiVersion(),
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Describe a quota rule
-     *
-     * <p>Get details of the specified quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get details of the specified quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -453,24 +375,15 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return details of the specified quota rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VolumeQuotaRuleInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        Context context) {
+    private Mono<Response<VolumeQuotaRuleInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String volumeQuotaRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -491,26 +404,16 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                volumeName,
-                volumeQuotaRuleName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            poolName, volumeName, volumeQuotaRuleName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Describe a quota rule
-     *
-     * <p>Get details of the specified quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get details of the specified quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -521,39 +424,18 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return details of the specified quota rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VolumeQuotaRuleInner> getAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName) {
+    private Mono<VolumeQuotaRuleInner> getAsync(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String volumeQuotaRuleName) {
         return getWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Describe a quota rule
-     *
-     * <p>Get details of the specified quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified quota rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VolumeQuotaRuleInner get(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName) {
-        return getAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName).block();
-    }
-
-    /**
-     * Describe a quota rule
-     *
-     * <p>Get details of the specified quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get details of the specified quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -565,23 +447,40 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return details of the specified quota rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VolumeQuotaRuleInner> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        Context context) {
+    public Response<VolumeQuotaRuleInner> getWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String volumeQuotaRuleName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context)
             .block();
     }
 
     /**
+     * Describe a quota rule
+     * 
+     * Get details of the specified quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param volumeQuotaRuleName The name of volume quota rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified quota rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VolumeQuotaRuleInner get(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName) {
+        return getWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Create a quota rule
-     *
-     * <p>Create the specified quota rule within the given volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create the specified quota rule within the given volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -593,24 +492,15 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return quota Rule of a Volume along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRuleInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String volumeQuotaRuleName, VolumeQuotaRuleInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -636,30 +526,18 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            volumeName,
-                            volumeQuotaRuleName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, this.client.getApiVersion(),
+                body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a quota rule
-     *
-     * <p>Create the specified quota rule within the given volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create the specified quota rule within the given volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -672,25 +550,15 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return quota Rule of a Volume along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRuleInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String volumeQuotaRuleName, VolumeQuotaRuleInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -716,27 +584,16 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                volumeName,
-                volumeQuotaRuleName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, volumeQuotaRuleName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Create a quota rule
-     *
-     * <p>Create the specified quota rule within the given volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create the specified quota rule within the given volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -749,30 +606,20 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginCreateAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
+        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName,
         VolumeQuotaRuleInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body);
-        return this
-            .client
-            .<VolumeQuotaRuleInner, VolumeQuotaRuleInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VolumeQuotaRuleInner.class,
-                VolumeQuotaRuleInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body);
+        return this.client.<VolumeQuotaRuleInner, VolumeQuotaRuleInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VolumeQuotaRuleInner.class, VolumeQuotaRuleInner.class, this.client.getContext());
     }
 
     /**
      * Create a quota rule
-     *
-     * <p>Create the specified quota rule within the given volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create the specified quota rule within the given volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -786,88 +633,70 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginCreateAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRuleInner body,
-        Context context) {
+        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName,
+        VolumeQuotaRuleInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(
-                resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, accountName, poolName,
+            volumeName, volumeQuotaRuleName, body, context);
+        return this.client.<VolumeQuotaRuleInner, VolumeQuotaRuleInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VolumeQuotaRuleInner.class, VolumeQuotaRuleInner.class, context);
+    }
+
+    /**
+     * Create a quota rule
+     * 
+     * Create the specified quota rule within the given volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param volumeQuotaRuleName The name of volume quota rule.
+     * @param body Quota rule object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of quota Rule of a Volume.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginCreate(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String volumeQuotaRuleName, VolumeQuotaRuleInner body) {
+        return this.beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create a quota rule
+     * 
+     * Create the specified quota rule within the given volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param volumeQuotaRuleName The name of volume quota rule.
+     * @param body Quota rule object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of quota Rule of a Volume.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginCreate(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String volumeQuotaRuleName, VolumeQuotaRuleInner body,
+        Context context) {
         return this
-            .client
-            .<VolumeQuotaRuleInner, VolumeQuotaRuleInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VolumeQuotaRuleInner.class, VolumeQuotaRuleInner.class, context);
-    }
-
-    /**
-     * Create a quota rule
-     *
-     * <p>Create the specified quota rule within the given volume.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @param body Quota rule object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of quota Rule of a Volume.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRuleInner body) {
-        return beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body)
+            .beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, context)
             .getSyncPoller();
     }
 
     /**
      * Create a quota rule
-     *
-     * <p>Create the specified quota rule within the given volume.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @param body Quota rule object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of quota Rule of a Volume.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRuleInner body,
-        Context context) {
-        return beginCreateAsync(
-                resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Create a quota rule
-     *
-     * <p>Create the specified quota rule within the given volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create the specified quota rule within the given volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -879,24 +708,18 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return quota Rule of a Volume on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VolumeQuotaRuleInner> createAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRuleInner body) {
-        return beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body)
-            .last()
+    private Mono<VolumeQuotaRuleInner> createAsync(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String volumeQuotaRuleName, VolumeQuotaRuleInner body) {
+        return beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a quota rule
-     *
-     * <p>Create the specified quota rule within the given volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create the specified quota rule within the given volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -909,26 +732,18 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return quota Rule of a Volume on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VolumeQuotaRuleInner> createAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRuleInner body,
-        Context context) {
-        return beginCreateAsync(
-                resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<VolumeQuotaRuleInner> createAsync(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String volumeQuotaRuleName, VolumeQuotaRuleInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a quota rule
-     *
-     * <p>Create the specified quota rule within the given volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create the specified quota rule within the given volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -940,22 +755,17 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return quota Rule of a Volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VolumeQuotaRuleInner create(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRuleInner body) {
+    public VolumeQuotaRuleInner create(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName, VolumeQuotaRuleInner body) {
         return createAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body).block();
     }
 
     /**
      * Create a quota rule
-     *
-     * <p>Create the specified quota rule within the given volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create the specified quota rule within the given volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -968,24 +778,18 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return quota Rule of a Volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VolumeQuotaRuleInner create(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRuleInner body,
-        Context context) {
+    public VolumeQuotaRuleInner create(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName, VolumeQuotaRuleInner body, Context context) {
         return createAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, context)
             .block();
     }
 
     /**
      * Update a quota rule
-     *
-     * <p>Patch a quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -997,24 +801,15 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return quota Rule of a Volume along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRulePatch body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String volumeQuotaRuleName, VolumeQuotaRulePatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1040,30 +835,18 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            volumeName,
-                            volumeQuotaRuleName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, this.client.getApiVersion(),
+                body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a quota rule
-     *
-     * <p>Patch a quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1076,25 +859,15 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return quota Rule of a Volume along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRulePatch body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String volumeQuotaRuleName, VolumeQuotaRulePatch body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1120,27 +893,16 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                volumeName,
-                volumeQuotaRuleName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, volumeQuotaRuleName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Update a quota rule
-     *
-     * <p>Patch a quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1153,30 +915,20 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
+        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName,
         VolumeQuotaRulePatch body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body);
-        return this
-            .client
-            .<VolumeQuotaRuleInner, VolumeQuotaRuleInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VolumeQuotaRuleInner.class,
-                VolumeQuotaRuleInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body);
+        return this.client.<VolumeQuotaRuleInner, VolumeQuotaRuleInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VolumeQuotaRuleInner.class, VolumeQuotaRuleInner.class, this.client.getContext());
     }
 
     /**
      * Update a quota rule
-     *
-     * <p>Patch a quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1190,88 +942,70 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRulePatch body,
-        Context context) {
+        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName,
+        VolumeQuotaRulePatch body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, accountName, poolName,
+            volumeName, volumeQuotaRuleName, body, context);
+        return this.client.<VolumeQuotaRuleInner, VolumeQuotaRuleInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VolumeQuotaRuleInner.class, VolumeQuotaRuleInner.class, context);
+    }
+
+    /**
+     * Update a quota rule
+     * 
+     * Patch a quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param volumeQuotaRuleName The name of volume quota rule.
+     * @param body Quota rule object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of quota Rule of a Volume.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginUpdate(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String volumeQuotaRuleName, VolumeQuotaRulePatch body) {
+        return this.beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body)
+            .getSyncPoller();
+    }
+
+    /**
+     * Update a quota rule
+     * 
+     * Patch a quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param volumeQuotaRuleName The name of volume quota rule.
+     * @param body Quota rule object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of quota Rule of a Volume.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginUpdate(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String volumeQuotaRuleName, VolumeQuotaRulePatch body,
+        Context context) {
         return this
-            .client
-            .<VolumeQuotaRuleInner, VolumeQuotaRuleInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VolumeQuotaRuleInner.class, VolumeQuotaRuleInner.class, context);
-    }
-
-    /**
-     * Update a quota rule
-     *
-     * <p>Patch a quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @param body Quota rule object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of quota Rule of a Volume.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRulePatch body) {
-        return beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body)
+            .beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, context)
             .getSyncPoller();
     }
 
     /**
      * Update a quota rule
-     *
-     * <p>Patch a quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param volumeQuotaRuleName The name of volume quota rule.
-     * @param body Quota rule object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of quota Rule of a Volume.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VolumeQuotaRuleInner>, VolumeQuotaRuleInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRulePatch body,
-        Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Update a quota rule
-     *
-     * <p>Patch a quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1283,24 +1017,18 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return quota Rule of a Volume on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VolumeQuotaRuleInner> updateAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRulePatch body) {
-        return beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body)
-            .last()
+    private Mono<VolumeQuotaRuleInner> updateAsync(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String volumeQuotaRuleName, VolumeQuotaRulePatch body) {
+        return beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a quota rule
-     *
-     * <p>Patch a quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1313,26 +1041,18 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return quota Rule of a Volume on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VolumeQuotaRuleInner> updateAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRulePatch body,
-        Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<VolumeQuotaRuleInner> updateAsync(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String volumeQuotaRuleName, VolumeQuotaRulePatch body, Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a quota rule
-     *
-     * <p>Patch a quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1344,22 +1064,17 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return quota Rule of a Volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VolumeQuotaRuleInner update(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRulePatch body) {
+    public VolumeQuotaRuleInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName, VolumeQuotaRulePatch body) {
         return updateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body).block();
     }
 
     /**
      * Update a quota rule
-     *
-     * <p>Patch a quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1372,24 +1087,18 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return quota Rule of a Volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VolumeQuotaRuleInner update(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        VolumeQuotaRulePatch body,
-        Context context) {
+    public VolumeQuotaRuleInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName, VolumeQuotaRulePatch body, Context context) {
         return updateAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, body, context)
             .block();
     }
 
     /**
      * Delete a quota rule
-     *
-     * <p>Delete quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1400,19 +1109,15 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String volumeQuotaRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1431,29 +1136,20 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter volumeQuotaRuleName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            volumeName,
-                            volumeQuotaRuleName,
-                            this.client.getApiVersion(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, this.client.getApiVersion(),
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a quota rule
-     *
-     * <p>Delete quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1465,24 +1161,15 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String volumeQuotaRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1501,26 +1188,18 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter volumeQuotaRuleName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                volumeName,
-                volumeQuotaRuleName,
-                this.client.getApiVersion(),
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, volumeQuotaRuleName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete a quota rule
-     *
-     * <p>Delete quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1531,22 +1210,20 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String volumeQuotaRuleName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a quota rule
-     *
-     * <p>Delete quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1558,27 +1235,21 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String volumeQuotaRuleName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, accountName, poolName,
+            volumeName, volumeQuotaRuleName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a quota rule
-     *
-     * <p>Delete quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1589,18 +1260,18 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName) {
-        return beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String volumeQuotaRuleName) {
+        return this.beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName)
             .getSyncPoller();
     }
 
     /**
      * Delete a quota rule
-     *
-     * <p>Delete quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1612,23 +1283,18 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String volumeQuotaRuleName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context)
             .getSyncPoller();
     }
 
     /**
      * Delete a quota rule
-     *
-     * <p>Delete quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1639,19 +1305,18 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName) {
-        return beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName) {
+        return beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a quota rule
-     *
-     * <p>Delete quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1663,13 +1328,8 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        Context context) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName, Context context) {
         return beginDeleteAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1677,10 +1337,10 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
 
     /**
      * Delete a quota rule
-     *
-     * <p>Delete quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1690,17 +1350,17 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName) {
+    public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName) {
         deleteAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName).block();
     }
 
     /**
      * Delete a quota rule
-     *
-     * <p>Delete quota rule.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete quota rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -1711,13 +1371,8 @@ public final class VolumeQuotaRulesClientImpl implements VolumeQuotaRulesClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        Context context) {
+    public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName, Context context) {
         deleteAsync(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context).block();
     }
 }

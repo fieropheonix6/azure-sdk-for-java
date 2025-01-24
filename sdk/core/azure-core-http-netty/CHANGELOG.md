@@ -1,6 +1,6 @@
 # Release History
 
-## 1.13.0-beta.1 (Unreleased)
+## 1.16.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,264 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.15.7 (2024-11-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to `1.54.1`.
+- Upgraded Netty dependencies from `4.1.112.Final` to `4.1.115.Final` to resolve a CVE.
+
+## 1.15.6 (2024-11-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to `1.54.0`.
+- Upgraded `reactor-netty-http` from `1.0.45` to `1.0.48`.
+- Upgraded Netty dependencies from `4.1.110.Final` to `4.1.112.Final`.
+
+## 1.15.5 (2024-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+
+## 1.15.4 (2024-09-12)
+
+### Bugs Fixed
+
+- Fixed a bug where logging the Netty versions could throw an exception when `SecurityManager` is present. ([#41484](https://github.com/Azure/azure-sdk-for-java/pull/41484))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
+
+## 1.15.3 (2024-07-31)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to `1.51.0`.
+
+## 1.15.2 (2024-07-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Netty version logging (#40733)[https://github.com/Azure/azure-sdk-for-java/pull/40733]
+
+## 1.15.1 (2024-06-06)
+
+### Other Changes
+
+- Changed the log message for mismatched Netty versions to not state an expected version, instead just that versions
+  weren't aligned. ([#40134](https://github.com/Azure/azure-sdk-for-java/pull/40134))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to `1.49.1`.
+- Upgraded `reactor-netty-http` from `1.0.43` to `1.0.45`.
+- Upgraded Netty dependencies from `4.1.108.Final` to `4.1.110.Final`.
+
+## 1.15.0 (2024-05-01)
+
+### Bugs Fixed
+
+- Fixed a bug where mismatch Netty versions were always being reported, even if they were correct. ([#39591](https://github.com/Azure/azure-sdk-for-java/pull/39591))
+
+### Other Changes
+
+- If a Reactor Netty `HttpClient` is passed and has a `LoggingHandler` configured the 
+  `NettyAsyncHttpClientBuilder.wiretap` value is ignored, the builder method is now deprecated as well. ([#39976](https://github.com/Azure/azure-sdk-for-java/pull/39976))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to `1.49.0`.
+
+## 1.14.2 (2024-04-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
+- Upgraded `reactor-netty-http` from `1.0.40` to `1.0.43`.
+- Upgraded Netty dependencies from `4.1.101.Final` to `4.1.108.Final`.
+- Upgraded Netty TcNative dependencies from `2.0.62.Final` to `2.0.65.Final`.
+
+## 1.14.1 (2024-03-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to `1.47.0`.
+
+## 1.14.0 (2024-02-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
+- Upgraded `reactor-netty-http` from `1.0.39` to `1.0.40`.
+
+## 1.13.10 (2023-11-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to `1.45.0`.
+
+## 1.13.9 (2023-10-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.0` to `1.44.1`.
+- Upgraded `netty-handler` from `4.1.94.Final` to `4.1.100.Final`.
+- Upgraded `netty-handler-proxy` from `4.1.94.Final` to `4.1.100.Final`.
+- Upgraded `netty-buffer` from `4.1.94.Final` to `4.1.100.Final`.
+- Upgraded `netty-codec` from `4.1.94.Final` to `4.1.100.Final`.
+- Upgraded `netty-codec-http` from `4.1.94.Final` to `4.1.100.Final`.
+- Upgraded `netty-codec-http2` from `4.1.94.Final` to `4.1.100.Final`.
+- Upgraded `netty-transport-native-unix-common` from `4.1.94.Final` to `4.1.100.Final`.
+- Upgraded `netty-common` from `4.1.94.Final` to `4.1.100.Final`.
+- Upgraded `reactor-netty-http` from `1.0.34` to `1.0.38`.
+
+## 1.13.8 (2023-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to `1.44.0`.
+
+## 1.13.7 (2023-09-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to `1.43.0`.
+
+## 1.13.6 (2023-08-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to `1.42.0`.
+
+## 1.14.0-beta.1 (2023-07-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to `1.42.0-beta.1`.
+
+## 1.13.5 (2023-07-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to `1.41.0`.
+
+## 1.13.4 (2023-06-02)
+
+### Bugs Fixed
+
+- Fixed a bug where `NettyAsyncHttpResponse.writeBodyTo` and `writeBodyToAsync` could have a race condition when writing
+  to the `WritableByteChannel`/`AsynchronousByteChannel` while tracking the bytes written when a network error happens
+  during consumption of the HTTP response body. ([#35004](https://github.com/Azure/azure-sdk-for-java/pull/35004))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to `1.40.0`.
+
+## 1.13.3 (2023-05-04)
+
+### Other Changes
+
+- Changed how timeout handlers are added to the request pipeline.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to `1.39.0`.
+
+## 1.13.2 (2023-04-07)
+
+### Bugs Fixed
+
+- Fixed a bug where sending an `http` request with an empty body created from `BinaryData.fromFile` would throw an error. ([#34294](https://github.com/Azure/azure-sdk-for-java/pull/34294))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to `1.38.0`.
+
+## 1.13.1 (2023-03-02)
+
+### Bugs Fixed
+
+- Fixed a bug where IP-style URLs wouldn't have a host part when used as a `URI`. ([#33673](https://github.com/Azure/azure-sdk-for-java/pull/33673))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.36.0` to `1.37.0`.
+- Upgraded Netty from `4.1.87.Final` to `4.1.89.Final`.
+- Upgraded Reactor Netty from `1.0.27` to `1.0.28`.
+
+## 1.13.0 (2023-02-01)
+
+### Features Added
+
+- Added override for `HttpClient.sendSync` in `NettyAsyncHttpClient`. This is done to propagate any exceptions through
+  a synchronous stack rather than through Reactor's error stream, allowing for better handling of exceptions that
+  wouldn't be thrown until the reactive stream was blocked further up the callstack. ([#32840](https://github.com/Azure/azure-sdk-for-java/pull/32840))
+
+### Other Changes
+
+- Added a log message when `ConnectionProvider` is set to a non-default `ConnectionProvider` to allow for easier debugging
+  if `PollAcquirePendingLimitException` is seen. ([#32826](https://github.com/Azure/azure-sdk-for-java/pull/32826))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to `1.36.0`.
+- Upgraded Netty from `4.1.86.Final` to `4.1.87.Final`.
+- Upgraded Reactor Netty from `1.0.26` to `1.0.27`.
+
+## 1.12.8 (2023-01-05)
+
+### Bugs Fixed
+
+- Fixed a bug where an exception would be logged during the first attempt to connect to an authenticated
+  proxy without using credentials (done to prevent any potential credential leaking). ([#30274](https://github.com/Azure/azure-sdk-for-java/pull/30274))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to `1.35.0`.
+- Upgraded Netty from `4.1.82.Final` to `4.1.86.Final`.
+- Upgraded Reactor Netty from `1.0.23` to `1.0.26`.
 
 ## 1.12.7 (2022-11-04)
 

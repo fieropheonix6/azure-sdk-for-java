@@ -6,20 +6,17 @@ package com.azure.resourcemanager.webpubsub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.fluent.models.SkuListInner;
-import org.junit.jupiter.api.Test;
 
 public final class SkuListInnerTests {
-    @Test
-    public void testDeserialize() {
-        SkuListInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"resourceType\":\"lxprglyatddckcbc\",\"sku\":{\"name\":\"jrjxgciqibrhosx\",\"tier\":\"Premium\",\"size\":\"hzoymibmrqy\",\"family\":\"ahwfluszdtmhrk\",\"capacity\":1386295796},\"capacity\":{\"minimum\":1026914225,\"maximum\":1655642589,\"default\":728388129,\"allowedValues\":[],\"scaleType\":\"None\"}},{\"resourceType\":\"pbtg\",\"sku\":{\"name\":\"bwoenwashrt\",\"tier\":\"Standard\",\"size\":\"nqxwbp\",\"family\":\"ulpiuj\",\"capacity\":2036871201},\"capacity\":{\"minimum\":279995448,\"maximum\":172575084,\"default\":1035814224,\"allowedValues\":[],\"scaleType\":\"Manual\"}},{\"resourceType\":\"erpqlpqwcciuqg\",\"sku\":{\"name\":\"butauvfb\",\"tier\":\"Premium\",\"size\":\"hhmhykojoxa\",\"family\":\"nd\",\"capacity\":1324529031},\"capacity\":{\"minimum\":1639639314,\"maximum\":1904357705,\"default\":1940707417,\"allowedValues\":[],\"scaleType\":\"None\"}}],\"nextLink\":\"bpkkpwdre\"}")
-                .toObject(SkuListInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SkuListInner model = BinaryData.fromString(
+            "{\"value\":[{\"resourceType\":\"yjt\",\"sku\":{\"name\":\"of\",\"tier\":\"Standard\",\"size\":\"fcibyfmowuxrkj\",\"family\":\"dwxf\",\"capacity\":2104951545},\"capacity\":{\"minimum\":1157352083,\"maximum\":1754263967,\"default\":779718035,\"allowedValues\":[1253939074,954639384,1858009162,1410890434],\"scaleType\":\"None\"}},{\"resourceType\":\"btrnegvm\",\"sku\":{\"name\":\"uqeqv\",\"tier\":\"Standard\",\"size\":\"astjbkkdmflvestm\",\"family\":\"xrrilozapee\",\"capacity\":1482669533},\"capacity\":{\"minimum\":1353258007,\"maximum\":55990997,\"default\":17628020,\"allowedValues\":[163860242,1984241161,1190990500,463707796],\"scaleType\":\"Manual\"}},{\"resourceType\":\"ufuztcktyhjtq\",\"sku\":{\"name\":\"cgzulwmmrqzzr\",\"tier\":\"Basic\",\"size\":\"gl\",\"family\":\"zgkrvqe\",\"capacity\":1665980983},\"capacity\":{\"minimum\":1014603209,\"maximum\":1266268287,\"default\":108809884,\"allowedValues\":[584463560,2045022432,989782858],\"scaleType\":\"None\"}}],\"nextLink\":\"o\"}")
+            .toObject(SkuListInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuListInner model = new SkuListInner();
         model = BinaryData.fromObject(model).toObject(SkuListInner.class);
     }

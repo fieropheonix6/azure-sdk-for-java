@@ -5,39 +5,48 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.KeyVaultSecretReference;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes a Virtual Machine Scale Set Extension. */
+/**
+ * Describes a Virtual Machine Scale Set Extension.
+ */
 @Fluent
 public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
     /*
      * The name of the extension.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Describes the properties of a Virtual Machine Scale Set Extension.
      */
-    @JsonProperty(value = "properties")
     private VirtualMachineScaleSetExtensionProperties innerProperties;
 
-    /** Creates an instance of VirtualMachineScaleSetExtensionInner class. */
+    /*
+     * Resource Id
+     */
+    private String id;
+
+    /**
+     * Creates an instance of VirtualMachineScaleSetExtensionInner class.
+     */
     public VirtualMachineScaleSetExtensionInner() {
     }
 
     /**
      * Get the name property: The name of the extension.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -46,7 +55,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
 
     /**
      * Set the name property: The name of the extension.
-     *
+     * 
      * @param name the name value to set.
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
@@ -57,7 +66,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -66,7 +75,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
 
     /**
      * Get the innerProperties property: Describes the properties of a Virtual Machine Scale Set Extension.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualMachineScaleSetExtensionProperties innerProperties() {
@@ -74,9 +83,19 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
     }
 
     /**
+     * Get the id property: Resource Id.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the forceUpdateTag property: If a value is provided and is different from the previous value, the extension
      * handler will be forced to update even if the extension configuration has not changed.
-     *
+     * 
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
@@ -86,7 +105,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
     /**
      * Set the forceUpdateTag property: If a value is provided and is different from the previous value, the extension
      * handler will be forced to update even if the extension configuration has not changed.
-     *
+     * 
      * @param forceUpdateTag the forceUpdateTag value to set.
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
@@ -100,7 +119,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
 
     /**
      * Get the publisher property: The name of the extension handler publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -109,7 +128,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
 
     /**
      * Set the publisher property: The name of the extension handler publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
@@ -123,7 +142,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
 
     /**
      * Get the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
-     *
+     * 
      * @return the type value.
      */
     public String typePropertiesType() {
@@ -132,7 +151,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
 
     /**
      * Set the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
-     *
+     * 
      * @param type the type value to set.
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
@@ -146,7 +165,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
 
     /**
      * Get the typeHandlerVersion property: Specifies the version of the script handler.
-     *
+     * 
      * @return the typeHandlerVersion value.
      */
     public String typeHandlerVersion() {
@@ -155,7 +174,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
 
     /**
      * Set the typeHandlerVersion property: Specifies the version of the script handler.
-     *
+     * 
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
@@ -171,7 +190,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
      * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
      * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
      * redeployed, even with this property set to true.
-     *
+     * 
      * @return the autoUpgradeMinorVersion value.
      */
     public Boolean autoUpgradeMinorVersion() {
@@ -182,7 +201,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
      * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
      * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
      * redeployed, even with this property set to true.
-     *
+     * 
      * @param autoUpgradeMinorVersion the autoUpgradeMinorVersion value to set.
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
@@ -197,7 +216,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
     /**
      * Get the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
      * platform if there is a newer version of the extension available.
-     *
+     * 
      * @return the enableAutomaticUpgrade value.
      */
     public Boolean enableAutomaticUpgrade() {
@@ -207,7 +226,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
     /**
      * Set the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
      * platform if there is a newer version of the extension available.
-     *
+     * 
      * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
@@ -221,7 +240,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
 
     /**
      * Get the settings property: Json formatted public settings for the extension.
-     *
+     * 
      * @return the settings value.
      */
     public Object settings() {
@@ -230,7 +249,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
 
     /**
      * Set the settings property: Json formatted public settings for the extension.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
@@ -245,7 +264,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
     /**
      * Get the protectedSettings property: The extension can contain either protectedSettings or
      * protectedSettingsFromKeyVault or no protected settings at all.
-     *
+     * 
      * @return the protectedSettings value.
      */
     public Object protectedSettings() {
@@ -255,7 +274,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
     /**
      * Set the protectedSettings property: The extension can contain either protectedSettings or
      * protectedSettingsFromKeyVault or no protected settings at all.
-     *
+     * 
      * @param protectedSettings the protectedSettings value to set.
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
@@ -269,7 +288,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
 
     /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -279,7 +298,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
     /**
      * Get the provisionAfterExtensions property: Collection of extension names after which this extension needs to be
      * provisioned.
-     *
+     * 
      * @return the provisionAfterExtensions value.
      */
     public List<String> provisionAfterExtensions() {
@@ -289,7 +308,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
     /**
      * Set the provisionAfterExtensions property: Collection of extension names after which this extension needs to be
      * provisioned.
-     *
+     * 
      * @param provisionAfterExtensions the provisionAfterExtensions value to set.
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
@@ -305,7 +324,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
      * Get the suppressFailures property: Indicates whether failures stemming from the extension will be suppressed
      * (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The
      * default is false.
-     *
+     * 
      * @return the suppressFailures value.
      */
     public Boolean suppressFailures() {
@@ -316,7 +335,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
      * Set the suppressFailures property: Indicates whether failures stemming from the extension will be suppressed
      * (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The
      * default is false.
-     *
+     * 
      * @param suppressFailures the suppressFailures value to set.
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
@@ -331,7 +350,7 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
     /**
      * Get the protectedSettingsFromKeyVault property: The extensions protected settings that are passed by reference,
      * and consumed from key vault.
-     *
+     * 
      * @return the protectedSettingsFromKeyVault value.
      */
     public KeyVaultSecretReference protectedSettingsFromKeyVault() {
@@ -341,12 +360,12 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
     /**
      * Set the protectedSettingsFromKeyVault property: The extensions protected settings that are passed by reference,
      * and consumed from key vault.
-     *
+     * 
      * @param protectedSettingsFromKeyVault the protectedSettingsFromKeyVault value to set.
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
-    public VirtualMachineScaleSetExtensionInner withProtectedSettingsFromKeyVault(
-        KeyVaultSecretReference protectedSettingsFromKeyVault) {
+    public VirtualMachineScaleSetExtensionInner
+        withProtectedSettingsFromKeyVault(KeyVaultSecretReference protectedSettingsFromKeyVault) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineScaleSetExtensionProperties();
         }
@@ -356,14 +375,58 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetExtensionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetExtensionInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetExtensionInner.
+     */
+    public static VirtualMachineScaleSetExtensionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetExtensionInner deserializedVirtualMachineScaleSetExtensionInner
+                = new VirtualMachineScaleSetExtensionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionInner.innerProperties
+                        = VirtualMachineScaleSetExtensionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetExtensionInner;
+        });
     }
 }

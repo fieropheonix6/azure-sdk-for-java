@@ -4,40 +4,39 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.DedicatedHostInner;
 import com.azure.resourcemanager.compute.models.Sku;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DedicatedHosts CreateOrUpdate. */
+/**
+ * Samples for DedicatedHosts CreateOrUpdate.
+ */
 public final class DedicatedHostsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/dedicatedHostExamples/DedicatedHost_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * dedicatedHostExamples/DedicatedHost_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a dedicated host .
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateADedicatedHost(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getDedicatedHosts()
-            .createOrUpdate(
-                "myResourceGroup",
-                "myDedicatedHostGroup",
-                "myDedicatedHost",
-                new DedicatedHostInner()
-                    .withLocation("westus")
+            .createOrUpdate("myResourceGroup", "myDedicatedHostGroup", "myDedicatedHost",
+                new DedicatedHostInner().withLocation("westus")
                     .withTags(mapOf("department", "HR"))
                     .withSku(new Sku().withName("DSv3-Type1"))
                     .withPlatformFaultDomain(1),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

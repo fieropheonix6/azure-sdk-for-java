@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.signalr.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for SignalR List. */
+/**
+ * Samples for SignalR List.
+ */
 public final class SignalRListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/SignalR_ListBySubscription.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/
+     * SignalR_ListBySubscription.json
      */
     /**
      * Sample code: SignalR_ListBySubscription.
-     *
+     * 
      * @param manager Entry point to SignalRManager.
      */
     public static void signalRListBySubscription(com.azure.resourcemanager.signalr.SignalRManager manager) {
-        manager.signalRs().list(Context.NONE);
+        manager.signalRs().list(com.azure.core.util.Context.NONE);
     }
 }

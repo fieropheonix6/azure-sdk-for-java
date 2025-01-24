@@ -38,8 +38,14 @@ public class MockFluxHttpResponse extends HttpResponse {
     }
 
     @Override
+    @Deprecated
     public String getHeaderValue(String name) {
         return headers.getValue(name);
+    }
+
+    @Override
+    public String getHeaderValue(HttpHeaderName headerName) {
+        return headers.getValue(headerName);
     }
 
     @Override
@@ -64,9 +70,7 @@ public class MockFluxHttpResponse extends HttpResponse {
 
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
-        return getBodyAsByteArray().map(
-            bytes -> new String(bytes, charset)
-        );
+        return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
     }
 
     @Override

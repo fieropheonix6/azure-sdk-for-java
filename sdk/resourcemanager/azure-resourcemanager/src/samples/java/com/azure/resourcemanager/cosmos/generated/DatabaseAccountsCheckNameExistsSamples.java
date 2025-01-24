@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DatabaseAccounts CheckNameExists. */
+/**
+ * Samples for DatabaseAccounts CheckNameExists.
+ */
 public final class DatabaseAccountsCheckNameExistsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountCheckNameExists.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
+     * CosmosDBDatabaseAccountCheckNameExists.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountCheckNameExists.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBDatabaseAccountCheckNameExists(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
+        azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getDatabaseAccounts()
-            .checkNameExistsWithResponse("ddb1", Context.NONE);
+            .checkNameExistsWithResponse("ddb1", com.azure.core.util.Context.NONE);
     }
 }

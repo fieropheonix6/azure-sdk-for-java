@@ -8,25 +8,21 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureFileShareBackupRequest;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureFileShareBackupRequestTests {
-    @Test
-    public void testDeserialize() {
-        AzureFileShareBackupRequest model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"AzureFileShareBackupRequest\",\"recoveryPointExpiryTimeInUTC\":\"2021-07-09T12:00:41Z\"}")
-                .toObject(AzureFileShareBackupRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-09T12:00:41Z"), model.recoveryPointExpiryTimeInUtc());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureFileShareBackupRequest model = BinaryData.fromString(
+            "{\"objectType\":\"AzureFileShareBackupRequest\",\"recoveryPointExpiryTimeInUTC\":\"2021-01-16T12:01:28Z\"}")
+            .toObject(AzureFileShareBackupRequest.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-16T12:01:28Z"), model.recoveryPointExpiryTimeInUtc());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureFileShareBackupRequest model =
-            new AzureFileShareBackupRequest()
-                .withRecoveryPointExpiryTimeInUtc(OffsetDateTime.parse("2021-07-09T12:00:41Z"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureFileShareBackupRequest model = new AzureFileShareBackupRequest()
+            .withRecoveryPointExpiryTimeInUtc(OffsetDateTime.parse("2021-01-16T12:01:28Z"));
         model = BinaryData.fromObject(model).toObject(AzureFileShareBackupRequest.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-09T12:00:41Z"), model.recoveryPointExpiryTimeInUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-16T12:01:28Z"), model.recoveryPointExpiryTimeInUtc());
     }
 }

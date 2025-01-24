@@ -4,21 +4,31 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ClientCertMode. */
+/**
+ * This composes with ClientCertEnabled setting.
+ * - ClientCertEnabled: false means ClientCert is ignored.
+ * - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
+ * - ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
+ */
 public enum ClientCertMode {
-    /** Enum value Required. */
+    /**
+     * Enum value Required.
+     */
     REQUIRED("Required"),
 
-    /** Enum value Optional. */
+    /**
+     * Enum value Optional.
+     */
     OPTIONAL("Optional"),
 
-    /** Enum value OptionalInteractiveUser. */
+    /**
+     * Enum value OptionalInteractiveUser.
+     */
     OPTIONAL_INTERACTIVE_USER("OptionalInteractiveUser");
 
-    /** The actual serialized value for a ClientCertMode instance. */
+    /**
+     * The actual serialized value for a ClientCertMode instance.
+     */
     private final String value;
 
     ClientCertMode(String value) {
@@ -27,12 +37,14 @@ public enum ClientCertMode {
 
     /**
      * Parses a serialized value to a ClientCertMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ClientCertMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static ClientCertMode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ClientCertMode[] items = ClientCertMode.values();
         for (ClientCertMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +54,9 @@ public enum ClientCertMode {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

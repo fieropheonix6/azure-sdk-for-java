@@ -8,36 +8,53 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Experiments. */
+/**
+ * Resource collection API of Experiments.
+ */
 public interface Experiments {
     /**
      * Gets a list of Experiments.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Experiments.
+     * @return a list of Experiments as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Experiment> listByProfile(String resourceGroupName, String profileName);
 
     /**
      * Gets a list of Experiments.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Experiments.
+     * @return a list of Experiments as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Experiment> listByProfile(String resourceGroupName, String profileName, Context context);
 
     /**
      * Gets an Experiment by ExperimentName.
-     *
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName The Profile identifier associated with the Tenant and Partner.
+     * @param experimentName The Experiment identifier associated with the Experiment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Experiment by ExperimentName along with {@link Response}.
+     */
+    Response<Experiment> getWithResponse(String resourceGroupName, String profileName, String experimentName,
+        Context context);
+
+    /**
+     * Gets an Experiment by ExperimentName.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -49,23 +66,8 @@ public interface Experiments {
     Experiment get(String resourceGroupName, String profileName, String experimentName);
 
     /**
-     * Gets an Experiment by ExperimentName.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName The Profile identifier associated with the Tenant and Partner.
-     * @param experimentName The Experiment identifier associated with the Experiment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Experiment by ExperimentName.
-     */
-    Response<Experiment> getWithResponse(
-        String resourceGroupName, String profileName, String experimentName, Context context);
-
-    /**
      * Deletes an Experiment.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -77,7 +79,7 @@ public interface Experiments {
 
     /**
      * Deletes an Experiment.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -90,30 +92,30 @@ public interface Experiments {
 
     /**
      * Gets an Experiment by ExperimentName.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Experiment by ExperimentName.
+     * @return an Experiment by ExperimentName along with {@link Response}.
      */
     Experiment getById(String id);
 
     /**
      * Gets an Experiment by ExperimentName.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Experiment by ExperimentName.
+     * @return an Experiment by ExperimentName along with {@link Response}.
      */
     Response<Experiment> getByIdWithResponse(String id, Context context);
 
     /**
      * Deletes an Experiment.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -123,7 +125,7 @@ public interface Experiments {
 
     /**
      * Deletes an Experiment.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,7 +136,7 @@ public interface Experiments {
 
     /**
      * Begins definition for a new Experiment resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Experiment definition.
      */

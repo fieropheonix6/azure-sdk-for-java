@@ -7,24 +7,21 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.AutoPauseProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AutoPausePropertiesTests {
-    @Test
-    public void testDeserialize() {
-        AutoPauseProperties model =
-            BinaryData
-                .fromString("{\"delayInMinutes\":1505052289,\"enabled\":true}")
-                .toObject(AutoPauseProperties.class);
-        Assertions.assertEquals(1505052289, model.delayInMinutes());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AutoPauseProperties model = BinaryData.fromString("{\"delayInMinutes\":1738803308,\"enabled\":true}")
+            .toObject(AutoPauseProperties.class);
+        Assertions.assertEquals(1738803308, model.delayInMinutes());
         Assertions.assertEquals(true, model.enabled());
     }
 
-    @Test
-    public void testSerialize() {
-        AutoPauseProperties model = new AutoPauseProperties().withDelayInMinutes(1505052289).withEnabled(true);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AutoPauseProperties model = new AutoPauseProperties().withDelayInMinutes(1738803308).withEnabled(true);
         model = BinaryData.fromObject(model).toObject(AutoPauseProperties.class);
-        Assertions.assertEquals(1505052289, model.delayInMinutes());
+        Assertions.assertEquals(1738803308, model.delayInMinutes());
         Assertions.assertEquals(true, model.enabled());
     }
 }

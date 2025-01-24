@@ -5,56 +5,60 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Network Manager Deployment Status. */
+/**
+ * Network Manager Deployment Status.
+ */
 @Fluent
-public final class NetworkManagerDeploymentStatus {
+public final class NetworkManagerDeploymentStatus implements JsonSerializable<NetworkManagerDeploymentStatus> {
     /*
      * Commit Time.
      */
-    @JsonProperty(value = "commitTime")
     private OffsetDateTime commitTime;
 
     /*
      * Region Name.
      */
-    @JsonProperty(value = "region")
     private String region;
 
     /*
      * Deployment Status.
      */
-    @JsonProperty(value = "deploymentStatus")
     private DeploymentStatus deploymentStatus;
 
     /*
      * List of configuration ids.
      */
-    @JsonProperty(value = "configurationIds")
     private List<String> configurationIds;
 
     /*
      * Configuration Deployment Type.
      */
-    @JsonProperty(value = "deploymentType")
     private ConfigurationType deploymentType;
 
     /*
      * Error Message.
      */
-    @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
-    /** Creates an instance of NetworkManagerDeploymentStatus class. */
+    /**
+     * Creates an instance of NetworkManagerDeploymentStatus class.
+     */
     public NetworkManagerDeploymentStatus() {
     }
 
     /**
      * Get the commitTime property: Commit Time.
-     *
+     * 
      * @return the commitTime value.
      */
     public OffsetDateTime commitTime() {
@@ -63,7 +67,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Set the commitTime property: Commit Time.
-     *
+     * 
      * @param commitTime the commitTime value to set.
      * @return the NetworkManagerDeploymentStatus object itself.
      */
@@ -74,7 +78,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Get the region property: Region Name.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -83,7 +87,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Set the region property: Region Name.
-     *
+     * 
      * @param region the region value to set.
      * @return the NetworkManagerDeploymentStatus object itself.
      */
@@ -94,7 +98,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Get the deploymentStatus property: Deployment Status.
-     *
+     * 
      * @return the deploymentStatus value.
      */
     public DeploymentStatus deploymentStatus() {
@@ -103,7 +107,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Set the deploymentStatus property: Deployment Status.
-     *
+     * 
      * @param deploymentStatus the deploymentStatus value to set.
      * @return the NetworkManagerDeploymentStatus object itself.
      */
@@ -114,7 +118,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Get the configurationIds property: List of configuration ids.
-     *
+     * 
      * @return the configurationIds value.
      */
     public List<String> configurationIds() {
@@ -123,7 +127,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Set the configurationIds property: List of configuration ids.
-     *
+     * 
      * @param configurationIds the configurationIds value to set.
      * @return the NetworkManagerDeploymentStatus object itself.
      */
@@ -134,7 +138,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Get the deploymentType property: Configuration Deployment Type.
-     *
+     * 
      * @return the deploymentType value.
      */
     public ConfigurationType deploymentType() {
@@ -143,7 +147,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Set the deploymentType property: Configuration Deployment Type.
-     *
+     * 
      * @param deploymentType the deploymentType value to set.
      * @return the NetworkManagerDeploymentStatus object itself.
      */
@@ -154,7 +158,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Get the errorMessage property: Error Message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -163,7 +167,7 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Set the errorMessage property: Error Message.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the NetworkManagerDeploymentStatus object itself.
      */
@@ -174,9 +178,69 @@ public final class NetworkManagerDeploymentStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("commitTime",
+            this.commitTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.commitTime));
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeStringField("deploymentStatus",
+            this.deploymentStatus == null ? null : this.deploymentStatus.toString());
+        jsonWriter.writeArrayField("configurationIds", this.configurationIds,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("deploymentType",
+            this.deploymentType == null ? null : this.deploymentType.toString());
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkManagerDeploymentStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkManagerDeploymentStatus if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkManagerDeploymentStatus.
+     */
+    public static NetworkManagerDeploymentStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkManagerDeploymentStatus deserializedNetworkManagerDeploymentStatus
+                = new NetworkManagerDeploymentStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("commitTime".equals(fieldName)) {
+                    deserializedNetworkManagerDeploymentStatus.commitTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("region".equals(fieldName)) {
+                    deserializedNetworkManagerDeploymentStatus.region = reader.getString();
+                } else if ("deploymentStatus".equals(fieldName)) {
+                    deserializedNetworkManagerDeploymentStatus.deploymentStatus
+                        = DeploymentStatus.fromString(reader.getString());
+                } else if ("configurationIds".equals(fieldName)) {
+                    List<String> configurationIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkManagerDeploymentStatus.configurationIds = configurationIds;
+                } else if ("deploymentType".equals(fieldName)) {
+                    deserializedNetworkManagerDeploymentStatus.deploymentType
+                        = ConfigurationType.fromString(reader.getString());
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedNetworkManagerDeploymentStatus.errorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkManagerDeploymentStatus;
+        });
     }
 }

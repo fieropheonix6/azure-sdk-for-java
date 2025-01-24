@@ -5,56 +5,59 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.batch.models.AuthenticationMode;
 import com.azure.resourcemanager.batch.models.AutoStorageBaseProperties;
 import com.azure.resourcemanager.batch.models.EncryptionProperties;
 import com.azure.resourcemanager.batch.models.NetworkProfile;
 import com.azure.resourcemanager.batch.models.PublicNetworkAccessType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties of a Batch account. */
+/**
+ * The properties of a Batch account.
+ */
 @Fluent
-public final class BatchAccountUpdateProperties {
+public final class BatchAccountUpdateProperties implements JsonSerializable<BatchAccountUpdateProperties> {
     /*
      * The properties related to the auto-storage account.
      */
-    @JsonProperty(value = "autoStorage")
     private AutoStorageBaseProperties autoStorage;
 
     /*
      * Configures how customer data is encrypted inside the Batch account. By default, accounts are encrypted using a
      * Microsoft managed key. For additional control, a customer-managed key can be used instead.
      */
-    @JsonProperty(value = "encryption")
     private EncryptionProperties encryption;
 
     /*
      * List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane.
      * This does not affect authentication with the control plane.
      */
-    @JsonProperty(value = "allowedAuthenticationModes")
     private List<AuthenticationMode> allowedAuthenticationModes;
 
     /*
      * If not specified, the default value is 'enabled'.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccessType publicNetworkAccess;
 
     /*
      * The network profile only takes effect when publicNetworkAccess is enabled.
      */
-    @JsonProperty(value = "networkProfile")
     private NetworkProfile networkProfile;
 
-    /** Creates an instance of BatchAccountUpdateProperties class. */
+    /**
+     * Creates an instance of BatchAccountUpdateProperties class.
+     */
     public BatchAccountUpdateProperties() {
     }
 
     /**
      * Get the autoStorage property: The properties related to the auto-storage account.
-     *
+     * 
      * @return the autoStorage value.
      */
     public AutoStorageBaseProperties autoStorage() {
@@ -63,7 +66,7 @@ public final class BatchAccountUpdateProperties {
 
     /**
      * Set the autoStorage property: The properties related to the auto-storage account.
-     *
+     * 
      * @param autoStorage the autoStorage value to set.
      * @return the BatchAccountUpdateProperties object itself.
      */
@@ -76,7 +79,7 @@ public final class BatchAccountUpdateProperties {
      * Get the encryption property: Configures how customer data is encrypted inside the Batch account. By default,
      * accounts are encrypted using a Microsoft managed key. For additional control, a customer-managed key can be used
      * instead.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperties encryption() {
@@ -87,7 +90,7 @@ public final class BatchAccountUpdateProperties {
      * Set the encryption property: Configures how customer data is encrypted inside the Batch account. By default,
      * accounts are encrypted using a Microsoft managed key. For additional control, a customer-managed key can be used
      * instead.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the BatchAccountUpdateProperties object itself.
      */
@@ -99,7 +102,7 @@ public final class BatchAccountUpdateProperties {
     /**
      * Get the allowedAuthenticationModes property: List of allowed authentication modes for the Batch account that can
      * be used to authenticate with the data plane. This does not affect authentication with the control plane.
-     *
+     * 
      * @return the allowedAuthenticationModes value.
      */
     public List<AuthenticationMode> allowedAuthenticationModes() {
@@ -109,19 +112,19 @@ public final class BatchAccountUpdateProperties {
     /**
      * Set the allowedAuthenticationModes property: List of allowed authentication modes for the Batch account that can
      * be used to authenticate with the data plane. This does not affect authentication with the control plane.
-     *
+     * 
      * @param allowedAuthenticationModes the allowedAuthenticationModes value to set.
      * @return the BatchAccountUpdateProperties object itself.
      */
-    public BatchAccountUpdateProperties withAllowedAuthenticationModes(
-        List<AuthenticationMode> allowedAuthenticationModes) {
+    public BatchAccountUpdateProperties
+        withAllowedAuthenticationModes(List<AuthenticationMode> allowedAuthenticationModes) {
         this.allowedAuthenticationModes = allowedAuthenticationModes;
         return this;
     }
 
     /**
      * Get the publicNetworkAccess property: If not specified, the default value is 'enabled'.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccessType publicNetworkAccess() {
@@ -130,7 +133,7 @@ public final class BatchAccountUpdateProperties {
 
     /**
      * Set the publicNetworkAccess property: If not specified, the default value is 'enabled'.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the BatchAccountUpdateProperties object itself.
      */
@@ -141,7 +144,7 @@ public final class BatchAccountUpdateProperties {
 
     /**
      * Get the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
-     *
+     * 
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
@@ -150,7 +153,7 @@ public final class BatchAccountUpdateProperties {
 
     /**
      * Set the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
-     *
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the BatchAccountUpdateProperties object itself.
      */
@@ -161,7 +164,7 @@ public final class BatchAccountUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -174,5 +177,58 @@ public final class BatchAccountUpdateProperties {
         if (networkProfile() != null) {
             networkProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("autoStorage", this.autoStorage);
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeArrayField("allowedAuthenticationModes", this.allowedAuthenticationModes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchAccountUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchAccountUpdateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchAccountUpdateProperties.
+     */
+    public static BatchAccountUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchAccountUpdateProperties deserializedBatchAccountUpdateProperties = new BatchAccountUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("autoStorage".equals(fieldName)) {
+                    deserializedBatchAccountUpdateProperties.autoStorage = AutoStorageBaseProperties.fromJson(reader);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedBatchAccountUpdateProperties.encryption = EncryptionProperties.fromJson(reader);
+                } else if ("allowedAuthenticationModes".equals(fieldName)) {
+                    List<AuthenticationMode> allowedAuthenticationModes
+                        = reader.readArray(reader1 -> AuthenticationMode.fromString(reader1.getString()));
+                    deserializedBatchAccountUpdateProperties.allowedAuthenticationModes = allowedAuthenticationModes;
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedBatchAccountUpdateProperties.publicNetworkAccess
+                        = PublicNetworkAccessType.fromString(reader.getString());
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedBatchAccountUpdateProperties.networkProfile = NetworkProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBatchAccountUpdateProperties;
+        });
     }
 }

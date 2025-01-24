@@ -5,24 +5,36 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Preferences related to the Encryption. */
+/**
+ * Preferences related to the Encryption.
+ */
 @Fluent
-public final class EncryptionPreferences {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionPreferences.class);
-
+public final class EncryptionPreferences implements JsonSerializable<EncryptionPreferences> {
     /*
      * Defines secondary layer of software-based encryption enablement.
      */
-    @JsonProperty(value = "doubleEncryption")
     private DoubleEncryption doubleEncryption;
+
+    /*
+     * Defines Hardware level encryption (Only for disk)
+     */
+    private HardwareEncryption hardwareEncryption;
+
+    /**
+     * Creates an instance of EncryptionPreferences class.
+     */
+    public EncryptionPreferences() {
+    }
 
     /**
      * Get the doubleEncryption property: Defines secondary layer of software-based encryption enablement.
-     *
+     * 
      * @return the doubleEncryption value.
      */
     public DoubleEncryption doubleEncryption() {
@@ -31,7 +43,7 @@ public final class EncryptionPreferences {
 
     /**
      * Set the doubleEncryption property: Defines secondary layer of software-based encryption enablement.
-     *
+     * 
      * @param doubleEncryption the doubleEncryption value to set.
      * @return the EncryptionPreferences object itself.
      */
@@ -41,10 +53,73 @@ public final class EncryptionPreferences {
     }
 
     /**
+     * Get the hardwareEncryption property: Defines Hardware level encryption (Only for disk).
+     * 
+     * @return the hardwareEncryption value.
+     */
+    public HardwareEncryption hardwareEncryption() {
+        return this.hardwareEncryption;
+    }
+
+    /**
+     * Set the hardwareEncryption property: Defines Hardware level encryption (Only for disk).
+     * 
+     * @param hardwareEncryption the hardwareEncryption value to set.
+     * @return the EncryptionPreferences object itself.
+     */
+    public EncryptionPreferences withHardwareEncryption(HardwareEncryption hardwareEncryption) {
+        this.hardwareEncryption = hardwareEncryption;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("doubleEncryption",
+            this.doubleEncryption == null ? null : this.doubleEncryption.toString());
+        jsonWriter.writeStringField("hardwareEncryption",
+            this.hardwareEncryption == null ? null : this.hardwareEncryption.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptionPreferences from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncryptionPreferences if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EncryptionPreferences.
+     */
+    public static EncryptionPreferences fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptionPreferences deserializedEncryptionPreferences = new EncryptionPreferences();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("doubleEncryption".equals(fieldName)) {
+                    deserializedEncryptionPreferences.doubleEncryption
+                        = DoubleEncryption.fromString(reader.getString());
+                } else if ("hardwareEncryption".equals(fieldName)) {
+                    deserializedEncryptionPreferences.hardwareEncryption
+                        = HardwareEncryption.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryptionPreferences;
+        });
     }
 }

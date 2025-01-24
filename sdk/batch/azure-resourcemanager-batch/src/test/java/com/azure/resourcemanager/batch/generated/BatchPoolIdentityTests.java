@@ -11,34 +11,25 @@ import com.azure.resourcemanager.batch.models.UserAssignedIdentities;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BatchPoolIdentityTests {
-    @Test
-    public void testDeserialize() {
-        BatchPoolIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"zzikhlyfjhdg\":{\"principalId\":\"mjwosytx\",\"clientId\":\"cskfcktqumiekk\"},\"dsuvarmywdmjsjqb\":{\"principalId\":\"gebdunygaeq\",\"clientId\":\"bqfatpxllrxcyjmo\"}}}")
-                .toObject(BatchPoolIdentity.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        BatchPoolIdentity model = BinaryData.fromString(
+            "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"kaivwit\":{\"principalId\":\"xicslfao\",\"clientId\":\"piyylhalnswhccsp\"}}}")
+            .toObject(BatchPoolIdentity.class);
         Assertions.assertEquals(PoolIdentityType.USER_ASSIGNED, model.type());
     }
 
-    @Test
-    public void testSerialize() {
-        BatchPoolIdentity model =
-            new BatchPoolIdentity()
-                .withType(PoolIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "zzikhlyfjhdg",
-                        new UserAssignedIdentities(),
-                        "dsuvarmywdmjsjqb",
-                        new UserAssignedIdentities()));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        BatchPoolIdentity model = new BatchPoolIdentity().withType(PoolIdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("kaivwit", new UserAssignedIdentities()));
         model = BinaryData.fromObject(model).toObject(BatchPoolIdentity.class);
         Assertions.assertEquals(PoolIdentityType.USER_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

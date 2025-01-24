@@ -22,14 +22,88 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in InstancePoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in InstancePoolsClient.
+ */
 public interface InstancePoolsClient
     extends InnerSupportsGet<InstancePoolInner>, InnerSupportsListing<InstancePoolInner>, InnerSupportsDelete<Void> {
     /**
-     * Gets an instance pool.
-     *
+     * Gets a list of all instance pools in the subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all instance pools in the subscription as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<InstancePoolInner> listAsync();
+
+    /**
+     * Gets a list of all instance pools in the subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all instance pools in the subscription as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<InstancePoolInner> list();
+
+    /**
+     * Gets a list of all instance pools in the subscription.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all instance pools in the subscription as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<InstancePoolInner> list(Context context);
+
+    /**
+     * Gets a list of instance pools in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of instance pools in the resource group as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<InstancePoolInner> listByResourceGroupAsync(String resourceGroupName);
+
+    /**
+     * Gets a list of instance pools in the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of instance pools in the resource group as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<InstancePoolInner> listByResourceGroup(String resourceGroupName);
+
+    /**
+     * Gets a list of instance pools in the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of instance pools in the resource group as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<InstancePoolInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Gets an instance pool.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -37,14 +111,14 @@ public interface InstancePoolsClient
      * @return an instance pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<InstancePoolInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String instancePoolName);
+    Mono<Response<InstancePoolInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String instancePoolName);
 
     /**
      * Gets an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -56,9 +130,25 @@ public interface InstancePoolsClient
 
     /**
      * Gets an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param instancePoolName The name of the instance pool to be retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance pool along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<InstancePoolInner> getByResourceGroupWithResponse(String resourceGroupName, String instancePoolName,
+        Context context);
+
+    /**
+     * Gets an instance pool.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,26 +159,10 @@ public interface InstancePoolsClient
     InstancePoolInner getByResourceGroup(String resourceGroupName, String instancePoolName);
 
     /**
-     * Gets an instance pool.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param instancePoolName The name of the instance pool to be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance pool along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InstancePoolInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String instancePoolName, Context context);
-
-    /**
      * Creates or updates an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be created or updated.
      * @param parameters The requested instance pool resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -97,14 +171,14 @@ public interface InstancePoolsClient
      * @return an Azure SQL instance pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String instancePoolName, InstancePoolInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String instancePoolName,
+        InstancePoolInner parameters);
 
     /**
      * Creates or updates an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be created or updated.
      * @param parameters The requested instance pool resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -113,14 +187,14 @@ public interface InstancePoolsClient
      * @return the {@link PollerFlux} for polling of an Azure SQL instance pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<InstancePoolInner>, InstancePoolInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String instancePoolName, InstancePoolInner parameters);
+    PollerFlux<PollResult<InstancePoolInner>, InstancePoolInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String instancePoolName, InstancePoolInner parameters);
 
     /**
      * Creates or updates an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be created or updated.
      * @param parameters The requested instance pool resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,14 +203,14 @@ public interface InstancePoolsClient
      * @return the {@link SyncPoller} for polling of an Azure SQL instance pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InstancePoolInner>, InstancePoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String instancePoolName, InstancePoolInner parameters);
+    SyncPoller<PollResult<InstancePoolInner>, InstancePoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String instancePoolName, InstancePoolInner parameters);
 
     /**
      * Creates or updates an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be created or updated.
      * @param parameters The requested instance pool resource state.
      * @param context The context to associate with this operation.
@@ -146,14 +220,14 @@ public interface InstancePoolsClient
      * @return the {@link SyncPoller} for polling of an Azure SQL instance pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InstancePoolInner>, InstancePoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String instancePoolName, InstancePoolInner parameters, Context context);
+    SyncPoller<PollResult<InstancePoolInner>, InstancePoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String instancePoolName, InstancePoolInner parameters, Context context);
 
     /**
      * Creates or updates an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be created or updated.
      * @param parameters The requested instance pool resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -162,14 +236,14 @@ public interface InstancePoolsClient
      * @return an Azure SQL instance pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<InstancePoolInner> createOrUpdateAsync(
-        String resourceGroupName, String instancePoolName, InstancePoolInner parameters);
+    Mono<InstancePoolInner> createOrUpdateAsync(String resourceGroupName, String instancePoolName,
+        InstancePoolInner parameters);
 
     /**
      * Creates or updates an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be created or updated.
      * @param parameters The requested instance pool resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -182,9 +256,9 @@ public interface InstancePoolsClient
 
     /**
      * Creates or updates an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be created or updated.
      * @param parameters The requested instance pool resource state.
      * @param context The context to associate with this operation.
@@ -194,14 +268,14 @@ public interface InstancePoolsClient
      * @return an Azure SQL instance pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InstancePoolInner createOrUpdate(
-        String resourceGroupName, String instancePoolName, InstancePoolInner parameters, Context context);
+    InstancePoolInner createOrUpdate(String resourceGroupName, String instancePoolName, InstancePoolInner parameters,
+        Context context);
 
     /**
      * Deletes an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -213,9 +287,9 @@ public interface InstancePoolsClient
 
     /**
      * Deletes an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -227,9 +301,9 @@ public interface InstancePoolsClient
 
     /**
      * Deletes an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -241,9 +315,9 @@ public interface InstancePoolsClient
 
     /**
      * Deletes an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -256,9 +330,9 @@ public interface InstancePoolsClient
 
     /**
      * Deletes an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -270,9 +344,9 @@ public interface InstancePoolsClient
 
     /**
      * Deletes an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -283,9 +357,9 @@ public interface InstancePoolsClient
 
     /**
      * Deletes an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,9 +371,9 @@ public interface InstancePoolsClient
 
     /**
      * Updates an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be updated.
      * @param parameters The requested instance pool resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -308,14 +382,14 @@ public interface InstancePoolsClient
      * @return an Azure SQL instance pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String instancePoolName, InstancePoolUpdate parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String instancePoolName,
+        InstancePoolUpdate parameters);
 
     /**
      * Updates an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be updated.
      * @param parameters The requested instance pool resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -324,14 +398,14 @@ public interface InstancePoolsClient
      * @return the {@link PollerFlux} for polling of an Azure SQL instance pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<InstancePoolInner>, InstancePoolInner> beginUpdateAsync(
-        String resourceGroupName, String instancePoolName, InstancePoolUpdate parameters);
+    PollerFlux<PollResult<InstancePoolInner>, InstancePoolInner> beginUpdateAsync(String resourceGroupName,
+        String instancePoolName, InstancePoolUpdate parameters);
 
     /**
      * Updates an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be updated.
      * @param parameters The requested instance pool resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -340,14 +414,14 @@ public interface InstancePoolsClient
      * @return the {@link SyncPoller} for polling of an Azure SQL instance pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InstancePoolInner>, InstancePoolInner> beginUpdate(
-        String resourceGroupName, String instancePoolName, InstancePoolUpdate parameters);
+    SyncPoller<PollResult<InstancePoolInner>, InstancePoolInner> beginUpdate(String resourceGroupName,
+        String instancePoolName, InstancePoolUpdate parameters);
 
     /**
      * Updates an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be updated.
      * @param parameters The requested instance pool resource state.
      * @param context The context to associate with this operation.
@@ -357,14 +431,14 @@ public interface InstancePoolsClient
      * @return the {@link SyncPoller} for polling of an Azure SQL instance pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InstancePoolInner>, InstancePoolInner> beginUpdate(
-        String resourceGroupName, String instancePoolName, InstancePoolUpdate parameters, Context context);
+    SyncPoller<PollResult<InstancePoolInner>, InstancePoolInner> beginUpdate(String resourceGroupName,
+        String instancePoolName, InstancePoolUpdate parameters, Context context);
 
     /**
      * Updates an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be updated.
      * @param parameters The requested instance pool resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -373,14 +447,14 @@ public interface InstancePoolsClient
      * @return an Azure SQL instance pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<InstancePoolInner> updateAsync(
-        String resourceGroupName, String instancePoolName, InstancePoolUpdate parameters);
+    Mono<InstancePoolInner> updateAsync(String resourceGroupName, String instancePoolName,
+        InstancePoolUpdate parameters);
 
     /**
      * Updates an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be updated.
      * @param parameters The requested instance pool resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -393,9 +467,9 @@ public interface InstancePoolsClient
 
     /**
      * Updates an instance pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be updated.
      * @param parameters The requested instance pool resource state.
      * @param context The context to associate with this operation.
@@ -405,78 +479,6 @@ public interface InstancePoolsClient
      * @return an Azure SQL instance pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InstancePoolInner update(
-        String resourceGroupName, String instancePoolName, InstancePoolUpdate parameters, Context context);
-
-    /**
-     * Gets a list of instance pools in the resource group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of instance pools in the resource group as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<InstancePoolInner> listByResourceGroupAsync(String resourceGroupName);
-
-    /**
-     * Gets a list of instance pools in the resource group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of instance pools in the resource group as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<InstancePoolInner> listByResourceGroup(String resourceGroupName);
-
-    /**
-     * Gets a list of instance pools in the resource group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of instance pools in the resource group as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<InstancePoolInner> listByResourceGroup(String resourceGroupName, Context context);
-
-    /**
-     * Gets a list of all instance pools in the subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all instance pools in the subscription as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<InstancePoolInner> listAsync();
-
-    /**
-     * Gets a list of all instance pools in the subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all instance pools in the subscription as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<InstancePoolInner> list();
-
-    /**
-     * Gets a list of all instance pools in the subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all instance pools in the subscription as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<InstancePoolInner> list(Context context);
+    InstancePoolInner update(String resourceGroupName, String instancePoolName, InstancePoolUpdate parameters,
+        Context context);
 }

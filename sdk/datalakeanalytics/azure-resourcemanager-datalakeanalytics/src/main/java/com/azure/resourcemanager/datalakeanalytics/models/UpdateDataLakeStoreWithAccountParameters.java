@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datalakeanalytics.fluent.models.UpdateDataLakeStoreProperties;
+import java.io.IOException;
 
-/** The parameters used to update a Data Lake Store account while updating a Data Lake Analytics account. */
-@JsonFlatten
+/**
+ * The parameters used to update a Data Lake Store account while updating a Data Lake Analytics account.
+ */
 @Fluent
-public class UpdateDataLakeStoreWithAccountParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateDataLakeStoreWithAccountParameters.class);
-
+public final class UpdateDataLakeStoreWithAccountParameters
+    implements JsonSerializable<UpdateDataLakeStoreWithAccountParameters> {
     /*
      * The unique name of the Data Lake Store account to update.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * The optional suffix for the Data Lake Store account.
+     * The Data Lake Store account properties to use when updating a Data Lake Store account.
      */
-    @JsonProperty(value = "properties.suffix")
-    private String suffix;
+    private UpdateDataLakeStoreProperties innerProperties;
+
+    /**
+     * Creates an instance of UpdateDataLakeStoreWithAccountParameters class.
+     */
+    public UpdateDataLakeStoreWithAccountParameters() {
+    }
 
     /**
      * Get the name property: The unique name of the Data Lake Store account to update.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +46,7 @@ public class UpdateDataLakeStoreWithAccountParameters {
 
     /**
      * Set the name property: The unique name of the Data Lake Store account to update.
-     *
+     * 
      * @param name the name value to set.
      * @return the UpdateDataLakeStoreWithAccountParameters object itself.
      */
@@ -49,36 +56,95 @@ public class UpdateDataLakeStoreWithAccountParameters {
     }
 
     /**
+     * Get the innerProperties property: The Data Lake Store account properties to use when updating a Data Lake Store
+     * account.
+     * 
+     * @return the innerProperties value.
+     */
+    private UpdateDataLakeStoreProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the suffix property: The optional suffix for the Data Lake Store account.
-     *
+     * 
      * @return the suffix value.
      */
     public String suffix() {
-        return this.suffix;
+        return this.innerProperties() == null ? null : this.innerProperties().suffix();
     }
 
     /**
      * Set the suffix property: The optional suffix for the Data Lake Store account.
-     *
+     * 
      * @param suffix the suffix value to set.
      * @return the UpdateDataLakeStoreWithAccountParameters object itself.
      */
     public UpdateDataLakeStoreWithAccountParameters withSuffix(String suffix) {
-        this.suffix = suffix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateDataLakeStoreProperties();
+        }
+        this.innerProperties().withSuffix(suffix);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model UpdateDataLakeStoreWithAccountParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model UpdateDataLakeStoreWithAccountParameters"));
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UpdateDataLakeStoreWithAccountParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateDataLakeStoreWithAccountParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateDataLakeStoreWithAccountParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UpdateDataLakeStoreWithAccountParameters.
+     */
+    public static UpdateDataLakeStoreWithAccountParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateDataLakeStoreWithAccountParameters deserializedUpdateDataLakeStoreWithAccountParameters
+                = new UpdateDataLakeStoreWithAccountParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedUpdateDataLakeStoreWithAccountParameters.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUpdateDataLakeStoreWithAccountParameters.innerProperties
+                        = UpdateDataLakeStoreProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateDataLakeStoreWithAccountParameters;
+        });
     }
 }

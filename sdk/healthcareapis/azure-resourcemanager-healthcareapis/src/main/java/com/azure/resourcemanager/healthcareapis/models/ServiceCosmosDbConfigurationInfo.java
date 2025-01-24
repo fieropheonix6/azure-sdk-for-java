@@ -5,26 +5,41 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The settings for the Cosmos DB database backing the service. */
+/**
+ * The settings for the Cosmos DB database backing the service.
+ */
 @Fluent
-public final class ServiceCosmosDbConfigurationInfo {
+public final class ServiceCosmosDbConfigurationInfo implements JsonSerializable<ServiceCosmosDbConfigurationInfo> {
     /*
      * The provisioned throughput for the backing database.
      */
-    @JsonProperty(value = "offerThroughput")
     private Integer offerThroughput;
 
     /*
      * The URI of the customer-managed key for the backing database.
      */
-    @JsonProperty(value = "keyVaultKeyUri")
     private String keyVaultKeyUri;
+
+    /*
+     * The multi-tenant application id used to enable CMK access for services in a data sovereign region.
+     */
+    private String crossTenantCmkApplicationId;
+
+    /**
+     * Creates an instance of ServiceCosmosDbConfigurationInfo class.
+     */
+    public ServiceCosmosDbConfigurationInfo() {
+    }
 
     /**
      * Get the offerThroughput property: The provisioned throughput for the backing database.
-     *
+     * 
      * @return the offerThroughput value.
      */
     public Integer offerThroughput() {
@@ -33,7 +48,7 @@ public final class ServiceCosmosDbConfigurationInfo {
 
     /**
      * Set the offerThroughput property: The provisioned throughput for the backing database.
-     *
+     * 
      * @param offerThroughput the offerThroughput value to set.
      * @return the ServiceCosmosDbConfigurationInfo object itself.
      */
@@ -44,7 +59,7 @@ public final class ServiceCosmosDbConfigurationInfo {
 
     /**
      * Get the keyVaultKeyUri property: The URI of the customer-managed key for the backing database.
-     *
+     * 
      * @return the keyVaultKeyUri value.
      */
     public String keyVaultKeyUri() {
@@ -53,7 +68,7 @@ public final class ServiceCosmosDbConfigurationInfo {
 
     /**
      * Set the keyVaultKeyUri property: The URI of the customer-managed key for the backing database.
-     *
+     * 
      * @param keyVaultKeyUri the keyVaultKeyUri value to set.
      * @return the ServiceCosmosDbConfigurationInfo object itself.
      */
@@ -63,10 +78,76 @@ public final class ServiceCosmosDbConfigurationInfo {
     }
 
     /**
+     * Get the crossTenantCmkApplicationId property: The multi-tenant application id used to enable CMK access for
+     * services in a data sovereign region.
+     * 
+     * @return the crossTenantCmkApplicationId value.
+     */
+    public String crossTenantCmkApplicationId() {
+        return this.crossTenantCmkApplicationId;
+    }
+
+    /**
+     * Set the crossTenantCmkApplicationId property: The multi-tenant application id used to enable CMK access for
+     * services in a data sovereign region.
+     * 
+     * @param crossTenantCmkApplicationId the crossTenantCmkApplicationId value to set.
+     * @return the ServiceCosmosDbConfigurationInfo object itself.
+     */
+    public ServiceCosmosDbConfigurationInfo withCrossTenantCmkApplicationId(String crossTenantCmkApplicationId) {
+        this.crossTenantCmkApplicationId = crossTenantCmkApplicationId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("offerThroughput", this.offerThroughput);
+        jsonWriter.writeStringField("keyVaultKeyUri", this.keyVaultKeyUri);
+        jsonWriter.writeStringField("crossTenantCmkApplicationId", this.crossTenantCmkApplicationId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceCosmosDbConfigurationInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceCosmosDbConfigurationInfo if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceCosmosDbConfigurationInfo.
+     */
+    public static ServiceCosmosDbConfigurationInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceCosmosDbConfigurationInfo deserializedServiceCosmosDbConfigurationInfo
+                = new ServiceCosmosDbConfigurationInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("offerThroughput".equals(fieldName)) {
+                    deserializedServiceCosmosDbConfigurationInfo.offerThroughput
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("keyVaultKeyUri".equals(fieldName)) {
+                    deserializedServiceCosmosDbConfigurationInfo.keyVaultKeyUri = reader.getString();
+                } else if ("crossTenantCmkApplicationId".equals(fieldName)) {
+                    deserializedServiceCosmosDbConfigurationInfo.crossTenantCmkApplicationId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceCosmosDbConfigurationInfo;
+        });
     }
 }

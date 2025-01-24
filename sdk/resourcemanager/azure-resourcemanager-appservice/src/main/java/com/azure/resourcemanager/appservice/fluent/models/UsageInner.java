@@ -5,30 +5,87 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ComputeModeOptions;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Usage of the quota resource. */
+/**
+ * Usage of the quota resource.
+ */
 @Fluent
 public final class UsageInner extends ProxyOnlyResource {
     /*
      * Usage resource specific properties
      */
-    @JsonProperty(value = "properties")
     private UsageProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of UsageInner class.
+     */
+    public UsageInner() {
+    }
 
     /**
      * Get the innerProperties property: Usage resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UsageProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UsageInner withKind(String kind) {
         super.withKind(kind);
@@ -37,7 +94,7 @@ public final class UsageInner extends ProxyOnlyResource {
 
     /**
      * Get the displayName property: Friendly name shown in the UI.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -46,7 +103,7 @@ public final class UsageInner extends ProxyOnlyResource {
 
     /**
      * Get the resourceName property: Name of the quota resource.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -55,7 +112,7 @@ public final class UsageInner extends ProxyOnlyResource {
 
     /**
      * Get the unit property: Units of measurement for the quota resource.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -64,7 +121,7 @@ public final class UsageInner extends ProxyOnlyResource {
 
     /**
      * Get the currentValue property: The current value of the resource counter.
-     *
+     * 
      * @return the currentValue value.
      */
     public Long currentValue() {
@@ -73,7 +130,7 @@ public final class UsageInner extends ProxyOnlyResource {
 
     /**
      * Get the limit property: The resource limit.
-     *
+     * 
      * @return the limit value.
      */
     public Long limit() {
@@ -82,7 +139,7 @@ public final class UsageInner extends ProxyOnlyResource {
 
     /**
      * Get the nextResetTime property: Next reset time for the resource counter.
-     *
+     * 
      * @return the nextResetTime value.
      */
     public OffsetDateTime nextResetTime() {
@@ -91,7 +148,7 @@ public final class UsageInner extends ProxyOnlyResource {
 
     /**
      * Get the computeMode property: Compute mode used for this usage.
-     *
+     * 
      * @return the computeMode value.
      */
     public ComputeModeOptions computeMode() {
@@ -100,7 +157,7 @@ public final class UsageInner extends ProxyOnlyResource {
 
     /**
      * Get the siteMode property: Site mode used for this usage.
-     *
+     * 
      * @return the siteMode value.
      */
     public String siteMode() {
@@ -109,14 +166,59 @@ public final class UsageInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UsageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UsageInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UsageInner.
+     */
+    public static UsageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UsageInner deserializedUsageInner = new UsageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedUsageInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedUsageInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedUsageInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedUsageInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUsageInner.innerProperties = UsageProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUsageInner;
+        });
     }
 }

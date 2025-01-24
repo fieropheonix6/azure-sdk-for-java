@@ -8,36 +8,55 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IntegrationServiceEnvironmentManagedApis. */
+/**
+ * Resource collection API of IntegrationServiceEnvironmentManagedApis.
+ */
 public interface IntegrationServiceEnvironmentManagedApis {
     /**
      * Gets the integration service environment managed Apis.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment managed Apis.
+     * @return the integration service environment managed Apis as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ManagedApi> list(String resourceGroup, String integrationServiceEnvironmentName);
+    PagedIterable<IntegrationServiceEnvironmentManagedApi> list(String resourceGroup,
+        String integrationServiceEnvironmentName);
 
     /**
      * Gets the integration service environment managed Apis.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment managed Apis.
+     * @return the integration service environment managed Apis as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ManagedApi> list(String resourceGroup, String integrationServiceEnvironmentName, Context context);
+    PagedIterable<IntegrationServiceEnvironmentManagedApi> list(String resourceGroup,
+        String integrationServiceEnvironmentName, Context context);
 
     /**
      * Gets the integration service environment managed Api.
-     *
+     * 
+     * @param resourceGroup The resource group name.
+     * @param integrationServiceEnvironmentName The integration service environment name.
+     * @param apiName The api name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the integration service environment managed Api along with {@link Response}.
+     */
+    Response<IntegrationServiceEnvironmentManagedApi> getWithResponse(String resourceGroup,
+        String integrationServiceEnvironmentName, String apiName, Context context);
+
+    /**
+     * Gets the integration service environment managed Api.
+     * 
      * @param resourceGroup The resource group name.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
@@ -46,53 +65,12 @@ public interface IntegrationServiceEnvironmentManagedApis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration service environment managed Api.
      */
-    ManagedApi get(String resourceGroup, String integrationServiceEnvironmentName, String apiName);
-
-    /**
-     * Gets the integration service environment managed Api.
-     *
-     * @param resourceGroup The resource group name.
-     * @param integrationServiceEnvironmentName The integration service environment name.
-     * @param apiName The api name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration service environment managed Api.
-     */
-    Response<ManagedApi> getWithResponse(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName, Context context);
-
-    /**
-     * Puts the integration service environment managed Api.
-     *
-     * @param resourceGroup The resource group name.
-     * @param integrationServiceEnvironmentName The integration service environment name.
-     * @param apiName The api name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed api definition.
-     */
-    ManagedApi put(String resourceGroup, String integrationServiceEnvironmentName, String apiName);
-
-    /**
-     * Puts the integration service environment managed Api.
-     *
-     * @param resourceGroup The resource group name.
-     * @param integrationServiceEnvironmentName The integration service environment name.
-     * @param apiName The api name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed api definition.
-     */
-    ManagedApi put(String resourceGroup, String integrationServiceEnvironmentName, String apiName, Context context);
+    IntegrationServiceEnvironmentManagedApi get(String resourceGroup, String integrationServiceEnvironmentName,
+        String apiName);
 
     /**
      * Deletes the integration service environment managed Api.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
@@ -104,7 +82,7 @@ public interface IntegrationServiceEnvironmentManagedApis {
 
     /**
      * Deletes the integration service environment managed Api.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
@@ -114,4 +92,56 @@ public interface IntegrationServiceEnvironmentManagedApis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(String resourceGroup, String integrationServiceEnvironmentName, String apiName, Context context);
+
+    /**
+     * Gets the integration service environment managed Api.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the integration service environment managed Api along with {@link Response}.
+     */
+    IntegrationServiceEnvironmentManagedApi getById(String id);
+
+    /**
+     * Gets the integration service environment managed Api.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the integration service environment managed Api along with {@link Response}.
+     */
+    Response<IntegrationServiceEnvironmentManagedApi> getByIdWithResponse(String id, Context context);
+
+    /**
+     * Deletes the integration service environment managed Api.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteById(String id);
+
+    /**
+     * Deletes the integration service environment managed Api.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByIdWithResponse(String id, Context context);
+
+    /**
+     * Begins definition for a new IntegrationServiceEnvironmentManagedApi resource.
+     * 
+     * @param name resource name.
+     * @return the first stage of the new IntegrationServiceEnvironmentManagedApi definition.
+     */
+    IntegrationServiceEnvironmentManagedApi.DefinitionStages.Blank define(String name);
 }

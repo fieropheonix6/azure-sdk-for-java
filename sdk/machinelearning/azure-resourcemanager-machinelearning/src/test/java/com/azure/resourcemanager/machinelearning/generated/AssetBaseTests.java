@@ -9,40 +9,37 @@ import com.azure.resourcemanager.machinelearning.models.AssetBase;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AssetBaseTests {
-    @Test
-    public void testDeserialize() {
-        AssetBase model =
-            BinaryData
-                .fromString(
-                    "{\"isAnonymous\":false,\"isArchived\":false,\"description\":\"szfjvfbgofelja\",\"properties\":{\"ojnal\":\"mqhldvrii\",\"qhhahhxvrhmzkwpj\":\"hfkvtvsexsowuel\",\"ughftqsx\":\"wws\"},\"tags\":{\"grjguufzd\":\"ujxukndxd\",\"whbotzingamv\":\"syqtfi\"}}")
-                .toObject(AssetBase.class);
-        Assertions.assertEquals("szfjvfbgofelja", model.description());
-        Assertions.assertEquals("mqhldvrii", model.properties().get("ojnal"));
-        Assertions.assertEquals("ujxukndxd", model.tags().get("grjguufzd"));
-        Assertions.assertEquals(false, model.isAnonymous());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AssetBase model = BinaryData.fromString(
+            "{\"isArchived\":false,\"isAnonymous\":true,\"description\":\"jrkvfgbvfvpdbo\",\"tags\":{\"bdeibqipqk\":\"izsjqlhkrr\",\"rwkq\":\"hvxndzwmkrefajpj\",\"sjabibs\":\"yhgbijtjivfx\",\"bjxbkzbzk\":\"stawfsdjpvkv\"},\"properties\":{\"zhjjklffhmouwq\":\"cjabudurgkakmo\"}}")
+            .toObject(AssetBase.class);
+        Assertions.assertEquals("jrkvfgbvfvpdbo", model.description());
+        Assertions.assertEquals("izsjqlhkrr", model.tags().get("bdeibqipqk"));
+        Assertions.assertEquals("cjabudurgkakmo", model.properties().get("zhjjklffhmouwq"));
         Assertions.assertEquals(false, model.isArchived());
+        Assertions.assertEquals(true, model.isAnonymous());
     }
 
-    @Test
-    public void testSerialize() {
-        AssetBase model =
-            new AssetBase()
-                .withDescription("szfjvfbgofelja")
-                .withProperties(mapOf("ojnal", "mqhldvrii", "qhhahhxvrhmzkwpj", "hfkvtvsexsowuel", "ughftqsx", "wws"))
-                .withTags(mapOf("grjguufzd", "ujxukndxd", "whbotzingamv", "syqtfi"))
-                .withIsAnonymous(false)
-                .withIsArchived(false);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AssetBase model = new AssetBase().withDescription("jrkvfgbvfvpdbo")
+            .withTags(mapOf("bdeibqipqk", "izsjqlhkrr", "rwkq", "hvxndzwmkrefajpj", "sjabibs", "yhgbijtjivfx",
+                "bjxbkzbzk", "stawfsdjpvkv"))
+            .withProperties(mapOf("zhjjklffhmouwq", "cjabudurgkakmo"))
+            .withIsArchived(false)
+            .withIsAnonymous(true);
         model = BinaryData.fromObject(model).toObject(AssetBase.class);
-        Assertions.assertEquals("szfjvfbgofelja", model.description());
-        Assertions.assertEquals("mqhldvrii", model.properties().get("ojnal"));
-        Assertions.assertEquals("ujxukndxd", model.tags().get("grjguufzd"));
-        Assertions.assertEquals(false, model.isAnonymous());
+        Assertions.assertEquals("jrkvfgbvfvpdbo", model.description());
+        Assertions.assertEquals("izsjqlhkrr", model.tags().get("bdeibqipqk"));
+        Assertions.assertEquals("cjabudurgkakmo", model.properties().get("zhjjklffhmouwq"));
         Assertions.assertEquals(false, model.isArchived());
+        Assertions.assertEquals(true, model.isAnonymous());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

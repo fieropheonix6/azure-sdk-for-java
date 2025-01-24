@@ -16,39 +16,35 @@ import com.azure.resourcemanager.devspaces.models.Controller;
 import com.azure.resourcemanager.devspaces.models.ControllerConnectionDetailsList;
 import com.azure.resourcemanager.devspaces.models.Controllers;
 import com.azure.resourcemanager.devspaces.models.ListConnectionDetailsParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ControllersImpl implements Controllers {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ControllersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ControllersImpl.class);
 
     private final ControllersClient innerClient;
 
     private final com.azure.resourcemanager.devspaces.DevSpacesManager serviceManager;
 
-    public ControllersImpl(
-        ControllersClient innerClient, com.azure.resourcemanager.devspaces.DevSpacesManager serviceManager) {
+    public ControllersImpl(ControllersClient innerClient,
+        com.azure.resourcemanager.devspaces.DevSpacesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<Controller> getByResourceGroupWithResponse(String resourceGroupName, String name, Context context) {
+        Response<ControllerInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, name, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ControllerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Controller getByResourceGroup(String resourceGroupName, String name) {
         ControllerInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, name);
         if (inner != null) {
             return new ControllerImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<Controller> getByResourceGroupWithResponse(String resourceGroupName, String name, Context context) {
-        Response<ControllerInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, name, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ControllerImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -64,28 +60,40 @@ public final class ControllersImpl implements Controllers {
 
     public PagedIterable<Controller> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ControllerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ControllerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ControllerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Controller> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ControllerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ControllerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ControllerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Controller> list() {
         PagedIterable<ControllerInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ControllerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ControllerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Controller> list(Context context) {
         PagedIterable<ControllerInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ControllerImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ControllerImpl(inner1, this.manager()));
     }
 
-    public ControllerConnectionDetailsList listConnectionDetails(
-        String resourceGroupName, String name, ListConnectionDetailsParameters listConnectionDetailsParameters) {
-        ControllerConnectionDetailsListInner inner =
-            this.serviceClient().listConnectionDetails(resourceGroupName, name, listConnectionDetailsParameters);
+    public Response<ControllerConnectionDetailsList> listConnectionDetailsWithResponse(String resourceGroupName,
+        String name, ListConnectionDetailsParameters listConnectionDetailsParameters, Context context) {
+        Response<ControllerConnectionDetailsListInner> inner = this.serviceClient()
+            .listConnectionDetailsWithResponse(resourceGroupName, name, listConnectionDetailsParameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ControllerConnectionDetailsListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ControllerConnectionDetailsList listConnectionDetails(String resourceGroupName, String name,
+        ListConnectionDetailsParameters listConnectionDetailsParameters) {
+        ControllerConnectionDetailsListInner inner
+            = this.serviceClient().listConnectionDetails(resourceGroupName, name, listConnectionDetailsParameters);
         if (inner != null) {
             return new ControllerConnectionDetailsListImpl(inner, this.manager());
         } else {
@@ -93,98 +101,58 @@ public final class ControllersImpl implements Controllers {
         }
     }
 
-    public Response<ControllerConnectionDetailsList> listConnectionDetailsWithResponse(
-        String resourceGroupName,
-        String name,
-        ListConnectionDetailsParameters listConnectionDetailsParameters,
-        Context context) {
-        Response<ControllerConnectionDetailsListInner> inner =
-            this
-                .serviceClient()
-                .listConnectionDetailsWithResponse(resourceGroupName, name, listConnectionDetailsParameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ControllerConnectionDetailsListImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public Controller getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "controllers");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "controllers");
         if (name == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'controllers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'controllers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE).getValue();
     }
 
     public Response<Controller> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "controllers");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "controllers");
         if (name == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'controllers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'controllers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, name, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "controllers");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "controllers");
         if (name == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'controllers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'controllers'.", id)));
         }
         this.delete(resourceGroupName, name, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "controllers");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "controllers");
         if (name == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'controllers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'controllers'.", id)));
         }
         this.delete(resourceGroupName, name, context);
     }

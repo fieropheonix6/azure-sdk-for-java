@@ -15,18 +15,19 @@ import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.implementation.PollingConstants;
 import com.azure.core.util.polling.implementation.PollingUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
+import static com.azure.core.util.polling.PollingUtil.locationCanPoll;
 import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolutePath;
 import static com.azure.core.util.polling.implementation.PollingUtils.serializeResponseSync;
 
@@ -46,6 +47,7 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
     private final HttpPipeline httpPipeline;
     private final ObjectSerializer serializer;
     private final Context context;
+    private final String serviceVersion;
 
     /**
      * Creates an instance of the location polling strategy using a JSON serializer.
@@ -91,25 +93,31 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
      */
     public SyncLocationPollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer,
         Context context) {
-        this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
-        this.endpoint = endpoint;
-        this.serializer = (serializer == null) ? DEFAULT_SERIALIZER : serializer;
-        this.context = context == null ? Context.NONE : context;
+        this(new PollingStrategyOptions(httpPipeline).setEndpoint(endpoint)
+            .setSerializer(serializer)
+            .setContext(context));
+    }
+
+    /**
+     * Creates an instance of the location polling strategy.
+     *
+     * @param pollingStrategyOptions options to configure this polling strategy.
+     * @throws NullPointerException If {@code pollingStrategyOptions} is null.
+     */
+    public SyncLocationPollingStrategy(PollingStrategyOptions pollingStrategyOptions) {
+        Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");
+        this.httpPipeline = pollingStrategyOptions.getHttpPipeline();
+        this.endpoint = pollingStrategyOptions.getEndpoint();
+        this.serializer = (pollingStrategyOptions.getSerializer() == null)
+            ? DEFAULT_SERIALIZER
+            : pollingStrategyOptions.getSerializer();
+        this.serviceVersion = pollingStrategyOptions.getServiceVersion();
+        this.context = pollingStrategyOptions.getContext() == null ? Context.NONE : pollingStrategyOptions.getContext();
     }
 
     @Override
     public boolean canPoll(Response<?> initialResponse) {
-        HttpHeader locationHeader = initialResponse.getHeaders().get(HttpHeaderName.LOCATION);
-        if (locationHeader != null) {
-            try {
-                new URL(getAbsolutePath(locationHeader.getValue(), endpoint, LOGGER));
-                return true;
-            } catch (MalformedURLException e) {
-                LOGGER.info("Failed to parse Location header into a URL.", e);
-                return false;
-            }
-        }
-        return false;
+        return locationCanPoll(initialResponse, endpoint, LOGGER);
     }
 
     @Override
@@ -123,8 +131,10 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
         pollingContext.setData(PollingConstants.HTTP_METHOD, response.getRequest().getHttpMethod().name());
         pollingContext.setData(PollingConstants.REQUEST_URL, response.getRequest().getUrl().toString());
 
-        if (response.getStatusCode() == 200 || response.getStatusCode() == 201
-            || response.getStatusCode() == 202 || response.getStatusCode() == 204) {
+        if (response.getStatusCode() == 200
+            || response.getStatusCode() == 201
+            || response.getStatusCode() == 202
+            || response.getStatusCode() == 204) {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
             return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                 PollingUtils.convertResponseSync(response.getValue(), serializer, pollResponseType), retryAfter);
@@ -137,8 +147,9 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
 
     @Override
     public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, pollingContext.getData(PollingConstants.LOCATION));
-
+        String url = pollingContext.getData(PollingConstants.LOCATION);
+        url = setServiceVersionQueryParam(url);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
 
         try (HttpResponse response = httpPipeline.sendSync(request, context)) {
             HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
@@ -178,8 +189,7 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
         if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)
             || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
             finalGetUrl = pollingContext.getData(PollingConstants.REQUEST_URL);
-        } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)
-            && pollingContext.getData(PollingConstants.LOCATION) != null) {
+        } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)) {
             finalGetUrl = pollingContext.getData(PollingConstants.LOCATION);
         } else {
             throw LOGGER.logExceptionAsError(new AzureException("Cannot get final result"));
@@ -191,10 +201,20 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
                 resultType);
         }
 
+        finalGetUrl = setServiceVersionQueryParam(finalGetUrl);
         HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
         try (HttpResponse response = httpPipeline.sendSync(request, context)) {
             BinaryData responseBody = response.getBodyAsBinaryData();
             return PollingUtils.deserializeResponseSync(responseBody, serializer, resultType);
         }
+    }
+
+    private String setServiceVersionQueryParam(String url) {
+        if (!CoreUtils.isNullOrEmpty(this.serviceVersion)) {
+            UrlBuilder urlBuilder = UrlBuilder.parse(url);
+            urlBuilder.setQueryParameter("api-version", this.serviceVersion);
+            url = urlBuilder.toString();
+        }
+        return url;
     }
 }

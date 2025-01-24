@@ -4,21 +4,31 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnosticsContext;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.ThroughputProperties;
 
-import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 /**
  * Encapsulates options that can be specified for a request issued to the Azure Cosmos DB database service.
  */
-public class RequestOptions {
+public class RequestOptions implements OverridableRequestOptions {
     private Map<String, String> customOptions;
     private List<String> preTriggerInclude;
     private List<String> postTriggerInclude;
@@ -31,7 +41,6 @@ public class RequestOptions {
     private String ifNoneMatchETag;
     private Integer offerThroughput;
     private PartitionKey partitionkey;
-    private String partitionKeyRangeId;
     private boolean scriptLoggingEnabled;
     private boolean quotaInfoEnabled;
     private Map<String, Object> properties;
@@ -41,7 +50,78 @@ public class RequestOptions {
     private String throughputControlGroupName;
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
-    private Duration thresholdForDiagnosticsOnTracer;
+    private CosmosDiagnosticsThresholds thresholds;
+    private boolean useTrackingIds;
+    private String trackingId;
+    private Boolean nonIdempotentWriteRetriesEnabled;
+    private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
+    private List<String> excludeRegions;
+
+    private Supplier<CosmosDiagnosticsContext> diagnosticsCtxSupplier;
+    private CosmosItemSerializer effectiveItemSerializer;
+
+    private final AtomicReference<Runnable> markE2ETimeoutInRequestContextCallbackHook;
+    private Set<String> keywordIdentifiers;
+
+    private PartitionKeyDefinition partitionKeyDefinition;
+
+    public RequestOptions() {
+
+        this.markE2ETimeoutInRequestContextCallbackHook = new AtomicReference<>(null);
+        this.effectiveItemSerializer = CosmosItemSerializer.DEFAULT_SERIALIZER;
+    }
+
+    public RequestOptions(RequestOptions toBeCloned) {
+        this.indexingDirective = toBeCloned.indexingDirective;
+        this.consistencyLevel = toBeCloned.consistencyLevel;
+        this.sessionToken = toBeCloned.sessionToken;
+        this.resourceTokenExpirySeconds = toBeCloned.resourceTokenExpirySeconds;
+        this.offerType = toBeCloned.offerType;
+        this.ifMatchETag = toBeCloned.ifMatchETag;
+        this.ifNoneMatchETag = toBeCloned.ifNoneMatchETag;
+        this.offerThroughput = toBeCloned.offerThroughput;
+        this.partitionkey = toBeCloned.partitionkey;
+        this.scriptLoggingEnabled = toBeCloned.scriptLoggingEnabled;
+        this.quotaInfoEnabled = toBeCloned.quotaInfoEnabled;
+        this.throughputProperties = toBeCloned.throughputProperties;
+        this.contentResponseOnWriteEnabled = toBeCloned.contentResponseOnWriteEnabled;
+        this.filterPredicate = toBeCloned.filterPredicate;
+        this.throughputControlGroupName = toBeCloned.throughputControlGroupName;
+        this.operationContextAndListenerTuple = toBeCloned.operationContextAndListenerTuple;
+        this.dedicatedGatewayRequestOptions = toBeCloned.dedicatedGatewayRequestOptions;
+        this.thresholds = toBeCloned.thresholds;
+        this.trackingId = toBeCloned.trackingId;
+        this.nonIdempotentWriteRetriesEnabled = toBeCloned.nonIdempotentWriteRetriesEnabled;
+        this.endToEndOperationLatencyConfig = toBeCloned.endToEndOperationLatencyConfig;
+        this.diagnosticsCtxSupplier = toBeCloned.diagnosticsCtxSupplier;
+        this.markE2ETimeoutInRequestContextCallbackHook = new AtomicReference<>(null);
+        this.effectiveItemSerializer= toBeCloned.effectiveItemSerializer;
+        this.partitionKeyDefinition = toBeCloned.partitionKeyDefinition;
+
+        if (toBeCloned.customOptions != null) {
+            this.customOptions = new HashMap<>(toBeCloned.customOptions);
+        }
+
+        if (toBeCloned.properties != null) {
+            this.properties = new HashMap<>(toBeCloned.properties);
+        }
+
+        if (toBeCloned.preTriggerInclude != null) {
+            this.preTriggerInclude = new ArrayList<>(toBeCloned.preTriggerInclude);
+        }
+
+        if (toBeCloned.postTriggerInclude != null) {
+            this.postTriggerInclude = new ArrayList<>(toBeCloned.postTriggerInclude);
+        }
+
+        if (toBeCloned.excludeRegions != null) {
+            this.excludeRegions = new ArrayList<>(toBeCloned.excludeRegions);
+        }
+
+        if (toBeCloned.keywordIdentifiers != null) {
+            this.keywordIdentifiers = new HashSet<>(toBeCloned.keywordIdentifiers);
+        }
+    }
 
     /**
      * Gets the triggers to be invoked before the operation.
@@ -70,6 +150,17 @@ public class RequestOptions {
      */
     public void setPreTriggerInclude(List<String> preTriggerInclude) {
         this.preTriggerInclude = preTriggerInclude;
+    }
+
+    public RequestOptions setNonIdempotentWriteRetriesEnabled(boolean enabled) {
+        this.nonIdempotentWriteRetriesEnabled = enabled;
+
+        return this;
+    }
+
+    @Override
+    public Boolean getNonIdempotentWriteRetriesEnabled() {
+        return this.nonIdempotentWriteRetriesEnabled;
     }
 
     /**
@@ -139,7 +230,6 @@ public class RequestOptions {
      * Sets the FilterPredicate associated with the request in the Azure Cosmos DB service.
      *
      * @param filterPredicate the filterPredicate associated with the request.
-     * @return the current request options
      */
     public void setFilterPredicate(String filterPredicate) {
         this.filterPredicate = filterPredicate;
@@ -163,11 +253,20 @@ public class RequestOptions {
         this.indexingDirective = indexingDirective;
     }
 
+    public void setTrackingId(String trackingId) {
+        this.trackingId = trackingId;
+    }
+
+    public String getTrackingId() {
+        return this.trackingId;
+    }
+
     /**
      * Gets the consistency level required for the request.
      *
      * @return the consistency level.
      */
+    @Override
     public ConsistencyLevel getConsistencyLevel() {
         return this.consistencyLevel;
     }
@@ -280,24 +379,6 @@ public class RequestOptions {
     }
 
     /**
-     * Internal usage only: Gets the partition key range id used to identify the current request's target partition.
-     *
-     * @return the partition key range id value.
-     */
-    String getPartitionKeyRangeId() {
-        return this.partitionKeyRangeId;
-    }
-
-    /**
-     * Internal usage only: Sets the partition key range id used to identify the current request's target partition.
-     *
-     * @param partitionKeyRangeId the partition key range id value.
-     */
-    protected void setPartitionKeyRengeId(String partitionKeyRangeId) {
-        this.partitionKeyRangeId = partitionKeyRangeId;
-    }
-
-    /**
      * Gets whether Javascript stored procedure logging is enabled for the current request in the Azure Cosmos DB database
      * service or not.
      *
@@ -381,16 +462,17 @@ public class RequestOptions {
     /**
      * Gets the boolean to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
-     *
+     * <p>
      * If set to false, service doesn't return payload in the response. It reduces networking
      * and CPU load by not sending the payload back over the network and serializing it on the client.
-     *
+     * <p>
      * This feature does not impact RU usage for read or write operations.
-     *
+     * <p>
      * By-default, this is null.
      *
      * @return a boolean indicating whether payload will be included in the response or not for this request.
      */
+    @Override
     public Boolean isContentResponseOnWriteEnabled() {
         return contentResponseOnWriteEnabled;
     }
@@ -398,14 +480,14 @@ public class RequestOptions {
     /**
      * Sets the boolean to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
-     *
+     * <p>
      * If set to false, service doesn't return payload in the response. It reduces networking
      * and CPU load by not sending the payload back over the network and serializing it on the client.
-     *
+     * <p>
      * This feature does not impact RU usage for read or write operations.
-     *
+     * <p>
      * By-default, this is null.
-     *
+     * <p>
      * NOTE: This flag is also present on {@link com.azure.cosmos.CosmosClientBuilder},
      * however if specified on {@link com.azure.cosmos.models.CosmosItemRequestOptions},
      * it will override the value specified in {@link com.azure.cosmos.CosmosClientBuilder} for this request.
@@ -417,6 +499,7 @@ public class RequestOptions {
         this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
     }
 
+    @Override
     public String getThroughputControlGroupName() {
         return this.throughputControlGroupName;
     }
@@ -425,6 +508,7 @@ public class RequestOptions {
         this.throughputControlGroupName = throughputControlGroupName;
     }
 
+    @Override
     public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
         return dedicatedGatewayRequestOptions;
     }
@@ -433,23 +517,171 @@ public class RequestOptions {
         this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
     }
 
-    /**
-     * Gets the thresholdForDiagnosticsOnTracer, if latency on CRUD operation is greater than this
-     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
-     *
-     * @return  thresholdForDiagnosticsOnTracerInMS the latency threshold for diagnostics on tracer.
-     */
-    public Duration getThresholdForDiagnosticsOnTracer() {
-        return thresholdForDiagnosticsOnTracer;
+    @Override
+    public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
+        return this.thresholds;
     }
 
-    /**
-     * Sets the thresholdForDiagnosticsOnTracer, if latency on CRUD operation is greater than this
-     * diagnostics will be send to open telemetry exporter as events in tracer span of end to end CRUD api.
-     *
-     * @param thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
-     */
-    public void setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
-        this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
+    @Override
+    public Boolean isScanInQueryEnabled() {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxDegreeOfParallelism() {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxBufferedItemCount() {
+        return null;
+    }
+
+    @Override
+    public Integer getResponseContinuationTokenLimitInKb() {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxItemCount() {
+        return null;
+    }
+
+    @Override
+    public Boolean isQueryMetricsEnabled() {
+        return null;
+    }
+
+    @Override
+    public Boolean isIndexMetricsEnabled() {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxPrefetchPageCount() {
+        return null;
+    }
+
+    @Override
+    public String getQueryNameOrDefault(String defaultQueryName) {
+        return null;
+    }
+
+    public void setDiagnosticsThresholds(CosmosDiagnosticsThresholds thresholds) {
+        this.thresholds = thresholds;
+    }
+
+    public void setDiagnosticsContextSupplier(Supplier<CosmosDiagnosticsContext> ctxSupplier) {
+        this.diagnosticsCtxSupplier = ctxSupplier;
+    }
+
+    public CosmosDiagnosticsContext getDiagnosticsContextSnapshot() {
+        Supplier<CosmosDiagnosticsContext> ctxSupplierSnapshot = this.diagnosticsCtxSupplier;
+        if (ctxSupplierSnapshot == null) {
+            return null;
+        }
+
+        return ctxSupplierSnapshot.get();
+    }
+
+    public void setCosmosEndToEndLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
+        this.endToEndOperationLatencyConfig = endToEndOperationLatencyPolicyConfig;
+    }
+
+    @Override
+    public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig(){
+        return this.endToEndOperationLatencyConfig;
+    }
+
+    @Override
+    public List<String> getExcludedRegions() {
+        return this.excludeRegions;
+    }
+
+    public void setExcludedRegions(List<String> excludeRegions) {
+        this.excludeRegions = excludeRegions;
+    }
+
+    public AtomicReference<Runnable> getMarkE2ETimeoutInRequestContextCallbackHook() {
+        return this.markE2ETimeoutInRequestContextCallbackHook;
+    }
+
+    public void setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.keywordIdentifiers = keywordIdentifiers;
+    }
+
+    @Override
+    public Set<String> getKeywordIdentifiers() {
+        return keywordIdentifiers;
+    }
+
+    @Override
+    public void override(CosmosRequestOptions cosmosCommonRequestOptions) {
+        this.consistencyLevel = overrideOption(cosmosCommonRequestOptions.getConsistencyLevel(), this.consistencyLevel);
+        this.contentResponseOnWriteEnabled = overrideOption(cosmosCommonRequestOptions.isContentResponseOnWriteEnabled(), this.contentResponseOnWriteEnabled);
+        this.nonIdempotentWriteRetriesEnabled = overrideOption(cosmosCommonRequestOptions.getNonIdempotentWriteRetriesEnabled(), this.nonIdempotentWriteRetriesEnabled);
+        this.dedicatedGatewayRequestOptions = overrideOption(cosmosCommonRequestOptions.getDedicatedGatewayRequestOptions(), this.dedicatedGatewayRequestOptions);
+        this.excludeRegions = overrideOption(cosmosCommonRequestOptions.getExcludedRegions(), this.excludeRegions);
+        this.throughputControlGroupName = overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+        this.thresholds = overrideOption(cosmosCommonRequestOptions.getDiagnosticsThresholds(), this.thresholds);
+        this.endToEndOperationLatencyConfig = overrideOption(cosmosCommonRequestOptions.getCosmosEndToEndLatencyPolicyConfig(), this.endToEndOperationLatencyConfig);
+        this.keywordIdentifiers = overrideOption(cosmosCommonRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
+    }
+
+    public CosmosItemSerializer getEffectiveItemSerializer() {
+        return this.effectiveItemSerializer;
+    }
+
+    public void setEffectiveItemSerializer(CosmosItemSerializer serializer) {
+        this.effectiveItemSerializer = serializer;
+    }
+
+    public void setUseTrackingIds(boolean useTrackingIds) {
+        this.useTrackingIds = useTrackingIds;
+    }
+
+    public boolean getUseTrackingIds() {
+        return this.useTrackingIds;
+    }
+
+    public WriteRetryPolicy calculateAndGetEffectiveNonIdempotentRetriesEnabled(
+        WriteRetryPolicy clientDefault,
+        boolean operationDefault) {
+
+        if (this.nonIdempotentWriteRetriesEnabled != null) {
+            return new WriteRetryPolicy(
+                this.nonIdempotentWriteRetriesEnabled,
+                this.useTrackingIds);
+        }
+
+        if (!operationDefault) {
+            this.setNonIdempotentWriteRetriesEnabled(false);
+            this.setUseTrackingIds(false);
+            return WriteRetryPolicy.DISABLED;
+        }
+
+        if (clientDefault != null) {
+            if (clientDefault.isEnabled()) {
+                this.setNonIdempotentWriteRetriesEnabled(true);
+                this.setUseTrackingIds(clientDefault.useTrackingIdProperty());
+            } else {
+                this.setNonIdempotentWriteRetriesEnabled(false);
+                this.setUseTrackingIds(false);
+            }
+
+            return clientDefault;
+        }
+
+        this.setNonIdempotentWriteRetriesEnabled(false);
+        this.setUseTrackingIds(false);
+        return WriteRetryPolicy.DISABLED;
+    }
+
+    public void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
+        this.partitionKeyDefinition = partitionKeyDefinition;
+    }
+
+    public PartitionKeyDefinition getPartitionKeyDefinition() {
+        return this.partitionKeyDefinition;
     }
 }

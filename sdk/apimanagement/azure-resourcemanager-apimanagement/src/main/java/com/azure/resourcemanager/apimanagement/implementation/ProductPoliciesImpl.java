@@ -27,11 +27,22 @@ public final class ProductPoliciesImpl implements ProductPolicies {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public ProductPoliciesImpl(
-        ProductPoliciesClient innerClient,
+    public ProductPoliciesImpl(ProductPoliciesClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<PolicyCollection> listByProductWithResponse(String resourceGroupName, String serviceName,
+        String productId, Context context) {
+        Response<PolicyCollectionInner> inner
+            = this.serviceClient().listByProductWithResponse(resourceGroupName, serviceName, productId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PolicyCollectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PolicyCollection listByProduct(String resourceGroupName, String serviceName, String productId) {
@@ -43,30 +54,26 @@ public final class ProductPoliciesImpl implements ProductPolicies {
         }
     }
 
-    public Response<PolicyCollection> listByProductWithResponse(
-        String resourceGroupName, String serviceName, String productId, Context context) {
-        Response<PolicyCollectionInner> inner =
-            this.serviceClient().listByProductWithResponse(resourceGroupName, serviceName, productId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PolicyCollectionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public ProductPoliciesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String productId, PolicyIdName policyId, Context context) {
+        return this.serviceClient()
+            .getEntityTagWithResponse(resourceGroupName, serviceName, productId, policyId, context);
     }
 
     public void getEntityTag(String resourceGroupName, String serviceName, String productId, PolicyIdName policyId) {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, productId, policyId);
     }
 
-    public ProductPoliciesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String productId, PolicyIdName policyId, Context context) {
-        return this
-            .serviceClient()
-            .getEntityTagWithResponse(resourceGroupName, serviceName, productId, policyId, context);
+    public Response<PolicyContract> getWithResponse(String resourceGroupName, String serviceName, String productId,
+        PolicyIdName policyId, PolicyExportFormat format, Context context) {
+        ProductPoliciesGetResponse inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, serviceName, productId, policyId, format, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PolicyContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PolicyContract get(String resourceGroupName, String serviceName, String productId, PolicyIdName policyId) {
@@ -78,34 +85,23 @@ public final class ProductPoliciesImpl implements ProductPolicies {
         }
     }
 
-    public Response<PolicyContract> getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        PolicyExportFormat format,
-        Context context) {
-        ProductPoliciesGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, productId, policyId, format, context);
+    public Response<PolicyContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String productId, PolicyIdName policyId, PolicyContractInner parameters, String ifMatch, Context context) {
+        ProductPoliciesCreateOrUpdateResponse inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, productId, policyId, parameters, ifMatch,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PolicyContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PolicyContract createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters) {
-        PolicyContractInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, productId, policyId, parameters);
+    public PolicyContract createOrUpdate(String resourceGroupName, String serviceName, String productId,
+        PolicyIdName policyId, PolicyContractInner parameters) {
+        PolicyContractInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, serviceName, productId, policyId, parameters);
         if (inner != null) {
             return new PolicyContractImpl(inner, this.manager());
         } else {
@@ -113,45 +109,15 @@ public final class ProductPoliciesImpl implements ProductPolicies {
         }
     }
 
-    public Response<PolicyContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters,
-        String ifMatch,
-        Context context) {
-        ProductPoliciesCreateOrUpdateResponse inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, productId, policyId, parameters, ifMatch, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PolicyContractImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public void delete(
-        String resourceGroupName, String serviceName, String productId, PolicyIdName policyId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, productId, policyId, ifMatch);
-    }
-
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        String ifMatch,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String productId,
+        PolicyIdName policyId, String ifMatch, Context context) {
+        return this.serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, productId, policyId, ifMatch, context);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String productId, PolicyIdName policyId,
+        String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, productId, policyId, ifMatch);
     }
 
     private ProductPoliciesClient serviceClient() {

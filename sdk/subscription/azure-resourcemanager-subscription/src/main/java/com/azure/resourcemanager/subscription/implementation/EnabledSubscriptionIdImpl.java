@@ -12,15 +12,14 @@ public final class EnabledSubscriptionIdImpl implements EnabledSubscriptionId {
 
     private final com.azure.resourcemanager.subscription.SubscriptionManager serviceManager;
 
-    EnabledSubscriptionIdImpl(
-        EnabledSubscriptionIdInner innerObject,
+    EnabledSubscriptionIdImpl(EnabledSubscriptionIdInner innerObject,
         com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
 
-    public String value() {
-        return this.innerModel().value();
+    public String subscriptionId() {
+        return this.innerModel().subscriptionId();
     }
 
     public EnabledSubscriptionIdInner innerModel() {

@@ -5,30 +5,50 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The AnalyzeTextKeyPhraseExtractionInput model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("KeyPhraseExtraction")
+/**
+ * The AnalyzeTextKeyPhraseExtractionInput model.
+ */
 @Fluent
 public final class AnalyzeTextKeyPhraseExtractionInput extends AnalyzeTextTask {
     /*
+     * Enumeration of supported Text Analysis tasks.
+     */
+    private AnalyzeTextTaskKind kind = AnalyzeTextTaskKind.KEY_PHRASE_EXTRACTION;
+
+    /*
      * The analysisInput property.
      */
-    @JsonProperty(value = "analysisInput")
     private MultiLanguageAnalysisInput analysisInput;
 
     /*
      * Supported parameters for a Key Phrase Extraction task.
      */
-    @JsonProperty(value = "parameters")
     private KeyPhraseTaskParameters parameters;
 
     /**
+     * Creates an instance of AnalyzeTextKeyPhraseExtractionInput class.
+     */
+    public AnalyzeTextKeyPhraseExtractionInput() {
+    }
+
+    /**
+     * Get the kind property: Enumeration of supported Text Analysis tasks.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public AnalyzeTextTaskKind getKind() {
+        return this.kind;
+    }
+
+    /**
      * Get the analysisInput property: The analysisInput property.
-     *
+     * 
      * @return the analysisInput value.
      */
     public MultiLanguageAnalysisInput getAnalysisInput() {
@@ -37,7 +57,7 @@ public final class AnalyzeTextKeyPhraseExtractionInput extends AnalyzeTextTask {
 
     /**
      * Set the analysisInput property: The analysisInput property.
-     *
+     * 
      * @param analysisInput the analysisInput value to set.
      * @return the AnalyzeTextKeyPhraseExtractionInput object itself.
      */
@@ -48,7 +68,7 @@ public final class AnalyzeTextKeyPhraseExtractionInput extends AnalyzeTextTask {
 
     /**
      * Get the parameters property: Supported parameters for a Key Phrase Extraction task.
-     *
+     * 
      * @return the parameters value.
      */
     public KeyPhraseTaskParameters getParameters() {
@@ -57,12 +77,58 @@ public final class AnalyzeTextKeyPhraseExtractionInput extends AnalyzeTextTask {
 
     /**
      * Set the parameters property: Supported parameters for a Key Phrase Extraction task.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the AnalyzeTextKeyPhraseExtractionInput object itself.
      */
     public AnalyzeTextKeyPhraseExtractionInput setParameters(KeyPhraseTaskParameters parameters) {
         this.parameters = parameters;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("analysisInput", this.analysisInput);
+        jsonWriter.writeJsonField("parameters", this.parameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnalyzeTextKeyPhraseExtractionInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnalyzeTextKeyPhraseExtractionInput if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AnalyzeTextKeyPhraseExtractionInput.
+     */
+    public static AnalyzeTextKeyPhraseExtractionInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AnalyzeTextKeyPhraseExtractionInput deserializedAnalyzeTextKeyPhraseExtractionInput
+                = new AnalyzeTextKeyPhraseExtractionInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedAnalyzeTextKeyPhraseExtractionInput.kind
+                        = AnalyzeTextTaskKind.fromString(reader.getString());
+                } else if ("analysisInput".equals(fieldName)) {
+                    deserializedAnalyzeTextKeyPhraseExtractionInput.analysisInput
+                        = MultiLanguageAnalysisInput.fromJson(reader);
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedAnalyzeTextKeyPhraseExtractionInput.parameters
+                        = KeyPhraseTaskParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAnalyzeTextKeyPhraseExtractionInput;
+        });
     }
 }

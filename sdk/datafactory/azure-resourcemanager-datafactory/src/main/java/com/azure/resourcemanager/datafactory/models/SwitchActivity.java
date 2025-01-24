@@ -6,61 +6,104 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.SwitchActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This activity evaluates an expression and executes activities under the cases property that correspond to the
  * expression evaluation expected in the equals property.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Switch")
 @Fluent
 public final class SwitchActivity extends ControlActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "Switch";
+
+    /*
      * Switch activity properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private SwitchActivityTypeProperties innerTypeProperties = new SwitchActivityTypeProperties();
 
-    /** Creates an instance of SwitchActivity class. */
+    /**
+     * Creates an instance of SwitchActivity class.
+     */
     public SwitchActivity() {
     }
 
     /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Switch activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private SwitchActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SwitchActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SwitchActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SwitchActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SwitchActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SwitchActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SwitchActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -70,7 +113,7 @@ public final class SwitchActivity extends ControlActivity {
     /**
      * Get the on property: An expression that would evaluate to a string or integer. This is used to determine the
      * block of activities in cases that will be executed.
-     *
+     * 
      * @return the on value.
      */
     public Expression on() {
@@ -80,7 +123,7 @@ public final class SwitchActivity extends ControlActivity {
     /**
      * Set the on property: An expression that would evaluate to a string or integer. This is used to determine the
      * block of activities in cases that will be executed.
-     *
+     * 
      * @param on the on value to set.
      * @return the SwitchActivity object itself.
      */
@@ -95,7 +138,7 @@ public final class SwitchActivity extends ControlActivity {
     /**
      * Get the cases property: List of cases that correspond to expected values of the 'on' property. This is an
      * optional property and if not provided, the activity will execute activities provided in defaultActivities.
-     *
+     * 
      * @return the cases value.
      */
     public List<SwitchCase> cases() {
@@ -105,7 +148,7 @@ public final class SwitchActivity extends ControlActivity {
     /**
      * Set the cases property: List of cases that correspond to expected values of the 'on' property. This is an
      * optional property and if not provided, the activity will execute activities provided in defaultActivities.
-     *
+     * 
      * @param cases the cases value to set.
      * @return the SwitchActivity object itself.
      */
@@ -120,7 +163,7 @@ public final class SwitchActivity extends ControlActivity {
     /**
      * Get the defaultActivities property: List of activities to execute if no case condition is satisfied. This is an
      * optional property and if not provided, the activity will exit without any action.
-     *
+     * 
      * @return the defaultActivities value.
      */
     public List<Activity> defaultActivities() {
@@ -130,7 +173,7 @@ public final class SwitchActivity extends ControlActivity {
     /**
      * Set the defaultActivities property: List of activities to execute if no case condition is satisfied. This is an
      * optional property and if not provided, the activity will exit without any action.
-     *
+     * 
      * @param defaultActivities the defaultActivities value to set.
      * @return the SwitchActivity object itself.
      */
@@ -144,21 +187,103 @@ public final class SwitchActivity extends ControlActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model SwitchActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SwitchActivity"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model SwitchActivity"));
+        }
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
+        if (userProperties() != null) {
+            userProperties().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SwitchActivity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            onInactiveMarkAs() == null ? null : onInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", dependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", userProperties(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SwitchActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SwitchActivity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SwitchActivity.
+     */
+    public static SwitchActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SwitchActivity deserializedSwitchActivity = new SwitchActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSwitchActivity.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedSwitchActivity.withDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedSwitchActivity.withState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedSwitchActivity
+                        .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedSwitchActivity.withDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedSwitchActivity.withUserProperties(userProperties);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedSwitchActivity.innerTypeProperties = SwitchActivityTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedSwitchActivity.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSwitchActivity.withAdditionalProperties(additionalProperties);
+
+            return deserializedSwitchActivity;
+        });
+    }
 }

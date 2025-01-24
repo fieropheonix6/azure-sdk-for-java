@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ContainerAppsDiagnostics ListDetectors. */
+/**
+ * Samples for ContainerAppsDiagnostics ListDetectors.
+ */
 public final class ContainerAppsDiagnosticsListDetectorsSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ContainerAppsDiagnostics_List.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
+     * ContainerAppsDiagnostics_List.json
      */
     /**
      * Sample code: Get the list of available diagnostics for a given Container App.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void getTheListOfAvailableDiagnosticsForAGivenContainerApp(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager
-            .containerAppsDiagnostics()
-            .listDetectors("mikono-workerapp-test-rg", "mikono-capp-stage1", Context.NONE);
+        manager.containerAppsDiagnostics()
+            .listDetectors("mikono-workerapp-test-rg", "mikono-capp-stage1", com.azure.core.util.Context.NONE);
     }
 }

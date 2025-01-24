@@ -5,258 +5,341 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Represents a Wait Statistic. */
-@JsonFlatten
+/**
+ * Represents a Wait Statistic.
+ */
 @Fluent
-public class WaitStatisticInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WaitStatisticInner.class);
+public final class WaitStatisticInner extends ProxyResource {
+    /*
+     * The properties of a wait statistic.
+     */
+    private WaitStatisticProperties innerProperties;
 
     /*
-     * Observation start time.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.startTime")
-    private OffsetDateTime startTime;
+    private String type;
 
     /*
-     * Observation end time.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.endTime")
-    private OffsetDateTime endTime;
+    private String name;
 
     /*
-     * Wait event name.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.eventName")
-    private String eventName;
+    private String id;
 
-    /*
-     * Wait event type name.
+    /**
+     * Creates an instance of WaitStatisticInner class.
      */
-    @JsonProperty(value = "properties.eventTypeName")
-    private String eventTypeName;
+    public WaitStatisticInner() {
+    }
 
-    /*
-     * Database query identifier.
+    /**
+     * Get the innerProperties property: The properties of a wait statistic.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.queryId")
-    private Long queryId;
+    private WaitStatisticProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Database Name.
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.databaseName")
-    private String databaseName;
+    @Override
+    public String type() {
+        return this.type;
+    }
 
-    /*
-     * Database user identifier.
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    @JsonProperty(value = "properties.userId")
-    private Long userId;
+    @Override
+    public String name() {
+        return this.name;
+    }
 
-    /*
-     * Wait event count observed in this time interval.
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    @JsonProperty(value = "properties.count")
-    private Long count;
-
-    /*
-     * Total time of wait in milliseconds in this time interval.
-     */
-    @JsonProperty(value = "properties.totalTimeInMs")
-    private Double totalTimeInMs;
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the startTime property: Observation start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
      * Set the startTime property: Observation start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the WaitStatisticInner object itself.
      */
     public WaitStatisticInner withStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticProperties();
+        }
+        this.innerProperties().withStartTime(startTime);
         return this;
     }
 
     /**
      * Get the endTime property: Observation end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
-        return this.endTime;
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
     }
 
     /**
      * Set the endTime property: Observation end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the WaitStatisticInner object itself.
      */
     public WaitStatisticInner withEndTime(OffsetDateTime endTime) {
-        this.endTime = endTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticProperties();
+        }
+        this.innerProperties().withEndTime(endTime);
         return this;
     }
 
     /**
      * Get the eventName property: Wait event name.
-     *
+     * 
      * @return the eventName value.
      */
     public String eventName() {
-        return this.eventName;
+        return this.innerProperties() == null ? null : this.innerProperties().eventName();
     }
 
     /**
      * Set the eventName property: Wait event name.
-     *
+     * 
      * @param eventName the eventName value to set.
      * @return the WaitStatisticInner object itself.
      */
     public WaitStatisticInner withEventName(String eventName) {
-        this.eventName = eventName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticProperties();
+        }
+        this.innerProperties().withEventName(eventName);
         return this;
     }
 
     /**
      * Get the eventTypeName property: Wait event type name.
-     *
+     * 
      * @return the eventTypeName value.
      */
     public String eventTypeName() {
-        return this.eventTypeName;
+        return this.innerProperties() == null ? null : this.innerProperties().eventTypeName();
     }
 
     /**
      * Set the eventTypeName property: Wait event type name.
-     *
+     * 
      * @param eventTypeName the eventTypeName value to set.
      * @return the WaitStatisticInner object itself.
      */
     public WaitStatisticInner withEventTypeName(String eventTypeName) {
-        this.eventTypeName = eventTypeName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticProperties();
+        }
+        this.innerProperties().withEventTypeName(eventTypeName);
         return this;
     }
 
     /**
      * Get the queryId property: Database query identifier.
-     *
+     * 
      * @return the queryId value.
      */
     public Long queryId() {
-        return this.queryId;
+        return this.innerProperties() == null ? null : this.innerProperties().queryId();
     }
 
     /**
      * Set the queryId property: Database query identifier.
-     *
+     * 
      * @param queryId the queryId value to set.
      * @return the WaitStatisticInner object itself.
      */
     public WaitStatisticInner withQueryId(Long queryId) {
-        this.queryId = queryId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticProperties();
+        }
+        this.innerProperties().withQueryId(queryId);
         return this;
     }
 
     /**
      * Get the databaseName property: Database Name.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
-        return this.databaseName;
+        return this.innerProperties() == null ? null : this.innerProperties().databaseName();
     }
 
     /**
      * Set the databaseName property: Database Name.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the WaitStatisticInner object itself.
      */
     public WaitStatisticInner withDatabaseName(String databaseName) {
-        this.databaseName = databaseName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticProperties();
+        }
+        this.innerProperties().withDatabaseName(databaseName);
         return this;
     }
 
     /**
      * Get the userId property: Database user identifier.
-     *
+     * 
      * @return the userId value.
      */
     public Long userId() {
-        return this.userId;
+        return this.innerProperties() == null ? null : this.innerProperties().userId();
     }
 
     /**
      * Set the userId property: Database user identifier.
-     *
+     * 
      * @param userId the userId value to set.
      * @return the WaitStatisticInner object itself.
      */
     public WaitStatisticInner withUserId(Long userId) {
-        this.userId = userId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticProperties();
+        }
+        this.innerProperties().withUserId(userId);
         return this;
     }
 
     /**
      * Get the count property: Wait event count observed in this time interval.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
-        return this.count;
+        return this.innerProperties() == null ? null : this.innerProperties().count();
     }
 
     /**
      * Set the count property: Wait event count observed in this time interval.
-     *
+     * 
      * @param count the count value to set.
      * @return the WaitStatisticInner object itself.
      */
     public WaitStatisticInner withCount(Long count) {
-        this.count = count;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticProperties();
+        }
+        this.innerProperties().withCount(count);
         return this;
     }
 
     /**
      * Get the totalTimeInMs property: Total time of wait in milliseconds in this time interval.
-     *
+     * 
      * @return the totalTimeInMs value.
      */
     public Double totalTimeInMs() {
-        return this.totalTimeInMs;
+        return this.innerProperties() == null ? null : this.innerProperties().totalTimeInMs();
     }
 
     /**
      * Set the totalTimeInMs property: Total time of wait in milliseconds in this time interval.
-     *
+     * 
      * @param totalTimeInMs the totalTimeInMs value to set.
      * @return the WaitStatisticInner object itself.
      */
     public WaitStatisticInner withTotalTimeInMs(Double totalTimeInMs) {
-        this.totalTimeInMs = totalTimeInMs;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WaitStatisticProperties();
+        }
+        this.innerProperties().withTotalTimeInMs(totalTimeInMs);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WaitStatisticInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WaitStatisticInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WaitStatisticInner.
+     */
+    public static WaitStatisticInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WaitStatisticInner deserializedWaitStatisticInner = new WaitStatisticInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWaitStatisticInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWaitStatisticInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWaitStatisticInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWaitStatisticInner.innerProperties = WaitStatisticProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWaitStatisticInner;
+        });
     }
 }

@@ -5,36 +5,57 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServiceManagedIdentityType. */
+/**
+ * Type of identity being specified, currently SystemAssigned and None are allowed.
+ */
 public final class ServiceManagedIdentityType extends ExpandableStringEnum<ServiceManagedIdentityType> {
-    /** Static value None for ServiceManagedIdentityType. */
+    /**
+     * Static value None for ServiceManagedIdentityType.
+     */
     public static final ServiceManagedIdentityType NONE = fromString("None");
 
-    /** Static value SystemAssigned for ServiceManagedIdentityType. */
+    /**
+     * Static value SystemAssigned for ServiceManagedIdentityType.
+     */
     public static final ServiceManagedIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
-    /** Static value UserAssigned for ServiceManagedIdentityType. */
+    /**
+     * Static value UserAssigned for ServiceManagedIdentityType.
+     */
     public static final ServiceManagedIdentityType USER_ASSIGNED = fromString("UserAssigned");
 
-    /** Static value SystemAssigned,UserAssigned for ServiceManagedIdentityType. */
-    public static final ServiceManagedIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED =
-        fromString("SystemAssigned,UserAssigned");
+    /**
+     * Static value SystemAssigned,UserAssigned for ServiceManagedIdentityType.
+     */
+    public static final ServiceManagedIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED
+        = fromString("SystemAssigned,UserAssigned");
+
+    /**
+     * Creates a new instance of ServiceManagedIdentityType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServiceManagedIdentityType() {
+    }
 
     /**
      * Creates or finds a ServiceManagedIdentityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServiceManagedIdentityType.
      */
-    @JsonCreator
     public static ServiceManagedIdentityType fromString(String name) {
         return fromString(name, ServiceManagedIdentityType.class);
     }
 
-    /** @return known ServiceManagedIdentityType values. */
+    /**
+     * Gets known ServiceManagedIdentityType values.
+     * 
+     * @return known ServiceManagedIdentityType values.
+     */
     public static Collection<ServiceManagedIdentityType> values() {
         return values(ServiceManagedIdentityType.class);
     }

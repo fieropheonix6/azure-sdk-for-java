@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Databases Delete. */
+/**
+ * Samples for Databases Delete.
+ */
 public final class DatabasesDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoDatabasesDelete.json
+     * x-ms-original-file:
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDatabasesDelete.json
      */
     /**
      * Sample code: KustoDatabasesDelete.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDatabasesDelete(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager.databases().delete("kustorptest", "kustoCluster", "KustoDatabase8", Context.NONE);
+        manager.databases().delete("kustorptest", "kustoCluster", "KustoDatabase8", com.azure.core.util.Context.NONE);
     }
 }

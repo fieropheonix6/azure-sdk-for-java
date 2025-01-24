@@ -5,34 +5,42 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Supported parameters for a PII Entities Recognition task. */
+/**
+ * Supported parameters for a PII Entities Recognition task.
+ */
 @Fluent
 public final class PiiTaskParameters extends PreBuiltTaskParameters {
     /*
      * The PII domain used for PII Entity Recognition.
      */
-    @JsonProperty(value = "domain")
     private PiiDomain domain;
 
     /*
      * (Optional) describes the PII categories to return
      */
-    @JsonProperty(value = "piiCategories")
     private List<PiiCategory> piiCategories;
 
     /*
-     * Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to
-     * Unicode v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
+     * Specifies the method used to interpret string offsets. Defaults to Text Elements (Graphemes) according to Unicode
+     * v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
      */
-    @JsonProperty(value = "stringIndexType")
     private StringIndexType stringIndexType;
 
     /**
+     * Creates an instance of PiiTaskParameters class.
+     */
+    public PiiTaskParameters() {
+    }
+
+    /**
      * Get the domain property: The PII domain used for PII Entity Recognition.
-     *
+     * 
      * @return the domain value.
      */
     public PiiDomain getDomain() {
@@ -41,7 +49,7 @@ public final class PiiTaskParameters extends PreBuiltTaskParameters {
 
     /**
      * Set the domain property: The PII domain used for PII Entity Recognition.
-     *
+     * 
      * @param domain the domain value to set.
      * @return the PiiTaskParameters object itself.
      */
@@ -52,7 +60,7 @@ public final class PiiTaskParameters extends PreBuiltTaskParameters {
 
     /**
      * Get the piiCategories property: (Optional) describes the PII categories to return.
-     *
+     * 
      * @return the piiCategories value.
      */
     public List<PiiCategory> getPiiCategories() {
@@ -61,7 +69,7 @@ public final class PiiTaskParameters extends PreBuiltTaskParameters {
 
     /**
      * Set the piiCategories property: (Optional) describes the PII categories to return.
-     *
+     * 
      * @param piiCategories the piiCategories value to set.
      * @return the PiiTaskParameters object itself.
      */
@@ -74,7 +82,7 @@ public final class PiiTaskParameters extends PreBuiltTaskParameters {
      * Get the stringIndexType property: Specifies the method used to interpret string offsets. Defaults to Text
      * Elements (Graphemes) according to Unicode v8.0.0. For additional information see
      * https://aka.ms/text-analytics-offsets.
-     *
+     * 
      * @return the stringIndexType value.
      */
     public StringIndexType getStringIndexType() {
@@ -85,7 +93,7 @@ public final class PiiTaskParameters extends PreBuiltTaskParameters {
      * Set the stringIndexType property: Specifies the method used to interpret string offsets. Defaults to Text
      * Elements (Graphemes) according to Unicode v8.0.0. For additional information see
      * https://aka.ms/text-analytics-offsets.
-     *
+     * 
      * @param stringIndexType the stringIndexType value to set.
      * @return the PiiTaskParameters object itself.
      */
@@ -94,17 +102,73 @@ public final class PiiTaskParameters extends PreBuiltTaskParameters {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PiiTaskParameters setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PiiTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
         super.setLoggingOptOut(loggingOptOut);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("loggingOptOut", isLoggingOptOut());
+        jsonWriter.writeStringField("modelVersion", getModelVersion());
+        jsonWriter.writeStringField("domain", this.domain == null ? null : this.domain.toString());
+        jsonWriter.writeArrayField("piiCategories", this.piiCategories,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("stringIndexType",
+            this.stringIndexType == null ? null : this.stringIndexType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PiiTaskParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PiiTaskParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PiiTaskParameters.
+     */
+    public static PiiTaskParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PiiTaskParameters deserializedPiiTaskParameters = new PiiTaskParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("loggingOptOut".equals(fieldName)) {
+                    deserializedPiiTaskParameters.setLoggingOptOut(reader.getNullable(JsonReader::getBoolean));
+                } else if ("modelVersion".equals(fieldName)) {
+                    deserializedPiiTaskParameters.setModelVersion(reader.getString());
+                } else if ("domain".equals(fieldName)) {
+                    deserializedPiiTaskParameters.domain = PiiDomain.fromString(reader.getString());
+                } else if ("piiCategories".equals(fieldName)) {
+                    List<PiiCategory> piiCategories
+                        = reader.readArray(reader1 -> PiiCategory.fromString(reader1.getString()));
+                    deserializedPiiTaskParameters.piiCategories = piiCategories;
+                } else if ("stringIndexType".equals(fieldName)) {
+                    deserializedPiiTaskParameters.stringIndexType = StringIndexType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPiiTaskParameters;
+        });
     }
 }

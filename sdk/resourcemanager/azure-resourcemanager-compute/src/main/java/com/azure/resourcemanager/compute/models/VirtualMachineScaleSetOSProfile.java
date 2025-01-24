@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes a virtual machine scale set OS profile. */
+/**
+ * Describes a virtual machine scale set OS profile.
+ */
 @Fluent
-public final class VirtualMachineScaleSetOSProfile {
+public final class VirtualMachineScaleSetOSProfile implements JsonSerializable<VirtualMachineScaleSetOSProfile> {
     /*
      * Specifies the computer name prefix for all of the virtual machines in the scale set. Computer name prefixes must
      * be 1 to 15 characters long.
      */
-    @JsonProperty(value = "computerNamePrefix")
     private String computerNamePrefix;
 
     /*
@@ -23,48 +28,43 @@ public final class VirtualMachineScaleSetOSProfile {
      * <br><br> **Disallowed values:** "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3",
      * "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet", "backup", "console", "david", "guest", "john",
      * "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3", "user4", "user5".
-     * <br><br> **Minimum-length (Linux):** 1  character <br><br> **Max-length (Linux):** 64 characters <br><br>
+     * <br><br> **Minimum-length (Linux):** 1 character <br><br> **Max-length (Linux):** 64 characters <br><br>
      * **Max-length (Windows):** 20 characters
      */
-    @JsonProperty(value = "adminUsername")
     private String adminUsername;
 
     /*
-     * Specifies the password of the administrator account. <br><br> **Minimum-length (Windows):** 8 characters
-     * <br><br> **Minimum-length (Linux):** 6 characters <br><br> **Max-length (Windows):** 123 characters <br><br>
-     * **Max-length (Linux):** 72 characters <br><br> **Complexity requirements:** 3 out of 4 conditions below need to
-     * be fulfilled <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character
-     * (Regex match [\W_]) <br><br> **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123",
-     * "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" <br><br> For resetting the
-     * password, see [How to reset the Remote Desktop service or its login password in a Windows
+     * Specifies the password of the administrator account. <br><br> **Minimum-length (Windows):** 8 characters <br><br>
+     * **Minimum-length (Linux):** 6 characters <br><br> **Max-length (Windows):** 123 characters <br><br> **Max-length
+     * (Linux):** 72 characters <br><br> **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled
+     * <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character (Regex match
+     * [\W_]) <br><br> **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word",
+     * "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" <br><br> For resetting the password, see [How
+     * to reset the Remote Desktop service or its login password in a Windows
      * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) <br><br> For resetting root
      * password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
      * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)
      */
-    @JsonProperty(value = "adminPassword")
     private String adminPassword;
 
     /*
      * Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that
-     * is saved as a file on the Virtual Machine. The maximum length of the binary array is 65535 bytes. <br><br> For
-     * using cloud-init for your VM, see [Using cloud-init to customize a Linux VM during
+     * is saved as a file on the Virtual Machine. The maximum length of the binary array is 65535 bytes. For using
+     * cloud-init for your VM, see [Using cloud-init to customize a Linux VM during
      * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init)
      */
-    @JsonProperty(value = "customData")
     private String customData;
 
     /*
      * Specifies Windows operating system settings on the virtual machine.
      */
-    @JsonProperty(value = "windowsConfiguration")
     private WindowsConfiguration windowsConfiguration;
 
     /*
-     * Specifies the Linux operating system settings on the virtual machine. <br><br>For a list of supported Linux
+     * Specifies the Linux operating system settings on the virtual machine. For a list of supported Linux
      * distributions, see [Linux on Azure-Endorsed
      * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
      */
-    @JsonProperty(value = "linuxConfiguration")
     private LinuxConfiguration linuxConfiguration;
 
     /*
@@ -74,24 +74,29 @@ public final class VirtualMachineScaleSetOSProfile {
      * virtual machine extension for
      * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      */
-    @JsonProperty(value = "secrets")
     private List<VaultSecretGroup> secrets;
 
     /*
-     * Specifies whether extension operations should be allowed on the virtual machine scale set. <br><br>This may only
-     * be set to False when no extensions are present on the virtual machine scale set.
+     * Specifies whether extension operations should be allowed on the virtual machine scale set. This may only be set
+     * to False when no extensions are present on the virtual machine scale set.
      */
-    @JsonProperty(value = "allowExtensionOperations")
     private Boolean allowExtensionOperations;
 
-    /** Creates an instance of VirtualMachineScaleSetOSProfile class. */
+    /*
+     * Optional property which must either be set to True or omitted.
+     */
+    private Boolean requireGuestProvisionSignal;
+
+    /**
+     * Creates an instance of VirtualMachineScaleSetOSProfile class.
+     */
     public VirtualMachineScaleSetOSProfile() {
     }
 
     /**
      * Get the computerNamePrefix property: Specifies the computer name prefix for all of the virtual machines in the
      * scale set. Computer name prefixes must be 1 to 15 characters long.
-     *
+     * 
      * @return the computerNamePrefix value.
      */
     public String computerNamePrefix() {
@@ -101,7 +106,7 @@ public final class VirtualMachineScaleSetOSProfile {
     /**
      * Set the computerNamePrefix property: Specifies the computer name prefix for all of the virtual machines in the
      * scale set. Computer name prefixes must be 1 to 15 characters long.
-     *
+     * 
      * @param computerNamePrefix the computerNamePrefix value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
@@ -118,7 +123,7 @@ public final class VirtualMachineScaleSetOSProfile {
      * "support_388945a0", "sys", "test2", "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length (Linux):** 1
      * character &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 64 characters &lt;br&gt;&lt;br&gt; **Max-length
      * (Windows):** 20 characters.
-     *
+     * 
      * @return the adminUsername value.
      */
     public String adminUsername() {
@@ -133,7 +138,7 @@ public final class VirtualMachineScaleSetOSProfile {
      * "support_388945a0", "sys", "test2", "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length (Linux):** 1
      * character &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 64 characters &lt;br&gt;&lt;br&gt; **Max-length
      * (Windows):** 20 characters.
-     *
+     * 
      * @param adminUsername the adminUsername value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
@@ -148,13 +153,14 @@ public final class VirtualMachineScaleSetOSProfile {
      * &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 123 characters &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 72
      * characters &lt;br&gt;&lt;br&gt; **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled
      * &lt;br&gt; Has lower characters &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special
-     * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd",
-     * "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" &lt;br&gt;&lt;br&gt;
-     * For resetting the password, see [How to reset the Remote Desktop service or its login password in a Windows
-     * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) &lt;br&gt;&lt;br&gt; For resetting
-     * root password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
+     * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc&#064;123", "P&#064;$$w0rd",
+     * "P&#064;ssw0rd", "P&#064;ssword123", "Pa$$word", "pass&#064;word1", "Password!", "Password1", "Password22",
+     * "iloveyou!" &lt;br&gt;&lt;br&gt; For resetting the password, see [How to reset the Remote Desktop service or its
+     * login password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
+     * &lt;br&gt;&lt;br&gt; For resetting root password, see [Manage users, SSH, and check or repair disks on Azure
+     * Linux VMs using the VMAccess
      * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
-     *
+     * 
      * @return the adminPassword value.
      */
     public String adminPassword() {
@@ -167,13 +173,14 @@ public final class VirtualMachineScaleSetOSProfile {
      * &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 123 characters &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 72
      * characters &lt;br&gt;&lt;br&gt; **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled
      * &lt;br&gt; Has lower characters &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special
-     * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd",
-     * "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" &lt;br&gt;&lt;br&gt;
-     * For resetting the password, see [How to reset the Remote Desktop service or its login password in a Windows
-     * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) &lt;br&gt;&lt;br&gt; For resetting
-     * root password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
+     * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc&#064;123", "P&#064;$$w0rd",
+     * "P&#064;ssw0rd", "P&#064;ssword123", "Pa$$word", "pass&#064;word1", "Password!", "Password1", "Password22",
+     * "iloveyou!" &lt;br&gt;&lt;br&gt; For resetting the password, see [How to reset the Remote Desktop service or its
+     * login password in a Windows VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
+     * &lt;br&gt;&lt;br&gt; For resetting root password, see [Manage users, SSH, and check or repair disks on Azure
+     * Linux VMs using the VMAccess
      * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
-     *
+     * 
      * @param adminPassword the adminPassword value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
@@ -185,9 +192,9 @@ public final class VirtualMachineScaleSetOSProfile {
     /**
      * Get the customData property: Specifies a base-64 encoded string of custom data. The base-64 encoded string is
      * decoded to a binary array that is saved as a file on the Virtual Machine. The maximum length of the binary array
-     * is 65535 bytes. &lt;br&gt;&lt;br&gt; For using cloud-init for your VM, see [Using cloud-init to customize a Linux
-     * VM during creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
-     *
+     * is 65535 bytes. For using cloud-init for your VM, see [Using cloud-init to customize a Linux VM during
+     * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
+     * 
      * @return the customData value.
      */
     public String customData() {
@@ -197,9 +204,9 @@ public final class VirtualMachineScaleSetOSProfile {
     /**
      * Set the customData property: Specifies a base-64 encoded string of custom data. The base-64 encoded string is
      * decoded to a binary array that is saved as a file on the Virtual Machine. The maximum length of the binary array
-     * is 65535 bytes. &lt;br&gt;&lt;br&gt; For using cloud-init for your VM, see [Using cloud-init to customize a Linux
-     * VM during creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
-     *
+     * is 65535 bytes. For using cloud-init for your VM, see [Using cloud-init to customize a Linux VM during
+     * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
+     * 
      * @param customData the customData value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
@@ -210,7 +217,7 @@ public final class VirtualMachineScaleSetOSProfile {
 
     /**
      * Get the windowsConfiguration property: Specifies Windows operating system settings on the virtual machine.
-     *
+     * 
      * @return the windowsConfiguration value.
      */
     public WindowsConfiguration windowsConfiguration() {
@@ -219,7 +226,7 @@ public final class VirtualMachineScaleSetOSProfile {
 
     /**
      * Set the windowsConfiguration property: Specifies Windows operating system settings on the virtual machine.
-     *
+     * 
      * @param windowsConfiguration the windowsConfiguration value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
@@ -229,10 +236,10 @@ public final class VirtualMachineScaleSetOSProfile {
     }
 
     /**
-     * Get the linuxConfiguration property: Specifies the Linux operating system settings on the virtual machine.
-     * &lt;br&gt;&lt;br&gt;For a list of supported Linux distributions, see [Linux on Azure-Endorsed
+     * Get the linuxConfiguration property: Specifies the Linux operating system settings on the virtual machine. For a
+     * list of supported Linux distributions, see [Linux on Azure-Endorsed
      * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
-     *
+     * 
      * @return the linuxConfiguration value.
      */
     public LinuxConfiguration linuxConfiguration() {
@@ -240,10 +247,10 @@ public final class VirtualMachineScaleSetOSProfile {
     }
 
     /**
-     * Set the linuxConfiguration property: Specifies the Linux operating system settings on the virtual machine.
-     * &lt;br&gt;&lt;br&gt;For a list of supported Linux distributions, see [Linux on Azure-Endorsed
+     * Set the linuxConfiguration property: Specifies the Linux operating system settings on the virtual machine. For a
+     * list of supported Linux distributions, see [Linux on Azure-Endorsed
      * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
-     *
+     * 
      * @param linuxConfiguration the linuxConfiguration value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
@@ -258,7 +265,7 @@ public final class VirtualMachineScaleSetOSProfile {
      * machine extension for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the
      * [Azure Key Vault virtual machine extension for
      * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
-     *
+     * 
      * @return the secrets value.
      */
     public List<VaultSecretGroup> secrets() {
@@ -271,7 +278,7 @@ public final class VirtualMachineScaleSetOSProfile {
      * machine extension for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the
      * [Azure Key Vault virtual machine extension for
      * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
-     *
+     * 
      * @param secrets the secrets value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
@@ -282,9 +289,9 @@ public final class VirtualMachineScaleSetOSProfile {
 
     /**
      * Get the allowExtensionOperations property: Specifies whether extension operations should be allowed on the
-     * virtual machine scale set. &lt;br&gt;&lt;br&gt;This may only be set to False when no extensions are present on
-     * the virtual machine scale set.
-     *
+     * virtual machine scale set. This may only be set to False when no extensions are present on the virtual machine
+     * scale set.
+     * 
      * @return the allowExtensionOperations value.
      */
     public Boolean allowExtensionOperations() {
@@ -293,9 +300,9 @@ public final class VirtualMachineScaleSetOSProfile {
 
     /**
      * Set the allowExtensionOperations property: Specifies whether extension operations should be allowed on the
-     * virtual machine scale set. &lt;br&gt;&lt;br&gt;This may only be set to False when no extensions are present on
-     * the virtual machine scale set.
-     *
+     * virtual machine scale set. This may only be set to False when no extensions are present on the virtual machine
+     * scale set.
+     * 
      * @param allowExtensionOperations the allowExtensionOperations value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
@@ -305,8 +312,28 @@ public final class VirtualMachineScaleSetOSProfile {
     }
 
     /**
+     * Get the requireGuestProvisionSignal property: Optional property which must either be set to True or omitted.
+     * 
+     * @return the requireGuestProvisionSignal value.
+     */
+    public Boolean requireGuestProvisionSignal() {
+        return this.requireGuestProvisionSignal;
+    }
+
+    /**
+     * Set the requireGuestProvisionSignal property: Optional property which must either be set to True or omitted.
+     * 
+     * @param requireGuestProvisionSignal the requireGuestProvisionSignal value to set.
+     * @return the VirtualMachineScaleSetOSProfile object itself.
+     */
+    public VirtualMachineScaleSetOSProfile withRequireGuestProvisionSignal(Boolean requireGuestProvisionSignal) {
+        this.requireGuestProvisionSignal = requireGuestProvisionSignal;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -319,5 +346,71 @@ public final class VirtualMachineScaleSetOSProfile {
         if (secrets() != null) {
             secrets().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("computerNamePrefix", this.computerNamePrefix);
+        jsonWriter.writeStringField("adminUsername", this.adminUsername);
+        jsonWriter.writeStringField("adminPassword", this.adminPassword);
+        jsonWriter.writeStringField("customData", this.customData);
+        jsonWriter.writeJsonField("windowsConfiguration", this.windowsConfiguration);
+        jsonWriter.writeJsonField("linuxConfiguration", this.linuxConfiguration);
+        jsonWriter.writeArrayField("secrets", this.secrets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("allowExtensionOperations", this.allowExtensionOperations);
+        jsonWriter.writeBooleanField("requireGuestProvisionSignal", this.requireGuestProvisionSignal);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetOSProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetOSProfile if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetOSProfile.
+     */
+    public static VirtualMachineScaleSetOSProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetOSProfile deserializedVirtualMachineScaleSetOSProfile
+                = new VirtualMachineScaleSetOSProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computerNamePrefix".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSProfile.computerNamePrefix = reader.getString();
+                } else if ("adminUsername".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSProfile.adminUsername = reader.getString();
+                } else if ("adminPassword".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSProfile.adminPassword = reader.getString();
+                } else if ("customData".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSProfile.customData = reader.getString();
+                } else if ("windowsConfiguration".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSProfile.windowsConfiguration
+                        = WindowsConfiguration.fromJson(reader);
+                } else if ("linuxConfiguration".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSProfile.linuxConfiguration
+                        = LinuxConfiguration.fromJson(reader);
+                } else if ("secrets".equals(fieldName)) {
+                    List<VaultSecretGroup> secrets = reader.readArray(reader1 -> VaultSecretGroup.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetOSProfile.secrets = secrets;
+                } else if ("allowExtensionOperations".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSProfile.allowExtensionOperations
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("requireGuestProvisionSignal".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSProfile.requireGuestProvisionSignal
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetOSProfile;
+        });
     }
 }

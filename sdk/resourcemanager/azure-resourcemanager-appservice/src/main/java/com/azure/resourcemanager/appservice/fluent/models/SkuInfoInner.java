@@ -5,34 +5,43 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.SkuCapacity;
 import com.azure.resourcemanager.appservice.models.SkuDescription;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** SKU discovery information. */
+/**
+ * SKU discovery information.
+ */
 @Fluent
-public final class SkuInfoInner {
+public final class SkuInfoInner implements JsonSerializable<SkuInfoInner> {
     /*
      * Resource type that this SKU applies to.
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
      * Name and tier of the SKU.
      */
-    @JsonProperty(value = "sku")
     private SkuDescription sku;
 
     /*
      * Min, max, and default scale values of the SKU.
      */
-    @JsonProperty(value = "capacity")
     private SkuCapacity capacity;
 
     /**
+     * Creates an instance of SkuInfoInner class.
+     */
+    public SkuInfoInner() {
+    }
+
+    /**
      * Get the resourceType property: Resource type that this SKU applies to.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -41,7 +50,7 @@ public final class SkuInfoInner {
 
     /**
      * Set the resourceType property: Resource type that this SKU applies to.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the SkuInfoInner object itself.
      */
@@ -52,7 +61,7 @@ public final class SkuInfoInner {
 
     /**
      * Get the sku property: Name and tier of the SKU.
-     *
+     * 
      * @return the sku value.
      */
     public SkuDescription sku() {
@@ -61,7 +70,7 @@ public final class SkuInfoInner {
 
     /**
      * Set the sku property: Name and tier of the SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the SkuInfoInner object itself.
      */
@@ -72,7 +81,7 @@ public final class SkuInfoInner {
 
     /**
      * Get the capacity property: Min, max, and default scale values of the SKU.
-     *
+     * 
      * @return the capacity value.
      */
     public SkuCapacity capacity() {
@@ -81,7 +90,7 @@ public final class SkuInfoInner {
 
     /**
      * Set the capacity property: Min, max, and default scale values of the SKU.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the SkuInfoInner object itself.
      */
@@ -92,7 +101,7 @@ public final class SkuInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -102,5 +111,47 @@ public final class SkuInfoInner {
         if (capacity() != null) {
             capacity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuInfoInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkuInfoInner.
+     */
+    public static SkuInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuInfoInner deserializedSkuInfoInner = new SkuInfoInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedSkuInfoInner.resourceType = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedSkuInfoInner.sku = SkuDescription.fromJson(reader);
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedSkuInfoInner.capacity = SkuCapacity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuInfoInner;
+        });
     }
 }

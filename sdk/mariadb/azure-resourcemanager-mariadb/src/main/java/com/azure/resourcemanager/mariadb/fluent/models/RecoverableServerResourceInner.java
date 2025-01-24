@@ -5,113 +5,189 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A recoverable server resource. */
-@JsonFlatten
+/**
+ * A recoverable server resource.
+ */
 @Immutable
-public class RecoverableServerResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoverableServerResourceInner.class);
+public final class RecoverableServerResourceInner extends ProxyResource {
+    /*
+     * Resource properties.
+     */
+    private RecoverableServerProperties innerProperties;
 
     /*
-     * The last available backup date time.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.lastAvailableBackupDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private String lastAvailableBackupDateTime;
+    private String type;
 
     /*
-     * The service level objective
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.serviceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceLevelObjective;
+    private String name;
 
     /*
-     * Edition of the performance tier.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.edition", access = JsonProperty.Access.WRITE_ONLY)
-    private String edition;
+    private String id;
 
-    /*
-     * vCore associated with the service level objective
+    /**
+     * Creates an instance of RecoverableServerResourceInner class.
      */
-    @JsonProperty(value = "properties.vCore", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer vCore;
+    public RecoverableServerResourceInner() {
+    }
 
-    /*
-     * Hardware generation associated with the service level objective
+    /**
+     * Get the innerProperties property: Resource properties.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.hardwareGeneration", access = JsonProperty.Access.WRITE_ONLY)
-    private String hardwareGeneration;
+    private RecoverableServerProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The MariaDB version
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.version", access = JsonProperty.Access.WRITE_ONLY)
-    private String version;
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the lastAvailableBackupDateTime property: The last available backup date time.
-     *
+     * 
      * @return the lastAvailableBackupDateTime value.
      */
     public String lastAvailableBackupDateTime() {
-        return this.lastAvailableBackupDateTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastAvailableBackupDateTime();
     }
 
     /**
      * Get the serviceLevelObjective property: The service level objective.
-     *
+     * 
      * @return the serviceLevelObjective value.
      */
     public String serviceLevelObjective() {
-        return this.serviceLevelObjective;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceLevelObjective();
     }
 
     /**
      * Get the edition property: Edition of the performance tier.
-     *
+     * 
      * @return the edition value.
      */
     public String edition() {
-        return this.edition;
+        return this.innerProperties() == null ? null : this.innerProperties().edition();
     }
 
     /**
      * Get the vCore property: vCore associated with the service level objective.
-     *
+     * 
      * @return the vCore value.
      */
     public Integer vCore() {
-        return this.vCore;
+        return this.innerProperties() == null ? null : this.innerProperties().vCore();
     }
 
     /**
      * Get the hardwareGeneration property: Hardware generation associated with the service level objective.
-     *
+     * 
      * @return the hardwareGeneration value.
      */
     public String hardwareGeneration() {
-        return this.hardwareGeneration;
+        return this.innerProperties() == null ? null : this.innerProperties().hardwareGeneration();
     }
 
     /**
      * Get the version property: The MariaDB version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
-        return this.version;
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoverableServerResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoverableServerResourceInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecoverableServerResourceInner.
+     */
+    public static RecoverableServerResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoverableServerResourceInner deserializedRecoverableServerResourceInner
+                = new RecoverableServerResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRecoverableServerResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRecoverableServerResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRecoverableServerResourceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRecoverableServerResourceInner.innerProperties
+                        = RecoverableServerProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoverableServerResourceInner;
+        });
     }
 }

@@ -7,40 +7,54 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.OfficeTrafficCategory;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** VirtualWAN Resource. */
+/**
+ * VirtualWAN Resource.
+ */
 @Fluent
 public final class VirtualWanInner extends Resource {
     /*
      * Properties of the virtual WAN.
      */
-    @JsonProperty(value = "properties")
     private VirtualWanProperties innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of VirtualWanInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /**
+     * Creates an instance of VirtualWanInner class.
+     */
     public VirtualWanInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the virtual WAN.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualWanProperties innerProperties() {
@@ -49,7 +63,7 @@ public final class VirtualWanInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -58,7 +72,7 @@ public final class VirtualWanInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -67,7 +81,7 @@ public final class VirtualWanInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the VirtualWanInner object itself.
      */
@@ -76,14 +90,38 @@ public final class VirtualWanInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualWanInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualWanInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -92,7 +130,7 @@ public final class VirtualWanInner extends Resource {
 
     /**
      * Get the disableVpnEncryption property: Vpn encryption to be disabled or not.
-     *
+     * 
      * @return the disableVpnEncryption value.
      */
     public Boolean disableVpnEncryption() {
@@ -101,7 +139,7 @@ public final class VirtualWanInner extends Resource {
 
     /**
      * Set the disableVpnEncryption property: Vpn encryption to be disabled or not.
-     *
+     * 
      * @param disableVpnEncryption the disableVpnEncryption value to set.
      * @return the VirtualWanInner object itself.
      */
@@ -115,7 +153,7 @@ public final class VirtualWanInner extends Resource {
 
     /**
      * Get the virtualHubs property: List of VirtualHubs in the VirtualWAN.
-     *
+     * 
      * @return the virtualHubs value.
      */
     public List<SubResource> virtualHubs() {
@@ -124,7 +162,7 @@ public final class VirtualWanInner extends Resource {
 
     /**
      * Get the vpnSites property: List of VpnSites in the VirtualWAN.
-     *
+     * 
      * @return the vpnSites value.
      */
     public List<SubResource> vpnSites() {
@@ -133,7 +171,7 @@ public final class VirtualWanInner extends Resource {
 
     /**
      * Get the allowBranchToBranchTraffic property: True if branch to branch traffic is allowed.
-     *
+     * 
      * @return the allowBranchToBranchTraffic value.
      */
     public Boolean allowBranchToBranchTraffic() {
@@ -142,7 +180,7 @@ public final class VirtualWanInner extends Resource {
 
     /**
      * Set the allowBranchToBranchTraffic property: True if branch to branch traffic is allowed.
-     *
+     * 
      * @param allowBranchToBranchTraffic the allowBranchToBranchTraffic value to set.
      * @return the VirtualWanInner object itself.
      */
@@ -156,7 +194,7 @@ public final class VirtualWanInner extends Resource {
 
     /**
      * Get the allowVnetToVnetTraffic property: True if Vnet to Vnet traffic is allowed.
-     *
+     * 
      * @return the allowVnetToVnetTraffic value.
      */
     public Boolean allowVnetToVnetTraffic() {
@@ -165,7 +203,7 @@ public final class VirtualWanInner extends Resource {
 
     /**
      * Set the allowVnetToVnetTraffic property: True if Vnet to Vnet traffic is allowed.
-     *
+     * 
      * @param allowVnetToVnetTraffic the allowVnetToVnetTraffic value to set.
      * @return the VirtualWanInner object itself.
      */
@@ -179,7 +217,7 @@ public final class VirtualWanInner extends Resource {
 
     /**
      * Get the office365LocalBreakoutCategory property: The office local breakout category.
-     *
+     * 
      * @return the office365LocalBreakoutCategory value.
      */
     public OfficeTrafficCategory office365LocalBreakoutCategory() {
@@ -188,7 +226,7 @@ public final class VirtualWanInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual WAN resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -197,7 +235,7 @@ public final class VirtualWanInner extends Resource {
 
     /**
      * Get the type property: The type of the VirtualWAN.
-     *
+     * 
      * @return the type value.
      */
     public String typePropertiesType() {
@@ -206,7 +244,7 @@ public final class VirtualWanInner extends Resource {
 
     /**
      * Set the type property: The type of the VirtualWAN.
-     *
+     * 
      * @param type the type value to set.
      * @return the VirtualWanInner object itself.
      */
@@ -220,12 +258,65 @@ public final class VirtualWanInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualWanInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualWanInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualWanInner.
+     */
+    public static VirtualWanInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualWanInner deserializedVirtualWanInner = new VirtualWanInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualWanInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualWanInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualWanInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualWanInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualWanInner.innerProperties = VirtualWanProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVirtualWanInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedVirtualWanInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualWanInner;
+        });
     }
 }

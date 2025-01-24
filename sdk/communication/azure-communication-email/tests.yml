@@ -1,7 +1,9 @@
 trigger: none
 
-stages:
-    - template: /sdk/communication/communication-tests-template.yml
-      parameters:
-          PackageName: azure-communication-email
-          SafeName: azurecommunicationemail
+extends:
+  template: /sdk/communication/communication-tests-template.yml
+  parameters:
+      PackageName: azure-communication-email
+      SafeName: azurecommunicationemail
+      TestResourceDirectories:
+        - communication/azure-communication-email/

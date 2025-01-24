@@ -2,6 +2,10 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "tenantId": {
+      "defaultValue": "[subscription().tenantId]",
+      "type": "string"
+    },
     "testApplicationOid": {
       "type": "String"
     },
@@ -23,7 +27,7 @@
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
-      "apiVersion": "2019-06-01",
+      "apiVersion": "2022-05-01",
       "name": "[variables('storageAccountsName')]",
       "location": "[variables('location')]",
       "sku": {
@@ -52,7 +56,8 @@
           },
           "keySource": "Microsoft.Storage"
         },
-        "accessTier": "Hot"
+        "accessTier": "Hot",
+        "minimumTlsVersion": "TLS1_2"
       }
     },
     {
@@ -256,6 +261,10 @@
     }
   ],
   "outputs": {
+    "AZURE_SPRING_TENANT_ID": {
+      "type": "string",
+      "value": "[parameters('tenantId')]"
+    },
     "AZURE_STORAGE_ACCOUNT_NAME": {
       "type": "string",
       "value": "[variables('storageAccountsName')]"

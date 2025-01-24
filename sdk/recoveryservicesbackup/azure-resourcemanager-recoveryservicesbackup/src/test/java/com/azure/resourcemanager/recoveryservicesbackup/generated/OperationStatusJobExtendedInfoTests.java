@@ -7,22 +7,20 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.OperationStatusJobExtendedInfo;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationStatusJobExtendedInfoTests {
-    @Test
-    public void testDeserialize() {
-        OperationStatusJobExtendedInfo model =
-            BinaryData
-                .fromString("{\"objectType\":\"OperationStatusJobExtendedInfo\",\"jobId\":\"afbwqroohtuovmao\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OperationStatusJobExtendedInfo model
+            = BinaryData.fromString("{\"objectType\":\"OperationStatusJobExtendedInfo\",\"jobId\":\"yvqkxr\"}")
                 .toObject(OperationStatusJobExtendedInfo.class);
-        Assertions.assertEquals("afbwqroohtuovmao", model.jobId());
+        Assertions.assertEquals("yvqkxr", model.jobId());
     }
 
-    @Test
-    public void testSerialize() {
-        OperationStatusJobExtendedInfo model = new OperationStatusJobExtendedInfo().withJobId("afbwqroohtuovmao");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OperationStatusJobExtendedInfo model = new OperationStatusJobExtendedInfo().withJobId("yvqkxr");
         model = BinaryData.fromObject(model).toObject(OperationStatusJobExtendedInfo.class);
-        Assertions.assertEquals("afbwqroohtuovmao", model.jobId());
+        Assertions.assertEquals("yvqkxr", model.jobId());
     }
 }

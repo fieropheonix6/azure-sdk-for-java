@@ -5,26 +5,44 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Parameters for Reimaging Virtual Machine. NOTE: Virtual Machine OS disk will always be reimaged. */
+/**
+ * Parameters for Reimaging Virtual Machine. NOTE: Virtual Machine OS disk will always be reimaged.
+ */
 @Fluent
-public class VirtualMachineReimageParameters {
+public class VirtualMachineReimageParameters implements JsonSerializable<VirtualMachineReimageParameters> {
     /*
      * Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage parameter is only
      * supported for VM/VMSS with Ephemeral OS disk.
      */
-    @JsonProperty(value = "tempDisk")
     private Boolean tempDisk;
 
-    /** Creates an instance of VirtualMachineReimageParameters class. */
+    /*
+     * Specifies in decimal number, the version the OS disk should be reimaged to. If exact version is not provided, the
+     * OS disk is reimaged to the existing version of OS Disk.
+     */
+    private String exactVersion;
+
+    /*
+     * Specifies information required for reimaging the non-ephemeral OS disk.
+     */
+    private OSProfileProvisioningData osProfile;
+
+    /**
+     * Creates an instance of VirtualMachineReimageParameters class.
+     */
     public VirtualMachineReimageParameters() {
     }
 
     /**
      * Get the tempDisk property: Specifies whether to reimage temp disk. Default value: false. Note: This temp disk
      * reimage parameter is only supported for VM/VMSS with Ephemeral OS disk.
-     *
+     * 
      * @return the tempDisk value.
      */
     public Boolean tempDisk() {
@@ -34,7 +52,7 @@ public class VirtualMachineReimageParameters {
     /**
      * Set the tempDisk property: Specifies whether to reimage temp disk. Default value: false. Note: This temp disk
      * reimage parameter is only supported for VM/VMSS with Ephemeral OS disk.
-     *
+     * 
      * @param tempDisk the tempDisk value to set.
      * @return the VirtualMachineReimageParameters object itself.
      */
@@ -44,10 +62,98 @@ public class VirtualMachineReimageParameters {
     }
 
     /**
+     * Get the exactVersion property: Specifies in decimal number, the version the OS disk should be reimaged to. If
+     * exact version is not provided, the OS disk is reimaged to the existing version of OS Disk.
+     * 
+     * @return the exactVersion value.
+     */
+    public String exactVersion() {
+        return this.exactVersion;
+    }
+
+    /**
+     * Set the exactVersion property: Specifies in decimal number, the version the OS disk should be reimaged to. If
+     * exact version is not provided, the OS disk is reimaged to the existing version of OS Disk.
+     * 
+     * @param exactVersion the exactVersion value to set.
+     * @return the VirtualMachineReimageParameters object itself.
+     */
+    public VirtualMachineReimageParameters withExactVersion(String exactVersion) {
+        this.exactVersion = exactVersion;
+        return this;
+    }
+
+    /**
+     * Get the osProfile property: Specifies information required for reimaging the non-ephemeral OS disk.
+     * 
+     * @return the osProfile value.
+     */
+    public OSProfileProvisioningData osProfile() {
+        return this.osProfile;
+    }
+
+    /**
+     * Set the osProfile property: Specifies information required for reimaging the non-ephemeral OS disk.
+     * 
+     * @param osProfile the osProfile value to set.
+     * @return the VirtualMachineReimageParameters object itself.
+     */
+    public VirtualMachineReimageParameters withOsProfile(OSProfileProvisioningData osProfile) {
+        this.osProfile = osProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (osProfile() != null) {
+            osProfile().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("tempDisk", this.tempDisk);
+        jsonWriter.writeStringField("exactVersion", this.exactVersion);
+        jsonWriter.writeJsonField("osProfile", this.osProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineReimageParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineReimageParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineReimageParameters.
+     */
+    public static VirtualMachineReimageParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineReimageParameters deserializedVirtualMachineReimageParameters
+                = new VirtualMachineReimageParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tempDisk".equals(fieldName)) {
+                    deserializedVirtualMachineReimageParameters.tempDisk = reader.getNullable(JsonReader::getBoolean);
+                } else if ("exactVersion".equals(fieldName)) {
+                    deserializedVirtualMachineReimageParameters.exactVersion = reader.getString();
+                } else if ("osProfile".equals(fieldName)) {
+                    deserializedVirtualMachineReimageParameters.osProfile = OSProfileProvisioningData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineReimageParameters;
+        });
     }
 }

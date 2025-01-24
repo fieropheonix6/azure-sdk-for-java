@@ -5,9 +5,10 @@
 package com.azure.resourcemanager.frontdoor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.models.CustomRuleList;
 import com.azure.resourcemanager.frontdoor.models.FrontendEndpointLink;
 import com.azure.resourcemanager.frontdoor.models.ManagedRuleSetList;
@@ -16,85 +17,63 @@ import com.azure.resourcemanager.frontdoor.models.PolicySettings;
 import com.azure.resourcemanager.frontdoor.models.RoutingRuleLink;
 import com.azure.resourcemanager.frontdoor.models.SecurityPolicyLink;
 import com.azure.resourcemanager.frontdoor.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Defines web application firewall policy. */
-@JsonFlatten
+/**
+ * Defines web application firewall policy.
+ */
 @Fluent
-public class WebApplicationFirewallPolicyInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebApplicationFirewallPolicyInner.class);
+public final class WebApplicationFirewallPolicyInner extends Resource {
+    /*
+     * Properties of the web application firewall policy.
+     */
+    private WebApplicationFirewallPolicyProperties innerProperties;
 
     /*
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * Gets a unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
-     * The pricing tier of web application firewall policy. Defaults to
-     * Classic_AzureFrontDoor if not specified.
+     * The pricing tier of web application firewall policy. Defaults to Classic_AzureFrontDoor if not specified.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
-     * Describes settings for the policy.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.policySettings")
-    private PolicySettings policySettings;
+    private String type;
 
     /*
-     * Describes custom rules inside the policy.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.customRules")
-    private CustomRuleList customRules;
+    private String name;
 
     /*
-     * Describes managed rules inside the policy.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.managedRules")
-    private ManagedRuleSetList managedRules;
+    private String id;
 
-    /*
-     * Describes Frontend Endpoints associated with this Web Application
-     * Firewall policy.
+    /**
+     * Creates an instance of WebApplicationFirewallPolicyInner class.
      */
-    @JsonProperty(value = "properties.frontendEndpointLinks", access = JsonProperty.Access.WRITE_ONLY)
-    private List<FrontendEndpointLink> frontendEndpointLinks;
+    public WebApplicationFirewallPolicyInner() {
+    }
 
-    /*
-     * Describes Routing Rules associated with this Web Application Firewall
-     * policy.
+    /**
+     * Get the innerProperties property: Properties of the web application firewall policy.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.routingRuleLinks", access = JsonProperty.Access.WRITE_ONLY)
-    private List<RoutingRuleLink> routingRuleLinks;
-
-    /*
-     * Describes Security Policy associated with this Web Application Firewall
-     * policy.
-     */
-    @JsonProperty(value = "properties.securityPolicyLinks", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SecurityPolicyLink> securityPolicyLinks;
-
-    /*
-     * Provisioning state of the policy.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * Resource status of the policy.
-     */
-    @JsonProperty(value = "properties.resourceState", access = JsonProperty.Access.WRITE_ONLY)
-    private PolicyResourceState resourceState;
+    private WebApplicationFirewallPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -103,7 +82,7 @@ public class WebApplicationFirewallPolicyInner extends Resource {
 
     /**
      * Set the etag property: Gets a unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the WebApplicationFirewallPolicyInner object itself.
      */
@@ -115,7 +94,7 @@ public class WebApplicationFirewallPolicyInner extends Resource {
     /**
      * Get the sku property: The pricing tier of web application firewall policy. Defaults to Classic_AzureFrontDoor if
      * not specified.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -125,7 +104,7 @@ public class WebApplicationFirewallPolicyInner extends Resource {
     /**
      * Set the sku property: The pricing tier of web application firewall policy. Defaults to Classic_AzureFrontDoor if
      * not specified.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the WebApplicationFirewallPolicyInner object itself.
      */
@@ -135,120 +114,47 @@ public class WebApplicationFirewallPolicyInner extends Resource {
     }
 
     /**
-     * Get the policySettings property: Describes settings for the policy.
-     *
-     * @return the policySettings value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public PolicySettings policySettings() {
-        return this.policySettings;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Set the policySettings property: Describes settings for the policy.
-     *
-     * @param policySettings the policySettings value to set.
-     * @return the WebApplicationFirewallPolicyInner object itself.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public WebApplicationFirewallPolicyInner withPolicySettings(PolicySettings policySettings) {
-        this.policySettings = policySettings;
-        return this;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the customRules property: Describes custom rules inside the policy.
-     *
-     * @return the customRules value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public CustomRuleList customRules() {
-        return this.customRules;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Set the customRules property: Describes custom rules inside the policy.
-     *
-     * @param customRules the customRules value to set.
-     * @return the WebApplicationFirewallPolicyInner object itself.
+     * {@inheritDoc}
      */
-    public WebApplicationFirewallPolicyInner withCustomRules(CustomRuleList customRules) {
-        this.customRules = customRules;
-        return this;
-    }
-
-    /**
-     * Get the managedRules property: Describes managed rules inside the policy.
-     *
-     * @return the managedRules value.
-     */
-    public ManagedRuleSetList managedRules() {
-        return this.managedRules;
-    }
-
-    /**
-     * Set the managedRules property: Describes managed rules inside the policy.
-     *
-     * @param managedRules the managedRules value to set.
-     * @return the WebApplicationFirewallPolicyInner object itself.
-     */
-    public WebApplicationFirewallPolicyInner withManagedRules(ManagedRuleSetList managedRules) {
-        this.managedRules = managedRules;
-        return this;
-    }
-
-    /**
-     * Get the frontendEndpointLinks property: Describes Frontend Endpoints associated with this Web Application
-     * Firewall policy.
-     *
-     * @return the frontendEndpointLinks value.
-     */
-    public List<FrontendEndpointLink> frontendEndpointLinks() {
-        return this.frontendEndpointLinks;
-    }
-
-    /**
-     * Get the routingRuleLinks property: Describes Routing Rules associated with this Web Application Firewall policy.
-     *
-     * @return the routingRuleLinks value.
-     */
-    public List<RoutingRuleLink> routingRuleLinks() {
-        return this.routingRuleLinks;
-    }
-
-    /**
-     * Get the securityPolicyLinks property: Describes Security Policy associated with this Web Application Firewall
-     * policy.
-     *
-     * @return the securityPolicyLinks value.
-     */
-    public List<SecurityPolicyLink> securityPolicyLinks() {
-        return this.securityPolicyLinks;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the policy.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the resourceState property: Resource status of the policy.
-     *
-     * @return the resourceState value.
-     */
-    public PolicyResourceState resourceState() {
-        return this.resourceState;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public WebApplicationFirewallPolicyInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebApplicationFirewallPolicyInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -256,31 +162,190 @@ public class WebApplicationFirewallPolicyInner extends Resource {
     }
 
     /**
+     * Get the policySettings property: Describes settings for the policy.
+     * 
+     * @return the policySettings value.
+     */
+    public PolicySettings policySettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().policySettings();
+    }
+
+    /**
+     * Set the policySettings property: Describes settings for the policy.
+     * 
+     * @param policySettings the policySettings value to set.
+     * @return the WebApplicationFirewallPolicyInner object itself.
+     */
+    public WebApplicationFirewallPolicyInner withPolicySettings(PolicySettings policySettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebApplicationFirewallPolicyProperties();
+        }
+        this.innerProperties().withPolicySettings(policySettings);
+        return this;
+    }
+
+    /**
+     * Get the customRules property: Describes custom rules inside the policy.
+     * 
+     * @return the customRules value.
+     */
+    public CustomRuleList customRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().customRules();
+    }
+
+    /**
+     * Set the customRules property: Describes custom rules inside the policy.
+     * 
+     * @param customRules the customRules value to set.
+     * @return the WebApplicationFirewallPolicyInner object itself.
+     */
+    public WebApplicationFirewallPolicyInner withCustomRules(CustomRuleList customRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebApplicationFirewallPolicyProperties();
+        }
+        this.innerProperties().withCustomRules(customRules);
+        return this;
+    }
+
+    /**
+     * Get the managedRules property: Describes managed rules inside the policy.
+     * 
+     * @return the managedRules value.
+     */
+    public ManagedRuleSetList managedRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedRules();
+    }
+
+    /**
+     * Set the managedRules property: Describes managed rules inside the policy.
+     * 
+     * @param managedRules the managedRules value to set.
+     * @return the WebApplicationFirewallPolicyInner object itself.
+     */
+    public WebApplicationFirewallPolicyInner withManagedRules(ManagedRuleSetList managedRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebApplicationFirewallPolicyProperties();
+        }
+        this.innerProperties().withManagedRules(managedRules);
+        return this;
+    }
+
+    /**
+     * Get the frontendEndpointLinks property: Describes Frontend Endpoints associated with this Web Application
+     * Firewall policy.
+     * 
+     * @return the frontendEndpointLinks value.
+     */
+    public List<FrontendEndpointLink> frontendEndpointLinks() {
+        return this.innerProperties() == null ? null : this.innerProperties().frontendEndpointLinks();
+    }
+
+    /**
+     * Get the routingRuleLinks property: Describes Routing Rules associated with this Web Application Firewall policy.
+     * 
+     * @return the routingRuleLinks value.
+     */
+    public List<RoutingRuleLink> routingRuleLinks() {
+        return this.innerProperties() == null ? null : this.innerProperties().routingRuleLinks();
+    }
+
+    /**
+     * Get the securityPolicyLinks property: Describes Security Policy associated with this Web Application Firewall
+     * policy.
+     * 
+     * @return the securityPolicyLinks value.
+     */
+    public List<SecurityPolicyLink> securityPolicyLinks() {
+        return this.innerProperties() == null ? null : this.innerProperties().securityPolicyLinks();
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the policy.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the resourceState property: Resource status of the policy.
+     * 
+     * @return the resourceState value.
+     */
+    public PolicyResourceState resourceState() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceState();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (sku() != null) {
             sku().validate();
         }
-        if (policySettings() != null) {
-            policySettings().validate();
-        }
-        if (customRules() != null) {
-            customRules().validate();
-        }
-        if (managedRules() != null) {
-            managedRules().validate();
-        }
-        if (frontendEndpointLinks() != null) {
-            frontendEndpointLinks().forEach(e -> e.validate());
-        }
-        if (routingRuleLinks() != null) {
-            routingRuleLinks().forEach(e -> e.validate());
-        }
-        if (securityPolicyLinks() != null) {
-            securityPolicyLinks().forEach(e -> e.validate());
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebApplicationFirewallPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebApplicationFirewallPolicyInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebApplicationFirewallPolicyInner.
+     */
+    public static WebApplicationFirewallPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebApplicationFirewallPolicyInner deserializedWebApplicationFirewallPolicyInner
+                = new WebApplicationFirewallPolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWebApplicationFirewallPolicyInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.innerProperties
+                        = WebApplicationFirewallPolicyProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.etag = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.sku = Sku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebApplicationFirewallPolicyInner;
+        });
     }
 }

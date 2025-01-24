@@ -7,33 +7,48 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.PrivateEndpointConnectionListResultInner;
+import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpoint;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointConnectionProperties;
+import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointServiceConnectionStatus;
+import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkServiceConnectionState;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointConnectionListResultInnerTests {
-    @Test
-    public void testDeserialize() {
-        PrivateEndpointConnectionListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"groupIds\":[]},\"location\":\"xhniskxfbkpycgk\",\"etag\":\"ndnhj\",\"id\":\"auwhvylwzbtdhx\",\"name\":\"jznb\",\"type\":\"pow\"}]}")
-                .toObject(PrivateEndpointConnectionListResultInner.class);
-        Assertions.assertEquals("xhniskxfbkpycgk", model.value().get(0).location());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateEndpointConnectionListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"y\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"nxxmueedndrdv\",\"actionsRequired\":\"kwqqtchealmf\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"ygdvwv\",\"piohgwxrtfu\",\"xepxgyqagvrvmn\"]},\"location\":\"kghimdblxgwimfnj\",\"etag\":\"j\",\"id\":\"wmszkk\",\"name\":\"oqreyfkzikfjawn\",\"type\":\"a\"}]}")
+            .toObject(PrivateEndpointConnectionListResultInner.class);
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+            model.value().get(0).properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("nxxmueedndrdv",
+            model.value().get(0).properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("kwqqtchealmf",
+            model.value().get(0).properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("ygdvwv", model.value().get(0).properties().groupIds().get(0));
+        Assertions.assertEquals("kghimdblxgwimfnj", model.value().get(0).location());
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateEndpointConnectionListResultInner model =
-            new PrivateEndpointConnectionListResultInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PrivateEndpointConnectionInner()
-                                .withProperties(new PrivateEndpointConnectionProperties().withGroupIds(Arrays.asList()))
-                                .withLocation("xhniskxfbkpycgk")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateEndpointConnectionListResultInner model = new PrivateEndpointConnectionListResultInner()
+            .withValue(Arrays.asList(new PrivateEndpointConnectionInner()
+                .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                        .withDescription("nxxmueedndrdv")
+                        .withActionsRequired("kwqqtchealmf"))
+                    .withGroupIds(Arrays.asList("ygdvwv", "piohgwxrtfu", "xepxgyqagvrvmn")))
+                .withLocation("kghimdblxgwimfnj")));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionListResultInner.class);
-        Assertions.assertEquals("xhniskxfbkpycgk", model.value().get(0).location());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+            model.value().get(0).properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("nxxmueedndrdv",
+            model.value().get(0).properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("kwqqtchealmf",
+            model.value().get(0).properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("ygdvwv", model.value().get(0).properties().groupIds().get(0));
+        Assertions.assertEquals("kghimdblxgwimfnj", model.value().get(0).location());
     }
 }

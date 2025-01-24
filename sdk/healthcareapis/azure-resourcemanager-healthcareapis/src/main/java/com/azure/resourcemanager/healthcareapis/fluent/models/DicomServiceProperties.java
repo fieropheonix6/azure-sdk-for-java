@@ -5,51 +5,85 @@
 package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.healthcareapis.models.CorsConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.DicomServiceAuthenticationConfiguration;
+import com.azure.resourcemanager.healthcareapis.models.Encryption;
 import com.azure.resourcemanager.healthcareapis.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.healthcareapis.models.ProvisioningState;
 import com.azure.resourcemanager.healthcareapis.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.healthcareapis.models.ServiceEventState;
+import com.azure.resourcemanager.healthcareapis.models.StorageConfiguration;
+import java.io.IOException;
 import java.util.List;
 
-/** Dicom Service properties. */
+/**
+ * Dicom Service properties.
+ */
 @Fluent
-public final class DicomServiceProperties {
+public final class DicomServiceProperties implements JsonSerializable<DicomServiceProperties> {
     /*
      * The provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Dicom Service authentication configuration.
      */
-    @JsonProperty(value = "authenticationConfiguration")
     private DicomServiceAuthenticationConfiguration authenticationConfiguration;
+
+    /*
+     * Dicom Service Cors configuration.
+     */
+    private CorsConfiguration corsConfiguration;
 
     /*
      * The url of the Dicom Services.
      */
-    @JsonProperty(value = "serviceUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceUrl;
 
     /*
-     * The list of private endpoint connections that are set up for this
-     * resource.
+     * The list of private endpoint connections that are set up for this resource.
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnection> privateEndpointConnections;
 
     /*
-     * Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
+     * Control permission for data plane traffic coming from public networks while private endpoint is enabled.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * DICOM Service event support status.
+     */
+    private ServiceEventState eventState;
+
+    /*
+     * The encryption settings of the DICOM service
+     */
+    private Encryption encryption;
+
+    /*
+     * The configuration of external storage account
+     */
+    private StorageConfiguration storageConfiguration;
+
+    /*
+     * If data partitions is enabled or not.
+     */
+    private Boolean enableDataPartitions;
+
+    /**
+     * Creates an instance of DicomServiceProperties class.
+     */
+    public DicomServiceProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -58,7 +92,7 @@ public final class DicomServiceProperties {
 
     /**
      * Get the authenticationConfiguration property: Dicom Service authentication configuration.
-     *
+     * 
      * @return the authenticationConfiguration value.
      */
     public DicomServiceAuthenticationConfiguration authenticationConfiguration() {
@@ -67,19 +101,39 @@ public final class DicomServiceProperties {
 
     /**
      * Set the authenticationConfiguration property: Dicom Service authentication configuration.
-     *
+     * 
      * @param authenticationConfiguration the authenticationConfiguration value to set.
      * @return the DicomServiceProperties object itself.
      */
-    public DicomServiceProperties withAuthenticationConfiguration(
-        DicomServiceAuthenticationConfiguration authenticationConfiguration) {
+    public DicomServiceProperties
+        withAuthenticationConfiguration(DicomServiceAuthenticationConfiguration authenticationConfiguration) {
         this.authenticationConfiguration = authenticationConfiguration;
         return this;
     }
 
     /**
+     * Get the corsConfiguration property: Dicom Service Cors configuration.
+     * 
+     * @return the corsConfiguration value.
+     */
+    public CorsConfiguration corsConfiguration() {
+        return this.corsConfiguration;
+    }
+
+    /**
+     * Set the corsConfiguration property: Dicom Service Cors configuration.
+     * 
+     * @param corsConfiguration the corsConfiguration value to set.
+     * @return the DicomServiceProperties object itself.
+     */
+    public DicomServiceProperties withCorsConfiguration(CorsConfiguration corsConfiguration) {
+        this.corsConfiguration = corsConfiguration;
+        return this;
+    }
+
+    /**
      * Get the serviceUrl property: The url of the Dicom Services.
-     *
+     * 
      * @return the serviceUrl value.
      */
     public String serviceUrl() {
@@ -89,7 +143,7 @@ public final class DicomServiceProperties {
     /**
      * Get the privateEndpointConnections property: The list of private endpoint connections that are set up for this
      * resource.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnection> privateEndpointConnections() {
@@ -99,7 +153,7 @@ public final class DicomServiceProperties {
     /**
      * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
      * private endpoint is enabled.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -109,7 +163,7 @@ public final class DicomServiceProperties {
     /**
      * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
      * private endpoint is enabled.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the DicomServiceProperties object itself.
      */
@@ -119,16 +173,160 @@ public final class DicomServiceProperties {
     }
 
     /**
+     * Get the eventState property: DICOM Service event support status.
+     * 
+     * @return the eventState value.
+     */
+    public ServiceEventState eventState() {
+        return this.eventState;
+    }
+
+    /**
+     * Get the encryption property: The encryption settings of the DICOM service.
+     * 
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: The encryption settings of the DICOM service.
+     * 
+     * @param encryption the encryption value to set.
+     * @return the DicomServiceProperties object itself.
+     */
+    public DicomServiceProperties withEncryption(Encryption encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
+     * Get the storageConfiguration property: The configuration of external storage account.
+     * 
+     * @return the storageConfiguration value.
+     */
+    public StorageConfiguration storageConfiguration() {
+        return this.storageConfiguration;
+    }
+
+    /**
+     * Set the storageConfiguration property: The configuration of external storage account.
+     * 
+     * @param storageConfiguration the storageConfiguration value to set.
+     * @return the DicomServiceProperties object itself.
+     */
+    public DicomServiceProperties withStorageConfiguration(StorageConfiguration storageConfiguration) {
+        this.storageConfiguration = storageConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the enableDataPartitions property: If data partitions is enabled or not.
+     * 
+     * @return the enableDataPartitions value.
+     */
+    public Boolean enableDataPartitions() {
+        return this.enableDataPartitions;
+    }
+
+    /**
+     * Set the enableDataPartitions property: If data partitions is enabled or not.
+     * 
+     * @param enableDataPartitions the enableDataPartitions value to set.
+     * @return the DicomServiceProperties object itself.
+     */
+    public DicomServiceProperties withEnableDataPartitions(Boolean enableDataPartitions) {
+        this.enableDataPartitions = enableDataPartitions;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (authenticationConfiguration() != null) {
             authenticationConfiguration().validate();
         }
+        if (corsConfiguration() != null) {
+            corsConfiguration().validate();
+        }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+        if (encryption() != null) {
+            encryption().validate();
+        }
+        if (storageConfiguration() != null) {
+            storageConfiguration().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("authenticationConfiguration", this.authenticationConfiguration);
+        jsonWriter.writeJsonField("corsConfiguration", this.corsConfiguration);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeJsonField("storageConfiguration", this.storageConfiguration);
+        jsonWriter.writeBooleanField("enableDataPartitions", this.enableDataPartitions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DicomServiceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DicomServiceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DicomServiceProperties.
+     */
+    public static DicomServiceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DicomServiceProperties deserializedDicomServiceProperties = new DicomServiceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedDicomServiceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("authenticationConfiguration".equals(fieldName)) {
+                    deserializedDicomServiceProperties.authenticationConfiguration
+                        = DicomServiceAuthenticationConfiguration.fromJson(reader);
+                } else if ("corsConfiguration".equals(fieldName)) {
+                    deserializedDicomServiceProperties.corsConfiguration = CorsConfiguration.fromJson(reader);
+                } else if ("serviceUrl".equals(fieldName)) {
+                    deserializedDicomServiceProperties.serviceUrl = reader.getString();
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnection> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnection.fromJson(reader1));
+                    deserializedDicomServiceProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedDicomServiceProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("eventState".equals(fieldName)) {
+                    deserializedDicomServiceProperties.eventState = ServiceEventState.fromString(reader.getString());
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedDicomServiceProperties.encryption = Encryption.fromJson(reader);
+                } else if ("storageConfiguration".equals(fieldName)) {
+                    deserializedDicomServiceProperties.storageConfiguration = StorageConfiguration.fromJson(reader);
+                } else if ("enableDataPartitions".equals(fieldName)) {
+                    deserializedDicomServiceProperties.enableDataPartitions
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDicomServiceProperties;
+        });
     }
 }

@@ -13,49 +13,45 @@ import com.azure.resourcemanager.databoxedge.fluent.AlertsClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.AlertInner;
 import com.azure.resourcemanager.databoxedge.models.Alert;
 import com.azure.resourcemanager.databoxedge.models.Alerts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AlertsImpl implements Alerts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AlertsImpl.class);
 
     private final AlertsClient innerClient;
 
     private final com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager;
 
-    public AlertsImpl(
-        AlertsClient innerClient, com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager) {
+    public AlertsImpl(AlertsClient innerClient,
+        com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Alert> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName) {
         PagedIterable<AlertInner> inner = this.serviceClient().listByDataBoxEdgeDevice(deviceName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new AlertImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AlertImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Alert> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName, Context context) {
-        PagedIterable<AlertInner> inner =
-            this.serviceClient().listByDataBoxEdgeDevice(deviceName, resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new AlertImpl(inner1, this.manager()));
+        PagedIterable<AlertInner> inner
+            = this.serviceClient().listByDataBoxEdgeDevice(deviceName, resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AlertImpl(inner1, this.manager()));
+    }
+
+    public Response<Alert> getWithResponse(String deviceName, String name, String resourceGroupName, Context context) {
+        Response<AlertInner> inner = this.serviceClient().getWithResponse(deviceName, name, resourceGroupName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AlertImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Alert get(String deviceName, String name, String resourceGroupName) {
         AlertInner inner = this.serviceClient().get(deviceName, name, resourceGroupName);
         if (inner != null) {
             return new AlertImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<Alert> getWithResponse(String deviceName, String name, String resourceGroupName, Context context) {
-        Response<AlertInner> inner = this.serviceClient().getWithResponse(deviceName, name, resourceGroupName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AlertImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

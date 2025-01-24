@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The VirtualHub Router autoscale configuration. */
+/**
+ * The VirtualHub Router autoscale configuration.
+ */
 @Fluent
-public final class VirtualRouterAutoScaleConfiguration {
+public final class VirtualRouterAutoScaleConfiguration
+    implements JsonSerializable<VirtualRouterAutoScaleConfiguration> {
     /*
      * The minimum number of scale units for VirtualHub Router.
      */
-    @JsonProperty(value = "minCapacity")
     private Integer minCapacity;
 
-    /** Creates an instance of VirtualRouterAutoScaleConfiguration class. */
+    /**
+     * Creates an instance of VirtualRouterAutoScaleConfiguration class.
+     */
     public VirtualRouterAutoScaleConfiguration() {
     }
 
     /**
      * Get the minCapacity property: The minimum number of scale units for VirtualHub Router.
-     *
+     * 
      * @return the minCapacity value.
      */
     public Integer minCapacity() {
@@ -31,7 +39,7 @@ public final class VirtualRouterAutoScaleConfiguration {
 
     /**
      * Set the minCapacity property: The minimum number of scale units for VirtualHub Router.
-     *
+     * 
      * @param minCapacity the minCapacity value to set.
      * @return the VirtualRouterAutoScaleConfiguration object itself.
      */
@@ -42,9 +50,47 @@ public final class VirtualRouterAutoScaleConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("minCapacity", this.minCapacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualRouterAutoScaleConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualRouterAutoScaleConfiguration if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualRouterAutoScaleConfiguration.
+     */
+    public static VirtualRouterAutoScaleConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualRouterAutoScaleConfiguration deserializedVirtualRouterAutoScaleConfiguration
+                = new VirtualRouterAutoScaleConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("minCapacity".equals(fieldName)) {
+                    deserializedVirtualRouterAutoScaleConfiguration.minCapacity
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualRouterAutoScaleConfiguration;
+        });
     }
 }

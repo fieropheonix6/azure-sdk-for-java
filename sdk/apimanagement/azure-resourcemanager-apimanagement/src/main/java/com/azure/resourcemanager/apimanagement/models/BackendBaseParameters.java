@@ -5,57 +5,62 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Backend entity base Parameter set. */
+/**
+ * Backend entity base Parameter set.
+ */
 @Fluent
-public class BackendBaseParameters {
+public class BackendBaseParameters implements JsonSerializable<BackendBaseParameters> {
     /*
      * Backend Title.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * Backend Description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
-     * Management Uri of the Resource in External System. This url can be the
-     * Arm Resource Id of Logic Apps, Function Apps or API Apps.
+     * Management Uri of the Resource in External System. This URL can be the Arm Resource Id of Logic Apps, Function
+     * Apps or API Apps.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * Backend Properties contract
      */
-    @JsonProperty(value = "properties")
     private BackendProperties properties;
 
     /*
      * Backend Credentials Contract Properties
      */
-    @JsonProperty(value = "credentials")
     private BackendCredentialsContract credentials;
 
     /*
-     * Backend Proxy Contract Properties
+     * Backend gateway Contract Properties
      */
-    @JsonProperty(value = "proxy")
     private BackendProxyContract proxy;
 
     /*
      * Backend TLS Properties
      */
-    @JsonProperty(value = "tls")
     private BackendTlsProperties tls;
 
     /**
+     * Creates an instance of BackendBaseParameters class.
+     */
+    public BackendBaseParameters() {
+    }
+
+    /**
      * Get the title property: Backend Title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -64,7 +69,7 @@ public class BackendBaseParameters {
 
     /**
      * Set the title property: Backend Title.
-     *
+     * 
      * @param title the title value to set.
      * @return the BackendBaseParameters object itself.
      */
@@ -75,7 +80,7 @@ public class BackendBaseParameters {
 
     /**
      * Get the description property: Backend Description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -84,7 +89,7 @@ public class BackendBaseParameters {
 
     /**
      * Set the description property: Backend Description.
-     *
+     * 
      * @param description the description value to set.
      * @return the BackendBaseParameters object itself.
      */
@@ -94,9 +99,9 @@ public class BackendBaseParameters {
     }
 
     /**
-     * Get the resourceId property: Management Uri of the Resource in External System. This url can be the Arm Resource
+     * Get the resourceId property: Management Uri of the Resource in External System. This URL can be the Arm Resource
      * Id of Logic Apps, Function Apps or API Apps.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -104,9 +109,9 @@ public class BackendBaseParameters {
     }
 
     /**
-     * Set the resourceId property: Management Uri of the Resource in External System. This url can be the Arm Resource
+     * Set the resourceId property: Management Uri of the Resource in External System. This URL can be the Arm Resource
      * Id of Logic Apps, Function Apps or API Apps.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the BackendBaseParameters object itself.
      */
@@ -117,7 +122,7 @@ public class BackendBaseParameters {
 
     /**
      * Get the properties property: Backend Properties contract.
-     *
+     * 
      * @return the properties value.
      */
     public BackendProperties properties() {
@@ -126,7 +131,7 @@ public class BackendBaseParameters {
 
     /**
      * Set the properties property: Backend Properties contract.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the BackendBaseParameters object itself.
      */
@@ -137,7 +142,7 @@ public class BackendBaseParameters {
 
     /**
      * Get the credentials property: Backend Credentials Contract Properties.
-     *
+     * 
      * @return the credentials value.
      */
     public BackendCredentialsContract credentials() {
@@ -146,7 +151,7 @@ public class BackendBaseParameters {
 
     /**
      * Set the credentials property: Backend Credentials Contract Properties.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the BackendBaseParameters object itself.
      */
@@ -156,8 +161,8 @@ public class BackendBaseParameters {
     }
 
     /**
-     * Get the proxy property: Backend Proxy Contract Properties.
-     *
+     * Get the proxy property: Backend gateway Contract Properties.
+     * 
      * @return the proxy value.
      */
     public BackendProxyContract proxy() {
@@ -165,8 +170,8 @@ public class BackendBaseParameters {
     }
 
     /**
-     * Set the proxy property: Backend Proxy Contract Properties.
-     *
+     * Set the proxy property: Backend gateway Contract Properties.
+     * 
      * @param proxy the proxy value to set.
      * @return the BackendBaseParameters object itself.
      */
@@ -177,7 +182,7 @@ public class BackendBaseParameters {
 
     /**
      * Get the tls property: Backend TLS Properties.
-     *
+     * 
      * @return the tls value.
      */
     public BackendTlsProperties tls() {
@@ -186,7 +191,7 @@ public class BackendBaseParameters {
 
     /**
      * Set the tls property: Backend TLS Properties.
-     *
+     * 
      * @param tls the tls value to set.
      * @return the BackendBaseParameters object itself.
      */
@@ -197,7 +202,7 @@ public class BackendBaseParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -213,5 +218,59 @@ public class BackendBaseParameters {
         if (tls() != null) {
             tls().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("credentials", this.credentials);
+        jsonWriter.writeJsonField("proxy", this.proxy);
+        jsonWriter.writeJsonField("tls", this.tls);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackendBaseParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackendBaseParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackendBaseParameters.
+     */
+    public static BackendBaseParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackendBaseParameters deserializedBackendBaseParameters = new BackendBaseParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedBackendBaseParameters.title = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedBackendBaseParameters.description = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedBackendBaseParameters.resourceId = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBackendBaseParameters.properties = BackendProperties.fromJson(reader);
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedBackendBaseParameters.credentials = BackendCredentialsContract.fromJson(reader);
+                } else if ("proxy".equals(fieldName)) {
+                    deserializedBackendBaseParameters.proxy = BackendProxyContract.fromJson(reader);
+                } else if ("tls".equals(fieldName)) {
+                    deserializedBackendBaseParameters.tls = BackendTlsProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackendBaseParameters;
+        });
     }
 }

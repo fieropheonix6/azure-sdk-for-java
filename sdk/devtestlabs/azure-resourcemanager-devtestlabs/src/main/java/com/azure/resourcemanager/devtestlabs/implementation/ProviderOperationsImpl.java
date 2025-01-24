@@ -11,29 +11,28 @@ import com.azure.resourcemanager.devtestlabs.fluent.ProviderOperationsClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.OperationMetadataInner;
 import com.azure.resourcemanager.devtestlabs.models.OperationMetadata;
 import com.azure.resourcemanager.devtestlabs.models.ProviderOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProviderOperationsImpl implements ProviderOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProviderOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProviderOperationsImpl.class);
 
     private final ProviderOperationsClient innerClient;
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    public ProviderOperationsImpl(
-        ProviderOperationsClient innerClient, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    public ProviderOperationsImpl(ProviderOperationsClient innerClient,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<OperationMetadata> list() {
         PagedIterable<OperationMetadataInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new OperationMetadataImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationMetadataImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OperationMetadata> list(Context context) {
         PagedIterable<OperationMetadataInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new OperationMetadataImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationMetadataImpl(inner1, this.manager()));
     }
 
     private ProviderOperationsClient serviceClient() {

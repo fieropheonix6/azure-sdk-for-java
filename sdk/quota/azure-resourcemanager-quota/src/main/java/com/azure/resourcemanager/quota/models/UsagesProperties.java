@@ -5,40 +5,36 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Usage properties for the specified resource. */
+/**
+ * Usage properties for the specified resource.
+ */
 @Fluent
-public final class UsagesProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsagesProperties.class);
-
+public final class UsagesProperties implements JsonSerializable<UsagesProperties> {
     /*
      * The quota limit properties for this resource.
      */
-    @JsonProperty(value = "usages")
     private UsagesObject usages;
 
     /*
-     * The units for the quota usage, such as Count and Bytes. When requesting
-     * quota, use the **unit** value returned in the GET response in the
-     * request body of your PUT operation.
+     * The units for the quota usage, such as Count and Bytes. When requesting quota, use the **unit** value returned in
+     * the GET response in the request body of your PUT operation.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /*
-     * Resource name provided by the resource provider. Use this property name
-     * when requesting quota.
+     * Resource name provided by the resource provider. Use this property name when requesting quota.
      */
-    @JsonProperty(value = "name")
     private ResourceName name;
 
     /*
-     * The name of the resource type.
+     * The name of the resource type. Optional field.
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
@@ -46,27 +42,29 @@ public final class UsagesProperties {
      * *P1D (per one day)
      * *PT1M (per one minute)
      * *PT1S (per one second).
-     * This parameter is optional because it is not relevant for all resources
-     * such as compute.
+     * This parameter is optional because it is not relevant for all resources such as compute.
      */
-    @JsonProperty(value = "quotaPeriod", access = JsonProperty.Access.WRITE_ONLY)
     private String quotaPeriod;
 
     /*
      * States if quota can be requested for this resource.
      */
-    @JsonProperty(value = "isQuotaApplicable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isQuotaApplicable;
 
     /*
      * Additional properties for the specific resource provider.
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /**
+     * Creates an instance of UsagesProperties class.
+     */
+    public UsagesProperties() {
+    }
+
+    /**
      * Get the usages property: The quota limit properties for this resource.
-     *
+     * 
      * @return the usages value.
      */
     public UsagesObject usages() {
@@ -75,7 +73,7 @@ public final class UsagesProperties {
 
     /**
      * Set the usages property: The quota limit properties for this resource.
-     *
+     * 
      * @param usages the usages value to set.
      * @return the UsagesProperties object itself.
      */
@@ -87,7 +85,7 @@ public final class UsagesProperties {
     /**
      * Get the unit property: The units for the quota usage, such as Count and Bytes. When requesting quota, use the
      * **unit** value returned in the GET response in the request body of your PUT operation.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -97,7 +95,7 @@ public final class UsagesProperties {
     /**
      * Get the name property: Resource name provided by the resource provider. Use this property name when requesting
      * quota.
-     *
+     * 
      * @return the name value.
      */
     public ResourceName name() {
@@ -107,7 +105,7 @@ public final class UsagesProperties {
     /**
      * Set the name property: Resource name provided by the resource provider. Use this property name when requesting
      * quota.
-     *
+     * 
      * @param name the name value to set.
      * @return the UsagesProperties object itself.
      */
@@ -117,8 +115,8 @@ public final class UsagesProperties {
     }
 
     /**
-     * Get the resourceType property: The name of the resource type.
-     *
+     * Get the resourceType property: The name of the resource type. Optional field.
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -126,8 +124,8 @@ public final class UsagesProperties {
     }
 
     /**
-     * Set the resourceType property: The name of the resource type.
-     *
+     * Set the resourceType property: The name of the resource type. Optional field.
+     * 
      * @param resourceType the resourceType value to set.
      * @return the UsagesProperties object itself.
      */
@@ -137,10 +135,12 @@ public final class UsagesProperties {
     }
 
     /**
-     * Get the quotaPeriod property: The time period for the summary of the quota usage values. For example: *P1D (per
-     * one day) *PT1M (per one minute) *PT1S (per one second). This parameter is optional because it is not relevant for
-     * all resources such as compute.
-     *
+     * Get the quotaPeriod property: The time period for the summary of the quota usage values. For example:
+     * *P1D (per one day)
+     * *PT1M (per one minute)
+     * *PT1S (per one second).
+     * This parameter is optional because it is not relevant for all resources such as compute.
+     * 
      * @return the quotaPeriod value.
      */
     public String quotaPeriod() {
@@ -149,7 +149,7 @@ public final class UsagesProperties {
 
     /**
      * Get the isQuotaApplicable property: States if quota can be requested for this resource.
-     *
+     * 
      * @return the isQuotaApplicable value.
      */
     public Boolean isQuotaApplicable() {
@@ -158,7 +158,7 @@ public final class UsagesProperties {
 
     /**
      * Get the properties property: Additional properties for the specific resource provider.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -167,7 +167,7 @@ public final class UsagesProperties {
 
     /**
      * Set the properties property: Additional properties for the specific resource provider.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the UsagesProperties object itself.
      */
@@ -178,7 +178,7 @@ public final class UsagesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -188,5 +188,56 @@ public final class UsagesProperties {
         if (name() != null) {
             name().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("usages", this.usages);
+        jsonWriter.writeJsonField("name", this.name);
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeUntypedField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UsagesProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UsagesProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UsagesProperties.
+     */
+    public static UsagesProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UsagesProperties deserializedUsagesProperties = new UsagesProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("usages".equals(fieldName)) {
+                    deserializedUsagesProperties.usages = UsagesObject.fromJson(reader);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedUsagesProperties.unit = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedUsagesProperties.name = ResourceName.fromJson(reader);
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedUsagesProperties.resourceType = reader.getString();
+                } else if ("quotaPeriod".equals(fieldName)) {
+                    deserializedUsagesProperties.quotaPeriod = reader.getString();
+                } else if ("isQuotaApplicable".equals(fieldName)) {
+                    deserializedUsagesProperties.isQuotaApplicable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUsagesProperties.properties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUsagesProperties;
+        });
     }
 }

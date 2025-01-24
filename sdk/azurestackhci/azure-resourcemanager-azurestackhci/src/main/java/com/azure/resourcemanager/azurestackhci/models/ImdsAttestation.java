@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.azurestackhci.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ImdsAttestation. */
+/**
+ * IMDS attestation status of the cluster.
+ */
 public final class ImdsAttestation extends ExpandableStringEnum<ImdsAttestation> {
-    /** Static value Disabled for ImdsAttestation. */
+    /**
+     * Static value Disabled for ImdsAttestation.
+     */
     public static final ImdsAttestation DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for ImdsAttestation. */
+    /**
+     * Static value Enabled for ImdsAttestation.
+     */
     public static final ImdsAttestation ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of ImdsAttestation value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ImdsAttestation() {
+    }
+
+    /**
      * Creates or finds a ImdsAttestation from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ImdsAttestation.
      */
-    @JsonCreator
     public static ImdsAttestation fromString(String name) {
         return fromString(name, ImdsAttestation.class);
     }
 
     /**
      * Gets known ImdsAttestation values.
-     *
+     * 
      * @return known ImdsAttestation values.
      */
     public static Collection<ImdsAttestation> values() {

@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The network resource topology information for the given resource group. */
+/**
+ * The network resource topology information for the given resource group.
+ */
 @Fluent
-public final class TopologyResource {
+public final class TopologyResource implements JsonSerializable<TopologyResource> {
     /*
      * Name of the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * ID of the resource.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Resource location.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Holds the associations the resource has with other resources in the resource group.
      */
-    @JsonProperty(value = "associations")
     private List<TopologyAssociation> associations;
 
-    /** Creates an instance of TopologyResource class. */
+    /**
+     * Creates an instance of TopologyResource class.
+     */
     public TopologyResource() {
     }
 
     /**
      * Get the name property: Name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +54,7 @@ public final class TopologyResource {
 
     /**
      * Set the name property: Name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the TopologyResource object itself.
      */
@@ -61,7 +65,7 @@ public final class TopologyResource {
 
     /**
      * Get the id property: ID of the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -70,7 +74,7 @@ public final class TopologyResource {
 
     /**
      * Set the id property: ID of the resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the TopologyResource object itself.
      */
@@ -81,7 +85,7 @@ public final class TopologyResource {
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -90,7 +94,7 @@ public final class TopologyResource {
 
     /**
      * Set the location property: Resource location.
-     *
+     * 
      * @param location the location value to set.
      * @return the TopologyResource object itself.
      */
@@ -102,7 +106,7 @@ public final class TopologyResource {
     /**
      * Get the associations property: Holds the associations the resource has with other resources in the resource
      * group.
-     *
+     * 
      * @return the associations value.
      */
     public List<TopologyAssociation> associations() {
@@ -112,7 +116,7 @@ public final class TopologyResource {
     /**
      * Set the associations property: Holds the associations the resource has with other resources in the resource
      * group.
-     *
+     * 
      * @param associations the associations value to set.
      * @return the TopologyResource object itself.
      */
@@ -123,12 +127,59 @@ public final class TopologyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (associations() != null) {
             associations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeArrayField("associations", this.associations, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TopologyResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TopologyResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TopologyResource.
+     */
+    public static TopologyResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TopologyResource deserializedTopologyResource = new TopologyResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedTopologyResource.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedTopologyResource.id = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedTopologyResource.location = reader.getString();
+                } else if ("associations".equals(fieldName)) {
+                    List<TopologyAssociation> associations
+                        = reader.readArray(reader1 -> TopologyAssociation.fromJson(reader1));
+                    deserializedTopologyResource.associations = associations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTopologyResource;
+        });
     }
 }

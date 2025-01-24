@@ -6,12 +6,14 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -48,6 +50,11 @@ public interface ChangeFeedContextClient {
     <T> Flux<FeedResponse<T>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink,
                                                             CosmosChangeFeedRequestOptions requestOptions,
                                                             Class<T> klass);
+
+    <T> Flux<FeedResponse<T>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink,
+                                                            CosmosChangeFeedRequestOptions requestOptions,
+                                                            Class<T> klass,
+                                                            boolean isSplitHandlingDisabled);
 
     /**
      * Reads a database.
@@ -89,6 +96,14 @@ public interface ChangeFeedContextClient {
      */
     Mono<CosmosItemResponse<Object>> deleteItem(String itemId, PartitionKey partitionKey,
                                                 CosmosItemRequestOptions options);
+
+    /**
+     * DELETE all cosmos items.
+     *
+     * @param cosmosItemIdentities the cosmos identities.
+     * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     */
+    Flux<CosmosBulkOperationResponse<Object>> deleteAllItems(List<CosmosItemIdentity> cosmosItemIdentities);
 
     /**
      * Replaces a cosmos item.
@@ -168,8 +183,9 @@ public interface ChangeFeedContextClient {
      * Get the overlapping partition key ranges.
      *
      * @param range the range.
+     * @param forceRefresh flag to indicate whether to refresh the underlying caches
      *
      * @return The list of partition key ranges.
      */
-    Mono<List<PartitionKeyRange>> getOverlappingRanges(Range<String> range);
+    Mono<List<PartitionKeyRange>> getOverlappingRanges(Range<String> range, boolean forceRefresh);
 }

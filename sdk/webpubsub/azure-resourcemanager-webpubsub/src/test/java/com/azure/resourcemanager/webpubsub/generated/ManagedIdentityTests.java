@@ -11,38 +11,27 @@ import com.azure.resourcemanager.webpubsub.models.UserAssignedIdentityProperty;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ManagedIdentityTests {
-    @Test
-    public void testDeserialize() {
-        ManagedIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"None\",\"userAssignedIdentities\":{\"ofmxagkvtmelmqkr\":{\"principalId\":\"hseyvju\",\"clientId\":\"tslhspkdeem\"},\"aex\":{\"principalId\":\"hvljuahaquh\",\"clientId\":\"hmdua\"},\"vxpvgomz\":{\"principalId\":\"vfadmws\",\"clientId\":\"r\"},\"auhashsfwx\":{\"principalId\":\"misgwbnb\",\"clientId\":\"ldawkzbaliourqha\"}},\"principalId\":\"owzxcu\",\"tenantId\":\"cjooxdjebwpucwwf\"}")
-                .toObject(ManagedIdentity.class);
-        Assertions.assertEquals(ManagedIdentityType.NONE, model.type());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ManagedIdentity model = BinaryData.fromString(
+            "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"wib\":{\"principalId\":\"olppvksrpqvujz\",\"clientId\":\"ehtwdwrft\"},\"hevxcced\":{\"principalId\":\"cdl\",\"clientId\":\"shfwpracstwity\"},\"navvwx\":{\"principalId\":\"nmdyodnwzxl\",\"clientId\":\"cvnhltiugc\"},\"daciz\":{\"principalId\":\"byqunyow\",\"clientId\":\"lmdjrkvfgbvfvpdb\"}},\"principalId\":\"q\",\"tenantId\":\"krribdeibqi\"}")
+            .toObject(ManagedIdentity.class);
+        Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.type());
     }
 
-    @Test
-    public void testSerialize() {
-        ManagedIdentity model =
-            new ManagedIdentity()
-                .withType(ManagedIdentityType.NONE)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "ofmxagkvtmelmqkr",
-                        new UserAssignedIdentityProperty(),
-                        "aex",
-                        new UserAssignedIdentityProperty(),
-                        "vxpvgomz",
-                        new UserAssignedIdentityProperty(),
-                        "auhashsfwx",
-                        new UserAssignedIdentityProperty()));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ManagedIdentity model = new ManagedIdentity().withType(ManagedIdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentities(
+                mapOf("wib", new UserAssignedIdentityProperty(), "hevxcced", new UserAssignedIdentityProperty(),
+                    "navvwx", new UserAssignedIdentityProperty(), "daciz", new UserAssignedIdentityProperty()));
         model = BinaryData.fromObject(model).toObject(ManagedIdentity.class);
-        Assertions.assertEquals(ManagedIdentityType.NONE, model.type());
+        Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

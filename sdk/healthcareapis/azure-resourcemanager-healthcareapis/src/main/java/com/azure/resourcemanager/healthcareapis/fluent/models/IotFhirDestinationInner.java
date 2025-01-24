@@ -7,29 +7,53 @@ package com.azure.resourcemanager.healthcareapis.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.healthcareapis.models.IotIdentityResolutionType;
 import com.azure.resourcemanager.healthcareapis.models.IotMappingProperties;
 import com.azure.resourcemanager.healthcareapis.models.LocationBasedResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** IoT Connector FHIR destination definition. */
+/**
+ * IoT Connector FHIR destination definition.
+ */
 @Fluent
 public final class IotFhirDestinationInner extends LocationBasedResource {
     /*
      * IoT FHIR Destination settings.
      */
-    @JsonProperty(value = "properties", required = true)
     private IotFhirDestinationProperties innerProperties = new IotFhirDestinationProperties();
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of IotFhirDestinationInner class.
+     */
+    public IotFhirDestinationInner() {
+    }
 
     /**
      * Get the innerProperties property: IoT FHIR Destination settings.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IotFhirDestinationProperties innerProperties() {
@@ -38,21 +62,55 @@ public final class IotFhirDestinationInner extends LocationBasedResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotFhirDestinationInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotFhirDestinationInner withEtag(String etag) {
         super.withEtag(etag);
@@ -61,7 +119,7 @@ public final class IotFhirDestinationInner extends LocationBasedResource {
 
     /**
      * Get the resourceIdentityResolutionType property: Determines how resource identity is resolved on the destination.
-     *
+     * 
      * @return the resourceIdentityResolutionType value.
      */
     public IotIdentityResolutionType resourceIdentityResolutionType() {
@@ -70,12 +128,12 @@ public final class IotFhirDestinationInner extends LocationBasedResource {
 
     /**
      * Set the resourceIdentityResolutionType property: Determines how resource identity is resolved on the destination.
-     *
+     * 
      * @param resourceIdentityResolutionType the resourceIdentityResolutionType value to set.
      * @return the IotFhirDestinationInner object itself.
      */
-    public IotFhirDestinationInner withResourceIdentityResolutionType(
-        IotIdentityResolutionType resourceIdentityResolutionType) {
+    public IotFhirDestinationInner
+        withResourceIdentityResolutionType(IotIdentityResolutionType resourceIdentityResolutionType) {
         if (this.innerProperties() == null) {
             this.innerProperties = new IotFhirDestinationProperties();
         }
@@ -85,7 +143,7 @@ public final class IotFhirDestinationInner extends LocationBasedResource {
 
     /**
      * Get the fhirServiceResourceId property: Fully qualified resource id of the FHIR service to connect to.
-     *
+     * 
      * @return the fhirServiceResourceId value.
      */
     public String fhirServiceResourceId() {
@@ -94,7 +152,7 @@ public final class IotFhirDestinationInner extends LocationBasedResource {
 
     /**
      * Set the fhirServiceResourceId property: Fully qualified resource id of the FHIR service to connect to.
-     *
+     * 
      * @param fhirServiceResourceId the fhirServiceResourceId value to set.
      * @return the IotFhirDestinationInner object itself.
      */
@@ -108,7 +166,7 @@ public final class IotFhirDestinationInner extends LocationBasedResource {
 
     /**
      * Get the fhirMapping property: FHIR Mappings.
-     *
+     * 
      * @return the fhirMapping value.
      */
     public IotMappingProperties fhirMapping() {
@@ -117,7 +175,7 @@ public final class IotFhirDestinationInner extends LocationBasedResource {
 
     /**
      * Set the fhirMapping property: FHIR Mappings.
-     *
+     * 
      * @param fhirMapping the fhirMapping value to set.
      * @return the IotFhirDestinationInner object itself.
      */
@@ -131,21 +189,70 @@ public final class IotFhirDestinationInner extends LocationBasedResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model IotFhirDestinationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model IotFhirDestinationInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IotFhirDestinationInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IotFhirDestinationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotFhirDestinationInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IotFhirDestinationInner.
+     */
+    public static IotFhirDestinationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotFhirDestinationInner deserializedIotFhirDestinationInner = new IotFhirDestinationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIotFhirDestinationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIotFhirDestinationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIotFhirDestinationInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedIotFhirDestinationInner.withEtag(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedIotFhirDestinationInner.withLocation(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIotFhirDestinationInner.innerProperties = IotFhirDestinationProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedIotFhirDestinationInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIotFhirDestinationInner;
+        });
+    }
 }

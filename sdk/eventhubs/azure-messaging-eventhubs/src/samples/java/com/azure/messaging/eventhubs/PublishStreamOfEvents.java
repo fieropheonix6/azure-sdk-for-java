@@ -2,13 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -19,9 +20,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
- * Demonstrates how to continuously publish events using {@link EventHubProducerAsyncClient}.
- * {@link CustomPublisher} is publishes size-limited batches when they are full. In addition, it checks for periodically
- * for a partial batch that needs to be sent.
+ * Demonstrates how to continuously publish events using {@link EventHubProducerAsyncClient}. {@link CustomPublisher} is
+ * publishes size-limited batches when they are full. In addition, it checks for periodically for a partial batch that
+ * needs to be sent.
  */
 public class PublishStreamOfEvents {
     private static final String EVENT_NUMBER = "EVENT_NUMBER";
@@ -32,27 +33,31 @@ public class PublishStreamOfEvents {
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        // The connection string value can be obtained by:
-        // 1. Going to your Event Hubs namespace in Azure Portal.
-        // 2. Creating an Event Hub instance.
-        // 3. Creating a "Shared access policy" for your Event Hub instance.
-        // 4. Copying the connection string from the policy's properties.
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
-            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
-
         // Limit the size of the batches to 1024 bytes instead of using the default max size.
         final CreateBatchOptions batchOptions = new CreateBatchOptions().setMaximumSizeInBytes(1024);
-        final CustomPublisher publisher = new CustomPublisher(connectionString, Duration.ofSeconds(1), batchOptions);
+
+        // The credential used is DefaultAzureCredential because it combines commonly used credentials
+        // in deployment and development and chooses the credential to used based on its running environment.
+        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
+        final TokenCredential credential = new DefaultAzureCredentialBuilder()
+            .build();
+        final String fullyQualifiedNamespace = "<<fully-qualified-namespace>>";
+        final String eventHubName = "<<event-hub-name>>";
+
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+        final CustomPublisher publisher = new CustomPublisher(fullyQualifiedNamespace, eventHubName, credential,
+            Duration.ofSeconds(1), batchOptions);
 
         // This represents a stream of events that we want to publish.
-        final DirectProcessor<EventData> events = DirectProcessor.create();
+        final Sinks.Many<EventData> events = Sinks.many().multicast().onBackpressureBuffer();
 
         System.out.println("Publishing events...");
-        publisher.publish(events).subscribe(unused -> System.out.println("Completed."),
+        publisher.publish(events.asFlux()).subscribe(unused -> System.out.println("Completed."),
             error -> System.err.println("Error sending events: " + error),
             () -> System.out.println("Completed sending events."));
 
-        emitEvents(events.sink());
+        emitEvents(events);
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete.
@@ -69,9 +74,9 @@ public class PublishStreamOfEvents {
      * Helper function that emits 50 events. The interval between each event is randomly selected between 0 - 250ms and
      * is a random substring of the lorem ipsum text.
      *
-     * @param sink Sink for generated events.
+     * @param events Sink for generated events.
      */
-    private static void emitEvents(FluxSink<EventData> sink) {
+    private static void emitEvents(Sinks.Many<EventData> events) {
         final String contents = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do "
             + "eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "
             + "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure "
@@ -93,10 +98,10 @@ public class PublishStreamOfEvents {
             final EventData event = new EventData(contents.substring(0, endIndex));
             event.getProperties().put(EVENT_NUMBER, String.valueOf(i));
 
-            sink.next(event);
+            events.emitNext(event, Sinks.EmitFailureHandler.FAIL_FAST);
         }
 
-        sink.complete();
+        events.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
     }
 
     /**
@@ -119,14 +124,20 @@ public class PublishStreamOfEvents {
         /**
          * Creates a new instance of {@link CustomPublisher}.
          *
-         * @param connectionString Connection string for the specific Event Hub.
+         * @param fullyQualifiedNamespace Fully qualified namespace. Will look similar to:
+         *     "{your-namespace}.servicebus.windows.net"
+         * @param eventHubName Event Hub name
+         * @param tokenCredential Credential to authorize with Event Hubs.
          * @param windowDuration Intervals to check for an available {@link EventDataBatch} to send.
          * @param batchOptions Options to use when creating the {@link EventDataBatch}. If {@code null}, the default
-         * batch options are used.
+         *     batch options are used.
          */
-        CustomPublisher(String connectionString, Duration windowDuration, CreateBatchOptions batchOptions) {
+        CustomPublisher(String fullyQualifiedNamespace, String eventHubName, TokenCredential tokenCredential,
+            Duration windowDuration, CreateBatchOptions batchOptions) {
+
+            // Create a producer.
             producer = new EventHubClientBuilder()
-                .connectionString(connectionString)
+                .credential(fullyQualifiedNamespace, eventHubName, tokenCredential)
                 .buildAsyncProducerClient();
 
             this.batchOptions = batchOptions != null ? batchOptions : new CreateBatchOptions();
@@ -167,15 +178,15 @@ public class PublishStreamOfEvents {
                             });
                         }).block();
                 }, error -> {
-                        sink.error(new RuntimeException("Error fetching next event.", error));
-                    }, () -> {
-                        final EventDataBatch lastBatch = currentBatch.getAndSet(null);
-                        if (lastBatch != null) {
-                            sink.next(lastBatch);
-                        }
+                    sink.error(new RuntimeException("Error fetching next event.", error));
+                }, () -> {
+                    final EventDataBatch lastBatch = currentBatch.getAndSet(null);
+                    if (lastBatch != null) {
+                        sink.next(lastBatch);
+                    }
 
-                        sink.complete();
-                    });
+                    sink.complete();
+                });
             }).publish().autoConnect();
 
             // Periodically checks to see if there is an available, not full, batch to send. If there is, it sends that

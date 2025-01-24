@@ -3,6 +3,7 @@
 
 package com.azure.core.http.netty.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.BinaryData;
@@ -22,6 +23,14 @@ import java.nio.charset.Charset;
 public final class NettyAsyncHttpBufferedResponse extends NettyAsyncHttpResponseBase {
     private final byte[] body;
 
+    /**
+     * Creates a new buffered response.
+     *
+     * @param httpClientResponse The Reactor Netty HTTP response.
+     * @param httpRequest The HTTP request that initiated this response.
+     * @param body The buffered response body.
+     * @param headersEagerlyConverted Whether the headers were eagerly converted.
+     */
     public NettyAsyncHttpBufferedResponse(HttpClientResponse httpClientResponse, HttpRequest httpRequest, byte[] body,
         boolean headersEagerlyConverted) {
         super(httpClientResponse, httpRequest, headersEagerlyConverted);
@@ -45,7 +54,7 @@ public final class NettyAsyncHttpBufferedResponse extends NettyAsyncHttpResponse
 
     @Override
     public Mono<String> getBodyAsString() {
-        return Mono.fromSupplier(() -> CoreUtils.bomAwareToString(body, getHeaderValue("Content-Type")));
+        return Mono.fromSupplier(() -> CoreUtils.bomAwareToString(body, getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
     }
 
     @Override

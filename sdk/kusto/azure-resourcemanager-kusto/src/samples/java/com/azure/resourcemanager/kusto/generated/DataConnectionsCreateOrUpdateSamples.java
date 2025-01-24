@@ -4,34 +4,32 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.kusto.models.BlobStorageEventType;
+import com.azure.resourcemanager.kusto.models.CosmosDbDataConnection;
 import com.azure.resourcemanager.kusto.models.DatabaseRouting;
 import com.azure.resourcemanager.kusto.models.EventGridDataConnection;
 import com.azure.resourcemanager.kusto.models.EventGridDataFormat;
 import com.azure.resourcemanager.kusto.models.EventHubDataConnection;
+import java.time.OffsetDateTime;
 
-/** Samples for DataConnections CreateOrUpdate. */
+/**
+ * Samples for DataConnections CreateOrUpdate.
+ */
 public final class DataConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoDataConnectionsEventGridCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDataConnectionsEventGridCreateOrUpdate.json
      */
     /**
      * Sample code: KustoDataConnectionsEventGridCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
-    public static void kustoDataConnectionsEventGridCreateOrUpdate(
-        com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
-            .createOrUpdate(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
-                "dataConnectionTest",
-                new EventGridDataConnection()
-                    .withLocation("westus")
+    public static void
+        kustoDataConnectionsEventGridCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.dataConnections()
+            .createOrUpdate("kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest",
+                new EventGridDataConnection().withLocation("westus")
                     .withStorageAccountResourceId(
                         "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Storage/storageAccounts/teststorageaccount")
                     .withEventGridResourceId(
@@ -41,38 +39,59 @@ public final class DataConnectionsCreateOrUpdateSamples {
                     .withConsumerGroup("$Default")
                     .withTableName("TestTable")
                     .withMappingRuleName("TestMapping")
-                    .withDataFormat(EventGridDataFormat.JSON)
+                    .withDataFormat(EventGridDataFormat.MULTIJSON)
                     .withIgnoreFirstRecord(false)
                     .withBlobStorageEventType(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_CREATED)
                     .withManagedIdentityResourceId(
                         "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1")
                     .withDatabaseRouting(DatabaseRouting.SINGLE),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoDataConnectionsCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDataConnectionsCosmosDbCreateOrUpdate.json
+     */
+    /**
+     * Sample code: KustoDataConnectionsCosmosDbCreateOrUpdate.
+     * 
+     * @param manager Entry point to KustoManager.
+     */
+    public static void
+        kustoDataConnectionsCosmosDbCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager.dataConnections()
+            .createOrUpdate("kustorptest", "kustoCluster", "KustoDatabase1", "dataConnectionTest",
+                new CosmosDbDataConnection().withLocation("westus")
+                    .withTableName("TestTable")
+                    .withMappingRuleName("TestMapping")
+                    .withManagedIdentityResourceId(
+                        "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1")
+                    .withCosmosDbAccountResourceId(
+                        "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.DocumentDb/databaseAccounts/cosmosDbAccountTest1")
+                    .withCosmosDbDatabase("cosmosDbDatabaseTest")
+                    .withCosmosDbContainer("cosmosDbContainerTest")
+                    .withRetrievalStartDate(OffsetDateTime.parse("2022-07-29T12:00:00.6554616Z")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoDataConnectionsCreateOrUpdate.json
      */
     /**
      * Sample code: KustoDataConnectionsCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoDataConnectionsCreateOrUpdate(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .dataConnections()
-            .createOrUpdate(
-                "kustorptest",
-                "kustoCluster",
-                "KustoDatabase8",
-                "dataConnectionTest",
-                new EventHubDataConnection()
-                    .withLocation("westus")
+        manager.dataConnections()
+            .createOrUpdate("kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest",
+                new EventHubDataConnection().withLocation("westus")
                     .withEventHubResourceId(
                         "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1")
                     .withConsumerGroup("testConsumerGroup1")
                     .withManagedIdentityResourceId(
                         "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

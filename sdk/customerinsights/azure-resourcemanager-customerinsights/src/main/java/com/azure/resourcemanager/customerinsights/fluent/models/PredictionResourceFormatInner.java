@@ -5,447 +5,489 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.PredictionGradesItem;
 import com.azure.resourcemanager.customerinsights.models.PredictionMappings;
 import com.azure.resourcemanager.customerinsights.models.PredictionSystemGeneratedEntities;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The prediction resource format. */
-@JsonFlatten
+/**
+ * The prediction resource format.
+ */
 @Fluent
-public class PredictionResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PredictionResourceFormatInner.class);
+public final class PredictionResourceFormatInner extends ProxyResource {
+    /*
+     * The prediction definition.
+     */
+    private Prediction innerProperties;
 
     /*
-     * Description of the prediction.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.description")
-    private Map<String, String> description;
+    private String type;
 
     /*
-     * Display name of the prediction.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.displayName")
-    private Map<String, String> displayName;
+    private String name;
 
     /*
-     * Interaction types involved in the prediction.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.involvedInteractionTypes")
-    private List<String> involvedInteractionTypes;
+    private String id;
 
-    /*
-     * KPI types involved in the prediction.
+    /**
+     * Creates an instance of PredictionResourceFormatInner class.
      */
-    @JsonProperty(value = "properties.involvedKpiTypes")
-    private List<String> involvedKpiTypes;
+    public PredictionResourceFormatInner() {
+    }
 
-    /*
-     * Relationships involved in the prediction.
+    /**
+     * Get the innerProperties property: The prediction definition.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.involvedRelationships")
-    private List<String> involvedRelationships;
+    private Prediction innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Negative outcome expression.
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.negativeOutcomeExpression")
-    private String negativeOutcomeExpression;
+    @Override
+    public String type() {
+        return this.type;
+    }
 
-    /*
-     * Positive outcome expression.
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    @JsonProperty(value = "properties.positiveOutcomeExpression")
-    private String positiveOutcomeExpression;
+    @Override
+    public String name() {
+        return this.name;
+    }
 
-    /*
-     * Primary profile type.
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    @JsonProperty(value = "properties.primaryProfileType")
-    private String primaryProfileType;
-
-    /*
-     * Provisioning state.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningStates provisioningState;
-
-    /*
-     * Name of the prediction.
-     */
-    @JsonProperty(value = "properties.predictionName")
-    private String predictionName;
-
-    /*
-     * Scope expression.
-     */
-    @JsonProperty(value = "properties.scopeExpression")
-    private String scopeExpression;
-
-    /*
-     * The hub name.
-     */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
-
-    /*
-     * Whether do auto analyze.
-     */
-    @JsonProperty(value = "properties.autoAnalyze")
-    private Boolean autoAnalyze;
-
-    /*
-     * Definition of the link mapping of prediction.
-     */
-    @JsonProperty(value = "properties.mappings")
-    private PredictionMappings mappings;
-
-    /*
-     * Score label.
-     */
-    @JsonProperty(value = "properties.scoreLabel")
-    private String scoreLabel;
-
-    /*
-     * The prediction grades.
-     */
-    @JsonProperty(value = "properties.grades")
-    private List<PredictionGradesItem> grades;
-
-    /*
-     * System generated entities.
-     */
-    @JsonProperty(value = "properties.systemGeneratedEntities", access = JsonProperty.Access.WRITE_ONLY)
-    private PredictionSystemGeneratedEntities systemGeneratedEntities;
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the description property: Description of the prediction.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
      * Set the description property: Description of the prediction.
-     *
+     * 
      * @param description the description value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
     public PredictionResourceFormatInner withDescription(Map<String, String> description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Prediction();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
     /**
      * Get the displayName property: Display name of the prediction.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
      * Set the displayName property: Display name of the prediction.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
     public PredictionResourceFormatInner withDisplayName(Map<String, String> displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Prediction();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
     /**
      * Get the involvedInteractionTypes property: Interaction types involved in the prediction.
-     *
+     * 
      * @return the involvedInteractionTypes value.
      */
     public List<String> involvedInteractionTypes() {
-        return this.involvedInteractionTypes;
+        return this.innerProperties() == null ? null : this.innerProperties().involvedInteractionTypes();
     }
 
     /**
      * Set the involvedInteractionTypes property: Interaction types involved in the prediction.
-     *
+     * 
      * @param involvedInteractionTypes the involvedInteractionTypes value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
     public PredictionResourceFormatInner withInvolvedInteractionTypes(List<String> involvedInteractionTypes) {
-        this.involvedInteractionTypes = involvedInteractionTypes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Prediction();
+        }
+        this.innerProperties().withInvolvedInteractionTypes(involvedInteractionTypes);
         return this;
     }
 
     /**
      * Get the involvedKpiTypes property: KPI types involved in the prediction.
-     *
+     * 
      * @return the involvedKpiTypes value.
      */
     public List<String> involvedKpiTypes() {
-        return this.involvedKpiTypes;
+        return this.innerProperties() == null ? null : this.innerProperties().involvedKpiTypes();
     }
 
     /**
      * Set the involvedKpiTypes property: KPI types involved in the prediction.
-     *
+     * 
      * @param involvedKpiTypes the involvedKpiTypes value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
     public PredictionResourceFormatInner withInvolvedKpiTypes(List<String> involvedKpiTypes) {
-        this.involvedKpiTypes = involvedKpiTypes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Prediction();
+        }
+        this.innerProperties().withInvolvedKpiTypes(involvedKpiTypes);
         return this;
     }
 
     /**
      * Get the involvedRelationships property: Relationships involved in the prediction.
-     *
+     * 
      * @return the involvedRelationships value.
      */
     public List<String> involvedRelationships() {
-        return this.involvedRelationships;
+        return this.innerProperties() == null ? null : this.innerProperties().involvedRelationships();
     }
 
     /**
      * Set the involvedRelationships property: Relationships involved in the prediction.
-     *
+     * 
      * @param involvedRelationships the involvedRelationships value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
     public PredictionResourceFormatInner withInvolvedRelationships(List<String> involvedRelationships) {
-        this.involvedRelationships = involvedRelationships;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Prediction();
+        }
+        this.innerProperties().withInvolvedRelationships(involvedRelationships);
         return this;
     }
 
     /**
      * Get the negativeOutcomeExpression property: Negative outcome expression.
-     *
+     * 
      * @return the negativeOutcomeExpression value.
      */
     public String negativeOutcomeExpression() {
-        return this.negativeOutcomeExpression;
+        return this.innerProperties() == null ? null : this.innerProperties().negativeOutcomeExpression();
     }
 
     /**
      * Set the negativeOutcomeExpression property: Negative outcome expression.
-     *
+     * 
      * @param negativeOutcomeExpression the negativeOutcomeExpression value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
     public PredictionResourceFormatInner withNegativeOutcomeExpression(String negativeOutcomeExpression) {
-        this.negativeOutcomeExpression = negativeOutcomeExpression;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Prediction();
+        }
+        this.innerProperties().withNegativeOutcomeExpression(negativeOutcomeExpression);
         return this;
     }
 
     /**
      * Get the positiveOutcomeExpression property: Positive outcome expression.
-     *
+     * 
      * @return the positiveOutcomeExpression value.
      */
     public String positiveOutcomeExpression() {
-        return this.positiveOutcomeExpression;
+        return this.innerProperties() == null ? null : this.innerProperties().positiveOutcomeExpression();
     }
 
     /**
      * Set the positiveOutcomeExpression property: Positive outcome expression.
-     *
+     * 
      * @param positiveOutcomeExpression the positiveOutcomeExpression value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
     public PredictionResourceFormatInner withPositiveOutcomeExpression(String positiveOutcomeExpression) {
-        this.positiveOutcomeExpression = positiveOutcomeExpression;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Prediction();
+        }
+        this.innerProperties().withPositiveOutcomeExpression(positiveOutcomeExpression);
         return this;
     }
 
     /**
      * Get the primaryProfileType property: Primary profile type.
-     *
+     * 
      * @return the primaryProfileType value.
      */
     public String primaryProfileType() {
-        return this.primaryProfileType;
+        return this.innerProperties() == null ? null : this.innerProperties().primaryProfileType();
     }
 
     /**
      * Set the primaryProfileType property: Primary profile type.
-     *
+     * 
      * @param primaryProfileType the primaryProfileType value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
     public PredictionResourceFormatInner withPrimaryProfileType(String primaryProfileType) {
-        this.primaryProfileType = primaryProfileType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Prediction();
+        }
+        this.innerProperties().withPrimaryProfileType(primaryProfileType);
         return this;
     }
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
      * Get the predictionName property: Name of the prediction.
-     *
+     * 
      * @return the predictionName value.
      */
     public String predictionName() {
-        return this.predictionName;
+        return this.innerProperties() == null ? null : this.innerProperties().predictionName();
     }
 
     /**
      * Set the predictionName property: Name of the prediction.
-     *
+     * 
      * @param predictionName the predictionName value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
     public PredictionResourceFormatInner withPredictionName(String predictionName) {
-        this.predictionName = predictionName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Prediction();
+        }
+        this.innerProperties().withPredictionName(predictionName);
         return this;
     }
 
     /**
      * Get the scopeExpression property: Scope expression.
-     *
+     * 
      * @return the scopeExpression value.
      */
     public String scopeExpression() {
-        return this.scopeExpression;
+        return this.innerProperties() == null ? null : this.innerProperties().scopeExpression();
     }
 
     /**
      * Set the scopeExpression property: Scope expression.
-     *
+     * 
      * @param scopeExpression the scopeExpression value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
     public PredictionResourceFormatInner withScopeExpression(String scopeExpression) {
-        this.scopeExpression = scopeExpression;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Prediction();
+        }
+        this.innerProperties().withScopeExpression(scopeExpression);
         return this;
     }
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
      * Get the autoAnalyze property: Whether do auto analyze.
-     *
+     * 
      * @return the autoAnalyze value.
      */
     public Boolean autoAnalyze() {
-        return this.autoAnalyze;
+        return this.innerProperties() == null ? null : this.innerProperties().autoAnalyze();
     }
 
     /**
      * Set the autoAnalyze property: Whether do auto analyze.
-     *
+     * 
      * @param autoAnalyze the autoAnalyze value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
     public PredictionResourceFormatInner withAutoAnalyze(Boolean autoAnalyze) {
-        this.autoAnalyze = autoAnalyze;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Prediction();
+        }
+        this.innerProperties().withAutoAnalyze(autoAnalyze);
         return this;
     }
 
     /**
      * Get the mappings property: Definition of the link mapping of prediction.
-     *
+     * 
      * @return the mappings value.
      */
     public PredictionMappings mappings() {
-        return this.mappings;
+        return this.innerProperties() == null ? null : this.innerProperties().mappings();
     }
 
     /**
      * Set the mappings property: Definition of the link mapping of prediction.
-     *
+     * 
      * @param mappings the mappings value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
     public PredictionResourceFormatInner withMappings(PredictionMappings mappings) {
-        this.mappings = mappings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Prediction();
+        }
+        this.innerProperties().withMappings(mappings);
         return this;
     }
 
     /**
      * Get the scoreLabel property: Score label.
-     *
+     * 
      * @return the scoreLabel value.
      */
     public String scoreLabel() {
-        return this.scoreLabel;
+        return this.innerProperties() == null ? null : this.innerProperties().scoreLabel();
     }
 
     /**
      * Set the scoreLabel property: Score label.
-     *
+     * 
      * @param scoreLabel the scoreLabel value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
     public PredictionResourceFormatInner withScoreLabel(String scoreLabel) {
-        this.scoreLabel = scoreLabel;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Prediction();
+        }
+        this.innerProperties().withScoreLabel(scoreLabel);
         return this;
     }
 
     /**
      * Get the grades property: The prediction grades.
-     *
+     * 
      * @return the grades value.
      */
     public List<PredictionGradesItem> grades() {
-        return this.grades;
+        return this.innerProperties() == null ? null : this.innerProperties().grades();
     }
 
     /**
      * Set the grades property: The prediction grades.
-     *
+     * 
      * @param grades the grades value to set.
      * @return the PredictionResourceFormatInner object itself.
      */
     public PredictionResourceFormatInner withGrades(List<PredictionGradesItem> grades) {
-        this.grades = grades;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Prediction();
+        }
+        this.innerProperties().withGrades(grades);
         return this;
     }
 
     /**
      * Get the systemGeneratedEntities property: System generated entities.
-     *
+     * 
      * @return the systemGeneratedEntities value.
      */
     public PredictionSystemGeneratedEntities systemGeneratedEntities() {
-        return this.systemGeneratedEntities;
+        return this.innerProperties() == null ? null : this.innerProperties().systemGeneratedEntities();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (mappings() != null) {
-            mappings().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
-        if (grades() != null) {
-            grades().forEach(e -> e.validate());
-        }
-        if (systemGeneratedEntities() != null) {
-            systemGeneratedEntities().validate();
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PredictionResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PredictionResourceFormatInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PredictionResourceFormatInner.
+     */
+    public static PredictionResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PredictionResourceFormatInner deserializedPredictionResourceFormatInner
+                = new PredictionResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPredictionResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPredictionResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPredictionResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPredictionResourceFormatInner.innerProperties = Prediction.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPredictionResourceFormatInner;
+        });
     }
 }

@@ -5,32 +5,41 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The DocumentWarning model. */
+/**
+ * The DocumentWarning model.
+ */
 @Fluent
-public final class DocumentWarning {
+public final class DocumentWarning implements JsonSerializable<DocumentWarning> {
     /*
      * Error code.
      */
-    @JsonProperty(value = "code", required = true)
     private WarningCodeValue code;
 
     /*
      * Warning message.
      */
-    @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
      * A JSON pointer reference indicating the target object.
      */
-    @JsonProperty(value = "targetRef")
     private String targetRef;
 
     /**
+     * Creates an instance of DocumentWarning class.
+     */
+    public DocumentWarning() {
+    }
+
+    /**
      * Get the code property: Error code.
-     *
+     * 
      * @return the code value.
      */
     public WarningCodeValue getCode() {
@@ -39,7 +48,7 @@ public final class DocumentWarning {
 
     /**
      * Set the code property: Error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the DocumentWarning object itself.
      */
@@ -50,7 +59,7 @@ public final class DocumentWarning {
 
     /**
      * Get the message property: Warning message.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -59,7 +68,7 @@ public final class DocumentWarning {
 
     /**
      * Set the message property: Warning message.
-     *
+     * 
      * @param message the message value to set.
      * @return the DocumentWarning object itself.
      */
@@ -70,7 +79,7 @@ public final class DocumentWarning {
 
     /**
      * Get the targetRef property: A JSON pointer reference indicating the target object.
-     *
+     * 
      * @return the targetRef value.
      */
     public String getTargetRef() {
@@ -79,12 +88,55 @@ public final class DocumentWarning {
 
     /**
      * Set the targetRef property: A JSON pointer reference indicating the target object.
-     *
+     * 
      * @param targetRef the targetRef value to set.
      * @return the DocumentWarning object itself.
      */
     public DocumentWarning setTargetRef(String targetRef) {
         this.targetRef = targetRef;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code == null ? null : this.code.toString());
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("targetRef", this.targetRef);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentWarning from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentWarning if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentWarning.
+     */
+    public static DocumentWarning fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DocumentWarning deserializedDocumentWarning = new DocumentWarning();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedDocumentWarning.code = WarningCodeValue.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedDocumentWarning.message = reader.getString();
+                } else if ("targetRef".equals(fieldName)) {
+                    deserializedDocumentWarning.targetRef = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDocumentWarning;
+        });
     }
 }

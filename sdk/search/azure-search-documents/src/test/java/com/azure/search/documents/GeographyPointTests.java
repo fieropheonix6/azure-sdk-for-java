@@ -3,10 +3,10 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -16,16 +16,20 @@ import com.azure.search.documents.models.SearchOptions;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * This class tests indexes using OData type GeographyPoint.
@@ -34,8 +38,7 @@ public class GeographyPointTests extends SearchTestBase {
     private static final List<SearchField> SEARCH_FIELDS = Arrays.asList(
         new SearchField("id", SearchFieldDataType.STRING).setKey(true),
         new SearchField("geography_point", SearchFieldDataType.GEOGRAPHY_POINT).setFilterable(true).setSortable(true),
-        new SearchField("description", SearchFieldDataType.STRING).setSearchable(true)
-    );
+        new SearchField("description", SearchFieldDataType.STRING).setSearchable(true));
 
     private static final GeoPoint SPACE_NEEDLE = new GeoPoint(-122.348616, 47.622151);
     private static final GeoPoint PIKES_PLACE_MARKET = new GeoPoint(-122.340529, 47.608564);
@@ -47,21 +50,24 @@ public class GeographyPointTests extends SearchTestBase {
     private static SearchIndexClient searchIndexClient;
 
     private SearchClient searchClient;
+    private SearchAsyncClient searchAsyncClient;
 
     private static List<SimpleDocument> getDocuments() {
-        return Arrays.asList(
-            new SimpleDocument("1", SPACE_NEEDLE, "Tourist location"),
+        return Arrays.asList(new SimpleDocument("1", SPACE_NEEDLE, "Tourist location"),
             new SimpleDocument("2", PIKES_PLACE_MARKET, "Tourist location"),
             new SimpleDocument("3", PARADISE_VISITOR_CENTER, "Tourist location"),
             new SimpleDocument("4", EMPIRE_STATE_BUILDER, "Tourist location"));
     }
 
+    private static Map<String, SimpleDocument> getExpectedDocuments() {
+        return getDocuments().stream().collect(Collectors.toMap(SimpleDocument::getId, Function.identity()));
+    }
+
     @BeforeAll
     public static void createSharedIndex() {
         if (TEST_MODE != TestMode.PLAYBACK) {
-            searchIndexClient = new SearchIndexClientBuilder()
-                .endpoint(ENDPOINT)
-                .credential(new AzureKeyCredential(API_KEY))
+            searchIndexClient = new SearchIndexClientBuilder().endpoint(ENDPOINT)
+                .credential(TestHelpers.getTestTokenCredential())
                 .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
                 .buildClient();
 
@@ -83,35 +89,50 @@ public class GeographyPointTests extends SearchTestBase {
     protected void beforeTest() {
         super.beforeTest();
 
-        searchClient = getSearchClientBuilder(INDEX_NAME).buildClient();
+        searchClient = getSearchClientBuilder(INDEX_NAME, true).buildClient();
+        searchAsyncClient = getSearchClientBuilder(INDEX_NAME, false).buildAsyncClient();
     }
 
     @Test
-    public void canRoundTripGeographyPoints() {
-        assert searchClient != null;
+    public void canRoundTripGeographyPointsSync() {
+        Map<String, SimpleDocument> expectedDocuments = getExpectedDocuments();
+        Map<String, SimpleDocument> actualDocuments = new HashMap<>();
 
-        List<SimpleDocument> expectedDocuments = getDocuments();
-        List<SimpleDocument> actualDocuments = new ArrayList<>();
+        actualDocuments.put("1", searchClient.getDocument("1", SimpleDocument.class));
+        actualDocuments.put("2", searchClient.getDocument("2", SimpleDocument.class));
+        actualDocuments.put("3", searchClient.getDocument("3", SimpleDocument.class));
+        actualDocuments.put("4", searchClient.getDocument("4", SimpleDocument.class));
 
-        actualDocuments.add(searchClient.getDocument("1", SimpleDocument.class));
-        actualDocuments.add(searchClient.getDocument("2", SimpleDocument.class));
-        actualDocuments.add(searchClient.getDocument("3", SimpleDocument.class));
-        actualDocuments.add(searchClient.getDocument("4", SimpleDocument.class));
+        compareMaps(expectedDocuments, actualDocuments, Assertions::assertEquals);
 
-        assertEquals(expectedDocuments.size(), actualDocuments.size());
-        for (int i = 0; i < expectedDocuments.size(); i++) {
-            assertEquals(expectedDocuments.get(i), actualDocuments.get(i));
-        }
-
-        actualDocuments = searchClient.search("Tourist location", new SearchOptions().setOrderBy("id"), null)
+        actualDocuments = searchClient.search("Tourist location", new SearchOptions().setOrderBy("id"), Context.NONE)
             .stream()
             .map(doc -> doc.getDocument(SimpleDocument.class))
-            .collect(Collectors.toList());
+            .collect(Collectors.toMap(SimpleDocument::getId, Function.identity()));
 
-        assertEquals(expectedDocuments.size(), actualDocuments.size());
-        for (int i = 0; i < expectedDocuments.size(); i++) {
-            assertEquals(expectedDocuments.get(i), actualDocuments.get(i));
-        }
+        compareMaps(expectedDocuments, actualDocuments, Assertions::assertEquals);
+    }
+
+    @Test
+    public void canRoundTripGeographyPointsAsync() {
+        Map<String, SimpleDocument> expectedDocuments = getExpectedDocuments();
+
+        Mono<Map<String, SimpleDocument>> getDocumentsByIdMono = Flux.just("1", "2", "3", "4")
+            .flatMap(id -> searchAsyncClient.getDocument(id, SimpleDocument.class))
+            .collectMap(SimpleDocument::getId);
+
+        StepVerifier.create(getDocumentsByIdMono)
+            .assertNext(actualDocuments -> compareMaps(expectedDocuments, actualDocuments, Assertions::assertEquals))
+            .verifyComplete();
+
+        Mono<Map<String, SimpleDocument>> searchDocumentsMono
+            = searchAsyncClient.search("Tourist location", new SearchOptions().setOrderBy("id"))
+                .map(doc -> doc.getDocument(SimpleDocument.class))
+                .collectMap(SimpleDocument::getId);
+
+        StepVerifier.create(searchDocumentsMono)
+            .assertNext(actualDocuments -> compareMaps(expectedDocuments, actualDocuments, Assertions::assertEquals))
+            .verifyComplete();
     }
 
     public static final class SimpleDocument {

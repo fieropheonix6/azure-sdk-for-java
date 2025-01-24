@@ -8,34 +8,29 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.AzureCapacity;
 import com.azure.resourcemanager.kusto.models.AzureScaleType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureCapacityTests {
-    @Test
-    public void testDeserialize() {
-        AzureCapacity model =
-            BinaryData
-                .fromString(
-                    "{\"scaleType\":\"manual\",\"minimum\":1762722977,\"maximum\":611347280,\"default\":168254793}")
-                .toObject(AzureCapacity.class);
-        Assertions.assertEquals(AzureScaleType.MANUAL, model.scaleType());
-        Assertions.assertEquals(1762722977, model.minimum());
-        Assertions.assertEquals(611347280, model.maximum());
-        Assertions.assertEquals(168254793, model.defaultProperty());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureCapacity model = BinaryData
+            .fromString("{\"scaleType\":\"none\",\"minimum\":10985850,\"maximum\":107340083,\"default\":1397433575}")
+            .toObject(AzureCapacity.class);
+        Assertions.assertEquals(AzureScaleType.NONE, model.scaleType());
+        Assertions.assertEquals(10985850, model.minimum());
+        Assertions.assertEquals(107340083, model.maximum());
+        Assertions.assertEquals(1397433575, model.defaultProperty());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureCapacity model =
-            new AzureCapacity()
-                .withScaleType(AzureScaleType.MANUAL)
-                .withMinimum(1762722977)
-                .withMaximum(611347280)
-                .withDefaultProperty(168254793);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureCapacity model = new AzureCapacity().withScaleType(AzureScaleType.NONE)
+            .withMinimum(10985850)
+            .withMaximum(107340083)
+            .withDefaultProperty(1397433575);
         model = BinaryData.fromObject(model).toObject(AzureCapacity.class);
-        Assertions.assertEquals(AzureScaleType.MANUAL, model.scaleType());
-        Assertions.assertEquals(1762722977, model.minimum());
-        Assertions.assertEquals(611347280, model.maximum());
-        Assertions.assertEquals(168254793, model.defaultProperty());
+        Assertions.assertEquals(AzureScaleType.NONE, model.scaleType());
+        Assertions.assertEquals(10985850, model.minimum());
+        Assertions.assertEquals(107340083, model.maximum());
+        Assertions.assertEquals(1397433575, model.defaultProperty());
     }
 }

@@ -12,7 +12,6 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeed;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedDimension;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType;
-import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionSettings;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedOptions;
@@ -23,6 +22,7 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeedStatus;
 import com.azure.ai.metricsadvisor.administration.models.DataSourceCredentialEntity;
 import com.azure.ai.metricsadvisor.administration.models.DataSourceServicePrincipalInKeyVault;
 import com.azure.ai.metricsadvisor.administration.models.DetectionConditionOperator;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.administration.models.EmailNotificationHook;
 import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
@@ -50,6 +50,7 @@ import com.azure.ai.metricsadvisor.administration.models.WebNotificationHook;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.util.Context;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -75,6 +76,19 @@ public class MetricsAdvisorAdministrationAsyncClientJavaDocCodeSnippets {
                 .endpoint("{endpoint}")
                 .buildAsyncClient();
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation
+    }
+
+    /**
+     * Code snippet for creating a {@link MetricsAdvisorAdministrationAsyncClient} with AAD
+     */
+    public void createMetricAdvisorAdministrationAsyncClientWithAAD() {
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation.withAAD
+        MetricsAdvisorAdministrationAsyncClient metricsAdvisorAdminAsyncClient =
+            new MetricsAdvisorAdministrationClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{endpoint}")
+                .buildAsyncClient();
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation.withAAD
     }
 
     /**

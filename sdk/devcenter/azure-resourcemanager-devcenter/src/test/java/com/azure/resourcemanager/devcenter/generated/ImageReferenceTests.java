@@ -7,34 +7,19 @@ package com.azure.resourcemanager.devcenter.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.ImageReference;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ImageReferenceTests {
-    @Test
-    public void testDeserialize() {
-        ImageReference model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"gwyzm\",\"exactVersion\":\"xongmtsavjcbpwxq\",\"publisher\":\"rknftguvriuhprwm\",\"offer\":\"vxqtayriwwroyqbe\",\"sku\":\"mcqibycnojv\"}")
-                .toObject(ImageReference.class);
-        Assertions.assertEquals("gwyzm", model.id());
-        Assertions.assertEquals("rknftguvriuhprwm", model.publisher());
-        Assertions.assertEquals("vxqtayriwwroyqbe", model.offer());
-        Assertions.assertEquals("mcqibycnojv", model.sku());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ImageReference model = BinaryData.fromString("{\"id\":\"yhejhzisxgfp\",\"exactVersion\":\"olppvksrpqvujz\"}")
+            .toObject(ImageReference.class);
+        Assertions.assertEquals("yhejhzisxgfp", model.id());
     }
 
-    @Test
-    public void testSerialize() {
-        ImageReference model =
-            new ImageReference()
-                .withId("gwyzm")
-                .withPublisher("rknftguvriuhprwm")
-                .withOffer("vxqtayriwwroyqbe")
-                .withSku("mcqibycnojv");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ImageReference model = new ImageReference().withId("yhejhzisxgfp");
         model = BinaryData.fromObject(model).toObject(ImageReference.class);
-        Assertions.assertEquals("gwyzm", model.id());
-        Assertions.assertEquals("rknftguvriuhprwm", model.publisher());
-        Assertions.assertEquals("vxqtayriwwroyqbe", model.offer());
-        Assertions.assertEquals("mcqibycnojv", model.sku());
+        Assertions.assertEquals("yhejhzisxgfp", model.id());
     }
 }

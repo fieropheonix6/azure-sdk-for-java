@@ -9,37 +9,32 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.DpmJobTaskDetails
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DpmJobTaskDetailsTests {
-    @Test
-    public void testDeserialize() {
-        DpmJobTaskDetails model =
-            BinaryData
-                .fromString(
-                    "{\"taskId\":\"lhslnelxieixyn\",\"startTime\":\"2021-05-18T07:09:15Z\",\"endTime\":\"2021-03-23T01:16:36Z\",\"duration\":\"PT96H12M52S\",\"status\":\"ojphslhc\"}")
-                .toObject(DpmJobTaskDetails.class);
-        Assertions.assertEquals("lhslnelxieixyn", model.taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-18T07:09:15Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-23T01:16:36Z"), model.endTime());
-        Assertions.assertEquals(Duration.parse("PT96H12M52S"), model.duration());
-        Assertions.assertEquals("ojphslhc", model.status());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DpmJobTaskDetails model = BinaryData.fromString(
+            "{\"taskId\":\"ctbrxkjzwrgxffm\",\"startTime\":\"2021-08-27T19:17:59Z\",\"endTime\":\"2021-08-28T12:30:32Z\",\"duration\":\"PT140H50M53S\",\"status\":\"ozxwopd\"}")
+            .toObject(DpmJobTaskDetails.class);
+        Assertions.assertEquals("ctbrxkjzwrgxffm", model.taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-27T19:17:59Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T12:30:32Z"), model.endTime());
+        Assertions.assertEquals(Duration.parse("PT140H50M53S"), model.duration());
+        Assertions.assertEquals("ozxwopd", model.status());
     }
 
-    @Test
-    public void testSerialize() {
-        DpmJobTaskDetails model =
-            new DpmJobTaskDetails()
-                .withTaskId("lhslnelxieixyn")
-                .withStartTime(OffsetDateTime.parse("2021-05-18T07:09:15Z"))
-                .withEndTime(OffsetDateTime.parse("2021-03-23T01:16:36Z"))
-                .withDuration(Duration.parse("PT96H12M52S"))
-                .withStatus("ojphslhc");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DpmJobTaskDetails model = new DpmJobTaskDetails().withTaskId("ctbrxkjzwrgxffm")
+            .withStartTime(OffsetDateTime.parse("2021-08-27T19:17:59Z"))
+            .withEndTime(OffsetDateTime.parse("2021-08-28T12:30:32Z"))
+            .withDuration(Duration.parse("PT140H50M53S"))
+            .withStatus("ozxwopd");
         model = BinaryData.fromObject(model).toObject(DpmJobTaskDetails.class);
-        Assertions.assertEquals("lhslnelxieixyn", model.taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-18T07:09:15Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-23T01:16:36Z"), model.endTime());
-        Assertions.assertEquals(Duration.parse("PT96H12M52S"), model.duration());
-        Assertions.assertEquals("ojphslhc", model.status());
+        Assertions.assertEquals("ctbrxkjzwrgxffm", model.taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-27T19:17:59Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T12:30:32Z"), model.endTime());
+        Assertions.assertEquals(Duration.parse("PT140H50M53S"), model.duration());
+        Assertions.assertEquals("ozxwopd", model.status());
     }
 }

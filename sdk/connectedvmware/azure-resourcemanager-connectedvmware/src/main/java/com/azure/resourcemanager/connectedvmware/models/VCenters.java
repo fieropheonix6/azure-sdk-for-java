@@ -8,27 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of VCenters. */
+/**
+ * Resource collection API of VCenters.
+ */
 public interface VCenters {
     /**
      * Gets a vCenter.
-     *
-     * <p>Implements vCenter GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param vcenterName Name of the vCenter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the vCenter.
-     */
-    VCenter getByResourceGroup(String resourceGroupName, String vcenterName);
-
-    /**
-     * Gets a vCenter.
-     *
-     * <p>Implements vCenter GET method.
-     *
+     * 
+     * Implements vCenter GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param context The context to associate with this operation.
@@ -40,24 +28,24 @@ public interface VCenters {
     Response<VCenter> getByResourceGroupWithResponse(String resourceGroupName, String vcenterName, Context context);
 
     /**
-     * Deletes an vCenter.
-     *
-     * <p>Implements vCenter DELETE method.
-     *
+     * Gets a vCenter.
+     * 
+     * Implements vCenter GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the vCenter.
      */
-    void delete(String resourceGroupName, String vcenterName, Boolean force);
+    VCenter getByResourceGroup(String resourceGroupName, String vcenterName);
 
     /**
      * Deletes an vCenter.
-     *
-     * <p>Implements vCenter DELETE method.
-     *
+     * 
+     * Implements vCenter DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,9 +56,9 @@ public interface VCenters {
 
     /**
      * Deletes an vCenter.
-     *
-     * <p>Implements vCenter DELETE method.
-     *
+     * 
+     * Implements vCenter DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param force Whether force delete was specified.
@@ -83,9 +71,9 @@ public interface VCenters {
 
     /**
      * Implements GET vCenters in a subscription.
-     *
-     * <p>List of vCenters in a subscription.
-     *
+     * 
+     * List of vCenters in a subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of VCenters as paginated response with {@link PagedIterable}.
@@ -94,9 +82,9 @@ public interface VCenters {
 
     /**
      * Implements GET vCenters in a subscription.
-     *
-     * <p>List of vCenters in a subscription.
-     *
+     * 
+     * List of vCenters in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,9 +95,9 @@ public interface VCenters {
 
     /**
      * Implements GET vCenters in a resource group.
-     *
-     * <p>List of vCenters in a resource group.
-     *
+     * 
+     * List of vCenters in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,9 +108,9 @@ public interface VCenters {
 
     /**
      * Implements GET vCenters in a resource group.
-     *
-     * <p>List of vCenters in a resource group.
-     *
+     * 
+     * List of vCenters in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,9 +122,9 @@ public interface VCenters {
 
     /**
      * Gets a vCenter.
-     *
-     * <p>Implements vCenter GET method.
-     *
+     * 
+     * Implements vCenter GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -147,9 +135,9 @@ public interface VCenters {
 
     /**
      * Gets a vCenter.
-     *
-     * <p>Implements vCenter GET method.
-     *
+     * 
+     * Implements vCenter GET method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -161,9 +149,9 @@ public interface VCenters {
 
     /**
      * Deletes an vCenter.
-     *
-     * <p>Implements vCenter DELETE method.
-     *
+     * 
+     * Implements vCenter DELETE method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -173,9 +161,9 @@ public interface VCenters {
 
     /**
      * Deletes an vCenter.
-     *
-     * <p>Implements vCenter DELETE method.
-     *
+     * 
+     * Implements vCenter DELETE method.
+     * 
      * @param id the resource ID.
      * @param force Whether force delete was specified.
      * @param context The context to associate with this operation.
@@ -187,7 +175,7 @@ public interface VCenters {
 
     /**
      * Begins definition for a new VCenter resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new VCenter definition.
      */

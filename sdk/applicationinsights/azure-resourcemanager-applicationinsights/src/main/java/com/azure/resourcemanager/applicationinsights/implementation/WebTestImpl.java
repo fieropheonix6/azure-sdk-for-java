@@ -12,6 +12,8 @@ import com.azure.resourcemanager.applicationinsights.models.WebTest;
 import com.azure.resourcemanager.applicationinsights.models.WebTestGeolocation;
 import com.azure.resourcemanager.applicationinsights.models.WebTestKind;
 import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesConfiguration;
+import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesRequest;
+import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesValidationRules;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -99,6 +101,14 @@ public final class WebTestImpl implements WebTest, WebTest.Definition, WebTest.U
         return this.innerModel().provisioningState();
     }
 
+    public WebTestPropertiesRequest request() {
+        return this.innerModel().request();
+    }
+
+    public WebTestPropertiesValidationRules validationRules() {
+        return this.innerModel().validationRules();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -131,22 +141,18 @@ public final class WebTestImpl implements WebTest, WebTest.Definition, WebTest.U
     }
 
     public WebTest create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebTests()
-                .createOrUpdateWithResponse(resourceGroupName, webTestName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebTests()
+            .createOrUpdateWithResponse(resourceGroupName, webTestName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public WebTest create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebTests()
-                .createOrUpdateWithResponse(resourceGroupName, webTestName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebTests()
+            .createOrUpdateWithResponse(resourceGroupName, webTestName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -162,51 +168,42 @@ public final class WebTestImpl implements WebTest, WebTest.Definition, WebTest.U
     }
 
     public WebTest apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebTests()
-                .updateTagsWithResponse(resourceGroupName, webTestName, updateWebTestTags, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebTests()
+            .updateTagsWithResponse(resourceGroupName, webTestName, updateWebTestTags, Context.NONE)
+            .getValue();
         return this;
     }
 
     public WebTest apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebTests()
-                .updateTagsWithResponse(resourceGroupName, webTestName, updateWebTestTags, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebTests()
+            .updateTagsWithResponse(resourceGroupName, webTestName, updateWebTestTags, context)
+            .getValue();
         return this;
     }
 
-    WebTestImpl(
-        WebTestInner innerObject,
+    WebTestImpl(WebTestInner innerObject,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.webTestName = Utils.getValueFromIdByName(innerObject.id(), "webtests");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.webTestName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "webtests");
     }
 
     public WebTest refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebTests()
-                .getByResourceGroupWithResponse(resourceGroupName, webTestName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebTests()
+            .getByResourceGroupWithResponse(resourceGroupName, webTestName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public WebTest refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebTests()
-                .getByResourceGroupWithResponse(resourceGroupName, webTestName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebTests()
+            .getByResourceGroupWithResponse(resourceGroupName, webTestName, context)
+            .getValue();
         return this;
     }
 
@@ -282,6 +279,16 @@ public final class WebTestImpl implements WebTest, WebTest.Definition, WebTest.U
 
     public WebTestImpl withConfiguration(WebTestPropertiesConfiguration configuration) {
         this.innerModel().withConfiguration(configuration);
+        return this;
+    }
+
+    public WebTestImpl withRequest(WebTestPropertiesRequest request) {
+        this.innerModel().withRequest(request);
+        return this;
+    }
+
+    public WebTestImpl withValidationRules(WebTestPropertiesValidationRules validationRules) {
+        this.innerModel().withValidationRules(validationRules);
         return this;
     }
 

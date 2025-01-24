@@ -6,35 +6,41 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Azure Active Directory Application. */
+/**
+ * Azure Active Directory Application.
+ */
 @Fluent
-public final class AzureActiveDirectoryApp {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureActiveDirectoryApp.class);
-
+public final class AzureActiveDirectoryApp implements JsonSerializable<AzureActiveDirectoryApp> {
     /*
      * Application ID of the Azure Active Directory Application
      */
-    @JsonProperty(value = "applicationId", required = true)
     private String applicationId;
 
     /*
      * Key used to authenticate to the Azure Active Directory Application
      */
-    @JsonProperty(value = "appKey", required = true)
     private String appKey;
 
     /*
      * Tenant id of the customer
      */
-    @JsonProperty(value = "tenantId", required = true)
     private String tenantId;
 
     /**
+     * Creates an instance of AzureActiveDirectoryApp class.
+     */
+    public AzureActiveDirectoryApp() {
+    }
+
+    /**
      * Get the applicationId property: Application ID of the Azure Active Directory Application.
-     *
+     * 
      * @return the applicationId value.
      */
     public String applicationId() {
@@ -43,7 +49,7 @@ public final class AzureActiveDirectoryApp {
 
     /**
      * Set the applicationId property: Application ID of the Azure Active Directory Application.
-     *
+     * 
      * @param applicationId the applicationId value to set.
      * @return the AzureActiveDirectoryApp object itself.
      */
@@ -54,7 +60,7 @@ public final class AzureActiveDirectoryApp {
 
     /**
      * Get the appKey property: Key used to authenticate to the Azure Active Directory Application.
-     *
+     * 
      * @return the appKey value.
      */
     public String appKey() {
@@ -63,7 +69,7 @@ public final class AzureActiveDirectoryApp {
 
     /**
      * Set the appKey property: Key used to authenticate to the Azure Active Directory Application.
-     *
+     * 
      * @param appKey the appKey value to set.
      * @return the AzureActiveDirectoryApp object itself.
      */
@@ -74,7 +80,7 @@ public final class AzureActiveDirectoryApp {
 
     /**
      * Get the tenantId property: Tenant id of the customer.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -83,7 +89,7 @@ public final class AzureActiveDirectoryApp {
 
     /**
      * Set the tenantId property: Tenant id of the customer.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the AzureActiveDirectoryApp object itself.
      */
@@ -94,26 +100,68 @@ public final class AzureActiveDirectoryApp {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (applicationId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property applicationId in model AzureActiveDirectoryApp"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property applicationId in model AzureActiveDirectoryApp"));
         }
         if (appKey() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property appKey in model AzureActiveDirectoryApp"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property appKey in model AzureActiveDirectoryApp"));
         }
         if (tenantId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property tenantId in model AzureActiveDirectoryApp"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property tenantId in model AzureActiveDirectoryApp"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureActiveDirectoryApp.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("applicationId", this.applicationId);
+        jsonWriter.writeStringField("appKey", this.appKey);
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureActiveDirectoryApp from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureActiveDirectoryApp if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureActiveDirectoryApp.
+     */
+    public static AzureActiveDirectoryApp fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureActiveDirectoryApp deserializedAzureActiveDirectoryApp = new AzureActiveDirectoryApp();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("applicationId".equals(fieldName)) {
+                    deserializedAzureActiveDirectoryApp.applicationId = reader.getString();
+                } else if ("appKey".equals(fieldName)) {
+                    deserializedAzureActiveDirectoryApp.appKey = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedAzureActiveDirectoryApp.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureActiveDirectoryApp;
+        });
     }
 }

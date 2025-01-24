@@ -7,6 +7,10 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.metrics.Meter;
+import com.azure.core.util.metrics.MeterProvider;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -109,6 +113,11 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD = "AZURE_CLIENT_CERTIFICATE_PASSWORD";
 
     /**
+     * Flag to enable sending the certificate chain in x5c header to support subject name / issuer based authentication.
+     */
+    public static final String PROPERTY_AZURE_CLIENT_SEND_CERTIFICATE_CHAIN = "AZURE_CLIENT_SEND_CERTIFICATE_CHAIN";
+
+    /**
      * Flag to disable the CP1 client capabilities in Azure Identity Token credentials.
      */
     public static final String PROPERTY_AZURE_IDENTITY_DISABLE_CP1 = "AZURE_IDENTITY_DISABLE_CP1";
@@ -159,10 +168,37 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_TRACING_DISABLED = "AZURE_TRACING_DISABLED";
 
     /**
+     * Sets the name of the {@link TracerProvider} implementation that should be used to construct instances of
+     * {@link Tracer}.
+     * <p>
+     * The name must be the full class name, e.g. {@code com.azure.core.tracing.opentelemetry.OpenTelemetryTracerProvider} and not
+     * {@code OpenTelemetryTracerProvider}.
+     * <p>
+     * If the value isn't set or is an empty string the first {@link TracerProvider} resolved by {@link java.util.ServiceLoader} will be
+     * used to create an instance of {@link Tracer}. If the value is set and doesn't match any
+     * {@link TracerProvider} resolved by {@link java.util.ServiceLoader} an {@link IllegalStateException} will be thrown when
+     * attempting to create an instance of {@link TracerProvider}.
+     */
+    public static final String PROPERTY_AZURE_TRACING_IMPLEMENTATION = "AZURE_TRACING_IMPLEMENTATION";
+
+    /**
      * Disables metrics.
      */
     public static final String PROPERTY_AZURE_METRICS_DISABLED = "AZURE_METRICS_DISABLED";
 
+    /**
+     * Sets the name of the {@link MeterProvider} implementation that should be used to construct instances of
+     * {@link Meter}.
+     * <p>
+     * The name must be the full class name, e.g. {@code com.azure.core.tracing.opentelemetry.OpenTelemetryMeterProvider} and not
+     * {@code OpenTelemetryMeterProvider}.
+     * <p>
+     * If the value isn't set or is an empty string the first {@link MeterProvider} resolved by {@link java.util.ServiceLoader} will be
+     * used to create an instance of {@link Meter}. If the value is set and doesn't match any
+     * {@link MeterProvider} resolved by {@link java.util.ServiceLoader} an {@link IllegalStateException} will be thrown when
+     * attempting to create an instance of {@link MeterProvider}.
+     */
+    public static final String PROPERTY_AZURE_METRICS_IMPLEMENTATION = "AZURE_METRICS_IMPLEMENTATION";
 
     /**
      * Sets the default number of times a request will be retried, if it passes the conditions for retrying, before it
@@ -206,9 +242,9 @@ public class Configuration implements Cloneable {
      * {@code NettyAsyncHttpClientProvider}, to disambiguate multiple providers with the same name but from different
      * packages.
      * <p>
-     * If the value isn't set or is an empty string the first {@link HttpClientProvider} found on the class path will
-     * be used to create an instance of {@link HttpClient}. If the value is set and doesn't match any
-     * {@link HttpClientProvider} found on the class path an {@link IllegalStateException} will be thrown when
+     * If the value isn't set or is an empty string the first {@link HttpClientProvider} resolved by {@link java.util.ServiceLoader} will be
+     * used to create an instance of {@link HttpClient}. If the value is set and doesn't match any
+     * {@link HttpClientProvider} resolved by {@link java.util.ServiceLoader} an {@link IllegalStateException} will be thrown when
      * attempting to create an instance of {@link HttpClient}.
      */
     public static final String PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION = "AZURE_HTTP_CLIENT_IMPLEMENTATION";
@@ -235,8 +271,8 @@ public class Configuration implements Cloneable {
     /**
      * Constructs a configuration containing the known Azure properties constants.
      *
-     * @deprecated Use {@link ConfigurationBuilder} and {@link ConfigurationSource} that allow to
-     * provide all properties before creating configuration and keep it immutable.
+     * @deprecated Use {@link ConfigurationBuilder} and {@link ConfigurationSource} that allow to provide all properties
+     * before creating configuration and keep it immutable.
      */
     @Deprecated
     public Configuration() {
@@ -244,29 +280,34 @@ public class Configuration implements Cloneable {
     }
 
     /**
-     * Constructs a configuration containing the known Azure properties constants. Use {@link ConfigurationBuilder} to create instance of {@link Configuration}.
+     * Constructs a configuration containing the known Azure properties constants. Use {@link ConfigurationBuilder} to
+     * create instance of {@link Configuration}.
      *
      * @param configurationSource Configuration property source.
      * @param environmentConfiguration instance of {@link EnvironmentConfiguration} to mock environment for testing.
      * @param path Absolute path of current configuration section for logging and diagnostics purposes.
      * @param sharedConfiguration Instance of shared {@link Configuration} section to retrieve shared properties.
      */
-    Configuration(ConfigurationSource configurationSource, EnvironmentConfiguration environmentConfiguration, String path, Configuration sharedConfiguration) {
+    Configuration(ConfigurationSource configurationSource, EnvironmentConfiguration environmentConfiguration,
+        String path, Configuration sharedConfiguration) {
         this(readConfigurations(configurationSource, path), environmentConfiguration, path, sharedConfiguration);
     }
 
     /**
-     * Constructs a configuration containing the known Azure properties constants. Use {@link ConfigurationBuilder} to create instance of {@link Configuration}.
+     * Constructs a configuration containing the known Azure properties constants. Use {@link ConfigurationBuilder} to
+     * create instance of {@link Configuration}.
      *
      * @param configurations map of all properties.
      * @param environmentConfiguration instance of {@link EnvironmentConfiguration} to mock environment for testing.
      * @param path Absolute path of current configuration section for logging and diagnostics purposes.
      * @param sharedConfiguration Instance of shared {@link Configuration} section to retrieve shared properties.
      */
-    private Configuration(Map<String, String> configurations, EnvironmentConfiguration environmentConfiguration, String path, Configuration sharedConfiguration) {
+    private Configuration(Map<String, String> configurations, EnvironmentConfiguration environmentConfiguration,
+        String path, Configuration sharedConfiguration) {
         this.configurations = configurations;
         this.isEmpty = configurations.isEmpty();
-        this.environmentConfiguration = Objects.requireNonNull(environmentConfiguration, "'environmentConfiguration' cannot be null");
+        this.environmentConfiguration
+            = Objects.requireNonNull(environmentConfiguration, "'environmentConfiguration' cannot be null");
         this.path = path;
         this.sharedConfiguration = sharedConfiguration;
     }
@@ -299,8 +340,8 @@ public class Configuration implements Cloneable {
      * Gets the value of system property or environment variable converted to given primitive {@code T} using
      * corresponding {@code parse} method on this type.
      *
-     * Use {@link Configuration#get(ConfigurationProperty)} overload to get explicit configuration or
-     * environment configuration from specific source.
+     * Use {@link Configuration#get(ConfigurationProperty)} overload to get explicit configuration or environment
+     * configuration from specific source.
      *
      * <p>
      * This method first checks the values previously loaded from the environment, if the configuration is found there
@@ -354,9 +395,8 @@ public class Configuration implements Cloneable {
      * @param name Name of the configuration.
      * @param value Value of the configuration.
      * @return The updated Configuration object.
-     *
-     * @deprecated Use {@link ConfigurationBuilder} and {@link ConfigurationSource} to
-     * provide all properties before creating configuration.
+     * @deprecated Use {@link ConfigurationBuilder} and {@link ConfigurationSource} to provide all properties before
+     * creating configuration.
      */
     @Deprecated
     public Configuration put(String name, String value) {
@@ -371,9 +411,8 @@ public class Configuration implements Cloneable {
      *
      * @param name Name of the configuration.
      * @return The configuration if it previously existed, otherwise null.
-     *
-     * @deprecated Use {@link ConfigurationBuilder} and {@link ConfigurationSource} to
-     * provide all properties before creating configuration.
+     * @deprecated Use {@link ConfigurationBuilder} and {@link ConfigurationSource} to provide all properties before
+     * creating configuration.
      */
     @Deprecated
     public String remove(String name) {
@@ -382,9 +421,9 @@ public class Configuration implements Cloneable {
 
     /**
      * Determines if the system property or environment variable is defined.
-     *
-     * Use {@link Configuration#contains(ConfigurationProperty)} overload to get explicit configuration or
-     * environment configuration from specific source.
+     * <p>
+     * Use {@link Configuration#contains(ConfigurationProperty)} overload to get explicit configuration or environment
+     * configuration from specific source.
      *
      * <p>
      * This only checks against values previously loaded into the Configuration object, this won't inspect the
@@ -406,12 +445,14 @@ public class Configuration implements Cloneable {
     @SuppressWarnings("CloneDoesntCallSuperClone")
     @Deprecated
     public Configuration clone() {
-        return new Configuration(configurations, new EnvironmentConfiguration(environmentConfiguration), path, sharedConfiguration);
+        return new Configuration(configurations, new EnvironmentConfiguration(environmentConfiguration), path,
+            sharedConfiguration);
     }
 
     /**
-     * Checks if configuration contains the property. If property can be shared between clients, checks this {@code Configuration} and
-     * falls back to shared section. If property has aliases, system property or environment variable defined, checks them as well.
+     * Checks if configuration contains the property. If property can be shared between clients, checks this
+     * {@code Configuration} and falls back to shared section. If property has aliases, system property or environment
+     * variable defined, checks them as well.
      * <p>
      * Value is not validated.
      *
@@ -454,7 +495,7 @@ public class Configuration implements Cloneable {
      *
      * @param property instance.
      * @param <T> Type that the configuration is converted to if found.
-     * @return true if property is available, false otherwise.
+     * @return The value of the property if it exists, otherwise the default value of the property.
      * @throws NullPointerException when property instance is null.
      * @throws IllegalArgumentException when required property is missing.
      * @throws RuntimeException when property value conversion (and validation) throws.
@@ -516,7 +557,7 @@ public class Configuration implements Cloneable {
         return null;
     }
 
-    private <T> String getWithFallback(ConfigurationProperty<T> property) {
+    private String getWithFallback(ConfigurationProperty<?> property) {
         String name = property.getName();
         if (!CoreUtils.isNullOrEmpty(name)) {
             String value = getLocalProperty(name, property.getAliases(), property.getValueSanitizer());
@@ -531,31 +572,28 @@ public class Configuration implements Cloneable {
                 }
             }
         }
-        return getFromEnvironment(property);
+        return getFromEnvironment(property.getSystemPropertyName(), property.getEnvironmentVariableName(),
+            property.getValueSanitizer());
     }
 
-    private <T> String getFromEnvironment(ConfigurationProperty<T> property) {
-        String systemProperty = property.getSystemPropertyName();
+    String getFromEnvironment(String systemProperty, String envVar, Function<String, String> valueSanitizer) {
         if (systemProperty != null) {
             final String value = environmentConfiguration.getSystemProperty(systemProperty);
             if (value != null) {
                 LOGGER.atVerbose()
-                    .addKeyValue("name", property.getName())
                     .addKeyValue("systemProperty", systemProperty)
-                    .addKeyValue("value", () -> property.getValueSanitizer().apply(value))
+                    .addKeyValue("value", () -> valueSanitizer.apply(value))
                     .log("Got property from system property.");
                 return value;
             }
         }
 
-        String envVar = property.getEnvironmentVariableName();
         if (envVar != null) {
             final String value = environmentConfiguration.getEnvironmentVariable(envVar);
             if (value != null) {
                 LOGGER.atVerbose()
-                    .addKeyValue("name", property.getName())
                     .addKeyValue("envVar", envVar)
-                    .addKeyValue("value", () -> property.getValueSanitizer().apply(value))
+                    .addKeyValue("value", () -> valueSanitizer.apply(value))
                     .log("Got property from environment variable.");
                 return value;
             }
@@ -578,16 +616,12 @@ public class Configuration implements Cloneable {
             String key = CoreUtils.isNullOrEmpty(path) ? prop.getKey() : prop.getKey().substring(path.length() + 1);
             String value = prop.getValue();
 
-            LOGGER.atVerbose()
-                .addKeyValue("name", prop.getKey())
-                .log("Got property from configuration source.");
+            LOGGER.atVerbose().addKeyValue("name", prop.getKey()).log("Got property from configuration source.");
 
             if (key != null && value != null) {
                 props.put(key, value);
             } else {
-                LOGGER.atWarning()
-                    .addKeyValue("name", prop.getKey())
-                    .log("Key or value is null, property is ignored.");
+                LOGGER.atWarning().addKeyValue("name", prop.getKey()).log("Key or value is null, property is ignored.");
             }
         }
 
@@ -595,8 +629,8 @@ public class Configuration implements Cloneable {
     }
 
     /**
-     * Attempts to convert the configuration value to given primitive {@code T} using
-     * corresponding {@code parse} method on this type.
+     * Attempts to convert the configuration value to given primitive {@code T} using corresponding {@code parse} method
+     * on this type.
      *
      * <p><b>Following types are supported:</b></p>
      * <ul>

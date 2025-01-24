@@ -43,24 +43,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualMachineImageTemplatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualMachineImageTemplatesClient.
+ */
 public final class VirtualMachineImageTemplatesClientImpl implements VirtualMachineImageTemplatesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VirtualMachineImageTemplatesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ImageBuilderClientImpl client;
 
     /**
      * Initializes an instance of VirtualMachineImageTemplatesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachineImageTemplatesClientImpl(ImageBuilderClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    VirtualMachineImageTemplatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(VirtualMachineImageTemplatesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -70,282 +74,193 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @Host("{$host}")
     @ServiceInterface(name = "ImageBuilderClientVi")
-    private interface VirtualMachineImageTemplatesService {
-        @Headers({"Content-Type: application/json"})
+    public interface VirtualMachineImageTemplatesService {
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.VirtualMachineImages/imageTemplates")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ImageTemplateListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ImageTemplateListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.VirtualMachineImages/imageTemplates")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ImageTemplateListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ImageTemplateListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("imageTemplateName") String imageTemplateName,
-            @BodyParam("application/json") ImageTemplateInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ImageTemplateInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("imageTemplateName") String imageTemplateName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("imageTemplateName") String imageTemplateName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ImageTemplateUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ImageTemplateInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<ImageTemplateInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("imageTemplateName") String imageTemplateName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("imageTemplateName") String imageTemplateName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("imageTemplateName") String imageTemplateName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("imageTemplateName") String imageTemplateName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/run")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/run")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> run(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> run(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("imageTemplateName") String imageTemplateName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("imageTemplateName") String imageTemplateName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/cancel")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/cancel")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> cancel(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> cancel(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("imageTemplateName") String imageTemplateName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("imageTemplateName") String imageTemplateName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/runOutputs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/runOutputs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RunOutputCollection>> listRunOutputs(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<RunOutputCollection>> listRunOutputs(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("imageTemplateName") String imageTemplateName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("imageTemplateName") String imageTemplateName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/runOutputs/{runOutputName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/runOutputs/{runOutputName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RunOutputInner>> getRunOutput(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<RunOutputInner>> getRunOutput(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("imageTemplateName") String imageTemplateName,
-            @PathParam("runOutputName") String runOutputName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("imageTemplateName") String imageTemplateName, @PathParam("runOutputName") String runOutputName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ImageTemplateListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ImageTemplateListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ImageTemplateListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RunOutputCollection>> listRunOutputsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets information about the VM image templates associated with the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the VM image templates associated with the subscription along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return information about the VM image templates associated with the subscription along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageTemplateInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ImageTemplateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ImageTemplateInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about the VM image templates associated with the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the VM image templates associated with the subscription along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return information about the VM image templates associated with the subscription along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageTemplateInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets information about the VM image templates associated with the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the subscription as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ImageTemplateInner> listAsync() {
@@ -354,27 +269,27 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
 
     /**
      * Gets information about the VM image templates associated with the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the subscription as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ImageTemplateInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets information about the VM image templates associated with the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the subscription as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageTemplateInner> list() {
@@ -383,13 +298,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
 
     /**
      * Gets information about the VM image templates associated with the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the subscription as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageTemplateInner> list(Context context) {
@@ -398,151 +313,114 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
 
     /**
      * Gets information about the VM image templates associated with the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the VM image templates associated with the specified resource group along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return information about the VM image templates associated with the specified resource group along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageTemplateInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ImageTemplateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ImageTemplateInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about the VM image templates associated with the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the VM image templates associated with the specified resource group along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return information about the VM image templates associated with the specified resource group along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ImageTemplateInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<ImageTemplateInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets information about the VM image templates associated with the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the specified resource group as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ImageTemplateInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets information about the VM image templates associated with the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the specified resource group as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ImageTemplateInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets information about the VM image templates associated with the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the specified resource group as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageTemplateInner> listByResourceGroup(String resourceGroupName) {
@@ -551,14 +429,14 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
 
     /**
      * Gets information about the VM image templates associated with the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the VM image templates associated with the specified resource group as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageTemplateInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -567,30 +445,26 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
 
     /**
      * Create or update a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String imageTemplateName, ImageTemplateInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String imageTemplateName, ImageTemplateInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -607,24 +481,14 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            imageTemplateName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
@@ -632,23 +496,19 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String imageTemplateName, ImageTemplateInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String imageTemplateName, ImageTemplateInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -665,21 +525,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                imageTemplateName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, parameters, accept, context);
     }
 
     /**
      * Create or update a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
@@ -687,26 +539,20 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of image template is an ARM resource managed by
-     *     Microsoft.VirtualMachineImages provider.
+     * Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ImageTemplateInner>, ImageTemplateInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String imageTemplateName, ImageTemplateInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, imageTemplateName, parameters);
-        return this
-            .client
-            .<ImageTemplateInner, ImageTemplateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ImageTemplateInner.class,
-                ImageTemplateInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<ImageTemplateInner>, ImageTemplateInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String imageTemplateName, ImageTemplateInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, imageTemplateName, parameters);
+        return this.client.<ImageTemplateInner, ImageTemplateInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ImageTemplateInner.class, ImageTemplateInner.class, this.client.getContext());
     }
 
     /**
      * Create or update a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
@@ -715,23 +561,21 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of image template is an ARM resource managed by
-     *     Microsoft.VirtualMachineImages provider.
+     * Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ImageTemplateInner>, ImageTemplateInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String imageTemplateName, ImageTemplateInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, imageTemplateName, parameters, context);
-        return this
-            .client
-            .<ImageTemplateInner, ImageTemplateInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ImageTemplateInner.class, ImageTemplateInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, imageTemplateName, parameters, context);
+        return this.client.<ImageTemplateInner, ImageTemplateInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ImageTemplateInner.class, ImageTemplateInner.class, context);
     }
 
     /**
      * Create or update a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
@@ -739,17 +583,17 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of image template is an ARM resource managed by
-     *     Microsoft.VirtualMachineImages provider.
+     * Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginCreateOrUpdate(
-        String resourceGroupName, String imageTemplateName, ImageTemplateInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, imageTemplateName, parameters).getSyncPoller();
+    public SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginCreateOrUpdate(String resourceGroupName,
+        String imageTemplateName, ImageTemplateInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, imageTemplateName, parameters).getSyncPoller();
     }
 
     /**
      * Create or update a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
@@ -758,17 +602,17 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of image template is an ARM resource managed by
-     *     Microsoft.VirtualMachineImages provider.
+     * Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginCreateOrUpdate(
-        String resourceGroupName, String imageTemplateName, ImageTemplateInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, imageTemplateName, parameters, context).getSyncPoller();
+    public SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginCreateOrUpdate(String resourceGroupName,
+        String imageTemplateName, ImageTemplateInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, imageTemplateName, parameters, context).getSyncPoller();
     }
 
     /**
      * Create or update a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
@@ -776,19 +620,18 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ImageTemplateInner> createOrUpdateAsync(
-        String resourceGroupName, String imageTemplateName, ImageTemplateInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, imageTemplateName, parameters)
-            .last()
+    private Mono<ImageTemplateInner> createOrUpdateAsync(String resourceGroupName, String imageTemplateName,
+        ImageTemplateInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, imageTemplateName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
@@ -797,19 +640,18 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ImageTemplateInner> createOrUpdateAsync(
-        String resourceGroupName, String imageTemplateName, ImageTemplateInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, imageTemplateName, parameters, context)
-            .last()
+    private Mono<ImageTemplateInner> createOrUpdateAsync(String resourceGroupName, String imageTemplateName,
+        ImageTemplateInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, imageTemplateName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
@@ -819,14 +661,14 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImageTemplateInner createOrUpdate(
-        String resourceGroupName, String imageTemplateName, ImageTemplateInner parameters) {
+    public ImageTemplateInner createOrUpdate(String resourceGroupName, String imageTemplateName,
+        ImageTemplateInner parameters) {
         return createOrUpdateAsync(resourceGroupName, imageTemplateName, parameters).block();
     }
 
     /**
      * Create or update a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Parameters supplied to the CreateImageTemplate operation.
@@ -837,37 +679,33 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImageTemplateInner createOrUpdate(
-        String resourceGroupName, String imageTemplateName, ImageTemplateInner parameters, Context context) {
+    public ImageTemplateInner createOrUpdate(String resourceGroupName, String imageTemplateName,
+        ImageTemplateInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, imageTemplateName, parameters, context).block();
     }
 
     /**
      * Update the tags for this Virtual Machine Image Template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Additional parameters for Image Template update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String imageTemplateName, ImageTemplateUpdateParameters parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String imageTemplateName,
+        ImageTemplateUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -884,24 +722,14 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            imageTemplateName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, imageTemplateName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update the tags for this Virtual Machine Image Template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Additional parameters for Image Template update.
@@ -909,23 +737,19 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String imageTemplateName, ImageTemplateUpdateParameters parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String imageTemplateName,
+        ImageTemplateUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -942,21 +766,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                imageTemplateName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            imageTemplateName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Update the tags for this Virtual Machine Image Template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Additional parameters for Image Template update.
@@ -964,26 +780,20 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of image template is an ARM resource managed by
-     *     Microsoft.VirtualMachineImages provider.
+     * Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ImageTemplateInner>, ImageTemplateInner> beginUpdateAsync(
-        String resourceGroupName, String imageTemplateName, ImageTemplateUpdateParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, imageTemplateName, parameters);
-        return this
-            .client
-            .<ImageTemplateInner, ImageTemplateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ImageTemplateInner.class,
-                ImageTemplateInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<ImageTemplateInner>, ImageTemplateInner> beginUpdateAsync(String resourceGroupName,
+        String imageTemplateName, ImageTemplateUpdateParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, imageTemplateName, parameters);
+        return this.client.<ImageTemplateInner, ImageTemplateInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ImageTemplateInner.class, ImageTemplateInner.class, this.client.getContext());
     }
 
     /**
      * Update the tags for this Virtual Machine Image Template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Additional parameters for Image Template update.
@@ -992,23 +802,21 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of image template is an ARM resource managed by
-     *     Microsoft.VirtualMachineImages provider.
+     * Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ImageTemplateInner>, ImageTemplateInner> beginUpdateAsync(
-        String resourceGroupName, String imageTemplateName, ImageTemplateUpdateParameters parameters, Context context) {
+    private PollerFlux<PollResult<ImageTemplateInner>, ImageTemplateInner> beginUpdateAsync(String resourceGroupName,
+        String imageTemplateName, ImageTemplateUpdateParameters parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, imageTemplateName, parameters, context);
-        return this
-            .client
-            .<ImageTemplateInner, ImageTemplateInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ImageTemplateInner.class, ImageTemplateInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, imageTemplateName, parameters, context);
+        return this.client.<ImageTemplateInner, ImageTemplateInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ImageTemplateInner.class, ImageTemplateInner.class, context);
     }
 
     /**
      * Update the tags for this Virtual Machine Image Template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Additional parameters for Image Template update.
@@ -1016,17 +824,17 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of image template is an ARM resource managed by
-     *     Microsoft.VirtualMachineImages provider.
+     * Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginUpdate(
-        String resourceGroupName, String imageTemplateName, ImageTemplateUpdateParameters parameters) {
-        return beginUpdateAsync(resourceGroupName, imageTemplateName, parameters).getSyncPoller();
+    public SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginUpdate(String resourceGroupName,
+        String imageTemplateName, ImageTemplateUpdateParameters parameters) {
+        return this.beginUpdateAsync(resourceGroupName, imageTemplateName, parameters).getSyncPoller();
     }
 
     /**
      * Update the tags for this Virtual Machine Image Template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Additional parameters for Image Template update.
@@ -1035,17 +843,17 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of image template is an ARM resource managed by
-     *     Microsoft.VirtualMachineImages provider.
+     * Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginUpdate(
-        String resourceGroupName, String imageTemplateName, ImageTemplateUpdateParameters parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, imageTemplateName, parameters, context).getSyncPoller();
+    public SyncPoller<PollResult<ImageTemplateInner>, ImageTemplateInner> beginUpdate(String resourceGroupName,
+        String imageTemplateName, ImageTemplateUpdateParameters parameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, imageTemplateName, parameters, context).getSyncPoller();
     }
 
     /**
      * Update the tags for this Virtual Machine Image Template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Additional parameters for Image Template update.
@@ -1053,19 +861,18 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ImageTemplateInner> updateAsync(
-        String resourceGroupName, String imageTemplateName, ImageTemplateUpdateParameters parameters) {
-        return beginUpdateAsync(resourceGroupName, imageTemplateName, parameters)
-            .last()
+    private Mono<ImageTemplateInner> updateAsync(String resourceGroupName, String imageTemplateName,
+        ImageTemplateUpdateParameters parameters) {
+        return beginUpdateAsync(resourceGroupName, imageTemplateName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update the tags for this Virtual Machine Image Template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Additional parameters for Image Template update.
@@ -1074,19 +881,18 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ImageTemplateInner> updateAsync(
-        String resourceGroupName, String imageTemplateName, ImageTemplateUpdateParameters parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, imageTemplateName, parameters, context)
-            .last()
+    private Mono<ImageTemplateInner> updateAsync(String resourceGroupName, String imageTemplateName,
+        ImageTemplateUpdateParameters parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, imageTemplateName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update the tags for this Virtual Machine Image Template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Additional parameters for Image Template update.
@@ -1096,14 +902,14 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImageTemplateInner update(
-        String resourceGroupName, String imageTemplateName, ImageTemplateUpdateParameters parameters) {
+    public ImageTemplateInner update(String resourceGroupName, String imageTemplateName,
+        ImageTemplateUpdateParameters parameters) {
         return updateAsync(resourceGroupName, imageTemplateName, parameters).block();
     }
 
     /**
      * Update the tags for this Virtual Machine Image Template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param parameters Additional parameters for Image Template update.
@@ -1114,36 +920,32 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return image template is an ARM resource managed by Microsoft.VirtualMachineImages provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImageTemplateInner update(
-        String resourceGroupName, String imageTemplateName, ImageTemplateUpdateParameters parameters, Context context) {
+    public ImageTemplateInner update(String resourceGroupName, String imageTemplateName,
+        ImageTemplateUpdateParameters parameters, Context context) {
         return updateAsync(resourceGroupName, imageTemplateName, parameters, context).block();
     }
 
     /**
      * Get information about a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a virtual machine image template along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ImageTemplateInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String imageTemplateName) {
+    private Mono<Response<ImageTemplateInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String imageTemplateName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1155,23 +957,14 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            imageTemplateName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get information about a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -1179,22 +972,18 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a virtual machine image template along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ImageTemplateInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String imageTemplateName, Context context) {
+    private Mono<Response<ImageTemplateInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String imageTemplateName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1206,20 +995,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                imageTemplateName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, accept, context);
     }
 
     /**
      * Get information about a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1235,22 +1017,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
 
     /**
      * Get information about a virtual machine image template.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param imageTemplateName The name of the image Template.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a virtual machine image template.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImageTemplateInner getByResourceGroup(String resourceGroupName, String imageTemplateName) {
-        return getByResourceGroupAsync(resourceGroupName, imageTemplateName).block();
-    }
-
-    /**
-     * Get information about a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -1260,14 +1027,29 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return information about a virtual machine image template along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ImageTemplateInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String imageTemplateName, Context context) {
+    public Response<ImageTemplateInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String imageTemplateName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, imageTemplateName, context).block();
     }
 
     /**
+     * Get information about a virtual machine image template.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param imageTemplateName The name of the image Template.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a virtual machine image template.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ImageTemplateInner getByResourceGroup(String resourceGroupName, String imageTemplateName) {
+        return getByResourceGroupWithResponse(resourceGroupName, imageTemplateName, Context.NONE).getValue();
+    }
+
+    /**
      * Delete a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1276,19 +1058,15 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String imageTemplateName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String imageTemplateName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1300,23 +1078,14 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            imageTemplateName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -1326,19 +1095,15 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String imageTemplateName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String imageTemplateName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1350,20 +1115,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                imageTemplateName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, imageTemplateName, accept, context);
     }
 
     /**
      * Delete a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1374,15 +1132,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String imageTemplateName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, imageTemplateName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -1392,18 +1148,17 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String imageTemplateName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String imageTemplateName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, imageTemplateName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1413,12 +1168,12 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageTemplateName) {
-        return beginDeleteAsync(resourceGroupName, imageTemplateName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, imageTemplateName).getSyncPoller();
     }
 
     /**
      * Delete a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -1428,14 +1183,14 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String imageTemplateName, Context context) {
-        return beginDeleteAsync(resourceGroupName, imageTemplateName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageTemplateName,
+        Context context) {
+        return this.beginDeleteAsync(resourceGroupName, imageTemplateName, context).getSyncPoller();
     }
 
     /**
      * Delete a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1445,14 +1200,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String imageTemplateName) {
-        return beginDeleteAsync(resourceGroupName, imageTemplateName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, imageTemplateName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -1463,14 +1217,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String imageTemplateName, Context context) {
-        return beginDeleteAsync(resourceGroupName, imageTemplateName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, imageTemplateName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1484,7 +1237,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
 
     /**
      * Delete a virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -1499,7 +1252,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
 
     /**
      * Create artifacts from a existing image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1510,16 +1263,12 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> runWithResponseAsync(String resourceGroupName, String imageTemplateName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1531,23 +1280,14 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .run(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            imageTemplateName,
-                            accept,
-                            context))
+            .withContext(context -> service.run(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create artifacts from a existing image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -1557,19 +1297,15 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> runWithResponseAsync(
-        String resourceGroupName, String imageTemplateName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> runWithResponseAsync(String resourceGroupName, String imageTemplateName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1581,20 +1317,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .run(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                imageTemplateName,
-                accept,
-                context);
+        return service.run(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, imageTemplateName, accept, context);
     }
 
     /**
      * Create artifacts from a existing image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1605,15 +1334,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRunAsync(String resourceGroupName, String imageTemplateName) {
         Mono<Response<Flux<ByteBuffer>>> mono = runWithResponseAsync(resourceGroupName, imageTemplateName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Create artifacts from a existing image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -1623,18 +1350,17 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRunAsync(
-        String resourceGroupName, String imageTemplateName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRunAsync(String resourceGroupName, String imageTemplateName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = runWithResponseAsync(resourceGroupName, imageTemplateName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Create artifacts from a existing image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1644,12 +1370,12 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRun(String resourceGroupName, String imageTemplateName) {
-        return beginRunAsync(resourceGroupName, imageTemplateName).getSyncPoller();
+        return this.beginRunAsync(resourceGroupName, imageTemplateName).getSyncPoller();
     }
 
     /**
      * Create artifacts from a existing image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -1659,14 +1385,14 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRun(
-        String resourceGroupName, String imageTemplateName, Context context) {
-        return beginRunAsync(resourceGroupName, imageTemplateName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginRun(String resourceGroupName, String imageTemplateName,
+        Context context) {
+        return this.beginRunAsync(resourceGroupName, imageTemplateName, context).getSyncPoller();
     }
 
     /**
      * Create artifacts from a existing image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1676,14 +1402,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> runAsync(String resourceGroupName, String imageTemplateName) {
-        return beginRunAsync(resourceGroupName, imageTemplateName)
-            .last()
+        return beginRunAsync(resourceGroupName, imageTemplateName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create artifacts from a existing image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -1694,14 +1419,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> runAsync(String resourceGroupName, String imageTemplateName, Context context) {
-        return beginRunAsync(resourceGroupName, imageTemplateName, context)
-            .last()
+        return beginRunAsync(resourceGroupName, imageTemplateName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create artifacts from a existing image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1715,7 +1439,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
 
     /**
      * Create artifacts from a existing image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -1730,7 +1454,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
 
     /**
      * Cancel the long running image build based on the image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1739,19 +1463,15 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(
-        String resourceGroupName, String imageTemplateName) {
+    private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(String resourceGroupName,
+        String imageTemplateName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1763,23 +1483,14 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .cancel(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            imageTemplateName,
-                            accept,
-                            context))
+            .withContext(context -> service.cancel(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Cancel the long running image build based on the image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -1789,19 +1500,15 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(
-        String resourceGroupName, String imageTemplateName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(String resourceGroupName, String imageTemplateName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1813,20 +1520,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .cancel(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                imageTemplateName,
-                accept,
-                context);
+        return service.cancel(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, imageTemplateName, accept, context);
     }
 
     /**
      * Cancel the long running image build based on the image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1837,15 +1537,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCancelAsync(String resourceGroupName, String imageTemplateName) {
         Mono<Response<Flux<ByteBuffer>>> mono = cancelWithResponseAsync(resourceGroupName, imageTemplateName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Cancel the long running image build based on the image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -1855,18 +1553,17 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCancelAsync(
-        String resourceGroupName, String imageTemplateName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginCancelAsync(String resourceGroupName, String imageTemplateName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = cancelWithResponseAsync(resourceGroupName, imageTemplateName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Cancel the long running image build based on the image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1876,12 +1573,12 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String imageTemplateName) {
-        return beginCancelAsync(resourceGroupName, imageTemplateName).getSyncPoller();
+        return this.beginCancelAsync(resourceGroupName, imageTemplateName).getSyncPoller();
     }
 
     /**
      * Cancel the long running image build based on the image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -1891,14 +1588,14 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCancel(
-        String resourceGroupName, String imageTemplateName, Context context) {
-        return beginCancelAsync(resourceGroupName, imageTemplateName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String imageTemplateName,
+        Context context) {
+        return this.beginCancelAsync(resourceGroupName, imageTemplateName, context).getSyncPoller();
     }
 
     /**
      * Cancel the long running image build based on the image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1908,14 +1605,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> cancelAsync(String resourceGroupName, String imageTemplateName) {
-        return beginCancelAsync(resourceGroupName, imageTemplateName)
-            .last()
+        return beginCancelAsync(resourceGroupName, imageTemplateName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Cancel the long running image build based on the image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -1926,14 +1622,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> cancelAsync(String resourceGroupName, String imageTemplateName, Context context) {
-        return beginCancelAsync(resourceGroupName, imageTemplateName, context)
-            .last()
+        return beginCancelAsync(resourceGroupName, imageTemplateName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Cancel the long running image build based on the image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1947,7 +1642,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
 
     /**
      * Cancel the long running image build based on the image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -1962,29 +1657,25 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
 
     /**
      * List all run outputs for the specified Image Template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List run outputs operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RunOutputInner>> listRunOutputsSinglePageAsync(
-        String resourceGroupName, String imageTemplateName) {
+    private Mono<PagedResponse<RunOutputInner>> listRunOutputsSinglePageAsync(String resourceGroupName,
+        String imageTemplateName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1996,32 +1687,16 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listRunOutputs(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            imageTemplateName,
-                            accept,
-                            context))
-            .<PagedResponse<RunOutputInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listRunOutputs(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, accept, context))
+            .<PagedResponse<RunOutputInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List all run outputs for the specified Image Template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -2029,22 +1704,18 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List run outputs operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RunOutputInner>> listRunOutputsSinglePageAsync(
-        String resourceGroupName, String imageTemplateName, Context context) {
+    private Mono<PagedResponse<RunOutputInner>> listRunOutputsSinglePageAsync(String resourceGroupName,
+        String imageTemplateName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2057,28 +1728,15 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listRunOutputs(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                imageTemplateName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listRunOutputs(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, imageTemplateName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List all run outputs for the specified Image Template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2088,14 +1746,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RunOutputInner> listRunOutputsAsync(String resourceGroupName, String imageTemplateName) {
-        return new PagedFlux<>(
-            () -> listRunOutputsSinglePageAsync(resourceGroupName, imageTemplateName),
+        return new PagedFlux<>(() -> listRunOutputsSinglePageAsync(resourceGroupName, imageTemplateName),
             nextLink -> listRunOutputsNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all run outputs for the specified Image Template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -2105,16 +1762,15 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return the result of List run outputs operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RunOutputInner> listRunOutputsAsync(
-        String resourceGroupName, String imageTemplateName, Context context) {
-        return new PagedFlux<>(
-            () -> listRunOutputsSinglePageAsync(resourceGroupName, imageTemplateName, context),
+    private PagedFlux<RunOutputInner> listRunOutputsAsync(String resourceGroupName, String imageTemplateName,
+        Context context) {
+        return new PagedFlux<>(() -> listRunOutputsSinglePageAsync(resourceGroupName, imageTemplateName, context),
             nextLink -> listRunOutputsNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List all run outputs for the specified Image Template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2129,7 +1785,7 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
 
     /**
      * List all run outputs for the specified Image Template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -2139,14 +1795,14 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return the result of List run outputs operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RunOutputInner> listRunOutputs(
-        String resourceGroupName, String imageTemplateName, Context context) {
+    public PagedIterable<RunOutputInner> listRunOutputs(String resourceGroupName, String imageTemplateName,
+        Context context) {
         return new PagedIterable<>(listRunOutputsAsync(resourceGroupName, imageTemplateName, context));
     }
 
     /**
      * Get the specified run output for the specified image template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param runOutputName The name of the run output.
@@ -2154,22 +1810,18 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified run output for the specified image template resource along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RunOutputInner>> getRunOutputWithResponseAsync(
-        String resourceGroupName, String imageTemplateName, String runOutputName) {
+    private Mono<Response<RunOutputInner>> getRunOutputWithResponseAsync(String resourceGroupName,
+        String imageTemplateName, String runOutputName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2184,24 +1836,14 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getRunOutput(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            imageTemplateName,
-                            runOutputName,
-                            accept,
-                            context))
+            .withContext(context -> service.getRunOutput(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, runOutputName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the specified run output for the specified image template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param runOutputName The name of the run output.
@@ -2210,22 +1852,18 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified run output for the specified image template resource along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RunOutputInner>> getRunOutputWithResponseAsync(
-        String resourceGroupName, String imageTemplateName, String runOutputName, Context context) {
+    private Mono<Response<RunOutputInner>> getRunOutputWithResponseAsync(String resourceGroupName,
+        String imageTemplateName, String runOutputName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2240,56 +1878,32 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getRunOutput(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                imageTemplateName,
-                runOutputName,
-                accept,
-                context);
+        return service.getRunOutput(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, imageTemplateName, runOutputName, accept, context);
     }
 
     /**
      * Get the specified run output for the specified image template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param runOutputName The name of the run output.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified run output for the specified image template resource on successful completion of {@link
-     *     Mono}.
+     * @return the specified run output for the specified image template resource on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RunOutputInner> getRunOutputAsync(
-        String resourceGroupName, String imageTemplateName, String runOutputName) {
+    private Mono<RunOutputInner> getRunOutputAsync(String resourceGroupName, String imageTemplateName,
+        String runOutputName) {
         return getRunOutputWithResponseAsync(resourceGroupName, imageTemplateName, runOutputName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the specified run output for the specified image template resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param imageTemplateName The name of the image Template.
-     * @param runOutputName The name of the run output.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified run output for the specified image template resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RunOutputInner getRunOutput(String resourceGroupName, String imageTemplateName, String runOutputName) {
-        return getRunOutputAsync(resourceGroupName, imageTemplateName, runOutputName).block();
-    }
-
-    /**
-     * Get the specified run output for the specified image template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param runOutputName The name of the run output.
@@ -2300,20 +1914,36 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
      * @return the specified run output for the specified image template resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RunOutputInner> getRunOutputWithResponse(
-        String resourceGroupName, String imageTemplateName, String runOutputName, Context context) {
+    public Response<RunOutputInner> getRunOutputWithResponse(String resourceGroupName, String imageTemplateName,
+        String runOutputName, Context context) {
         return getRunOutputWithResponseAsync(resourceGroupName, imageTemplateName, runOutputName, context).block();
     }
 
     /**
+     * Get the specified run output for the specified image template resource.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param imageTemplateName The name of the image Template.
+     * @param runOutputName The name of the run output.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified run output for the specified image template resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RunOutputInner getRunOutput(String resourceGroupName, String imageTemplateName, String runOutputName) {
+        return getRunOutputWithResponse(resourceGroupName, imageTemplateName, runOutputName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List image templates operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageTemplateInner>> listNextSinglePageAsync(String nextLink) {
@@ -2321,36 +1951,26 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ImageTemplateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ImageTemplateInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List image templates operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageTemplateInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -2358,35 +1978,25 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List image templates operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageTemplateInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2394,74 +2004,55 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ImageTemplateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ImageTemplateInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List image templates operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ImageTemplateInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ImageTemplateInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List run outputs operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RunOutputInner>> listRunOutputsNextSinglePageAsync(String nextLink) {
@@ -2469,36 +2060,27 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listRunOutputsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RunOutputInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<RunOutputInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of List run outputs operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RunOutputInner>> listRunOutputsNextSinglePageAsync(String nextLink, Context context) {
@@ -2506,23 +2088,13 @@ public final class VirtualMachineImageTemplatesClientImpl implements VirtualMach
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listRunOutputsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listRunOutputsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

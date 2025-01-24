@@ -5,99 +5,97 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.Channels;
 import com.azure.resourcemanager.appservice.models.NotificationLevel;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
-/** RecommendationRule resource specific properties. */
+/**
+ * RecommendationRule resource specific properties.
+ */
 @Fluent
-public final class RecommendationRuleProperties {
+public final class RecommendationRuleProperties implements JsonSerializable<RecommendationRuleProperties> {
     /*
      * Unique name of the rule.
      */
-    @JsonProperty(value = "recommendationName")
     private String recommendationName;
 
     /*
      * UI friendly name of the rule.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Localized name of the rule (Good for UI).
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
-     * Recommendation ID of an associated recommendation object tied to the
-     * rule, if exists.
+     * Recommendation ID of an associated recommendation object tied to the rule, if exists.
      * If such an object doesn't exist, it is set to null.
      */
-    @JsonProperty(value = "recommendationId")
     private UUID recommendationId;
 
     /*
      * Localized detailed description of the rule.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Name of action that is recommended by this rule in string.
      */
-    @JsonProperty(value = "actionName")
     private String actionName;
 
     /*
      * Level of impact indicating how critical this rule is.
      */
-    @JsonProperty(value = "level")
     private NotificationLevel level;
 
     /*
      * List of available channels that this rule applies.
      */
-    @JsonProperty(value = "channels")
     private Channels channels;
 
     /*
      * The list of category tags that this recommendation rule belongs to.
      */
-    @JsonProperty(value = "categoryTags", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> categoryTags;
 
     /*
      * True if this is associated with a dynamically added rule
      */
-    @JsonProperty(value = "isDynamic")
     private Boolean isDynamic;
 
     /*
      * Extension name of the portal if exists. Applicable to dynamic rule only.
      */
-    @JsonProperty(value = "extensionName")
     private String extensionName;
 
     /*
      * Deep link to a blade on the portal. Applicable to dynamic rule only.
      */
-    @JsonProperty(value = "bladeName")
     private String bladeName;
 
     /*
-     * Forward link to an external document associated with the rule.
-     * Applicable to dynamic rule only.
+     * Forward link to an external document associated with the rule. Applicable to dynamic rule only.
      */
-    @JsonProperty(value = "forwardLink")
     private String forwardLink;
 
     /**
+     * Creates an instance of RecommendationRuleProperties class.
+     */
+    public RecommendationRuleProperties() {
+    }
+
+    /**
      * Get the recommendationName property: Unique name of the rule.
-     *
+     * 
      * @return the recommendationName value.
      */
     public String recommendationName() {
@@ -106,7 +104,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Set the recommendationName property: Unique name of the rule.
-     *
+     * 
      * @param recommendationName the recommendationName value to set.
      * @return the RecommendationRuleProperties object itself.
      */
@@ -117,7 +115,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Get the displayName property: UI friendly name of the rule.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -126,7 +124,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Set the displayName property: UI friendly name of the rule.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the RecommendationRuleProperties object itself.
      */
@@ -137,7 +135,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Get the message property: Localized name of the rule (Good for UI).
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -146,7 +144,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Set the message property: Localized name of the rule (Good for UI).
-     *
+     * 
      * @param message the message value to set.
      * @return the RecommendationRuleProperties object itself.
      */
@@ -157,8 +155,9 @@ public final class RecommendationRuleProperties {
 
     /**
      * Get the recommendationId property: Recommendation ID of an associated recommendation object tied to the rule, if
-     * exists. If such an object doesn't exist, it is set to null.
-     *
+     * exists.
+     * If such an object doesn't exist, it is set to null.
+     * 
      * @return the recommendationId value.
      */
     public UUID recommendationId() {
@@ -167,8 +166,9 @@ public final class RecommendationRuleProperties {
 
     /**
      * Set the recommendationId property: Recommendation ID of an associated recommendation object tied to the rule, if
-     * exists. If such an object doesn't exist, it is set to null.
-     *
+     * exists.
+     * If such an object doesn't exist, it is set to null.
+     * 
      * @param recommendationId the recommendationId value to set.
      * @return the RecommendationRuleProperties object itself.
      */
@@ -179,7 +179,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Get the description property: Localized detailed description of the rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -188,7 +188,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Set the description property: Localized detailed description of the rule.
-     *
+     * 
      * @param description the description value to set.
      * @return the RecommendationRuleProperties object itself.
      */
@@ -199,7 +199,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Get the actionName property: Name of action that is recommended by this rule in string.
-     *
+     * 
      * @return the actionName value.
      */
     public String actionName() {
@@ -208,7 +208,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Set the actionName property: Name of action that is recommended by this rule in string.
-     *
+     * 
      * @param actionName the actionName value to set.
      * @return the RecommendationRuleProperties object itself.
      */
@@ -219,7 +219,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Get the level property: Level of impact indicating how critical this rule is.
-     *
+     * 
      * @return the level value.
      */
     public NotificationLevel level() {
@@ -228,7 +228,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Set the level property: Level of impact indicating how critical this rule is.
-     *
+     * 
      * @param level the level value to set.
      * @return the RecommendationRuleProperties object itself.
      */
@@ -239,7 +239,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Get the channels property: List of available channels that this rule applies.
-     *
+     * 
      * @return the channels value.
      */
     public Channels channels() {
@@ -248,7 +248,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Set the channels property: List of available channels that this rule applies.
-     *
+     * 
      * @param channels the channels value to set.
      * @return the RecommendationRuleProperties object itself.
      */
@@ -259,7 +259,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Get the categoryTags property: The list of category tags that this recommendation rule belongs to.
-     *
+     * 
      * @return the categoryTags value.
      */
     public List<String> categoryTags() {
@@ -268,7 +268,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Get the isDynamic property: True if this is associated with a dynamically added rule.
-     *
+     * 
      * @return the isDynamic value.
      */
     public Boolean isDynamic() {
@@ -277,7 +277,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Set the isDynamic property: True if this is associated with a dynamically added rule.
-     *
+     * 
      * @param isDynamic the isDynamic value to set.
      * @return the RecommendationRuleProperties object itself.
      */
@@ -288,7 +288,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Get the extensionName property: Extension name of the portal if exists. Applicable to dynamic rule only.
-     *
+     * 
      * @return the extensionName value.
      */
     public String extensionName() {
@@ -297,7 +297,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Set the extensionName property: Extension name of the portal if exists. Applicable to dynamic rule only.
-     *
+     * 
      * @param extensionName the extensionName value to set.
      * @return the RecommendationRuleProperties object itself.
      */
@@ -308,7 +308,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Get the bladeName property: Deep link to a blade on the portal. Applicable to dynamic rule only.
-     *
+     * 
      * @return the bladeName value.
      */
     public String bladeName() {
@@ -317,7 +317,7 @@ public final class RecommendationRuleProperties {
 
     /**
      * Set the bladeName property: Deep link to a blade on the portal. Applicable to dynamic rule only.
-     *
+     * 
      * @param bladeName the bladeName value to set.
      * @return the RecommendationRuleProperties object itself.
      */
@@ -329,7 +329,7 @@ public final class RecommendationRuleProperties {
     /**
      * Get the forwardLink property: Forward link to an external document associated with the rule. Applicable to
      * dynamic rule only.
-     *
+     * 
      * @return the forwardLink value.
      */
     public String forwardLink() {
@@ -339,7 +339,7 @@ public final class RecommendationRuleProperties {
     /**
      * Set the forwardLink property: Forward link to an external document associated with the rule. Applicable to
      * dynamic rule only.
-     *
+     * 
      * @param forwardLink the forwardLink value to set.
      * @return the RecommendationRuleProperties object itself.
      */
@@ -350,9 +350,82 @@ public final class RecommendationRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recommendationName", this.recommendationName);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("recommendationId", Objects.toString(this.recommendationId, null));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("actionName", this.actionName);
+        jsonWriter.writeStringField("level", this.level == null ? null : this.level.toString());
+        jsonWriter.writeStringField("channels", this.channels == null ? null : this.channels.toString());
+        jsonWriter.writeBooleanField("isDynamic", this.isDynamic);
+        jsonWriter.writeStringField("extensionName", this.extensionName);
+        jsonWriter.writeStringField("bladeName", this.bladeName);
+        jsonWriter.writeStringField("forwardLink", this.forwardLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecommendationRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecommendationRuleProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecommendationRuleProperties.
+     */
+    public static RecommendationRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecommendationRuleProperties deserializedRecommendationRuleProperties = new RecommendationRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recommendationName".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.recommendationName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.displayName = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.message = reader.getString();
+                } else if ("recommendationId".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.recommendationId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.description = reader.getString();
+                } else if ("actionName".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.actionName = reader.getString();
+                } else if ("level".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.level = NotificationLevel.fromString(reader.getString());
+                } else if ("channels".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.channels = Channels.fromString(reader.getString());
+                } else if ("categoryTags".equals(fieldName)) {
+                    List<String> categoryTags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRecommendationRuleProperties.categoryTags = categoryTags;
+                } else if ("isDynamic".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.isDynamic = reader.getNullable(JsonReader::getBoolean);
+                } else if ("extensionName".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.extensionName = reader.getString();
+                } else if ("bladeName".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.bladeName = reader.getString();
+                } else if ("forwardLink".equals(fieldName)) {
+                    deserializedRecommendationRuleProperties.forwardLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecommendationRuleProperties;
+        });
     }
 }

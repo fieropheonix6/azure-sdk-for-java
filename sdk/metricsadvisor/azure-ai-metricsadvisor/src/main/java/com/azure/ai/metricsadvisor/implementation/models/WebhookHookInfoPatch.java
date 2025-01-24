@@ -5,24 +5,46 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** The WebhookHookInfoPatch model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "hookType")
-@JsonTypeName("Webhook")
+/**
+ * The WebhookHookInfoPatch model.
+ */
 @Fluent
 public final class WebhookHookInfoPatch extends HookInfoPatch {
     /*
+     * hook type
+     */
+    private HookType hookType = HookType.WEBHOOK;
+
+    /*
      * The hookParameter property.
      */
-    @JsonProperty(value = "hookParameter")
     private WebhookHookParameterPatch hookParameter;
 
     /**
+     * Creates an instance of WebhookHookInfoPatch class.
+     */
+    public WebhookHookInfoPatch() {
+    }
+
+    /**
+     * Get the hookType property: hook type.
+     * 
+     * @return the hookType value.
+     */
+    @Override
+    public HookType getHookType() {
+        return this.hookType;
+    }
+
+    /**
      * Get the hookParameter property: The hookParameter property.
-     *
+     * 
      * @return the hookParameter value.
      */
     public WebhookHookParameterPatch getHookParameter() {
@@ -31,12 +53,100 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
 
     /**
      * Set the hookParameter property: The hookParameter property.
-     *
+     * 
      * @param hookParameter the hookParameter value to set.
      * @return the WebhookHookInfoPatch object itself.
      */
     public WebhookHookInfoPatch setHookParameter(WebhookHookParameterPatch hookParameter) {
         this.hookParameter = hookParameter;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebhookHookInfoPatch setHookName(String hookName) {
+        super.setHookName(hookName);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebhookHookInfoPatch setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebhookHookInfoPatch setExternalLink(String externalLink) {
+        super.setExternalLink(externalLink);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WebhookHookInfoPatch setAdmins(List<String> admins) {
+        super.setAdmins(admins);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hookName", getHookName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("externalLink", getExternalLink());
+        jsonWriter.writeArrayField("admins", getAdmins(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("hookType", this.hookType == null ? null : this.hookType.toString());
+        jsonWriter.writeJsonField("hookParameter", this.hookParameter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebhookHookInfoPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebhookHookInfoPatch if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebhookHookInfoPatch.
+     */
+    public static WebhookHookInfoPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebhookHookInfoPatch deserializedWebhookHookInfoPatch = new WebhookHookInfoPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hookName".equals(fieldName)) {
+                    deserializedWebhookHookInfoPatch.setHookName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedWebhookHookInfoPatch.setDescription(reader.getString());
+                } else if ("externalLink".equals(fieldName)) {
+                    deserializedWebhookHookInfoPatch.setExternalLink(reader.getString());
+                } else if ("admins".equals(fieldName)) {
+                    List<String> admins = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWebhookHookInfoPatch.setAdmins(admins);
+                } else if ("hookType".equals(fieldName)) {
+                    deserializedWebhookHookInfoPatch.hookType = HookType.fromString(reader.getString());
+                } else if ("hookParameter".equals(fieldName)) {
+                    deserializedWebhookHookInfoPatch.hookParameter = WebhookHookParameterPatch.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebhookHookInfoPatch;
+        });
     }
 }

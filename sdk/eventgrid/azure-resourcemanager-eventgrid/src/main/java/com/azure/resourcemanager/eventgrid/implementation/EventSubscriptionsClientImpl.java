@@ -43,22 +43,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in EventSubscriptionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EventSubscriptionsClient.
+ */
 public final class EventSubscriptionsClientImpl implements EventSubscriptionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EventSubscriptionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EventGridManagementClientImpl client;
 
     /**
      * Initializes an instance of EventSubscriptionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EventSubscriptionsClientImpl(EventGridManagementClientImpl client) {
-        this.service =
-            RestProxy.create(EventSubscriptionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(EventSubscriptionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,370 +74,274 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
-    private interface EventSubscriptionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get("/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}")
-        @ExpectedResponses({200})
+    public interface EventSubscriptionsService {
+        @Headers({ "Content-Type: application/json" })
+        @Post("/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}/getDeliveryAttributes")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSubscriptionInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributes(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("eventSubscriptionName") String eventSubscriptionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put("/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}")
-        @ExpectedResponses({201})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EventSubscriptionInner>> get(@HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope,
+            @PathParam("eventSubscriptionName") String eventSubscriptionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("eventSubscriptionName") String eventSubscriptionName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") EventSubscriptionInner eventSubscriptionInfo,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}")
-        @ExpectedResponses({200, 202, 204})
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("eventSubscriptionName") String eventSubscriptionName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
+            @QueryParam("api-version") String apiVersion, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("eventSubscriptionName") String eventSubscriptionName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}/getFullUrl")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSubscriptionFullUrlInner>> getFullUrl(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EventSubscriptionFullUrlInner>> getFullUrl(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("eventSubscriptionName") String eventSubscriptionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/eventSubscriptions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSubscriptionsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<EventSubscriptionsListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/topicTypes/{topicTypeName}"
-                + "/eventSubscriptions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/topicTypes/{topicTypeName}/eventSubscriptions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listGlobalBySubscriptionForTopicType(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("topicTypeName") String topicTypeName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("topicTypeName") String topicTypeName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/eventSubscriptions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/eventSubscriptions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSubscriptionsListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EventSubscriptionsListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/topicTypes/{topicTypeName}/eventSubscriptions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topicTypes/{topicTypeName}/eventSubscriptions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listGlobalByResourceGroupForTopicType(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("topicTypeName") String topicTypeName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("topicTypeName") String topicTypeName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/locations/{location}/eventSubscriptions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSubscriptionsListResult>> listRegionalBySubscription(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EventSubscriptionsListResult>> listRegionalBySubscription(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/locations"
-                + "/{location}/eventSubscriptions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/locations/{location}/eventSubscriptions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSubscriptionsListResult>> listRegionalByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EventSubscriptionsListResult>> listRegionalByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/locations/{location}/topicTypes"
-                + "/{topicTypeName}/eventSubscriptions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/locations/{location}/topicTypes/{topicTypeName}/eventSubscriptions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listRegionalBySubscriptionForTopicType(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @PathParam("topicTypeName") String topicTypeName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("topicTypeName") String topicTypeName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/locations"
-                + "/{location}/topicTypes/{topicTypeName}/eventSubscriptions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/locations/{location}/topicTypes/{topicTypeName}/eventSubscriptions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listRegionalByResourceGroupForTopicType(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("location") String location,
-            @PathParam("topicTypeName") String topicTypeName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
+            @PathParam("topicTypeName") String topicTypeName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerNamespace}"
-                + "/{resourceTypeName}/{resourceName}/providers/Microsoft.EventGrid/eventSubscriptions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerNamespace}/{resourceTypeName}/{resourceName}/providers/Microsoft.EventGrid/eventSubscriptions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSubscriptionsListResult>> listByResource(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EventSubscriptionsListResult>> listByResource(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("providerNamespace") String providerNamespace,
-            @PathParam("resourceTypeName") String resourceTypeName,
-            @PathParam("resourceName") String resourceName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceTypeName") String resourceTypeName, @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}/topics/{topicName}/providers/Microsoft.EventGrid/eventSubscriptions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{topicName}/providers/Microsoft.EventGrid/eventSubscriptions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSubscriptionsListResult>> listByDomainTopic(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EventSubscriptionsListResult>> listByDomainTopic(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("domainName") String domainName,
-            @PathParam("topicName") String topicName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
+            @PathParam("topicName") String topicName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post("/{scope}/providers/Microsoft.EventGrid/eventSubscriptions/{eventSubscriptionName}/getDeliveryAttributes")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributes(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @PathParam("eventSubscriptionName") String eventSubscriptionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listGlobalBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listGlobalBySubscriptionForTopicTypeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listGlobalByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listGlobalByResourceGroupForTopicTypeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listRegionalBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listRegionalByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listRegionalBySubscriptionForTopicTypeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listRegionalByResourceGroupForTopicTypeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listByResourceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listByDomainTopicNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Get properties of an event subscription.
-     *
+     * Get delivery attributes for an event subscription.
+     * 
+     * Get all delivery attributes for an event subscription.
+     * 
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an event subscription along with {@link Response} on successful completion of {@link Mono}.
+     * @return all delivery attributes for an event subscription along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSubscriptionInner>> getWithResponseAsync(String scope, String eventSubscriptionName) {
+    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(String scope,
+        String eventSubscriptionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -442,45 +352,38 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            scope,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getDeliveryAttributes(this.client.getEndpoint(), scope,
+                eventSubscriptionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get properties of an event subscription.
-     *
+     * Get delivery attributes for an event subscription.
+     * 
+     * Get all delivery attributes for an event subscription.
+     * 
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an event subscription along with {@link Response} on successful completion of {@link Mono}.
+     * @return all delivery attributes for an event subscription along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSubscriptionInner>> getWithResponseAsync(
-        String scope, String eventSubscriptionName, Context context) {
+    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(String scope,
+        String eventSubscriptionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -491,22 +394,179 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(this.client.getEndpoint(), scope, eventSubscriptionName, this.client.getApiVersion(), accept, context);
+        return service.getDeliveryAttributes(this.client.getEndpoint(), scope, eventSubscriptionName,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
-     * Get properties of an event subscription.
-     *
+     * Get delivery attributes for an event subscription.
+     * 
+     * Get all delivery attributes for an event subscription.
+     * 
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DeliveryAttributeListResultInner> getDeliveryAttributesAsync(String scope,
+        String eventSubscriptionName) {
+        return getDeliveryAttributesWithResponseAsync(scope, eventSubscriptionName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get delivery attributes for an event subscription.
+     * 
+     * Get all delivery attributes for an event subscription.
+     * 
+     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(String scope,
+        String eventSubscriptionName, Context context) {
+        return getDeliveryAttributesWithResponseAsync(scope, eventSubscriptionName, context).block();
+    }
+
+    /**
+     * Get delivery attributes for an event subscription.
+     * 
+     * Get all delivery attributes for an event subscription.
+     * 
+     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeliveryAttributeListResultInner getDeliveryAttributes(String scope, String eventSubscriptionName) {
+        return getDeliveryAttributesWithResponse(scope, eventSubscriptionName, Context.NONE).getValue();
+    }
+
+    /**
+     * Get an event subscription.
+     * 
+     * Get properties of an event subscription.
+     * 
+     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be found.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of an event subscription along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<EventSubscriptionInner>> getWithResponseAsync(String scope, String eventSubscriptionName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (scope == null) {
+            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
+        }
+        if (eventSubscriptionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.get(this.client.getEndpoint(), scope, eventSubscriptionName,
+                this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get an event subscription.
+     * 
+     * Get properties of an event subscription.
+     * 
+     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be found.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of an event subscription along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<EventSubscriptionInner>> getWithResponseAsync(String scope, String eventSubscriptionName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (scope == null) {
+            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
+        }
+        if (eventSubscriptionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.get(this.client.getEndpoint(), scope, eventSubscriptionName, this.client.getApiVersion(), accept,
+            context);
+    }
+
+    /**
+     * Get an event subscription.
+     * 
+     * Get properties of an event subscription.
+     * 
+     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -518,39 +578,19 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
+     * Get an event subscription.
+     * 
      * Get properties of an event subscription.
-     *
+     * 
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an event subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionInner get(String scope, String eventSubscriptionName) {
-        return getAsync(scope, eventSubscriptionName).block();
-    }
-
-    /**
-     * Get properties of an event subscription.
-     *
-     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -558,25 +598,51 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return properties of an event subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventSubscriptionInner> getWithResponse(
-        String scope, String eventSubscriptionName, Context context) {
+    public Response<EventSubscriptionInner> getWithResponse(String scope, String eventSubscriptionName,
+        Context context) {
         return getWithResponseAsync(scope, eventSubscriptionName, context).block();
     }
 
     /**
+     * Get an event subscription.
+     * 
+     * Get properties of an event subscription.
+     * 
+     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be found.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of an event subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EventSubscriptionInner get(String scope, String eventSubscriptionName) {
+        return getWithResponse(scope, eventSubscriptionName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or update an event subscription.
+     * 
      * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
      * scope.
-     *
+     * 
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
-     *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
-     *     namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     *     characters in length and should use alphanumeric letters only.
+     * scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
+     * namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -584,13 +650,11 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String scope, String eventSubscriptionName,
+        EventSubscriptionInner eventSubscriptionInfo) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -607,34 +671,27 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            scope,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            eventSubscriptionInfo,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), scope, eventSubscriptionName,
+                this.client.getApiVersion(), eventSubscriptionInfo, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Create or update an event subscription.
+     * 
      * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
      * scope.
-     *
+     * 
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
-     *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
-     *     namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     *     characters in length and should use alphanumeric letters only.
+     * scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
+     * namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -643,13 +700,11 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String scope, String eventSubscriptionName,
+        EventSubscriptionInner eventSubscriptionInfo, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -666,31 +721,26 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                scope,
-                eventSubscriptionName,
-                this.client.getApiVersion(),
-                eventSubscriptionInfo,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), scope, eventSubscriptionName,
+            this.client.getApiVersion(), eventSubscriptionInfo, accept, context);
     }
 
     /**
+     * Create or update an event subscription.
+     * 
      * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
      * scope.
-     *
+     * 
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
-     *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
-     *     namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     *     characters in length and should use alphanumeric letters only.
+     * scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
+     * namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -700,32 +750,29 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdateAsync(
         String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(scope, eventSubscriptionName, eventSubscriptionInfo);
-        return this
-            .client
-            .<EventSubscriptionInner, EventSubscriptionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                EventSubscriptionInner.class,
-                EventSubscriptionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(scope, eventSubscriptionName, eventSubscriptionInfo);
+        return this.client.<EventSubscriptionInner, EventSubscriptionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), EventSubscriptionInner.class, EventSubscriptionInner.class,
+            this.client.getContext());
     }
 
     /**
+     * Create or update an event subscription.
+     * 
      * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
      * scope.
-     *
+     * 
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
-     *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
-     *     namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     *     characters in length and should use alphanumeric letters only.
+     * scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
+     * namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -737,32 +784,28 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdateAsync(
         String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(scope, eventSubscriptionName, eventSubscriptionInfo, context);
-        return this
-            .client
-            .<EventSubscriptionInner, EventSubscriptionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                EventSubscriptionInner.class,
-                EventSubscriptionInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(scope, eventSubscriptionName, eventSubscriptionInfo, context);
+        return this.client.<EventSubscriptionInner, EventSubscriptionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), EventSubscriptionInner.class, EventSubscriptionInner.class, context);
     }
 
     /**
+     * Create or update an event subscription.
+     * 
      * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
      * scope.
-     *
+     * 
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
-     *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
-     *     namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     *     characters in length and should use alphanumeric letters only.
+     * scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
+     * namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -770,25 +813,27 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return the {@link SyncPoller} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
-        String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
-        return beginCreateOrUpdateAsync(scope, eventSubscriptionName, eventSubscriptionInfo).getSyncPoller();
+    public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(String scope,
+        String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
+        return this.beginCreateOrUpdateAsync(scope, eventSubscriptionName, eventSubscriptionInfo).getSyncPoller();
     }
 
     /**
+     * Create or update an event subscription.
+     * 
      * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
      * scope.
-     *
+     * 
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
-     *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
-     *     namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     *     characters in length and should use alphanumeric letters only.
+     * scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
+     * namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -797,25 +842,28 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return the {@link SyncPoller} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
-        String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context) {
-        return beginCreateOrUpdateAsync(scope, eventSubscriptionName, eventSubscriptionInfo, context).getSyncPoller();
+    public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(String scope,
+        String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context) {
+        return this.beginCreateOrUpdateAsync(scope, eventSubscriptionName, eventSubscriptionInfo, context)
+            .getSyncPoller();
     }
 
     /**
+     * Create or update an event subscription.
+     * 
      * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
      * scope.
-     *
+     * 
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
-     *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
-     *     namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     *     characters in length and should use alphanumeric letters only.
+     * scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
+     * namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -823,27 +871,28 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return event Subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSubscriptionInner> createOrUpdateAsync(
-        String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
-        return beginCreateOrUpdateAsync(scope, eventSubscriptionName, eventSubscriptionInfo)
-            .last()
+    private Mono<EventSubscriptionInner> createOrUpdateAsync(String scope, String eventSubscriptionName,
+        EventSubscriptionInner eventSubscriptionInfo) {
+        return beginCreateOrUpdateAsync(scope, eventSubscriptionName, eventSubscriptionInfo).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Create or update an event subscription.
+     * 
      * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
      * scope.
-     *
+     * 
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
-     *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
-     *     namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     *     characters in length and should use alphanumeric letters only.
+     * scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
+     * namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -852,27 +901,28 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return event Subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSubscriptionInner> createOrUpdateAsync(
-        String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context) {
-        return beginCreateOrUpdateAsync(scope, eventSubscriptionName, eventSubscriptionInfo, context)
-            .last()
+    private Mono<EventSubscriptionInner> createOrUpdateAsync(String scope, String eventSubscriptionName,
+        EventSubscriptionInner eventSubscriptionInfo, Context context) {
+        return beginCreateOrUpdateAsync(scope, eventSubscriptionName, eventSubscriptionInfo, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Create or update an event subscription.
+     * 
      * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
      * scope.
-     *
+     * 
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
-     *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
-     *     namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     *     characters in length and should use alphanumeric letters only.
+     * scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
+     * namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -880,25 +930,27 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return event Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionInner createOrUpdate(
-        String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
+    public EventSubscriptionInner createOrUpdate(String scope, String eventSubscriptionName,
+        EventSubscriptionInner eventSubscriptionInfo) {
         return createOrUpdateAsync(scope, eventSubscriptionName, eventSubscriptionInfo).block();
     }
 
     /**
+     * Create or update an event subscription.
+     * 
      * Asynchronously creates a new event subscription or updates an existing event subscription based on the specified
      * scope.
-     *
+     * 
      * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The
-     *     scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
-     *     namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     *     characters in length and should use alphanumeric letters only.
+     * scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider
+     * namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -907,23 +959,25 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return event Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionInner createOrUpdate(
-        String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context) {
+    public EventSubscriptionInner createOrUpdate(String scope, String eventSubscriptionName,
+        EventSubscriptionInner eventSubscriptionInfo, Context context) {
         return createOrUpdateAsync(scope, eventSubscriptionName, eventSubscriptionInfo, context).block();
     }
 
     /**
+     * Delete an event subscription.
+     * 
      * Delete an existing event subscription.
-     *
+     * 
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -932,10 +986,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String scope, String eventSubscriptionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -945,30 +997,25 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
                 .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            scope,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), scope, eventSubscriptionName,
+                this.client.getApiVersion(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Delete an event subscription.
+     * 
      * Delete an existing event subscription.
-     *
+     * 
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -976,13 +1023,11 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String scope, String eventSubscriptionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String scope, String eventSubscriptionName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -992,22 +1037,24 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
                 .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .delete(this.client.getEndpoint(), scope, eventSubscriptionName, this.client.getApiVersion(), context);
+        return service.delete(this.client.getEndpoint(), scope, eventSubscriptionName, this.client.getApiVersion(),
+            context);
     }
 
     /**
+     * Delete an event subscription.
+     * 
      * Delete an existing event subscription.
-     *
+     * 
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1016,24 +1063,24 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String scope, String eventSubscriptionName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(scope, eventSubscriptionName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
+     * Delete an event subscription.
+     * 
      * Delete an existing event subscription.
-     *
+     * 
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1041,27 +1088,28 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String scope, String eventSubscriptionName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String scope, String eventSubscriptionName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(scope, eventSubscriptionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
+     * Delete an event subscription.
+     * 
      * Delete an existing event subscription.
-     *
+     * 
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1069,21 +1117,23 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String scope, String eventSubscriptionName) {
-        return beginDeleteAsync(scope, eventSubscriptionName).getSyncPoller();
+        return this.beginDeleteAsync(scope, eventSubscriptionName).getSyncPoller();
     }
 
     /**
+     * Delete an event subscription.
+     * 
      * Delete an existing event subscription.
-     *
+     * 
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1092,21 +1142,23 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String scope, String eventSubscriptionName, Context context) {
-        return beginDeleteAsync(scope, eventSubscriptionName, context).getSyncPoller();
+        return this.beginDeleteAsync(scope, eventSubscriptionName, context).getSyncPoller();
     }
 
     /**
+     * Delete an event subscription.
+     * 
      * Delete an existing event subscription.
-     *
+     * 
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1118,17 +1170,19 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
+     * Delete an event subscription.
+     * 
      * Delete an existing event subscription.
-     *
+     * 
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1137,23 +1191,24 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String scope, String eventSubscriptionName, Context context) {
-        return beginDeleteAsync(scope, eventSubscriptionName, context)
-            .last()
+        return beginDeleteAsync(scope, eventSubscriptionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Delete an event subscription.
+     * 
      * Delete an existing event subscription.
-     *
+     * 
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1164,17 +1219,19 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
+     * Delete an event subscription.
+     * 
      * Delete an existing event subscription.
-     *
+     * 
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1186,16 +1243,18 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
+     * Update an event subscription.
+     * 
      * Asynchronously updates an existing event subscription.
-     *
+     * 
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
-     *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
+     * top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1204,15 +1263,11 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String scope,
-        String eventSubscriptionName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String scope, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1222,40 +1277,31 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
                 .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
         }
         if (eventSubscriptionUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter eventSubscriptionUpdateParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter eventSubscriptionUpdateParameters is required and cannot be null."));
         } else {
             eventSubscriptionUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            scope,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            eventSubscriptionUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), scope, eventSubscriptionName,
+                this.client.getApiVersion(), eventSubscriptionUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Update an event subscription.
+     * 
      * Asynchronously updates an existing event subscription.
-     *
+     * 
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
-     *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
+     * top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
@@ -1265,16 +1311,11 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String scope,
-        String eventSubscriptionName,
-        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String scope, String eventSubscriptionName,
+        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1284,37 +1325,30 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
                 .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
         }
         if (eventSubscriptionUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter eventSubscriptionUpdateParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter eventSubscriptionUpdateParameters is required and cannot be null."));
         } else {
             eventSubscriptionUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                scope,
-                eventSubscriptionName,
-                this.client.getApiVersion(),
-                eventSubscriptionUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), scope, eventSubscriptionName, this.client.getApiVersion(),
+            eventSubscriptionUpdateParameters, accept, context);
     }
 
     /**
+     * Update an event subscription.
+     * 
      * Asynchronously updates an existing event subscription.
-     *
+     * 
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
-     *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
+     * top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1323,33 +1357,28 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return the {@link PollerFlux} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdateAsync(
-        String scope,
-        String eventSubscriptionName,
-        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(scope, eventSubscriptionName, eventSubscriptionUpdateParameters);
-        return this
-            .client
-            .<EventSubscriptionInner, EventSubscriptionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                EventSubscriptionInner.class,
-                EventSubscriptionInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdateAsync(String scope,
+        String eventSubscriptionName, EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(scope, eventSubscriptionName, eventSubscriptionUpdateParameters);
+        return this.client.<EventSubscriptionInner, EventSubscriptionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), EventSubscriptionInner.class, EventSubscriptionInner.class,
+            this.client.getContext());
     }
 
     /**
+     * Update an event subscription.
+     * 
      * Asynchronously updates an existing event subscription.
-     *
+     * 
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
-     *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
+     * top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
@@ -1359,35 +1388,29 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return the {@link PollerFlux} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdateAsync(
-        String scope,
-        String eventSubscriptionName,
-        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
+    private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdateAsync(String scope,
+        String eventSubscriptionName, EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(scope, eventSubscriptionName, eventSubscriptionUpdateParameters, context);
-        return this
-            .client
-            .<EventSubscriptionInner, EventSubscriptionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                EventSubscriptionInner.class,
-                EventSubscriptionInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(scope, eventSubscriptionName, eventSubscriptionUpdateParameters, context);
+        return this.client.<EventSubscriptionInner, EventSubscriptionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), EventSubscriptionInner.class, EventSubscriptionInner.class, context);
     }
 
     /**
+     * Update an event subscription.
+     * 
      * Asynchronously updates an existing event subscription.
-     *
+     * 
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
-     *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
+     * top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1396,24 +1419,24 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return the {@link SyncPoller} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
-        String scope,
-        String eventSubscriptionName,
-        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        return beginUpdateAsync(scope, eventSubscriptionName, eventSubscriptionUpdateParameters).getSyncPoller();
+    public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(String scope,
+        String eventSubscriptionName, EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
+        return this.beginUpdateAsync(scope, eventSubscriptionName, eventSubscriptionUpdateParameters).getSyncPoller();
     }
 
     /**
+     * Update an event subscription.
+     * 
      * Asynchronously updates an existing event subscription.
-     *
+     * 
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
-     *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
+     * top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
@@ -1423,26 +1446,26 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return the {@link SyncPoller} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
-        String scope,
-        String eventSubscriptionName,
-        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
+    public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(String scope,
+        String eventSubscriptionName, EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
         Context context) {
-        return beginUpdateAsync(scope, eventSubscriptionName, eventSubscriptionUpdateParameters, context)
+        return this.beginUpdateAsync(scope, eventSubscriptionName, eventSubscriptionUpdateParameters, context)
             .getSyncPoller();
     }
 
     /**
+     * Update an event subscription.
+     * 
      * Asynchronously updates an existing event subscription.
-     *
+     * 
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
-     *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
+     * top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1451,26 +1474,25 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return event Subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSubscriptionInner> updateAsync(
-        String scope,
-        String eventSubscriptionName,
+    private Mono<EventSubscriptionInner> updateAsync(String scope, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        return beginUpdateAsync(scope, eventSubscriptionName, eventSubscriptionUpdateParameters)
-            .last()
+        return beginUpdateAsync(scope, eventSubscriptionName, eventSubscriptionUpdateParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Update an event subscription.
+     * 
      * Asynchronously updates an existing event subscription.
-     *
+     * 
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
-     *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
+     * top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
@@ -1480,27 +1502,25 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return event Subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSubscriptionInner> updateAsync(
-        String scope,
-        String eventSubscriptionName,
-        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
-        Context context) {
-        return beginUpdateAsync(scope, eventSubscriptionName, eventSubscriptionUpdateParameters, context)
-            .last()
+    private Mono<EventSubscriptionInner> updateAsync(String scope, String eventSubscriptionName,
+        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context) {
+        return beginUpdateAsync(scope, eventSubscriptionName, eventSubscriptionUpdateParameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Update an event subscription.
+     * 
      * Asynchronously updates an existing event subscription.
-     *
+     * 
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
-     *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
+     * top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1509,24 +1529,24 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return event Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionInner update(
-        String scope,
-        String eventSubscriptionName,
+    public EventSubscriptionInner update(String scope, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
         return updateAsync(scope, eventSubscriptionName, eventSubscriptionUpdateParameters).block();
     }
 
     /**
+     * Update an event subscription.
+     * 
      * Asynchronously updates an existing event subscription.
-     *
+     * 
      * @param scope The scope of existing event subscription. The scope can be a subscription, or a resource group, or a
-     *     top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
+     * top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
@@ -1536,40 +1556,37 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return event Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionInner update(
-        String scope,
-        String eventSubscriptionName,
-        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
-        Context context) {
+    public EventSubscriptionInner update(String scope, String eventSubscriptionName,
+        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context) {
         return updateAsync(scope, eventSubscriptionName, eventSubscriptionUpdateParameters, context).block();
     }
 
     /**
+     * Get full URL of an event subscription.
+     * 
      * Get the full endpoint URL for an event subscription.
-     *
+     * 
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the full endpoint URL for an event subscription along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSubscriptionFullUrlInner>> getFullUrlWithResponseAsync(
-        String scope, String eventSubscriptionName) {
+    private Mono<Response<EventSubscriptionFullUrlInner>> getFullUrlWithResponseAsync(String scope,
+        String eventSubscriptionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1580,46 +1597,38 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getFullUrl(
-                            this.client.getEndpoint(),
-                            scope,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getFullUrl(this.client.getEndpoint(), scope, eventSubscriptionName,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Get full URL of an event subscription.
+     * 
      * Get the full endpoint URL for an event subscription.
-     *
+     * 
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the full endpoint URL for an event subscription along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSubscriptionFullUrlInner>> getFullUrlWithResponseAsync(
-        String scope, String eventSubscriptionName, Context context) {
+    private Mono<Response<EventSubscriptionFullUrlInner>> getFullUrlWithResponseAsync(String scope,
+        String eventSubscriptionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1630,22 +1639,23 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getFullUrl(
-                this.client.getEndpoint(), scope, eventSubscriptionName, this.client.getApiVersion(), accept, context);
+        return service.getFullUrl(this.client.getEndpoint(), scope, eventSubscriptionName, this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
+     * Get full URL of an event subscription.
+     * 
      * Get the full endpoint URL for an event subscription.
-     *
+     * 
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1659,38 +1669,18 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
+     * Get full URL of an event subscription.
+     * 
      * Get the full endpoint URL for an event subscription.
-     *
+     * 
      * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionFullUrlInner getFullUrl(String scope, String eventSubscriptionName) {
-        return getFullUrlAsync(scope, eventSubscriptionName).block();
-    }
-
-    /**
-     * Get the full endpoint URL for an event subscription.
-     *
-     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
      * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1699,133 +1689,123 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return the full endpoint URL for an event subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventSubscriptionFullUrlInner> getFullUrlWithResponse(
-        String scope, String eventSubscriptionName, Context context) {
+    public Response<EventSubscriptionFullUrlInner> getFullUrlWithResponse(String scope, String eventSubscriptionName,
+        Context context) {
         return getFullUrlWithResponseAsync(scope, eventSubscriptionName, context).block();
     }
 
     /**
+     * Get full URL of an event subscription.
+     * 
+     * Get the full endpoint URL for an event subscription.
+     * 
+     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
+     * level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for a resource, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
+     * for an EventGrid topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for an event subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EventSubscriptionFullUrlInner getFullUrl(String scope, String eventSubscriptionName) {
+        return getFullUrlWithResponse(scope, eventSubscriptionName, Context.NONE).getValue();
+    }
+
+    /**
+     * Get an aggregated list of all global event subscriptions under an Azure subscription.
+     * 
      * List all aggregated global event subscriptions under a specific Azure subscription.
-     *
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventSubscriptionInner>> listSinglePageAsync(String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), filter, top, accept, context))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Get an aggregated list of all global event subscriptions under an Azure subscription.
+     * 
      * List all aggregated global event subscriptions under a specific Azure subscription.
-     *
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listSinglePageAsync(
-        String filter, Integer top, Context context) {
+    private Mono<PagedResponse<EventSubscriptionInner>> listSinglePageAsync(String filter, Integer top,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), filter, top,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
+     * Get an aggregated list of all global event subscriptions under an Azure subscription.
+     * 
      * List all aggregated global event subscriptions under a specific Azure subscription.
-     *
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1833,13 +1813,15 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listAsync(String filter, Integer top) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top), nextLink -> listGlobalBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top),
+            nextLink -> listGlobalBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
+     * Get an aggregated list of all global event subscriptions under an Azure subscription.
+     * 
      * List all aggregated global event subscriptions under a specific Azure subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
@@ -1848,21 +1830,22 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     private PagedFlux<EventSubscriptionInner> listAsync() {
         final String filter = null;
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top), nextLink -> listGlobalBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top),
+            nextLink -> listGlobalBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
+     * Get an aggregated list of all global event subscriptions under an Azure subscription.
+     * 
      * List all aggregated global event subscriptions under a specific Azure subscription.
-     *
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1871,14 +1854,15 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listAsync(String filter, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top, context),
             nextLink -> listGlobalBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
+     * Get an aggregated list of all global event subscriptions under an Azure subscription.
+     * 
      * List all aggregated global event subscriptions under a specific Azure subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
@@ -1891,16 +1875,17 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
+     * Get an aggregated list of all global event subscriptions under an Azure subscription.
+     * 
      * List all aggregated global event subscriptions under a specific Azure subscription.
-     *
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1913,100 +1898,76 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
+     * List all global event subscriptions for a topic type.
+     * 
      * List all global event subscriptions under an Azure subscription for a topic type.
-     *
+     * 
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listGlobalBySubscriptionForTopicTypeSinglePageAsync(
-        String topicTypeName, String filter, Integer top) {
+    private Mono<PagedResponse<EventSubscriptionInner>>
+        listGlobalBySubscriptionForTopicTypeSinglePageAsync(String topicTypeName, String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (topicTypeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter topicTypeName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listGlobalBySubscriptionForTopicType(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            topicTypeName,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listGlobalBySubscriptionForTopicType(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), topicTypeName, this.client.getApiVersion(), filter, top, accept, context))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * List all global event subscriptions for a topic type.
+     * 
      * List all global event subscriptions under an Azure subscription for a topic type.
-     *
+     * 
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventSubscriptionInner>> listGlobalBySubscriptionForTopicTypeSinglePageAsync(
         String topicTypeName, String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (topicTypeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter topicTypeName is required and cannot be null."));
@@ -2014,54 +1975,42 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listGlobalBySubscriptionForTopicType(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                topicTypeName,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listGlobalBySubscriptionForTopicType(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                topicTypeName, this.client.getApiVersion(), filter, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
+     * List all global event subscriptions for a topic type.
+     * 
      * List all global event subscriptions under an Azure subscription for a topic type.
-     *
+     * 
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listGlobalBySubscriptionForTopicTypeAsync(
-        String topicTypeName, String filter, Integer top) {
-        return new PagedFlux<>(
-            () -> listGlobalBySubscriptionForTopicTypeSinglePageAsync(topicTypeName, filter, top),
+    private PagedFlux<EventSubscriptionInner> listGlobalBySubscriptionForTopicTypeAsync(String topicTypeName,
+        String filter, Integer top) {
+        return new PagedFlux<>(() -> listGlobalBySubscriptionForTopicTypeSinglePageAsync(topicTypeName, filter, top),
             nextLink -> listGlobalBySubscriptionForTopicTypeNextSinglePageAsync(nextLink));
     }
 
     /**
+     * List all global event subscriptions for a topic type.
+     * 
      * List all global event subscriptions under an Azure subscription for a topic type.
-     *
+     * 
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2072,23 +2021,23 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     private PagedFlux<EventSubscriptionInner> listGlobalBySubscriptionForTopicTypeAsync(String topicTypeName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listGlobalBySubscriptionForTopicTypeSinglePageAsync(topicTypeName, filter, top),
+        return new PagedFlux<>(() -> listGlobalBySubscriptionForTopicTypeSinglePageAsync(topicTypeName, filter, top),
             nextLink -> listGlobalBySubscriptionForTopicTypeNextSinglePageAsync(nextLink));
     }
 
     /**
+     * List all global event subscriptions for a topic type.
+     * 
      * List all global event subscriptions under an Azure subscription for a topic type.
-     *
+     * 
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2096,16 +2045,18 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listGlobalBySubscriptionForTopicTypeAsync(
-        String topicTypeName, String filter, Integer top, Context context) {
+    private PagedFlux<EventSubscriptionInner> listGlobalBySubscriptionForTopicTypeAsync(String topicTypeName,
+        String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listGlobalBySubscriptionForTopicTypeSinglePageAsync(topicTypeName, filter, top, context),
             nextLink -> listGlobalBySubscriptionForTopicTypeNextSinglePageAsync(nextLink, context));
     }
 
     /**
+     * List all global event subscriptions for a topic type.
+     * 
      * List all global event subscriptions under an Azure subscription for a topic type.
-     *
+     * 
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2120,17 +2071,18 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
+     * List all global event subscriptions for a topic type.
+     * 
      * List all global event subscriptions under an Azure subscription for a topic type.
-     *
+     * 
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2138,43 +2090,40 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventSubscriptionInner> listGlobalBySubscriptionForTopicType(
-        String topicTypeName, String filter, Integer top, Context context) {
+    public PagedIterable<EventSubscriptionInner> listGlobalBySubscriptionForTopicType(String topicTypeName,
+        String filter, Integer top, Context context) {
         return new PagedIterable<>(listGlobalBySubscriptionForTopicTypeAsync(topicTypeName, filter, top, context));
     }
 
     /**
+     * List all global event subscriptions under an Azure subscription and resource group.
+     * 
      * List all global event subscriptions under a specific Azure subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter, Integer top) {
+    private Mono<PagedResponse<EventSubscriptionInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2183,62 +2132,43 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), filter, top, accept, context))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * List all global event subscriptions under an Azure subscription and resource group.
+     * 
      * List all global event subscriptions under a specific Azure subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter, Integer top, Context context) {
+    private Mono<PagedResponse<EventSubscriptionInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2247,54 +2177,42 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), filter, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
+     * List all global event subscriptions under an Azure subscription and resource group.
+     * 
      * List all global event subscriptions under a specific Azure subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listByResourceGroupAsync(
-        String resourceGroupName, String filter, Integer top) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
+    private PagedFlux<EventSubscriptionInner> listByResourceGroupAsync(String resourceGroupName, String filter,
+        Integer top) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
             nextLink -> listGlobalByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
+     * List all global event subscriptions under an Azure subscription and resource group.
+     * 
      * List all global event subscriptions under a specific Azure subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2305,23 +2223,23 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     private PagedFlux<EventSubscriptionInner> listByResourceGroupAsync(String resourceGroupName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
             nextLink -> listGlobalByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
+     * List all global event subscriptions under an Azure subscription and resource group.
+     * 
      * List all global event subscriptions under a specific Azure subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2329,16 +2247,17 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listByResourceGroupAsync(
-        String resourceGroupName, String filter, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, context),
+    private PagedFlux<EventSubscriptionInner> listByResourceGroupAsync(String resourceGroupName, String filter,
+        Integer top, Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, context),
             nextLink -> listGlobalByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
+     * List all global event subscriptions under an Azure subscription and resource group.
+     * 
      * List all global event subscriptions under a specific Azure subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2353,17 +2272,18 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
+     * List all global event subscriptions under an Azure subscription and resource group.
+     * 
      * List all global event subscriptions under a specific Azure subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2371,44 +2291,41 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventSubscriptionInner> listByResourceGroup(
-        String resourceGroupName, String filter, Integer top, Context context) {
+    public PagedIterable<EventSubscriptionInner> listByResourceGroup(String resourceGroupName, String filter,
+        Integer top, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, top, context));
     }
 
     /**
+     * List all global event subscriptions under a resource group for a topic type.
+     * 
      * List all global event subscriptions under a resource group for a specific topic type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventSubscriptionInner>> listGlobalByResourceGroupForTopicTypeSinglePageAsync(
         String resourceGroupName, String topicTypeName, String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2419,65 +2336,45 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listGlobalByResourceGroupForTopicType(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            topicTypeName,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listGlobalByResourceGroupForTopicType(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, topicTypeName, this.client.getApiVersion(), filter,
+                top, accept, context))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * List all global event subscriptions under a resource group for a topic type.
+     * 
      * List all global event subscriptions under a resource group for a specific topic type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventSubscriptionInner>> listGlobalByResourceGroupForTopicTypeSinglePageAsync(
         String resourceGroupName, String topicTypeName, String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2489,56 +2386,44 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listGlobalByResourceGroupForTopicType(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                topicTypeName,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listGlobalByResourceGroupForTopicType(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, topicTypeName, this.client.getApiVersion(), filter, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
+     * List all global event subscriptions under a resource group for a topic type.
+     * 
      * List all global event subscriptions under a resource group for a specific topic type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listGlobalByResourceGroupForTopicTypeAsync(
-        String resourceGroupName, String topicTypeName, String filter, Integer top) {
+    private PagedFlux<EventSubscriptionInner> listGlobalByResourceGroupForTopicTypeAsync(String resourceGroupName,
+        String topicTypeName, String filter, Integer top) {
         return new PagedFlux<>(
             () -> listGlobalByResourceGroupForTopicTypeSinglePageAsync(resourceGroupName, topicTypeName, filter, top),
             nextLink -> listGlobalByResourceGroupForTopicTypeNextSinglePageAsync(nextLink));
     }
 
     /**
+     * List all global event subscriptions under a resource group for a topic type.
+     * 
      * List all global event subscriptions under a resource group for a specific topic type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2547,8 +2432,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listGlobalByResourceGroupForTopicTypeAsync(
-        String resourceGroupName, String topicTypeName) {
+    private PagedFlux<EventSubscriptionInner> listGlobalByResourceGroupForTopicTypeAsync(String resourceGroupName,
+        String topicTypeName) {
         final String filter = null;
         final Integer top = null;
         return new PagedFlux<>(
@@ -2557,18 +2442,19 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
+     * List all global event subscriptions under a resource group for a topic type.
+     * 
      * List all global event subscriptions under a resource group for a specific topic type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2576,18 +2462,18 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listGlobalByResourceGroupForTopicTypeAsync(
-        String resourceGroupName, String topicTypeName, String filter, Integer top, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listGlobalByResourceGroupForTopicTypeSinglePageAsync(
-                    resourceGroupName, topicTypeName, filter, top, context),
+    private PagedFlux<EventSubscriptionInner> listGlobalByResourceGroupForTopicTypeAsync(String resourceGroupName,
+        String topicTypeName, String filter, Integer top, Context context) {
+        return new PagedFlux<>(() -> listGlobalByResourceGroupForTopicTypeSinglePageAsync(resourceGroupName,
+            topicTypeName, filter, top, context),
             nextLink -> listGlobalByResourceGroupForTopicTypeNextSinglePageAsync(nextLink, context));
     }
 
     /**
+     * List all global event subscriptions under a resource group for a topic type.
+     * 
      * List all global event subscriptions under a resource group for a specific topic type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2596,8 +2482,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventSubscriptionInner> listGlobalByResourceGroupForTopicType(
-        String resourceGroupName, String topicTypeName) {
+    public PagedIterable<EventSubscriptionInner> listGlobalByResourceGroupForTopicType(String resourceGroupName,
+        String topicTypeName) {
         final String filter = null;
         final Integer top = null;
         return new PagedIterable<>(
@@ -2605,18 +2491,19 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
+     * List all global event subscriptions under a resource group for a topic type.
+     * 
      * List all global event subscriptions under a resource group for a specific topic type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2624,107 +2511,84 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventSubscriptionInner> listGlobalByResourceGroupForTopicType(
-        String resourceGroupName, String topicTypeName, String filter, Integer top, Context context) {
+    public PagedIterable<EventSubscriptionInner> listGlobalByResourceGroupForTopicType(String resourceGroupName,
+        String topicTypeName, String filter, Integer top, Context context) {
         return new PagedIterable<>(
             listGlobalByResourceGroupForTopicTypeAsync(resourceGroupName, topicTypeName, filter, top, context));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription.
-     *
+     * 
      * @param location Name of the location.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listRegionalBySubscriptionSinglePageAsync(
-        String location, String filter, Integer top) {
+    private Mono<PagedResponse<EventSubscriptionInner>> listRegionalBySubscriptionSinglePageAsync(String location,
+        String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listRegionalBySubscription(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listRegionalBySubscription(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), location, this.client.getApiVersion(), filter, top, accept, context))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription.
-     *
+     * 
      * @param location Name of the location.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listRegionalBySubscriptionSinglePageAsync(
-        String location, String filter, Integer top, Context context) {
+    private Mono<PagedResponse<EventSubscriptionInner>> listRegionalBySubscriptionSinglePageAsync(String location,
+        String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -2732,54 +2596,42 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listRegionalBySubscription(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                location,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listRegionalBySubscription(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+                this.client.getApiVersion(), filter, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription.
-     *
+     * 
      * @param location Name of the location.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listRegionalBySubscriptionAsync(
-        String location, String filter, Integer top) {
-        return new PagedFlux<>(
-            () -> listRegionalBySubscriptionSinglePageAsync(location, filter, top),
+    private PagedFlux<EventSubscriptionInner> listRegionalBySubscriptionAsync(String location, String filter,
+        Integer top) {
+        return new PagedFlux<>(() -> listRegionalBySubscriptionSinglePageAsync(location, filter, top),
             nextLink -> listRegionalBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription.
-     *
+     * 
      * @param location Name of the location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2790,23 +2642,23 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     private PagedFlux<EventSubscriptionInner> listRegionalBySubscriptionAsync(String location) {
         final String filter = null;
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listRegionalBySubscriptionSinglePageAsync(location, filter, top),
+        return new PagedFlux<>(() -> listRegionalBySubscriptionSinglePageAsync(location, filter, top),
             nextLink -> listRegionalBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription.
-     *
+     * 
      * @param location Name of the location.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2814,16 +2666,17 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listRegionalBySubscriptionAsync(
-        String location, String filter, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listRegionalBySubscriptionSinglePageAsync(location, filter, top, context),
+    private PagedFlux<EventSubscriptionInner> listRegionalBySubscriptionAsync(String location, String filter,
+        Integer top, Context context) {
+        return new PagedFlux<>(() -> listRegionalBySubscriptionSinglePageAsync(location, filter, top, context),
             nextLink -> listRegionalBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription.
-     *
+     * 
      * @param location Name of the location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2838,17 +2691,18 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription.
-     *
+     * 
      * @param location Name of the location.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2856,44 +2710,41 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventSubscriptionInner> listRegionalBySubscription(
-        String location, String filter, Integer top, Context context) {
+    public PagedIterable<EventSubscriptionInner> listRegionalBySubscription(String location, String filter, Integer top,
+        Context context) {
         return new PagedIterable<>(listRegionalBySubscriptionAsync(location, filter, top, context));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription and resource group.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventSubscriptionInner>> listRegionalByResourceGroupSinglePageAsync(
         String resourceGroupName, String location, String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2904,65 +2755,45 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listRegionalByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            location,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listRegionalByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, location, this.client.getApiVersion(), filter, top,
+                accept, context))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription and resource group.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventSubscriptionInner>> listRegionalByResourceGroupSinglePageAsync(
         String resourceGroupName, String location, String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2974,56 +2805,44 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listRegionalByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                location,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listRegionalByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                location, this.client.getApiVersion(), filter, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription and resource group.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listRegionalByResourceGroupAsync(
-        String resourceGroupName, String location, String filter, Integer top) {
+    private PagedFlux<EventSubscriptionInner> listRegionalByResourceGroupAsync(String resourceGroupName,
+        String location, String filter, Integer top) {
         return new PagedFlux<>(
             () -> listRegionalByResourceGroupSinglePageAsync(resourceGroupName, location, filter, top),
             nextLink -> listRegionalByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription and resource group.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3032,8 +2851,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listRegionalByResourceGroupAsync(
-        String resourceGroupName, String location) {
+    private PagedFlux<EventSubscriptionInner> listRegionalByResourceGroupAsync(String resourceGroupName,
+        String location) {
         final String filter = null;
         final Integer top = null;
         return new PagedFlux<>(
@@ -3042,18 +2861,19 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription and resource group.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3061,16 +2881,18 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listRegionalByResourceGroupAsync(
-        String resourceGroupName, String location, String filter, Integer top, Context context) {
+    private PagedFlux<EventSubscriptionInner> listRegionalByResourceGroupAsync(String resourceGroupName,
+        String location, String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listRegionalByResourceGroupSinglePageAsync(resourceGroupName, location, filter, top, context),
             nextLink -> listRegionalByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription and resource group.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3079,26 +2901,27 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventSubscriptionInner> listRegionalByResourceGroup(
-        String resourceGroupName, String location) {
+    public PagedIterable<EventSubscriptionInner> listRegionalByResourceGroup(String resourceGroupName,
+        String location) {
         final String filter = null;
         final Integer top = null;
         return new PagedIterable<>(listRegionalByResourceGroupAsync(resourceGroupName, location, filter, top));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription and resource group.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3106,44 +2929,41 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventSubscriptionInner> listRegionalByResourceGroup(
-        String resourceGroupName, String location, String filter, Integer top, Context context) {
+    public PagedIterable<EventSubscriptionInner> listRegionalByResourceGroup(String resourceGroupName, String location,
+        String filter, Integer top, Context context) {
         return new PagedIterable<>(listRegionalByResourceGroupAsync(resourceGroupName, location, filter, top, context));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription for a topic type.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and topic type.
-     *
+     * 
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventSubscriptionInner>> listRegionalBySubscriptionForTopicTypeSinglePageAsync(
         String location, String topicTypeName, String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -3153,65 +2973,45 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listRegionalBySubscriptionForTopicType(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            topicTypeName,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listRegionalBySubscriptionForTopicType(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), location, topicTypeName, this.client.getApiVersion(), filter, top,
+                accept, context))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription for a topic type.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and topic type.
-     *
+     * 
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventSubscriptionInner>> listRegionalBySubscriptionForTopicTypeSinglePageAsync(
         String location, String topicTypeName, String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -3222,56 +3022,44 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listRegionalBySubscriptionForTopicType(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                location,
-                topicTypeName,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listRegionalBySubscriptionForTopicType(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                location, topicTypeName, this.client.getApiVersion(), filter, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription for a topic type.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and topic type.
-     *
+     * 
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listRegionalBySubscriptionForTopicTypeAsync(
-        String location, String topicTypeName, String filter, Integer top) {
+    private PagedFlux<EventSubscriptionInner> listRegionalBySubscriptionForTopicTypeAsync(String location,
+        String topicTypeName, String filter, Integer top) {
         return new PagedFlux<>(
             () -> listRegionalBySubscriptionForTopicTypeSinglePageAsync(location, topicTypeName, filter, top),
             nextLink -> listRegionalBySubscriptionForTopicTypeNextSinglePageAsync(nextLink));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription for a topic type.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and topic type.
-     *
+     * 
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3280,8 +3068,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listRegionalBySubscriptionForTopicTypeAsync(
-        String location, String topicTypeName) {
+    private PagedFlux<EventSubscriptionInner> listRegionalBySubscriptionForTopicTypeAsync(String location,
+        String topicTypeName) {
         final String filter = null;
         final Integer top = null;
         return new PagedFlux<>(
@@ -3290,18 +3078,19 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription for a topic type.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and topic type.
-     *
+     * 
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3309,16 +3098,18 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listRegionalBySubscriptionForTopicTypeAsync(
-        String location, String topicTypeName, String filter, Integer top, Context context) {
+    private PagedFlux<EventSubscriptionInner> listRegionalBySubscriptionForTopicTypeAsync(String location,
+        String topicTypeName, String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listRegionalBySubscriptionForTopicTypeSinglePageAsync(location, topicTypeName, filter, top, context),
             nextLink -> listRegionalBySubscriptionForTopicTypeNextSinglePageAsync(nextLink, context));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription for a topic type.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and topic type.
-     *
+     * 
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3327,26 +3118,27 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventSubscriptionInner> listRegionalBySubscriptionForTopicType(
-        String location, String topicTypeName) {
+    public PagedIterable<EventSubscriptionInner> listRegionalBySubscriptionForTopicType(String location,
+        String topicTypeName) {
         final String filter = null;
         final Integer top = null;
         return new PagedIterable<>(listRegionalBySubscriptionForTopicTypeAsync(location, topicTypeName, filter, top));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription for a topic type.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and topic type.
-     *
+     * 
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3354,47 +3146,44 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventSubscriptionInner> listRegionalBySubscriptionForTopicType(
-        String location, String topicTypeName, String filter, Integer top, Context context) {
+    public PagedIterable<EventSubscriptionInner> listRegionalBySubscriptionForTopicType(String location,
+        String topicTypeName, String filter, Integer top, Context context) {
         return new PagedIterable<>(
             listRegionalBySubscriptionForTopicTypeAsync(location, topicTypeName, filter, top, context));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and resource group and
      * topic type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventSubscriptionInner>> listRegionalByResourceGroupForTopicTypeSinglePageAsync(
         String resourceGroupName, String location, String topicTypeName, String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3408,68 +3197,47 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listRegionalByResourceGroupForTopicType(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            location,
-                            topicTypeName,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listRegionalByResourceGroupForTopicType(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, location, topicTypeName,
+                this.client.getApiVersion(), filter, top, accept, context))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and resource group and
      * topic type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventSubscriptionInner>> listRegionalByResourceGroupForTopicTypeSinglePageAsync(
         String resourceGroupName, String location, String topicTypeName, String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3484,62 +3252,47 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listRegionalByResourceGroupForTopicType(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                location,
-                topicTypeName,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listRegionalByResourceGroupForTopicType(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, location, topicTypeName, this.client.getApiVersion(), filter, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and resource group and
      * topic type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listRegionalByResourceGroupForTopicTypeAsync(
-        String resourceGroupName, String location, String topicTypeName, String filter, Integer top) {
-        return new PagedFlux<>(
-            () ->
-                listRegionalByResourceGroupForTopicTypeSinglePageAsync(
-                    resourceGroupName, location, topicTypeName, filter, top),
+    private PagedFlux<EventSubscriptionInner> listRegionalByResourceGroupForTopicTypeAsync(String resourceGroupName,
+        String location, String topicTypeName, String filter, Integer top) {
+        return new PagedFlux<>(() -> listRegionalByResourceGroupForTopicTypeSinglePageAsync(resourceGroupName, location,
+            topicTypeName, filter, top),
             nextLink -> listRegionalByResourceGroupForTopicTypeNextSinglePageAsync(nextLink));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and resource group and
      * topic type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
@@ -3549,32 +3302,31 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listRegionalByResourceGroupForTopicTypeAsync(
-        String resourceGroupName, String location, String topicTypeName) {
+    private PagedFlux<EventSubscriptionInner> listRegionalByResourceGroupForTopicTypeAsync(String resourceGroupName,
+        String location, String topicTypeName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedFlux<>(
-            () ->
-                listRegionalByResourceGroupForTopicTypeSinglePageAsync(
-                    resourceGroupName, location, topicTypeName, filter, top),
+        return new PagedFlux<>(() -> listRegionalByResourceGroupForTopicTypeSinglePageAsync(resourceGroupName, location,
+            topicTypeName, filter, top),
             nextLink -> listRegionalByResourceGroupForTopicTypeNextSinglePageAsync(nextLink));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and resource group and
      * topic type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3582,19 +3334,20 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listRegionalByResourceGroupForTopicTypeAsync(
-        String resourceGroupName, String location, String topicTypeName, String filter, Integer top, Context context) {
+    private PagedFlux<EventSubscriptionInner> listRegionalByResourceGroupForTopicTypeAsync(String resourceGroupName,
+        String location, String topicTypeName, String filter, Integer top, Context context) {
         return new PagedFlux<>(
-            () ->
-                listRegionalByResourceGroupForTopicTypeSinglePageAsync(
-                    resourceGroupName, location, topicTypeName, filter, top, context),
+            () -> listRegionalByResourceGroupForTopicTypeSinglePageAsync(resourceGroupName, location, topicTypeName,
+                filter, top, context),
             nextLink -> listRegionalByResourceGroupForTopicTypeNextSinglePageAsync(nextLink, context));
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and resource group and
      * topic type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
@@ -3604,8 +3357,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventSubscriptionInner> listRegionalByResourceGroupForTopicType(
-        String resourceGroupName, String location, String topicTypeName) {
+    public PagedIterable<EventSubscriptionInner> listRegionalByResourceGroupForTopicType(String resourceGroupName,
+        String location, String topicTypeName) {
         final String filter = null;
         final Integer top = null;
         return new PagedIterable<>(
@@ -3613,20 +3366,21 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
+     * List all regional event subscriptions under an Azure subscription and resource group for a topic type.
+     * 
      * List all event subscriptions from the given location under a specific Azure subscription and resource group and
      * topic type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param location Name of the location.
      * @param topicTypeName Name of the topic type.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3634,53 +3388,44 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventSubscriptionInner> listRegionalByResourceGroupForTopicType(
-        String resourceGroupName, String location, String topicTypeName, String filter, Integer top, Context context) {
-        return new PagedIterable<>(
-            listRegionalByResourceGroupForTopicTypeAsync(
-                resourceGroupName, location, topicTypeName, filter, top, context));
+    public PagedIterable<EventSubscriptionInner> listRegionalByResourceGroupForTopicType(String resourceGroupName,
+        String location, String topicTypeName, String filter, Integer top, Context context) {
+        return new PagedIterable<>(listRegionalByResourceGroupForTopicTypeAsync(resourceGroupName, location,
+            topicTypeName, filter, top, context));
     }
 
     /**
+     * List all event subscriptions.
+     * 
      * List all event subscriptions that have been created for a specific resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
      * @param resourceTypeName Name of the resource type.
      * @param resourceName Name of the resource.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listByResourceSinglePageAsync(
-        String resourceGroupName,
-        String providerNamespace,
-        String resourceTypeName,
-        String resourceName,
-        String filter,
-        Integer top) {
+    private Mono<PagedResponse<EventSubscriptionInner>> listByResourceSinglePageAsync(String resourceGroupName,
+        String providerNamespace, String resourceTypeName, String resourceName, String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3699,75 +3444,48 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResource(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            providerNamespace,
-                            resourceTypeName,
-                            resourceName,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResource(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, providerNamespace, resourceTypeName, resourceName, this.client.getApiVersion(),
+                filter, top, accept, context))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * List all event subscriptions.
+     * 
      * List all event subscriptions that have been created for a specific resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
      * @param resourceTypeName Name of the resource type.
      * @param resourceName Name of the resource.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listByResourceSinglePageAsync(
-        String resourceGroupName,
-        String providerNamespace,
-        String resourceTypeName,
-        String resourceName,
-        String filter,
-        Integer top,
+    private Mono<PagedResponse<EventSubscriptionInner>> listByResourceSinglePageAsync(String resourceGroupName,
+        String providerNamespace, String resourceTypeName, String resourceName, String filter, Integer top,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3787,67 +3505,46 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResource(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                providerNamespace,
-                resourceTypeName,
-                resourceName,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
+            .listByResource(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                providerNamespace, resourceTypeName, resourceName, this.client.getApiVersion(), filter, top, accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
+     * List all event subscriptions.
+     * 
      * List all event subscriptions that have been created for a specific resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
      * @param resourceTypeName Name of the resource type.
      * @param resourceName Name of the resource.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listByResourceAsync(
-        String resourceGroupName,
-        String providerNamespace,
-        String resourceTypeName,
-        String resourceName,
-        String filter,
-        Integer top) {
-        return new PagedFlux<>(
-            () ->
-                listByResourceSinglePageAsync(
-                    resourceGroupName, providerNamespace, resourceTypeName, resourceName, filter, top),
-            nextLink -> listByResourceNextSinglePageAsync(nextLink));
+    private PagedFlux<EventSubscriptionInner> listByResourceAsync(String resourceGroupName, String providerNamespace,
+        String resourceTypeName, String resourceName, String filter, Integer top) {
+        return new PagedFlux<>(() -> listByResourceSinglePageAsync(resourceGroupName, providerNamespace,
+            resourceTypeName, resourceName, filter, top), nextLink -> listByResourceNextSinglePageAsync(nextLink));
     }
 
     /**
+     * List all event subscriptions.
+     * 
      * List all event subscriptions that have been created for a specific resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
      * @param resourceTypeName Name of the resource type.
@@ -3858,32 +3555,30 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listByResourceAsync(
-        String resourceGroupName, String providerNamespace, String resourceTypeName, String resourceName) {
+    private PagedFlux<EventSubscriptionInner> listByResourceAsync(String resourceGroupName, String providerNamespace,
+        String resourceTypeName, String resourceName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedFlux<>(
-            () ->
-                listByResourceSinglePageAsync(
-                    resourceGroupName, providerNamespace, resourceTypeName, resourceName, filter, top),
-            nextLink -> listByResourceNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByResourceSinglePageAsync(resourceGroupName, providerNamespace,
+            resourceTypeName, resourceName, filter, top), nextLink -> listByResourceNextSinglePageAsync(nextLink));
     }
 
     /**
+     * List all event subscriptions.
+     * 
      * List all event subscriptions that have been created for a specific resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
      * @param resourceTypeName Name of the resource type.
      * @param resourceName Name of the resource.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3891,24 +3586,18 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listByResourceAsync(
-        String resourceGroupName,
-        String providerNamespace,
-        String resourceTypeName,
-        String resourceName,
-        String filter,
-        Integer top,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByResourceSinglePageAsync(
-                    resourceGroupName, providerNamespace, resourceTypeName, resourceName, filter, top, context),
+    private PagedFlux<EventSubscriptionInner> listByResourceAsync(String resourceGroupName, String providerNamespace,
+        String resourceTypeName, String resourceName, String filter, Integer top, Context context) {
+        return new PagedFlux<>(() -> listByResourceSinglePageAsync(resourceGroupName, providerNamespace,
+            resourceTypeName, resourceName, filter, top, context),
             nextLink -> listByResourceNextSinglePageAsync(nextLink, context));
     }
 
     /**
+     * List all event subscriptions.
+     * 
      * List all event subscriptions that have been created for a specific resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
      * @param resourceTypeName Name of the resource type.
@@ -3919,8 +3608,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventSubscriptionInner> listByResource(
-        String resourceGroupName, String providerNamespace, String resourceTypeName, String resourceName) {
+    public PagedIterable<EventSubscriptionInner> listByResource(String resourceGroupName, String providerNamespace,
+        String resourceTypeName, String resourceName) {
         final String filter = null;
         final Integer top = null;
         return new PagedIterable<>(
@@ -3928,20 +3617,21 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
+     * List all event subscriptions.
+     * 
      * List all event subscriptions that have been created for a specific resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
      * @param resourceTypeName Name of the resource type.
      * @param resourceName Name of the resource.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3949,53 +3639,43 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventSubscriptionInner> listByResource(
-        String resourceGroupName,
-        String providerNamespace,
-        String resourceTypeName,
-        String resourceName,
-        String filter,
-        Integer top,
-        Context context) {
-        return new PagedIterable<>(
-            listByResourceAsync(
-                resourceGroupName, providerNamespace, resourceTypeName, resourceName, filter, top, context));
+    public PagedIterable<EventSubscriptionInner> listByResource(String resourceGroupName, String providerNamespace,
+        String resourceTypeName, String resourceName, String filter, Integer top, Context context) {
+        return new PagedIterable<>(listByResourceAsync(resourceGroupName, providerNamespace, resourceTypeName,
+            resourceName, filter, top, context));
     }
 
     /**
+     * List all event subscriptions for a specific domain topic.
+     * 
      * List all event subscriptions that have been created for a specific domain topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
      * @param topicName Name of the domain topic.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listByDomainTopicSinglePageAsync(
-        String resourceGroupName, String domainName, String topicName, String filter, Integer top) {
+    private Mono<PagedResponse<EventSubscriptionInner>> listByDomainTopicSinglePageAsync(String resourceGroupName,
+        String domainName, String topicName, String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4009,67 +3689,46 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDomainTopic(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            domainName,
-                            topicName,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByDomainTopic(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, domainName, topicName, this.client.getApiVersion(),
+                filter, top, accept, context))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * List all event subscriptions for a specific domain topic.
+     * 
      * List all event subscriptions that have been created for a specific domain topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
      * @param topicName Name of the domain topic.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listByDomainTopicSinglePageAsync(
-        String resourceGroupName, String domainName, String topicName, String filter, Integer top, Context context) {
+    private Mono<PagedResponse<EventSubscriptionInner>> listByDomainTopicSinglePageAsync(String resourceGroupName,
+        String domainName, String topicName, String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4084,58 +3743,45 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDomainTopic(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                domainName,
-                topicName,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByDomainTopic(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                domainName, topicName, this.client.getApiVersion(), filter, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
+     * List all event subscriptions for a specific domain topic.
+     * 
      * List all event subscriptions that have been created for a specific domain topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
      * @param topicName Name of the domain topic.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listByDomainTopicAsync(
-        String resourceGroupName, String domainName, String topicName, String filter, Integer top) {
+    private PagedFlux<EventSubscriptionInner> listByDomainTopicAsync(String resourceGroupName, String domainName,
+        String topicName, String filter, Integer top) {
         return new PagedFlux<>(
             () -> listByDomainTopicSinglePageAsync(resourceGroupName, domainName, topicName, filter, top),
             nextLink -> listByDomainTopicNextSinglePageAsync(nextLink));
     }
 
     /**
+     * List all event subscriptions for a specific domain topic.
+     * 
      * List all event subscriptions that have been created for a specific domain topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
      * @param topicName Name of the domain topic.
@@ -4145,8 +3791,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listByDomainTopicAsync(
-        String resourceGroupName, String domainName, String topicName) {
+    private PagedFlux<EventSubscriptionInner> listByDomainTopicAsync(String resourceGroupName, String domainName,
+        String topicName) {
         final String filter = null;
         final Integer top = null;
         return new PagedFlux<>(
@@ -4155,19 +3801,20 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
+     * List all event subscriptions for a specific domain topic.
+     * 
      * List all event subscriptions that have been created for a specific domain topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
      * @param topicName Name of the domain topic.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4175,16 +3822,18 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listByDomainTopicAsync(
-        String resourceGroupName, String domainName, String topicName, String filter, Integer top, Context context) {
+    private PagedFlux<EventSubscriptionInner> listByDomainTopicAsync(String resourceGroupName, String domainName,
+        String topicName, String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listByDomainTopicSinglePageAsync(resourceGroupName, domainName, topicName, filter, top, context),
             nextLink -> listByDomainTopicNextSinglePageAsync(nextLink, context));
     }
 
     /**
+     * List all event subscriptions for a specific domain topic.
+     * 
      * List all event subscriptions that have been created for a specific domain topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
      * @param topicName Name of the domain topic.
@@ -4194,27 +3843,28 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventSubscriptionInner> listByDomainTopic(
-        String resourceGroupName, String domainName, String topicName) {
+    public PagedIterable<EventSubscriptionInner> listByDomainTopic(String resourceGroupName, String domainName,
+        String topicName) {
         final String filter = null;
         final Integer top = null;
         return new PagedIterable<>(listByDomainTopicAsync(resourceGroupName, domainName, topicName, filter, top));
     }
 
     /**
+     * List all event subscriptions for a specific domain topic.
+     * 
      * List all event subscriptions that have been created for a specific domain topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the top level domain.
      * @param topicName Name of the domain topic.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4222,182 +3872,21 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventSubscriptionInner> listByDomainTopic(
-        String resourceGroupName, String domainName, String topicName, String filter, Integer top, Context context) {
+    public PagedIterable<EventSubscriptionInner> listByDomainTopic(String resourceGroupName, String domainName,
+        String topicName, String filter, Integer top, Context context) {
         return new PagedIterable<>(
             listByDomainTopicAsync(resourceGroupName, domainName, topicName, filter, top, context));
     }
 
     /**
-     * Get all delivery attributes for an event subscription.
-     *
-     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
-        String scope, String eventSubscriptionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (eventSubscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getDeliveryAttributes(
-                            this.client.getEndpoint(),
-                            scope,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription.
-     *
-     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription along with {@link Response} on successful completion of
-     *     {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
-        String scope, String eventSubscriptionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (eventSubscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getDeliveryAttributes(
-                this.client.getEndpoint(), scope, eventSubscriptionName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription.
-     *
-     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeliveryAttributeListResultInner> getDeliveryAttributesAsync(
-        String scope, String eventSubscriptionName) {
-        return getDeliveryAttributesWithResponseAsync(scope, eventSubscriptionName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription.
-     *
-     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeliveryAttributeListResultInner getDeliveryAttributes(String scope, String eventSubscriptionName) {
-        return getDeliveryAttributesAsync(scope, eventSubscriptionName).block();
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription.
-     *
-     * @param scope The scope of the event subscription. The scope can be a subscription, or a resource group, or a top
-     *     level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for a resource, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-     *     for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(
-        String scope, String eventSubscriptionName, Context context) {
-        return getDeliveryAttributesWithResponseAsync(scope, eventSubscriptionName, context).block();
-    }
-
-    /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventSubscriptionInner>> listGlobalBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -4405,152 +3894,112 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listGlobalBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listGlobalBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<EventSubscriptionInner>> listGlobalBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listGlobalBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listGlobalBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listGlobalBySubscriptionForTopicTypeNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<EventSubscriptionInner>>
+        listGlobalBySubscriptionForTopicTypeNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listGlobalBySubscriptionForTopicTypeNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listGlobalBySubscriptionForTopicTypeNext(nextLink,
+                this.client.getEndpoint(), accept, context))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listGlobalBySubscriptionForTopicTypeNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<EventSubscriptionInner>>
+        listGlobalBySubscriptionForTopicTypeNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listGlobalBySubscriptionForTopicTypeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listGlobalBySubscriptionForTopicTypeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventSubscriptionInner>> listGlobalByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -4558,153 +4007,112 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listGlobalByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listGlobalByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<EventSubscriptionInner>> listGlobalByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listGlobalByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listGlobalByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listGlobalByResourceGroupForTopicTypeNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<EventSubscriptionInner>>
+        listGlobalByResourceGroupForTopicTypeNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listGlobalByResourceGroupForTopicTypeNext(
-                            nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listGlobalByResourceGroupForTopicTypeNext(nextLink,
+                this.client.getEndpoint(), accept, context))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listGlobalByResourceGroupForTopicTypeNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<EventSubscriptionInner>>
+        listGlobalByResourceGroupForTopicTypeNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listGlobalByResourceGroupForTopicTypeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listGlobalByResourceGroupForTopicTypeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventSubscriptionInner>> listRegionalBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -4712,309 +4120,225 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listRegionalBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listRegionalBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<EventSubscriptionInner>> listRegionalBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listRegionalBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listRegionalBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listRegionalByResourceGroupNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<EventSubscriptionInner>>
+        listRegionalByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.listRegionalByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<EventSubscriptionInner>> listRegionalByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listRegionalByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<EventSubscriptionInner>>
+        listRegionalBySubscriptionForTopicTypeNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.listRegionalByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listRegionalBySubscriptionForTopicTypeNext(nextLink,
+                this.client.getEndpoint(), accept, context))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listRegionalByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<EventSubscriptionInner>>
+        listRegionalBySubscriptionForTopicTypeNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listRegionalByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listRegionalBySubscriptionForTopicTypeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listRegionalBySubscriptionForTopicTypeNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<EventSubscriptionInner>>
+        listRegionalByResourceGroupForTopicTypeNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listRegionalBySubscriptionForTopicTypeNext(
-                            nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listRegionalByResourceGroupForTopicTypeNext(nextLink,
+                this.client.getEndpoint(), accept, context))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listRegionalBySubscriptionForTopicTypeNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<EventSubscriptionInner>>
+        listRegionalByResourceGroupForTopicTypeNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listRegionalBySubscriptionForTopicTypeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listRegionalByResourceGroupForTopicTypeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listRegionalByResourceGroupForTopicTypeNextSinglePageAsync(
-        String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listRegionalByResourceGroupForTopicTypeNext(
-                            nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listRegionalByResourceGroupForTopicTypeNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listRegionalByResourceGroupForTopicTypeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventSubscriptionInner>> listByResourceNextSinglePageAsync(String nextLink) {
@@ -5022,73 +4346,54 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listByResourceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<EventSubscriptionInner>> listByResourceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventSubscriptionInner>> listByDomainTopicNextSinglePageAsync(String nextLink) {
@@ -5096,61 +4401,42 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDomainTopicNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listByDomainTopicNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<EventSubscriptionInner>> listByDomainTopicNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByDomainTopicNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByDomainTopicNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -12,6 +12,7 @@ import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * The default polling strategy to use with Azure data plane services. The default polling strategy will attempt 3
@@ -21,7 +22,7 @@ import java.util.Arrays;
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
- *           kept
+ * kept
  */
 public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U> {
     private final ChainedPollingStrategy<T, U> chainedPollingStrategy;
@@ -75,11 +76,27 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
      * @param context an instance of {@link Context}.
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
-    public DefaultPollingStrategy(HttpPipeline httpPipeline, String endpoint, JsonSerializer serializer, Context context) {
-        this.chainedPollingStrategy = new ChainedPollingStrategy<>(Arrays.asList(
-            new OperationResourcePollingStrategy<>(httpPipeline, endpoint, serializer, null, context),
-            new LocationPollingStrategy<>(httpPipeline, endpoint, serializer, context),
-            new StatusCheckPollingStrategy<>(serializer)));
+    public DefaultPollingStrategy(HttpPipeline httpPipeline, String endpoint, JsonSerializer serializer,
+        Context context) {
+        this(new PollingStrategyOptions(httpPipeline).setEndpoint(endpoint)
+            .setSerializer(serializer)
+            .setContext(context));
+    }
+
+    /**
+     * Creates a chained polling strategy with 3 known polling strategies, {@link OperationResourcePollingStrategy},
+     * {@link LocationPollingStrategy}, and {@link StatusCheckPollingStrategy}, in this order, with a custom
+     * serializer.
+     *
+     * @param pollingStrategyOptions options to configure this polling strategy.
+     * @throws NullPointerException If {@code pollingStrategyOptions} is null.
+     */
+    public DefaultPollingStrategy(PollingStrategyOptions pollingStrategyOptions) {
+        Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");
+        this.chainedPollingStrategy = new ChainedPollingStrategy<>(
+            Arrays.asList(new OperationResourcePollingStrategy<>(null, pollingStrategyOptions),
+                new LocationPollingStrategy<>(pollingStrategyOptions),
+                new StatusCheckPollingStrategy<>(pollingStrategyOptions.getSerializer())));
     }
 
     @Override
@@ -94,7 +111,7 @@ public final class DefaultPollingStrategy<T, U> implements PollingStrategy<T, U>
 
     @Override
     public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
-                                                              TypeReference<T> pollResponseType) {
+        TypeReference<T> pollResponseType) {
         return chainedPollingStrategy.onInitialResponse(response, pollingContext, pollResponseType);
     }
 

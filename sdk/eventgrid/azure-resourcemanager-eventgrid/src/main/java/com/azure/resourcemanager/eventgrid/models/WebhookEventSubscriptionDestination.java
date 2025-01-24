@@ -5,26 +5,47 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.WebhookEventSubscriptionDestinationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 
-/** Information about the webhook destination for an event subscription. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
-@JsonTypeName("WebHook")
+/**
+ * Information about the webhook destination for an event subscription.
+ */
 @Fluent
 public final class WebhookEventSubscriptionDestination extends EventSubscriptionDestination {
     /*
+     * Type of the endpoint for the event subscription destination.
+     */
+    private EndpointType endpointType = EndpointType.WEB_HOOK;
+
+    /*
      * WebHook Properties of the event subscription destination.
      */
-    @JsonProperty(value = "properties")
     private WebhookEventSubscriptionDestinationProperties innerProperties;
 
     /**
+     * Creates an instance of WebhookEventSubscriptionDestination class.
+     */
+    public WebhookEventSubscriptionDestination() {
+    }
+
+    /**
+     * Get the endpointType property: Type of the endpoint for the event subscription destination.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public EndpointType endpointType() {
+        return this.endpointType;
+    }
+
+    /**
      * Get the innerProperties property: WebHook Properties of the event subscription destination.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WebhookEventSubscriptionDestinationProperties innerProperties() {
@@ -33,7 +54,7 @@ public final class WebhookEventSubscriptionDestination extends EventSubscription
 
     /**
      * Get the endpointUrl property: The URL that represents the endpoint of the destination of an event subscription.
-     *
+     * 
      * @return the endpointUrl value.
      */
     public String endpointUrl() {
@@ -42,7 +63,7 @@ public final class WebhookEventSubscriptionDestination extends EventSubscription
 
     /**
      * Set the endpointUrl property: The URL that represents the endpoint of the destination of an event subscription.
-     *
+     * 
      * @param endpointUrl the endpointUrl value to set.
      * @return the WebhookEventSubscriptionDestination object itself.
      */
@@ -57,7 +78,7 @@ public final class WebhookEventSubscriptionDestination extends EventSubscription
     /**
      * Get the endpointBaseUrl property: The base URL that represents the endpoint of the destination of an event
      * subscription.
-     *
+     * 
      * @return the endpointBaseUrl value.
      */
     public String endpointBaseUrl() {
@@ -66,7 +87,7 @@ public final class WebhookEventSubscriptionDestination extends EventSubscription
 
     /**
      * Get the maxEventsPerBatch property: Maximum number of events per batch.
-     *
+     * 
      * @return the maxEventsPerBatch value.
      */
     public Integer maxEventsPerBatch() {
@@ -75,7 +96,7 @@ public final class WebhookEventSubscriptionDestination extends EventSubscription
 
     /**
      * Set the maxEventsPerBatch property: Maximum number of events per batch.
-     *
+     * 
      * @param maxEventsPerBatch the maxEventsPerBatch value to set.
      * @return the WebhookEventSubscriptionDestination object itself.
      */
@@ -89,7 +110,7 @@ public final class WebhookEventSubscriptionDestination extends EventSubscription
 
     /**
      * Get the preferredBatchSizeInKilobytes property: Preferred batch size in Kilobytes.
-     *
+     * 
      * @return the preferredBatchSizeInKilobytes value.
      */
     public Integer preferredBatchSizeInKilobytes() {
@@ -98,12 +119,12 @@ public final class WebhookEventSubscriptionDestination extends EventSubscription
 
     /**
      * Set the preferredBatchSizeInKilobytes property: Preferred batch size in Kilobytes.
-     *
+     * 
      * @param preferredBatchSizeInKilobytes the preferredBatchSizeInKilobytes value to set.
      * @return the WebhookEventSubscriptionDestination object itself.
      */
-    public WebhookEventSubscriptionDestination withPreferredBatchSizeInKilobytes(
-        Integer preferredBatchSizeInKilobytes) {
+    public WebhookEventSubscriptionDestination
+        withPreferredBatchSizeInKilobytes(Integer preferredBatchSizeInKilobytes) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WebhookEventSubscriptionDestinationProperties();
         }
@@ -114,7 +135,7 @@ public final class WebhookEventSubscriptionDestination extends EventSubscription
     /**
      * Get the azureActiveDirectoryTenantId property: The Azure Active Directory Tenant ID to get the access token that
      * will be included as the bearer token in delivery requests.
-     *
+     * 
      * @return the azureActiveDirectoryTenantId value.
      */
     public String azureActiveDirectoryTenantId() {
@@ -124,7 +145,7 @@ public final class WebhookEventSubscriptionDestination extends EventSubscription
     /**
      * Set the azureActiveDirectoryTenantId property: The Azure Active Directory Tenant ID to get the access token that
      * will be included as the bearer token in delivery requests.
-     *
+     * 
      * @param azureActiveDirectoryTenantId the azureActiveDirectoryTenantId value to set.
      * @return the WebhookEventSubscriptionDestination object itself.
      */
@@ -139,7 +160,7 @@ public final class WebhookEventSubscriptionDestination extends EventSubscription
     /**
      * Get the azureActiveDirectoryApplicationIdOrUri property: The Azure Active Directory Application ID or URI to get
      * the access token that will be included as the bearer token in delivery requests.
-     *
+     * 
      * @return the azureActiveDirectoryApplicationIdOrUri value.
      */
     public String azureActiveDirectoryApplicationIdOrUri() {
@@ -149,12 +170,12 @@ public final class WebhookEventSubscriptionDestination extends EventSubscription
     /**
      * Set the azureActiveDirectoryApplicationIdOrUri property: The Azure Active Directory Application ID or URI to get
      * the access token that will be included as the bearer token in delivery requests.
-     *
+     * 
      * @param azureActiveDirectoryApplicationIdOrUri the azureActiveDirectoryApplicationIdOrUri value to set.
      * @return the WebhookEventSubscriptionDestination object itself.
      */
-    public WebhookEventSubscriptionDestination withAzureActiveDirectoryApplicationIdOrUri(
-        String azureActiveDirectoryApplicationIdOrUri) {
+    public WebhookEventSubscriptionDestination
+        withAzureActiveDirectoryApplicationIdOrUri(String azureActiveDirectoryApplicationIdOrUri) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WebhookEventSubscriptionDestinationProperties();
         }
@@ -164,7 +185,7 @@ public final class WebhookEventSubscriptionDestination extends EventSubscription
 
     /**
      * Get the deliveryAttributeMappings property: Delivery attribute details.
-     *
+     * 
      * @return the deliveryAttributeMappings value.
      */
     public List<DeliveryAttributeMapping> deliveryAttributeMappings() {
@@ -173,12 +194,12 @@ public final class WebhookEventSubscriptionDestination extends EventSubscription
 
     /**
      * Set the deliveryAttributeMappings property: Delivery attribute details.
-     *
+     * 
      * @param deliveryAttributeMappings the deliveryAttributeMappings value to set.
      * @return the WebhookEventSubscriptionDestination object itself.
      */
-    public WebhookEventSubscriptionDestination withDeliveryAttributeMappings(
-        List<DeliveryAttributeMapping> deliveryAttributeMappings) {
+    public WebhookEventSubscriptionDestination
+        withDeliveryAttributeMappings(List<DeliveryAttributeMapping> deliveryAttributeMappings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WebhookEventSubscriptionDestinationProperties();
         }
@@ -187,15 +208,79 @@ public final class WebhookEventSubscriptionDestination extends EventSubscription
     }
 
     /**
+     * Get the minimumTlsVersionAllowed property: Minimum TLS version that should be supported by webhook endpoint.
+     * 
+     * @return the minimumTlsVersionAllowed value.
+     */
+    public TlsVersion minimumTlsVersionAllowed() {
+        return this.innerProperties() == null ? null : this.innerProperties().minimumTlsVersionAllowed();
+    }
+
+    /**
+     * Set the minimumTlsVersionAllowed property: Minimum TLS version that should be supported by webhook endpoint.
+     * 
+     * @param minimumTlsVersionAllowed the minimumTlsVersionAllowed value to set.
+     * @return the WebhookEventSubscriptionDestination object itself.
+     */
+    public WebhookEventSubscriptionDestination withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withMinimumTlsVersionAllowed(minimumTlsVersionAllowed);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebhookEventSubscriptionDestination from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebhookEventSubscriptionDestination if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebhookEventSubscriptionDestination.
+     */
+    public static WebhookEventSubscriptionDestination fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebhookEventSubscriptionDestination deserializedWebhookEventSubscriptionDestination
+                = new WebhookEventSubscriptionDestination();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointType".equals(fieldName)) {
+                    deserializedWebhookEventSubscriptionDestination.endpointType
+                        = EndpointType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWebhookEventSubscriptionDestination.innerProperties
+                        = WebhookEventSubscriptionDestinationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebhookEventSubscriptionDestination;
+        });
     }
 }

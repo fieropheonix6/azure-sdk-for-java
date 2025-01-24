@@ -3,9 +3,9 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionStatus;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Assertions;
@@ -17,6 +17,7 @@ import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.TIME_SERIES_STAR
 
 public abstract class DataFeedIngestionOperationTestBase extends MetricsAdvisorAdministrationClientTestBase {
     public abstract void listIngestionStatus(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
+
     static final String DATA_FEED_ID = "6e48e476-33e6-4113-a299-a5740bc0db47";
 
     // Pre-configured test resource.

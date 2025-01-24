@@ -8,34 +8,29 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureStorageProtectableContainer;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureStorageProtectableContainerTests {
-    @Test
-    public void testDeserialize() {
-        AzureStorageProtectableContainer model =
-            BinaryData
-                .fromString(
-                    "{\"protectableContainerType\":\"StorageContainer\",\"friendlyName\":\"axsipietgb\",\"backupManagementType\":\"AzureSql\",\"healthStatus\":\"ulbmoichdlp\",\"containerId\":\"pubntnbatz\"}")
-                .toObject(AzureStorageProtectableContainer.class);
-        Assertions.assertEquals("axsipietgb", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
-        Assertions.assertEquals("ulbmoichdlp", model.healthStatus());
-        Assertions.assertEquals("pubntnbatz", model.containerId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureStorageProtectableContainer model = BinaryData.fromString(
+            "{\"protectableContainerType\":\"StorageContainer\",\"friendlyName\":\"yqwcabvnuil\",\"backupManagementType\":\"DefaultBackup\",\"healthStatus\":\"swlpaugmrmfj\",\"containerId\":\"xwtoaukhfkvc\"}")
+            .toObject(AzureStorageProtectableContainer.class);
+        Assertions.assertEquals("yqwcabvnuil", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
+        Assertions.assertEquals("swlpaugmrmfj", model.healthStatus());
+        Assertions.assertEquals("xwtoaukhfkvc", model.containerId());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureStorageProtectableContainer model =
-            new AzureStorageProtectableContainer()
-                .withFriendlyName("axsipietgb")
-                .withBackupManagementType(BackupManagementType.AZURE_SQL)
-                .withHealthStatus("ulbmoichdlp")
-                .withContainerId("pubntnbatz");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureStorageProtectableContainer model = new AzureStorageProtectableContainer().withFriendlyName("yqwcabvnuil")
+            .withBackupManagementType(BackupManagementType.DEFAULT_BACKUP)
+            .withHealthStatus("swlpaugmrmfj")
+            .withContainerId("xwtoaukhfkvc");
         model = BinaryData.fromObject(model).toObject(AzureStorageProtectableContainer.class);
-        Assertions.assertEquals("axsipietgb", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.backupManagementType());
-        Assertions.assertEquals("ulbmoichdlp", model.healthStatus());
-        Assertions.assertEquals("pubntnbatz", model.containerId());
+        Assertions.assertEquals("yqwcabvnuil", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
+        Assertions.assertEquals("swlpaugmrmfj", model.healthStatus());
+        Assertions.assertEquals("xwtoaukhfkvc", model.containerId());
     }
 }

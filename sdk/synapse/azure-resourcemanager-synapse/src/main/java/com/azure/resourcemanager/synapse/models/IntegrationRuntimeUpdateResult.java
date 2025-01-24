@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IntegrationRuntimeUpdateResult. */
+/**
+ * The result of the last integration runtime node update.
+ */
 public final class IntegrationRuntimeUpdateResult extends ExpandableStringEnum<IntegrationRuntimeUpdateResult> {
-    /** Static value None for IntegrationRuntimeUpdateResult. */
+    /**
+     * Static value None for IntegrationRuntimeUpdateResult.
+     */
     public static final IntegrationRuntimeUpdateResult NONE = fromString("None");
 
-    /** Static value Succeed for IntegrationRuntimeUpdateResult. */
+    /**
+     * Static value Succeed for IntegrationRuntimeUpdateResult.
+     */
     public static final IntegrationRuntimeUpdateResult SUCCEED = fromString("Succeed");
 
-    /** Static value Fail for IntegrationRuntimeUpdateResult. */
+    /**
+     * Static value Fail for IntegrationRuntimeUpdateResult.
+     */
     public static final IntegrationRuntimeUpdateResult FAIL = fromString("Fail");
 
     /**
+     * Creates a new instance of IntegrationRuntimeUpdateResult value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationRuntimeUpdateResult() {
+    }
+
+    /**
      * Creates or finds a IntegrationRuntimeUpdateResult from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IntegrationRuntimeUpdateResult.
      */
-    @JsonCreator
     public static IntegrationRuntimeUpdateResult fromString(String name) {
         return fromString(name, IntegrationRuntimeUpdateResult.class);
     }
 
-    /** @return known IntegrationRuntimeUpdateResult values. */
+    /**
+     * Gets known IntegrationRuntimeUpdateResult values.
+     * 
+     * @return known IntegrationRuntimeUpdateResult values.
+     */
     public static Collection<IntegrationRuntimeUpdateResult> values() {
         return values(IntegrationRuntimeUpdateResult.class);
     }

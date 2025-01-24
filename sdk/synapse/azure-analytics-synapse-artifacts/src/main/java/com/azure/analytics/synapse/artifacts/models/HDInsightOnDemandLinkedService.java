@@ -5,24 +5,28 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** HDInsight ondemand linked service. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("HDInsightOnDemand")
-@JsonFlatten
+/**
+ * HDInsight ondemand linked service.
+ */
 @Fluent
 public class HDInsightOnDemandLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    private String type = "HDInsightOnDemand";
+
     /*
      * Number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "typeProperties.clusterSize", required = true)
     private Object clusterSize;
 
     /*
@@ -30,207 +34,197 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * stays alive after completion of an activity run if there are no other active jobs in the cluster. The minimum
      * value is 5 mins. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.timeToLive", required = true)
     private Object timeToLive;
 
     /*
      * Version of the HDInsight cluster.  Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.version", required = true)
     private Object version;
 
     /*
      * Azure Storage linked service to be used by the on-demand cluster for storing and processing data.
      */
-    @JsonProperty(value = "typeProperties.linkedServiceName", required = true)
     private LinkedServiceReference linkedServiceName;
 
     /*
      * The customer’s subscription to host the cluster. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.hostSubscriptionId", required = true)
     private Object hostSubscriptionId;
 
     /*
      * The service principal id for the hostSubscriptionId. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The key for the service principal id.
      */
-    @JsonProperty(value = "typeProperties.servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
      * The Tenant id/name to which the service principal belongs. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.tenant", required = true)
     private Object tenant;
 
     /*
      * The resource group where the cluster belongs. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.clusterResourceGroup", required = true)
     private Object clusterResourceGroup;
 
     /*
      * The prefix of cluster name, postfix will be distinct with timestamp. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "typeProperties.clusterNamePrefix")
     private Object clusterNamePrefix;
 
     /*
      * The username to access the cluster. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.clusterUserName")
     private Object clusterUserName;
 
     /*
      * The password to access the cluster.
      */
-    @JsonProperty(value = "typeProperties.clusterPassword")
     private SecretBase clusterPassword;
 
     /*
      * The username to SSH remotely connect to cluster’s node (for Linux). Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "typeProperties.clusterSshUserName")
     private Object clusterSshUserName;
 
     /*
      * The password to SSH remotely connect cluster’s node (for Linux).
      */
-    @JsonProperty(value = "typeProperties.clusterSshPassword")
     private SecretBase clusterSshPassword;
 
     /*
      * Specifies additional storage accounts for the HDInsight linked service so that the Data Factory service can
      * register them on your behalf.
      */
-    @JsonProperty(value = "typeProperties.additionalLinkedServiceNames")
     private List<LinkedServiceReference> additionalLinkedServiceNames;
 
     /*
      * The name of Azure SQL linked service that point to the HCatalog database. The on-demand HDInsight cluster is
      * created by using the Azure SQL database as the metastore.
      */
-    @JsonProperty(value = "typeProperties.hcatalogLinkedServiceName")
     private LinkedServiceReference hcatalogLinkedServiceName;
 
     /*
      * The cluster type. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.clusterType")
     private Object clusterType;
 
     /*
      * The version of spark if the cluster type is 'spark'. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.sparkVersion")
     private Object sparkVersion;
 
     /*
      * Specifies the core configuration parameters (as in core-site.xml) for the HDInsight cluster to be created.
      */
-    @JsonProperty(value = "typeProperties.coreConfiguration")
     private Object coreConfiguration;
 
     /*
      * Specifies the HBase configuration parameters (hbase-site.xml) for the HDInsight cluster.
      */
-    @JsonProperty(value = "typeProperties.hBaseConfiguration")
     private Object hBaseConfiguration;
 
     /*
      * Specifies the HDFS configuration parameters (hdfs-site.xml) for the HDInsight cluster.
      */
-    @JsonProperty(value = "typeProperties.hdfsConfiguration")
     private Object hdfsConfiguration;
 
     /*
      * Specifies the hive configuration parameters (hive-site.xml) for the HDInsight cluster.
      */
-    @JsonProperty(value = "typeProperties.hiveConfiguration")
     private Object hiveConfiguration;
 
     /*
      * Specifies the MapReduce configuration parameters (mapred-site.xml) for the HDInsight cluster.
      */
-    @JsonProperty(value = "typeProperties.mapReduceConfiguration")
     private Object mapReduceConfiguration;
 
     /*
      * Specifies the Oozie configuration parameters (oozie-site.xml) for the HDInsight cluster.
      */
-    @JsonProperty(value = "typeProperties.oozieConfiguration")
     private Object oozieConfiguration;
 
     /*
      * Specifies the Storm configuration parameters (storm-site.xml) for the HDInsight cluster.
      */
-    @JsonProperty(value = "typeProperties.stormConfiguration")
     private Object stormConfiguration;
 
     /*
      * Specifies the Yarn configuration parameters (yarn-site.xml) for the HDInsight cluster.
      */
-    @JsonProperty(value = "typeProperties.yarnConfiguration")
     private Object yarnConfiguration;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
     /*
      * Specifies the size of the head node for the HDInsight cluster.
      */
-    @JsonProperty(value = "typeProperties.headNodeSize")
     private Object headNodeSize;
 
     /*
      * Specifies the size of the data node for the HDInsight cluster.
      */
-    @JsonProperty(value = "typeProperties.dataNodeSize")
     private Object dataNodeSize;
 
     /*
      * Specifies the size of the Zoo Keeper node for the HDInsight cluster.
      */
-    @JsonProperty(value = "typeProperties.zookeeperNodeSize")
     private Object zookeeperNodeSize;
 
     /*
      * Custom script actions to run on HDI ondemand cluster once it's up. Please refer to
-     * https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-customize-cluster-linux?toc=%2Fen-us%2Fazure%2Fhdinsight%2Fr-server%2FTOC.json&bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#understanding-script-actions.
+     * https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-customize-cluster-linux?toc=%2Fen-us%2Fazure%
+     * 2Fhdinsight%2Fr-server%2FTOC.json&bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#understanding-script-actions.
      */
-    @JsonProperty(value = "typeProperties.scriptActions")
     private List<ScriptAction> scriptActions;
 
     /*
      * The ARM resource ID for the vNet to which the cluster should be joined after creation. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.virtualNetworkId")
     private Object virtualNetworkId;
 
     /*
      * The ARM resource ID for the subnet in the vNet. If virtualNetworkId was specified, then this property is
      * required. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.subnetName")
     private Object subnetName;
+
+    /*
+     * The credential reference containing authentication information.
+     */
+    private CredentialReference credential;
+
+    /**
+     * Creates an instance of HDInsightOnDemandLinkedService class.
+     */
+    public HDInsightOnDemandLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the clusterSize property: Number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the clusterSize value.
      */
     public Object getClusterSize() {
@@ -240,7 +234,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the clusterSize property: Number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param clusterSize the clusterSize value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -253,7 +247,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * Get the timeToLive property: The allowed idle time for the on-demand HDInsight cluster. Specifies how long the
      * on-demand HDInsight cluster stays alive after completion of an activity run if there are no other active jobs in
      * the cluster. The minimum value is 5 mins. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the timeToLive value.
      */
     public Object getTimeToLive() {
@@ -264,7 +258,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * Set the timeToLive property: The allowed idle time for the on-demand HDInsight cluster. Specifies how long the
      * on-demand HDInsight cluster stays alive after completion of an activity run if there are no other active jobs in
      * the cluster. The minimum value is 5 mins. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param timeToLive the timeToLive value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -275,7 +269,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
 
     /**
      * Get the version property: Version of the HDInsight cluster.  Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the version value.
      */
     public Object getVersion() {
@@ -284,7 +278,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
 
     /**
      * Set the version property: Version of the HDInsight cluster.  Type: string (or Expression with resultType string).
-     *
+     * 
      * @param version the version value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -296,7 +290,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the linkedServiceName property: Azure Storage linked service to be used by the on-demand cluster for storing
      * and processing data.
-     *
+     * 
      * @return the linkedServiceName value.
      */
     public LinkedServiceReference getLinkedServiceName() {
@@ -306,7 +300,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the linkedServiceName property: Azure Storage linked service to be used by the on-demand cluster for storing
      * and processing data.
-     *
+     * 
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -318,7 +312,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the hostSubscriptionId property: The customer’s subscription to host the cluster. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the hostSubscriptionId value.
      */
     public Object getHostSubscriptionId() {
@@ -328,7 +322,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the hostSubscriptionId property: The customer’s subscription to host the cluster. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param hostSubscriptionId the hostSubscriptionId value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -340,7 +334,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the servicePrincipalId property: The service principal id for the hostSubscriptionId. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object getServicePrincipalId() {
@@ -350,7 +344,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the servicePrincipalId property: The service principal id for the hostSubscriptionId. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -361,7 +355,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
 
     /**
      * Get the servicePrincipalKey property: The key for the service principal id.
-     *
+     * 
      * @return the servicePrincipalKey value.
      */
     public SecretBase getServicePrincipalKey() {
@@ -370,7 +364,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
 
     /**
      * Set the servicePrincipalKey property: The key for the service principal id.
-     *
+     * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -382,7 +376,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the tenant property: The Tenant id/name to which the service principal belongs. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the tenant value.
      */
     public Object getTenant() {
@@ -392,7 +386,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the tenant property: The Tenant id/name to which the service principal belongs. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param tenant the tenant value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -404,7 +398,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the clusterResourceGroup property: The resource group where the cluster belongs. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the clusterResourceGroup value.
      */
     public Object getClusterResourceGroup() {
@@ -414,7 +408,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the clusterResourceGroup property: The resource group where the cluster belongs. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param clusterResourceGroup the clusterResourceGroup value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -426,7 +420,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the clusterNamePrefix property: The prefix of cluster name, postfix will be distinct with timestamp. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the clusterNamePrefix value.
      */
     public Object getClusterNamePrefix() {
@@ -436,7 +430,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the clusterNamePrefix property: The prefix of cluster name, postfix will be distinct with timestamp. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param clusterNamePrefix the clusterNamePrefix value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -448,7 +442,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the clusterUserName property: The username to access the cluster. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the clusterUserName value.
      */
     public Object getClusterUserName() {
@@ -458,7 +452,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the clusterUserName property: The username to access the cluster. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param clusterUserName the clusterUserName value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -469,7 +463,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
 
     /**
      * Get the clusterPassword property: The password to access the cluster.
-     *
+     * 
      * @return the clusterPassword value.
      */
     public SecretBase getClusterPassword() {
@@ -478,7 +472,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
 
     /**
      * Set the clusterPassword property: The password to access the cluster.
-     *
+     * 
      * @param clusterPassword the clusterPassword value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -490,7 +484,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the clusterSshUserName property: The username to SSH remotely connect to cluster’s node (for Linux). Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the clusterSshUserName value.
      */
     public Object getClusterSshUserName() {
@@ -500,7 +494,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the clusterSshUserName property: The username to SSH remotely connect to cluster’s node (for Linux). Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param clusterSshUserName the clusterSshUserName value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -511,7 +505,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
 
     /**
      * Get the clusterSshPassword property: The password to SSH remotely connect cluster’s node (for Linux).
-     *
+     * 
      * @return the clusterSshPassword value.
      */
     public SecretBase getClusterSshPassword() {
@@ -520,7 +514,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
 
     /**
      * Set the clusterSshPassword property: The password to SSH remotely connect cluster’s node (for Linux).
-     *
+     * 
      * @param clusterSshPassword the clusterSshPassword value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -532,7 +526,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the additionalLinkedServiceNames property: Specifies additional storage accounts for the HDInsight linked
      * service so that the Data Factory service can register them on your behalf.
-     *
+     * 
      * @return the additionalLinkedServiceNames value.
      */
     public List<LinkedServiceReference> getAdditionalLinkedServiceNames() {
@@ -542,12 +536,12 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the additionalLinkedServiceNames property: Specifies additional storage accounts for the HDInsight linked
      * service so that the Data Factory service can register them on your behalf.
-     *
+     * 
      * @param additionalLinkedServiceNames the additionalLinkedServiceNames value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
-    public HDInsightOnDemandLinkedService setAdditionalLinkedServiceNames(
-            List<LinkedServiceReference> additionalLinkedServiceNames) {
+    public HDInsightOnDemandLinkedService
+        setAdditionalLinkedServiceNames(List<LinkedServiceReference> additionalLinkedServiceNames) {
         this.additionalLinkedServiceNames = additionalLinkedServiceNames;
         return this;
     }
@@ -555,7 +549,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the hcatalogLinkedServiceName property: The name of Azure SQL linked service that point to the HCatalog
      * database. The on-demand HDInsight cluster is created by using the Azure SQL database as the metastore.
-     *
+     * 
      * @return the hcatalogLinkedServiceName value.
      */
     public LinkedServiceReference getHcatalogLinkedServiceName() {
@@ -565,19 +559,19 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the hcatalogLinkedServiceName property: The name of Azure SQL linked service that point to the HCatalog
      * database. The on-demand HDInsight cluster is created by using the Azure SQL database as the metastore.
-     *
+     * 
      * @param hcatalogLinkedServiceName the hcatalogLinkedServiceName value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
-    public HDInsightOnDemandLinkedService setHcatalogLinkedServiceName(
-            LinkedServiceReference hcatalogLinkedServiceName) {
+    public HDInsightOnDemandLinkedService
+        setHcatalogLinkedServiceName(LinkedServiceReference hcatalogLinkedServiceName) {
         this.hcatalogLinkedServiceName = hcatalogLinkedServiceName;
         return this;
     }
 
     /**
      * Get the clusterType property: The cluster type. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the clusterType value.
      */
     public Object getClusterType() {
@@ -586,7 +580,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
 
     /**
      * Set the clusterType property: The cluster type. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param clusterType the clusterType value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -598,7 +592,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the sparkVersion property: The version of spark if the cluster type is 'spark'. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the sparkVersion value.
      */
     public Object getSparkVersion() {
@@ -608,7 +602,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the sparkVersion property: The version of spark if the cluster type is 'spark'. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param sparkVersion the sparkVersion value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -620,7 +614,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the coreConfiguration property: Specifies the core configuration parameters (as in core-site.xml) for the
      * HDInsight cluster to be created.
-     *
+     * 
      * @return the coreConfiguration value.
      */
     public Object getCoreConfiguration() {
@@ -630,7 +624,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the coreConfiguration property: Specifies the core configuration parameters (as in core-site.xml) for the
      * HDInsight cluster to be created.
-     *
+     * 
      * @param coreConfiguration the coreConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -642,7 +636,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the hBaseConfiguration property: Specifies the HBase configuration parameters (hbase-site.xml) for the
      * HDInsight cluster.
-     *
+     * 
      * @return the hBaseConfiguration value.
      */
     public Object getHBaseConfiguration() {
@@ -652,7 +646,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the hBaseConfiguration property: Specifies the HBase configuration parameters (hbase-site.xml) for the
      * HDInsight cluster.
-     *
+     * 
      * @param hBaseConfiguration the hBaseConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -664,7 +658,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the hdfsConfiguration property: Specifies the HDFS configuration parameters (hdfs-site.xml) for the HDInsight
      * cluster.
-     *
+     * 
      * @return the hdfsConfiguration value.
      */
     public Object getHdfsConfiguration() {
@@ -674,7 +668,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the hdfsConfiguration property: Specifies the HDFS configuration parameters (hdfs-site.xml) for the HDInsight
      * cluster.
-     *
+     * 
      * @param hdfsConfiguration the hdfsConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -686,7 +680,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the hiveConfiguration property: Specifies the hive configuration parameters (hive-site.xml) for the HDInsight
      * cluster.
-     *
+     * 
      * @return the hiveConfiguration value.
      */
     public Object getHiveConfiguration() {
@@ -696,7 +690,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the hiveConfiguration property: Specifies the hive configuration parameters (hive-site.xml) for the HDInsight
      * cluster.
-     *
+     * 
      * @param hiveConfiguration the hiveConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -708,7 +702,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the mapReduceConfiguration property: Specifies the MapReduce configuration parameters (mapred-site.xml) for
      * the HDInsight cluster.
-     *
+     * 
      * @return the mapReduceConfiguration value.
      */
     public Object getMapReduceConfiguration() {
@@ -718,7 +712,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the mapReduceConfiguration property: Specifies the MapReduce configuration parameters (mapred-site.xml) for
      * the HDInsight cluster.
-     *
+     * 
      * @param mapReduceConfiguration the mapReduceConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -730,7 +724,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the oozieConfiguration property: Specifies the Oozie configuration parameters (oozie-site.xml) for the
      * HDInsight cluster.
-     *
+     * 
      * @return the oozieConfiguration value.
      */
     public Object getOozieConfiguration() {
@@ -740,7 +734,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the oozieConfiguration property: Specifies the Oozie configuration parameters (oozie-site.xml) for the
      * HDInsight cluster.
-     *
+     * 
      * @param oozieConfiguration the oozieConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -752,7 +746,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the stormConfiguration property: Specifies the Storm configuration parameters (storm-site.xml) for the
      * HDInsight cluster.
-     *
+     * 
      * @return the stormConfiguration value.
      */
     public Object getStormConfiguration() {
@@ -762,7 +756,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the stormConfiguration property: Specifies the Storm configuration parameters (storm-site.xml) for the
      * HDInsight cluster.
-     *
+     * 
      * @param stormConfiguration the stormConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -774,7 +768,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the yarnConfiguration property: Specifies the Yarn configuration parameters (yarn-site.xml) for the HDInsight
      * cluster.
-     *
+     * 
      * @return the yarnConfiguration value.
      */
     public Object getYarnConfiguration() {
@@ -784,7 +778,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the yarnConfiguration property: Specifies the Yarn configuration parameters (yarn-site.xml) for the HDInsight
      * cluster.
-     *
+     * 
      * @param yarnConfiguration the yarnConfiguration value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -796,7 +790,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -806,7 +800,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -817,7 +811,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
 
     /**
      * Get the headNodeSize property: Specifies the size of the head node for the HDInsight cluster.
-     *
+     * 
      * @return the headNodeSize value.
      */
     public Object getHeadNodeSize() {
@@ -826,7 +820,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
 
     /**
      * Set the headNodeSize property: Specifies the size of the head node for the HDInsight cluster.
-     *
+     * 
      * @param headNodeSize the headNodeSize value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -837,7 +831,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
 
     /**
      * Get the dataNodeSize property: Specifies the size of the data node for the HDInsight cluster.
-     *
+     * 
      * @return the dataNodeSize value.
      */
     public Object getDataNodeSize() {
@@ -846,7 +840,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
 
     /**
      * Set the dataNodeSize property: Specifies the size of the data node for the HDInsight cluster.
-     *
+     * 
      * @param dataNodeSize the dataNodeSize value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -857,7 +851,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
 
     /**
      * Get the zookeeperNodeSize property: Specifies the size of the Zoo Keeper node for the HDInsight cluster.
-     *
+     * 
      * @return the zookeeperNodeSize value.
      */
     public Object getZookeeperNodeSize() {
@@ -866,7 +860,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
 
     /**
      * Set the zookeeperNodeSize property: Specifies the size of the Zoo Keeper node for the HDInsight cluster.
-     *
+     * 
      * @param zookeeperNodeSize the zookeeperNodeSize value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -879,7 +873,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * Get the scriptActions property: Custom script actions to run on HDI ondemand cluster once it's up. Please refer
      * to
      * https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-customize-cluster-linux?toc=%2Fen-us%2Fazure%2Fhdinsight%2Fr-server%2FTOC.json&amp;bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#understanding-script-actions.
-     *
+     * 
      * @return the scriptActions value.
      */
     public List<ScriptAction> getScriptActions() {
@@ -890,7 +884,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      * Set the scriptActions property: Custom script actions to run on HDI ondemand cluster once it's up. Please refer
      * to
      * https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-customize-cluster-linux?toc=%2Fen-us%2Fazure%2Fhdinsight%2Fr-server%2FTOC.json&amp;bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#understanding-script-actions.
-     *
+     * 
      * @param scriptActions the scriptActions value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -902,7 +896,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the virtualNetworkId property: The ARM resource ID for the vNet to which the cluster should be joined after
      * creation. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the virtualNetworkId value.
      */
     public Object getVirtualNetworkId() {
@@ -912,7 +906,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the virtualNetworkId property: The ARM resource ID for the vNet to which the cluster should be joined after
      * creation. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param virtualNetworkId the virtualNetworkId value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -924,7 +918,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Get the subnetName property: The ARM resource ID for the subnet in the vNet. If virtualNetworkId was specified,
      * then this property is required. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the subnetName value.
      */
     public Object getSubnetName() {
@@ -934,7 +928,7 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     /**
      * Set the subnetName property: The ARM resource ID for the subnet in the vNet. If virtualNetworkId was specified,
      * then this property is required. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param subnetName the subnetName value to set.
      * @return the HDInsightOnDemandLinkedService object itself.
      */
@@ -943,31 +937,283 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     * 
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     * 
+     * @param credential the credential value to set.
+     * @return the HDInsightOnDemandLinkedService object itself.
+     */
+    public HDInsightOnDemandLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightOnDemandLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightOnDemandLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightOnDemandLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightOnDemandLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (clusterSize != null
+            || timeToLive != null
+            || version != null
+            || linkedServiceName != null
+            || hostSubscriptionId != null
+            || servicePrincipalId != null
+            || servicePrincipalKey != null
+            || tenant != null
+            || clusterResourceGroup != null
+            || clusterNamePrefix != null
+            || clusterUserName != null
+            || clusterPassword != null
+            || clusterSshUserName != null
+            || clusterSshPassword != null
+            || additionalLinkedServiceNames != null
+            || hcatalogLinkedServiceName != null
+            || clusterType != null
+            || sparkVersion != null
+            || coreConfiguration != null
+            || hBaseConfiguration != null
+            || hdfsConfiguration != null
+            || hiveConfiguration != null
+            || mapReduceConfiguration != null
+            || oozieConfiguration != null
+            || stormConfiguration != null
+            || yarnConfiguration != null
+            || encryptedCredential != null
+            || headNodeSize != null
+            || dataNodeSize != null
+            || zookeeperNodeSize != null
+            || scriptActions != null
+            || virtualNetworkId != null
+            || subnetName != null
+            || credential != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("clusterSize", this.clusterSize);
+            jsonWriter.writeUntypedField("timeToLive", this.timeToLive);
+            jsonWriter.writeUntypedField("version", this.version);
+            jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
+            jsonWriter.writeUntypedField("hostSubscriptionId", this.hostSubscriptionId);
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
+            jsonWriter.writeUntypedField("tenant", this.tenant);
+            jsonWriter.writeUntypedField("clusterResourceGroup", this.clusterResourceGroup);
+            jsonWriter.writeUntypedField("clusterNamePrefix", this.clusterNamePrefix);
+            jsonWriter.writeUntypedField("clusterUserName", this.clusterUserName);
+            jsonWriter.writeJsonField("clusterPassword", this.clusterPassword);
+            jsonWriter.writeUntypedField("clusterSshUserName", this.clusterSshUserName);
+            jsonWriter.writeJsonField("clusterSshPassword", this.clusterSshPassword);
+            jsonWriter.writeArrayField("additionalLinkedServiceNames", this.additionalLinkedServiceNames,
+                (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeJsonField("hcatalogLinkedServiceName", this.hcatalogLinkedServiceName);
+            jsonWriter.writeUntypedField("clusterType", this.clusterType);
+            jsonWriter.writeUntypedField("sparkVersion", this.sparkVersion);
+            jsonWriter.writeUntypedField("coreConfiguration", this.coreConfiguration);
+            jsonWriter.writeUntypedField("hBaseConfiguration", this.hBaseConfiguration);
+            jsonWriter.writeUntypedField("hdfsConfiguration", this.hdfsConfiguration);
+            jsonWriter.writeUntypedField("hiveConfiguration", this.hiveConfiguration);
+            jsonWriter.writeUntypedField("mapReduceConfiguration", this.mapReduceConfiguration);
+            jsonWriter.writeUntypedField("oozieConfiguration", this.oozieConfiguration);
+            jsonWriter.writeUntypedField("stormConfiguration", this.stormConfiguration);
+            jsonWriter.writeUntypedField("yarnConfiguration", this.yarnConfiguration);
+            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeUntypedField("headNodeSize", this.headNodeSize);
+            jsonWriter.writeUntypedField("dataNodeSize", this.dataNodeSize);
+            jsonWriter.writeUntypedField("zookeeperNodeSize", this.zookeeperNodeSize);
+            jsonWriter.writeArrayField("scriptActions", this.scriptActions,
+                (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeUntypedField("virtualNetworkId", this.virtualNetworkId);
+            jsonWriter.writeUntypedField("subnetName", this.subnetName);
+            jsonWriter.writeJsonField("credential", this.credential);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HDInsightOnDemandLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HDInsightOnDemandLinkedService if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HDInsightOnDemandLinkedService.
+     */
+    public static HDInsightOnDemandLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HDInsightOnDemandLinkedService deserializedHDInsightOnDemandLinkedService
+                = new HDInsightOnDemandLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedService
+                        .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedHDInsightOnDemandLinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedHDInsightOnDemandLinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("clusterSize".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.clusterSize = reader.readUntyped();
+                        } else if ("timeToLive".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.timeToLive = reader.readUntyped();
+                        } else if ("version".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.version = reader.readUntyped();
+                        } else if ("linkedServiceName".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.linkedServiceName
+                                = LinkedServiceReference.fromJson(reader);
+                        } else if ("hostSubscriptionId".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.hostSubscriptionId = reader.readUntyped();
+                        } else if ("servicePrincipalId".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.servicePrincipalId = reader.readUntyped();
+                        } else if ("servicePrincipalKey".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.servicePrincipalKey
+                                = SecretBase.fromJson(reader);
+                        } else if ("tenant".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.tenant = reader.readUntyped();
+                        } else if ("clusterResourceGroup".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.clusterResourceGroup = reader.readUntyped();
+                        } else if ("clusterNamePrefix".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.clusterNamePrefix = reader.readUntyped();
+                        } else if ("clusterUserName".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.clusterUserName = reader.readUntyped();
+                        } else if ("clusterPassword".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.clusterPassword = SecretBase.fromJson(reader);
+                        } else if ("clusterSshUserName".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.clusterSshUserName = reader.readUntyped();
+                        } else if ("clusterSshPassword".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.clusterSshPassword = SecretBase.fromJson(reader);
+                        } else if ("additionalLinkedServiceNames".equals(fieldName)) {
+                            List<LinkedServiceReference> additionalLinkedServiceNames
+                                = reader.readArray(reader1 -> LinkedServiceReference.fromJson(reader1));
+                            deserializedHDInsightOnDemandLinkedService.additionalLinkedServiceNames
+                                = additionalLinkedServiceNames;
+                        } else if ("hcatalogLinkedServiceName".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.hcatalogLinkedServiceName
+                                = LinkedServiceReference.fromJson(reader);
+                        } else if ("clusterType".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.clusterType = reader.readUntyped();
+                        } else if ("sparkVersion".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.sparkVersion = reader.readUntyped();
+                        } else if ("coreConfiguration".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.coreConfiguration = reader.readUntyped();
+                        } else if ("hBaseConfiguration".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.hBaseConfiguration = reader.readUntyped();
+                        } else if ("hdfsConfiguration".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.hdfsConfiguration = reader.readUntyped();
+                        } else if ("hiveConfiguration".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.hiveConfiguration = reader.readUntyped();
+                        } else if ("mapReduceConfiguration".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.mapReduceConfiguration = reader.readUntyped();
+                        } else if ("oozieConfiguration".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.oozieConfiguration = reader.readUntyped();
+                        } else if ("stormConfiguration".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.stormConfiguration = reader.readUntyped();
+                        } else if ("yarnConfiguration".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.yarnConfiguration = reader.readUntyped();
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.encryptedCredential = reader.readUntyped();
+                        } else if ("headNodeSize".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.headNodeSize = reader.readUntyped();
+                        } else if ("dataNodeSize".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.dataNodeSize = reader.readUntyped();
+                        } else if ("zookeeperNodeSize".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.zookeeperNodeSize = reader.readUntyped();
+                        } else if ("scriptActions".equals(fieldName)) {
+                            List<ScriptAction> scriptActions
+                                = reader.readArray(reader1 -> ScriptAction.fromJson(reader1));
+                            deserializedHDInsightOnDemandLinkedService.scriptActions = scriptActions;
+                        } else if ("virtualNetworkId".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.virtualNetworkId = reader.readUntyped();
+                        } else if ("subnetName".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.subnetName = reader.readUntyped();
+                        } else if ("credential".equals(fieldName)) {
+                            deserializedHDInsightOnDemandLinkedService.credential
+                                = CredentialReference.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedHDInsightOnDemandLinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedHDInsightOnDemandLinkedService;
+        });
     }
 }

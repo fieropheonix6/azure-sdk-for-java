@@ -8,28 +8,23 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionPolicy;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProtectionPolicyTests {
-    @Test
-    public void testDeserialize() {
-        ProtectionPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1408848677,\"resourceGuardOperationRequests\":[\"vmkfssxqu\",\"kfplgmgsxnk\",\"zkd\"]}")
-                .toObject(ProtectionPolicy.class);
-        Assertions.assertEquals(1408848677, model.protectedItemsCount());
-        Assertions.assertEquals("vmkfssxqu", model.resourceGuardOperationRequests().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ProtectionPolicy model = BinaryData.fromString(
+            "{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":291050041,\"resourceGuardOperationRequests\":[\"ck\",\"rlhrxs\",\"kyv\"]}")
+            .toObject(ProtectionPolicy.class);
+        Assertions.assertEquals(291050041, model.protectedItemsCount());
+        Assertions.assertEquals("ck", model.resourceGuardOperationRequests().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        ProtectionPolicy model =
-            new ProtectionPolicy()
-                .withProtectedItemsCount(1408848677)
-                .withResourceGuardOperationRequests(Arrays.asList("vmkfssxqu", "kfplgmgsxnk", "zkd"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ProtectionPolicy model = new ProtectionPolicy().withProtectedItemsCount(291050041)
+            .withResourceGuardOperationRequests(Arrays.asList("ck", "rlhrxs", "kyv"));
         model = BinaryData.fromObject(model).toObject(ProtectionPolicy.class);
-        Assertions.assertEquals(1408848677, model.protectedItemsCount());
-        Assertions.assertEquals("vmkfssxqu", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(291050041, model.protectedItemsCount());
+        Assertions.assertEquals("ck", model.resourceGuardOperationRequests().get(0));
     }
 }

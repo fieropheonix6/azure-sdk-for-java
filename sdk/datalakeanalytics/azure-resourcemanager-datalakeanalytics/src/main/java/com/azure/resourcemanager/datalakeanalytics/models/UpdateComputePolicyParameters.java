@@ -5,135 +5,181 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datalakeanalytics.fluent.models.UpdateComputePolicyProperties;
+import java.io.IOException;
 import java.util.UUID;
 
-/** The parameters used to update a compute policy. */
-@JsonFlatten
+/**
+ * The parameters used to update a compute policy.
+ */
 @Fluent
-public class UpdateComputePolicyParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateComputePolicyParameters.class);
-
+public final class UpdateComputePolicyParameters implements JsonSerializable<UpdateComputePolicyParameters> {
     /*
-     * The AAD object identifier for the entity to create a policy for.
+     * The compute policy properties to use when updating a compute policy.
      */
-    @JsonProperty(value = "properties.objectId")
-    private UUID objectId;
+    private UpdateComputePolicyProperties innerProperties;
 
-    /*
-     * The type of AAD object the object identifier refers to.
+    /**
+     * Creates an instance of UpdateComputePolicyParameters class.
      */
-    @JsonProperty(value = "properties.objectType")
-    private AadObjectType objectType;
+    public UpdateComputePolicyParameters() {
+    }
 
-    /*
-     * The maximum degree of parallelism per job this user can use to submit
-     * jobs. This property, the min priority per job property, or both must be
-     * passed.
+    /**
+     * Get the innerProperties property: The compute policy properties to use when updating a compute policy.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.maxDegreeOfParallelismPerJob")
-    private Integer maxDegreeOfParallelismPerJob;
-
-    /*
-     * The minimum priority per job this user can use to submit jobs. This
-     * property, the max degree of parallelism per job property, or both must
-     * be passed.
-     */
-    @JsonProperty(value = "properties.minPriorityPerJob")
-    private Integer minPriorityPerJob;
+    private UpdateComputePolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the objectId property: The AAD object identifier for the entity to create a policy for.
-     *
+     * 
      * @return the objectId value.
      */
     public UUID objectId() {
-        return this.objectId;
+        return this.innerProperties() == null ? null : this.innerProperties().objectId();
     }
 
     /**
      * Set the objectId property: The AAD object identifier for the entity to create a policy for.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the UpdateComputePolicyParameters object itself.
      */
     public UpdateComputePolicyParameters withObjectId(UUID objectId) {
-        this.objectId = objectId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateComputePolicyProperties();
+        }
+        this.innerProperties().withObjectId(objectId);
         return this;
     }
 
     /**
      * Get the objectType property: The type of AAD object the object identifier refers to.
-     *
+     * 
      * @return the objectType value.
      */
     public AadObjectType objectType() {
-        return this.objectType;
+        return this.innerProperties() == null ? null : this.innerProperties().objectType();
     }
 
     /**
      * Set the objectType property: The type of AAD object the object identifier refers to.
-     *
+     * 
      * @param objectType the objectType value to set.
      * @return the UpdateComputePolicyParameters object itself.
      */
     public UpdateComputePolicyParameters withObjectType(AadObjectType objectType) {
-        this.objectType = objectType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateComputePolicyProperties();
+        }
+        this.innerProperties().withObjectType(objectType);
         return this;
     }
 
     /**
      * Get the maxDegreeOfParallelismPerJob property: The maximum degree of parallelism per job this user can use to
      * submit jobs. This property, the min priority per job property, or both must be passed.
-     *
+     * 
      * @return the maxDegreeOfParallelismPerJob value.
      */
     public Integer maxDegreeOfParallelismPerJob() {
-        return this.maxDegreeOfParallelismPerJob;
+        return this.innerProperties() == null ? null : this.innerProperties().maxDegreeOfParallelismPerJob();
     }
 
     /**
      * Set the maxDegreeOfParallelismPerJob property: The maximum degree of parallelism per job this user can use to
      * submit jobs. This property, the min priority per job property, or both must be passed.
-     *
+     * 
      * @param maxDegreeOfParallelismPerJob the maxDegreeOfParallelismPerJob value to set.
      * @return the UpdateComputePolicyParameters object itself.
      */
     public UpdateComputePolicyParameters withMaxDegreeOfParallelismPerJob(Integer maxDegreeOfParallelismPerJob) {
-        this.maxDegreeOfParallelismPerJob = maxDegreeOfParallelismPerJob;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateComputePolicyProperties();
+        }
+        this.innerProperties().withMaxDegreeOfParallelismPerJob(maxDegreeOfParallelismPerJob);
         return this;
     }
 
     /**
      * Get the minPriorityPerJob property: The minimum priority per job this user can use to submit jobs. This property,
      * the max degree of parallelism per job property, or both must be passed.
-     *
+     * 
      * @return the minPriorityPerJob value.
      */
     public Integer minPriorityPerJob() {
-        return this.minPriorityPerJob;
+        return this.innerProperties() == null ? null : this.innerProperties().minPriorityPerJob();
     }
 
     /**
      * Set the minPriorityPerJob property: The minimum priority per job this user can use to submit jobs. This property,
      * the max degree of parallelism per job property, or both must be passed.
-     *
+     * 
      * @param minPriorityPerJob the minPriorityPerJob value to set.
      * @return the UpdateComputePolicyParameters object itself.
      */
     public UpdateComputePolicyParameters withMinPriorityPerJob(Integer minPriorityPerJob) {
-        this.minPriorityPerJob = minPriorityPerJob;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateComputePolicyProperties();
+        }
+        this.innerProperties().withMinPriorityPerJob(minPriorityPerJob);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateComputePolicyParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateComputePolicyParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateComputePolicyParameters.
+     */
+    public static UpdateComputePolicyParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateComputePolicyParameters deserializedUpdateComputePolicyParameters
+                = new UpdateComputePolicyParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedUpdateComputePolicyParameters.innerProperties
+                        = UpdateComputePolicyProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateComputePolicyParameters;
+        });
     }
 }

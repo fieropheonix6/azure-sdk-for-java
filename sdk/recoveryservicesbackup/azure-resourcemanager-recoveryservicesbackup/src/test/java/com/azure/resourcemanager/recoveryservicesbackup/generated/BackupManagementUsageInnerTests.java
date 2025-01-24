@@ -10,16 +10,13 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.NameInfo;
 import com.azure.resourcemanager.recoveryservicesbackup.models.UsagesUnit;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BackupManagementUsageInnerTests {
-    @Test
-    public void testDeserialize() {
-        BackupManagementUsageInner model =
-            BinaryData
-                .fromString(
-                    "{\"unit\":\"Count\",\"quotaPeriod\":\"dvkaozw\",\"nextResetTime\":\"2021-02-22T11:39:16Z\",\"currentValue\":4625530429549295340,\"limit\":4205096906528038378,\"name\":{\"value\":\"k\",\"localizedValue\":\"yxolniwp\"}}")
-                .toObject(BackupManagementUsageInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        BackupManagementUsageInner model = BinaryData.fromString(
+            "{\"unit\":\"Count\",\"quotaPeriod\":\"dvkaozw\",\"nextResetTime\":\"2021-02-22T11:39:16Z\",\"currentValue\":4625530429549295340,\"limit\":4205096906528038378,\"name\":{\"value\":\"k\",\"localizedValue\":\"yxolniwp\"}}")
+            .toObject(BackupManagementUsageInner.class);
         Assertions.assertEquals(UsagesUnit.COUNT, model.unit());
         Assertions.assertEquals("dvkaozw", model.quotaPeriod());
         Assertions.assertEquals(OffsetDateTime.parse("2021-02-22T11:39:16Z"), model.nextResetTime());
@@ -29,16 +26,14 @@ public final class BackupManagementUsageInnerTests {
         Assertions.assertEquals("yxolniwp", model.name().localizedValue());
     }
 
-    @Test
-    public void testSerialize() {
-        BackupManagementUsageInner model =
-            new BackupManagementUsageInner()
-                .withUnit(UsagesUnit.COUNT)
-                .withQuotaPeriod("dvkaozw")
-                .withNextResetTime(OffsetDateTime.parse("2021-02-22T11:39:16Z"))
-                .withCurrentValue(4625530429549295340L)
-                .withLimit(4205096906528038378L)
-                .withName(new NameInfo().withValue("k").withLocalizedValue("yxolniwp"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        BackupManagementUsageInner model = new BackupManagementUsageInner().withUnit(UsagesUnit.COUNT)
+            .withQuotaPeriod("dvkaozw")
+            .withNextResetTime(OffsetDateTime.parse("2021-02-22T11:39:16Z"))
+            .withCurrentValue(4625530429549295340L)
+            .withLimit(4205096906528038378L)
+            .withName(new NameInfo().withValue("k").withLocalizedValue("yxolniwp"));
         model = BinaryData.fromObject(model).toObject(BackupManagementUsageInner.class);
         Assertions.assertEquals(UsagesUnit.COUNT, model.unit());
         Assertions.assertEquals("dvkaozw", model.quotaPeriod());

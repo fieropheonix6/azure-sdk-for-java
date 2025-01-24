@@ -5,9 +5,11 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.ArtifactDeploymentStatusProperties;
 import com.azure.resourcemanager.devtestlabs.models.ArtifactInstallProperties;
 import com.azure.resourcemanager.devtestlabs.models.ComputeVmProperties;
@@ -16,813 +18,93 @@ import com.azure.resourcemanager.devtestlabs.models.GalleryImageReference;
 import com.azure.resourcemanager.devtestlabs.models.NetworkInterfaceProperties;
 import com.azure.resourcemanager.devtestlabs.models.ScheduleCreationParameter;
 import com.azure.resourcemanager.devtestlabs.models.VirtualMachineCreationSource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** A virtual machine. */
-@JsonFlatten
+/**
+ * A virtual machine.
+ */
 @Fluent
-public class LabVirtualMachineInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabVirtualMachineInner.class);
+public final class LabVirtualMachineInner extends Resource {
+    /*
+     * The properties of the resource.
+     */
+    private LabVirtualMachinePropertiesInner innerProperties = new LabVirtualMachinePropertiesInner();
 
     /*
-     * The notes of the virtual machine.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.notes")
-    private String notes;
+    private String type;
 
     /*
-     * The object identifier of the owner of the virtual machine.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.ownerObjectId")
-    private String ownerObjectId;
+    private String name;
 
     /*
-     * The user principal name of the virtual machine owner.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.ownerUserPrincipalName")
-    private String ownerUserPrincipalName;
-
-    /*
-     * The object identifier of the creator of the virtual machine.
-     */
-    @JsonProperty(value = "properties.createdByUserId", access = JsonProperty.Access.WRITE_ONLY)
-    private String createdByUserId;
-
-    /*
-     * The email address of creator of the virtual machine.
-     */
-    @JsonProperty(value = "properties.createdByUser", access = JsonProperty.Access.WRITE_ONLY)
-    private String createdByUser;
-
-    /*
-     * The creation date of the virtual machine.
-     */
-    @JsonProperty(value = "properties.createdDate")
-    private OffsetDateTime createdDate;
-
-    /*
-     * The resource identifier (Microsoft.Compute) of the virtual machine.
-     */
-    @JsonProperty(value = "properties.computeId", access = JsonProperty.Access.WRITE_ONLY)
-    private String computeId;
-
-    /*
-     * The custom image identifier of the virtual machine.
-     */
-    @JsonProperty(value = "properties.customImageId")
-    private String customImageId;
-
-    /*
-     * The OS type of the virtual machine.
-     */
-    @JsonProperty(value = "properties.osType", access = JsonProperty.Access.WRITE_ONLY)
-    private String osType;
-
-    /*
-     * The size of the virtual machine.
-     */
-    @JsonProperty(value = "properties.size")
-    private String size;
-
-    /*
-     * The user name of the virtual machine.
-     */
-    @JsonProperty(value = "properties.userName")
-    private String username;
-
-    /*
-     * The password of the virtual machine administrator.
-     */
-    @JsonProperty(value = "properties.password")
-    private String password;
-
-    /*
-     * The SSH key of the virtual machine administrator.
-     */
-    @JsonProperty(value = "properties.sshKey")
-    private String sshKey;
-
-    /*
-     * Indicates whether this virtual machine uses an SSH key for
-     * authentication.
-     */
-    @JsonProperty(value = "properties.isAuthenticationWithSshKey")
-    private Boolean isAuthenticationWithSshKey;
-
-    /*
-     * The fully-qualified domain name of the virtual machine.
-     */
-    @JsonProperty(value = "properties.fqdn", access = JsonProperty.Access.WRITE_ONLY)
-    private String fqdn;
-
-    /*
-     * The lab subnet name of the virtual machine.
-     */
-    @JsonProperty(value = "properties.labSubnetName")
-    private String labSubnetName;
-
-    /*
-     * The lab virtual network identifier of the virtual machine.
-     */
-    @JsonProperty(value = "properties.labVirtualNetworkId")
-    private String labVirtualNetworkId;
-
-    /*
-     * Indicates whether the virtual machine is to be created without a public
-     * IP address.
-     */
-    @JsonProperty(value = "properties.disallowPublicIpAddress")
-    private Boolean disallowPublicIpAddress;
-
-    /*
-     * The artifacts to be installed on the virtual machine.
-     */
-    @JsonProperty(value = "properties.artifacts")
-    private List<ArtifactInstallProperties> artifacts;
-
-    /*
-     * The artifact deployment status for the virtual machine.
-     */
-    @JsonProperty(value = "properties.artifactDeploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private ArtifactDeploymentStatusProperties artifactDeploymentStatus;
-
-    /*
-     * The Microsoft Azure Marketplace image reference of the virtual machine.
-     */
-    @JsonProperty(value = "properties.galleryImageReference")
-    private GalleryImageReference galleryImageReference;
-
-    /*
-     * The id of the plan associated with the virtual machine image
-     */
-    @JsonProperty(value = "properties.planId")
-    private String planId;
-
-    /*
-     * The compute virtual machine properties.
-     */
-    @JsonProperty(value = "properties.computeVm", access = JsonProperty.Access.WRITE_ONLY)
-    private ComputeVmProperties computeVm;
-
-    /*
-     * The network interface properties.
-     */
-    @JsonProperty(value = "properties.networkInterface")
-    private NetworkInterfaceProperties networkInterface;
-
-    /*
-     * The applicable schedule for the virtual machine.
-     */
-    @JsonProperty(value = "properties.applicableSchedule", access = JsonProperty.Access.WRITE_ONLY)
-    private ApplicableScheduleInner applicableSchedule;
-
-    /*
-     * The expiration date for VM.
-     */
-    @JsonProperty(value = "properties.expirationDate")
-    private OffsetDateTime expirationDate;
-
-    /*
-     * Indicates whether another user can take ownership of the virtual machine
-     */
-    @JsonProperty(value = "properties.allowClaim")
-    private Boolean allowClaim;
-
-    /*
-     * Storage type to use for virtual machine (i.e. Standard, Premium).
-     */
-    @JsonProperty(value = "properties.storageType")
-    private String storageType;
-
-    /*
-     * Tells source of creation of lab virtual machine. Output property only.
-     */
-    @JsonProperty(value = "properties.virtualMachineCreationSource", access = JsonProperty.Access.WRITE_ONLY)
-    private VirtualMachineCreationSource virtualMachineCreationSource;
-
-    /*
-     * The resource ID of the environment that contains this virtual machine,
-     * if any.
-     */
-    @JsonProperty(value = "properties.environmentId")
-    private String environmentId;
-
-    /*
-     * New or existing data disks to attach to the virtual machine after
-     * creation
-     */
-    @JsonProperty(value = "properties.dataDiskParameters")
-    private List<DataDiskProperties> dataDiskParameters;
-
-    /*
-     * Virtual Machine schedules to be created
-     */
-    @JsonProperty(value = "properties.scheduleParameters")
-    private List<ScheduleCreationParameter> scheduleParameters;
-
-    /*
-     * Last known compute power state captured in DTL
-     */
-    @JsonProperty(value = "properties.lastKnownPowerState", access = JsonProperty.Access.WRITE_ONLY)
-    private String lastKnownPowerState;
-
-    /*
-     * The provisioning status of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The unique immutable identifier of a resource (Guid).
-     */
-    @JsonProperty(value = "properties.uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
-    private String uniqueIdentifier;
+    private String id;
 
     /**
-     * Get the notes property: The notes of the virtual machine.
-     *
-     * @return the notes value.
+     * Creates an instance of LabVirtualMachineInner class.
      */
-    public String notes() {
-        return this.notes;
+    public LabVirtualMachineInner() {
     }
 
     /**
-     * Set the notes property: The notes of the virtual machine.
-     *
-     * @param notes the notes value to set.
-     * @return the LabVirtualMachineInner object itself.
+     * Get the innerProperties property: The properties of the resource.
+     * 
+     * @return the innerProperties value.
      */
-    public LabVirtualMachineInner withNotes(String notes) {
-        this.notes = notes;
-        return this;
+    private LabVirtualMachinePropertiesInner innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the ownerObjectId property: The object identifier of the owner of the virtual machine.
-     *
-     * @return the ownerObjectId value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public String ownerObjectId() {
-        return this.ownerObjectId;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Set the ownerObjectId property: The object identifier of the owner of the virtual machine.
-     *
-     * @param ownerObjectId the ownerObjectId value to set.
-     * @return the LabVirtualMachineInner object itself.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public LabVirtualMachineInner withOwnerObjectId(String ownerObjectId) {
-        this.ownerObjectId = ownerObjectId;
-        return this;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the ownerUserPrincipalName property: The user principal name of the virtual machine owner.
-     *
-     * @return the ownerUserPrincipalName value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public String ownerUserPrincipalName() {
-        return this.ownerUserPrincipalName;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Set the ownerUserPrincipalName property: The user principal name of the virtual machine owner.
-     *
-     * @param ownerUserPrincipalName the ownerUserPrincipalName value to set.
-     * @return the LabVirtualMachineInner object itself.
+     * {@inheritDoc}
      */
-    public LabVirtualMachineInner withOwnerUserPrincipalName(String ownerUserPrincipalName) {
-        this.ownerUserPrincipalName = ownerUserPrincipalName;
-        return this;
-    }
-
-    /**
-     * Get the createdByUserId property: The object identifier of the creator of the virtual machine.
-     *
-     * @return the createdByUserId value.
-     */
-    public String createdByUserId() {
-        return this.createdByUserId;
-    }
-
-    /**
-     * Get the createdByUser property: The email address of creator of the virtual machine.
-     *
-     * @return the createdByUser value.
-     */
-    public String createdByUser() {
-        return this.createdByUser;
-    }
-
-    /**
-     * Get the createdDate property: The creation date of the virtual machine.
-     *
-     * @return the createdDate value.
-     */
-    public OffsetDateTime createdDate() {
-        return this.createdDate;
-    }
-
-    /**
-     * Set the createdDate property: The creation date of the virtual machine.
-     *
-     * @param createdDate the createdDate value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withCreatedDate(OffsetDateTime createdDate) {
-        this.createdDate = createdDate;
-        return this;
-    }
-
-    /**
-     * Get the computeId property: The resource identifier (Microsoft.Compute) of the virtual machine.
-     *
-     * @return the computeId value.
-     */
-    public String computeId() {
-        return this.computeId;
-    }
-
-    /**
-     * Get the customImageId property: The custom image identifier of the virtual machine.
-     *
-     * @return the customImageId value.
-     */
-    public String customImageId() {
-        return this.customImageId;
-    }
-
-    /**
-     * Set the customImageId property: The custom image identifier of the virtual machine.
-     *
-     * @param customImageId the customImageId value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withCustomImageId(String customImageId) {
-        this.customImageId = customImageId;
-        return this;
-    }
-
-    /**
-     * Get the osType property: The OS type of the virtual machine.
-     *
-     * @return the osType value.
-     */
-    public String osType() {
-        return this.osType;
-    }
-
-    /**
-     * Get the size property: The size of the virtual machine.
-     *
-     * @return the size value.
-     */
-    public String size() {
-        return this.size;
-    }
-
-    /**
-     * Set the size property: The size of the virtual machine.
-     *
-     * @param size the size value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withSize(String size) {
-        this.size = size;
-        return this;
-    }
-
-    /**
-     * Get the username property: The user name of the virtual machine.
-     *
-     * @return the username value.
-     */
-    public String username() {
-        return this.username;
-    }
-
-    /**
-     * Set the username property: The user name of the virtual machine.
-     *
-     * @param username the username value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withUsername(String username) {
-        this.username = username;
-        return this;
-    }
-
-    /**
-     * Get the password property: The password of the virtual machine administrator.
-     *
-     * @return the password value.
-     */
-    public String password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: The password of the virtual machine administrator.
-     *
-     * @param password the password value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get the sshKey property: The SSH key of the virtual machine administrator.
-     *
-     * @return the sshKey value.
-     */
-    public String sshKey() {
-        return this.sshKey;
-    }
-
-    /**
-     * Set the sshKey property: The SSH key of the virtual machine administrator.
-     *
-     * @param sshKey the sshKey value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withSshKey(String sshKey) {
-        this.sshKey = sshKey;
-        return this;
-    }
-
-    /**
-     * Get the isAuthenticationWithSshKey property: Indicates whether this virtual machine uses an SSH key for
-     * authentication.
-     *
-     * @return the isAuthenticationWithSshKey value.
-     */
-    public Boolean isAuthenticationWithSshKey() {
-        return this.isAuthenticationWithSshKey;
-    }
-
-    /**
-     * Set the isAuthenticationWithSshKey property: Indicates whether this virtual machine uses an SSH key for
-     * authentication.
-     *
-     * @param isAuthenticationWithSshKey the isAuthenticationWithSshKey value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withIsAuthenticationWithSshKey(Boolean isAuthenticationWithSshKey) {
-        this.isAuthenticationWithSshKey = isAuthenticationWithSshKey;
-        return this;
-    }
-
-    /**
-     * Get the fqdn property: The fully-qualified domain name of the virtual machine.
-     *
-     * @return the fqdn value.
-     */
-    public String fqdn() {
-        return this.fqdn;
-    }
-
-    /**
-     * Get the labSubnetName property: The lab subnet name of the virtual machine.
-     *
-     * @return the labSubnetName value.
-     */
-    public String labSubnetName() {
-        return this.labSubnetName;
-    }
-
-    /**
-     * Set the labSubnetName property: The lab subnet name of the virtual machine.
-     *
-     * @param labSubnetName the labSubnetName value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withLabSubnetName(String labSubnetName) {
-        this.labSubnetName = labSubnetName;
-        return this;
-    }
-
-    /**
-     * Get the labVirtualNetworkId property: The lab virtual network identifier of the virtual machine.
-     *
-     * @return the labVirtualNetworkId value.
-     */
-    public String labVirtualNetworkId() {
-        return this.labVirtualNetworkId;
-    }
-
-    /**
-     * Set the labVirtualNetworkId property: The lab virtual network identifier of the virtual machine.
-     *
-     * @param labVirtualNetworkId the labVirtualNetworkId value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withLabVirtualNetworkId(String labVirtualNetworkId) {
-        this.labVirtualNetworkId = labVirtualNetworkId;
-        return this;
-    }
-
-    /**
-     * Get the disallowPublicIpAddress property: Indicates whether the virtual machine is to be created without a public
-     * IP address.
-     *
-     * @return the disallowPublicIpAddress value.
-     */
-    public Boolean disallowPublicIpAddress() {
-        return this.disallowPublicIpAddress;
-    }
-
-    /**
-     * Set the disallowPublicIpAddress property: Indicates whether the virtual machine is to be created without a public
-     * IP address.
-     *
-     * @param disallowPublicIpAddress the disallowPublicIpAddress value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withDisallowPublicIpAddress(Boolean disallowPublicIpAddress) {
-        this.disallowPublicIpAddress = disallowPublicIpAddress;
-        return this;
-    }
-
-    /**
-     * Get the artifacts property: The artifacts to be installed on the virtual machine.
-     *
-     * @return the artifacts value.
-     */
-    public List<ArtifactInstallProperties> artifacts() {
-        return this.artifacts;
-    }
-
-    /**
-     * Set the artifacts property: The artifacts to be installed on the virtual machine.
-     *
-     * @param artifacts the artifacts value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withArtifacts(List<ArtifactInstallProperties> artifacts) {
-        this.artifacts = artifacts;
-        return this;
-    }
-
-    /**
-     * Get the artifactDeploymentStatus property: The artifact deployment status for the virtual machine.
-     *
-     * @return the artifactDeploymentStatus value.
-     */
-    public ArtifactDeploymentStatusProperties artifactDeploymentStatus() {
-        return this.artifactDeploymentStatus;
-    }
-
-    /**
-     * Get the galleryImageReference property: The Microsoft Azure Marketplace image reference of the virtual machine.
-     *
-     * @return the galleryImageReference value.
-     */
-    public GalleryImageReference galleryImageReference() {
-        return this.galleryImageReference;
-    }
-
-    /**
-     * Set the galleryImageReference property: The Microsoft Azure Marketplace image reference of the virtual machine.
-     *
-     * @param galleryImageReference the galleryImageReference value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withGalleryImageReference(GalleryImageReference galleryImageReference) {
-        this.galleryImageReference = galleryImageReference;
-        return this;
-    }
-
-    /**
-     * Get the planId property: The id of the plan associated with the virtual machine image.
-     *
-     * @return the planId value.
-     */
-    public String planId() {
-        return this.planId;
-    }
-
-    /**
-     * Set the planId property: The id of the plan associated with the virtual machine image.
-     *
-     * @param planId the planId value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withPlanId(String planId) {
-        this.planId = planId;
-        return this;
-    }
-
-    /**
-     * Get the computeVm property: The compute virtual machine properties.
-     *
-     * @return the computeVm value.
-     */
-    public ComputeVmProperties computeVm() {
-        return this.computeVm;
-    }
-
-    /**
-     * Get the networkInterface property: The network interface properties.
-     *
-     * @return the networkInterface value.
-     */
-    public NetworkInterfaceProperties networkInterface() {
-        return this.networkInterface;
-    }
-
-    /**
-     * Set the networkInterface property: The network interface properties.
-     *
-     * @param networkInterface the networkInterface value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withNetworkInterface(NetworkInterfaceProperties networkInterface) {
-        this.networkInterface = networkInterface;
-        return this;
-    }
-
-    /**
-     * Get the applicableSchedule property: The applicable schedule for the virtual machine.
-     *
-     * @return the applicableSchedule value.
-     */
-    public ApplicableScheduleInner applicableSchedule() {
-        return this.applicableSchedule;
-    }
-
-    /**
-     * Get the expirationDate property: The expiration date for VM.
-     *
-     * @return the expirationDate value.
-     */
-    public OffsetDateTime expirationDate() {
-        return this.expirationDate;
-    }
-
-    /**
-     * Set the expirationDate property: The expiration date for VM.
-     *
-     * @param expirationDate the expirationDate value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withExpirationDate(OffsetDateTime expirationDate) {
-        this.expirationDate = expirationDate;
-        return this;
-    }
-
-    /**
-     * Get the allowClaim property: Indicates whether another user can take ownership of the virtual machine.
-     *
-     * @return the allowClaim value.
-     */
-    public Boolean allowClaim() {
-        return this.allowClaim;
-    }
-
-    /**
-     * Set the allowClaim property: Indicates whether another user can take ownership of the virtual machine.
-     *
-     * @param allowClaim the allowClaim value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withAllowClaim(Boolean allowClaim) {
-        this.allowClaim = allowClaim;
-        return this;
-    }
-
-    /**
-     * Get the storageType property: Storage type to use for virtual machine (i.e. Standard, Premium).
-     *
-     * @return the storageType value.
-     */
-    public String storageType() {
-        return this.storageType;
-    }
-
-    /**
-     * Set the storageType property: Storage type to use for virtual machine (i.e. Standard, Premium).
-     *
-     * @param storageType the storageType value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withStorageType(String storageType) {
-        this.storageType = storageType;
-        return this;
-    }
-
-    /**
-     * Get the virtualMachineCreationSource property: Tells source of creation of lab virtual machine. Output property
-     * only.
-     *
-     * @return the virtualMachineCreationSource value.
-     */
-    public VirtualMachineCreationSource virtualMachineCreationSource() {
-        return this.virtualMachineCreationSource;
-    }
-
-    /**
-     * Get the environmentId property: The resource ID of the environment that contains this virtual machine, if any.
-     *
-     * @return the environmentId value.
-     */
-    public String environmentId() {
-        return this.environmentId;
-    }
-
-    /**
-     * Set the environmentId property: The resource ID of the environment that contains this virtual machine, if any.
-     *
-     * @param environmentId the environmentId value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withEnvironmentId(String environmentId) {
-        this.environmentId = environmentId;
-        return this;
-    }
-
-    /**
-     * Get the dataDiskParameters property: New or existing data disks to attach to the virtual machine after creation.
-     *
-     * @return the dataDiskParameters value.
-     */
-    public List<DataDiskProperties> dataDiskParameters() {
-        return this.dataDiskParameters;
-    }
-
-    /**
-     * Set the dataDiskParameters property: New or existing data disks to attach to the virtual machine after creation.
-     *
-     * @param dataDiskParameters the dataDiskParameters value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withDataDiskParameters(List<DataDiskProperties> dataDiskParameters) {
-        this.dataDiskParameters = dataDiskParameters;
-        return this;
-    }
-
-    /**
-     * Get the scheduleParameters property: Virtual Machine schedules to be created.
-     *
-     * @return the scheduleParameters value.
-     */
-    public List<ScheduleCreationParameter> scheduleParameters() {
-        return this.scheduleParameters;
-    }
-
-    /**
-     * Set the scheduleParameters property: Virtual Machine schedules to be created.
-     *
-     * @param scheduleParameters the scheduleParameters value to set.
-     * @return the LabVirtualMachineInner object itself.
-     */
-    public LabVirtualMachineInner withScheduleParameters(List<ScheduleCreationParameter> scheduleParameters) {
-        this.scheduleParameters = scheduleParameters;
-        return this;
-    }
-
-    /**
-     * Get the lastKnownPowerState property: Last known compute power state captured in DTL.
-     *
-     * @return the lastKnownPowerState value.
-     */
-    public String lastKnownPowerState() {
-        return this.lastKnownPowerState;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning status of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
-     * @return the uniqueIdentifier value.
-     */
-    public String uniqueIdentifier() {
-        return this.uniqueIdentifier;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public LabVirtualMachineInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LabVirtualMachineInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -830,34 +112,712 @@ public class LabVirtualMachineInner extends Resource {
     }
 
     /**
+     * Get the notes property: The notes of the virtual machine.
+     * 
+     * @return the notes value.
+     */
+    public String notes() {
+        return this.innerProperties() == null ? null : this.innerProperties().notes();
+    }
+
+    /**
+     * Set the notes property: The notes of the virtual machine.
+     * 
+     * @param notes the notes value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withNotes(String notes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withNotes(notes);
+        return this;
+    }
+
+    /**
+     * Get the ownerObjectId property: The object identifier of the owner of the virtual machine.
+     * 
+     * @return the ownerObjectId value.
+     */
+    public String ownerObjectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().ownerObjectId();
+    }
+
+    /**
+     * Set the ownerObjectId property: The object identifier of the owner of the virtual machine.
+     * 
+     * @param ownerObjectId the ownerObjectId value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withOwnerObjectId(String ownerObjectId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withOwnerObjectId(ownerObjectId);
+        return this;
+    }
+
+    /**
+     * Get the ownerUserPrincipalName property: The user principal name of the virtual machine owner.
+     * 
+     * @return the ownerUserPrincipalName value.
+     */
+    public String ownerUserPrincipalName() {
+        return this.innerProperties() == null ? null : this.innerProperties().ownerUserPrincipalName();
+    }
+
+    /**
+     * Set the ownerUserPrincipalName property: The user principal name of the virtual machine owner.
+     * 
+     * @param ownerUserPrincipalName the ownerUserPrincipalName value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withOwnerUserPrincipalName(String ownerUserPrincipalName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withOwnerUserPrincipalName(ownerUserPrincipalName);
+        return this;
+    }
+
+    /**
+     * Get the createdByUserId property: The object identifier of the creator of the virtual machine.
+     * 
+     * @return the createdByUserId value.
+     */
+    public String createdByUserId() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdByUserId();
+    }
+
+    /**
+     * Get the createdByUser property: The email address of creator of the virtual machine.
+     * 
+     * @return the createdByUser value.
+     */
+    public String createdByUser() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdByUser();
+    }
+
+    /**
+     * Get the createdDate property: The creation date of the virtual machine.
+     * 
+     * @return the createdDate value.
+     */
+    public OffsetDateTime createdDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
+    }
+
+    /**
+     * Set the createdDate property: The creation date of the virtual machine.
+     * 
+     * @param createdDate the createdDate value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withCreatedDate(OffsetDateTime createdDate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withCreatedDate(createdDate);
+        return this;
+    }
+
+    /**
+     * Get the computeId property: The resource identifier (Microsoft.Compute) of the virtual machine.
+     * 
+     * @return the computeId value.
+     */
+    public String computeId() {
+        return this.innerProperties() == null ? null : this.innerProperties().computeId();
+    }
+
+    /**
+     * Get the customImageId property: The custom image identifier of the virtual machine.
+     * 
+     * @return the customImageId value.
+     */
+    public String customImageId() {
+        return this.innerProperties() == null ? null : this.innerProperties().customImageId();
+    }
+
+    /**
+     * Set the customImageId property: The custom image identifier of the virtual machine.
+     * 
+     * @param customImageId the customImageId value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withCustomImageId(String customImageId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withCustomImageId(customImageId);
+        return this;
+    }
+
+    /**
+     * Get the osType property: The OS type of the virtual machine.
+     * 
+     * @return the osType value.
+     */
+    public String osType() {
+        return this.innerProperties() == null ? null : this.innerProperties().osType();
+    }
+
+    /**
+     * Get the size property: The size of the virtual machine.
+     * 
+     * @return the size value.
+     */
+    public String size() {
+        return this.innerProperties() == null ? null : this.innerProperties().size();
+    }
+
+    /**
+     * Set the size property: The size of the virtual machine.
+     * 
+     * @param size the size value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withSize(String size) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withSize(size);
+        return this;
+    }
+
+    /**
+     * Get the username property: The user name of the virtual machine.
+     * 
+     * @return the username value.
+     */
+    public String username() {
+        return this.innerProperties() == null ? null : this.innerProperties().username();
+    }
+
+    /**
+     * Set the username property: The user name of the virtual machine.
+     * 
+     * @param username the username value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withUsername(String username) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withUsername(username);
+        return this;
+    }
+
+    /**
+     * Get the password property: The password of the virtual machine administrator.
+     * 
+     * @return the password value.
+     */
+    public String password() {
+        return this.innerProperties() == null ? null : this.innerProperties().password();
+    }
+
+    /**
+     * Set the password property: The password of the virtual machine administrator.
+     * 
+     * @param password the password value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withPassword(String password) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the sshKey property: The SSH key of the virtual machine administrator.
+     * 
+     * @return the sshKey value.
+     */
+    public String sshKey() {
+        return this.innerProperties() == null ? null : this.innerProperties().sshKey();
+    }
+
+    /**
+     * Set the sshKey property: The SSH key of the virtual machine administrator.
+     * 
+     * @param sshKey the sshKey value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withSshKey(String sshKey) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withSshKey(sshKey);
+        return this;
+    }
+
+    /**
+     * Get the isAuthenticationWithSshKey property: Indicates whether this virtual machine uses an SSH key for
+     * authentication.
+     * 
+     * @return the isAuthenticationWithSshKey value.
+     */
+    public Boolean isAuthenticationWithSshKey() {
+        return this.innerProperties() == null ? null : this.innerProperties().isAuthenticationWithSshKey();
+    }
+
+    /**
+     * Set the isAuthenticationWithSshKey property: Indicates whether this virtual machine uses an SSH key for
+     * authentication.
+     * 
+     * @param isAuthenticationWithSshKey the isAuthenticationWithSshKey value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withIsAuthenticationWithSshKey(Boolean isAuthenticationWithSshKey) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withIsAuthenticationWithSshKey(isAuthenticationWithSshKey);
+        return this;
+    }
+
+    /**
+     * Get the fqdn property: The fully-qualified domain name of the virtual machine.
+     * 
+     * @return the fqdn value.
+     */
+    public String fqdn() {
+        return this.innerProperties() == null ? null : this.innerProperties().fqdn();
+    }
+
+    /**
+     * Get the labSubnetName property: The lab subnet name of the virtual machine.
+     * 
+     * @return the labSubnetName value.
+     */
+    public String labSubnetName() {
+        return this.innerProperties() == null ? null : this.innerProperties().labSubnetName();
+    }
+
+    /**
+     * Set the labSubnetName property: The lab subnet name of the virtual machine.
+     * 
+     * @param labSubnetName the labSubnetName value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withLabSubnetName(String labSubnetName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withLabSubnetName(labSubnetName);
+        return this;
+    }
+
+    /**
+     * Get the labVirtualNetworkId property: The lab virtual network identifier of the virtual machine.
+     * 
+     * @return the labVirtualNetworkId value.
+     */
+    public String labVirtualNetworkId() {
+        return this.innerProperties() == null ? null : this.innerProperties().labVirtualNetworkId();
+    }
+
+    /**
+     * Set the labVirtualNetworkId property: The lab virtual network identifier of the virtual machine.
+     * 
+     * @param labVirtualNetworkId the labVirtualNetworkId value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withLabVirtualNetworkId(String labVirtualNetworkId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withLabVirtualNetworkId(labVirtualNetworkId);
+        return this;
+    }
+
+    /**
+     * Get the disallowPublicIpAddress property: Indicates whether the virtual machine is to be created without a public
+     * IP address.
+     * 
+     * @return the disallowPublicIpAddress value.
+     */
+    public Boolean disallowPublicIpAddress() {
+        return this.innerProperties() == null ? null : this.innerProperties().disallowPublicIpAddress();
+    }
+
+    /**
+     * Set the disallowPublicIpAddress property: Indicates whether the virtual machine is to be created without a public
+     * IP address.
+     * 
+     * @param disallowPublicIpAddress the disallowPublicIpAddress value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withDisallowPublicIpAddress(Boolean disallowPublicIpAddress) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withDisallowPublicIpAddress(disallowPublicIpAddress);
+        return this;
+    }
+
+    /**
+     * Get the artifacts property: The artifacts to be installed on the virtual machine.
+     * 
+     * @return the artifacts value.
+     */
+    public List<ArtifactInstallProperties> artifacts() {
+        return this.innerProperties() == null ? null : this.innerProperties().artifacts();
+    }
+
+    /**
+     * Set the artifacts property: The artifacts to be installed on the virtual machine.
+     * 
+     * @param artifacts the artifacts value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withArtifacts(List<ArtifactInstallProperties> artifacts) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withArtifacts(artifacts);
+        return this;
+    }
+
+    /**
+     * Get the artifactDeploymentStatus property: The artifact deployment status for the virtual machine.
+     * 
+     * @return the artifactDeploymentStatus value.
+     */
+    public ArtifactDeploymentStatusProperties artifactDeploymentStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().artifactDeploymentStatus();
+    }
+
+    /**
+     * Get the galleryImageReference property: The Microsoft Azure Marketplace image reference of the virtual machine.
+     * 
+     * @return the galleryImageReference value.
+     */
+    public GalleryImageReference galleryImageReference() {
+        return this.innerProperties() == null ? null : this.innerProperties().galleryImageReference();
+    }
+
+    /**
+     * Set the galleryImageReference property: The Microsoft Azure Marketplace image reference of the virtual machine.
+     * 
+     * @param galleryImageReference the galleryImageReference value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withGalleryImageReference(GalleryImageReference galleryImageReference) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withGalleryImageReference(galleryImageReference);
+        return this;
+    }
+
+    /**
+     * Get the planId property: The id of the plan associated with the virtual machine image.
+     * 
+     * @return the planId value.
+     */
+    public String planId() {
+        return this.innerProperties() == null ? null : this.innerProperties().planId();
+    }
+
+    /**
+     * Set the planId property: The id of the plan associated with the virtual machine image.
+     * 
+     * @param planId the planId value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withPlanId(String planId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withPlanId(planId);
+        return this;
+    }
+
+    /**
+     * Get the computeVm property: The compute virtual machine properties.
+     * 
+     * @return the computeVm value.
+     */
+    public ComputeVmProperties computeVm() {
+        return this.innerProperties() == null ? null : this.innerProperties().computeVm();
+    }
+
+    /**
+     * Get the networkInterface property: The network interface properties.
+     * 
+     * @return the networkInterface value.
+     */
+    public NetworkInterfaceProperties networkInterface() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkInterface();
+    }
+
+    /**
+     * Set the networkInterface property: The network interface properties.
+     * 
+     * @param networkInterface the networkInterface value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withNetworkInterface(NetworkInterfaceProperties networkInterface) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withNetworkInterface(networkInterface);
+        return this;
+    }
+
+    /**
+     * Get the applicableSchedule property: The applicable schedule for the virtual machine.
+     * 
+     * @return the applicableSchedule value.
+     */
+    public ApplicableScheduleInner applicableSchedule() {
+        return this.innerProperties() == null ? null : this.innerProperties().applicableSchedule();
+    }
+
+    /**
+     * Get the expirationDate property: The expiration date for VM.
+     * 
+     * @return the expirationDate value.
+     */
+    public OffsetDateTime expirationDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().expirationDate();
+    }
+
+    /**
+     * Set the expirationDate property: The expiration date for VM.
+     * 
+     * @param expirationDate the expirationDate value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withExpirationDate(OffsetDateTime expirationDate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withExpirationDate(expirationDate);
+        return this;
+    }
+
+    /**
+     * Get the allowClaim property: Indicates whether another user can take ownership of the virtual machine.
+     * 
+     * @return the allowClaim value.
+     */
+    public Boolean allowClaim() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowClaim();
+    }
+
+    /**
+     * Set the allowClaim property: Indicates whether another user can take ownership of the virtual machine.
+     * 
+     * @param allowClaim the allowClaim value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withAllowClaim(Boolean allowClaim) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withAllowClaim(allowClaim);
+        return this;
+    }
+
+    /**
+     * Get the storageType property: Storage type to use for virtual machine (i.e. Standard, Premium).
+     * 
+     * @return the storageType value.
+     */
+    public String storageType() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageType();
+    }
+
+    /**
+     * Set the storageType property: Storage type to use for virtual machine (i.e. Standard, Premium).
+     * 
+     * @param storageType the storageType value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withStorageType(String storageType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withStorageType(storageType);
+        return this;
+    }
+
+    /**
+     * Get the virtualMachineCreationSource property: Tells source of creation of lab virtual machine. Output property
+     * only.
+     * 
+     * @return the virtualMachineCreationSource value.
+     */
+    public VirtualMachineCreationSource virtualMachineCreationSource() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachineCreationSource();
+    }
+
+    /**
+     * Get the environmentId property: The resource ID of the environment that contains this virtual machine, if any.
+     * 
+     * @return the environmentId value.
+     */
+    public String environmentId() {
+        return this.innerProperties() == null ? null : this.innerProperties().environmentId();
+    }
+
+    /**
+     * Set the environmentId property: The resource ID of the environment that contains this virtual machine, if any.
+     * 
+     * @param environmentId the environmentId value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withEnvironmentId(String environmentId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withEnvironmentId(environmentId);
+        return this;
+    }
+
+    /**
+     * Get the dataDiskParameters property: New or existing data disks to attach to the virtual machine after creation.
+     * 
+     * @return the dataDiskParameters value.
+     */
+    public List<DataDiskProperties> dataDiskParameters() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataDiskParameters();
+    }
+
+    /**
+     * Set the dataDiskParameters property: New or existing data disks to attach to the virtual machine after creation.
+     * 
+     * @param dataDiskParameters the dataDiskParameters value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withDataDiskParameters(List<DataDiskProperties> dataDiskParameters) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withDataDiskParameters(dataDiskParameters);
+        return this;
+    }
+
+    /**
+     * Get the scheduleParameters property: Virtual Machine schedules to be created.
+     * 
+     * @return the scheduleParameters value.
+     */
+    public List<ScheduleCreationParameter> scheduleParameters() {
+        return this.innerProperties() == null ? null : this.innerProperties().scheduleParameters();
+    }
+
+    /**
+     * Set the scheduleParameters property: Virtual Machine schedules to be created.
+     * 
+     * @param scheduleParameters the scheduleParameters value to set.
+     * @return the LabVirtualMachineInner object itself.
+     */
+    public LabVirtualMachineInner withScheduleParameters(List<ScheduleCreationParameter> scheduleParameters) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LabVirtualMachinePropertiesInner();
+        }
+        this.innerProperties().withScheduleParameters(scheduleParameters);
+        return this;
+    }
+
+    /**
+     * Get the lastKnownPowerState property: Last known compute power state captured in DTL.
+     * 
+     * @return the lastKnownPowerState value.
+     */
+    public String lastKnownPowerState() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastKnownPowerState();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning status of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
+     * 
+     * @return the uniqueIdentifier value.
+     */
+    public String uniqueIdentifier() {
+        return this.innerProperties() == null ? null : this.innerProperties().uniqueIdentifier();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (artifacts() != null) {
-            artifacts().forEach(e -> e.validate());
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model LabVirtualMachineInner"));
+        } else {
+            innerProperties().validate();
         }
-        if (artifactDeploymentStatus() != null) {
-            artifactDeploymentStatus().validate();
-        }
-        if (galleryImageReference() != null) {
-            galleryImageReference().validate();
-        }
-        if (computeVm() != null) {
-            computeVm().validate();
-        }
-        if (networkInterface() != null) {
-            networkInterface().validate();
-        }
-        if (applicableSchedule() != null) {
-            applicableSchedule().validate();
-        }
-        if (dataDiskParameters() != null) {
-            dataDiskParameters().forEach(e -> e.validate());
-        }
-        if (scheduleParameters() != null) {
-            scheduleParameters().forEach(e -> e.validate());
-        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LabVirtualMachineInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabVirtualMachineInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabVirtualMachineInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LabVirtualMachineInner.
+     */
+    public static LabVirtualMachineInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabVirtualMachineInner deserializedLabVirtualMachineInner = new LabVirtualMachineInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLabVirtualMachineInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLabVirtualMachineInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLabVirtualMachineInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedLabVirtualMachineInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedLabVirtualMachineInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLabVirtualMachineInner.innerProperties
+                        = LabVirtualMachinePropertiesInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabVirtualMachineInner;
+        });
     }
 }

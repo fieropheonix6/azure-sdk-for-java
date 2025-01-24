@@ -6,38 +6,52 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Network watcher in a resource group. */
+/**
+ * Network watcher in a resource group.
+ */
 @Fluent
 public final class NetworkWatcherInner extends Resource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Properties of the network watcher.
      */
-    @JsonProperty(value = "properties")
     private NetworkWatcherPropertiesFormat innerProperties;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of NetworkWatcherInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /**
+     * Creates an instance of NetworkWatcherInner class.
+     */
     public NetworkWatcherInner() {
     }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -46,7 +60,7 @@ public final class NetworkWatcherInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the network watcher.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkWatcherPropertiesFormat innerProperties() {
@@ -55,7 +69,7 @@ public final class NetworkWatcherInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -64,7 +78,7 @@ public final class NetworkWatcherInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the NetworkWatcherInner object itself.
      */
@@ -73,14 +87,38 @@ public final class NetworkWatcherInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkWatcherInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkWatcherInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -89,7 +127,7 @@ public final class NetworkWatcherInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the network watcher resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -98,12 +136,65 @@ public final class NetworkWatcherInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkWatcherInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkWatcherInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkWatcherInner.
+     */
+    public static NetworkWatcherInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkWatcherInner deserializedNetworkWatcherInner = new NetworkWatcherInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNetworkWatcherInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNetworkWatcherInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedNetworkWatcherInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNetworkWatcherInner.withTags(tags);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedNetworkWatcherInner.etag = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNetworkWatcherInner.innerProperties = NetworkWatcherPropertiesFormat.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedNetworkWatcherInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkWatcherInner;
+        });
     }
 }

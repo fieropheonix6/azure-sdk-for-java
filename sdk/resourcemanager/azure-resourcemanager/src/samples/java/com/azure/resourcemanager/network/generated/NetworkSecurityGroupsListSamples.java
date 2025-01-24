@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for NetworkSecurityGroups List. */
+/**
+ * Samples for NetworkSecurityGroups List.
+ */
 public final class NetworkSecurityGroupsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkSecurityGroupListAll.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/NetworkSecurityGroupListAll.
+     * json
      */
     /**
      * Sample code: List all network security groups.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAllNetworkSecurityGroups(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkSecurityGroups().list(Context.NONE);
+        azure.networks().manager().serviceClient().getNetworkSecurityGroups().list(com.azure.core.util.Context.NONE);
     }
 }

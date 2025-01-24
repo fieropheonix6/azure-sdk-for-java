@@ -6,45 +6,48 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingPolicy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The routing intent child resource of a Virtual hub. */
+/**
+ * The routing intent child resource of a Virtual hub.
+ */
 @Fluent
 public final class RoutingIntentInner extends SubResource {
     /*
      * Properties of the RoutingIntent resource.
      */
-    @JsonProperty(value = "properties")
     private RoutingIntentProperties innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of RoutingIntentInner class. */
+    /**
+     * Creates an instance of RoutingIntentInner class.
+     */
     public RoutingIntentInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the RoutingIntent resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RoutingIntentProperties innerProperties() {
@@ -54,7 +57,7 @@ public final class RoutingIntentInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -64,7 +67,7 @@ public final class RoutingIntentInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the RoutingIntentInner object itself.
      */
@@ -75,7 +78,7 @@ public final class RoutingIntentInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -84,14 +87,16 @@ public final class RoutingIntentInner extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RoutingIntentInner withId(String id) {
         super.withId(id);
@@ -100,7 +105,7 @@ public final class RoutingIntentInner extends SubResource {
 
     /**
      * Get the routingPolicies property: List of routing policies.
-     *
+     * 
      * @return the routingPolicies value.
      */
     public List<RoutingPolicy> routingPolicies() {
@@ -109,7 +114,7 @@ public final class RoutingIntentInner extends SubResource {
 
     /**
      * Set the routingPolicies property: List of routing policies.
-     *
+     * 
      * @param routingPolicies the routingPolicies value to set.
      * @return the RoutingIntentInner object itself.
      */
@@ -123,7 +128,7 @@ public final class RoutingIntentInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the RoutingIntent resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -132,12 +137,58 @@ public final class RoutingIntentInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoutingIntentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoutingIntentInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoutingIntentInner.
+     */
+    public static RoutingIntentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoutingIntentInner deserializedRoutingIntentInner = new RoutingIntentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRoutingIntentInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRoutingIntentInner.innerProperties = RoutingIntentProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedRoutingIntentInner.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedRoutingIntentInner.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRoutingIntentInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoutingIntentInner;
+        });
     }
 }

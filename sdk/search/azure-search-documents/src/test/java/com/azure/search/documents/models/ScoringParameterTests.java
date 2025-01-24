@@ -5,6 +5,8 @@ package com.azure.search.documents.models;
 
 import com.azure.core.models.GeoPoint;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SuppressWarnings("unchecked")
+@Execution(ExecutionMode.CONCURRENT)
 public class ScoringParameterTests {
     private static final Map<String, Object> FOOL_SPOTBUGS = new HashMap<>();
 
@@ -50,14 +53,14 @@ public class ScoringParameterTests {
 
     @Test
     public void testConstructorWithMapNullName() {
-        assertThrows(NullPointerException.class, () -> new ScoringParameter((String) FOOL_SPOTBUGS.get("name"),
-            Arrays.asList("hello", "tests")));
+        assertThrows(NullPointerException.class,
+            () -> new ScoringParameter((String) FOOL_SPOTBUGS.get("name"), Arrays.asList("hello", "tests")));
     }
 
     @Test
     public void testConstructorWithMapNullValues() {
-        assertThrows(NullPointerException.class, () -> new ScoringParameter("null value",
-            (List<String>) FOOL_SPOTBUGS.get("values")));
+        assertThrows(NullPointerException.class,
+            () -> new ScoringParameter("null value", (List<String>) FOOL_SPOTBUGS.get("values")));
     }
 
     @Test
@@ -72,7 +75,7 @@ public class ScoringParameterTests {
 
     @Test
     public void testConstructorWithNullGeoPoint() {
-        assertThrows(NullPointerException.class, () -> new ScoringParameter("null geopoint",
-            (GeoPoint) FOOL_SPOTBUGS.get("geoPoint")));
+        assertThrows(NullPointerException.class,
+            () -> new ScoringParameter("null geopoint", (GeoPoint) FOOL_SPOTBUGS.get("geoPoint")));
     }
 }

@@ -6,34 +6,53 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** ScheduleBasedTriggerContext Schedule based trigger context. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("ScheduleBasedTriggerContext")
+/**
+ * ScheduleBasedTriggerContext
+ * 
+ * Schedule based trigger context.
+ */
 @Fluent
 public final class ScheduleBasedTriggerContext extends TriggerContext {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleBasedTriggerContext.class);
+    /*
+     * Type of the specific object - used for deserializing
+     */
+    private String objectType = "ScheduleBasedTriggerContext";
 
     /*
-     * BackupSchedule Schedule for this backup
+     * Schedule for this backup
      */
-    @JsonProperty(value = "schedule", required = true)
     private BackupSchedule schedule;
 
     /*
      * List of tags that can be applicable for given schedule.
      */
-    @JsonProperty(value = "taggingCriteria", required = true)
     private List<TaggingCriteria> taggingCriteria;
 
     /**
-     * Get the schedule property: BackupSchedule Schedule for this backup.
-     *
+     * Creates an instance of ScheduleBasedTriggerContext class.
+     */
+    public ScheduleBasedTriggerContext() {
+    }
+
+    /**
+     * Get the objectType property: Type of the specific object - used for deserializing.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
+     * Get the schedule property: Schedule for this backup.
+     * 
      * @return the schedule value.
      */
     public BackupSchedule schedule() {
@@ -41,8 +60,8 @@ public final class ScheduleBasedTriggerContext extends TriggerContext {
     }
 
     /**
-     * Set the schedule property: BackupSchedule Schedule for this backup.
-     *
+     * Set the schedule property: Schedule for this backup.
+     * 
      * @param schedule the schedule value to set.
      * @return the ScheduleBasedTriggerContext object itself.
      */
@@ -53,7 +72,7 @@ public final class ScheduleBasedTriggerContext extends TriggerContext {
 
     /**
      * Get the taggingCriteria property: List of tags that can be applicable for given schedule.
-     *
+     * 
      * @return the taggingCriteria value.
      */
     public List<TaggingCriteria> taggingCriteria() {
@@ -62,7 +81,7 @@ public final class ScheduleBasedTriggerContext extends TriggerContext {
 
     /**
      * Set the taggingCriteria property: List of tags that can be applicable for given schedule.
-     *
+     * 
      * @param taggingCriteria the taggingCriteria value to set.
      * @return the ScheduleBasedTriggerContext object itself.
      */
@@ -73,27 +92,73 @@ public final class ScheduleBasedTriggerContext extends TriggerContext {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (schedule() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schedule in model ScheduleBasedTriggerContext"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property schedule in model ScheduleBasedTriggerContext"));
         } else {
             schedule().validate();
         }
         if (taggingCriteria() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property taggingCriteria in model ScheduleBasedTriggerContext"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property taggingCriteria in model ScheduleBasedTriggerContext"));
         } else {
             taggingCriteria().forEach(e -> e.validate());
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScheduleBasedTriggerContext.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("schedule", this.schedule);
+        jsonWriter.writeArrayField("taggingCriteria", this.taggingCriteria,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleBasedTriggerContext from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleBasedTriggerContext if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScheduleBasedTriggerContext.
+     */
+    public static ScheduleBasedTriggerContext fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleBasedTriggerContext deserializedScheduleBasedTriggerContext = new ScheduleBasedTriggerContext();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("schedule".equals(fieldName)) {
+                    deserializedScheduleBasedTriggerContext.schedule = BackupSchedule.fromJson(reader);
+                } else if ("taggingCriteria".equals(fieldName)) {
+                    List<TaggingCriteria> taggingCriteria
+                        = reader.readArray(reader1 -> TaggingCriteria.fromJson(reader1));
+                    deserializedScheduleBasedTriggerContext.taggingCriteria = taggingCriteria;
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedScheduleBasedTriggerContext.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleBasedTriggerContext;
+        });
     }
 }

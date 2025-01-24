@@ -5,37 +5,54 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The Network protocol of a Rule. */
+/**
+ * The Network protocol of a Rule.
+ */
 public final class FirewallPolicyRuleNetworkProtocol extends ExpandableStringEnum<FirewallPolicyRuleNetworkProtocol> {
-    /** Static value TCP for FirewallPolicyRuleNetworkProtocol. */
+    /**
+     * Static value TCP for FirewallPolicyRuleNetworkProtocol.
+     */
     public static final FirewallPolicyRuleNetworkProtocol TCP = fromString("TCP");
 
-    /** Static value UDP for FirewallPolicyRuleNetworkProtocol. */
+    /**
+     * Static value UDP for FirewallPolicyRuleNetworkProtocol.
+     */
     public static final FirewallPolicyRuleNetworkProtocol UDP = fromString("UDP");
 
-    /** Static value Any for FirewallPolicyRuleNetworkProtocol. */
+    /**
+     * Static value Any for FirewallPolicyRuleNetworkProtocol.
+     */
     public static final FirewallPolicyRuleNetworkProtocol ANY = fromString("Any");
 
-    /** Static value ICMP for FirewallPolicyRuleNetworkProtocol. */
+    /**
+     * Static value ICMP for FirewallPolicyRuleNetworkProtocol.
+     */
     public static final FirewallPolicyRuleNetworkProtocol ICMP = fromString("ICMP");
 
     /**
+     * Creates a new instance of FirewallPolicyRuleNetworkProtocol value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FirewallPolicyRuleNetworkProtocol() {
+    }
+
+    /**
      * Creates or finds a FirewallPolicyRuleNetworkProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FirewallPolicyRuleNetworkProtocol.
      */
-    @JsonCreator
     public static FirewallPolicyRuleNetworkProtocol fromString(String name) {
         return fromString(name, FirewallPolicyRuleNetworkProtocol.class);
     }
 
     /**
      * Gets known FirewallPolicyRuleNetworkProtocol values.
-     *
+     * 
      * @return known FirewallPolicyRuleNetworkProtocol values.
      */
     public static Collection<FirewallPolicyRuleNetworkProtocol> values() {

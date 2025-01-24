@@ -6,37 +6,51 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** ExpressRouteProviderPort resource. */
+/**
+ * ExpressRouteProviderPort resource.
+ */
 @Fluent
 public final class ExpressRouteProviderPortInner extends Resource {
     /*
      * Properties of the express route Service Provider Port.
      */
-    @JsonProperty(value = "properties")
     private ExpressRouteProviderPortProperties innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of ExpressRouteProviderPortInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /**
+     * Creates an instance of ExpressRouteProviderPortInner class.
+     */
     public ExpressRouteProviderPortInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the express route Service Provider Port.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ExpressRouteProviderPortProperties innerProperties() {
@@ -45,7 +59,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -54,7 +68,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -63,7 +77,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the ExpressRouteProviderPortInner object itself.
      */
@@ -72,14 +86,38 @@ public final class ExpressRouteProviderPortInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressRouteProviderPortInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressRouteProviderPortInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -88,7 +126,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the portPairDescriptor property: The name of the port pair.
-     *
+     * 
      * @return the portPairDescriptor value.
      */
     public String portPairDescriptor() {
@@ -97,7 +135,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the primaryAzurePort property: The name of the primary port.
-     *
+     * 
      * @return the primaryAzurePort value.
      */
     public String primaryAzurePort() {
@@ -106,7 +144,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the secondaryAzurePort property: The name of the secondary port.
-     *
+     * 
      * @return the secondaryAzurePort value.
      */
     public String secondaryAzurePort() {
@@ -115,7 +153,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the peeringLocation property: The peering location of the port pair.
-     *
+     * 
      * @return the peeringLocation value.
      */
     public String peeringLocation() {
@@ -124,7 +162,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Set the peeringLocation property: The peering location of the port pair.
-     *
+     * 
      * @param peeringLocation the peeringLocation value to set.
      * @return the ExpressRouteProviderPortInner object itself.
      */
@@ -138,7 +176,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the overprovisionFactor property: Overprovisioning factor for the port pair.
-     *
+     * 
      * @return the overprovisionFactor value.
      */
     public Integer overprovisionFactor() {
@@ -147,7 +185,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Set the overprovisionFactor property: Overprovisioning factor for the port pair.
-     *
+     * 
      * @param overprovisionFactor the overprovisionFactor value to set.
      * @return the ExpressRouteProviderPortInner object itself.
      */
@@ -161,7 +199,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the portBandwidthInMbps property: Bandwidth of the port in Mbps.
-     *
+     * 
      * @return the portBandwidthInMbps value.
      */
     public Integer portBandwidthInMbps() {
@@ -170,7 +208,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Set the portBandwidthInMbps property: Bandwidth of the port in Mbps.
-     *
+     * 
      * @param portBandwidthInMbps the portBandwidthInMbps value to set.
      * @return the ExpressRouteProviderPortInner object itself.
      */
@@ -184,7 +222,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the usedBandwidthInMbps property: Used Bandwidth of the port in Mbps.
-     *
+     * 
      * @return the usedBandwidthInMbps value.
      */
     public Integer usedBandwidthInMbps() {
@@ -193,7 +231,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Set the usedBandwidthInMbps property: Used Bandwidth of the port in Mbps.
-     *
+     * 
      * @param usedBandwidthInMbps the usedBandwidthInMbps value to set.
      * @return the ExpressRouteProviderPortInner object itself.
      */
@@ -207,7 +245,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Get the remainingBandwidthInMbps property: Remaining Bandwidth of the port in Mbps.
-     *
+     * 
      * @return the remainingBandwidthInMbps value.
      */
     public Integer remainingBandwidthInMbps() {
@@ -216,7 +254,7 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Set the remainingBandwidthInMbps property: Remaining Bandwidth of the port in Mbps.
-     *
+     * 
      * @param remainingBandwidthInMbps the remainingBandwidthInMbps value to set.
      * @return the ExpressRouteProviderPortInner object itself.
      */
@@ -230,12 +268,67 @@ public final class ExpressRouteProviderPortInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteProviderPortInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteProviderPortInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExpressRouteProviderPortInner.
+     */
+    public static ExpressRouteProviderPortInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteProviderPortInner deserializedExpressRouteProviderPortInner
+                = new ExpressRouteProviderPortInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedExpressRouteProviderPortInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedExpressRouteProviderPortInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedExpressRouteProviderPortInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedExpressRouteProviderPortInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedExpressRouteProviderPortInner.innerProperties
+                        = ExpressRouteProviderPortProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedExpressRouteProviderPortInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedExpressRouteProviderPortInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteProviderPortInner;
+        });
     }
 }

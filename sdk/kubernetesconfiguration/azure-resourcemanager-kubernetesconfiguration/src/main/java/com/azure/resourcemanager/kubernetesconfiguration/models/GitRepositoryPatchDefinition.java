@@ -5,69 +5,67 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Parameters to reconcile to the GitRepository source kind type. */
+/**
+ * Parameters to reconcile to the GitRepository source kind type.
+ */
 @Fluent
-public final class GitRepositoryPatchDefinition {
+public final class GitRepositoryPatchDefinition implements JsonSerializable<GitRepositoryPatchDefinition> {
     /*
      * The URL to sync for the flux configuration git repository.
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
-     * The maximum time to attempt to reconcile the cluster git repository
-     * source with the remote.
+     * The maximum time to attempt to reconcile the cluster git repository source with the remote.
      */
-    @JsonProperty(value = "timeoutInSeconds")
     private Long timeoutInSeconds;
 
     /*
-     * The interval at which to re-reconcile the cluster git repository source
-     * with the remote.
+     * The interval at which to re-reconcile the cluster git repository source with the remote.
      */
-    @JsonProperty(value = "syncIntervalInSeconds")
     private Long syncIntervalInSeconds;
 
     /*
      * The source reference for the GitRepository object.
      */
-    @JsonProperty(value = "repositoryRef")
     private RepositoryRefDefinition repositoryRef;
 
     /*
-     * Base64-encoded known_hosts value containing public SSH keys required to
-     * access private git repositories over SSH
+     * Base64-encoded known_hosts value containing public SSH keys required to access private git repositories over SSH
      */
-    @JsonProperty(value = "sshKnownHosts")
     private String sshKnownHosts;
 
     /*
-     * Plaintext HTTPS username used to access private git repositories over
-     * HTTPS
+     * Plaintext HTTPS username used to access private git repositories over HTTPS
      */
-    @JsonProperty(value = "httpsUser")
     private String httpsUser;
 
     /*
-     * Base64-encoded HTTPS certificate authority contents used to access git
-     * private git repositories over HTTPS
+     * Base64-encoded HTTPS certificate authority contents used to access git private git repositories over HTTPS
      */
-    @JsonProperty(value = "httpsCACert")
     private String httpsCACert;
 
     /*
-     * Name of a local secret on the Kubernetes cluster to use as the
-     * authentication secret rather than the managed or user-provided
-     * configuration secrets.
+     * Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or
+     * user-provided configuration secrets.
      */
-    @JsonProperty(value = "localAuthRef")
     private String localAuthRef;
 
     /**
+     * Creates an instance of GitRepositoryPatchDefinition class.
+     */
+    public GitRepositoryPatchDefinition() {
+    }
+
+    /**
      * Get the url property: The URL to sync for the flux configuration git repository.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -76,7 +74,7 @@ public final class GitRepositoryPatchDefinition {
 
     /**
      * Set the url property: The URL to sync for the flux configuration git repository.
-     *
+     * 
      * @param url the url value to set.
      * @return the GitRepositoryPatchDefinition object itself.
      */
@@ -88,7 +86,7 @@ public final class GitRepositoryPatchDefinition {
     /**
      * Get the timeoutInSeconds property: The maximum time to attempt to reconcile the cluster git repository source
      * with the remote.
-     *
+     * 
      * @return the timeoutInSeconds value.
      */
     public Long timeoutInSeconds() {
@@ -98,7 +96,7 @@ public final class GitRepositoryPatchDefinition {
     /**
      * Set the timeoutInSeconds property: The maximum time to attempt to reconcile the cluster git repository source
      * with the remote.
-     *
+     * 
      * @param timeoutInSeconds the timeoutInSeconds value to set.
      * @return the GitRepositoryPatchDefinition object itself.
      */
@@ -110,7 +108,7 @@ public final class GitRepositoryPatchDefinition {
     /**
      * Get the syncIntervalInSeconds property: The interval at which to re-reconcile the cluster git repository source
      * with the remote.
-     *
+     * 
      * @return the syncIntervalInSeconds value.
      */
     public Long syncIntervalInSeconds() {
@@ -120,7 +118,7 @@ public final class GitRepositoryPatchDefinition {
     /**
      * Set the syncIntervalInSeconds property: The interval at which to re-reconcile the cluster git repository source
      * with the remote.
-     *
+     * 
      * @param syncIntervalInSeconds the syncIntervalInSeconds value to set.
      * @return the GitRepositoryPatchDefinition object itself.
      */
@@ -131,7 +129,7 @@ public final class GitRepositoryPatchDefinition {
 
     /**
      * Get the repositoryRef property: The source reference for the GitRepository object.
-     *
+     * 
      * @return the repositoryRef value.
      */
     public RepositoryRefDefinition repositoryRef() {
@@ -140,7 +138,7 @@ public final class GitRepositoryPatchDefinition {
 
     /**
      * Set the repositoryRef property: The source reference for the GitRepository object.
-     *
+     * 
      * @param repositoryRef the repositoryRef value to set.
      * @return the GitRepositoryPatchDefinition object itself.
      */
@@ -152,7 +150,7 @@ public final class GitRepositoryPatchDefinition {
     /**
      * Get the sshKnownHosts property: Base64-encoded known_hosts value containing public SSH keys required to access
      * private git repositories over SSH.
-     *
+     * 
      * @return the sshKnownHosts value.
      */
     public String sshKnownHosts() {
@@ -162,7 +160,7 @@ public final class GitRepositoryPatchDefinition {
     /**
      * Set the sshKnownHosts property: Base64-encoded known_hosts value containing public SSH keys required to access
      * private git repositories over SSH.
-     *
+     * 
      * @param sshKnownHosts the sshKnownHosts value to set.
      * @return the GitRepositoryPatchDefinition object itself.
      */
@@ -173,7 +171,7 @@ public final class GitRepositoryPatchDefinition {
 
     /**
      * Get the httpsUser property: Plaintext HTTPS username used to access private git repositories over HTTPS.
-     *
+     * 
      * @return the httpsUser value.
      */
     public String httpsUser() {
@@ -182,7 +180,7 @@ public final class GitRepositoryPatchDefinition {
 
     /**
      * Set the httpsUser property: Plaintext HTTPS username used to access private git repositories over HTTPS.
-     *
+     * 
      * @param httpsUser the httpsUser value to set.
      * @return the GitRepositoryPatchDefinition object itself.
      */
@@ -194,7 +192,7 @@ public final class GitRepositoryPatchDefinition {
     /**
      * Get the httpsCACert property: Base64-encoded HTTPS certificate authority contents used to access git private git
      * repositories over HTTPS.
-     *
+     * 
      * @return the httpsCACert value.
      */
     public String httpsCACert() {
@@ -204,7 +202,7 @@ public final class GitRepositoryPatchDefinition {
     /**
      * Set the httpsCACert property: Base64-encoded HTTPS certificate authority contents used to access git private git
      * repositories over HTTPS.
-     *
+     * 
      * @param httpsCACert the httpsCACert value to set.
      * @return the GitRepositoryPatchDefinition object itself.
      */
@@ -216,7 +214,7 @@ public final class GitRepositoryPatchDefinition {
     /**
      * Get the localAuthRef property: Name of a local secret on the Kubernetes cluster to use as the authentication
      * secret rather than the managed or user-provided configuration secrets.
-     *
+     * 
      * @return the localAuthRef value.
      */
     public String localAuthRef() {
@@ -226,7 +224,7 @@ public final class GitRepositoryPatchDefinition {
     /**
      * Set the localAuthRef property: Name of a local secret on the Kubernetes cluster to use as the authentication
      * secret rather than the managed or user-provided configuration secrets.
-     *
+     * 
      * @param localAuthRef the localAuthRef value to set.
      * @return the GitRepositoryPatchDefinition object itself.
      */
@@ -237,12 +235,70 @@ public final class GitRepositoryPatchDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (repositoryRef() != null) {
             repositoryRef().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeNumberField("timeoutInSeconds", this.timeoutInSeconds);
+        jsonWriter.writeNumberField("syncIntervalInSeconds", this.syncIntervalInSeconds);
+        jsonWriter.writeJsonField("repositoryRef", this.repositoryRef);
+        jsonWriter.writeStringField("sshKnownHosts", this.sshKnownHosts);
+        jsonWriter.writeStringField("httpsUser", this.httpsUser);
+        jsonWriter.writeStringField("httpsCACert", this.httpsCACert);
+        jsonWriter.writeStringField("localAuthRef", this.localAuthRef);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitRepositoryPatchDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitRepositoryPatchDefinition if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GitRepositoryPatchDefinition.
+     */
+    public static GitRepositoryPatchDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitRepositoryPatchDefinition deserializedGitRepositoryPatchDefinition = new GitRepositoryPatchDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedGitRepositoryPatchDefinition.url = reader.getString();
+                } else if ("timeoutInSeconds".equals(fieldName)) {
+                    deserializedGitRepositoryPatchDefinition.timeoutInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("syncIntervalInSeconds".equals(fieldName)) {
+                    deserializedGitRepositoryPatchDefinition.syncIntervalInSeconds
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("repositoryRef".equals(fieldName)) {
+                    deserializedGitRepositoryPatchDefinition.repositoryRef = RepositoryRefDefinition.fromJson(reader);
+                } else if ("sshKnownHosts".equals(fieldName)) {
+                    deserializedGitRepositoryPatchDefinition.sshKnownHosts = reader.getString();
+                } else if ("httpsUser".equals(fieldName)) {
+                    deserializedGitRepositoryPatchDefinition.httpsUser = reader.getString();
+                } else if ("httpsCACert".equals(fieldName)) {
+                    deserializedGitRepositoryPatchDefinition.httpsCACert = reader.getString();
+                } else if ("localAuthRef".equals(fieldName)) {
+                    deserializedGitRepositoryPatchDefinition.localAuthRef = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitRepositoryPatchDefinition;
+        });
     }
 }

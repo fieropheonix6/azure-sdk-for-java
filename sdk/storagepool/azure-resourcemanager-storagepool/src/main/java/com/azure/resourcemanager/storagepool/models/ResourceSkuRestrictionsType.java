@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.storagepool.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ResourceSkuRestrictionsType. */
+/**
+ * The type of restrictions.
+ */
 public enum ResourceSkuRestrictionsType {
-    /** Enum value Location. */
+    /**
+     * Enum value Location.
+     */
     LOCATION("Location"),
 
-    /** Enum value Zone. */
+    /**
+     * Enum value Zone.
+     */
     ZONE("Zone");
 
-    /** The actual serialized value for a ResourceSkuRestrictionsType instance. */
+    /**
+     * The actual serialized value for a ResourceSkuRestrictionsType instance.
+     */
     private final String value;
 
     ResourceSkuRestrictionsType(String value) {
@@ -24,12 +29,14 @@ public enum ResourceSkuRestrictionsType {
 
     /**
      * Parses a serialized value to a ResourceSkuRestrictionsType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ResourceSkuRestrictionsType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ResourceSkuRestrictionsType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ResourceSkuRestrictionsType[] items = ResourceSkuRestrictionsType.values();
         for (ResourceSkuRestrictionsType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum ResourceSkuRestrictionsType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

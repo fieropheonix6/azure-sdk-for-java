@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Will contain the filter name and values to operate on. */
+/**
+ * Will contain the filter name and values to operate on.
+ */
 @Fluent
-public final class FilterItems {
+public final class FilterItems implements JsonSerializable<FilterItems> {
     /*
      * The name of the field we would like to filter
      */
-    @JsonProperty(value = "field")
     private String field;
 
     /*
      * List of values to filter the current field by
      */
-    @JsonProperty(value = "values")
     private List<String> values;
 
-    /** Creates an instance of FilterItems class. */
+    /**
+     * Creates an instance of FilterItems class.
+     */
     public FilterItems() {
     }
 
     /**
      * Get the field property: The name of the field we would like to filter.
-     *
+     * 
      * @return the field value.
      */
     public String field() {
@@ -38,7 +44,7 @@ public final class FilterItems {
 
     /**
      * Set the field property: The name of the field we would like to filter.
-     *
+     * 
      * @param field the field value to set.
      * @return the FilterItems object itself.
      */
@@ -49,7 +55,7 @@ public final class FilterItems {
 
     /**
      * Get the values property: List of values to filter the current field by.
-     *
+     * 
      * @return the values value.
      */
     public List<String> values() {
@@ -58,7 +64,7 @@ public final class FilterItems {
 
     /**
      * Set the values property: List of values to filter the current field by.
-     *
+     * 
      * @param values the values value to set.
      * @return the FilterItems object itself.
      */
@@ -69,9 +75,49 @@ public final class FilterItems {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("field", this.field);
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FilterItems from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FilterItems if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FilterItems.
+     */
+    public static FilterItems fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FilterItems deserializedFilterItems = new FilterItems();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("field".equals(fieldName)) {
+                    deserializedFilterItems.field = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    List<String> values = reader.readArray(reader1 -> reader1.getString());
+                    deserializedFilterItems.values = values;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFilterItems;
+        });
     }
 }

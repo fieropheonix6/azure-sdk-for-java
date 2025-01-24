@@ -10,16 +10,18 @@ import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper;
-import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManagerSettings;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLeaseUpdater;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper;
+import com.azure.cosmos.implementation.changefeed.epkversion.ServiceItemLeaseV1;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
+import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -31,7 +33,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -40,7 +47,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Provides flexible way to buildAsyncClient lease manager constructor parameters.
  * For the actual creation of lease manager instance, delegates to lease manager factory.
  */
-class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.LeaseStoreManagerBuilderDefinition {
+public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.LeaseStoreManagerBuilderDefinition {
     private final String LEASE_STORE_MANAGER_LEASE_SUFFIX = "..";
 
     private final Logger logger = LoggerFactory.getLogger(LeaseStoreManagerImpl.class);
@@ -49,7 +56,6 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
     private RequestOptionsFactory requestOptionsFactory;
     private ServiceItemLeaseUpdater leaseUpdater;
     private LeaseStore leaseStore;
-
 
     public static LeaseStoreManagerBuilderDefinition builder() {
         return new LeaseStoreManagerImpl();
@@ -128,6 +134,12 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
     }
 
     @Override
+    public Flux<Lease> getTopLeases(int topCount) {
+        return this.listDocuments(this.getPartitionLeasePrefix(), topCount)
+            .map(documentServiceLease -> documentServiceLease);
+    }
+
+    @Override
     public Flux<Lease> getOwnedLeases() {
         return this.getAllLeases()
             .filter(lease -> lease.getOwner() != null && lease.getOwner().equalsIgnoreCase(this.settings.getHostName()));
@@ -135,11 +147,21 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
 
     @Override
     public Mono<Lease> createLeaseIfNotExist(FeedRangeEpkImpl feedRange, String continuationToken) {
+        return this.createLeaseIfNotExist(feedRange, continuationToken, null);
+    }
+
+    @Override
+    public Mono<Lease> createLeaseIfNotExist(FeedRangeEpkImpl feedRange, String continuationToken, Map<String, String> properties) {
         throw new UnsupportedOperationException("FeedRangeEpkImpl based leases are not supported for Change Feed V0 wire format");
     }
 
     @Override
     public Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken) {
+        return this.createLeaseIfNotExist(leaseToken, continuationToken, null);
+    }
+
+    @Override
+    public Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken, Map<String, String> properties) {
         if (leaseToken == null) {
             throw new IllegalArgumentException("leaseToken");
         }
@@ -148,9 +170,14 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
         ServiceItemLease documentServiceLease = new ServiceItemLease()
             .withId(leaseDocId)
             .withLeaseToken(leaseToken)
-            .withContinuationToken(continuationToken);
+            .withContinuationToken(continuationToken)
+            .withProperties(properties);
 
-        return this.leaseDocumentClient.createItem(this.settings.getLeaseCollectionLink(), documentServiceLease, null, false)
+        return this.leaseDocumentClient.createItem(
+            this.settings.getLeaseCollectionLink(),
+                documentServiceLease,
+                this.requestOptionsFactory.createItemRequestOptions(documentServiceLease),
+                false)
             .onErrorResume( ex -> {
                 if (ex instanceof CosmosException) {
                     CosmosException e = (CosmosException) ex;
@@ -169,12 +196,10 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
 
                 InternalObjectNode document = BridgeInternal.getProperties(documentResourceResponse);
 
-//                logger.info("Created lease for partition {}.", leaseToken);
-
                 return documentServiceLease
                     .withId(document.getId())
                     .withETag(document.getETag())
-                    .withTs(ModelBridgeInternal.getStringFromJsonSerializable(document, Constants.Properties.LAST_MODIFIED));
+                    .withTs(document.getString(Constants.Properties.LAST_MODIFIED));
             });
     }
 
@@ -185,8 +210,10 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
         }
 
         return this.leaseDocumentClient
-            .deleteItem(lease.getId(), new PartitionKey(lease.getId()),
-                        this.requestOptionsFactory.createItemRequestOptions(lease))
+            .deleteItem(
+                lease.getId(),
+                new PartitionKey(lease.getId()),
+                this.requestOptionsFactory.createItemRequestOptions(lease))
             .onErrorResume( ex -> {
                 if (ex instanceof CosmosException) {
                     CosmosException e = (CosmosException) ex;
@@ -200,6 +227,47 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
             })
             // return some add-hoc value since we don't actually care about the result.
             .map( documentResourceResponse -> true)
+            .then();
+    }
+
+    @Override
+    public Mono<Void> deleteAll(List<Lease> leases) {
+        checkNotNull(leases, "Argument 'leases' can not be null");
+
+        logger.info("Deleting all leases");
+        Map<String, CosmosItemIdentity> cosmosIdentityMap = new HashMap<>();
+        for (Lease lease : leases) {
+            cosmosIdentityMap.put(lease.getId(), new CosmosItemIdentity(new PartitionKey(lease.getId()), lease.getId()));
+        }
+
+        return Mono.defer(() -> Mono.just(cosmosIdentityMap))
+            .flatMapMany(itemIdentities ->
+                this.leaseDocumentClient.deleteAllItems(cosmosIdentityMap.values().stream().collect(Collectors.toList())))
+            .flatMap(itemResponse -> {
+                if (itemResponse.getResponse() != null && itemResponse.getResponse().isSuccessStatusCode()) {
+                    cosmosIdentityMap.remove(itemResponse.getOperation().getId());
+                } else {
+                    // should ignore 404/0 for delete, will retry on other cases
+                    int effectiveStatusCode = 0;
+                    int effectiveSubStatusCode = 0;
+                    if (itemResponse.getResponse() != null) {
+                        effectiveStatusCode = itemResponse.getResponse().getStatusCode();
+                        effectiveSubStatusCode = itemResponse.getResponse().getStatusCode();
+                    } else if (itemResponse.getException() != null && itemResponse.getException() instanceof CosmosException) {
+                        CosmosException cosmosException = (CosmosException) itemResponse.getException();
+                        effectiveStatusCode = cosmosException.getStatusCode();
+                        effectiveSubStatusCode = cosmosException.getSubStatusCode();
+                    }
+
+                    if (effectiveStatusCode == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND &&
+                        effectiveSubStatusCode == 0) {
+                        cosmosIdentityMap.remove(itemResponse.getOperation().getId());
+                    }
+                }
+
+                return Mono.empty();
+            })
+            .repeat(() -> cosmosIdentityMap.size() != 0)
             .then();
     }
 
@@ -404,16 +472,35 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
     }
 
     private Flux<ServiceItemLease> listDocuments(String prefix) {
-        if (prefix == null || prefix.isEmpty())  {
-            throw new IllegalArgumentException("prefix");
+        return listDocuments(prefix, null);
+    }
+
+    private Flux<ServiceItemLease> listDocuments(String prefix, Integer top) {
+        if (prefix == null || prefix.isEmpty()) {
+            throw new IllegalArgumentException("prefix cannot be null or empty!");
         }
 
-        SqlParameter param = new SqlParameter();
-        param.setName("@PartitionLeasePrefix");
-        param.setValue(prefix);
-        SqlQuerySpec querySpec = new SqlQuerySpec(
-            "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
-            Collections.singletonList(param));
+        SqlQuerySpec querySpec;
+
+        if (top == null) {
+            SqlParameter param = new SqlParameter();
+            param.setName("@PartitionLeasePrefix");
+            param.setValue(prefix);
+            querySpec = new SqlQuerySpec(
+                "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
+                Collections.singletonList(param));
+        } else {
+            SqlParameter topParam = new SqlParameter();
+            topParam.setName("@Top");
+            topParam.setValue(top);
+
+            SqlParameter param = new SqlParameter();
+            param.setName("@PartitionLeasePrefix");
+            param.setValue(prefix);
+            querySpec = new SqlQuerySpec(
+                "SELECT TOP @Top * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix) AND c.ContinuationToken <> null",
+                Arrays.asList(topParam, param));
+        }
 
         Flux<FeedResponse<InternalObjectNode>> query = this.leaseDocumentClient.queryItems(
             this.settings.getLeaseCollectionLink(),
@@ -421,7 +508,7 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
             this.requestOptionsFactory.createQueryRequestOptions(),
             InternalObjectNode.class);
 
-        return query.flatMap( documentFeedResponse -> Flux.fromIterable(documentFeedResponse.getResults()))
+        return query.flatMap(documentFeedResponse -> Flux.fromIterable(documentFeedResponse.getResults()))
             .map(ServiceItemLease::fromDocument);
     }
 

@@ -5,26 +5,34 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dataprotection.fluent.models.BackupVaultResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** BackupVaultResourceList List of BackupVault resources. */
+/**
+ * BackupVaultResourceList
+ * 
+ * List of BackupVault resources.
+ */
 @Fluent
 public final class BackupVaultResourceList extends DppResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupVaultResourceList.class);
-
     /*
      * List of resources.
      */
-    @JsonProperty(value = "value")
     private List<BackupVaultResourceInner> value;
 
     /**
+     * Creates an instance of BackupVaultResourceList class.
+     */
+    public BackupVaultResourceList() {
+    }
+
+    /**
      * Get the value property: List of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<BackupVaultResourceInner> value() {
@@ -33,7 +41,7 @@ public final class BackupVaultResourceList extends DppResourceList {
 
     /**
      * Set the value property: List of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the BackupVaultResourceList object itself.
      */
@@ -42,7 +50,9 @@ public final class BackupVaultResourceList extends DppResourceList {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupVaultResourceList withNextLink(String nextLink) {
         super.withNextLink(nextLink);
@@ -51,7 +61,7 @@ public final class BackupVaultResourceList extends DppResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -60,5 +70,46 @@ public final class BackupVaultResourceList extends DppResourceList {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", nextLink());
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupVaultResourceList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupVaultResourceList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupVaultResourceList.
+     */
+    public static BackupVaultResourceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupVaultResourceList deserializedBackupVaultResourceList = new BackupVaultResourceList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedBackupVaultResourceList.withNextLink(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    List<BackupVaultResourceInner> value
+                        = reader.readArray(reader1 -> BackupVaultResourceInner.fromJson(reader1));
+                    deserializedBackupVaultResourceList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupVaultResourceList;
+        });
     }
 }

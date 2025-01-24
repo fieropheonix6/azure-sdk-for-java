@@ -14,62 +14,96 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hanaonazure.fluent.models.HanaInstanceInner;
 import com.azure.resourcemanager.hanaonazure.models.Tags;
 
-/** An instance of this class provides access to all the operations defined in HanaInstancesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in HanaInstancesClient.
+ */
 public interface HanaInstancesClient {
     /**
+     * Gets a list of SAP HANA instances in the specified subscription.
+     * 
      * Gets a list of SAP HANA instances in the specified subscription. The operations returns various properties of
      * each SAP HANA on Azure instance.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP HANA instances in the specified subscription.
+     * @return a list of SAP HANA instances in the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HanaInstanceInner> list();
 
     /**
+     * Gets a list of SAP HANA instances in the specified subscription.
+     * 
      * Gets a list of SAP HANA instances in the specified subscription. The operations returns various properties of
      * each SAP HANA on Azure instance.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP HANA instances in the specified subscription.
+     * @return a list of SAP HANA instances in the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HanaInstanceInner> list(Context context);
 
     /**
+     * Gets a list of SAP HANA instances in the specified subscription and the resource group.
+     * 
      * Gets a list of SAP HANA instances in the specified subscription and the resource group. The operations returns
      * various properties of each SAP HANA on Azure instance.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP HANA instances in the specified subscription and the resource group.
+     * @return a list of SAP HANA instances in the specified subscription and the resource group as paginated response
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HanaInstanceInner> listByResourceGroup(String resourceGroupName);
 
     /**
+     * Gets a list of SAP HANA instances in the specified subscription and the resource group.
+     * 
      * Gets a list of SAP HANA instances in the specified subscription and the resource group. The operations returns
      * various properties of each SAP HANA on Azure instance.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SAP HANA instances in the specified subscription and the resource group.
+     * @return a list of SAP HANA instances in the specified subscription and the resource group as paginated response
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HanaInstanceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
+     * Gets properties of a SAP HANA instance.
+     * 
      * Gets properties of a SAP HANA instance for the specified subscription, resource group, and instance name.
-     *
+     * 
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a SAP HANA instance for the specified subscription, resource group, and instance name along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<HanaInstanceInner> getByResourceGroupWithResponse(String resourceGroupName, String hanaInstanceName,
+        Context context);
+
+    /**
+     * Gets properties of a SAP HANA instance.
+     * 
+     * Gets properties of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -81,38 +115,27 @@ public interface HanaInstancesClient {
     HanaInstanceInner getByResourceGroup(String resourceGroupName, String hanaInstanceName);
 
     /**
-     * Gets properties of a SAP HANA instance for the specified subscription, resource group, and instance name.
-     *
-     * @param resourceGroupName Name of the resource group.
-     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a SAP HANA instance for the specified subscription, resource group, and instance name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HanaInstanceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String hanaInstanceName, Context context);
-
-    /**
-     * Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
-     *
+     * Creates a SAP HANA instance.
+     * 
+     * This action must be performed through our operations team.
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @param hanaInstanceParameter Request body representing a HanaInstance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hANA instance info on Azure (ARM properties and HANA properties).
+     * @return the {@link SyncPoller} for polling of hANA instance info on Azure (ARM properties and HANA properties).
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<HanaInstanceInner>, HanaInstanceInner> beginCreate(
-        String resourceGroupName, String hanaInstanceName, HanaInstanceInner hanaInstanceParameter);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<HanaInstanceInner>, HanaInstanceInner> beginCreate(String resourceGroupName,
+        String hanaInstanceName, HanaInstanceInner hanaInstanceParameter);
 
     /**
-     * Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
-     *
+     * Creates a SAP HANA instance.
+     * 
+     * This action must be performed through our operations team.
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @param hanaInstanceParameter Request body representing a HanaInstance.
@@ -120,15 +143,17 @@ public interface HanaInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hANA instance info on Azure (ARM properties and HANA properties).
+     * @return the {@link SyncPoller} for polling of hANA instance info on Azure (ARM properties and HANA properties).
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<HanaInstanceInner>, HanaInstanceInner> beginCreate(
-        String resourceGroupName, String hanaInstanceName, HanaInstanceInner hanaInstanceParameter, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<HanaInstanceInner>, HanaInstanceInner> beginCreate(String resourceGroupName,
+        String hanaInstanceName, HanaInstanceInner hanaInstanceParameter, Context context);
 
     /**
-     * Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
-     *
+     * Creates a SAP HANA instance.
+     * 
+     * This action must be performed through our operations team.
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @param hanaInstanceParameter Request body representing a HanaInstance.
@@ -138,12 +163,14 @@ public interface HanaInstancesClient {
      * @return hANA instance info on Azure (ARM properties and HANA properties).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    HanaInstanceInner create(
-        String resourceGroupName, String hanaInstanceName, HanaInstanceInner hanaInstanceParameter);
+    HanaInstanceInner create(String resourceGroupName, String hanaInstanceName,
+        HanaInstanceInner hanaInstanceParameter);
 
     /**
-     * Creates a SAP HANA instance for the specified subscription, resource group, and instance name.
-     *
+     * Creates a SAP HANA instance.
+     * 
+     * This action must be performed through our operations team.
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @param hanaInstanceParameter Request body representing a HanaInstance.
@@ -154,39 +181,45 @@ public interface HanaInstancesClient {
      * @return hANA instance info on Azure (ARM properties and HANA properties).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    HanaInstanceInner create(
-        String resourceGroupName, String hanaInstanceName, HanaInstanceInner hanaInstanceParameter, Context context);
+    HanaInstanceInner create(String resourceGroupName, String hanaInstanceName, HanaInstanceInner hanaInstanceParameter,
+        Context context);
 
     /**
-     * Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
-     *
+     * Deletes a SAP HANA instance.
+     * 
+     * This action must be performed through our operations team.
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hanaInstanceName);
 
     /**
-     * Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
-     *
+     * Deletes a SAP HANA instance.
+     * 
+     * This action must be performed through our operations team.
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hanaInstanceName, Context context);
 
     /**
-     * Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
-     *
+     * Deletes a SAP HANA instance.
+     * 
+     * This action must be performed through our operations team.
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -197,8 +230,10 @@ public interface HanaInstancesClient {
     void delete(String resourceGroupName, String hanaInstanceName);
 
     /**
-     * Deletes a SAP HANA instance with the specified subscription, resource group, and instance name.
-     *
+     * Deletes a SAP HANA instance.
+     * 
+     * This action must be performed through our operations team.
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @param context The context to associate with this operation.
@@ -210,8 +245,28 @@ public interface HanaInstancesClient {
     void delete(String resourceGroupName, String hanaInstanceName, Context context);
 
     /**
+     * Patches the Tags field of a SAP HANA instance.
+     * 
      * Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance name.
-     *
+     * 
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param tagsParameter Request body that only contains the new Tags field.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hANA instance info on Azure (ARM properties and HANA properties) along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<HanaInstanceInner> updateWithResponse(String resourceGroupName, String hanaInstanceName,
+        Tags tagsParameter, Context context);
+
+    /**
+     * Patches the Tags field of a SAP HANA instance.
+     * 
+     * Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @param tagsParameter Request body that only contains the new Tags field.
@@ -224,51 +279,35 @@ public interface HanaInstancesClient {
     HanaInstanceInner update(String resourceGroupName, String hanaInstanceName, Tags tagsParameter);
 
     /**
-     * Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance name.
-     *
-     * @param resourceGroupName Name of the resource group.
-     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
-     * @param tagsParameter Request body that only contains the new Tags field.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hANA instance info on Azure (ARM properties and HANA properties).
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HanaInstanceInner> updateWithResponse(
-        String resourceGroupName, String hanaInstanceName, Tags tagsParameter, Context context);
-
-    /**
      * The operation to restart a SAP HANA instance.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String hanaInstanceName);
 
     /**
      * The operation to restart a SAP HANA instance.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String hanaInstanceName, Context context);
 
     /**
      * The operation to restart a SAP HANA instance.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -280,7 +319,7 @@ public interface HanaInstancesClient {
 
     /**
      * The operation to restart a SAP HANA instance.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @param context The context to associate with this operation.
@@ -293,34 +332,34 @@ public interface HanaInstancesClient {
 
     /**
      * The operation to start a SAP HANA instance.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String hanaInstanceName);
 
     /**
      * The operation to start a SAP HANA instance.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String hanaInstanceName, Context context);
 
     /**
      * The operation to start a SAP HANA instance.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -332,7 +371,7 @@ public interface HanaInstancesClient {
 
     /**
      * The operation to start a SAP HANA instance.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @param context The context to associate with this operation.
@@ -345,35 +384,35 @@ public interface HanaInstancesClient {
 
     /**
      * The operation to shutdown a SAP HANA instance.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginShutdown(String resourceGroupName, String hanaInstanceName);
 
     /**
      * The operation to shutdown a SAP HANA instance.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginShutdown(
-        String resourceGroupName, String hanaInstanceName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginShutdown(String resourceGroupName, String hanaInstanceName,
+        Context context);
 
     /**
      * The operation to shutdown a SAP HANA instance.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -385,7 +424,7 @@ public interface HanaInstancesClient {
 
     /**
      * The operation to shutdown a SAP HANA instance.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param hanaInstanceName Name of the SAP HANA on Azure instance.
      * @param context The context to associate with this operation.

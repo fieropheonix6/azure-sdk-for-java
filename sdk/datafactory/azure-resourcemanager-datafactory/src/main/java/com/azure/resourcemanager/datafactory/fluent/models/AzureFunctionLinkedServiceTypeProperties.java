@@ -6,59 +6,63 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Azure Function linked service properties. */
+/**
+ * Azure Function linked service properties.
+ */
 @Fluent
-public final class AzureFunctionLinkedServiceTypeProperties {
+public final class AzureFunctionLinkedServiceTypeProperties
+    implements JsonSerializable<AzureFunctionLinkedServiceTypeProperties> {
     /*
-     * The endpoint of the Azure Function App. URL will be in the format https://<accountName>.azurewebsites.net.
+     * The endpoint of the Azure Function App. URL will be in the format https://<accountName>.azurewebsites.net. Type:
+     * string (or Expression with resultType string).
      */
-    @JsonProperty(value = "functionAppUrl", required = true)
     private Object functionAppUrl;
 
     /*
      * Function or Host key for Azure Function App.
      */
-    @JsonProperty(value = "functionKey")
     private SecretBase functionKey;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
      */
-    @JsonProperty(value = "credential")
     private CredentialReference credential;
 
     /*
-     * Allowed token audiences for azure function.
+     * Allowed token audiences for azure function. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "resourceId")
     private Object resourceId;
 
     /*
      * Type of authentication (Required to specify MSI) used to connect to AzureFunction. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "authentication")
     private Object authentication;
 
-    /** Creates an instance of AzureFunctionLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of AzureFunctionLinkedServiceTypeProperties class.
+     */
     public AzureFunctionLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the functionAppUrl property: The endpoint of the Azure Function App. URL will be in the format
-     * https://&lt;accountName&gt;.azurewebsites.net.
-     *
+     * https://&lt;accountName&gt;.azurewebsites.net. Type: string (or Expression with resultType string).
+     * 
      * @return the functionAppUrl value.
      */
     public Object functionAppUrl() {
@@ -67,8 +71,8 @@ public final class AzureFunctionLinkedServiceTypeProperties {
 
     /**
      * Set the functionAppUrl property: The endpoint of the Azure Function App. URL will be in the format
-     * https://&lt;accountName&gt;.azurewebsites.net.
-     *
+     * https://&lt;accountName&gt;.azurewebsites.net. Type: string (or Expression with resultType string).
+     * 
      * @param functionAppUrl the functionAppUrl value to set.
      * @return the AzureFunctionLinkedServiceTypeProperties object itself.
      */
@@ -79,7 +83,7 @@ public final class AzureFunctionLinkedServiceTypeProperties {
 
     /**
      * Get the functionKey property: Function or Host key for Azure Function App.
-     *
+     * 
      * @return the functionKey value.
      */
     public SecretBase functionKey() {
@@ -88,7 +92,7 @@ public final class AzureFunctionLinkedServiceTypeProperties {
 
     /**
      * Set the functionKey property: Function or Host key for Azure Function App.
-     *
+     * 
      * @param functionKey the functionKey value to set.
      * @return the AzureFunctionLinkedServiceTypeProperties object itself.
      */
@@ -99,29 +103,29 @@ public final class AzureFunctionLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureFunctionLinkedServiceTypeProperties object itself.
      */
-    public AzureFunctionLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public AzureFunctionLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Get the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @return the credential value.
      */
     public CredentialReference credential() {
@@ -130,7 +134,7 @@ public final class AzureFunctionLinkedServiceTypeProperties {
 
     /**
      * Set the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the AzureFunctionLinkedServiceTypeProperties object itself.
      */
@@ -140,8 +144,9 @@ public final class AzureFunctionLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the resourceId property: Allowed token audiences for azure function.
-     *
+     * Get the resourceId property: Allowed token audiences for azure function. Type: string (or Expression with
+     * resultType string).
+     * 
      * @return the resourceId value.
      */
     public Object resourceId() {
@@ -149,8 +154,9 @@ public final class AzureFunctionLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the resourceId property: Allowed token audiences for azure function.
-     *
+     * Set the resourceId property: Allowed token audiences for azure function. Type: string (or Expression with
+     * resultType string).
+     * 
      * @param resourceId the resourceId value to set.
      * @return the AzureFunctionLinkedServiceTypeProperties object itself.
      */
@@ -162,7 +168,7 @@ public final class AzureFunctionLinkedServiceTypeProperties {
     /**
      * Get the authentication property: Type of authentication (Required to specify MSI) used to connect to
      * AzureFunction. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the authentication value.
      */
     public Object authentication() {
@@ -172,7 +178,7 @@ public final class AzureFunctionLinkedServiceTypeProperties {
     /**
      * Set the authentication property: Type of authentication (Required to specify MSI) used to connect to
      * AzureFunction. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param authentication the authentication value to set.
      * @return the AzureFunctionLinkedServiceTypeProperties object itself.
      */
@@ -183,15 +189,14 @@ public final class AzureFunctionLinkedServiceTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (functionAppUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property functionAppUrl in model AzureFunctionLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property functionAppUrl in model AzureFunctionLinkedServiceTypeProperties"));
         }
         if (functionKey() != null) {
             functionKey().validate();
@@ -202,4 +207,58 @@ public final class AzureFunctionLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureFunctionLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("functionAppUrl", this.functionAppUrl);
+        jsonWriter.writeJsonField("functionKey", this.functionKey);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeJsonField("credential", this.credential);
+        jsonWriter.writeUntypedField("resourceId", this.resourceId);
+        jsonWriter.writeUntypedField("authentication", this.authentication);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFunctionLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFunctionLinkedServiceTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureFunctionLinkedServiceTypeProperties.
+     */
+    public static AzureFunctionLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFunctionLinkedServiceTypeProperties deserializedAzureFunctionLinkedServiceTypeProperties
+                = new AzureFunctionLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("functionAppUrl".equals(fieldName)) {
+                    deserializedAzureFunctionLinkedServiceTypeProperties.functionAppUrl = reader.readUntyped();
+                } else if ("functionKey".equals(fieldName)) {
+                    deserializedAzureFunctionLinkedServiceTypeProperties.functionKey = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedAzureFunctionLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("credential".equals(fieldName)) {
+                    deserializedAzureFunctionLinkedServiceTypeProperties.credential
+                        = CredentialReference.fromJson(reader);
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedAzureFunctionLinkedServiceTypeProperties.resourceId = reader.readUntyped();
+                } else if ("authentication".equals(fieldName)) {
+                    deserializedAzureFunctionLinkedServiceTypeProperties.authentication = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFunctionLinkedServiceTypeProperties;
+        });
+    }
 }

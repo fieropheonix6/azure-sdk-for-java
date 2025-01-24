@@ -6,39 +6,61 @@ package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.healthcareapis.models.IotEventHubIngestionEndpointConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.IotMappingProperties;
 import com.azure.resourcemanager.healthcareapis.models.ProvisioningState;
 import com.azure.resourcemanager.healthcareapis.models.ServiceManagedIdentityIdentity;
 import com.azure.resourcemanager.healthcareapis.models.TaggedResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** IoT Connector definition. */
+/**
+ * IoT Connector definition.
+ */
 @Fluent
 public final class IotConnectorInner extends TaggedResource {
     /*
      * IoT Connector configuration.
      */
-    @JsonProperty(value = "properties")
     private IotConnectorProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
-     * Setting indicating whether the service has a managed identity associated
-     * with it.
+     * Setting indicating whether the service has a managed identity associated with it.
      */
-    @JsonProperty(value = "identity")
     private ServiceManagedIdentityIdentity identity;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of IotConnectorInner class.
+     */
+    public IotConnectorInner() {
+    }
 
     /**
      * Get the innerProperties property: IoT Connector configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IotConnectorProperties innerProperties() {
@@ -47,7 +69,7 @@ public final class IotConnectorInner extends TaggedResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -56,7 +78,7 @@ public final class IotConnectorInner extends TaggedResource {
 
     /**
      * Get the identity property: Setting indicating whether the service has a managed identity associated with it.
-     *
+     * 
      * @return the identity value.
      */
     public ServiceManagedIdentityIdentity identity() {
@@ -65,7 +87,7 @@ public final class IotConnectorInner extends TaggedResource {
 
     /**
      * Set the identity property: Setting indicating whether the service has a managed identity associated with it.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the IotConnectorInner object itself.
      */
@@ -74,21 +96,57 @@ public final class IotConnectorInner extends TaggedResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotConnectorInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotConnectorInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotConnectorInner withEtag(String etag) {
         super.withEtag(etag);
@@ -97,7 +155,7 @@ public final class IotConnectorInner extends TaggedResource {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -106,7 +164,7 @@ public final class IotConnectorInner extends TaggedResource {
 
     /**
      * Get the ingestionEndpointConfiguration property: Source configuration.
-     *
+     * 
      * @return the ingestionEndpointConfiguration value.
      */
     public IotEventHubIngestionEndpointConfiguration ingestionEndpointConfiguration() {
@@ -115,12 +173,12 @@ public final class IotConnectorInner extends TaggedResource {
 
     /**
      * Set the ingestionEndpointConfiguration property: Source configuration.
-     *
+     * 
      * @param ingestionEndpointConfiguration the ingestionEndpointConfiguration value to set.
      * @return the IotConnectorInner object itself.
      */
-    public IotConnectorInner withIngestionEndpointConfiguration(
-        IotEventHubIngestionEndpointConfiguration ingestionEndpointConfiguration) {
+    public IotConnectorInner
+        withIngestionEndpointConfiguration(IotEventHubIngestionEndpointConfiguration ingestionEndpointConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new IotConnectorProperties();
         }
@@ -130,7 +188,7 @@ public final class IotConnectorInner extends TaggedResource {
 
     /**
      * Get the deviceMapping property: Device Mappings.
-     *
+     * 
      * @return the deviceMapping value.
      */
     public IotMappingProperties deviceMapping() {
@@ -139,7 +197,7 @@ public final class IotConnectorInner extends TaggedResource {
 
     /**
      * Set the deviceMapping property: Device Mappings.
-     *
+     * 
      * @param deviceMapping the deviceMapping value to set.
      * @return the IotConnectorInner object itself.
      */
@@ -153,17 +211,74 @@ public final class IotConnectorInner extends TaggedResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IotConnectorInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotConnectorInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IotConnectorInner.
+     */
+    public static IotConnectorInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotConnectorInner deserializedIotConnectorInner = new IotConnectorInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIotConnectorInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIotConnectorInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIotConnectorInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedIotConnectorInner.withEtag(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedIotConnectorInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIotConnectorInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIotConnectorInner.innerProperties = IotConnectorProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedIotConnectorInner.systemData = SystemData.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedIotConnectorInner.identity = ServiceManagedIdentityIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIotConnectorInner;
+        });
     }
 }

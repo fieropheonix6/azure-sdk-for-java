@@ -8,26 +8,23 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkServiceConnectionState;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkServiceConnectionStateTests {
-    @Test
-    public void testDeserialize() {
-        PrivateLinkServiceConnectionState model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"Rejected\",\"description\":\"uujitcjc\",\"actionsRequired\":\"zevndhkrwpdappds\"}")
-                .toObject(PrivateLinkServiceConnectionState.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateLinkServiceConnectionState model = BinaryData
+            .fromString(
+                "{\"status\":\"Rejected\",\"description\":\"uujitcjc\",\"actionsRequired\":\"zevndhkrwpdappds\"}")
+            .toObject(PrivateLinkServiceConnectionState.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED, model.status());
         Assertions.assertEquals("uujitcjc", model.description());
         Assertions.assertEquals("zevndhkrwpdappds", model.actionsRequired());
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateLinkServiceConnectionState model =
-            new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateLinkServiceConnectionState model
+            = new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
                 .withDescription("uujitcjc")
                 .withActionsRequired("zevndhkrwpdappds");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);

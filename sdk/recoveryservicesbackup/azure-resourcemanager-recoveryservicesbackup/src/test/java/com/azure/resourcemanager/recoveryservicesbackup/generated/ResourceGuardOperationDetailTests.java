@@ -7,27 +7,24 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardOperationDetail;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceGuardOperationDetailTests {
-    @Test
-    public void testDeserialize() {
-        ResourceGuardOperationDetail model =
-            BinaryData
-                .fromString("{\"vaultCriticalOperation\":\"frpdsofbshrns\",\"defaultResourceRequest\":\"uswdv\"}")
-                .toObject(ResourceGuardOperationDetail.class);
-        Assertions.assertEquals("frpdsofbshrns", model.vaultCriticalOperation());
-        Assertions.assertEquals("uswdv", model.defaultResourceRequest());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ResourceGuardOperationDetail model = BinaryData
+            .fromString("{\"vaultCriticalOperation\":\"aysjkixqtnqttez\",\"defaultResourceRequest\":\"fffiak\"}")
+            .toObject(ResourceGuardOperationDetail.class);
+        Assertions.assertEquals("aysjkixqtnqttez", model.vaultCriticalOperation());
+        Assertions.assertEquals("fffiak", model.defaultResourceRequest());
     }
 
-    @Test
-    public void testSerialize() {
-        ResourceGuardOperationDetail model =
-            new ResourceGuardOperationDetail()
-                .withVaultCriticalOperation("frpdsofbshrns")
-                .withDefaultResourceRequest("uswdv");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ResourceGuardOperationDetail model
+            = new ResourceGuardOperationDetail().withVaultCriticalOperation("aysjkixqtnqttez")
+                .withDefaultResourceRequest("fffiak");
         model = BinaryData.fromObject(model).toObject(ResourceGuardOperationDetail.class);
-        Assertions.assertEquals("frpdsofbshrns", model.vaultCriticalOperation());
-        Assertions.assertEquals("uswdv", model.defaultResourceRequest());
+        Assertions.assertEquals("aysjkixqtnqttez", model.vaultCriticalOperation());
+        Assertions.assertEquals("fffiak", model.defaultResourceRequest());
     }
 }

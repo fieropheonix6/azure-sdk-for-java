@@ -8,36 +8,53 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Creators. */
+/**
+ * Resource collection API of Creators.
+ */
 public interface Creators {
     /**
      * Get all Creator instances for an Azure Maps Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Creator instances for an Azure Maps Account.
+     * @return all Creator instances for an Azure Maps Account as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Creator> listByAccount(String resourceGroupName, String accountName);
 
     /**
      * Get all Creator instances for an Azure Maps Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Creator instances for an Azure Maps Account.
+     * @return all Creator instances for an Azure Maps Account as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Creator> listByAccount(String resourceGroupName, String accountName, Context context);
 
     /**
      * Delete a Maps Creator resource.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
+     * @param creatorName The name of the Maps Creator instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String creatorName,
+        Context context);
+
+    /**
+     * Delete a Maps Creator resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -48,8 +65,8 @@ public interface Creators {
     void delete(String resourceGroupName, String accountName, String creatorName);
 
     /**
-     * Delete a Maps Creator resource.
-     *
+     * Get a Maps Creator resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -57,14 +74,14 @@ public interface Creators {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a Maps Creator resource along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String creatorName, Context context);
+    Response<Creator> getWithResponse(String resourceGroupName, String accountName, String creatorName,
+        Context context);
 
     /**
      * Get a Maps Creator resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the Maps Account.
      * @param creatorName The name of the Maps Creator instance.
@@ -77,45 +94,30 @@ public interface Creators {
 
     /**
      * Get a Maps Creator resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the Maps Account.
-     * @param creatorName The name of the Maps Creator instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps Creator resource.
-     */
-    Response<Creator> getWithResponse(
-        String resourceGroupName, String accountName, String creatorName, Context context);
-
-    /**
-     * Get a Maps Creator resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps Creator resource.
+     * @return a Maps Creator resource along with {@link Response}.
      */
     Creator getById(String id);
 
     /**
      * Get a Maps Creator resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Maps Creator resource.
+     * @return a Maps Creator resource along with {@link Response}.
      */
     Response<Creator> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete a Maps Creator resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,19 +127,19 @@ public interface Creators {
 
     /**
      * Delete a Maps Creator resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new Creator resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Creator definition.
      */

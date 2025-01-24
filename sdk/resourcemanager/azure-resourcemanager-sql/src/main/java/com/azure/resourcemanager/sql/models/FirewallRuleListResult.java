@@ -4,23 +4,39 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.fluent.models.FirewallRuleInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents the response to a List Firewall Rules request. */
-@Fluent
-public final class FirewallRuleListResult {
+/**
+ * The response to a list firewall rules request.
+ */
+@Immutable
+public final class FirewallRuleListResult implements JsonSerializable<FirewallRuleListResult> {
     /*
-     * The list of server firewall rules.
+     * Array of results.
      */
-    @JsonProperty(value = "value")
     private List<FirewallRuleInner> value;
 
+    /*
+     * Link to retrieve next page of results.
+     */
+    private String nextLink;
+
     /**
-     * Get the value property: The list of server firewall rules.
-     *
+     * Creates an instance of FirewallRuleListResult class.
+     */
+    public FirewallRuleListResult() {
+    }
+
+    /**
+     * Get the value property: Array of results.
+     * 
      * @return the value value.
      */
     public List<FirewallRuleInner> value() {
@@ -28,24 +44,60 @@ public final class FirewallRuleListResult {
     }
 
     /**
-     * Set the value property: The list of server firewall rules.
-     *
-     * @param value the value value to set.
-     * @return the FirewallRuleListResult object itself.
+     * Get the nextLink property: Link to retrieve next page of results.
+     * 
+     * @return the nextLink value.
      */
-    public FirewallRuleListResult withValue(List<FirewallRuleInner> value) {
-        this.value = value;
-        return this;
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallRuleListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallRuleListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallRuleListResult.
+     */
+    public static FirewallRuleListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallRuleListResult deserializedFirewallRuleListResult = new FirewallRuleListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<FirewallRuleInner> value = reader.readArray(reader1 -> FirewallRuleInner.fromJson(reader1));
+                    deserializedFirewallRuleListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedFirewallRuleListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallRuleListResult;
+        });
     }
 }

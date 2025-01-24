@@ -5,36 +5,40 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.ExpressRoutePortInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * ExpressRoute Port List Result
- *
- * <p>Response for ListExpressRoutePorts API service call.
+ * 
+ * Response for ListExpressRoutePorts API service call.
  */
 @Fluent
-public final class ExpressRoutePortListResult {
+public final class ExpressRoutePortListResult implements JsonSerializable<ExpressRoutePortListResult> {
     /*
      * A list of ExpressRoutePort resources.
      */
-    @JsonProperty(value = "value")
     private List<ExpressRoutePortInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ExpressRoutePortListResult class. */
+    /**
+     * Creates an instance of ExpressRoutePortListResult class.
+     */
     public ExpressRoutePortListResult() {
     }
 
     /**
      * Get the value property: A list of ExpressRoutePort resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ExpressRoutePortInner> value() {
@@ -43,7 +47,7 @@ public final class ExpressRoutePortListResult {
 
     /**
      * Set the value property: A list of ExpressRoutePort resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ExpressRoutePortListResult object itself.
      */
@@ -54,7 +58,7 @@ public final class ExpressRoutePortListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +67,7 @@ public final class ExpressRoutePortListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ExpressRoutePortListResult object itself.
      */
@@ -74,12 +78,53 @@ public final class ExpressRoutePortListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRoutePortListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRoutePortListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRoutePortListResult.
+     */
+    public static ExpressRoutePortListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRoutePortListResult deserializedExpressRoutePortListResult = new ExpressRoutePortListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ExpressRoutePortInner> value
+                        = reader.readArray(reader1 -> ExpressRoutePortInner.fromJson(reader1));
+                    deserializedExpressRoutePortListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedExpressRoutePortListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRoutePortListResult;
+        });
     }
 }

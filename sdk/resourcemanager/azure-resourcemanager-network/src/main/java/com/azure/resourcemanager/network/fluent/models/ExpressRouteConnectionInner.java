@@ -7,33 +7,38 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringId;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** ExpressRouteConnection resource. */
+/**
+ * ExpressRouteConnection resource.
+ */
 @Fluent
 public final class ExpressRouteConnectionInner extends SubResource {
     /*
      * Properties of the express route connection.
      */
-    @JsonProperty(value = "properties")
     private ExpressRouteConnectionProperties innerProperties;
 
     /*
      * The name of the resource.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
-    /** Creates an instance of ExpressRouteConnectionInner class. */
+    /**
+     * Creates an instance of ExpressRouteConnectionInner class.
+     */
     public ExpressRouteConnectionInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the express route connection.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ExpressRouteConnectionProperties innerProperties() {
@@ -42,7 +47,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
 
     /**
      * Get the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -51,7 +56,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
 
     /**
      * Set the name property: The name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the ExpressRouteConnectionInner object itself.
      */
@@ -60,7 +65,9 @@ public final class ExpressRouteConnectionInner extends SubResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressRouteConnectionInner withId(String id) {
         super.withId(id);
@@ -69,7 +76,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the express route connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -78,7 +85,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
 
     /**
      * Get the expressRouteCircuitPeering property: The ExpressRoute circuit peering.
-     *
+     * 
      * @return the expressRouteCircuitPeering value.
      */
     public ExpressRouteCircuitPeeringId expressRouteCircuitPeering() {
@@ -87,12 +94,12 @@ public final class ExpressRouteConnectionInner extends SubResource {
 
     /**
      * Set the expressRouteCircuitPeering property: The ExpressRoute circuit peering.
-     *
+     * 
      * @param expressRouteCircuitPeering the expressRouteCircuitPeering value to set.
      * @return the ExpressRouteConnectionInner object itself.
      */
-    public ExpressRouteConnectionInner withExpressRouteCircuitPeering(
-        ExpressRouteCircuitPeeringId expressRouteCircuitPeering) {
+    public ExpressRouteConnectionInner
+        withExpressRouteCircuitPeering(ExpressRouteCircuitPeeringId expressRouteCircuitPeering) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExpressRouteConnectionProperties();
         }
@@ -102,7 +109,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
 
     /**
      * Get the authorizationKey property: Authorization key to establish the connection.
-     *
+     * 
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -111,7 +118,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
 
     /**
      * Set the authorizationKey property: Authorization key to establish the connection.
-     *
+     * 
      * @param authorizationKey the authorizationKey value to set.
      * @return the ExpressRouteConnectionInner object itself.
      */
@@ -125,7 +132,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
 
     /**
      * Get the routingWeight property: The routing weight associated to the connection.
-     *
+     * 
      * @return the routingWeight value.
      */
     public Integer routingWeight() {
@@ -134,7 +141,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
 
     /**
      * Set the routingWeight property: The routing weight associated to the connection.
-     *
+     * 
      * @param routingWeight the routingWeight value to set.
      * @return the ExpressRouteConnectionInner object itself.
      */
@@ -148,7 +155,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
 
     /**
      * Get the enableInternetSecurity property: Enable internet security.
-     *
+     * 
      * @return the enableInternetSecurity value.
      */
     public Boolean enableInternetSecurity() {
@@ -157,7 +164,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
 
     /**
      * Set the enableInternetSecurity property: Enable internet security.
-     *
+     * 
      * @param enableInternetSecurity the enableInternetSecurity value to set.
      * @return the ExpressRouteConnectionInner object itself.
      */
@@ -171,7 +178,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
 
     /**
      * Get the expressRouteGatewayBypass property: Enable FastPath to vWan Firewall hub.
-     *
+     * 
      * @return the expressRouteGatewayBypass value.
      */
     public Boolean expressRouteGatewayBypass() {
@@ -180,7 +187,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
 
     /**
      * Set the expressRouteGatewayBypass property: Enable FastPath to vWan Firewall hub.
-     *
+     * 
      * @param expressRouteGatewayBypass the expressRouteGatewayBypass value to set.
      * @return the ExpressRouteConnectionInner object itself.
      */
@@ -195,7 +202,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
     /**
      * Get the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
      * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
-     *
+     * 
      * @return the enablePrivateLinkFastPath value.
      */
     public Boolean enablePrivateLinkFastPath() {
@@ -205,7 +212,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
     /**
      * Set the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
      * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
-     *
+     * 
      * @param enablePrivateLinkFastPath the enablePrivateLinkFastPath value to set.
      * @return the ExpressRouteConnectionInner object itself.
      */
@@ -220,7 +227,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
     /**
      * Get the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
      * tables on this connection.
-     *
+     * 
      * @return the routingConfiguration value.
      */
     public RoutingConfiguration routingConfiguration() {
@@ -230,7 +237,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
     /**
      * Set the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
      * tables on this connection.
-     *
+     * 
      * @param routingConfiguration the routingConfiguration value to set.
      * @return the ExpressRouteConnectionInner object itself.
      */
@@ -244,7 +251,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -252,12 +259,55 @@ public final class ExpressRouteConnectionInner extends SubResource {
             innerProperties().validate();
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ExpressRouteConnectionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model ExpressRouteConnectionInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteConnectionInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteConnectionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteConnectionInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExpressRouteConnectionInner.
+     */
+    public static ExpressRouteConnectionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteConnectionInner deserializedExpressRouteConnectionInner = new ExpressRouteConnectionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedExpressRouteConnectionInner.withId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedExpressRouteConnectionInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedExpressRouteConnectionInner.innerProperties
+                        = ExpressRouteConnectionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteConnectionInner;
+        });
+    }
 }

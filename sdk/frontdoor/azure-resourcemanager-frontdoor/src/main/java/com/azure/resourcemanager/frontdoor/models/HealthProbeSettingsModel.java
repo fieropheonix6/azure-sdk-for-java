@@ -5,72 +5,51 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.frontdoor.fluent.models.HealthProbeSettingsProperties;
+import java.io.IOException;
 
-/** Load balancing settings for a backend pool. */
-@JsonFlatten
+/**
+ * Load balancing settings for a backend pool.
+ */
 @Fluent
-public class HealthProbeSettingsModel extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HealthProbeSettingsModel.class);
+public final class HealthProbeSettingsModel extends SubResource {
+    /*
+     * Properties of the health probe settings
+     */
+    private HealthProbeSettingsProperties innerProperties;
 
     /*
      * Resource name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The path to use for the health probe. Default is /
+    /**
+     * Creates an instance of HealthProbeSettingsModel class.
      */
-    @JsonProperty(value = "properties.path")
-    private String path;
+    public HealthProbeSettingsModel() {
+    }
 
-    /*
-     * Protocol scheme to use for this probe
+    /**
+     * Get the innerProperties property: Properties of the health probe settings.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.protocol")
-    private FrontDoorProtocol protocol;
-
-    /*
-     * The number of seconds between health probes.
-     */
-    @JsonProperty(value = "properties.intervalInSeconds")
-    private Integer intervalInSeconds;
-
-    /*
-     * Configures which HTTP method to use to probe the backends defined under
-     * backendPools.
-     */
-    @JsonProperty(value = "properties.healthProbeMethod")
-    private FrontDoorHealthProbeMethod healthProbeMethod;
-
-    /*
-     * Whether to enable health probes to be made against backends defined
-     * under backendPools. Health probes can only be disabled if there is a
-     * single enabled backend in single enabled backend pool.
-     */
-    @JsonProperty(value = "properties.enabledState")
-    private HealthProbeEnabled enabledState;
-
-    /*
-     * Resource status.
-     */
-    @JsonProperty(value = "properties.resourceState", access = JsonProperty.Access.WRITE_ONLY)
-    private FrontDoorResourceState resourceState;
+    private HealthProbeSettingsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -79,7 +58,7 @@ public class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Set the name property: Resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the HealthProbeSettingsModel object itself.
      */
@@ -90,7 +69,7 @@ public class HealthProbeSettingsModel extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -98,121 +77,8 @@ public class HealthProbeSettingsModel extends SubResource {
     }
 
     /**
-     * Get the path property: The path to use for the health probe. Default is /.
-     *
-     * @return the path value.
+     * {@inheritDoc}
      */
-    public String path() {
-        return this.path;
-    }
-
-    /**
-     * Set the path property: The path to use for the health probe. Default is /.
-     *
-     * @param path the path value to set.
-     * @return the HealthProbeSettingsModel object itself.
-     */
-    public HealthProbeSettingsModel withPath(String path) {
-        this.path = path;
-        return this;
-    }
-
-    /**
-     * Get the protocol property: Protocol scheme to use for this probe.
-     *
-     * @return the protocol value.
-     */
-    public FrontDoorProtocol protocol() {
-        return this.protocol;
-    }
-
-    /**
-     * Set the protocol property: Protocol scheme to use for this probe.
-     *
-     * @param protocol the protocol value to set.
-     * @return the HealthProbeSettingsModel object itself.
-     */
-    public HealthProbeSettingsModel withProtocol(FrontDoorProtocol protocol) {
-        this.protocol = protocol;
-        return this;
-    }
-
-    /**
-     * Get the intervalInSeconds property: The number of seconds between health probes.
-     *
-     * @return the intervalInSeconds value.
-     */
-    public Integer intervalInSeconds() {
-        return this.intervalInSeconds;
-    }
-
-    /**
-     * Set the intervalInSeconds property: The number of seconds between health probes.
-     *
-     * @param intervalInSeconds the intervalInSeconds value to set.
-     * @return the HealthProbeSettingsModel object itself.
-     */
-    public HealthProbeSettingsModel withIntervalInSeconds(Integer intervalInSeconds) {
-        this.intervalInSeconds = intervalInSeconds;
-        return this;
-    }
-
-    /**
-     * Get the healthProbeMethod property: Configures which HTTP method to use to probe the backends defined under
-     * backendPools.
-     *
-     * @return the healthProbeMethod value.
-     */
-    public FrontDoorHealthProbeMethod healthProbeMethod() {
-        return this.healthProbeMethod;
-    }
-
-    /**
-     * Set the healthProbeMethod property: Configures which HTTP method to use to probe the backends defined under
-     * backendPools.
-     *
-     * @param healthProbeMethod the healthProbeMethod value to set.
-     * @return the HealthProbeSettingsModel object itself.
-     */
-    public HealthProbeSettingsModel withHealthProbeMethod(FrontDoorHealthProbeMethod healthProbeMethod) {
-        this.healthProbeMethod = healthProbeMethod;
-        return this;
-    }
-
-    /**
-     * Get the enabledState property: Whether to enable health probes to be made against backends defined under
-     * backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend
-     * pool.
-     *
-     * @return the enabledState value.
-     */
-    public HealthProbeEnabled enabledState() {
-        return this.enabledState;
-    }
-
-    /**
-     * Set the enabledState property: Whether to enable health probes to be made against backends defined under
-     * backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend
-     * pool.
-     *
-     * @param enabledState the enabledState value to set.
-     * @return the HealthProbeSettingsModel object itself.
-     */
-    public HealthProbeSettingsModel withEnabledState(HealthProbeEnabled enabledState) {
-        this.enabledState = enabledState;
-        return this;
-    }
-
-    /**
-     * Get the resourceState property: Resource status.
-     *
-     * @return the resourceState value.
-     */
-    public FrontDoorResourceState resourceState() {
-        return this.resourceState;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public HealthProbeSettingsModel withId(String id) {
         super.withId(id);
@@ -220,10 +86,188 @@ public class HealthProbeSettingsModel extends SubResource {
     }
 
     /**
+     * Get the resourceState property: Resource status.
+     * 
+     * @return the resourceState value.
+     */
+    public FrontDoorResourceState resourceState() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceState();
+    }
+
+    /**
+     * Get the path property: The path to use for the health probe. Default is /.
+     * 
+     * @return the path value.
+     */
+    public String path() {
+        return this.innerProperties() == null ? null : this.innerProperties().path();
+    }
+
+    /**
+     * Set the path property: The path to use for the health probe. Default is /.
+     * 
+     * @param path the path value to set.
+     * @return the HealthProbeSettingsModel object itself.
+     */
+    public HealthProbeSettingsModel withPath(String path) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HealthProbeSettingsProperties();
+        }
+        this.innerProperties().withPath(path);
+        return this;
+    }
+
+    /**
+     * Get the protocol property: Protocol scheme to use for this probe.
+     * 
+     * @return the protocol value.
+     */
+    public FrontDoorProtocol protocol() {
+        return this.innerProperties() == null ? null : this.innerProperties().protocol();
+    }
+
+    /**
+     * Set the protocol property: Protocol scheme to use for this probe.
+     * 
+     * @param protocol the protocol value to set.
+     * @return the HealthProbeSettingsModel object itself.
+     */
+    public HealthProbeSettingsModel withProtocol(FrontDoorProtocol protocol) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HealthProbeSettingsProperties();
+        }
+        this.innerProperties().withProtocol(protocol);
+        return this;
+    }
+
+    /**
+     * Get the intervalInSeconds property: The number of seconds between health probes.
+     * 
+     * @return the intervalInSeconds value.
+     */
+    public Integer intervalInSeconds() {
+        return this.innerProperties() == null ? null : this.innerProperties().intervalInSeconds();
+    }
+
+    /**
+     * Set the intervalInSeconds property: The number of seconds between health probes.
+     * 
+     * @param intervalInSeconds the intervalInSeconds value to set.
+     * @return the HealthProbeSettingsModel object itself.
+     */
+    public HealthProbeSettingsModel withIntervalInSeconds(Integer intervalInSeconds) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HealthProbeSettingsProperties();
+        }
+        this.innerProperties().withIntervalInSeconds(intervalInSeconds);
+        return this;
+    }
+
+    /**
+     * Get the healthProbeMethod property: Configures which HTTP method to use to probe the backends defined under
+     * backendPools.
+     * 
+     * @return the healthProbeMethod value.
+     */
+    public FrontDoorHealthProbeMethod healthProbeMethod() {
+        return this.innerProperties() == null ? null : this.innerProperties().healthProbeMethod();
+    }
+
+    /**
+     * Set the healthProbeMethod property: Configures which HTTP method to use to probe the backends defined under
+     * backendPools.
+     * 
+     * @param healthProbeMethod the healthProbeMethod value to set.
+     * @return the HealthProbeSettingsModel object itself.
+     */
+    public HealthProbeSettingsModel withHealthProbeMethod(FrontDoorHealthProbeMethod healthProbeMethod) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HealthProbeSettingsProperties();
+        }
+        this.innerProperties().withHealthProbeMethod(healthProbeMethod);
+        return this;
+    }
+
+    /**
+     * Get the enabledState property: Whether to enable health probes to be made against backends defined under
+     * backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend
+     * pool.
+     * 
+     * @return the enabledState value.
+     */
+    public HealthProbeEnabled enabledState() {
+        return this.innerProperties() == null ? null : this.innerProperties().enabledState();
+    }
+
+    /**
+     * Set the enabledState property: Whether to enable health probes to be made against backends defined under
+     * backendPools. Health probes can only be disabled if there is a single enabled backend in single enabled backend
+     * pool.
+     * 
+     * @param enabledState the enabledState value to set.
+     * @return the HealthProbeSettingsModel object itself.
+     */
+    public HealthProbeSettingsModel withEnabledState(HealthProbeEnabled enabledState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HealthProbeSettingsProperties();
+        }
+        this.innerProperties().withEnabledState(enabledState);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HealthProbeSettingsModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HealthProbeSettingsModel if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HealthProbeSettingsModel.
+     */
+    public static HealthProbeSettingsModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HealthProbeSettingsModel deserializedHealthProbeSettingsModel = new HealthProbeSettingsModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedHealthProbeSettingsModel.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedHealthProbeSettingsModel.innerProperties
+                        = HealthProbeSettingsProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedHealthProbeSettingsModel.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedHealthProbeSettingsModel.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHealthProbeSettingsModel;
+        });
     }
 }

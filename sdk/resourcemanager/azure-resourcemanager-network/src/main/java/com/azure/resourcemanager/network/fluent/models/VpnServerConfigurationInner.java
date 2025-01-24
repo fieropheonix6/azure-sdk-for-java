@@ -6,6 +6,9 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AadAuthenticationParameters;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.RadiusServer;
@@ -15,38 +18,49 @@ import com.azure.resourcemanager.network.models.VpnServerConfigRadiusClientRootC
 import com.azure.resourcemanager.network.models.VpnServerConfigRadiusServerRootCertificate;
 import com.azure.resourcemanager.network.models.VpnServerConfigVpnClientRevokedCertificate;
 import com.azure.resourcemanager.network.models.VpnServerConfigVpnClientRootCertificate;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** VpnServerConfiguration Resource. */
+/**
+ * VpnServerConfiguration Resource.
+ */
 @Fluent
 public final class VpnServerConfigurationInner extends Resource {
     /*
      * Properties of the P2SVpnServer configuration.
      */
-    @JsonProperty(value = "properties")
     private VpnServerConfigurationProperties innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of VpnServerConfigurationInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /**
+     * Creates an instance of VpnServerConfigurationInner class.
+     */
     public VpnServerConfigurationInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the P2SVpnServer configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VpnServerConfigurationProperties innerProperties() {
@@ -55,7 +69,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -64,7 +78,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -73,7 +87,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the VpnServerConfigurationInner object itself.
      */
@@ -82,14 +96,38 @@ public final class VpnServerConfigurationInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VpnServerConfigurationInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VpnServerConfigurationInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -98,7 +136,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Get the name property: The name of the VpnServerConfiguration that is unique within a resource group.
-     *
+     * 
      * @return the name value.
      */
     public String namePropertiesName() {
@@ -107,7 +145,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Set the name property: The name of the VpnServerConfiguration that is unique within a resource group.
-     *
+     * 
      * @param name the name value to set.
      * @return the VpnServerConfigurationInner object itself.
      */
@@ -121,7 +159,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Get the vpnProtocols property: VPN protocols for the VpnServerConfiguration.
-     *
+     * 
      * @return the vpnProtocols value.
      */
     public List<VpnGatewayTunnelingProtocol> vpnProtocols() {
@@ -130,7 +168,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Set the vpnProtocols property: VPN protocols for the VpnServerConfiguration.
-     *
+     * 
      * @param vpnProtocols the vpnProtocols value to set.
      * @return the VpnServerConfigurationInner object itself.
      */
@@ -144,7 +182,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Get the vpnAuthenticationTypes property: VPN authentication types for the VpnServerConfiguration.
-     *
+     * 
      * @return the vpnAuthenticationTypes value.
      */
     public List<VpnAuthenticationType> vpnAuthenticationTypes() {
@@ -153,7 +191,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Set the vpnAuthenticationTypes property: VPN authentication types for the VpnServerConfiguration.
-     *
+     * 
      * @param vpnAuthenticationTypes the vpnAuthenticationTypes value to set.
      * @return the VpnServerConfigurationInner object itself.
      */
@@ -167,7 +205,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Get the vpnClientRootCertificates property: VPN client root certificate of VpnServerConfiguration.
-     *
+     * 
      * @return the vpnClientRootCertificates value.
      */
     public List<VpnServerConfigVpnClientRootCertificate> vpnClientRootCertificates() {
@@ -176,12 +214,12 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Set the vpnClientRootCertificates property: VPN client root certificate of VpnServerConfiguration.
-     *
+     * 
      * @param vpnClientRootCertificates the vpnClientRootCertificates value to set.
      * @return the VpnServerConfigurationInner object itself.
      */
-    public VpnServerConfigurationInner withVpnClientRootCertificates(
-        List<VpnServerConfigVpnClientRootCertificate> vpnClientRootCertificates) {
+    public VpnServerConfigurationInner
+        withVpnClientRootCertificates(List<VpnServerConfigVpnClientRootCertificate> vpnClientRootCertificates) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VpnServerConfigurationProperties();
         }
@@ -191,7 +229,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Get the vpnClientRevokedCertificates property: VPN client revoked certificate of VpnServerConfiguration.
-     *
+     * 
      * @return the vpnClientRevokedCertificates value.
      */
     public List<VpnServerConfigVpnClientRevokedCertificate> vpnClientRevokedCertificates() {
@@ -200,7 +238,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Set the vpnClientRevokedCertificates property: VPN client revoked certificate of VpnServerConfiguration.
-     *
+     * 
      * @param vpnClientRevokedCertificates the vpnClientRevokedCertificates value to set.
      * @return the VpnServerConfigurationInner object itself.
      */
@@ -215,7 +253,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Get the radiusServerRootCertificates property: Radius Server root certificate of VpnServerConfiguration.
-     *
+     * 
      * @return the radiusServerRootCertificates value.
      */
     public List<VpnServerConfigRadiusServerRootCertificate> radiusServerRootCertificates() {
@@ -224,7 +262,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Set the radiusServerRootCertificates property: Radius Server root certificate of VpnServerConfiguration.
-     *
+     * 
      * @param radiusServerRootCertificates the radiusServerRootCertificates value to set.
      * @return the VpnServerConfigurationInner object itself.
      */
@@ -239,7 +277,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Get the radiusClientRootCertificates property: Radius client root certificate of VpnServerConfiguration.
-     *
+     * 
      * @return the radiusClientRootCertificates value.
      */
     public List<VpnServerConfigRadiusClientRootCertificate> radiusClientRootCertificates() {
@@ -248,7 +286,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Set the radiusClientRootCertificates property: Radius client root certificate of VpnServerConfiguration.
-     *
+     * 
      * @param radiusClientRootCertificates the radiusClientRootCertificates value to set.
      * @return the VpnServerConfigurationInner object itself.
      */
@@ -263,7 +301,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Get the vpnClientIpsecPolicies property: VpnClientIpsecPolicies for VpnServerConfiguration.
-     *
+     * 
      * @return the vpnClientIpsecPolicies value.
      */
     public List<IpsecPolicy> vpnClientIpsecPolicies() {
@@ -272,7 +310,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Set the vpnClientIpsecPolicies property: VpnClientIpsecPolicies for VpnServerConfiguration.
-     *
+     * 
      * @param vpnClientIpsecPolicies the vpnClientIpsecPolicies value to set.
      * @return the VpnServerConfigurationInner object itself.
      */
@@ -287,7 +325,7 @@ public final class VpnServerConfigurationInner extends Resource {
     /**
      * Get the radiusServerAddress property: The radius server address property of the VpnServerConfiguration resource
      * for point to site client connection.
-     *
+     * 
      * @return the radiusServerAddress value.
      */
     public String radiusServerAddress() {
@@ -297,7 +335,7 @@ public final class VpnServerConfigurationInner extends Resource {
     /**
      * Set the radiusServerAddress property: The radius server address property of the VpnServerConfiguration resource
      * for point to site client connection.
-     *
+     * 
      * @param radiusServerAddress the radiusServerAddress value to set.
      * @return the VpnServerConfigurationInner object itself.
      */
@@ -312,7 +350,7 @@ public final class VpnServerConfigurationInner extends Resource {
     /**
      * Get the radiusServerSecret property: The radius secret property of the VpnServerConfiguration resource for point
      * to site client connection.
-     *
+     * 
      * @return the radiusServerSecret value.
      */
     public String radiusServerSecret() {
@@ -322,7 +360,7 @@ public final class VpnServerConfigurationInner extends Resource {
     /**
      * Set the radiusServerSecret property: The radius secret property of the VpnServerConfiguration resource for point
      * to site client connection.
-     *
+     * 
      * @param radiusServerSecret the radiusServerSecret value to set.
      * @return the VpnServerConfigurationInner object itself.
      */
@@ -336,7 +374,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Get the radiusServers property: Multiple Radius Server configuration for VpnServerConfiguration.
-     *
+     * 
      * @return the radiusServers value.
      */
     public List<RadiusServer> radiusServers() {
@@ -345,7 +383,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Set the radiusServers property: Multiple Radius Server configuration for VpnServerConfiguration.
-     *
+     * 
      * @param radiusServers the radiusServers value to set.
      * @return the VpnServerConfigurationInner object itself.
      */
@@ -359,7 +397,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Get the aadAuthenticationParameters property: The set of aad vpn authentication parameters.
-     *
+     * 
      * @return the aadAuthenticationParameters value.
      */
     public AadAuthenticationParameters aadAuthenticationParameters() {
@@ -368,12 +406,12 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Set the aadAuthenticationParameters property: The set of aad vpn authentication parameters.
-     *
+     * 
      * @param aadAuthenticationParameters the aadAuthenticationParameters value to set.
      * @return the VpnServerConfigurationInner object itself.
      */
-    public VpnServerConfigurationInner withAadAuthenticationParameters(
-        AadAuthenticationParameters aadAuthenticationParameters) {
+    public VpnServerConfigurationInner
+        withAadAuthenticationParameters(AadAuthenticationParameters aadAuthenticationParameters) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VpnServerConfigurationProperties();
         }
@@ -384,7 +422,7 @@ public final class VpnServerConfigurationInner extends Resource {
     /**
      * Get the provisioningState property: The provisioning state of the VpnServerConfiguration resource. Possible
      * values are: 'Updating', 'Deleting', and 'Failed'.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -393,7 +431,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Get the p2SVpnGateways property: List of references to P2SVpnGateways.
-     *
+     * 
      * @return the p2SVpnGateways value.
      */
     public List<P2SVpnGatewayInner> p2SVpnGateways() {
@@ -402,7 +440,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Get the configurationPolicyGroups property: List of all VpnServerConfigurationPolicyGroups.
-     *
+     * 
      * @return the configurationPolicyGroups value.
      */
     public List<VpnServerConfigurationPolicyGroupInner> configurationPolicyGroups() {
@@ -411,12 +449,12 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Set the configurationPolicyGroups property: List of all VpnServerConfigurationPolicyGroups.
-     *
+     * 
      * @param configurationPolicyGroups the configurationPolicyGroups value to set.
      * @return the VpnServerConfigurationInner object itself.
      */
-    public VpnServerConfigurationInner withConfigurationPolicyGroups(
-        List<VpnServerConfigurationPolicyGroupInner> configurationPolicyGroups) {
+    public VpnServerConfigurationInner
+        withConfigurationPolicyGroups(List<VpnServerConfigurationPolicyGroupInner> configurationPolicyGroups) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VpnServerConfigurationProperties();
         }
@@ -426,7 +464,7 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etagPropertiesEtag() {
@@ -435,12 +473,66 @@ public final class VpnServerConfigurationInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnServerConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnServerConfigurationInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VpnServerConfigurationInner.
+     */
+    public static VpnServerConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnServerConfigurationInner deserializedVpnServerConfigurationInner = new VpnServerConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVpnServerConfigurationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVpnServerConfigurationInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVpnServerConfigurationInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVpnServerConfigurationInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVpnServerConfigurationInner.innerProperties
+                        = VpnServerConfigurationProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVpnServerConfigurationInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedVpnServerConfigurationInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnServerConfigurationInner;
+        });
     }
 }

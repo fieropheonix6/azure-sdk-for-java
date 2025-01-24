@@ -5,37 +5,43 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Set of actions in the Rewrite Rule in Application Gateway. */
+/**
+ * Set of actions in the Rewrite Rule in Application Gateway.
+ */
 @Fluent
-public final class ApplicationGatewayRewriteRuleActionSet {
+public final class ApplicationGatewayRewriteRuleActionSet
+    implements JsonSerializable<ApplicationGatewayRewriteRuleActionSet> {
     /*
      * Request Header Actions in the Action Set.
      */
-    @JsonProperty(value = "requestHeaderConfigurations")
     private List<ApplicationGatewayHeaderConfiguration> requestHeaderConfigurations;
 
     /*
      * Response Header Actions in the Action Set.
      */
-    @JsonProperty(value = "responseHeaderConfigurations")
     private List<ApplicationGatewayHeaderConfiguration> responseHeaderConfigurations;
 
     /*
      * Url Configuration Action in the Action Set.
      */
-    @JsonProperty(value = "urlConfiguration")
     private ApplicationGatewayUrlConfiguration urlConfiguration;
 
-    /** Creates an instance of ApplicationGatewayRewriteRuleActionSet class. */
+    /**
+     * Creates an instance of ApplicationGatewayRewriteRuleActionSet class.
+     */
     public ApplicationGatewayRewriteRuleActionSet() {
     }
 
     /**
      * Get the requestHeaderConfigurations property: Request Header Actions in the Action Set.
-     *
+     * 
      * @return the requestHeaderConfigurations value.
      */
     public List<ApplicationGatewayHeaderConfiguration> requestHeaderConfigurations() {
@@ -44,19 +50,19 @@ public final class ApplicationGatewayRewriteRuleActionSet {
 
     /**
      * Set the requestHeaderConfigurations property: Request Header Actions in the Action Set.
-     *
+     * 
      * @param requestHeaderConfigurations the requestHeaderConfigurations value to set.
      * @return the ApplicationGatewayRewriteRuleActionSet object itself.
      */
-    public ApplicationGatewayRewriteRuleActionSet withRequestHeaderConfigurations(
-        List<ApplicationGatewayHeaderConfiguration> requestHeaderConfigurations) {
+    public ApplicationGatewayRewriteRuleActionSet
+        withRequestHeaderConfigurations(List<ApplicationGatewayHeaderConfiguration> requestHeaderConfigurations) {
         this.requestHeaderConfigurations = requestHeaderConfigurations;
         return this;
     }
 
     /**
      * Get the responseHeaderConfigurations property: Response Header Actions in the Action Set.
-     *
+     * 
      * @return the responseHeaderConfigurations value.
      */
     public List<ApplicationGatewayHeaderConfiguration> responseHeaderConfigurations() {
@@ -65,19 +71,19 @@ public final class ApplicationGatewayRewriteRuleActionSet {
 
     /**
      * Set the responseHeaderConfigurations property: Response Header Actions in the Action Set.
-     *
+     * 
      * @param responseHeaderConfigurations the responseHeaderConfigurations value to set.
      * @return the ApplicationGatewayRewriteRuleActionSet object itself.
      */
-    public ApplicationGatewayRewriteRuleActionSet withResponseHeaderConfigurations(
-        List<ApplicationGatewayHeaderConfiguration> responseHeaderConfigurations) {
+    public ApplicationGatewayRewriteRuleActionSet
+        withResponseHeaderConfigurations(List<ApplicationGatewayHeaderConfiguration> responseHeaderConfigurations) {
         this.responseHeaderConfigurations = responseHeaderConfigurations;
         return this;
     }
 
     /**
      * Get the urlConfiguration property: Url Configuration Action in the Action Set.
-     *
+     * 
      * @return the urlConfiguration value.
      */
     public ApplicationGatewayUrlConfiguration urlConfiguration() {
@@ -86,19 +92,19 @@ public final class ApplicationGatewayRewriteRuleActionSet {
 
     /**
      * Set the urlConfiguration property: Url Configuration Action in the Action Set.
-     *
+     * 
      * @param urlConfiguration the urlConfiguration value to set.
      * @return the ApplicationGatewayRewriteRuleActionSet object itself.
      */
-    public ApplicationGatewayRewriteRuleActionSet withUrlConfiguration(
-        ApplicationGatewayUrlConfiguration urlConfiguration) {
+    public ApplicationGatewayRewriteRuleActionSet
+        withUrlConfiguration(ApplicationGatewayUrlConfiguration urlConfiguration) {
         this.urlConfiguration = urlConfiguration;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -111,5 +117,57 @@ public final class ApplicationGatewayRewriteRuleActionSet {
         if (urlConfiguration() != null) {
             urlConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("requestHeaderConfigurations", this.requestHeaderConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("responseHeaderConfigurations", this.responseHeaderConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("urlConfiguration", this.urlConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayRewriteRuleActionSet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayRewriteRuleActionSet if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayRewriteRuleActionSet.
+     */
+    public static ApplicationGatewayRewriteRuleActionSet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayRewriteRuleActionSet deserializedApplicationGatewayRewriteRuleActionSet
+                = new ApplicationGatewayRewriteRuleActionSet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("requestHeaderConfigurations".equals(fieldName)) {
+                    List<ApplicationGatewayHeaderConfiguration> requestHeaderConfigurations
+                        = reader.readArray(reader1 -> ApplicationGatewayHeaderConfiguration.fromJson(reader1));
+                    deserializedApplicationGatewayRewriteRuleActionSet.requestHeaderConfigurations
+                        = requestHeaderConfigurations;
+                } else if ("responseHeaderConfigurations".equals(fieldName)) {
+                    List<ApplicationGatewayHeaderConfiguration> responseHeaderConfigurations
+                        = reader.readArray(reader1 -> ApplicationGatewayHeaderConfiguration.fromJson(reader1));
+                    deserializedApplicationGatewayRewriteRuleActionSet.responseHeaderConfigurations
+                        = responseHeaderConfigurations;
+                } else if ("urlConfiguration".equals(fieldName)) {
+                    deserializedApplicationGatewayRewriteRuleActionSet.urlConfiguration
+                        = ApplicationGatewayUrlConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayRewriteRuleActionSet;
+        });
     }
 }

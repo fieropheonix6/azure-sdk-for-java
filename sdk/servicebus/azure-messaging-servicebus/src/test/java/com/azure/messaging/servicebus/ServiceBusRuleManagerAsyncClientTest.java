@@ -20,9 +20,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcess
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import org.apache.qpid.proton.engine.SslDomain;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -46,6 +44,7 @@ public class ServiceBusRuleManagerAsyncClientTest {
     private static final String ENTITY_PATH = "topic-name/subscriptions/subscription-name";
     private static final MessagingEntityType ENTITY_TYPE = MessagingEntityType.SUBSCRIPTION;
     private static final String RULE_NAME = "foo-bar";
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(100);
 
     private ServiceBusRuleManagerAsyncClient ruleManager;
     private ServiceBusConnectionProcessor connectionProcessor;
@@ -74,16 +73,6 @@ public class ServiceBusRuleManagerAsyncClientTest {
     @Mock
     private RuleProperties ruleProperties2;
 
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(100));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
-
     @BeforeEach
     void setup(TestInfo testInfo) {
         LOGGER.info("[{}] Setting up.", testInfo.getDisplayName());
@@ -96,15 +85,14 @@ public class ServiceBusRuleManagerAsyncClientTest {
 
         ruleOptions = new CreateRuleOptions(ruleFilter);
 
-        when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE))
-            .thenReturn(Mono.just(managementNode));
+        when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
 
-        connectionProcessor =
-            Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
-                .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                    connectionOptions.getRetry()));
+        connectionProcessor = Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
+            .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
 
-        ruleManager = new ServiceBusRuleManagerAsyncClient(ENTITY_PATH, ENTITY_TYPE, connectionProcessor, onClientClose);
+        ruleManager = new ServiceBusRuleManagerAsyncClient(ENTITY_PATH, ENTITY_TYPE,
+            new ConnectionCacheWrapper(connectionProcessor), onClientClose);
 
     }
 
@@ -126,17 +114,20 @@ public class ServiceBusRuleManagerAsyncClientTest {
         when(managementNode.createRule(RULE_NAME, ruleOptions)).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(ruleManager.createRule(RULE_NAME, ruleOptions))
-            .verifyComplete();
+        StepVerifier.create(ruleManager.createRule(RULE_NAME, ruleOptions)).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     void getRules() {
         // Arrange
-        when(managementNode.listRules()).thenReturn(Flux.fromArray(new RuleProperties[]{ruleProperties1, ruleProperties2}));
+        when(managementNode.listRules())
+            .thenReturn(Flux.fromArray(new RuleProperties[] { ruleProperties1, ruleProperties2 }));
 
         // Act & Assert
-        StepVerifier.create(ruleManager.listRules()).expectNext(ruleProperties1, ruleProperties2).verifyComplete();
+        StepVerifier.create(ruleManager.listRules())
+            .expectNext(ruleProperties1, ruleProperties2)
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -145,6 +136,6 @@ public class ServiceBusRuleManagerAsyncClientTest {
         when(managementNode.deleteRule(RULE_NAME)).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(ruleManager.deleteRule(RULE_NAME)).verifyComplete();
+        StepVerifier.create(ruleManager.deleteRule(RULE_NAME)).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 }

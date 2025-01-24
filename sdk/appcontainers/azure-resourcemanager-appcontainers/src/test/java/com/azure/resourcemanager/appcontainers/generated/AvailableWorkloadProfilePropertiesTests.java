@@ -7,39 +7,37 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.Applicability;
 import com.azure.resourcemanager.appcontainers.models.AvailableWorkloadProfileProperties;
-import com.azure.resourcemanager.appcontainers.models.Category;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AvailableWorkloadProfilePropertiesTests {
-    @Test
-    public void testDeserialize() {
-        AvailableWorkloadProfileProperties model =
-            BinaryData
-                .fromString(
-                    "{\"billingMeterCategory\":\"PremiumSkuGeneralPurpose\",\"applicability\":\"LocationDefault\",\"cores\":1792442027,\"memoryGiB\":296401749,\"displayName\":\"gomfgbeglq\"}")
-                .toObject(AvailableWorkloadProfileProperties.class);
-        Assertions.assertEquals(Category.PREMIUM_SKU_GENERAL_PURPOSE, model.billingMeterCategory());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AvailableWorkloadProfileProperties model = BinaryData.fromString(
+            "{\"category\":\"imoryocfsfksym\",\"applicability\":\"LocationDefault\",\"cores\":666664165,\"memoryGiB\":30564685,\"gpus\":741108852,\"displayName\":\"hqyudxorrqnbpoc\"}")
+            .toObject(AvailableWorkloadProfileProperties.class);
+        Assertions.assertEquals("imoryocfsfksym", model.category());
         Assertions.assertEquals(Applicability.LOCATION_DEFAULT, model.applicability());
-        Assertions.assertEquals(1792442027, model.cores());
-        Assertions.assertEquals(296401749, model.memoryGiB());
-        Assertions.assertEquals("gomfgbeglq", model.displayName());
+        Assertions.assertEquals(666664165, model.cores());
+        Assertions.assertEquals(30564685, model.memoryGiB());
+        Assertions.assertEquals(741108852, model.gpus());
+        Assertions.assertEquals("hqyudxorrqnbpoc", model.displayName());
     }
 
-    @Test
-    public void testSerialize() {
-        AvailableWorkloadProfileProperties model =
-            new AvailableWorkloadProfileProperties()
-                .withBillingMeterCategory(Category.PREMIUM_SKU_GENERAL_PURPOSE)
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AvailableWorkloadProfileProperties model
+            = new AvailableWorkloadProfileProperties().withCategory("imoryocfsfksym")
                 .withApplicability(Applicability.LOCATION_DEFAULT)
-                .withCores(1792442027)
-                .withMemoryGiB(296401749)
-                .withDisplayName("gomfgbeglq");
+                .withCores(666664165)
+                .withMemoryGiB(30564685)
+                .withGpus(741108852)
+                .withDisplayName("hqyudxorrqnbpoc");
         model = BinaryData.fromObject(model).toObject(AvailableWorkloadProfileProperties.class);
-        Assertions.assertEquals(Category.PREMIUM_SKU_GENERAL_PURPOSE, model.billingMeterCategory());
+        Assertions.assertEquals("imoryocfsfksym", model.category());
         Assertions.assertEquals(Applicability.LOCATION_DEFAULT, model.applicability());
-        Assertions.assertEquals(1792442027, model.cores());
-        Assertions.assertEquals(296401749, model.memoryGiB());
-        Assertions.assertEquals("gomfgbeglq", model.displayName());
+        Assertions.assertEquals(666664165, model.cores());
+        Assertions.assertEquals(30564685, model.memoryGiB());
+        Assertions.assertEquals(741108852, model.gpus());
+        Assertions.assertEquals("hqyudxorrqnbpoc", model.displayName());
     }
 }

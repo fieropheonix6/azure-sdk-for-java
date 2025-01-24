@@ -7,20 +7,19 @@ package com.azure.resourcemanager.signalr.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.models.SignalRTlsSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SignalRTlsSettingsTests {
-    @Test
-    public void testDeserialize() {
-        SignalRTlsSettings model =
-            BinaryData.fromString("{\"clientCertEnabled\":true}").toObject(SignalRTlsSettings.class);
-        Assertions.assertEquals(true, model.clientCertEnabled());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SignalRTlsSettings model
+            = BinaryData.fromString("{\"clientCertEnabled\":false}").toObject(SignalRTlsSettings.class);
+        Assertions.assertEquals(false, model.clientCertEnabled());
     }
 
-    @Test
-    public void testSerialize() {
-        SignalRTlsSettings model = new SignalRTlsSettings().withClientCertEnabled(true);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SignalRTlsSettings model = new SignalRTlsSettings().withClientCertEnabled(false);
         model = BinaryData.fromObject(model).toObject(SignalRTlsSettings.class);
-        Assertions.assertEquals(true, model.clientCertEnabled());
+        Assertions.assertEquals(false, model.clientCertEnabled());
     }
 }

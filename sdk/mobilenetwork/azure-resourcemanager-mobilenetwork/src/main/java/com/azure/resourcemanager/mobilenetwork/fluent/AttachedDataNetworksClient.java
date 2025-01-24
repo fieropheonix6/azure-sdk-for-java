@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.AttachedDataNetworkInner;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 
-/** An instance of this class provides access to all the operations defined in AttachedDataNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AttachedDataNetworksClient.
+ */
 public interface AttachedDataNetworksClient {
     /**
      * Deletes the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -29,15 +31,12 @@ public interface AttachedDataNetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName, String attachedDataNetworkName);
 
     /**
      * Deletes the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -49,16 +48,12 @@ public interface AttachedDataNetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName, String attachedDataNetworkName, Context context);
 
     /**
      * Deletes the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -68,15 +63,12 @@ public interface AttachedDataNetworksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
+    void delete(String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName,
         String attachedDataNetworkName);
 
     /**
      * Deletes the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -87,35 +79,12 @@ public interface AttachedDataNetworksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        Context context);
+    void delete(String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName,
+        String attachedDataNetworkName, Context context);
 
     /**
      * Gets information about the specified attached data network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @param packetCoreDataPlaneName The name of the packet core data plane.
-     * @param attachedDataNetworkName The name of the attached data network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified attached data network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AttachedDataNetworkInner get(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName);
-
-    /**
-     * Gets information about the specified attached data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -127,16 +96,29 @@ public interface AttachedDataNetworksClient {
      * @return information about the specified attached data network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AttachedDataNetworkInner> getWithResponse(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        Context context);
+    Response<AttachedDataNetworkInner> getWithResponse(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName, String attachedDataNetworkName, Context context);
 
     /**
-     * Creates or updates an attached data network.
-     *
+     * Gets information about the specified attached data network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param packetCoreControlPlaneName The name of the packet core control plane.
+     * @param packetCoreDataPlaneName The name of the packet core data plane.
+     * @param attachedDataNetworkName The name of the attached data network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified attached data network.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AttachedDataNetworkInner get(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName, String attachedDataNetworkName);
+
+    /**
+     * Creates or updates an attached data network. Must be created in the same location as its parent packet core data
+     * plane.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -149,15 +131,13 @@ public interface AttachedDataNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AttachedDataNetworkInner>, AttachedDataNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        AttachedDataNetworkInner parameters);
+        String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName,
+        String attachedDataNetworkName, AttachedDataNetworkInner parameters);
 
     /**
-     * Creates or updates an attached data network.
-     *
+     * Creates or updates an attached data network. Must be created in the same location as its parent packet core data
+     * plane.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -171,16 +151,13 @@ public interface AttachedDataNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AttachedDataNetworkInner>, AttachedDataNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        AttachedDataNetworkInner parameters,
-        Context context);
+        String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName,
+        String attachedDataNetworkName, AttachedDataNetworkInner parameters, Context context);
 
     /**
-     * Creates or updates an attached data network.
-     *
+     * Creates or updates an attached data network. Must be created in the same location as its parent packet core data
+     * plane.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -192,16 +169,13 @@ public interface AttachedDataNetworksClient {
      * @return attached data network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AttachedDataNetworkInner createOrUpdate(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        AttachedDataNetworkInner parameters);
+    AttachedDataNetworkInner createOrUpdate(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName, String attachedDataNetworkName, AttachedDataNetworkInner parameters);
 
     /**
-     * Creates or updates an attached data network.
-     *
+     * Creates or updates an attached data network. Must be created in the same location as its parent packet core data
+     * plane.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -214,38 +188,13 @@ public interface AttachedDataNetworksClient {
      * @return attached data network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AttachedDataNetworkInner createOrUpdate(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        AttachedDataNetworkInner parameters,
+    AttachedDataNetworkInner createOrUpdate(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName, String attachedDataNetworkName, AttachedDataNetworkInner parameters,
         Context context);
 
     /**
      * Updates an attached data network tags.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @param packetCoreDataPlaneName The name of the packet core data plane.
-     * @param attachedDataNetworkName The name of the attached data network.
-     * @param parameters Parameters supplied to update attached data network tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attached data network resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AttachedDataNetworkInner updateTags(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        TagsObject parameters);
-
-    /**
-     * Updates an attached data network tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -258,33 +207,46 @@ public interface AttachedDataNetworksClient {
      * @return attached data network resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AttachedDataNetworkInner> updateTagsWithResponse(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        TagsObject parameters,
-        Context context);
+    Response<AttachedDataNetworkInner> updateTagsWithResponse(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName, String attachedDataNetworkName,
+        TagsObject parameters, Context context);
+
+    /**
+     * Updates an attached data network tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param packetCoreControlPlaneName The name of the packet core control plane.
+     * @param packetCoreDataPlaneName The name of the packet core data plane.
+     * @param attachedDataNetworkName The name of the attached data network.
+     * @param parameters Parameters supplied to update attached data network tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return attached data network resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AttachedDataNetworkInner updateTags(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName, String attachedDataNetworkName, TagsObject parameters);
 
     /**
      * Gets all the attached data networks associated with a packet core data plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the attached data networks associated with a packet core data plane as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the attached data networks associated with a packet core data plane as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AttachedDataNetworkInner> listByPacketCoreDataPlane(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName);
+    PagedIterable<AttachedDataNetworkInner> listByPacketCoreDataPlane(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName);
 
     /**
      * Gets all the attached data networks associated with a packet core data plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
@@ -292,10 +254,10 @@ public interface AttachedDataNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the attached data networks associated with a packet core data plane as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the attached data networks associated with a packet core data plane as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AttachedDataNetworkInner> listByPacketCoreDataPlane(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName, Context context);
+    PagedIterable<AttachedDataNetworkInner> listByPacketCoreDataPlane(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCoreDataPlaneName, Context context);
 }

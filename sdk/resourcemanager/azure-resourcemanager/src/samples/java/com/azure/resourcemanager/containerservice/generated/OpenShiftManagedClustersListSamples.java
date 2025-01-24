@@ -4,19 +4,25 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for OpenShiftManagedClusters List. */
+/**
+ * Samples for OpenShiftManagedClusters List.
+ */
 public final class OpenShiftManagedClustersListSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2019-04-30/examples/OpenShiftManagedClustersList.json
+     * x-ms-original-file:
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2019-04-30/examples/
+     * OpenShiftManagedClustersList.json
      */
     /**
      * Sample code: List Managed Clusters.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listManagedClusters(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.kubernetesClusters().manager().serviceClient().getOpenShiftManagedClusters().list(Context.NONE);
+        azure.kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getOpenShiftManagedClusters()
+            .list(com.azure.core.util.Context.NONE);
     }
 }

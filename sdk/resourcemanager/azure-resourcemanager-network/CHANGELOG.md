@@ -1,6 +1,6 @@
 # Release History
 
-## 2.22.0-beta.1 (Unreleased)
+## 2.48.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,243 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.47.0 (2025-01-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.46.0 (2024-12-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-05-01`.
+
+## 2.45.0 (2024-11-28)
+
+### Bugs Fixed
+
+- Fixed bug that "Microsoft.Network/bastionHosts" resource causes exception on `listNetworkInterfaceIPConfigurations` method in `Subnet` class.
+
+## 2.44.0 (2024-10-25)
+
+### Features Added
+
+- Supported `addressPrefixes` for `Subnet`.
+
+## 2.43.0 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-03-01`.
+
+## 2.42.0 (2024-08-23)
+
+### Other Changes
+
+- Replaced `Jackson` with `azure-json` for serialization/deserialization.
+
+## 2.41.0 (2024-07-25)
+
+### Breaking Changes
+
+- Removed superclass `SubResource` from model class `FirewallPacketCaptureParameters`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-01-01`.
+
+## 2.40.0 (2024-06-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-11-01`.
+
+## 2.39.0 (2024-05-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.38.0 (2024-04-16)
+
+### Features Added
+
+- Supported setting `DeleteOptions` for public IP addresses associated with `NetworkInterface`.
+
+## 2.37.0 (2024-03-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.36.0 (2024-02-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-09-01`.
+
+## 2.35.0 (2024-01-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.34.0 (2023-12-22)
+
+### Breaking Changes
+
+- Removed class `RoutingConfigurationNfv`. Please used class `RoutingConfiguration`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-06-01`.
+
+## 2.33.0 (2023-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.32.0 (2023-10-27)
+
+### Features Added
+
+- Supported `withHostNameFromBackendHttpSettings` for `ApplicationGatewayProbe` under `ApplicationGateway`.
+
+## 2.31.0 (2023-09-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-05-01`.
+
+## 2.30.0 (2023-08-25)
+
+### Features Added
+
+- Supported `backends` for `LoadBalancingRule`.
+- Supported `withSslPolicy` for `ApplicationGateway`.
+
+### Breaking Changes
+
+- Now `ApplicationGateway` will be created with `BASIC` sku and tier if not specified.
+- No new subscriptions for V1 deployments: July 1,2023 onwards - Application Gateway V1 is no longer available for 
+  deployment on subscriptions with out V1 gateways(Refer to 
+  [FAQ](https://learn.microsoft.com/azure/application-gateway/retirement-faq#what-is-the-definition-of-a-new-customer-on-application-gateway-v1-sku) 
+  for details) from July 1 2023 onwards.
+- No new V1 deployments: August 28, 2024 - V1 creation will be stopped completely for all customers 28 August 2024 onwards.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-04-01`.
+
+## 2.29.0 (2023-07-28)
+
+### Bugs Fixed
+
+- Fixed a bug that `priority` wasn't set for path-based request routing rules when creating V2 Application Gateways.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-02-01`.
+
+## 2.28.0 (2023-06-25)
+
+### Features Added
+
+- Supported `WebApplicationFirewallPolicy` for Web Application Firewall Policy.
+- Supported associating `ApplicationGateway` with `WebApplicationFirewallPolicy`.
+- Deprecated `withWebApplicationFirewall` in `ApplicationGateway` since no further investments will be made on legacy 
+  WAF configuration.
+
+## 2.27.0 (2023-05-25)
+
+### Features Added
+
+- Supported `withNatGateway` in `Subnet`.
+
+### Breaking Changes
+
+- Removed `DRAIN` from class `LoadBalancerBackendAddressAdminState`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-11-01`.
+
+## 2.26.0 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.25.0 (2023-03-24)
+
+### Bugs Fixed
+
+- Fixed a bug that `listAvailablePrivateIPAddresses` in `Subnet` throws NPE when user has no permission.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-09-01`.
+
+## 2.24.0 (2023-02-17)
+
+### Bugs Fixed
+
+- Fixed a bug that updating source/destination of `NetworkSecurityGroup` rules would fail when from application security group to ip addresses/service tags.
+
+## 2.23.0 (2023-01-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.22.0 (2022-12-23)
+
+### Other Changes
+
+- Remove validation for properties `selector` and `selectorMatchOperator` from `ApplicationGatewayFirewallExclusion` to support `Equals any` operator.
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-07-01`.
 
 ## 2.21.0 (2022-11-24)
 

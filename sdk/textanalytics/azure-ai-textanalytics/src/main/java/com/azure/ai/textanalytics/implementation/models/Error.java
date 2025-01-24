@@ -5,55 +5,59 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The error object. */
+/**
+ * The error object.
+ */
 @Fluent
-public final class Error {
+public final class Error implements JsonSerializable<Error> {
     /*
      * One of a server-defined set of error codes.
      */
-    @JsonProperty(value = "code", required = true)
     private ErrorCode code;
 
     /*
      * A human-readable representation of the error.
      */
-    @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
      * The target of the error.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * An array of details about specific errors that led to this reported error.
      */
-    @JsonProperty(value = "details")
     private List<Error> details;
 
     /*
      * An object containing more specific information than the current object about the error.
      */
-    @JsonProperty(value = "innererror")
     private InnerErrorModel innererror;
 
     /*
      * The error object.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
+
+    /**
+     * Creates an instance of Error class.
+     */
+    public Error() {
+    }
 
     /**
      * Get the code property: One of a server-defined set of error codes.
-     *
+     * 
      * @return the code value.
      */
     public ErrorCode getCode() {
@@ -62,7 +66,7 @@ public final class Error {
 
     /**
      * Set the code property: One of a server-defined set of error codes.
-     *
+     * 
      * @param code the code value to set.
      * @return the Error object itself.
      */
@@ -73,7 +77,7 @@ public final class Error {
 
     /**
      * Get the message property: A human-readable representation of the error.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -82,7 +86,7 @@ public final class Error {
 
     /**
      * Set the message property: A human-readable representation of the error.
-     *
+     * 
      * @param message the message value to set.
      * @return the Error object itself.
      */
@@ -93,7 +97,7 @@ public final class Error {
 
     /**
      * Get the target property: The target of the error.
-     *
+     * 
      * @return the target value.
      */
     public String getTarget() {
@@ -102,7 +106,7 @@ public final class Error {
 
     /**
      * Set the target property: The target of the error.
-     *
+     * 
      * @param target the target value to set.
      * @return the Error object itself.
      */
@@ -113,7 +117,7 @@ public final class Error {
 
     /**
      * Get the details property: An array of details about specific errors that led to this reported error.
-     *
+     * 
      * @return the details value.
      */
     public List<Error> getDetails() {
@@ -122,7 +126,7 @@ public final class Error {
 
     /**
      * Set the details property: An array of details about specific errors that led to this reported error.
-     *
+     * 
      * @param details the details value to set.
      * @return the Error object itself.
      */
@@ -134,7 +138,7 @@ public final class Error {
     /**
      * Get the innererror property: An object containing more specific information than the current object about the
      * error.
-     *
+     * 
      * @return the innererror value.
      */
     public InnerErrorModel getInnererror() {
@@ -144,7 +148,7 @@ public final class Error {
     /**
      * Set the innererror property: An object containing more specific information than the current object about the
      * error.
-     *
+     * 
      * @param innererror the innererror value to set.
      * @return the Error object itself.
      */
@@ -155,17 +159,16 @@ public final class Error {
 
     /**
      * Get the additionalProperties property: The error object.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: The error object.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the Error object itself.
      */
@@ -174,11 +177,64 @@ public final class Error {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code == null ? null : this.code.toString());
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("innererror", this.innererror);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Error from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Error if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Error.
+     */
+    public static Error fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Error deserializedError = new Error();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedError.code = ErrorCode.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedError.message = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedError.target = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    List<Error> details = reader.readArray(reader1 -> Error.fromJson(reader1));
+                    deserializedError.details = details;
+                } else if ("innererror".equals(fieldName)) {
+                    deserializedError.innererror = InnerErrorModel.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedError.additionalProperties = additionalProperties;
+
+            return deserializedError;
+        });
     }
 }

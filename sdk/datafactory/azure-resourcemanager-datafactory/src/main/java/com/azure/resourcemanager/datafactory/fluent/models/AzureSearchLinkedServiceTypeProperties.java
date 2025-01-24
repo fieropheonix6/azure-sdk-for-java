@@ -6,38 +6,44 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Windows Azure Search Service linked service properties. */
+/**
+ * Windows Azure Search Service linked service properties.
+ */
 @Fluent
-public final class AzureSearchLinkedServiceTypeProperties {
+public final class AzureSearchLinkedServiceTypeProperties
+    implements JsonSerializable<AzureSearchLinkedServiceTypeProperties> {
     /*
      * URL for Azure Search service. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "url", required = true)
     private Object url;
 
     /*
      * Admin Key for Azure Search service
      */
-    @JsonProperty(value = "key")
     private SecretBase key;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of AzureSearchLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of AzureSearchLinkedServiceTypeProperties class.
+     */
     public AzureSearchLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the url property: URL for Azure Search service. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the url value.
      */
     public Object url() {
@@ -46,7 +52,7 @@ public final class AzureSearchLinkedServiceTypeProperties {
 
     /**
      * Set the url property: URL for Azure Search service. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param url the url value to set.
      * @return the AzureSearchLinkedServiceTypeProperties object itself.
      */
@@ -57,7 +63,7 @@ public final class AzureSearchLinkedServiceTypeProperties {
 
     /**
      * Get the key property: Admin Key for Azure Search service.
-     *
+     * 
      * @return the key value.
      */
     public SecretBase key() {
@@ -66,7 +72,7 @@ public final class AzureSearchLinkedServiceTypeProperties {
 
     /**
      * Set the key property: Admin Key for Azure Search service.
-     *
+     * 
      * @param key the key value to set.
      * @return the AzureSearchLinkedServiceTypeProperties object itself.
      */
@@ -77,37 +83,36 @@ public final class AzureSearchLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureSearchLinkedServiceTypeProperties object itself.
      */
-    public AzureSearchLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public AzureSearchLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property url in model AzureSearchLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property url in model AzureSearchLinkedServiceTypeProperties"));
         }
         if (key() != null) {
             key().validate();
@@ -115,4 +120,48 @@ public final class AzureSearchLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureSearchLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("url", this.url);
+        jsonWriter.writeJsonField("key", this.key);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSearchLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSearchLinkedServiceTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureSearchLinkedServiceTypeProperties.
+     */
+    public static AzureSearchLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSearchLinkedServiceTypeProperties deserializedAzureSearchLinkedServiceTypeProperties
+                = new AzureSearchLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedAzureSearchLinkedServiceTypeProperties.url = reader.readUntyped();
+                } else if ("key".equals(fieldName)) {
+                    deserializedAzureSearchLinkedServiceTypeProperties.key = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedAzureSearchLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureSearchLinkedServiceTypeProperties;
+        });
+    }
 }

@@ -21,40 +21,45 @@ public final class ProductApisImpl implements ProductApis {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public ProductApisImpl(
-        ProductApisClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public ProductApisImpl(ProductApisClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ApiContract> listByProduct(String resourceGroupName, String serviceName, String productId) {
-        PagedIterable<ApiContractInner> inner =
-            this.serviceClient().listByProduct(resourceGroupName, serviceName, productId);
-        return Utils.mapPage(inner, inner1 -> new ApiContractImpl(inner1, this.manager()));
+        PagedIterable<ApiContractInner> inner
+            = this.serviceClient().listByProduct(resourceGroupName, serviceName, productId);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ApiContract> listByProduct(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
-        PagedIterable<ApiContractInner> inner =
-            this.serviceClient().listByProduct(resourceGroupName, serviceName, productId, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new ApiContractImpl(inner1, this.manager()));
+    public PagedIterable<ApiContract> listByProduct(String resourceGroupName, String serviceName, String productId,
+        String filter, Integer top, Integer skip, Context context) {
+        PagedIterable<ApiContractInner> inner
+            = this.serviceClient().listByProduct(resourceGroupName, serviceName, productId, filter, top, skip, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiContractImpl(inner1, this.manager()));
+    }
+
+    public Response<Void> checkEntityExistsWithResponse(String resourceGroupName, String serviceName, String productId,
+        String apiId, Context context) {
+        return this.serviceClient()
+            .checkEntityExistsWithResponse(resourceGroupName, serviceName, productId, apiId, context);
     }
 
     public void checkEntityExists(String resourceGroupName, String serviceName, String productId, String apiId) {
         this.serviceClient().checkEntityExists(resourceGroupName, serviceName, productId, apiId);
     }
 
-    public Response<Void> checkEntityExistsWithResponse(
-        String resourceGroupName, String serviceName, String productId, String apiId, Context context) {
-        return this
-            .serviceClient()
-            .checkEntityExistsWithResponse(resourceGroupName, serviceName, productId, apiId, context);
+    public Response<ApiContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String productId, String apiId, Context context) {
+        Response<ApiContractInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, productId, apiId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ApiContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ApiContract createOrUpdate(String resourceGroupName, String serviceName, String productId, String apiId) {
@@ -66,28 +71,13 @@ public final class ProductApisImpl implements ProductApis {
         }
     }
 
-    public Response<ApiContract> createOrUpdateWithResponse(
-        String resourceGroupName, String serviceName, String productId, String apiId, Context context) {
-        Response<ApiContractInner> inner =
-            this.serviceClient().createOrUpdateWithResponse(resourceGroupName, serviceName, productId, apiId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ApiContractImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String productId,
+        String apiId, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, productId, apiId, context);
     }
 
     public void delete(String resourceGroupName, String serviceName, String productId, String apiId) {
         this.serviceClient().delete(resourceGroupName, serviceName, productId, apiId);
-    }
-
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String productId, String apiId, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, productId, apiId, context);
     }
 
     private ProductApisClient serviceClient() {

@@ -5,64 +5,69 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ComputeModeOptions;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Usage resource specific properties. */
+/**
+ * Usage resource specific properties.
+ */
 @Immutable
-public final class UsageProperties {
+public final class UsageProperties implements JsonSerializable<UsageProperties> {
     /*
      * Friendly name shown in the UI.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Name of the quota resource.
      */
-    @JsonProperty(value = "resourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceName;
 
     /*
      * Units of measurement for the quota resource.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /*
      * The current value of the resource counter.
      */
-    @JsonProperty(value = "currentValue", access = JsonProperty.Access.WRITE_ONLY)
     private Long currentValue;
 
     /*
      * The resource limit.
      */
-    @JsonProperty(value = "limit", access = JsonProperty.Access.WRITE_ONLY)
     private Long limit;
 
     /*
      * Next reset time for the resource counter.
      */
-    @JsonProperty(value = "nextResetTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime nextResetTime;
 
     /*
      * Compute mode used for this usage.
      */
-    @JsonProperty(value = "computeMode", access = JsonProperty.Access.WRITE_ONLY)
     private ComputeModeOptions computeMode;
 
     /*
      * Site mode used for this usage.
      */
-    @JsonProperty(value = "siteMode", access = JsonProperty.Access.WRITE_ONLY)
     private String siteMode;
 
     /**
+     * Creates an instance of UsageProperties class.
+     */
+    public UsageProperties() {
+    }
+
+    /**
      * Get the displayName property: Friendly name shown in the UI.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -71,7 +76,7 @@ public final class UsageProperties {
 
     /**
      * Get the resourceName property: Name of the quota resource.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -80,7 +85,7 @@ public final class UsageProperties {
 
     /**
      * Get the unit property: Units of measurement for the quota resource.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -89,7 +94,7 @@ public final class UsageProperties {
 
     /**
      * Get the currentValue property: The current value of the resource counter.
-     *
+     * 
      * @return the currentValue value.
      */
     public Long currentValue() {
@@ -98,7 +103,7 @@ public final class UsageProperties {
 
     /**
      * Get the limit property: The resource limit.
-     *
+     * 
      * @return the limit value.
      */
     public Long limit() {
@@ -107,7 +112,7 @@ public final class UsageProperties {
 
     /**
      * Get the nextResetTime property: Next reset time for the resource counter.
-     *
+     * 
      * @return the nextResetTime value.
      */
     public OffsetDateTime nextResetTime() {
@@ -116,7 +121,7 @@ public final class UsageProperties {
 
     /**
      * Get the computeMode property: Compute mode used for this usage.
-     *
+     * 
      * @return the computeMode value.
      */
     public ComputeModeOptions computeMode() {
@@ -125,7 +130,7 @@ public final class UsageProperties {
 
     /**
      * Get the siteMode property: Site mode used for this usage.
-     *
+     * 
      * @return the siteMode value.
      */
     public String siteMode() {
@@ -134,9 +139,59 @@ public final class UsageProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UsageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UsageProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UsageProperties.
+     */
+    public static UsageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UsageProperties deserializedUsageProperties = new UsageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedUsageProperties.displayName = reader.getString();
+                } else if ("resourceName".equals(fieldName)) {
+                    deserializedUsageProperties.resourceName = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedUsageProperties.unit = reader.getString();
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedUsageProperties.currentValue = reader.getNullable(JsonReader::getLong);
+                } else if ("limit".equals(fieldName)) {
+                    deserializedUsageProperties.limit = reader.getNullable(JsonReader::getLong);
+                } else if ("nextResetTime".equals(fieldName)) {
+                    deserializedUsageProperties.nextResetTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("computeMode".equals(fieldName)) {
+                    deserializedUsageProperties.computeMode = ComputeModeOptions.fromString(reader.getString());
+                } else if ("siteMode".equals(fieldName)) {
+                    deserializedUsageProperties.siteMode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUsageProperties;
+        });
     }
 }

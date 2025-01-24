@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Http logs configuration. */
+/**
+ * Http logs configuration.
+ */
 @Fluent
-public final class HttpLogsConfig {
+public final class HttpLogsConfig implements JsonSerializable<HttpLogsConfig> {
     /*
      * Http logs to file system configuration.
      */
-    @JsonProperty(value = "fileSystem")
     private FileSystemHttpLogsConfig fileSystem;
 
     /*
      * Http logs to azure blob storage configuration.
      */
-    @JsonProperty(value = "azureBlobStorage")
     private AzureBlobStorageHttpLogsConfig azureBlobStorage;
 
     /**
+     * Creates an instance of HttpLogsConfig class.
+     */
+    public HttpLogsConfig() {
+    }
+
+    /**
      * Get the fileSystem property: Http logs to file system configuration.
-     *
+     * 
      * @return the fileSystem value.
      */
     public FileSystemHttpLogsConfig fileSystem() {
@@ -33,7 +43,7 @@ public final class HttpLogsConfig {
 
     /**
      * Set the fileSystem property: Http logs to file system configuration.
-     *
+     * 
      * @param fileSystem the fileSystem value to set.
      * @return the HttpLogsConfig object itself.
      */
@@ -44,7 +54,7 @@ public final class HttpLogsConfig {
 
     /**
      * Get the azureBlobStorage property: Http logs to azure blob storage configuration.
-     *
+     * 
      * @return the azureBlobStorage value.
      */
     public AzureBlobStorageHttpLogsConfig azureBlobStorage() {
@@ -53,7 +63,7 @@ public final class HttpLogsConfig {
 
     /**
      * Set the azureBlobStorage property: Http logs to azure blob storage configuration.
-     *
+     * 
      * @param azureBlobStorage the azureBlobStorage value to set.
      * @return the HttpLogsConfig object itself.
      */
@@ -64,7 +74,7 @@ public final class HttpLogsConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -74,5 +84,44 @@ public final class HttpLogsConfig {
         if (azureBlobStorage() != null) {
             azureBlobStorage().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("fileSystem", this.fileSystem);
+        jsonWriter.writeJsonField("azureBlobStorage", this.azureBlobStorage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpLogsConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpLogsConfig if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HttpLogsConfig.
+     */
+    public static HttpLogsConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpLogsConfig deserializedHttpLogsConfig = new HttpLogsConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fileSystem".equals(fieldName)) {
+                    deserializedHttpLogsConfig.fileSystem = FileSystemHttpLogsConfig.fromJson(reader);
+                } else if ("azureBlobStorage".equals(fieldName)) {
+                    deserializedHttpLogsConfig.azureBlobStorage = AzureBlobStorageHttpLogsConfig.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHttpLogsConfig;
+        });
     }
 }
