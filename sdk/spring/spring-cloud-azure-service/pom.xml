@@ -110,7 +110,7 @@
     <dependency>
       <groupId>org.apache.kafka</groupId>
       <artifactId>kafka-clients</artifactId>
-      <version>3.8.1</version> <!-- {x-version-update;springboot3_org.apache.kafka:kafka-clients;external_dependency} -->
+      <version>3.9.1</version> <!-- {x-version-update;springboot3_org.apache.kafka:kafka-clients;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
