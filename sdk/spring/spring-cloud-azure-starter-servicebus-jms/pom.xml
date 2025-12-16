@@ -166,7 +166,7 @@ currently released version and a lower version is resolved. -->
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-http</artifactId>
-      <version>4.1.124.Final</version> <!-- {x-version-update;springboot3_io.netty:netty-codec-http;external_dependency} -->
+      <version>4.1.129.Final</version> <!-- {x-version-update;springboot3_io.netty:netty-codec-http;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
