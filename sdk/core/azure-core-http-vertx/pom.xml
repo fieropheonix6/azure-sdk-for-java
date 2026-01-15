@@ -89,7 +89,7 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-core</artifactId>
-      <version>4.5.23</version> <!-- {x-version-update;io.vertx:vertx-core;external_dependency} -->
+      <version>4.5.24</version> <!-- {x-version-update;io.vertx:vertx-core;external_dependency} -->
     </dependency>
 
     <!-- test dependencies on azure-core, because we want to run tests inherited from this module using Vert.x Web Client -->
