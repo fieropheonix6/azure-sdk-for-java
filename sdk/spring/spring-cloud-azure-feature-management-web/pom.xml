@@ -34,7 +34,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>7.0.5</version> <!-- {x-version-update;springboot4_org.springframework:spring-webmvc;external_dependency} -->
+      <version>7.0.6</version> <!-- {x-version-update;springboot4_org.springframework:spring-webmvc;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
