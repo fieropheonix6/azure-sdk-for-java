@@ -126,7 +126,7 @@ currently released version and a lower version is resolved. -->
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-transport-native-epoll</artifactId>
-      <version>4.2.12.Final</version> <!-- {x-version-update;springboot4_io.netty:netty-transport-native-epoll;external_dependency} -->
+      <version>4.2.13.Final</version> <!-- {x-version-update;springboot4_io.netty:netty-transport-native-epoll;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
