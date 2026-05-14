@@ -68,7 +68,7 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
-      <version>1.43.0</version> <!-- {x-version-update;otel_exporter_deprecated_io.opentelemetry:opentelemetry-api;external_dependency} -->
+      <version>1.62.0</version> <!-- {x-version-update;otel_exporter_deprecated_io.opentelemetry:opentelemetry-api;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
