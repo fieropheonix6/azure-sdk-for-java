@@ -47,7 +47,7 @@
     <dependency>
       <groupId>tools.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>3.1.5</version> <!-- {x-version-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
+      <version>3.1.6</version> <!-- {x-version-update;springboot4_tools.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
